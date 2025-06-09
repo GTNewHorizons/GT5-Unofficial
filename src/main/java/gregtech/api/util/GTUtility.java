@@ -1749,15 +1749,11 @@ public class GTUtility {
         return areStacksEqual(aStack1, aStack2, false);
     }
 
-    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return aStack1 != null && aStack2 != null
-            && aStack1.getItem() == aStack2.getItem()
-            && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                || Items.feather.getDamage(aStack1) == WILDCARD
-                || Items.feather.getDamage(aStack2) == WILDCARD)
-            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
-                && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
-                    .equals(aStack2.getTagCompound()))));
+    public static boolean areStacksEqual(ItemStack a, ItemStack b, boolean aIgnoreNBT) {
+        return a != null && b != null
+            && a.getItem() == b.getItem()
+            && (a.itemDamage == b.itemDamage || a.itemDamage == WILDCARD || b.itemDamage == WILDCARD)
+            && (aIgnoreNBT || Objects.equals(a.getTagCompound(), b.getTagCompound()));
     }
 
     public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
@@ -2408,7 +2404,7 @@ public class GTUtility {
         StringBuilder sb = new StringBuilder();
 
         for (ItemStack stack : stacks) {
-            if (!sb.isEmpty()) sb.append(", ");
+            if (sb.length() > 0) sb.append(", ");
 
             sb.append(stack);
         }
@@ -2428,7 +2424,7 @@ public class GTUtility {
         StringBuilder sb = new StringBuilder();
 
         for (FluidStack stack : stacks) {
-            if (!sb.isEmpty()) sb.append(", ");
+            if (sb.length() > 0) sb.append(", ");
 
             sb.append(stack);
         }

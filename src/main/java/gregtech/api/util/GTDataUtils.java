@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,6 +42,24 @@ public class GTDataUtils {
     public static <S, T> T[] mapToArray(S[] in, IntFunction<T[]> ctor, Function<S, T> mapper) {
         T[] out = ctor.apply(in.length);
         for (int i = 0; i < out.length; i++) out[i] = mapper.apply(in[i]);
+        return out;
+    }
+
+    public static <T> T[] withoutNulls(T[] array) {
+        int nonNullCount = GTDataUtils.countNonNulls(array);
+
+        if (nonNullCount == array.length) return array;
+
+        T[] out = Arrays.copyOf(array, nonNullCount);
+
+        int j = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            T t = array[i];
+
+            if (t != null) out[j++] = t;
+        }
+
         return out;
     }
 

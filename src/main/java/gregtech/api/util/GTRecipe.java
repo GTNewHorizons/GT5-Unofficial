@@ -38,6 +38,10 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import it.unimi.dsi.fastutil.ints.Int2LongMap;
+import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2LongMap;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
@@ -432,6 +436,133 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes,
         FluidStack[] aFluidInputs, ItemStack... aInputs) {
         return isRecipeInputEqual(aDecreaseStacksizeBySuccess, aDontCheckStackSizes, 1, aFluidInputs, aInputs);
+    }
+
+    public boolean couldRunOnce(ItemStack[] items, FluidStack[] fluids, boolean dontCheckStackSizes) {
+        if (items.length > 64 || fluids.length > 64 || mInputs.length > 64 || mFluidInputs.length > 64) {
+            return isRecipeInputEqual(false, false, fluids, items);
+        }
+
+        // Check if the given inputs could theoretically run this recipe.
+        // Fast fail path because most of the time this will be false.
+        if (!areAllInputsPresent(items, fluids)) return false;
+
+        if (isNBTSensitive) {
+            return isRecipeInputEqual(false, false, fluids, items);
+        }
+
+        if (dontCheckStackSizes) return true;
+
+        if (mInputs.length > 0) {
+            var requiredItems = getItemHistogram(mInputs);
+            var presentItems = getItemHistogram(items);
+
+            for (var requiredItem : requiredItems.long2LongEntrySet()) {
+                if (presentItems.get(requiredItem.getLongKey()) < requiredItem.getLongValue()) return false;
+            }
+        }
+
+        if (mFluidInputs.length > 0) {
+            var requiredFluids = getFluidHistogram(mFluidInputs);
+            var presentFluids = getFluidHistogram(fluids);
+
+            for (var requiredFluid : requiredFluids.int2LongEntrySet()) {
+                if (presentFluids.get(requiredFluid.getIntKey()) < requiredFluid.getLongValue()) return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean areAllInputsPresent(ItemStack[] items, FluidStack[] fluids) {
+        long matchedItems = 0;
+
+        for (int i = 0; i < mInputs.length; i++) {
+            ItemStack inRecipe = mInputs[i];
+
+            if (inRecipe == null) continue;
+
+            boolean foundMatch = false;
+
+            for (int j = 0; j < items.length; j++) {
+                if ((matchedItems & (1L << j)) != 0) continue;
+
+                ItemStack inMachine = items[j];
+
+                if (inMachine == null) continue;
+
+                if (GTUtility.areStacksEqual(inRecipe, inMachine, !isNBTSensitive)) {
+                    matchedItems |= 1L << j;
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch) return false;
+        }
+
+        long matchedFluids = 0;
+
+        for (int i = 0; i < mFluidInputs.length; i++) {
+            FluidStack inRecipe = mFluidInputs[i];
+
+            if (inRecipe == null) continue;
+
+            boolean foundMatch = false;
+
+            for (int j = 0; j < fluids.length; j++) {
+                if ((matchedFluids & (1L << j)) != 0) continue;
+
+                FluidStack inMachine = fluids[j];
+
+                if (inMachine == null) continue;
+
+                if (GTUtility.areFluidsEqual(inRecipe, inMachine, !isNBTSensitive)) {
+                    matchedFluids |= 1L << j;
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch) return false;
+        }
+
+        return true;
+    }
+
+    private Long2LongMap getItemHistogram(ItemStack[] items) {
+        Long2LongOpenHashMap map = new Long2LongOpenHashMap(items.length);
+
+        for (int i = 0; i < items.length; i++) {
+            ItemStack stack = items[i];
+
+            if (stack == null || stack.getItem() == null) continue;
+
+            // Use the object identity hashcode here because Item references cannot change.
+            // An id lookup would be too slow, even if it makes more sense. We just care about a unique int value.
+            long key = ((long) Objects.hashCode(stack.getItem())) << 32 | (long) stack.itemDamage;
+
+            map.put(key, map.get(key) + stack.stackSize);
+        }
+
+        return map;
+    }
+
+    private Int2LongMap getFluidHistogram(FluidStack[] fluids) {
+        Int2LongOpenHashMap map = new Int2LongOpenHashMap(fluids.length);
+
+        for (int i = 0; i < fluids.length; i++) {
+            FluidStack stack = fluids[i];
+
+            if (stack == null || stack.getFluid() == null) continue;
+
+            // Same as above, the fluid reference will never change and we just want a unique key
+            int key = Objects.hashCode(stack.getFluid());
+
+            map.put(key, map.get(key) + stack.amount);
+        }
+
+        return map;
     }
 
     /**

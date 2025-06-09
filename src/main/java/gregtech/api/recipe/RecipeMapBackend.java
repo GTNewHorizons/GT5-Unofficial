@@ -341,7 +341,7 @@ public class RecipeMapBackend {
      * Returns all the matched recipes in the form of Stream, without any additional check for matches.
      *
      * @param rawItems            Item inputs.
-     * @param fluids              Fluid inputs.
+     * @param rawFluids           Fluid inputs.
      * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
      *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
      *                            Alternatively overriding {@link #filterFindRecipe} will also work.
@@ -352,12 +352,12 @@ public class RecipeMapBackend {
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
      */
-    Iterator<GTRecipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+    Iterator<GTRecipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] rawFluids, @Nullable ItemStack specialSlot,
         @Nullable GTRecipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck,
         long maxEUt, @Nullable Predicate<GTRecipe> filter) {
 
         if (doesOverwriteFindRecipe()) {
-            return ObjectIterators.singleton(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
+            return ObjectIterators.singleton(overwriteFindRecipe(rawItems, rawFluids, specialSlot, cachedRecipe));
         }
 
         if (recipesByCategory.isEmpty()) {
@@ -371,7 +371,7 @@ public class RecipeMapBackend {
         // For checking collision, we assume min inputs check already has been passed as of building the recipe.
         if (!forCollisionCheck) {
             if (properties.minFluidInputs > 0) {
-                if (GTDataUtils.countNonNulls(fluids) < properties.minFluidInputs) {
+                if (GTDataUtils.countNonNulls(rawFluids) < properties.minFluidInputs) {
                     return ObjectIterators.emptyIterator();
                 }
             }
@@ -382,7 +382,10 @@ public class RecipeMapBackend {
             }
         }
 
+        rawItems = GTDataUtils.withoutNulls(rawItems);
+
         ItemStack[] items;
+        FluidStack[] fluids = GTDataUtils.withoutNulls(rawFluids);
 
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
@@ -452,7 +455,7 @@ public class RecipeMapBackend {
 
                         GTRecipe recipe = this.recipeIter.next();
 
-                        if (maxEUt != -1 && recipe.mEUt > maxEUt) continue;
+                        if (maxEUt > 0 && recipe.mEUt > maxEUt) continue;
 
                         if (!filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes)) continue;
 
@@ -511,7 +514,7 @@ public class RecipeMapBackend {
 
                         GTRecipe recipe = this.recipes.next();
 
-                        if (recipe.mEUt < maxEUt) continue;
+                        if (maxEUt > 0 && recipe.mEUt > maxEUt) continue;
 
                         if (!filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes)) continue;
 
@@ -555,14 +558,13 @@ public class RecipeMapBackend {
      * <p>
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
-    protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
-        // spotless:off
-        if (recipe.mEnabled && !recipe.mFakeRecipe && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
-            return !properties.specialSlotSensitive || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
-        }
-        // spotless:on
-        return false;
+    protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+        if (!recipe.mEnabled) return false;
+        if (recipe.mFakeRecipe) return false;
+        if (properties.specialSlotSensitive && !areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot)) return false;
+        if (!recipe.couldRunOnce(items, fluids, dontCheckStackSizes)) return false;
+
+        return true;
     }
 
     // endregion
