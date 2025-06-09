@@ -533,7 +533,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     private Long2LongMap getItemHistogram(ItemStack[] items) {
-        Long2LongMap map = items.length < 16 ? new Long2LongArrayMap(items.length) : new Long2LongOpenHashMap(items.length);
+        Long2LongMap map = items.length < 16 ? new Long2LongArrayMap(items.length)
+            : new Long2LongOpenHashMap(items.length);
 
         for (int i = 0; i < items.length; i++) {
             ItemStack stack = items[i];
@@ -551,7 +552,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     private Int2LongMap getFluidHistogram(FluidStack[] fluids) {
-        Int2LongMap map = fluids.length < 16 ? new Int2LongArrayMap(fluids.length) : new Int2LongOpenHashMap(fluids.length);
+        Int2LongMap map = fluids.length < 16 ? new Int2LongArrayMap(fluids.length)
+            : new Int2LongOpenHashMap(fluids.length);
 
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];

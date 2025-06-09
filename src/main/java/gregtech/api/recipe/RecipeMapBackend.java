@@ -558,10 +558,12 @@ public class RecipeMapBackend {
      * <p>
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
-    protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+    protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
+        @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
         if (!recipe.mEnabled) return false;
         if (recipe.mFakeRecipe) return false;
-        if (properties.specialSlotSensitive && !areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot)) return false;
+        if (properties.specialSlotSensitive && !areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot))
+            return false;
         if (!recipe.couldRunOnce(items, fluids, dontCheckStackSizes)) return false;
 
         return true;
