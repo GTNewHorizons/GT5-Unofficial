@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
@@ -15,17 +14,13 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import cpw.mods.fml.common.Mod;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.common.blocks.BlockCasings12;
-import gtPlusPlus.core.block.ModBlocks;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -39,8 +34,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,7 +55,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
@@ -82,7 +77,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private int depthOffset = 2;
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
-    public final LimitingItemStackHandler inventoryHandler = new LimitingItemStackHandler(8, 1);
+    public final LimitingItemStackHandler turbineHolder = new LimitingItemStackHandler(8, 1);
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
@@ -93,11 +88,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
-    /*private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEChamberCentrifuge>builder()
-        .addShape(
-            STRUCTURE_TIER_1,
-            // spotless:off
+    /*
+     * private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
+     * .<MTEChamberCentrifuge>builder()
+     * .addShape(
+     * STRUCTURE_TIER_1,
+     * // spotless:off
             transpose(new String[][]{
                 {" CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCEEECCC","CCCEEECCC","CCCEEECCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC "},
                 {"  AAAAA  "," A     A ","A       A","A       A","A   BDD A","A       A","A       A"," A     A ","  AAAAA  "},
@@ -151,67 +147,135 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
             }))
         //spotless:on
-        .addElement('A', chainAllGlasses()) // tiered glasses
-
+     * .addElement('A', chainAllGlasses()) // tiered glasses
+     * .addElement(
+     * 'C', // main casing block
+     * buildHatchAdder(MTEChamberCentrifuge.class)
+     * .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
+     * .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
+     * .dot(1)
+     * .buildAndChain(
+     * onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
+     * .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 4)) // titanium turbine casings, for top section.
+     * .addElement('B', ofFrame(Materials.NaquadahAlloy)) // central shaft piece for tier 1
+     * .addElement('D', ofBlock(GregTechAPI.sBlockMetal4, 14)) // central rotor piece for tier 1
+     * .addElement('F', ofFrame(Materials.Neutronium)) // central shaft piece for tier 2
+     * .addElement('G', ofBlock(GregTechAPI.sBlockMetal5, 2)) // central rotor piece for tier 2
+     * .addElement('H', ofFrame(Materials.Infinity)) // central shaft piece for tier 3
+     * // .addElement('I', ofBlock(LudicrousBlocks.resource_block,1)) //central rotor piece for tier 3
+     * .addElement('I', ofBlock(GregTechAPI.sBlockMetal5, 3))
+     * .addElement('J', ofFrame(MaterialsUEVplus.TranscendentMetal)) // central shaft piece for tier 4, transcendent
+     * // metal
+     * .addElement('K', ofBlock(GregTechAPI.sBlockMetal9, 3)) // central rotor piece for tier 4, ~shirabon time. is
+     * // spacetime atm
+     * .build();
+     */
+    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEChamberCentrifuge>builder()
+        .addShape(
+            STRUCTURE_TIER_1,
+            transpose(
+                new String[][] {
+                    { "      GGGGG      ", "    GGGGGGGGG    ", "  GGGGGGGGGGGGG  ", "  GGGGGGGGGGGGG  ",
+                        " GGGGGGGGGGGGGGG ", " GGGGGGGGGGGGGGG ", "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG",
+                        "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG", " GGGGGGGGGGGGGGG ",
+                        " GGGGGGGGGGGGGGG ", "  GGGGGGGGGGGGG  ", "  GGGGGGGGGGGGG  ", "    GGGGGGGGG    ",
+                        "      GGGGG      " },
+                    { "                 ", "                 ", "      GGGGG      ", "    BG     GB    ",
+                        "   B         B   ", "   G         G   ", "  G           G  ", "  G    BAB    G  ",
+                        "  G    AAA    G  ", "  G    BAB    G  ", "  G           G  ", "   G         G   ",
+                        "   B         B   ", "    BG     GB    ", "      GGGGG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B  CCCCC  B   ", "   G CCCCCCC G   ", "  G CCCCCCCCC G  ", "  H CCCAAACCC H  ",
+                        "  H CCCAAACCC H  ", "  H CCCAAACCC H  ", "  G CCCCCCCCC G  ", "   G CCCCCCC G   ",
+                        "   B  CCCCC  B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GG~GG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G   DDD   G   ", "  G   D   D   G  ", "  H  D     D  H  ",
+                        "  H  D     D  H  ", "  H  D     D  H  ", "  G   D   D   G  ", "   G   DDD   G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B  CCCCC  B   ", "   G CCCCCCC G   ", "  G CCCCCCCCC G  ", "  H CCCAAACCC H  ",
+                        "  H CCCAAACCC H  ", "  H CCCAAACCC H  ", "  G CCCCCCCCC G  ", "   G CCCCCCC G   ",
+                        "   B  CCCCC  B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G         G   ", "  G           G  ", "  G    BAB    G  ",
+                        "  G    AAA    G  ", "  G    BAB    G  ", "  G           G  ", "   G         G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G         G   ", "  G           G  ", " FFFF  BAB  FFFF ",
+                        " FFFF  AAA  FFFF ", " FFFF  BAB  FFFF ", "  G           G  ", "   G         G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GHHHG      ", "    BG     GB    ",
+                        "   B         B   ", "   G         G   ", "  G           G  ", " FFFF  BAB  FFFF ",
+                        " IEEEEEEAEEEEEEI ", " FFFF  BAB  FFFF ", "  G           G  ", "   G         G   ",
+                        "   B         B   ", "    BG     GB    ", "      GHHHG      ", "                 ",
+                        "                 " },
+                    { "                 ", "                 ", "      GGGGG      ", "    BG     GB    ",
+                        "   B         B   ", "   G         G   ", "  G     A     G  ", " FFFF  AAA  FFFF ",
+                        " FFFF AAAAA FFFF ", " FFFF  AAA  FFFF ", "  G     A     G  ", "   G         G   ",
+                        "   B         B   ", "    BG     GB    ", "      GGGGG      ", "                 ",
+                        "                 " },
+                    { "      GGGGG      ", "    GGGGGGGGG    ", "  GGGGGGGGGGGGG  ", "  GGGGGGGGGGGGG  ",
+                        " GGGGGGGGGGGGGGG ", " GGGGGGGGGGGGGGG ", "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG",
+                        "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG", "GGGGGGGGGGGGGGGGG", " GGGGGGGGGGGGGGG ",
+                        " GGGGGGGGGGGGGGG ", "  GGGGGGGGGGGGG  ", "  GGGGGGGGGGGGG  ", "    GGGGGGGGG    ",
+                        "      GGGGG      " } }))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0))
+        .addElement('C', ofBlock(GregTechAPI.sBlockMetal9, 3))
+        // .addElement('D',ofBlock(ModBlocks.blockCasings2Misc,6))
+        // .addElement('E',ofBlock(ModBlocks.blockSpecialMultiCasings,0))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('F', lazy(t -> ofBlock(supercriticalFluidTurbineCasing, 0)))
         .addElement(
-            'C', // main casing block
+            'G',
             buildHatchAdder(MTEChamberCentrifuge.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 4)) // titanium turbine casings, for top section.
-        .addElement('B', ofFrame(Materials.NaquadahAlloy)) // central shaft piece for tier 1
-        .addElement('D', ofBlock(GregTechAPI.sBlockMetal4, 14)) // central rotor piece for tier 1
-        .addElement('F', ofFrame(Materials.Neutronium)) // central shaft piece for tier 2
-        .addElement('G', ofBlock(GregTechAPI.sBlockMetal5, 2)) // central rotor piece for tier 2
-        .addElement('H', ofFrame(Materials.Infinity)) // central shaft piece for tier 3
-        // .addElement('I', ofBlock(LudicrousBlocks.resource_block,1)) //central rotor piece for tier 3
-        .addElement('I', ofBlock(GregTechAPI.sBlockMetal5, 3))
-        .addElement('J', ofFrame(MaterialsUEVplus.TranscendentMetal)) // central shaft piece for tier 4, transcendent
-                                                                      // metal
-        .addElement('K', ofBlock(GregTechAPI.sBlockMetal9, 3)) // central rotor piece for tier 4, ~shirabon time. is
-                                                               // spacetime atm
-
-        .build();*/
-    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEChamberCentrifuge>builder()
-        .addShape(STRUCTURE_TIER_1,transpose(new String[][]{
-            {"      GGGGG      ","    GGGGGGGGG    ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  "," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG"," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  ","    GGGGGGGGG    ","      GGGGG      "},
-            {"                 ","                 ","      GGGGG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  ","  G    BAB    G  ","  G    AAA    G  ","  G    BAB    G  ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GGGGG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B  CCCCC  B   ","   G CCCCCCC G   ","  G CCCCCCCCC G  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  G CCCCCCCCC G  ","   G CCCCCCC G   ","   B  CCCCC  B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GG~GG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B  CCCCC  B   ","   G CCCCCCC G   ","  G CCCCCCCCC G  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  G CCCCCCCCC G  ","   G CCCCCCC G   ","   B  CCCCC  B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  ","  G    BAB    G  ","  G    AAA    G  ","  G    BAB    G  ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  "," FFFF  BAB  FFFF "," FFFF  AAA  FFFF "," FFFF  BAB  FFFF ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  "," FFFF  BAB  FFFF "," IEEEEEEAEEEEEEI "," FFFF  BAB  FFFF ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
-            {"                 ","                 ","      GGGGG      ","    BG     GB    ","   B         B   ","   G         G   ","  G     A     G  "," FFFF  AAA  FFFF "," FFFF AAAAA FFFF "," FFFF  AAA  FFFF ","  G     A     G  ","   G         G   ","   B         B   ","    BG     GB    ","      GGGGG      ","                 ","                 "},
-            {"      GGGGG      ","    GGGGGGGGG    ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  "," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG"," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  ","    GGGGGGGGG    ","      GGGGG      "}
-        }))
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9,0))
-        .addElement('C',ofBlock(GregTechAPI.sBlockMetal9, 3))
-        //.addElement('D',ofBlock(ModBlocks.blockCasings2Misc,6))
-        //.addElement('E',ofBlock(ModBlocks.blockSpecialMultiCasings,0))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement('E',ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement('F', lazy(t->ofBlock(supercriticalFluidTurbineCasing,0)))
-        .addElement('G',buildHatchAdder(MTEChamberCentrifuge.class)
-            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
-            .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
-            .dot(1)
-            .buildAndChain(
-                onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
-        .addElement('H',chainAllGlasses())
-        .addElement('I',ofBlock(GregTechAPI.sBlockMetal9, 4))
+        .addElement('H', chainAllGlasses())
+        .addElement('I', ofBlock(GregTechAPI.sBlockMetal9, 4))
         .build();
+
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -226,14 +290,31 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     @Override
+    public void onBlockDestroyed() {
+
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        World w = getBaseMetaTileEntity().getWorld();
+        final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
+        for (int i = 0; i < turbineHolder.getSlots(); i++) {
+            if (turbineHolder.getStackInSlot(i) != null) {
+                ItemStack currentItem = turbineHolder.extractItem(i, 1, false);
+                EntityItem entityItem = new EntityItem(w, aX, aY, aZ, currentItem);
+                w.spawnEntityInWorld(entityItem);
+
+            }
+        }
+        super.onBlockDestroyed();
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mTier = aNBT.getInteger("multiTier");
         mMode = aNBT.getDouble("multiMode");
         RP = aNBT.getInteger("RP");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
-        if (inventoryHandler != null) {
-            inventoryHandler.deserializeNBT(aNBT.getCompoundTag("inventory"));
+        if (turbineHolder != null) {
+            turbineHolder.deserializeNBT(aNBT.getCompoundTag("inventory"));
         }
     }
 
@@ -244,8 +325,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         aNBT.setDouble("multiMode", mMode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
-        if (inventoryHandler != null) {
-            aNBT.setTag("inventory", inventoryHandler.serializeNBT());
+        if (turbineHolder != null) {
+            aNBT.setTag("inventory", turbineHolder.serializeNBT());
         }
 
     }
@@ -280,8 +361,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     TextureFactory.builder()
                         .addIcon(TEXTURE_CONTROLLER)
                         .extFacing()
-                        .build()
-                    };
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
@@ -375,16 +455,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void construct(ItemStack holoStack, boolean hintsOnly) {
         if (holoStack.stackSize == 1) {
             buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, 8, 6, 2);
-        }/*
-        if (holoStack.stackSize == 2) {
-            buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, horizontalOffset, verticalOffset + 1, 0);
-        }
-        if (holoStack.stackSize == 3) {
-            buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, horizontalOffset, verticalOffset + 2, 0);
-        }
-        if (holoStack.stackSize >= 4) {
-            buildPiece(STRUCTURE_TIER_4, holoStack, hintsOnly, horizontalOffset, verticalOffset + 3, 0);
-        }*/
+        } /*
+           * if (holoStack.stackSize == 2) {
+           * buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, horizontalOffset, verticalOffset + 1, 0);
+           * }
+           * if (holoStack.stackSize == 3) {
+           * buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, horizontalOffset, verticalOffset + 2, 0);
+           * }
+           * if (holoStack.stackSize >= 4) {
+           * buildPiece(STRUCTURE_TIER_4, holoStack, hintsOnly, horizontalOffset, verticalOffset + 3, 0);
+           * }
+           */
 
     }
 
@@ -392,16 +473,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivalBuildPiece(
-                STRUCTURE_TIER_1,
-                holoStack,
-                8,
-                6,
-                2,
-                elementBudget,
-                env,
-                false,
-                true);
+            return survivalBuildPiece(STRUCTURE_TIER_1, holoStack, 8, 6, 2, elementBudget, env, false, true);
         }
         if (holoStack.stackSize == 2) {
             return survivalBuildPiece(
@@ -456,13 +528,15 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         boolean hasEnoughCasings = false;
         if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, 0)) {
             mTier = 1;
-        }/* else if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset + 1, 0)) {
-            mTier = 2;
-        } else if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset + 2, 0)) {
-            mTier = 3;
-        } else if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset + 3, 0)) {
-            mTier = 4;
-        }*/
+        } /*
+           * else if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset + 1, 0)) {
+           * mTier = 2;
+           * } else if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset + 2, 0)) {
+           * mTier = 3;
+           * } else if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset + 3, 0)) {
+           * mTier = 4;
+           * }
+           */
         return mTier > 0 && mCasingAmount >= 120;
     }
 
@@ -498,10 +572,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
-        }
-            .setEuModifier(0.7F);
+        }.setEuModifier(0.7F);
     }
-
 
     public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
         if (aStack == null) return false;
@@ -519,9 +591,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         int sumRotorLevels = 0;
 
         for (int i = 0; i < mTier * 2; i++) {
-            if (inventoryHandler.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
-                                                              // rotor.
-                ItemStack currentItem = inventoryHandler.getStackInSlot(i);
+            if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
+                                                           // rotor.
+                ItemStack currentItem = turbineHolder.getStackInSlot(i);
                 IToolStats toolStats = ((MetaGeneratedTool) currentItem.getItem()).getToolStats(currentItem);
                 int harvestLevel = ((MetaGeneratedTool) currentItem.getItem()).getHarvestLevel(currentItem, "test");
 
