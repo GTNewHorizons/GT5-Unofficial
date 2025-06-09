@@ -50,6 +50,7 @@ public class GTCapesLoader implements Runnable {
     private static void downloadGTNHUUIDCapes(Map<UUID, ResourceLocation> map) {
         /*                                       |------------------------------UUID------------------------------|:capeName(optional)*/
         Pattern pattern = Pattern.compile("^([0-9a-z]{8}-?[0-9a-z]{4}-?[0-9a-z]{4}-?[0-9a-z]{4}-?[0-9a-z]{12})(?:$|\\:(cape\\w+).*$)");
+        // TODO change for the new URL once PR is merged
         String url = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
         try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
             while (scanner.hasNextLine()) {
