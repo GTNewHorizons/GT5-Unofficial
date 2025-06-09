@@ -38,8 +38,10 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import it.unimi.dsi.fastutil.ints.Int2LongArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2LongMap;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2LongArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -531,7 +533,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     private Long2LongMap getItemHistogram(ItemStack[] items) {
-        Long2LongOpenHashMap map = new Long2LongOpenHashMap(items.length);
+        Long2LongMap map = items.length < 16 ? new Long2LongArrayMap(items.length) : new Long2LongOpenHashMap(items.length);
 
         for (int i = 0; i < items.length; i++) {
             ItemStack stack = items[i];
@@ -549,7 +551,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     private Int2LongMap getFluidHistogram(FluidStack[] fluids) {
-        Int2LongOpenHashMap map = new Int2LongOpenHashMap(fluids.length);
+        Int2LongMap map = fluids.length < 16 ? new Int2LongArrayMap(fluids.length) : new Int2LongOpenHashMap(fluids.length);
 
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];

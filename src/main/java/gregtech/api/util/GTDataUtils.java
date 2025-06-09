@@ -46,6 +46,8 @@ public class GTDataUtils {
     }
 
     public static <T> T[] withoutNulls(T[] array) {
+        if (array.length == 0) return array;
+
         int nonNullCount = GTDataUtils.countNonNulls(array);
 
         if (nonNullCount == array.length) return array;
