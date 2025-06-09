@@ -168,7 +168,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mica, 64))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mica, 32))
                 .fluidInputs(Materials.PrismaticNaquadah.getMolten(576))
                 .fluidOutputs(Materials.PrismaticNaquadahCompositeSlurry.getFluid(2000))
                 .duration(5 * SECONDS)
