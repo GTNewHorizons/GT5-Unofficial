@@ -2423,7 +2423,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    enum MufflerState {
+        OFF,
+        ON;
+    }
+
+    private @Nullable MufflerState prevMufflerState;
+
     protected void setMufflers(boolean state) {
+        if (prevMufflerState != null) {
+            MufflerState expected = state ? MufflerState.ON : MufflerState.OFF;
+
+            if (expected == prevMufflerState) return;
+
+            prevMufflerState = expected;
+        }
+
         int l = mMufflerHatches.size();
         for (int i = 0; i < l; i++) {
             MTEHatchMuffler aMuffler = mMufflerHatches.get(i);
