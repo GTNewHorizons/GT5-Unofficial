@@ -33,7 +33,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { "Grants creative flight to those wearing a maglev harness.",
+            new String[] { "Grants creative flight to those wearing a MagLev Harness.",
                 "Range is a cube centered on the pylon.",
                 String.format(
                     "Unpowered Range: %s%d blocks",
