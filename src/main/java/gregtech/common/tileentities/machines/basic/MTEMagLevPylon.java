@@ -26,7 +26,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private final int unpoweredRange = TetherManager.getRange(mTier, false);
     private final long powerCost = TetherManager.getPowerCost(mTier);
 
-    // TODO Power/Range balancing
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
