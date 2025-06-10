@@ -40,6 +40,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
@@ -55,7 +57,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
-public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T> {
+public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
+    implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
@@ -330,6 +333,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             && !mOutputBusses.isEmpty()
             && !mEnergyHatches.isEmpty();
     }
+
+    public abstract int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env);
 
     protected abstract int getControllerTextureIndex();
 
