@@ -1571,7 +1571,8 @@ public class Textures {
         OVERLAY_CHAMBER_CENTRIFUGE_ACTIVE,
         OVERLAY_CHAMBER_CENTRIFUGE_ACTIVE_GLOW,
         OVERLAY_CHAMBER_CENTRIFUGE_GLOW,
-        MACHINE_CASING_CHAMBER_CENTRIFUGE
+        MACHINE_CASING_CHAMBER_CENTRIFUGE,
+        SIEVE_MESH
 
         // semicolon after the comment to reduce merge conflicts
         ;
