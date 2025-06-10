@@ -169,7 +169,7 @@ public class Client {
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
 
-        @Config.Comment("Renders lines to maglev pylons when tethering")
+        @Config.Comment("Render lines to MagLev Pylons when tethering")
         @Config.DefaultBoolean(true)
         @Config.Name("Render MagLev Tethers")
         public boolean renderMagLevTethers;
