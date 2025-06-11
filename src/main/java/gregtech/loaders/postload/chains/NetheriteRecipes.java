@@ -177,6 +177,17 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
+                    MetaItemCraftingComponent.getInstance()
+                        .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
+                    WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 24))
+                .fluidInputs(Materials.PrismaticNaquadah.getMolten(576))
+                .fluidOutputs(Materials.PrismaticNaquadahCompositeSlurry.getFluid(2000))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(mixerNonCellRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.TungstenCarbide, 16),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Lead, 16))
                 .fluidInputs(Materials.PrismaticNaquadahCompositeSlurry.getFluid(8000))
