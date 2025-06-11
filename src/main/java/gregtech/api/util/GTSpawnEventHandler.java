@@ -4,9 +4,10 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 
+import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeMembershipCheck;
+
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.objects.VolumeMembershipCheck;
 
 public class GTSpawnEventHandler {
 
