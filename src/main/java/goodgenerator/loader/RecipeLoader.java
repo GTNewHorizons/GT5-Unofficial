@@ -876,6 +876,13 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemRefer.Special_Ceramics_Dust.get(2))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
+
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
