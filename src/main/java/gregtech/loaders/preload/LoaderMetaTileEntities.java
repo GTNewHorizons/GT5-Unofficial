@@ -1616,7 +1616,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEChamberCentrifuge(
                 Chamber_Centrifuge_Controller.ID,
                 "multimachine.chambercentrifuge",
-                "Kinetic Chamber Centrifuge").getStackForm(1));
+                "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
             chain(GTValues.fancyAuthorChrom, new Supplier<String>() {

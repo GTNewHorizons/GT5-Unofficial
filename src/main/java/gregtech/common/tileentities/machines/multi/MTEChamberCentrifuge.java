@@ -18,12 +18,15 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofGenericMTETiered;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
+import bartworks.system.material.BWMetaGeneratedWerkstoffBlocks;
+import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
@@ -31,6 +34,7 @@ import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
@@ -41,6 +45,7 @@ import mods.railcraft.common.core.Railcraft;
 import mods.railcraft.common.items.RailcraftItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -103,12 +108,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private int depthOffset = 2;
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
+    private static FluidStack kerosene100;
+    private static FluidStack kerosene10;
     public final LimitingItemStackHandler turbineHolder = new LimitingItemStackHandler(8, 1);
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-
+    private static final ItemStack shirabonitem = GGMaterial.shirabon.get(OrePrefixes.ingot);
     private static final IIconContainer TEXTURE_CONTROLLER = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE");
@@ -218,12 +225,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 .casingIndex(1538)
                 .dot(2)
                 .build())
-        .addElement('K', ofBlock(GregTechAPI.sBlockMetal5,2)) //t2 block
+        .addElement('K', lazy(t->ofBlock(LudicrousBlocks.resource_block,0))) //t2 block
         .addElement('L', ofFrame(Materials.Neutronium)) //t2 frame
         .addElement('M', lazy(t->ofBlock(LudicrousBlocks.resource_block,1))) //t3 block
         .addElement('N', ofFrame(Materials.Infinity)) //t3 frame
-        .addElement('O', ofBlock(GregTechAPI.sBlockMetal9,3)) //t4 block
-        .addElement('P', lazy(t->ofFrame(MaterialsUEVplus.WhiteDwarfMatter))) //t4 frame
+        .addElement('O', ofBlock(GregTechAPI.sBlockMetal9,6))
+        .addElement('P', lazy(t->ofFrame(MaterialsUEVplus.SpaceTime))) //t4 frame
         .build();
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -358,11 +365,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 "Requires " + EnumChatFormatting.BLUE
                     + "10L/s"
                     + EnumChatFormatting.GRAY
-                    + " of Lubricant to operate, supply {Fluid2} instead for a "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x"
-                    + EnumChatFormatting.GRAY
-                    + " Parallel multiplier")
+                    + " of "+EnumChatFormatting.DARK_PURPLE+"Kerosene"+EnumChatFormatting.GRAY+" to operate by default")
+            .addInfo("Supply "+EnumChatFormatting.DARK_PURPLE+"Bioluminescent Propulsion Fluid"+EnumChatFormatting.GRAY+" instead for a "+EnumChatFormatting.WHITE+"1.25x "+EnumChatFormatting.GRAY+"Parallel multiplier.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
@@ -386,11 +390,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GREEN
                     + "32"
                     + EnumChatFormatting.GRAY
-                    + ", Requires T3 Structure and {Fluid2}.")
+                    + ", Requires T3 Structure and "+EnumChatFormatting.DARK_PURPLE+"Bioluminescent Propulsion Fluid.")
             .addInfo(
                 "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GRAY + " Heavy Mode.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC+""+EnumChatFormatting.AQUA+"Turbines in Holders not included ;)")
+            .addInfo(EnumChatFormatting.ITALIC+""+EnumChatFormatting.BLUE+"Turbines in Holders not included ;)")
+            .addInfo(EnumChatFormatting.ITALIC+""+EnumChatFormatting.DARK_RED+"Maahes guides the way...")
             .beginStructureBlock(9, 9, 9, false)
             .addController("Front Center")
             .addCasingInfoMin("Chamber Casing", 120, false)
@@ -404,7 +409,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addEnergyHatch("Any Chamber Casing", 1)
             .addMaintenanceHatch("Any Chamber Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(EnumChatFormatting.BLUE, 73);
+            .toolTipFinisher(EnumChatFormatting.GRAY, 73);
 
         return tt;
     }
@@ -518,7 +523,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
-                if (!checkFluid(amountToDrain * 10)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (!checkFluid()) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
@@ -580,10 +585,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return sumRotorLevels;
     }
 
-    private boolean checkFluid(int amount) // checks if [amount] fluid is found in ANY of the machines input hatches
+    private boolean checkFluid() // checks if 100L of fluid is found in ANY of the machines input hatches
     {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amount) : Materials.Lubricant.getFluid(amount);
+        if(kerosene100==null) kerosene100 = new FluidStack(GTPPFluids.Kerosene,100);
+        FluidStack tFluid = tier2Fluid ? kerosene100 : MaterialsUEVplus.BioluminescentPropulsionFluid.getFluid(100);
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
                 return true;
@@ -616,8 +622,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return false;
         }
         if (ticker % 21 == 0) {
-            FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amountToDrain)
-                : Materials.Lubricant.getFluid(amountToDrain); // gets fluid to drain
+            if(kerosene10==null) kerosene10 = new FluidStack(GTPPFluids.Kerosene,10);
+            FluidStack tFluid = tier2Fluid ? kerosene10
+                : MaterialsUEVplus.BioluminescentPropulsionFluid.getFluid(amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) { // worst case, checks all hatches fluid not found, stops
                 // machine
                 if (drain(mInputHatch, tFluid, true)) {
