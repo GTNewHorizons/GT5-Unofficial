@@ -117,9 +117,9 @@ public class Client {
         public boolean invertCircuitScrollDirection;
 
         @Config.Comment({
-            "Overrides the MC total playable sounds limit. MC's default is 28, which causes problems with many machine sounds at once",
-            "If sounds are causing large amounts of lag, try lowering this.",
-            "If sounds are not working at all, try setting this to the lowest value (28).", "Default: 512" })
+                "Overrides the MC total playable sounds limit. MC's default is 28, which causes problems with many machine sounds at once",
+                "If sounds are causing large amounts of lag, try lowering this.",
+                "If sounds are not working at all, try setting this to the lowest value (28).", "Default: 512" })
         @Config.RangeInt(min = 28, max = 2048)
         @Config.RequiresMcRestart
         public int maxNumSounds = 512;
@@ -173,7 +173,7 @@ public class Client {
         @Config.DefaultBoolean(true)
         public boolean renderDigitalChestItem;
 
-        @Config.Comment("Renders lines to maglev pylons when tethering")
+        @Config.Comment("Render lines to MagLev Pylons when tethering")
         @Config.DefaultBoolean(true)
         @Config.Name("Render MagLev Tethers")
         public boolean renderMagLevTethers;
@@ -183,7 +183,8 @@ public class Client {
     public static class Waila {
 
         /**
-         * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
+         * This enables showing voltage tier of transformer for Waila, instead of raw
+         * voltage number
          */
         @Config.Comment("if true, enables showing voltage tier of transformer for Waila, instead of raw voltage number.")
         @Config.DefaultBoolean(true)

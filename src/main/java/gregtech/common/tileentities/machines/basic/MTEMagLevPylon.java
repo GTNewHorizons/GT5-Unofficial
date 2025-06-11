@@ -26,7 +26,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private final int unpoweredRange = TetherManager.getRange(mTier, false);
     private final long powerCost = TetherManager.getPowerCost(mTier);
 
-    // TODO Power/Range balancing
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -34,7 +33,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { "Grants creative flight to those wearing a maglev harness.",
+            new String[] { "Grants creative flight to those wearing a MagLev Harness.",
                 "Range is a cube centered on the pylon.",
                 String.format(
                     "Unpowered Range: %s%d blocks",
@@ -99,8 +98,10 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onRemoval() {
-        if (TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-            .contains(this.machineTether)) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()
+            && TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                .contains(this.machineTether)) {
             TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .remove(this.machineTether);
         }
