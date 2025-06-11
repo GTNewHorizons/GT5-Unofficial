@@ -98,8 +98,10 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onRemoval() {
-        if (TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-            .contains(this.machineTether)) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()
+            && TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                .contains(this.machineTether)) {
             TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .remove(this.machineTether);
         }
