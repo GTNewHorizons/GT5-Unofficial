@@ -11,6 +11,12 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -303,6 +309,30 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             return GTUtility.translate("GT5U.gui.text.at_past_30min", amperage, tier);
         })
             .setSynced(false));
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        lines.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
+        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLastMin));
+        lines.add(MessageFormat.format("Last 5 minutes: {0} EU/t", transferredLast5Min));
+        lines.add(MessageFormat.format("Last 30 minutes: {0} EU/t", transferredLast30Min));
+
+        return lines.toArray(new String[0]);
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        HashMap<String, String> map = new HashMap<>(super.getInfoMap());
+
+        map.put("minHatchTier", Integer.toString(calculateHatchTier()));
+        map.put("lastMinute", Double.toString(transferredLastMin));
+        map.put("last5Minutes", Double.toString(transferredLast5Min));
+        map.put("last30Minutes", Double.toString(transferredLast30Min));
+
+        return map;
     }
 
     @Override
