@@ -881,7 +881,7 @@ public class RecipeLoader {
             .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(formingPressRecipes);
+            .addTo(compressorRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
