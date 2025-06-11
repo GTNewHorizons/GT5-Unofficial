@@ -3,6 +3,9 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
+import static gregtech.api.enums.GTValues.TIER_COLORS;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -10,6 +13,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,17 +22,27 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.data.IntValue;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -42,6 +56,14 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // tick timer is essentially random, so it was extremely unreliable. Now you are guaranteed the length
     // of one structure check to finish your hotswap before it deforms.
     private boolean grace = false;
+
+    private double transferredLastMin = 0d;
+    private double transferredLast5Min = 0d;
+    private double transferredLast30Min = 0d;
+
+    private static final double TICKS_PER_MIN_INV = 1d / (20d * 60d);
+    private static final double TICKS_PER_5MIN_INV = 1d / (20d * 60d * 5d);
+    private static final double TICKS_PER_30MIN_INV = 1d / (20d * 60d * 30d);
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -123,6 +145,16 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
+    protected void onPostPowerPass(double eu) {
+        super.onPostPowerPass(eu);
+        // called once per tick
+
+        transferredLastMin = (transferredLastMin * (1d - TICKS_PER_MIN_INV)) + (eu * TICKS_PER_MIN_INV);
+        transferredLast5Min = (transferredLast5Min * (1d - TICKS_PER_5MIN_INV)) + (eu * TICKS_PER_5MIN_INV);
+        transferredLast30Min = (transferredLast30Min * (1d - TICKS_PER_30MIN_INV)) + (eu * TICKS_PER_30MIN_INV);
+    }
+
+    @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
@@ -178,6 +210,99 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
         }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (!ePowerPass) {
+            // Manually add a zero to the averages when the AT is off because it won't happen otherwise
+            onPostPowerPass(0);
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+
+        aNBT.setDouble("transferredLastMin", transferredLastMin);
+        aNBT.setDouble("transferredLast5Min", transferredLast5Min);
+        aNBT.setDouble("transferredLast30Min", transferredLast30Min);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+
+        transferredLastMin = aNBT.getDouble("transferredLastMin");
+        transferredLast5Min = aNBT.getDouble("transferredLast5Min");
+        transferredLast30Min = aNBT.getDouble("transferredLast30Min");
+    }
+
+    private int calculateHatchTier() {
+        long minEUt = Long.MAX_VALUE;
+
+        for (MTEHatchDynamo dynamo : mDynamoHatches) {
+            minEUt = Math.min(minEUt, dynamo.maxEUOutput());
+        }
+
+        for (MTEHatchEnergy energy : mEnergyHatches) {
+            minEUt = Math.min(minEUt, energy.maxEUInput());
+        }
+
+        for (MTEHatchDynamoMulti dynamo : eDynamoMulti) {
+            minEUt = Math.min(minEUt, dynamo.maxEUOutput());
+        }
+
+        for (MTEHatchEnergyMulti energy : eEnergyMulti) {
+            minEUt = Math.min(minEUt, energy.maxEUInput());
+        }
+
+        if (minEUt == Long.MAX_VALUE) minEUt = 0;
+
+        return GTUtility.getTier(minEUt);
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        IntValue hatchTier = new IntValue();
+
+        screenElements
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLastMin, value -> transferredLastMin = value));
+        screenElements
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Min, value -> transferredLast5Min = value));
+        screenElements
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast30Min, value -> transferredLast30Min = value));
+        screenElements.widget(new FakeSyncWidget.IntegerSyncer(this::calculateHatchTier, hatchTier::setValue));
+
+        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLastMin / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_1min", amperage, tier);
+        })
+            .setSynced(false));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLast5Min / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_5min", amperage, tier);
+        })
+            .setSynced(false));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLast30Min / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_30min", amperage, tier);
+        })
+            .setSynced(false));
     }
 
     @Override
