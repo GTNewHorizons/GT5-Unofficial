@@ -42,6 +42,7 @@ public enum GTPacketTypes {
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     LINK_GOGGLES(34, new GTPacketLinkPowerGoggles()),
+    POWERFAIL_STATUS(35, new GTPowerfailStatusPacket()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 
