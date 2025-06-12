@@ -212,7 +212,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER,1);
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
 
                 return recipetier <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientMachineTier(recipetier);
@@ -221,14 +221,13 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER,1);
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(mTierCasing > recipetier ? 1800*(mTierCasing-recipetier) : 1)
+                    .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-
 
         };
     }
