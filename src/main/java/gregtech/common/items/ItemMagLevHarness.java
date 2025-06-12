@@ -90,6 +90,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     private static void setFly(EntityPlayer player, boolean fly) {
         if (player.capabilities.allowFlying == fly) {
+            player.sendPlayerAbilities();
             return;
         }
         if (fly) {
