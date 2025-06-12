@@ -63,13 +63,13 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // of one structure check to finish your hotswap before it deforms.
     private boolean grace = false;
 
-    private double transferredLastMin = 0d;
-    private double transferredLast5Min = 0d;
-    private double transferredLast30Min = 0d;
+    private double transferredLast5Secs = 0d;
+    private double transferredLast30Secs = 0d;
+    private double transferredLast1Min = 0d;
 
+    private static final double TICKS_PER_5SECS_INV = 1d / (20d * 5d);
+    private static final double TICKS_PER_30SECS_INV = 1d / (20d * 30d);
     private static final double TICKS_PER_MIN_INV = 1d / (20d * 60d);
-    private static final double TICKS_PER_5MIN_INV = 1d / (20d * 60d * 5d);
-    private static final double TICKS_PER_30MIN_INV = 1d / (20d * 60d * 30d);
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -155,9 +155,9 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         super.onPostPowerPass(eu);
         // called once per tick
 
-        transferredLastMin = (transferredLastMin * (1d - TICKS_PER_MIN_INV)) + (eu * TICKS_PER_MIN_INV);
-        transferredLast5Min = (transferredLast5Min * (1d - TICKS_PER_5MIN_INV)) + (eu * TICKS_PER_5MIN_INV);
-        transferredLast30Min = (transferredLast30Min * (1d - TICKS_PER_30MIN_INV)) + (eu * TICKS_PER_30MIN_INV);
+        transferredLast5Secs = (transferredLast5Secs * (1d - TICKS_PER_5SECS_INV)) + (eu * TICKS_PER_5SECS_INV);
+        transferredLast30Secs = (transferredLast30Secs * (1d - TICKS_PER_30SECS_INV)) + (eu * TICKS_PER_30SECS_INV);
+        transferredLast1Min = (transferredLast1Min * (1d - TICKS_PER_MIN_INV)) + (eu * TICKS_PER_MIN_INV);
     }
 
     @Override
@@ -232,18 +232,18 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        aNBT.setDouble("transferredLastMin", transferredLastMin);
-        aNBT.setDouble("transferredLast5Min", transferredLast5Min);
-        aNBT.setDouble("transferredLast30Min", transferredLast30Min);
+        aNBT.setDouble("transferredLast5Secs", transferredLast5Secs);
+        aNBT.setDouble("transferredLast30Secs", transferredLast30Secs);
+        aNBT.setDouble("transferredLast1Min", transferredLast1Min);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        transferredLastMin = aNBT.getDouble("transferredLastMin");
-        transferredLast5Min = aNBT.getDouble("transferredLast5Min");
-        transferredLast30Min = aNBT.getDouble("transferredLast30Min");
+        transferredLast5Secs = aNBT.getDouble("transferredLast5Secs");
+        transferredLast30Secs = aNBT.getDouble("transferredLast30Secs");
+        transferredLast1Min = aNBT.getDouble("transferredLast1Min");
     }
 
     private int calculateHatchTier() {
@@ -277,36 +277,36 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         IntValue hatchTier = new IntValue();
 
         screenElements
-            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLastMin, value -> transferredLastMin = value));
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Secs, value -> transferredLast5Secs = value));
+        screenElements.widget(
+            new FakeSyncWidget.DoubleSyncer(() -> transferredLast30Secs, value -> transferredLast30Secs = value));
         screenElements
-            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Min, value -> transferredLast5Min = value));
-        screenElements
-            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast30Min, value -> transferredLast30Min = value));
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast1Min, value -> transferredLast1Min = value));
         screenElements.widget(new FakeSyncWidget.IntegerSyncer(this::calculateHatchTier, hatchTier::setValue));
 
         screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLastMin / V[hatchTier.value]);
+            String amperage = GTUtility.formatNumbers(transferredLast5Secs / V[hatchTier.value]);
             String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
 
-            return GTUtility.translate("GT5U.gui.text.at_past_1min", amperage, tier);
+            return GTUtility.translate("GT5U.gui.text.at_past_5secs", amperage, tier);
         })
             .setSynced(false));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLast5Min / V[hatchTier.value]);
+            String amperage = GTUtility.formatNumbers(transferredLast30Secs / V[hatchTier.value]);
             String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
 
-            return GTUtility.translate("GT5U.gui.text.at_past_5min", amperage, tier);
+            return GTUtility.translate("GT5U.gui.text.at_past_30secs", amperage, tier);
         })
             .setSynced(false));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLast30Min / V[hatchTier.value]);
+            String amperage = GTUtility.formatNumbers(transferredLast1Min / V[hatchTier.value]);
             String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
 
-            return GTUtility.translate("GT5U.gui.text.at_past_30min", amperage, tier);
+            return GTUtility.translate("GT5U.gui.text.at_past_min", amperage, tier);
         })
             .setSynced(false));
     }
@@ -316,9 +316,9 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         lines.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
-        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLastMin));
-        lines.add(MessageFormat.format("Last 5 minutes: {0} EU/t", transferredLast5Min));
-        lines.add(MessageFormat.format("Last 30 minutes: {0} EU/t", transferredLast30Min));
+        lines.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
+        lines.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
+        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
 
         return lines.toArray(new String[0]);
     }
@@ -328,9 +328,9 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         HashMap<String, String> map = new HashMap<>(super.getInfoMap());
 
         map.put("minHatchTier", Integer.toString(calculateHatchTier()));
-        map.put("lastMinute", Double.toString(transferredLastMin));
-        map.put("last5Minutes", Double.toString(transferredLast5Min));
-        map.put("last30Minutes", Double.toString(transferredLast30Min));
+        map.put("last5Seconds", Double.toString(transferredLast5Secs));
+        map.put("last30Seconds", Double.toString(transferredLast30Secs));
+        map.put("lastMinute", Double.toString(transferredLast1Min));
 
         return map;
     }
