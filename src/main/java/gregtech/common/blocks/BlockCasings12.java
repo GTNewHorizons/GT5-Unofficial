@@ -18,7 +18,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
-        register(9, ItemList.Chamber_Casing, "High Durability Centrifuge Casing");
+        register(9, ItemList.Chamber_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
