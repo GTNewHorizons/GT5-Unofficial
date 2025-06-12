@@ -254,6 +254,8 @@ public class GTPowerfailTracker {
             teamInfo.byWorld.clear();
         }
 
+        INSTANCE.markDirty();
+
         sendPlayerPowerfailStatus(player);
     }
 
@@ -261,6 +263,8 @@ public class GTPowerfailTracker {
         INSTANCE.playerNoRendering.remove(
             player.getGameProfile()
                 .getId());
+
+        INSTANCE.markDirty();
 
         sendPlayerRenderingFlag(player);
         sendPlayerPowerfailStatus(player);
@@ -270,6 +274,8 @@ public class GTPowerfailTracker {
         INSTANCE.playerNoRendering.add(
             player.getGameProfile()
                 .getId());
+
+        INSTANCE.markDirty();
 
         sendPlayerRenderingFlag(player);
     }
@@ -402,7 +408,7 @@ public class GTPowerfailTracker {
     }
 
     @SubscribeEvent
-    public static void onWorldUnload(WorldEvent.Load event) {
+    public static void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             INSTANCE = (SaveData) event.world.mapStorage.loadData(SaveData.class, DATA_NAME);
             if (INSTANCE == null) {
