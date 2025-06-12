@@ -3,13 +3,14 @@ package gregtech.common.data;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -19,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.WorldSavedData;
@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -61,7 +60,7 @@ public class GTPowerfailTracker {
     /** The powerfail state. When a world is loaded, this will never be null. */
     private static SaveData INSTANCE;
 
-    /** A fast lookup for players. Only populated on dedicated servers. */
+    /** A fast lookup for players. */
     private static final ConcurrentMap<UUID, EntityPlayerMP> PLAYERS_BY_ID = new MapMaker().weakValues()
         .makeMap();
     /** Players with pending powerfail syncs. Used to debounce updates to once per tick. */
@@ -70,13 +69,26 @@ public class GTPowerfailTracker {
     /** Something that can own a machine, usually a player but may also be a team. */
     interface MachineOwner {
 
+        Set<UUID> getPlayers();
+
         boolean isOnline();
 
         void sendMessage(String message);
+
+        default List<EntityPlayerMP> getPlayerEntities() {
+            return getPlayers().stream()
+                .map(GTPowerfailTracker::getPlayer)
+                .collect(Collectors.toList());
+        }
     }
 
     @Desugar
     private record PlayerOwner(UUID player) implements MachineOwner {
+
+        @Override
+        public Set<UUID> getPlayers() {
+            return new HashSet<>(Arrays.asList(player));
+        }
 
         @Override
         public boolean isOnline() {
@@ -96,7 +108,8 @@ public class GTPowerfailTracker {
     @Desugar
     private record TeamOwner(UUID leader) implements MachineOwner {
 
-        private List<EntityPlayerMP> getPlayers() {
+        @Override
+        public Set<UUID> getPlayers() {
             HashSet<UUID> inTeam = new HashSet<>();
 
             for (var e : SpaceProjectManager.spaceTeams.entrySet()) {
@@ -104,20 +117,7 @@ public class GTPowerfailTracker {
                     .equals(leader)) inTeam.add(e.getKey());
             }
 
-            List<EntityPlayerMP> players = new ArrayList<>();
-
-            ServerConfigurationManager configurationManager = MinecraftServer.getServer()
-                .getConfigurationManager();
-
-            for (EntityPlayerMP player : configurationManager.playerEntityList) {
-                if (inTeam.contains(
-                    player.getGameProfile()
-                        .getId())) {
-                    players.add(player);
-                }
-            }
-
-            return players;
+            return inTeam;
         }
 
         @Override
@@ -127,7 +127,7 @@ public class GTPowerfailTracker {
 
         @Override
         public void sendMessage(String message) {
-            for (EntityPlayerMP player : getPlayers()) {
+            for (EntityPlayerMP player : getPlayerEntities()) {
                 player.addChatMessage(new ChatComponentText(message));
             }
         }
@@ -224,7 +224,7 @@ public class GTPowerfailTracker {
             owner.sendMessage(powerfail.toString());
         }
 
-        PENDING_UPDATES.add(igte.getOwnerUuid());
+        PENDING_UPDATES.addAll(owner.getPlayers());
         INSTANCE.markDirty();
     }
 
@@ -254,9 +254,8 @@ public class GTPowerfailTracker {
             teamInfo.byWorld.clear();
         }
 
+        PENDING_UPDATES.addAll(owner.getPlayers());
         INSTANCE.markDirty();
-
-        sendPlayerPowerfailStatus(player);
     }
 
     public static void showPowerfails(EntityPlayerMP player) {
@@ -383,28 +382,7 @@ public class GTPowerfailTracker {
     }
 
     public static EntityPlayerMP getPlayer(UUID id) {
-        if (FMLCommonHandler.instance()
-            .getSide()
-            .isClient()) {
-            // integrated server
-
-            MinecraftServer server = MinecraftServer.getServer();
-
-            if (server == null) return null;
-
-            // spotless:off
-            return server
-                .getConfigurationManager()
-                .playerEntityList
-                .stream()
-                .filter(player -> player.getGameProfile().getId().equals(id))
-                .findFirst()
-                .orElse(null);
-            // spotless:on
-        } else {
-            // dedicated server
-            return PLAYERS_BY_ID.get(id);
-        }
+        return PLAYERS_BY_ID.get(id);
     }
 
     @SubscribeEvent

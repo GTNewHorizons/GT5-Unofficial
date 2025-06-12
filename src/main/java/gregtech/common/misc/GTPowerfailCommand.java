@@ -26,6 +26,11 @@ public class GTPowerfailCommand extends CommandBase {
     }
 
     @Override
+    public List<String> getCommandAliases() {
+        return Arrays.asList("powerfail", "pf");
+    }
+
+    @Override
     public String getCommandUsage(ICommandSender sender) {
         return GRAY + "Usage: /powerfails <subcommand>. Valid subcommands are: " + String.join(", ", SUBCOMMANDS) + ".";
     }
@@ -43,6 +48,8 @@ public class GTPowerfailCommand extends CommandBase {
         sender.addChatMessage(new ChatComponentText(GRAY + " list - Prints all uncleared powerfails for your team"));
         sender.addChatMessage(new ChatComponentText(GRAY + " show - Enables in-world powerfail icons"));
         sender.addChatMessage(new ChatComponentText(GRAY + " hide - Disables in-world powerfail icons"));
+        sender.addChatMessage(new ChatComponentText(""));
+        sender.addChatMessage(new ChatComponentText(GRAY + "Aliases: powerfails, powerfail, pf"));
     }
 
     @Override
