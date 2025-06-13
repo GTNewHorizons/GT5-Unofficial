@@ -20,6 +20,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -436,12 +438,15 @@ public class RecipeMapBackend {
     protected int hash(ItemStack[] items, FluidStack[] fluids) {
         int hash = 0;
         for (int i = 0; i < items.length; i++) {
-            hash += items[i].getItem()
-                .hashCode();
+            ItemStack stack = items[i];
+            Item item = stack.getItem();
+            hash += item.hashCode();
+            if (item.getHasSubtypes()) hash += Items.feather.getDamage(stack);
         }
         for (int i = 0; i < fluids.length; i++) {
-            hash += fluids[i].getFluid()
-                .hashCode();
+            FluidStack stack = fluids[i];
+            Fluid fluid = stack.getFluid();
+            hash += fluid.hashCode();
         }
         return hash;
     }
