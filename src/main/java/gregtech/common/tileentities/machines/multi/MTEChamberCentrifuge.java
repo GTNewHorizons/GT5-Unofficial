@@ -12,18 +12,14 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import gregtech.api.render.RenderOverlay;
-import gregtech.api.util.GTUtilityClient;
-import gregtech.api.util.shutdown.ShutDownReason;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,12 +39,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -69,6 +63,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -81,10 +76,8 @@ import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
@@ -93,9 +86,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public double mMode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public float speed = 3F;
-    private int horizontalOffset = 8; // base offset for tier 1
-    private int verticalOffset = 8; // base offset for tier 2
-    private int depthOffset = 2;
+    private final int horizontalOffset = 8; // base offset for tier 1
+    private final int verticalOffset = 8; // base offset for tier 2
+    private final int depthOffset = 2;
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
     private static FluidStack kerosene100;
@@ -113,365 +106,93 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
 
     private boolean mStaticAnimations = false;
-
+    // spotless:off
     private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEChamberCentrifuge>builder()
         .addShape(
             STRUCTURE_TIER_1,
             transpose(
                 new String[][] {
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ",
-                        "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H    B    H   ", "  H    BBB    H  ", "  I   BEBEB   I  ",
-                        "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   CCC   H   ", "  H   CCCCC   H  ", "  I  CCEEECC  I  ",
-                        "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  H   CCCCC   H  ", "   H   CCC   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   CCC   H   ", "  H   CCCCC   H  ", "  I  CCEEECC  I  ",
-                        "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  H   CCCCC   H  ", "   H   CCC   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", "  I   BEFEB   I  ",
-                        "  I  BBBEBBB  I  ", "  I   BEFEB   I  ", "  H    BFB    H  ", "   H    F    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ",
-                        "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " } }))
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ", "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H    B    H   ", "  H    BBB    H  ", "  I   BEBEB   I  ", "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   CCC   H   ", "  H   CCCCC   H  ", "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  H   CCCCC   H  ", "   H   CCC   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  A  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   CCC   H   ", "  H   CCCCC   H  ", "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  I  CCEEECC  I  ", "  H   CCCCC   H  ", "   H   CCC   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", "  I   BEFEB   I  ", "  I  BBBEBBB  I  ", "  I   BEFEB   I  ", "  H    BFB    H  ", "   H    F    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ", "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " } }))
         .addShape(
             STRUCTURE_TIER_2,
             transpose(
                 new String[][] {
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ",
-                        "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H    B    H   ", "  H    BBB    H  ", "  I   BEBEB   I  ",
-                        "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   KKK   H   ", "  H   KKKKK   H  ", "  I  KKEEEKK  I  ",
-                        "  I  KKEEEKK  I  ", "  I  KKEEEKK  I  ", "  H   KKKKK   H  ", "   H   KKK   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ",
-                        "  H  D  L  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   KKK   H   ", "  H   KKKKK   H  ", " GGGGKKEEEKKGGGG ",
-                        " GGGGKKEEEKKGGGG ", " GGGGKKEEEKKGGGG ", "  H   KKKKK   H  ", "   H   KKK   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ",
-                        " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ",
-                        " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " } }))
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H    B    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ", "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H    B    H   ", "  H    BBB    H  ", "  I   BEBEB   I  ", "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   KKK   H   ", "  H   KKKKK   H  ", "  I  KKEEEKK  I  ", "  I  KKEEEKK  I  ", "  I  KKEEEKK  I  ", "  H   KKKKK   H  ", "   H   KKK   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  L  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ", "  H  D  L  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   KKK   H   ", "  H   KKKKK   H  ", " GGGGKKEEEKKGGGG ", " GGGGKKEEEKKGGGG ", " GGGGKKEEEKKGGGG ", "  H   KKKKK   H  ", "   H   KKK   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ", " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ", " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " } }))
         .addShape(
             STRUCTURE_TIER_3,
             transpose(
                 new String[][] {
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ",
-                        "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BFB    H  ", "  I   BEBEB   I  ",
-                        "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   MMM   H   ", "  H   MMMMM   H  ", "  I  MMEEEMM  I  ",
-                        "  I  MMEEEMM  I  ", "  I  MMEEEMM  I  ", "  H   MMMMM   H  ", "   H   MMM   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ",
-                        "  H  D  N  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   MMM   H   ", "  H   MMMMM   H  ", " GGGGMMEEEMMGGGG ",
-                        " GGGGMMEEEMMGGGG ", " GGGGMMEEEMMGGGG ", "  H   MMMMM   H  ", "   H   MMM   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ",
-                        " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ",
-                        " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " } }))
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ", "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BFB    H  ", "  I   BEBEB   I  ", "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   MMM   H   ", "  H   MMMMM   H  ", "  I  MMEEEMM  I  ", "  I  MMEEEMM  I  ", "  I  MMEEEMM  I  ", "  H   MMMMM   H  ", "   H   MMM   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ", "  H  D  N  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   MMM   H   ", "  H   MMMMM   H  ", " GGGGMMEEEMMGGGG ", " GGGGMMEEEMMGGGG ", " GGGGMMEEEMMGGGG ", "  H   MMMMM   H  ", "   H   MMM   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ", " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ", " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " } }))
         .addShape(
             STRUCTURE_TIER_4,
             transpose(
                 new String[][] {
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ",
-                        " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ",
-                        " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   OOO   H   ", "  H   OOOOO   H  ", " GGGGOOEEEOOGGGG ",
-                        " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", "  H   OOOOO   H  ", "   H   OOO   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ",
-                        "  H  D  P  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ",
-                        "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ",
-                        "                 " },
-                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ",
-                        "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ",
-                        "  H  D  P  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ",
-                        "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H   OOO   H   ", "  H   OOOOO   H  ", " GGGGOOEEEOOGGGG ",
-                        " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", "  H   OOOOO   H  ", "   H   OOO   H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ",
-                        "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ",
-                        " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ",
-                        "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ",
-                        "                 " },
-                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ",
-                        "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ",
-                        " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ",
-                        "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ",
-                        "                 " },
-                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ",
-                        " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH",
-                        "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ",
-                        " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ",
-                        "      HHHHH      " } }))
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ", " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ", " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   OOO   H   ", "  H   OOOOO   H  ", " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", "  H   OOOOO   H  ", "   H   OOO   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ", "  H  D  P  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HH~HH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  P  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  H  D     D  H  ", "  H  D  P  D  H  ", "  H  D     D  H  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   OOO   H   ", "  H   OOOOO   H  ", " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", " GGGGOOEEEOOGGGG ", "  H   OOOOO   H  ", "   H   OOO   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BFB    H  ", " GGGG BEFEB GGGG ", " J  GFFFEFFFG  J ", " GGGG BEFEB GGGG ", "  H    BFB    H  ", "   H    F    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
+                    { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BEB    H  ", " GGGG BEEEB GGGG ", " GGGGBEEEEEBGGGG ", " GGGG BEEEB GGGG ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
+                    { "      HHHHH      ", "    HHHHHHHHH    ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", "HHHHHHHHHHHHHHHHH", " HHHHHHHHHHHHHHH ", " HHHHHHHHHHHHHHH ", "  HHHHHHHHHHHHH  ", "  HHHHHHHHHHHHH  ", "    HHHHHHHHH    ", "      HHHHH      " } }))
         .addElement(
             'A',
             lazy(
@@ -509,6 +230,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('O', ofBlock(GregTechAPI.sBlockMetal9, 6))
         .addElement('P', lazy(t -> ofFrame(MaterialsUEVplus.SpaceTime))) // t4 frame
         .build();
+    //spotless:on
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -547,8 +269,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return false;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if(aMetaTileEntity instanceof MTEHatchTurbine)
-        {
+        if (aMetaTileEntity instanceof MTEHatchTurbine) {
             mTurbineRotorHatches.add((MTEHatchTurbine) aMetaTileEntity);
 
             return true;
@@ -576,7 +297,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         aNBT.setDouble("multiMode", mMode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
-        aNBT.setBoolean("turbineAnimationsStatic",mStaticAnimations);
+        aNBT.setBoolean("turbineAnimationsStatic", mStaticAnimations);
 
         if (turbineHolder != null) {
             aNBT.setTag("inventory", turbineHolder.serializeNBT());
@@ -639,7 +360,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GREEN
                     + "Heavy")
             .addInfo("200% faster than singleblock machines of the same voltage")
-            .addInfo("Only uses 80% of the EU/t normally required")
+            .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Will not perform overclocks over the hatch tier.")
             .addSeparator()
             .addInfo(
@@ -699,20 +420,25 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addInfo(
                 "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GRAY + " Heavy Mode.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BLUE + "Turbines in Holders not included ;)")
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
-            .beginStructureBlock(9, 9, 9, false)
+            .beginStructureBlock(17, 17, 17, false)
             .addController("Front Center")
-            .addCasingInfoMin("Chamber Casing", 120, false)
-            .addCasingInfoMin("Any Tiered Glass", 84, true)
-            .addCasingInfoMin("Central Frame", 6, false)
-            .addCasingInfoMin("Central Rotor Blocks", 10, false)
-            .addInputBus("Any Chamber Casing", 1)
-            .addOutputBus("Any Chamber Casing", 1)
-            .addInputHatch("Any Chamber Casing", 1)
-            .addOutputHatch("Any Chamber Casing", 1)
-            .addEnergyHatch("Any Chamber Casing", 1)
-            .addMaintenanceHatch("Any Chamber Casing", 1)
+            .addCasingInfoRange("Any Tiered Glass", 81, 135, true)
+            .addCasingInfoMin("Vibration-Safe Casing", 550, false)
+            .addCasingInfoExactly("Chamber Grate", 144, false)
+            .addCasingInfoExactly("Central Frame Blocks", 9, true)
+            .addCasingInfoExactly("Central Rotor Blocks", 56, true)
+            .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
+            .addCasingInfoRange("PBI Pipe Casing", 160, 178, false)
+            .addCasingInfoRange("Turbine Shaft", 6, 24, false)
+            .addCasingInfoRange("Rotor Assembly", 2, 8, false)
+            .addCasingInfoRange("SC Turbine Casing", 66, 264, false)
+            .addInputBus("Any Vibration-Safe Casing", 1)
+            .addOutputBus("Any Vibration-Safe Casing", 1)
+            .addInputHatch("Any Vibration-Safe Casing", 1)
+            .addOutputHatch("Any Vibration-Safe Casing", 1)
+            .addEnergyHatch("Any Vibration-Safe Casing", 1)
+            .addMaintenanceHatch("Any Vibration-Safe Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.GRAY, 50);
 
@@ -742,7 +468,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivalBuildPiece(STRUCTURE_TIER_1, holoStack, 8, 8, 2, elementBudget, env, false, true);
+            return survivalBuildPiece(
+                STRUCTURE_TIER_1,
+                holoStack,
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         if (holoStack.stackSize == 2) {
             return survivalBuildPiece(
@@ -805,7 +540,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             mTier = 4;
         }
 
-        return mTier > 0 && mCasingAmount >= 120;
+        return mTier > 0 && mCasingAmount >= 550;
     }
 
     @Override
@@ -915,10 +650,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         }
         return false; // fluid was not found.
     }
-    public void setTurbineActive()
-    {
-        if (mStaticAnimations) return;
 
+    public void setTurbineActive() {
+        if (mStaticAnimations) return;
 
         for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.setActive(true);
@@ -926,8 +660,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         }
     }
 
-    public void setTurbineInactive()
-    {
+    public void setTurbineInactive() {
         for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.setActive(false);
             h.onTextureUpdate();
@@ -1036,14 +769,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return false;
     }
 
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool)
-    {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mStaticAnimations = !mStaticAnimations;
-        PlayerUtils.messagePlayer(aPlayer, "Using "+ (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        PlayerUtils
+            .messagePlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
         for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.mUsingAnimation = mStaticAnimations;
         }
     }
+
     @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.centrifugeNonCellRecipes;
