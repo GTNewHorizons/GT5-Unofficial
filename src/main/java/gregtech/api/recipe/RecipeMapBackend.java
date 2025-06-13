@@ -64,6 +64,11 @@ public class RecipeMapBackend {
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
 
     /**
+     * Cached recipes, by commutative hash of all inputs.
+     */
+    private HashMap<Integer, GTRecipe> cacheMap = new HashMap<>();
+
+    /**
      * All the properties specific to this backend.
      */
     protected final RecipeMapBackendProperties properties;
@@ -392,6 +397,7 @@ public class RecipeMapBackend {
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
+            GTStreamUtil.ofNullable(cacheMap.get(hash(items, fluids))),
             // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
             GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
                 .filter(Objects::nonNull)
@@ -418,6 +424,19 @@ public class RecipeMapBackend {
                 : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
                     .filter(Objects::nonNull))
             .flatMap(Function.identity());
+    }
+
+    protected void cache(ItemStack[] items, FluidStack[] fluids, GTRecipe recipe) {
+        cacheMap.put(hash(items, fluids), recipe);
+    }
+
+    protected int hash(ItemStack[] items, FluidStack[] fluids) {
+        int hash = 1;
+        for (ItemStack item : items) hash *= item.getItem()
+            .hashCode();
+        for (FluidStack fluid : fluids) hash *= fluid.getFluid()
+            .hashCode();
+        return hash;
     }
 
     /**

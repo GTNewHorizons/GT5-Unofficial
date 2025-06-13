@@ -86,7 +86,10 @@ public final class FindRecipeQuery {
                 notUnificated,
                 dontCheckStackSizes,
                 forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
+            .peek(
+                recipe -> recipeMap.getBackend()
+                    .cache(items, fluids, recipe));
     }
 
     /**
