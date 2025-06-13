@@ -431,10 +431,10 @@ public class RecipeMapBackend {
     }
 
     protected int hash(ItemStack[] items, FluidStack[] fluids) {
-        int hash = 1;
-        for (ItemStack item : items) hash *= item.getItem()
+        int hash = 0;
+        for (ItemStack item : items) hash += item.getItem()
             .hashCode();
-        for (FluidStack fluid : fluids) hash *= fluid.getFluid()
+        for (FluidStack fluid : fluids) hash += fluid.getFluid()
             .hashCode();
         return hash;
     }
