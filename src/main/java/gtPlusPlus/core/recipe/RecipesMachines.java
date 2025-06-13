@@ -2206,9 +2206,9 @@ public class RecipesMachines {
             MaterialsAlloy.OCTIRON.getPlate(1),
             ItemList.FluidRegulator_UHV.get(1),
             MaterialsAlloy.OCTIRON.getPlate(1),
-            "circuitInfinite",
+            OrePrefixes.circuit.get(Materials.UHV),
             ItemList.Hatch_Input_UHV.get(1),
-            "circuitInfinite",
+            OrePrefixes.circuit.get(Materials.UHV),
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1));
 
         // Thorium Reactor
