@@ -432,12 +432,17 @@ public class RecipeMapBackend {
         cacheMap.put(hash(items, fluids), recipe);
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected int hash(ItemStack[] items, FluidStack[] fluids) {
         int hash = 0;
-        for (ItemStack item : items) hash += item.getItem()
-            .hashCode();
-        for (FluidStack fluid : fluids) hash += fluid.getFluid()
-            .hashCode();
+        for (int i = 0; i < items.length; i++) {
+            hash += items[i].getItem()
+                .hashCode();
+        }
+        for (int i = 0; i < fluids.length; i++) {
+            hash += fluids[i].getFluid()
+                .hashCode();
+        }
         return hash;
     }
 
