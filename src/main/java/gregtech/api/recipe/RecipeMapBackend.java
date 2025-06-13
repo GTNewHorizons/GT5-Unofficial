@@ -36,6 +36,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -66,7 +68,7 @@ public class RecipeMapBackend {
     /**
      * Cached recipes, by commutative hash of all inputs.
      */
-    private HashMap<Integer, GTRecipe> cacheMap = new HashMap<>();
+    private final Int2ObjectMap<GTRecipe> cacheMap = new Int2ObjectOpenHashMap<>();
 
     /**
      * All the properties specific to this backend.
