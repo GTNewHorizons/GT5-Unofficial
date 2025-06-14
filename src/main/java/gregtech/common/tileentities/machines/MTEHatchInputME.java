@@ -678,6 +678,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             }
         }
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity().setColorization(color);
+        updateAE2ProxyColor();
         return true;
     }
 
@@ -690,7 +693,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
-
+        tag.setByte("color", this.getColor());
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
             for (int index = 0; index < SLOT_COUNT; index++) {

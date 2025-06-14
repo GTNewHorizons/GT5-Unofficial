@@ -419,6 +419,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity().setColorization(color);
+        updateAE2ProxyColor();
         return true;
     }
 
@@ -431,6 +434,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
         NBTTagList stockingItems = new NBTTagList();

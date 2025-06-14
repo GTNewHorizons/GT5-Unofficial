@@ -507,6 +507,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
         return tag;
     }
 
@@ -514,7 +515,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         additionalConnection = nbt.getBoolean("additionalConnection");
-        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity().setColorization(color);
+        updateAE2ProxyColor();
         return true;
     }
 

@@ -661,6 +661,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+
         return tag;
     }
 
@@ -669,6 +671,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         additionalConnection = nbt.getBoolean("additionalConnection");
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity().setColorization(color);
+        updateAE2ProxyColor();
         return true;
     }
 
