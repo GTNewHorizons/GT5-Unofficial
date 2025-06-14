@@ -914,8 +914,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!this.flowerType.equals(flowerType) ||
-            !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
+        if (!this.flowerType.equals(flowerType)
+            || !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
             flowercoords = null;
         }
         if (flowercoords != null) {
