@@ -402,6 +402,7 @@ public class RecipeMapBackend {
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
             GTStreamUtil.ofSupplier(() -> cacheMap.get(hash(items, fluids)))
+                .filter(Objects::nonNull)
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
