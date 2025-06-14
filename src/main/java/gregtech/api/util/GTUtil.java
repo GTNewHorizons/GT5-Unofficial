@@ -23,9 +23,11 @@ import net.minecraftforge.common.util.Constants;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class GTUtil {
 
@@ -242,6 +244,17 @@ public class GTUtil {
         newTag.setTag("mOutputBusses", list);
         count += list.tagCount();
 
+        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
+        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
+            if (outputHatch instanceof MTEHatchOutputME hatch) {
+                meOutputHatches.add(hatch);
+            }
+        }
+        list = saveConfigurationToDataStick(player, meOutputHatches);
+        if (list == null) return false;
+        newTag.setTag("mMEOutputHatches", list);
+        count += list.tagCount();
+
         // For Crafting Input Proxy
         ArrayList<MTEHatch> dualInputHatches = new ArrayList<>();
         for (IDualInputHatch dualInputHatch : controller.mDualInputHatches) {
@@ -307,6 +320,21 @@ public class GTUtil {
                 controller.mOutputBusses)) return false;
         }
 
+        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
+        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
+            if (outputHatch instanceof MTEHatchOutputME hatch) {
+                meOutputHatches.add(hatch);
+            }
+        }
+        if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+            player,
+            meOutputHatches)) {
+            return loadConfigurationFromDataStick(
+                tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+                player,
+                meOutputHatches);
+        }
         // For Crafting Input Proxy
         ArrayList<MTEHatch> dualInputHatches = new ArrayList<>();
         for (IDualInputHatch dualInputHatch : controller.mDualInputHatches) {
