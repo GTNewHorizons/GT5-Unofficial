@@ -213,7 +213,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic().noRecipeCaching();
     }
 
     @Override

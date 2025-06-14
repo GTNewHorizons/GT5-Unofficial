@@ -54,6 +54,7 @@ public class ProcessingLogic {
     protected double overClockTimeReduction = 2.0;
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+    protected boolean recipeCaching = true;
 
     // Calculated results
     protected ItemStack[] outputItems;
@@ -275,6 +276,14 @@ public class ProcessingLogic {
      */
     public ProcessingLogic setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
+        return this;
+    }
+
+    /**
+     * Disable caching of matched recipes.
+     */
+    public ProcessingLogic noRecipeCaching() {
+        this.recipeCaching = false;
         return this;
     }
 
@@ -503,6 +512,7 @@ public class ProcessingLogic {
             return Stream.empty();
         }
         return map.findRecipeQuery()
+            .caching(recipeCaching)
             .items(inputItems)
             .fluids(inputFluids)
             .specialSlot(specialSlotItem)

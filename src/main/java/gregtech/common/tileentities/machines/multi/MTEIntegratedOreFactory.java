@@ -467,6 +467,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .find();
                     if (tRecipe != null) {
@@ -490,6 +491,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
                         .find();
@@ -514,6 +516,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .find();
                     if (tRecipe != null) {

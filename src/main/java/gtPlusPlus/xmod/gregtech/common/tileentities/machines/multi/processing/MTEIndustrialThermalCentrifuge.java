@@ -150,7 +150,8 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.5F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 2.5F)
             .setEuModifier(0.8F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

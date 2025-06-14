@@ -504,6 +504,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 return;
             }
             GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .caching(false)
                 .items(currentItem)
                 .voltage(voltage)
                 .find();

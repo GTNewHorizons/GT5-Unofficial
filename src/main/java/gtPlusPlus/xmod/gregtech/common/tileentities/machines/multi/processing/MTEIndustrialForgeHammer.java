@@ -224,7 +224,8 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1 / 2F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1 / 2F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
