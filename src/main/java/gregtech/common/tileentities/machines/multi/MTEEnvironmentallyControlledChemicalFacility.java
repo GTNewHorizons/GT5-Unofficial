@@ -81,7 +81,7 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
+import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyControlledChemicalFacilityGUI;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -1117,7 +1117,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEEnvironmentallyCCFGUI(this);
+        return new MTEEnvironmentallyControlledChemicalFacilityGUI(this);
     }
 
     @Override
