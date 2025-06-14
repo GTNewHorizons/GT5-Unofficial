@@ -67,6 +67,9 @@ public final class GTTextureIds {
 
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
+    public static final String PROGRESSBAR_ECCF_TEMPERATURE = "progressbarEccfTemperature";
+    public static final String PROGRESSBAR_ECCF_PRESSURE = "progressbarEccfPressure";
+
     public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";
     public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
     public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
