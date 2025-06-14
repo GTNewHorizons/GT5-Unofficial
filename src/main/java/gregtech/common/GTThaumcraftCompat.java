@@ -111,6 +111,36 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             new Aspect[] { Aspect.LIGHT, Aspect.ENERGY },
             new ResourceLocation("gregtech:textures/aspects/" + TCAspects.RADIO.name() + ".png"),
             1);
+        TCAspects.AEQUALITAS.mAspect = new Aspect(
+            "custom1",
+            0xEEF0EA,
+            new Aspect[] { Aspect.MIND, Aspect.ORDER },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.AEQUALITAS.name() + ".png"),
+            1);
+        TCAspects.VESANIA.mAspect = new Aspect(
+            "custom2",
+            0x1B122C,
+            new Aspect[] { Aspect.MIND, Aspect.TAINT },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.VESANIA.name() + ".png"),
+            1);
+        TCAspects.PRIMORDIUM.mAspect = new Aspect(
+            "custom3",
+            0xF7F7DB,
+            new Aspect[] { Aspect.VOID, Aspect.MOTION },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.PRIMORDIUM.name() + ".png"),
+            1);
+        TCAspects.ASTRUM.mAspect = new Aspect(
+            "custom4",
+            0x2D2C2B,
+            new Aspect[] { Aspect.LIGHT, Aspect.getAspect("custom3") },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ASTRUM.name() + ".png"),
+            1);
+        TCAspects.GLORIA.mAspect = new Aspect(
+            "custom5",
+            0xFFE980,
+            new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
+            1);
 
         GTLanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
         GTLanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
