@@ -672,7 +672,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         additionalConnection = nbt.getBoolean("additionalConnection");
         updateValidGridProxySides();
         byte color = nbt.getByte("color");
-        this.getBaseMetaTileEntity().setColorization(color);
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
         updateAE2ProxyColor();
         return true;
     }

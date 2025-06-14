@@ -420,7 +420,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         setInventorySlotContents(getCircuitSlot(), circuit);
         updateValidGridProxySides();
         byte color = nbt.getByte("color");
-        this.getBaseMetaTileEntity().setColorization(color);
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
         updateAE2ProxyColor();
         return true;
     }
