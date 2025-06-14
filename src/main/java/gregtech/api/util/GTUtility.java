@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -45,6 +46,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -4508,6 +4511,32 @@ public class GTUtility {
         return Math.min(hi, Math.max(val, lo));
     }
 
+    public static double clamp(double val, double lo, double hi) {
+        return Math.min(hi, Math.max(val, lo));
+    }
+
+    public static int map(int x, int in_min, int in_max, int out_min, int out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static long map(long x, long in_min, long in_max, long out_min, long out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static float map(float x, float in_min, float in_max, float out_min, float out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static double map(double x, double in_min, double in_max, double out_min, double out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    public static double linearCurve(double x, double x1, double y1, double x2, double y2) {
+        x = GTUtility.clamp(x, Math.min(x1, x2), Math.max(x1, x2));
+
+        return map(x, x1, x2, y1, y2);
+    }
+
     public static int min(int first, int... rest) {
         for (int i = 0; i < rest.length; i++) {
             int l = rest[i];
@@ -4695,6 +4724,40 @@ public class GTUtility {
             (b, t) -> b.put(keyMapper.apply(t), valueMapper.apply(t)),
             (b1, b2) -> b1.putAll(b2.build()),
             ImmutableMap.Builder::build);
+    }
+
+    public static <NBT extends NBTBase> Collector<NBT, ?, NBTTagList> toNBTTagList() {
+        return new Collector<NBT, NBTTagList, NBTTagList>() {
+
+            @Override
+            public Supplier<NBTTagList> supplier() {
+                return NBTTagList::new;
+            }
+
+            @Override
+            public BiConsumer<NBTTagList, NBT> accumulator() {
+                return NBTTagList::appendTag;
+            }
+
+            @Override
+            public BinaryOperator<NBTTagList> combiner() {
+                return (from, to) -> {
+                    to.tagList.addAll(from.tagList);
+
+                    return to;
+                };
+            }
+
+            @Override
+            public Function<NBTTagList, NBTTagList> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return new HashSet<>(Arrays.asList(Characteristics.IDENTITY_FINISH));
+            }
+        };
     }
 
     public static boolean isArrayEmptyOrNull(Object[] arr) {
