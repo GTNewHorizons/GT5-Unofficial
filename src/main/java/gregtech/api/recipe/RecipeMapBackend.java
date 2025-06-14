@@ -444,6 +444,7 @@ public class RecipeMapBackend {
         for (int i = 0; i < items.length; i++) {
             ItemStack stack = items[i];
             Item item = stack.getItem();
+            assert item != null;
             hash += item.hashCode();
             if (item.getHasSubtypes()) hash += Items.feather.getDamage(stack);
         }
