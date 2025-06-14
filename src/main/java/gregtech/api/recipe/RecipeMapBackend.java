@@ -397,23 +397,14 @@ public class RecipeMapBackend {
         return Stream.<Stream<GTRecipe>>of(
             // Check the recipe which has been used last time in order to not have to search for it again, if possible.
             GTStreamUtil.ofNullable(cachedRecipe)
-                .filter(recipe -> recipe.mCanBeBuffered)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            GTStreamUtil.ofNullable(cacheMap.get(hash(items, fluids)))
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
+                .filter(recipe -> recipe.mCanBeBuffered),
+            GTStreamUtil.ofNullable(cacheMap.get(hash(items, fluids))),
             // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
             GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
                 .filter(Objects::nonNull)
                 .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
                 .map(itemIndex::get)
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
+                .flatMap(Collection::stream),
             // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
             // so check fluid index too.
             GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
@@ -422,15 +413,14 @@ public class RecipeMapBackend {
                     fluidStack -> fluidIndex.get(
                         fluidStack.getFluid()
                             .getName()))
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
+                .flatMap(Collection::stream),
             // Lastly, find fallback.
             forCollisionCheck ? Stream.empty()
-                : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
-                    .filter(Objects::nonNull))
-            .flatMap(Function.identity());
+                : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot)))
+            .flatMap(Function.identity())
+            .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+            .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+            .filter(Objects::nonNull);
     }
 
     protected void cache(ItemStack[] items, FluidStack[] fluids, GTRecipe recipe) {
