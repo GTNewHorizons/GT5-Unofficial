@@ -38,8 +38,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -70,7 +69,7 @@ public class RecipeMapBackend {
     /**
      * Cached recipes, by commutative hash of all inputs.
      */
-    private final Int2ObjectMap<GTRecipe> cacheMap = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectLinkedOpenHashMap<GTRecipe> cacheMap = new Int2ObjectLinkedOpenHashMap<>();
 
     /**
      * All the properties specific to this backend.
@@ -435,7 +434,8 @@ public class RecipeMapBackend {
     }
 
     protected void cache(ItemStack[] items, FluidStack[] fluids, GTRecipe recipe) {
-        cacheMap.put(hash(items, fluids), recipe);
+        cacheMap.putAndMoveToFirst(hash(items, fluids), recipe);
+        while (cacheMap.size() > 1024) cacheMap.removeLast();
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
