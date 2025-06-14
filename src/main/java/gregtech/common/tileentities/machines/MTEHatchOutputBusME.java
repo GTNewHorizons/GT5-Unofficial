@@ -659,6 +659,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add1by1Slot(builder);
     }
+
     @Override
     public boolean acceptsItemLock() {
         return false;
