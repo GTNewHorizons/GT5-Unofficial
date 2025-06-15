@@ -66,6 +66,9 @@ public class MultiblockTooltipBuilder {
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
     private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
+    private static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
+    private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
+    private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
@@ -506,6 +509,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -525,6 +540,18 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addOutputBus(String info) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -727,6 +754,20 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steaminputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -750,6 +791,20 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addOutputBus(String info, int... dots) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_outputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steamoutputbus);
         return this;
     }
 
