@@ -184,6 +184,7 @@ import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.Solidifier.MTEModularSolidifier;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -504,6 +505,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
+
+        ItemList.Machine_Modular_Solidifier.set(
+            new MTEModularSolidifier(
+                MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.modular_solidifier",
+                "Modular Shaper").getStackForm(1));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
