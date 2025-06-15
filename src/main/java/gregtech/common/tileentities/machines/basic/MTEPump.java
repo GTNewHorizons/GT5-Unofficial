@@ -51,7 +51,7 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     public static long getEuUsagePerTier(int aTier) {
-        return (16 * ((long) GTUtility.powInt(4, aTier)));
+        return 16L * (1L << 2 * aTier);
     }
 
     public ArrayDeque<ChunkPosition> mPumpList = new ArrayDeque<>();

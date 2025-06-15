@@ -261,7 +261,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) GTUtility.powInt(4, Math.max(this.mBlockTier - 1, 0));
+        return 1 << 2 * Math.max(this.mBlockTier - 1, 0);
     }
 
     private void updateChunkCoordinates() {
