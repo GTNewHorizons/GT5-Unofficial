@@ -4583,6 +4583,16 @@ public class GTUtility {
         return ((value % divisor) + divisor) % divisor;
     }
 
+    public static double powi(double base, int exp) {
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */

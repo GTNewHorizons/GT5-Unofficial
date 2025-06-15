@@ -327,7 +327,7 @@ public class OverclockCalculator {
 
     public double calculateHeatDiscountMultiplier() {
         int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
-        return Math.pow(heatDiscountExponent, heatDiscounts);
+        return GTUtility.powi(heatDiscountExponent, heatDiscounts);
     }
 
     protected void calculateOverclock() {
