@@ -4607,6 +4607,29 @@ public class GTUtility {
     }
 
     /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
      * Hash an item stack for the purpose of storing hash across launches
      */
     public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {
@@ -5031,7 +5054,7 @@ public class GTUtility {
 
         int exp = (int) (Math.log(number) / Math.log(1000));
         char suffix = "kMGTPE".charAt(exp - 1);
-        double shortened = number / Math.pow(1000, exp);
+        double shortened = number / GTUtility.powInt(1000, exp);
 
         if (shortened == (long) shortened) {
             return String.format("%d%c", (long) shortened, suffix);

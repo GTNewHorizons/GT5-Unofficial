@@ -742,7 +742,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private static float getOutputRatio(float voltageFactor, int antennaTier) {
         // Scale ratio with antenna tier, such a high exponential should be fine so long as
         // there are only a few antenna tiers
-        return (float) (voltageFactor / (10.0 / Math.pow(2.5, antennaTier)));
+        return (float) (voltageFactor / (10.0 / GTUtility.powInt(2.5, antennaTier)));
     }
 
     @Override

@@ -362,7 +362,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     // 2^(casingTier + 3)
     protected int getMaxParallel() {
         if (mTier <= 1) return 1;
-        return (int) Math.pow(2, 1 + (casingTier + 2));
+        return 1 << 1 + (casingTier + 2);
     }
 
     @Override
