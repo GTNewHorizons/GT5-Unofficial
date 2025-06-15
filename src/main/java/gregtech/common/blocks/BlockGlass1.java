@@ -34,7 +34,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             ItemList.Hawking_Glass,
             "Hawking Radiation Realignment Focus",
             translatedText("gt.casing.hawking-focus"));
-        register(5, ItemList.NaniteShieldingFrame, "Nanite Shielding Frame");
+        register(5, ItemList.NaniteShieldingFrame, "Nanite Shielding Glass");
 
     }
 
