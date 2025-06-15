@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -81,19 +82,19 @@ public class LinkedPurificationUnit {
 
     public String getStatusString() {
         if (this.isActive()) {
-            return EnumChatFormatting.GREEN + "Active";
+            return EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.gui.text.status.active");
         }
 
         PurificationUnitStatus status = this.mMetaTileEntity.status();
         switch (status) {
             case ONLINE -> {
-                return EnumChatFormatting.GREEN + "Online";
+                return EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.gui.text.status.online");
             }
             case DISABLED -> {
-                return EnumChatFormatting.YELLOW + "Disabled";
+                return EnumChatFormatting.YELLOW + StatCollector.translateToLocal("GT5U.gui.text.status.disabled");
             }
             case INCOMPLETE_STRUCTURE -> {
-                return EnumChatFormatting.RED + "Incomplete Structure";
+                return EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.text.status.incomplete");
             }
         }
 

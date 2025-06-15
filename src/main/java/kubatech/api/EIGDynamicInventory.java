@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -403,14 +404,15 @@ public class EIGDynamicInventory<T> {
                     return new IDrawable[] { itemSlot, stackSizeText };
                 })
                 .dynamicTooltip(() -> {
-                    // TODO: all l10n for insertion slot tooltip.
                     List<String> tip = new ArrayList<>();
                     tip.add(
-                        EnumChatFormatting.DARK_PURPLE + "Remaining seed types: "
-                            + (this.maxSeedTypes - this.usedSeedTypes));
+                        EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types",
+                            (this.maxSeedTypes - this.usedSeedTypes)));
                     tip.add(
-                        EnumChatFormatting.DARK_GREEN + "Remaining seed capacity: "
-                            + (this.maxSeedCount - this.usedSeedCount));
+                        EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocalFormatted(
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity",
+                            (this.maxSeedCount - this.usedSeedCount)));
                     return tip;
                 })
                 .setSize(18, 18));

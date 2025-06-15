@@ -856,7 +856,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .setPos(124, 62));
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
-                .dynamicTooltip(() -> Collections.singletonList("Reduction: " + mPollutionReduction + "/s"))
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
+                            mPollutionReduction)))
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> mPollutionReduction, val -> mPollutionReduction = val),
                     builder,
