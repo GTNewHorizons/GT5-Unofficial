@@ -1,10 +1,10 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
 /**
@@ -15,7 +15,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
 
     public BlockCasings13() {
         super(ItemCasings.class, "gt.blockcasings13", MaterialCasings.INSTANCE, 16);
-        register(9,  ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
+        register(9, ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
         register(10, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Power Efficient Subsystems Module");
         register(11, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendent Reinforcement Module");
         register(12, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Extra Casting Basins Module");

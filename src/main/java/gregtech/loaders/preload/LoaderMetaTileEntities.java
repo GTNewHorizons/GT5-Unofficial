@@ -43,7 +43,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.MTEModularSolidifier;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -161,6 +160,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTEModularSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -506,8 +506,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
         ItemList.Machine_Multi_ModularSolidifier.set(
-            new MTEModularSolidifier(MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID, "multimachine.modularsolidifier", "Modular Solidifier")
-                .getStackForm(1));
+            new MTEModularSolidifier(
+                MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.modularsolidifier",
+                "Modular Solidifier").getStackForm(1));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
