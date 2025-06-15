@@ -4583,7 +4583,12 @@ public class GTUtility {
         return ((value % divisor) + divisor) % divisor;
     }
 
+    /**
+     * Computes base raised to the power of a non-negative integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
     public static double powi(double base, int exp) {
+        assert exp >= 0;
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
