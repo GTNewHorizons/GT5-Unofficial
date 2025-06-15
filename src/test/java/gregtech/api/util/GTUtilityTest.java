@@ -9,6 +9,38 @@ import gregtech.api.enums.GTValues;
 public class GTUtilityTest {
 
     @Test
+    void testPowiPositive() {
+        assertEquals(GTUtility.powi(0.95, 1), Math.pow(0.95, 1));
+        assertEquals(GTUtility.powi(0.95, 2), Math.pow(0.95, 2));
+        assertEquals(GTUtility.powi(0.95, 3), Math.pow(0.95, 3));
+        assertEquals(GTUtility.powi(-0.95, 1), Math.pow(-0.95, 1));
+        assertEquals(GTUtility.powi(-0.95, 2), Math.pow(-0.95, 2));
+        assertEquals(GTUtility.powi(-0.95, 3), Math.pow(-0.95, 3));
+    }
+
+    @Test
+    void testPowiNegative() {
+        assertEquals(GTUtility.powi(0.95, -1), Math.pow(0.95, -1));
+        assertEquals(GTUtility.powi(0.95, -2), Math.pow(0.95, -2));
+        assertEquals(GTUtility.powi(0.95, -3), Math.pow(0.95, -3));
+        assertEquals(GTUtility.powi(-0.95, -1), Math.pow(-0.95, -1));
+        assertEquals(GTUtility.powi(-0.95, -2), Math.pow(-0.95, -2));
+        assertEquals(GTUtility.powi(-0.95, -3), Math.pow(-0.95, -3));
+    }
+
+    @Test
+    void testPowiZero() {
+        assertEquals(GTUtility.powi(0.95, 0), Math.pow(0.95, 0));
+        assertEquals(GTUtility.powi(-0.95, 0), Math.pow(-0.95, 0));
+    }
+
+    @Test
+    void testPowiZeroZero() {
+        assertEquals(GTUtility.powi(0.00, 0), Math.pow(0.00, 0));
+        assertEquals(GTUtility.powi(-0.00, 0), Math.pow(-0.00, 0));
+    }
+
+    @Test
     public void testGetTier() {
         assertEquals(0, GTUtility.getTier(-1));
         assertEquals(0, GTUtility.getTier(1));
