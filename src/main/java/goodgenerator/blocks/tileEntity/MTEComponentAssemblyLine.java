@@ -305,7 +305,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                speedBonus = GTUtility.powInt(2, -(casingTier + 1 - recipe.mSpecialValue));
+                speedBonus = 1.0 / (1 << casingTier + 1 - recipe.mSpecialValue);
                 return super.createOverclockCalculator(recipe).setDurationModifier(speedBonus);
             }
         };
