@@ -4587,7 +4587,7 @@ public class GTUtility {
      * Computes base raised to the power of an integer exponent.
      * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
      */
-    public static double powi(double base, int exp) {
+    public static double powInt(double base, int exp) {
         if (exp > 0) return powBySquaring(base, exp);
         if (exp < 0) return 1.0 / powBySquaring(base, -exp);
         return 1.0;
