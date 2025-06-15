@@ -43,6 +43,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.MTEModularSolidifier;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -503,6 +504,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
+                .getStackForm(1));
+        ItemList.Machine_Multi_ModularSolidifier.set(
+            new MTEModularSolidifier(MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID, "multimachine.modularsolidifier", "Atomic Caster")
                 .getStackForm(1));
 
         ItemList.WormholeGenerator.set(

@@ -1503,6 +1503,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
+    Machine_Multi_ModularSolidifier,
 
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
@@ -2686,6 +2687,8 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
+
+    Casing_Solidifier_Atomic
 
     // semicolon after the comment to reduce merge conflicts
     ;
