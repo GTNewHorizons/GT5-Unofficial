@@ -127,6 +127,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -570,8 +571,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void setErrorDisplayID(int errorID) {
         this.errorDisplayID = errorID;
     }
-
-    private boolean wereCoilsActive = false;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -1281,11 +1280,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mProgresstime = 0;
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
-        getBaseMetaTileEntity().disableWorking();
-        getBaseMetaTileEntity().setShutDownReason(reason);
-        getBaseMetaTileEntity().setShutdownStatus(true);
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+        igte.disableWorking();
+        igte.setShutDownReason(reason);
+        igte.setShutdownStatus(true);
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
+        }
+        if (reason == ShutDownReasonRegistry.POWER_LOSS) {
+            GTPowerfailTracker.createPowerfailEvent(igte);
         }
     }
 
