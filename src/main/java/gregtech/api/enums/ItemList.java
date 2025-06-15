@@ -2688,7 +2688,13 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
-    Casing_Solidifier_Atomic
+    Casing_Solidifier_Modular,
+    Efficient_Overclocking_Solidifier_Modular,
+    Power_Efficient_Subsystems_Solidifier_Modular,
+    Transcendent_Reinforcement_Solidifier_Modular,
+    Extra_Casting_Basins_Solidifier_Modular,
+    Hypercooler_Solidifier_Modular,
+    Streamlined_Casters_Solidifier_Modular
 
     // semicolon after the comment to reduce merge conflicts
     ;
