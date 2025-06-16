@@ -1183,7 +1183,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         }
 
         public int getAutoClaveEnergy() {
-            return (this.getVoltage() * 3 / 4) * (1 << Math.max(0, 5 - this.ordinal()));
+            return (int) ((this.getVoltage() * 3 / 4) * (Math.max(1, GTUtility.powInt(2, 5 - this.ordinal()))));
         }
 
         /** @return FluidStack needed for chemical process related to the Tier **/
