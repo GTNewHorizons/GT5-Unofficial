@@ -4612,19 +4612,19 @@ public class GTUtility {
      */
     public static int log2(int a) {
         int log = 0;
-        if ((a & 0xffff0000) != 0) {
+        if ((a & 0xFFFF_0000) != 0) {
             a >>>= 16;
             log = 16;
         }
-        if ((a & 0xffffff00) != 0) {
+        if ((a & 0xFFFF_FF00) != 0) {
             a >>>= 8;
             log += 8;
         }
-        if ((a & 0xfffffff0) != 0) {
+        if ((a & 0xFFFF_FFF0) != 0) {
             a >>>= 4;
             log += 4;
         }
-        if ((a & 0xfffffffc) != 0) {
+        if ((a & 0xFFFF_FFFC) != 0) {
             a >>>= 2;
             log += 2;
         }
@@ -4636,6 +4636,43 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static int log4(int a) {
+        return log2(a) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        int log = 0;
+        if ((a & 0xFFFF_FFFF_0000_0000L) != 0) {
+            a >>>= 32;
+            log = 32;
+        }
+        if ((a & 0xFFFF_FFFF_FFFF_0000L) != 0) {
+            a >>>= 16;
+            log += 16;
+        }
+        if ((a & 0xFFFF_FFFF_FFFF_FF00L) != 0) {
+            a >>>= 8;
+            log += 8;
+        }
+        if ((a & 0xFFFF_FFFF_FFFF_FFF0L) != 0) {
+            a >>>= 4;
+            log += 4;
+        }
+        if ((a & 0xFFFF_FFFF_FFFF_FFFCL) != 0) {
+            a >>>= 2;
+            log += 2;
+        }
+        return log + (a >>> 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
         return log2(a) >> 1;
     }
 

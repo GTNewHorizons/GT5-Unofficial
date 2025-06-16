@@ -105,7 +105,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     /**
      * The max number of 'overclocks' allowed when the wormhole's energy is increasing.
      */
-    public static double MAX_OVERCLOCKS = 2.0;
+    public static int MAX_OVERCLOCKS = 2;
 
     /**
      * The number of seconds to record for scan EU/t measurements. Purely visual and not saved.
@@ -647,11 +647,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         long toSend = GTUtility.min(available, empty, maxSend, maxReceive, maxIO);
 
-        double overclocks = 0;
+        int overclocks = 0;
 
         if (mAllowOverclocks) {
-            overclocks = Math.log((double)toSend / (double)optimal) / Math.log(4.0);
-            overclocks = MathHelper.clamp_double(overclocks, 0, MAX_OVERCLOCKS);
+            overclocks = (int) GTUtility.log4(toSend / optimal);
+            overclocks = MathHelper.clamp_int(overclocks, 0, MAX_OVERCLOCKS);
         }
 
         long toReceive = (long) (

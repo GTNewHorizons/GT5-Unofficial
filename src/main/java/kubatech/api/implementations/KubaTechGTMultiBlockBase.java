@@ -62,6 +62,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import kubatech.Tags;
 
@@ -139,7 +140,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
      */
     protected int calculateOverclock(long aEUt, int aDuration, final long maxInputEU, final boolean isPerfect) {
         final int minDuration = getOverclockTimeLimit();
-        int tiers = (int) (Math.log((double) maxInputEU / (double) aEUt) / ln4);
+        int tiers = (int) GTUtility.log4(maxInputEU / aEUt);
         if (tiers <= 0) {
             this.lEUt = aEUt;
             this.mMaxProgresstime = aDuration;

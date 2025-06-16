@@ -1174,7 +1174,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
         /** @return aEU/t needed for chemical and autoclave process related to the Tier **/
         public int getVoltageFromEU() {
-            return (int) Math.max(Math.floor(Math.log(2 * this.getVoltage()) / Math.log(4) - 1), 0);
+            return Math.max(GTUtility.log4(2 * this.getVoltage()) - 1, 0);
         }
 
         /** @return Voltage tier according to EU provided. 0 = ULV, 1 = LV, 2 = MV ... **/
