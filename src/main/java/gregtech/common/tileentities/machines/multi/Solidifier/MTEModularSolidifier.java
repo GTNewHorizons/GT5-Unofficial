@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi;
+package gregtech.common.tileentities.machines.multi.Solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -82,6 +82,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static final String STRUCTURE_TRANSCENDENT_REINFORCEMENT = "transcendent_reinforcement";
     private static final String STRUCTURE_EXTRA_CASTING_BASINS = "extra_casting_basins";
     private static final String STRUCTURE_STREAMLINED_CASTERS = "streamlined_casters";
+
+    // Hypercooler is limited to 1, either dont read the second one or strucure check fail
 
     private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEModularSolidifier>builder()
@@ -354,6 +356,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return RecipeMaps.fluidSolidifierRecipes;
     }
 
+    /*
+     * things to consider with processing math
+     * Things get added and multiplied(parallel,eu/t, speed bonus)
+     * Order of operations: ADD/SUB First, MUL/DIV After
+     * OC Factor changes (overclock calculator can deal with this)
+     * Hypercooler adds OC's based on fluid supplied
+     */
     @Override
     public boolean supportsVoidProtection() {
         return true;
@@ -371,6 +380,23 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     @Override
     public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    // mui2 stuff
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEModularSolidifierGui getGui() {
+        return new MTEModularSolidifierGui(this);
+    }
+
+    @Override
+    protected boolean useMui2() {
         return true;
     }
 }
