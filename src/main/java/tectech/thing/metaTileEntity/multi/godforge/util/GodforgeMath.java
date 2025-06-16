@@ -246,7 +246,7 @@ public class GodforgeMath {
         }
 
         if (godforge.isUpgradeActive(NGMS)) {
-            voltage *= 1L << 2 * godforge.getRingAmount();
+            voltage *= GTUtility.powInt(4, godforge.getRingAmount());
         }
 
         module.setProcessingVoltage(voltage);

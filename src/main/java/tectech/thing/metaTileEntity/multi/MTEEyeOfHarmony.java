@@ -1317,7 +1317,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
         outputEU_BigInt = BigInteger.valueOf((long) (recipeObject.getEUOutput() * (1 - outputEUPenalty)));
         usedEU = BigInteger.valueOf(-startEU)
-            .multiply(BigInteger.valueOf(1L << 2 * currentCircuitMultiplier));
+            .multiply(BigInteger.valueOf((long) GTUtility.powInt(4, currentCircuitMultiplier)));
 
         // Calculate parallel EU values
         if (parallelAmount > 1) {

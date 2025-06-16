@@ -148,7 +148,9 @@ public class BeamlineRecipeLoader {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(focusItem, wafer.get(1))
-                            .itemOutputs(GTUtility.copyAmountUnsafe(1 << index + 2, mask.getProducedItem()))
+                            .itemOutputs(
+                                GTUtility
+                                    .copyAmountUnsafe((int) GTUtility.powInt(2, index + 2), mask.getProducedItem()))
                             .metadata(
                                 TARGET_CHAMBER_METADATA,
                                 TargetChamberMetadata.builder(focusItem)

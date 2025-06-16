@@ -51,7 +51,7 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     public static long getEuUsagePerTier(int aTier) {
-        return 16L * (1L << 2 * aTier);
+        return (16 * ((long) GTUtility.powInt(4, aTier)));
     }
 
     public ArrayDeque<ChunkPosition> mPumpList = new ArrayDeque<>();
@@ -423,7 +423,7 @@ public class MTEPump extends MTEBasicMachine {
                                         break;
                                     }
                                 }
-                                this.mPumpTimer = GTUtility.safeInt(160 / (1L << this.mTier));
+                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
                                 this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
 
                                 mMaxProgresstime = mPumpTimer;

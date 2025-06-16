@@ -489,10 +489,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return Math.max(
+        return (int) Math.max(
             1,
             ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM || simulateWorking) ? getBaseProgressTime()
-                : 80) / (1 << tier));
+                : 80) / GTUtility.powInt(2, tier));
     }
 
     private ItemStack[] getOutputByDrops(Collection<ItemStack> oreBlockDrops) {

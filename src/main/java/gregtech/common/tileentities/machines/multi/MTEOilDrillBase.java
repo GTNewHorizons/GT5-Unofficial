@@ -190,11 +190,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return Math.max(
+        return (int) Math.max(
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / (1 << tier));
+                : 120) / GTUtility.powInt(2, tier));
     }
 
     protected float computeSpeed() {

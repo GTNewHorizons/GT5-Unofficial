@@ -142,7 +142,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / (1 << tier));
+        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / GTUtility.powInt(2, tier));
     }
 
     @Override

@@ -303,7 +303,7 @@ public class OverclockCalculator {
 
     public boolean getAllowedTierSkip() {
         if (this.maxTierSkip == Integer.MAX_VALUE) return true;
-        return recipeEUt <= machineVoltage << 2 * maxTierSkip;
+        return recipeEUt <= machineVoltage * GTUtility.powInt(4, maxTierSkip);
     }
 
     public boolean hasDurationUnderOneTickSupplier() {
