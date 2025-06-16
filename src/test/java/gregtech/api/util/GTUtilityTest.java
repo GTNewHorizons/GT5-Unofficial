@@ -49,11 +49,12 @@ public class GTUtilityTest {
             assertEquals((int) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
             assertEquals((int) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
         }
-    }
-
-    @Test
-    void testLog2Zero() {
-        assertEquals(0, GTUtility.log2(0));
+        // Check powers of 2 and neighbors up to 2^47 (doubles cannot distinguish anymore)
+        for (long i = 2; i > 0 && i <= (1L << 47); i <<= 1) {
+            assertEquals((long) (Math.log(i - 1) / Math.log(2)), GTUtility.log2(i - 1));
+            assertEquals((long) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
+            assertEquals((long) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
+        }
     }
 
     @SuppressWarnings("ConstantValue")
@@ -65,11 +66,12 @@ public class GTUtilityTest {
             assertEquals((int) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
             assertEquals((int) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
         }
-    }
-
-    @Test
-    void testLog4Zero() {
-        assertEquals(0, GTUtility.log4(0));
+        // Check powers of 2 and neighbors up to 2^47 (doubles cannot distinguish anymore)
+        for (long i = 2; i > 0 && i <= (1L << 47); i <<= 1) {
+            assertEquals((long) (Math.log(i - 1) / Math.log(4)), GTUtility.log4(i - 1));
+            assertEquals((long) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
+            assertEquals((long) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
+        }
     }
 
     @Test
