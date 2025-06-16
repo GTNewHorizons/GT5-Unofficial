@@ -4597,6 +4597,8 @@ public class GTUtility {
      * Computes base raised to non-negative integer exponent.
      */
     private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
