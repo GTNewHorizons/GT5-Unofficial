@@ -2408,7 +2408,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (int i = 0; i < mMufflerHatches.size(); i++) {
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
             final MTEHatchMuffler muffler = mMufflerHatches.get(i);
             final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
             if (tile == null || tile.isDead()) continue;
