@@ -4611,8 +4611,17 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static int log2(int a) {
-        if (a == 0) return 0;
+        if (a <= 1) return 0;
         return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
     }
 
     /**
@@ -4620,7 +4629,17 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static int log4(int a) {
-        return log2(a) >> 1;
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return log2ceil(a) + 1 >> 1;
     }
 
     /**
@@ -4628,8 +4647,17 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static long log2(long a) {
-        if (a == 0) return 0;
+        if (a <= 1) return 0;
         return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
     }
 
     /**
@@ -4637,7 +4665,17 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static long log4(long a) {
-        return log2(a) >> 1;
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return log2ceil(a) + 1 >> 1;
     }
 
     /**

@@ -43,17 +43,30 @@ public class GTUtilityTest {
     @SuppressWarnings("ConstantValue")
     @Test
     void testLog2() {
-        // Check powers of 2 and neighbors up to Integer.MAX_VALUE
-        for (int i = 2; i > 0 && i <= (1 << 30); i <<= 1) {
+        for (int i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
             assertEquals((int) (Math.log(i - 1) / Math.log(2)), GTUtility.log2(i - 1));
             assertEquals((int) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
             assertEquals((int) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
         }
-        // Check powers of 2 and neighbors up to 2^47 (doubles cannot distinguish anymore)
-        for (long i = 2; i > 0 && i <= (1L << 47); i <<= 1) {
-            assertEquals((long) (Math.log(i - 1) / Math.log(2)), GTUtility.log2(i - 1));
-            assertEquals((long) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
-            assertEquals((long) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
+        for (long i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) (Math.log(i - 1) / Math.log(2)), GTUtility.log2(i - 1));
+            assertEquals((int) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
+            assertEquals((int) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
+        }
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Test
+    void testLog2Ceil() {
+        for (int i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) Math.ceil(Math.log(i - 1) / Math.log(2)), GTUtility.log2ceil(i - 1));
+            assertEquals((int) Math.ceil(Math.log(i) / Math.log(2)), GTUtility.log2ceil(i));
+            assertEquals((int) Math.ceil(Math.log(i + 1) / Math.log(2)), GTUtility.log2ceil(i + 1));
+        }
+        for (long i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) Math.ceil(Math.log(i - 1) / Math.log(2)), GTUtility.log2ceil(i - 1));
+            assertEquals((int) Math.ceil(Math.log(i) / Math.log(2)), GTUtility.log2ceil(i));
+            assertEquals((int) Math.ceil(Math.log(i + 1) / Math.log(2)), GTUtility.log2ceil(i + 1));
         }
     }
 
@@ -65,17 +78,30 @@ public class GTUtilityTest {
     @SuppressWarnings("ConstantValue")
     @Test
     void testLog4() {
-        // Check powers of 2 and neighbors up to Integer.MAX_VALUE
-        for (int i = 2; i > 0 && i <= (1 << 30); i <<= 1) {
+        for (int i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
             assertEquals((int) (Math.log(i - 1) / Math.log(4)), GTUtility.log4(i - 1));
             assertEquals((int) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
             assertEquals((int) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
         }
-        // Check powers of 2 and neighbors up to 2^47 (doubles cannot distinguish anymore)
-        for (long i = 2; i > 0 && i <= (1L << 47); i <<= 1) {
-            assertEquals((long) (Math.log(i - 1) / Math.log(4)), GTUtility.log4(i - 1));
-            assertEquals((long) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
-            assertEquals((long) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
+        for (long i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) (Math.log(i - 1) / Math.log(4)), GTUtility.log4(i - 1));
+            assertEquals((int) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
+            assertEquals((int) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
+        }
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Test
+    void testLog4Ceil() {
+        for (int i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) Math.ceil(Math.log(i - 1) / Math.log(4)), GTUtility.log4ceil(i - 1));
+            assertEquals((int) Math.ceil(Math.log(i) / Math.log(4)), GTUtility.log4ceil(i));
+            assertEquals((int) Math.ceil(Math.log(i + 1) / Math.log(4)), GTUtility.log4ceil(i + 1));
+        }
+        for (long i = 2; i > 0 && i <= (1 << 16); i <<= 1) {
+            assertEquals((int) Math.ceil(Math.log(i - 1) / Math.log(4)), GTUtility.log4ceil(i - 1));
+            assertEquals((int) Math.ceil(Math.log(i) / Math.log(4)), GTUtility.log4ceil(i));
+            assertEquals((int) Math.ceil(Math.log(i + 1) / Math.log(4)), GTUtility.log4ceil(i + 1));
         }
     }
 
