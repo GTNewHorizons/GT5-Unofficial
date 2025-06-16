@@ -203,7 +203,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 setSpeedBonus(1.0f / getSpeedBonus());
                 return super.process();
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -389,7 +389,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 }
                 return super.onRecipeStart(recipe);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int coolingTimer = 0;

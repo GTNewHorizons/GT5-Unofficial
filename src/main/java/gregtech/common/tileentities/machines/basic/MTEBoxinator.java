@@ -207,6 +207,7 @@ public class MTEBoxinator extends MTEBasicMachine {
             || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
             if (hasValidCache(aStack, aTypeCache, false)) return true;
             if (RecipeMaps.packagerRecipes.findRecipeQuery()
+                .caching(false)
                 .items(GTUtility.copyAmount(64, aStack), tInput1)
                 .voltage(GTValues.V[mTier])
                 .notUnificated(true)
