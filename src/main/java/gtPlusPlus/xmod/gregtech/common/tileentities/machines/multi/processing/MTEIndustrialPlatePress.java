@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -93,6 +94,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Material Press Machine Casings", 6, false)
+            .addInputHatch("Any Casing", 1)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -113,7 +115,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
                 .addElement(
                     'C',
                     buildHatchAdder(MTEIndustrialPlatePress.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                         .casingIndex(50)
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
