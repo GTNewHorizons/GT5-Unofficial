@@ -40,6 +40,38 @@ public class GTUtilityTest {
         assertEquals(GTUtility.powInt(-0.00, 0), Math.pow(-0.00, 0));
     }
 
+    @SuppressWarnings("ConstantValue")
+    @Test
+    void testLog2() {
+        // Check powers of 2 and neighbors up to Integer.MAX_VALUE
+        for (int i = 2; i > 0 && i <= (1 << 30); i <<= 1) {
+            assertEquals((int) (Math.log(i - 1) / Math.log(2)), GTUtility.log2(i - 1));
+            assertEquals((int) (Math.log(i) / Math.log(2)), GTUtility.log2(i));
+            assertEquals((int) (Math.log(i + 1) / Math.log(2)), GTUtility.log2(i + 1));
+        }
+    }
+
+    @Test
+    void testLog2Zero() {
+        assertEquals(0, GTUtility.log2(0));
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Test
+    void testLog4() {
+        // Check powers of 2 and neighbors up to Integer.MAX_VALUE
+        for (int i = 2; i > 0 && i <= (1 << 30); i <<= 1) {
+            assertEquals((int) (Math.log(i - 1) / Math.log(4)), GTUtility.log4(i - 1));
+            assertEquals((int) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
+            assertEquals((int) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
+        }
+    }
+
+    @Test
+    void testLog4Zero() {
+        assertEquals(0, GTUtility.log4(0));
+    }
+
     @Test
     public void testGetTier() {
         assertEquals(0, GTUtility.getTier(-1));

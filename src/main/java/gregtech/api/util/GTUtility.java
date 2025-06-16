@@ -4607,6 +4607,39 @@ public class GTUtility {
     }
 
     /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        int log = 0;
+        if ((a & 0xffff0000) != 0) {
+            a >>>= 16;
+            log = 16;
+        }
+        if ((a & 0xffffff00) != 0) {
+            a >>>= 8;
+            log += 8;
+        }
+        if ((a & 0xfffffff0) != 0) {
+            a >>>= 4;
+            log += 4;
+        }
+        if ((a & 0xfffffffc) != 0) {
+            a >>>= 2;
+            log += 2;
+        }
+        return log + (a >>> 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        return log2(a) >> 1;
+    }
+
+    /**
      * Hash an item stack for the purpose of storing hash across launches
      */
     public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {
