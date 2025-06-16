@@ -57,6 +57,11 @@ public class GTUtilityTest {
         }
     }
 
+    @Test
+    void testLog2Zero() {
+        assertEquals(0, GTUtility.log2(0));
+    }
+
     @SuppressWarnings("ConstantValue")
     @Test
     void testLog4() {
@@ -72,6 +77,11 @@ public class GTUtilityTest {
             assertEquals((long) (Math.log(i) / Math.log(4)), GTUtility.log4(i));
             assertEquals((long) (Math.log(i + 1) / Math.log(4)), GTUtility.log4(i + 1));
         }
+    }
+
+    @Test
+    void testLog4Zero() {
+        assertEquals(0, GTUtility.log4(0));
     }
 
     @Test

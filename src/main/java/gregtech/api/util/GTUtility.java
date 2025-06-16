@@ -4611,6 +4611,7 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static int log2(int a) {
+        if (a == 0) return 0;
         return 31 - Integer.numberOfLeadingZeros(a);
     }
 
@@ -4627,6 +4628,7 @@ public class GTUtility {
      * Uses bitwise operations for fast calculation.
      */
     public static long log2(long a) {
+        if (a == 0) return 0;
         return 63 - Long.numberOfLeadingZeros(a);
     }
 

@@ -340,9 +340,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        int recipePowerTier = (int) Math.max(GTUtility.log4((long) (recipePower / 8)), 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int machinePowerTier = (int) Math.max(GTUtility.log4((long) machinePower / 8), 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -377,7 +376,7 @@ public class OverclockCalculator {
         }
 
         // Limit overclocks allowed by power tier.
-        overclocks = Math.min(maxOverclocks, machinePowerTier - recipePowerTier);
+        overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
@@ -415,9 +414,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        int recipePowerTier = (int) Math.max(GTUtility.log4((long) (recipePower / 8)), 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int machinePowerTier = (int) Math.max(GTUtility.log4((long) (machinePower / 8)), 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // Special handling for laser overclocking.
         if (laserOC) {
@@ -448,7 +446,7 @@ public class OverclockCalculator {
         }
 
         // Limit overclocks allowed by power tier.
-        int overclocks = Math.min(maxOverclocks, machinePowerTier - recipePowerTier);
+        int overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
