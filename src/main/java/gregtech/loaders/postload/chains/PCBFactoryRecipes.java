@@ -100,7 +100,7 @@ public class PCBFactoryRecipes {
 
         // Plastic Circuit Board
         for (int tier = 1; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
-            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 1))));
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(GTUtility.powInt(2, tier - 1))));
             List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(64));
@@ -151,7 +151,7 @@ public class PCBFactoryRecipes {
                 .addTo(RecipeMaps.pcbFactoryRecipes);
         }
         for (int tier = 1; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
-            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier))));
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(GTUtility.powInt(2, tier))));
             List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(64));
@@ -179,7 +179,7 @@ public class PCBFactoryRecipes {
 
         // Advanced Circuit Board
         for (int tier = 2; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
-            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 2))));
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(GTUtility.powInt(2, tier - 2))));
             List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(i));
@@ -228,7 +228,7 @@ public class PCBFactoryRecipes {
                 .addTo(RecipeMaps.pcbFactoryRecipes);
         }
         for (int tier = 2; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
-            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 1))));
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(GTUtility.powInt(2, tier - 1))));
             List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(i));

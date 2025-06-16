@@ -1,6 +1,5 @@
 package tectech.recipe;
 
-import static java.lang.Math.pow;
 import static tectech.recipe.EyeOfHarmonyRecipe.processHelper;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
@@ -21,6 +20,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
@@ -164,7 +164,7 @@ public class EyeOfHarmonyRecipeStorage {
     }
 
     private static long timeCalculator(final long rocketTier) {
-        return (long) (18_000L * pow(1.4, rocketTier));
+        return (long) (18_000L * GTUtility.powInt(1.4, rocketTier));
     }
 
     private ArrayList<Pair<Materials, Long>> processDD(final ArrayList<Materials> validMaterialList) {

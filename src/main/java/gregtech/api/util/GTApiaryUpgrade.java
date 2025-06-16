@@ -35,8 +35,8 @@ public enum GTApiaryUpgrade {
     }),
     production(UNIQUE_INDEX.PRODUCTION_UPGRADE, 32209, 8, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 8);
-        mods.production = 4.f * (float) Math.pow(1.2d, n);
-        mods.energy *= Math.pow(1.4f, n);
+        mods.production = 4.f * (float) GTUtility.powInt(1.2d, n);
+        mods.energy *= GTUtility.powInt(1.4f, n);
     }),
     plains(UNIQUE_INDEX.PLAINS_UPGRADE, 32210, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.plains;
@@ -48,8 +48,8 @@ public enum GTApiaryUpgrade {
     }),
     flowering(UNIQUE_INDEX.FLOWERING_UPGRADE, 32212, 8, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 8);
-        mods.flowering *= Math.pow(1.2f, n);
-        mods.energy *= Math.pow(1.1f, n);
+        mods.flowering *= GTUtility.powInt(1.2f, n);
+        mods.energy *= GTUtility.powInt(1.1f, n);
     }),
     winter(UNIQUE_INDEX.WINTER_UPGRADE, 32213, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.taiga;
@@ -58,7 +58,7 @@ public enum GTApiaryUpgrade {
     dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 16, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 16);
         mods.humidity -= 0.125f * n;
-        mods.energy *= Math.pow(1.025f, n);
+        mods.energy *= GTUtility.powInt(1.025f, n);
     }),
     automation(UNIQUE_INDEX.AUTOMATION_UPGRADE, 32215, 1, (mods, n) -> {
         mods.isAutomated = true;
@@ -67,7 +67,7 @@ public enum GTApiaryUpgrade {
     humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 16, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 16);
         mods.humidity += 0.125f * n;
-        mods.energy *= Math.pow(1.05f, n);
+        mods.energy *= GTUtility.powInt(1.05f, n);
     }),
     hell(UNIQUE_INDEX.HELL_UPGRADE, 32217, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.hell;
@@ -84,12 +84,12 @@ public enum GTApiaryUpgrade {
     cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 16, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 16);
         mods.temperature -= 0.125f * n;
-        mods.energy *= Math.pow(1.025f, n);
+        mods.energy *= GTUtility.powInt(1.025f, n);
     }),
     lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 4);
-        mods.lifespan /= Math.pow(1.5f, n);
-        mods.energy *= Math.pow(1.05f, n);
+        mods.lifespan /= GTUtility.powInt(1.5f, n);
+        mods.energy *= GTUtility.powInt(1.05f, n);
     }),
     seal(UNIQUE_INDEX.SEAL_UPGRADE, 32222, 1, (mods, n) -> {
         mods.isSealed = true;
@@ -105,8 +105,8 @@ public enum GTApiaryUpgrade {
     }),
     territory(UNIQUE_INDEX.TERRITORY_UPGRADE, 32225, 4, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 4);
-        mods.territory *= Math.pow(1.5f, n);
-        mods.energy *= Math.pow(1.05f, n);
+        mods.territory *= GTUtility.powInt(1.5f, n);
+        mods.energy *= GTUtility.powInt(1.05f, n);
     }),
     ocean(UNIQUE_INDEX.OCEAN_UPGRADE, 32226, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.ocean;
@@ -119,7 +119,7 @@ public enum GTApiaryUpgrade {
     heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 16, (mods, n) -> {
         n = MathHelper.clamp_int(n, 0, 16);
         mods.temperature += 0.125f * n;
-        mods.energy *= Math.pow(1.025f, n);
+        mods.energy *= GTUtility.powInt(1.025f, n);
     }),
     sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;

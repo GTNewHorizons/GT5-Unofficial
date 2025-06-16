@@ -261,7 +261,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         int pollutionPerSecond = 0;
         for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             // applying scaling factor
-            pollutionPerSecond += (int) Math.pow(SCALING_FACTOR, min(tTier, tHatch.mTier));
+            pollutionPerSecond += (int) GTUtility.powInt(SCALING_FACTOR, min(tTier, tHatch.mTier));
         }
         // apply the boost
         if (isRateBoosted) {

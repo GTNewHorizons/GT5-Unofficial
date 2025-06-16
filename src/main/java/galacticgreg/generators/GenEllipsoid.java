@@ -90,9 +90,18 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
         for (int iX = Xmin; iX <= Xmax; iX++) {
             for (int iY = Ymin; iY <= Ymax; iY++) {
                 for (int iZ = Zmin; iZ <= Zmax; iZ++) {
-                    double tmpX = Math.pow(_mEllipsoidCenter.xCoord - iX, 2) / Math.pow(_mSizeA, 2);
-                    double tmpY = Math.pow(_mEllipsoidCenter.yCoord - iY, 2) / Math.pow(_mSizeB, 2);
-                    double tmpZ = Math.pow(_mEllipsoidCenter.zCoord - iZ, 2) / Math.pow(_mSizeC, 2);
+                    double dx = _mEllipsoidCenter.xCoord - iX;
+                    double dy = _mEllipsoidCenter.yCoord - iY;
+                    double dz = _mEllipsoidCenter.zCoord - iZ;
+
+                    double invSizeA2 = 1.0 / (_mSizeA * _mSizeA);
+                    double invSizeB2 = 1.0 / (_mSizeB * _mSizeB);
+                    double invSizeC2 = 1.0 / (_mSizeC * _mSizeC);
+
+                    double tmpX = dx * dx * invSizeA2;
+                    double tmpY = dy * dy * invSizeB2;
+                    double tmpZ = dz * dz * invSizeC2;
+
                     double val = (tmpX + tmpY + tmpZ);
 
                     Vec3 tPoint = Vec3.createVectorHelper(iX, iY, iZ);
