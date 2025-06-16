@@ -75,7 +75,7 @@ public class MTEPump extends MTEBasicMachine {
             1,
             new String[] { "The best way to empty Oceans!",
                 getEuUsagePerTier(aTier) + " EU/operation, "
-                    + GTUtility.safeInt(160 / 20 / (1L << aTier))
+                    + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
                     + " sec per bucket, no stuttering",
                 "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
                     + "x"
