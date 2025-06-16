@@ -681,7 +681,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
-        updateAE2ProxyColor();
+
         return true;
     }
 

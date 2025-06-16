@@ -518,7 +518,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
-        updateAE2ProxyColor();
+
         return true;
     }
 

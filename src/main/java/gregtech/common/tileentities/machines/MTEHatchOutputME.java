@@ -674,7 +674,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
-        updateAE2ProxyColor();
+
         return true;
     }
 

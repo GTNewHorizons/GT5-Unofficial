@@ -422,7 +422,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
-        updateAE2ProxyColor();
+
         return true;
     }
 
