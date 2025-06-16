@@ -21,7 +21,6 @@
 package kubatech.api.implementations;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static kubatech.api.Variables.ln2;
 import static kubatech.api.Variables.ln4;
 
 import java.util.ArrayList;
@@ -146,8 +145,8 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             this.mMaxProgresstime = aDuration;
             return 0;
         }
-        int durationTiers = (int) Math
-            .ceil(Math.log((double) aDuration / (double) minDuration) / (isPerfect ? ln4 : ln2));
+        int durationTiers = isPerfect ? GTUtility.log4ceil(aDuration / minDuration)
+            : GTUtility.log2ceil(aDuration / minDuration);
         if (durationTiers < 0) durationTiers = 0; // We do not support downclocks (yet)
         if (durationTiers > tiers) durationTiers = tiers;
         if (!isOverclockingInfinite()) {

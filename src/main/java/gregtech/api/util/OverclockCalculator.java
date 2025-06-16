@@ -73,7 +73,6 @@ public class OverclockCalculator {
     // Constants
     protected static final int HEAT_DISCOUNT_THRESHOLD = 900;
     protected static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
-    protected static final double LOG4 = Math.log(4);
 
     /** Creates calculator that doesn't do OC at all. Will use recipe duration. */
     public static OverclockCalculator ofNoOverclock(@Nonnull GTRecipe recipe) {
@@ -380,8 +379,8 @@ public class OverclockCalculator {
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
@@ -450,8 +449,8 @@ public class OverclockCalculator {
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
