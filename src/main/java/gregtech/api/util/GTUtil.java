@@ -320,6 +320,7 @@ public class GTUtil {
                 controller.mOutputBusses)) return false;
         }
 
+        // for ME output hatches (normal output hatches are not implemented)
         ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
         for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
             if (outputHatch instanceof MTEHatchOutputME hatch) {
@@ -330,11 +331,12 @@ public class GTUtil {
             tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
             player,
             meOutputHatches)) {
-            return loadConfigurationFromDataStick(
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                meOutputHatches);
+                meOutputHatches)) return false;
         }
+
         // For Crafting Input Proxy
         ArrayList<MTEHatch> dualInputHatches = new ArrayList<>();
         for (IDualInputHatch dualInputHatch : controller.mDualInputHatches) {
@@ -346,10 +348,10 @@ public class GTUtil {
             tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
             player,
             dualInputHatches)) {
-            return loadConfigurationFromDataStick(
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                dualInputHatches);
+                dualInputHatches)) return false;
         }
 
         return true;
