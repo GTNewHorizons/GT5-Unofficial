@@ -198,9 +198,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         }
 
         if (!recipe.isRecipeInputEqual(
-            true,
+            getStoredInputs().toArray(new ItemStack[0]),
             getStoredFluids().toArray(new FluidStack[0]),
-            getStoredInputs().toArray(new ItemStack[0]))) {
+            true)) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 

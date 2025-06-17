@@ -19,7 +19,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
 import tectech.util.CommonValues;
 

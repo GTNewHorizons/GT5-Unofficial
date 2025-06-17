@@ -178,7 +178,6 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                         GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipeQuery()
                             .items(((EntityItem) entity).getEntityItem())
                             .voltage(128)
-                            .notUnificated(true)
                             .find();
                         if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
                             itemsToOutput.add(((EntityItem) entity).getEntityItem());

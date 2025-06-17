@@ -88,8 +88,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.IGTHatchAdder;
@@ -188,7 +187,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
         .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
         .build();
-    private GTRecipe.RecipeAssemblyLine currentRecipe;
+    private RecipeAssemblyLine currentRecipe;
     private final Slice[] slices = IntStream.range(0, 16)
         .mapToObj(Slice::new)
         .toArray(Slice[]::new);
@@ -666,29 +665,29 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return inputHatch.getFillableStack();
     }
 
-    private int maxParallelCalculatedByInputItems(GTRecipe.RecipeAssemblyLine tRecipe, int maxParallel) {
+    private int maxParallelCalculatedByInputItems(RecipeAssemblyLine tRecipe, int maxParallel) {
         int aItemCount = tRecipe.mInputs.length;
         if (mInputBusses.size() < aItemCount) return 0;
-        int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+        int[] itemConsumptions = RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
         if (itemConsumptions == null || itemConsumptions.length == 0) {
             return 0;
         }
-        return (int) GTRecipe.RecipeAssemblyLine
+        return (int) RecipeAssemblyLine
             .maxParallelCalculatedByInputItems(mInputBusses, maxParallel, itemConsumptions, curBatchItemsFromME);
     }
 
-    private int maxParallelCalculatedByInputFluids(GTRecipe.RecipeAssemblyLine tRecipe, int maxParallel) {
+    private int maxParallelCalculatedByInputFluids(RecipeAssemblyLine tRecipe, int maxParallel) {
         int aFluidCount = tRecipe.mFluidInputs.length;
         if (mInputHatches.size() < aFluidCount) return 0;
-        return (int) GTRecipe.RecipeAssemblyLine
+        return (int) RecipeAssemblyLine
             .maxParallelCalculatedByInputFluids(mInputHatches, maxParallel, tRecipe.mFluidInputs, curBatchFluidsFromME);
     }
 
-    private boolean hasAllItems(GTRecipe.RecipeAssemblyLine tRecipe, int parallel) {
+    private boolean hasAllItems(RecipeAssemblyLine tRecipe, int parallel) {
         return maxParallelCalculatedByInputItems(tRecipe, parallel) >= parallel;
     }
 
-    private boolean hasAllFluids(GTRecipe.RecipeAssemblyLine tRecipe, int parallel) {
+    private boolean hasAllFluids(RecipeAssemblyLine tRecipe, int parallel) {
         return maxParallelCalculatedByInputFluids(tRecipe, parallel) >= parallel;
     }
 
@@ -922,8 +921,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
      * Caller is responsible to check and ensure the hatches are there and has all the fluid needed. You will usually
      * want to ensure hasAllFluid was called right before calling this, otherwise very bad things can happen.
      */
-    private void drainAllFluids(GTRecipe.RecipeAssemblyLine recipe, int parallel) {
-        GTRecipe.RecipeAssemblyLine
+    private void drainAllFluids(RecipeAssemblyLine recipe, int parallel) {
+        RecipeAssemblyLine
             .consumeInputFluids(mInputHatches, parallel, recipe.mFluidInputs, curBatchFluidsFromME);
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) tHatch.updateSlots();
     }
@@ -1043,7 +1042,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             startRecipeProcessing();
             ItemStack stack = getInputBusContent(id);
             if (stack == null) return false;
-            int size = GTRecipe.RecipeAssemblyLine
+            int size = RecipeAssemblyLine
                 .getMatchedIngredientAmount(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
             if (size < 0 || stack.stackSize < size * currentRecipeParallel) return false;
             progress = mMaxProgresstime / currentInputLength;

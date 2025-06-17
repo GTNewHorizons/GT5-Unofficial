@@ -18,7 +18,6 @@ import com.google.common.collect.MultimapBuilder;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility.ItemId;
 
 public class AssemblyLineUtils {
@@ -130,11 +129,11 @@ public class AssemblyLineUtils {
      * @return Did we set the new recipe data & Recipe Hash String on the Data Stick?
      */
     public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick,
-        GTRecipe.RecipeAssemblyLine aNewRecipe) {
+        RecipeAssemblyLine aNewRecipe) {
         return setAssemblyLineRecipeOnDataStick(aDataStick, aNewRecipe, true);
     }
 
-    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, GTRecipe.RecipeAssemblyLine aNewRecipe,
+    public static boolean setAssemblyLineRecipeOnDataStick(ItemStack aDataStick, RecipeAssemblyLine aNewRecipe,
         boolean setUpdateTime) {
         if (!isItemDataStick(aDataStick)) return false;
         if (aNewRecipe.mOutput == null) return false;

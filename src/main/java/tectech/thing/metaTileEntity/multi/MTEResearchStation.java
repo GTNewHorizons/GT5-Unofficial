@@ -70,6 +70,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
@@ -92,7 +93,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GTRecipe.RecipeAssemblyLine tRecipe;
+    private RecipeAssemblyLine tRecipe;
     private static final String assembly = "Assembly line";
     private static final String scanner = "Scanner";
     private String machineType = assembly;
@@ -217,7 +218,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 switch (machineType) {
                     case scanner -> {
                         if (isDataStick) {
-                            for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                            for (RecipeAssemblyLine assRecipe : RecipeAssemblyLine.sAssemblylineRecipes) {
                                 if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                     boolean failScanner = true;
                                     for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
@@ -253,7 +254,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 && (tData.mMaterial.mMaterial != Materials.Magic)
                                 && (tData.mMaterial.mMaterial.getMass() > 0L)) {
 
-                                this.tRecipe = new GTRecipe.RecipeAssemblyLine(
+                                this.tRecipe = new RecipeAssemblyLine(
                                     holdItem.copy(),
                                     (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
                                     (int) TierEU.RECIPE_UV,
@@ -279,7 +280,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                         }
                     }
                     case assembly -> {
-                        for (GTRecipe.RecipeAssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                        for (RecipeAssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 tRecipe = assRecipe;
                                 // if found
@@ -523,7 +524,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 tRecipe = null;
                 if (holdItem != null) {
                     if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GTRecipe.RecipeAssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                        for (RecipeAssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GTUtility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
                                 break;

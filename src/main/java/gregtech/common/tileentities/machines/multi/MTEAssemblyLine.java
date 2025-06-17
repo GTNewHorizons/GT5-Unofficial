@@ -55,8 +55,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -282,7 +281,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             }
 
             // Check Inputs allign
-            int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+            int[] itemConsumptions = RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
             if (itemConsumptions == null || itemConsumptions.length == 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
@@ -290,7 +289,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             int currentParallel = maxParallel;
 
-            currentParallel = (int) GTRecipe.RecipeAssemblyLine
+            currentParallel = (int) RecipeAssemblyLine
                 .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
 
             if (currentParallel <= 0) {
@@ -367,8 +366,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             GT_FML_LOGGER.info("All checked start consuming inputs");
         }
 
-        GTRecipe.RecipeAssemblyLine.consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
-        GTRecipe.RecipeAssemblyLine.consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
+        RecipeAssemblyLine.consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
+        RecipeAssemblyLine.consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
 
         if (this.lEUt > 0) {
             this.lEUt = -this.lEUt;

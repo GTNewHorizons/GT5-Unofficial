@@ -328,7 +328,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+            .maxParallelCalculatedByInputs(tItemsWithFocusItemArray, new FluidStack[] {}, batchAmount);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;

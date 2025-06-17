@@ -459,7 +459,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             }
         }
 
-        if (!recipe.isRecipeInputEqual(true, null, inputs)) {
+        if (!recipe.isRecipeInputEqual(inputs, null, true)) {
             this.mOutputItems = null;
             return false;
         }

@@ -23,7 +23,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;

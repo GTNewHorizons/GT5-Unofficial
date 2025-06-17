@@ -182,7 +182,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
+        if (!tRecipe.isRecipeInputEqual(tItems, new FluidStack[] {}, true)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 

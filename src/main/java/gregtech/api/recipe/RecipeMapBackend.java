@@ -42,6 +42,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTRecipe_WithAlt;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
@@ -156,7 +157,7 @@ public class RecipeMapBackend {
             if (item == null) continue;
             itemIndex.put(new GTItemStack(item), recipe);
         }
-        if (recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
+        if (recipe instanceof GTRecipe_WithAlt recipeWithAlt) {
             for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
                 if (itemStacks == null) continue;
                 for (ItemStack item : itemStacks) {

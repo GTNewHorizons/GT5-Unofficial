@@ -833,7 +833,7 @@ public class GTRecipeBuilder {
         return itemInputs((Object[]) inputsBasic);
     }
 
-    public Optional<GTRecipe.GTRecipe_WithAlt> buildWithAlt() {
+    public Optional<GTRecipe_WithAlt> buildWithAlt() {
         if (skip) {
             return Optional.empty();
         }
@@ -847,7 +847,7 @@ public class GTRecipeBuilder {
         preBuildChecks();
         return Optional.of(
             decorate(
-                new GTRecipe.GTRecipe_WithAlt(
+                new GTRecipe_WithAlt(
                     inputsBasic,
                     outputs,
                     fluidInputs,

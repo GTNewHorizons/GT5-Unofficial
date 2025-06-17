@@ -9,7 +9,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
@@ -18,7 +18,7 @@ public class TecTechRecipeMaps {
 
     public static void init() {}
 
-    public static final List<GTRecipe.RecipeAssemblyLine> researchableALRecipeList = new ArrayList<>();
+    public static final List<RecipeAssemblyLine> researchableALRecipeList = new ArrayList<>();
 
     public static final RecipeMap<RecipeMapBackend> eyeOfHarmonyRecipes = RecipeMapBuilder.of("gt.recipe.eyeofharmony")
         .maxIO(

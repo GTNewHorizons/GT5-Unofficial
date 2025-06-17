@@ -80,13 +80,11 @@ public class ToolJackHammer extends ToolDrillLV {
         int rConversions = 0;
         GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
             .items(new ItemStack(aBlock, 1, aMetaData))
-            .notUnificated(true)
             .find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
                 tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
                     .items(GTUtility.copyAmount(1, tDrop))
-                    .notUnificated(true)
                     .find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);

@@ -66,7 +66,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe_WithAlt;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
@@ -798,7 +798,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
-            new GTRecipe.GTRecipe_WithAlt(
+            new GTRecipe_WithAlt(
                 false,
                 null, // All inputs are taken from aAtl argument.
                 outputStacks,

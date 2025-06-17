@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 
 public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
 

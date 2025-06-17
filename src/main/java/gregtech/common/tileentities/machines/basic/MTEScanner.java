@@ -50,6 +50,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class MTEScanner extends MTEBasicMachine {
@@ -347,7 +348,7 @@ public class MTEScanner extends MTEBasicMachine {
                 }
             }
             if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)) {
-                for (GTRecipe.RecipeAssemblyLine tRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                for (RecipeAssemblyLine tRecipe : RecipeAssemblyLine.sAssemblylineRecipes) {
                     if (GTUtility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
                         GTRecipe matchingRecipe = null;
 

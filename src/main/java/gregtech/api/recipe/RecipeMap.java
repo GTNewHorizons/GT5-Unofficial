@@ -25,6 +25,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTRecipe_WithAlt;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -154,7 +155,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         boolean hidden) {
         return addFakeRecipe(
             aCheckForCollisions,
-            new GTRecipe.GTRecipe_WithAlt(
+            new GTRecipe_WithAlt(
                 false,
                 aInputs,
                 aOutputs,

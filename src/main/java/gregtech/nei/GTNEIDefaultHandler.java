@@ -65,6 +65,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe_WithAlt;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
@@ -571,7 +572,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                         int i = widget.getMcSlot()
                             .getSlotIndex();
                         final Object input;
-                        if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
+                        if (aRecipe instanceof GTRecipe_WithAlt withAltRecipe) {
                             input = withAltRecipe.getRepresentativeInput(i);
                         } else {
                             ItemStack[] inputs = GTNEIDefaultHandler.this.neiProperties.itemInputsGetter.apply(aRecipe);

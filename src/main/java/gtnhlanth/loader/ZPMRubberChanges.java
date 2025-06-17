@@ -33,7 +33,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.RecipeAssemblyLine;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.WerkstoffMaterialPool;

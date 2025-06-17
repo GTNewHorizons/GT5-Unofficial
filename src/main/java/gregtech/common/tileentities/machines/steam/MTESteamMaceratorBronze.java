@@ -91,7 +91,7 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
+        if (!tRecipe.isRecipeInputEqual(getAllInputs(), new FluidStack[] { getFillableStack() }, true))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
         calculateCustomOverclock(tRecipe);

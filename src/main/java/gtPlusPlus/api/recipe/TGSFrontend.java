@@ -15,7 +15,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe_WithAlt;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -99,7 +99,7 @@ public class TGSFrontend extends RecipeMapFrontend {
             return currentTip;
         }
 
-        GTRecipe.GTRecipe_WithAlt recipe = (GTRecipe.GTRecipe_WithAlt) neiCachedRecipe.mRecipe;
+        GTRecipe_WithAlt recipe = (GTRecipe_WithAlt) neiCachedRecipe.mRecipe;
 
         // Inputs
         int slot = 0;

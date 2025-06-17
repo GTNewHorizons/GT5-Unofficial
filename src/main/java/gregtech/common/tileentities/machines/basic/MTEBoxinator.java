@@ -209,7 +209,6 @@ public class MTEBoxinator extends MTEBasicMachine {
             if (RecipeMaps.packagerRecipes.findRecipeQuery()
                 .items(GTUtility.copyAmount(64, aStack), tInput1)
                 .voltage(GTValues.V[mTier])
-                .notUnificated(true)
                 .find() != null) {
                 return true;
             }
