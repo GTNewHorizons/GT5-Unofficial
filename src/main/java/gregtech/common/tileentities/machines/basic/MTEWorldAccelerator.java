@@ -121,10 +121,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA" + EnumChatFormatting.RESET,
+            "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
             "Max Speed Bonus " + EnumChatFormatting.GREEN
-                + String.format("x%d", mAccelerateStatic[mTier])
-                + EnumChatFormatting.RESET,
+                + String.format("x%d", mAccelerateStatic[mTier]),
             EnumChatFormatting.GOLD + "Blocks Mode: "
                 + EnumChatFormatting.RESET
                 + String.format("Radius 1-%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
