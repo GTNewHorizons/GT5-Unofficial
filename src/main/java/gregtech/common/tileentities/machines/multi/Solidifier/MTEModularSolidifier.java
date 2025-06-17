@@ -16,15 +16,26 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTUtility.getTier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.OverclockCalculator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -74,9 +85,39 @@ enum Modules {
     }
 }
 
+
+
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
 
+    private static class CoolingFluid{
+        public Materials material;
+        public int grantedOC;
+        public int amount;
+
+        public CoolingFluid(Materials material, int grantedOC, int amount)
+        {
+            this.material = material;
+            this.grantedOC = grantedOC;
+            this.amount = amount;
+        }
+        public FluidStack getStack()
+        {
+            FluidStack stack = material.getFluid(amount);
+            //shoutout penguin, i think i get why you were upset with this code here :^)
+            if (stack == null){
+                return material.getMolten(amount);
+            }
+            return stack;
+        }
+    }
+
+    private static final ArrayList<CoolingFluid> COOLING_FLUIDS = new ArrayList<>(Arrays.asList
+        (new CoolingFluid(MaterialsUEVplus.SpaceTime,1,100),
+        new CoolingFluid(MaterialsUEVplus.Space, 2, 50),
+        new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25)));
+
+    private CoolingFluid currentCoolingFluid = null;
     private static int horizontalOffset = 4;
     private static int verticalOffset = 2;
 
@@ -85,7 +126,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private final float euEffBase = 0.9F;
     private final int parallelScaleBase = 8;
     private final float ocFactorBase = 2.0F;
-
+    private int additionaloverclocks = 0;
     private boolean uevRecipesEnabled = false;
     private boolean hypercoolerPresent = false;
 
@@ -331,6 +372,17 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14;
     }
 
+    public CoolingFluid findCoolingFluid()
+    {
+        for (MTEHatchInput hatch : mInputHatches)
+        {
+            Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
+                .filter(candidate -> drain(hatch, candidate.getStack(), false))
+                .findFirst();
+            if (fluid.isPresent()) return fluid.get();
+        }
+        return null;
+    }
     private void resetParameters() {
         ocFactorAdditive = 0.0F;
 
@@ -429,9 +481,31 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                additionaloverclocks = 0;
 
-                //TODO: check for fluid if hyppercooler present and if recipe is greater than uev
-                return super.validateRecipe(recipe);
+                if (hypercoolerPresent)
+                {
+                    currentCoolingFluid = findCoolingFluid();
+                    if(currentCoolingFluid == null)
+                    {
+                        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                    }
+                    additionaloverclocks = currentCoolingFluid.grantedOC;
+                }
+                //UEV recipes are tier 11 ?
+                if (GTUtility.getTier(recipe.mEUt) >= 11 && !uevRecipesEnabled)
+                {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @Override
+            protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe)
+                    .setMaxRegularOverclocks(additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
+                    .setDurationDecreasePerOC(ocFactorBase+ocFactorAdditive);
+
             }
 
             // for cribuffers/proxies?
@@ -459,7 +533,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         };
     }
-
 
     @Override
     public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
@@ -539,11 +612,4 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return (speedModifierAdj - 1) * 100 + "%";
     }
 
-    public double getOCFactor() {
-        double oc = 2.0;
-        for (Modules m : modules) {
-            if (m == Modules.EFFICIENT_OC) oc += 0.2;
-        }
-        return oc;
-    }
 }
