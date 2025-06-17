@@ -207,12 +207,11 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
                     + " cY="
                     + tMinY);
         }
+        double dx = aChunkX / 16 - aSeedX / 16;
+        double dz = aChunkZ / 16 - aSeedZ / 16;
         // Adjust the density down the more chunks we are away from the oreseed. The 5 chunks surrounding the seed
         // should always be max density due to truncation of Math.sqrt().
-        int localDensity = (Math.max(
-            1,
-            this.mDensity / ((int) Math
-                .sqrt(2 + Math.pow(aChunkX / 16 - aSeedX / 16, 2) + Math.pow(aChunkZ / 16 - aSeedZ / 16, 2)))));
+        int localDensity = (Math.max(1, this.mDensity / (int) Math.sqrt(2 + dx * dx + dz * dz)));
 
         // To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll
         // 1 pass through the loop
