@@ -159,7 +159,7 @@ public class BeamlineRecipeLoader {
                                     // This greatly incentivises the use of higher tier boule wafer recipes
                                     .amount(
                                         (int) Math.round(
-                                            mask.getBaselineAmount() * GTUtility.powInt(Math.sqrt(2), index - 1)))
+                                            mask.getBaselineAmount() * Math.sqrt(GTUtility.powInt(2, index - 1))))
                                     .energy(mask.getMinEnergy(), mask.getMaxEnergy(), 1)
                                     .minFocus(mask.getMinFocus())
                                     .build())
