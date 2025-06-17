@@ -137,28 +137,19 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         int x = area.x + area.width;
         int y = area.y;
         return new ModularPanel("moduleConfigPanel").pos(x, y)
-            .size(160, 130)
+            .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                new Column().sizeRel(1)
                     .padding(3)
                     .widgetTheme("backgroundPopup")
+                    .child(
+                        new TextWidget("Modules").size(60, 18)
+                            .alignment(Alignment.Center)
+                            .marginBottom(5))
 
-                    .child( // column that displays the modules
-                        new Column().size(80, 120)
-                            .padding(1)
-                            .widgetTheme("backgroundPopup")
-                            .marginRight(20)
-                            .child(
-                                new TextWidget("Modules").size(60, 18)
-                                    .alignment(Alignment.Center)
-                                    .marginBottom(5))
-                    /* .child( ) .build()) */ // here will be the modules and what name
-                    // to the right of them should be a button that opens a new panel to select modules
-
-                    )
-
-                    .crossAxisAlignment(Alignment.CrossAxis.START)
+            /* .child( ) .build()) */ // here will be the modules and what name
+            // to the right of them should be a button that opens a new panel to select modules
 
             );
     }

@@ -15,6 +15,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
 
     public BlockCasings13() {
         super(ItemCasings.class, "gt.blockcasings13", MaterialCasings.INSTANCE, 16);
+        register(8, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Active Time Dilation System");
         register(9, ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
         register(10, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Power Efficient Subsystems Module");
         register(11, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendent Reinforcement Module");
@@ -33,6 +34,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
+            case 8 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM.getIcon();
             case 9 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EFFICIENT_OVERCLOCKING.getIcon();
             case 10 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_POWER_EFFICIENT_SUBSYSTEMS.getIcon();
             case 11 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_TRANSCENDENT_REINFORCEMENT.getIcon();
