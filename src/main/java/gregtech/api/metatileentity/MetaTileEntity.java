@@ -400,20 +400,34 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * This is used to get the internal Energy. I use this for the IDSU.
+     * Gets the energy stored in this machine. In most cases, the energy is stored in the base tile entity, but some
+     * MTEs may override that behaviour. Check {@link MTEOverrideCharacteristics} and
+     * {@link BaseMetaTileEntity#extractStoredEU(long, boolean)} if you override this, and it isn't being called.
      */
     public long getEUVar() {
         return ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy;
     }
 
     /**
-     * This is used to set the internal Energy to the given Parameter. I use this for the IDSU.
+     * Sets the energy stored in this machine. See {@link #getEUVar()} for details.
      */
     public void setEUVar(long aEnergy) {
         if (aEnergy != ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy) {
             markDirty();
             ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy = aEnergy;
         }
+    }
+
+    /**
+     * Drains energy from this machine.
+     * @param energy The amount of energy to drain.
+     * @param allowPartial When true, energy will only be drained when {@code energy} is greater than the amount of stored energy.
+     * @return The amount of energy that was unable to be drained.
+     */
+    public long drainEU(long energy, boolean allowPartial) {
+        BaseMetaTileEntity bmte = ((BaseMetaTileEntity) mBaseMetaTileEntity);
+
+        return energy - bmte.extractStoredEU(energy, allowPartial);
     }
 
     /**

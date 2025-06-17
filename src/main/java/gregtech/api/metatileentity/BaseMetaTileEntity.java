@@ -124,6 +124,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     private UUID mOwnerUuid = GTUtility.defaultUuid;
     private int cableUpdateDelay = 30;
 
+    private MTEOverrideCharacteristics overrideCharacteristics;
+
     public BaseMetaTileEntity() {}
 
     @Override
@@ -1012,10 +1014,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy) {
+    public boolean decreaseStoredEnergyUnits(long energy, boolean aIgnoreTooLessEnergy) {
         if (!canAccessData()) return false;
-        return mHasEnoughEnergy = decreaseStoredEU(aEnergy, aIgnoreTooLessEnergy) || decreaseStoredSteam(aEnergy, false)
-            || (aIgnoreTooLessEnergy && (decreaseStoredSteam(aEnergy, true)));
+
+        mHasEnoughEnergy = decreaseStoredEU(energy, aIgnoreTooLessEnergy)
+            || decreaseStoredSteam(energy, false)
+            || (aIgnoreTooLessEnergy && (decreaseStoredSteam(energy, true)));
+
+        return mHasEnoughEnergy;
     }
 
     @Override
@@ -1213,19 +1219,68 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return true;
     }
 
-    public boolean decreaseStoredEU(long aEnergy, boolean aIgnoreTooLessEnergy) {
+    public boolean decreaseStoredEU(long energy, boolean aIgnoreTooLessEnergy) {
         if (!canAccessData()) {
             return false;
         }
-        if (mMetaTileEntity.getEUVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
-            setStoredEU(mMetaTileEntity.getEUVar() - aEnergy);
-            if (mMetaTileEntity.getEUVar() < 0) {
-                setStoredEU(0);
+
+        if (overrideCharacteristics.hasCustomEUStorage) {
+            if (mMetaTileEntity.getEUVar() - energy >= 0 || aIgnoreTooLessEnergy) {
+                setStoredEU(mMetaTileEntity.getEUVar() - energy);
+                if (mMetaTileEntity.getEUVar() < 0) {
+                    setStoredEU(0);
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+        } else {
+            if (mStoredEnergy >= energy) {
+                mStoredEnergy -= energy;
+                markDirty();
+
+                return true;
+            } else {
+                if (aIgnoreTooLessEnergy) {
+                    mStoredEnergy = 0;
+                    markDirty();
+                }
+
                 return false;
             }
-            return true;
         }
-        return false;
+    }
+
+    public long extractStoredEU(long energy, boolean allowPartial) {
+        if (overrideCharacteristics.hasCustomEUStorage) {
+            long stored = mMetaTileEntity.getEUVar();
+
+            if (allowPartial || stored >= energy) {
+                long toExtract = Math.min(stored, energy);
+                stored -= toExtract;
+                mMetaTileEntity.setEUVar(stored);
+                return toExtract;
+            }
+
+            return 0;
+        } else {
+            if (mStoredEnergy >= energy) {
+                mStoredEnergy -= energy;
+                markDirty();
+
+                return energy;
+            } else {
+                long extracted = mStoredEnergy;
+
+                if (allowPartial && mStoredEnergy > 0) {
+                    mStoredEnergy = 0;
+                    markDirty();
+                }
+
+                return extracted;
+            }
+        }
     }
 
     public boolean decreaseStoredSteam(long aEnergy, boolean aIgnoreTooLessEnergy) {
@@ -1678,9 +1733,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
-        if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null)
+        if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null) {
             mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
-        else {
+
+            if (mMetaTileEntity != null) {
+                overrideCharacteristics = MTEOverrideCharacteristics.getCharacteristics(mMetaTileEntity.getClass());
+            }
+        } else {
             GT_FML_LOGGER.error(
                 "Unknown meta tile entity set! Class {}, inventory name {}.",
                 aMetaTileEntity.getClass(),

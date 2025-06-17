@@ -30,16 +30,11 @@ public class ExoticEnergyInputHelper {
         sExoticEnergyHatchType.add(clazz);
     }
 
-    public static boolean drainEnergy(long aEU, Collection<? extends MTEHatch> hatches) {
-        for (MTEHatch tHatch : hatches) {
-            long tDrain = Math.min(
-                tHatch.getBaseMetaTileEntity()
-                    .getStoredEU(),
-                aEU);
-            tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(tDrain, false);
-            aEU -= tDrain;
+    public static boolean drainEnergy(long aEU, List<? extends MTEHatch> hatches) {
+        for (int i = 0; i < hatches.size(); i++) {
+            aEU = hatches.get(i).drainEU(aEU, false);
         }
+
         return aEU <= 0;
     }
 
