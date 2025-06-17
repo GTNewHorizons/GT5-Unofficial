@@ -375,7 +375,7 @@ public class ProcessingLogic {
         if (activeDualInv != null) {
             List<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
-                if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                if (matchedRecipe.couldRunOnce(inputItems, inputFluids, false)) {
                     CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
                     return foundResult.checkRecipeResult;
                 }

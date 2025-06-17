@@ -301,7 +301,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (tRecipe.getOutput(0) != null) {
             // Decrease input stack by appropriate amount (Not always 1)
             for (int i = 0; i < this.mMulti; i++) {
-                if (!tRecipe.isRecipeInputEqual(true, null, itemStack)) {
+                if (!tRecipe.isRecipeInputEqual(new ItemStack[]{itemStack}, null, true)) {
                     this.mMulti = i;
                     break;
                 }

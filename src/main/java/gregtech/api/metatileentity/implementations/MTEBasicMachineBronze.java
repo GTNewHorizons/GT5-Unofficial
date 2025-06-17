@@ -187,7 +187,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
             .voltage(TierEU.LV)
             .find();
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
-            && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
+            && (tRecipe.isRecipeInputEqual(getAllInputs(), null, true))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             calculateCustomOverclock(tRecipe);
             return FOUND_AND_SUCCESSFULLY_USED_RECIPE;

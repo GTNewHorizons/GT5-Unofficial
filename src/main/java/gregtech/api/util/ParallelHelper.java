@@ -396,13 +396,13 @@ public class ParallelHelper {
 
         double heatDiscountMultiplier = calculator.calculateHeatDiscountMultiplier();
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
-        if (availableEUt < tRecipeEUt) {
-            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+        final int actualRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
+        if (availableEUt < actualRecipeEUt) {
+            result = CheckRecipeResultRegistry.insufficientPower(actualRecipeEUt);
             return;
         }
         if (!calculator.getAllowedTierSkip()) {
-            result = CheckRecipeResultRegistry.insufficientVoltage(tRecipeEUt);
+            result = CheckRecipeResultRegistry.insufficientVoltage(actualRecipeEUt);
             return;
         }
 
@@ -432,7 +432,7 @@ public class ParallelHelper {
             : new FluidStack[0];
 
         SingleRecipeCheck recipeCheck = null;
-        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+        SingleRecipeCheck.Builder recipeCheckBuilder = null;
         if (isRecipeLocked && singleRecipeMachine != null) {
             recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
             if (recipeCheck == null) {
@@ -440,7 +440,7 @@ public class ParallelHelper {
                 // Build the checker on next successful recipe.
                 RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
-                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+                    recipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);
                 }
             }
@@ -473,17 +473,21 @@ public class ParallelHelper {
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
         // determine normal parallel
-        int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
-            : maxParallelBeforeBatchMode;
+        int actualMaxParallel = maxParallelBeforeBatchMode;
+
+        if (actualRecipeEUt > 0) {
+            actualMaxParallel = (int) Math.min(actualMaxParallel, availableEUt / actualRecipeEUt);
+        }
+
         if (recipeCheck != null) {
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
-            currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
+            currentParallel = GTUtility.safeInt(maxParallelCalculator.calculate(recipe, itemInputs, fluidInputs, actualMaxParallel));
             if (currentParallel > 0) {
-                if (tSingleRecipeCheckBuilder != null) {
+                if (recipeCheckBuilder != null) {
                     // If recipe checker is not built yet, build and set it
                     inputConsumer.consume(recipe, 1, fluidInputs, itemInputs);
-                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
+                    SingleRecipeCheck builtCheck = recipeCheckBuilder.setAfter(itemInputs, fluidInputs)
                         .setRecipe(recipe)
                         .build();
                     singleRecipeMachine.setSingleRecipeCheck(builtCheck);
@@ -499,25 +503,24 @@ public class ParallelHelper {
             return;
         }
 
-        calculator.setCurrentParallel(currentParallel)
-            .calculate();
+        calculator.setCurrentParallel(currentParallel).calculate();
+
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
-            int tExtraParallels;
             double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
-            final int maxExtraParallels = (int) Math.floor(
-                Math.min(
-                    currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
-                    maxParallel - currentParallel));
+
+            final int maxExtraParallels = (int) Math.floor(Math.min(currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1), maxParallel - currentParallel));
+
+            int extraParallels;
             if (recipeCheck != null) {
-                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
+                extraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
-                tExtraParallels = (int) maxParallelCalculator
-                    .calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
-                inputConsumer.consume(recipe, tExtraParallels, fluidInputs, itemInputs);
+                extraParallels = GTUtility.safeInt(maxParallelCalculator.calculate(recipe, itemInputs, fluidInputs, maxExtraParallels));
+                inputConsumer.consume(recipe, extraParallels, fluidInputs, itemInputs);
             }
-            durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
-            currentParallel += tExtraParallels;
+
+            durationMultiplier = 1.0f + (float) extraParallels / currentParallel;
+            currentParallel += extraParallels;
         }
 
         // If we want to calculate outputs we do it here
@@ -643,7 +646,7 @@ public class ParallelHelper {
     @FunctionalInterface
     public interface MaxParallelCalculator {
 
-        double calculate(GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items);
+        long calculate(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids, int maxParallel);
     }
 
     @FunctionalInterface

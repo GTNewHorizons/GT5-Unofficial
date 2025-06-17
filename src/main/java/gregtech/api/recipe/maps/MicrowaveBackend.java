@@ -44,7 +44,7 @@ public class MicrowaveBackend extends NonGTBackend {
         if (items.length == 0 || items[0] == null) {
             return null;
         }
-        if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)) {
+        if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(items, fluids, false, true)) {
             return cachedRecipe;
         }
 

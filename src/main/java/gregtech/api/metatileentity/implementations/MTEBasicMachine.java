@@ -1057,7 +1057,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
             }
         }
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
+        if (!tRecipe.isRecipeInputEqual(getAllInputs(), new FluidStack[] { getFillableStack() }, true))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         for (int i = 0; i < mOutputItems.length; i++)
             if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
