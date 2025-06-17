@@ -55,6 +55,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mBlacklistedTiles;
     }
 
+    public static final String RESET = "\u001B[0m";
+    public static final String GREEN = "\u001B[32m";
+
     private int _mRadiusTierOverride = -1;
     private int _mSpeedTierOverride = -1;
 
@@ -119,13 +122,11 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            String
-                .format("Accelerating things (Max Radius: %d | Max Speed Bonus: x%d)", mTier, mAccelerateStatic[mTier]),
-            "Use a screwdriver to change mode, sneak to change Radius", "Use a wrench to change speed",
-            "To accelerate TileEntities, this machine has to be adjacent to it",
-            String.format("Normal mode consumes up to %s amperage, depending on radius", AMPERAGE_NORMAL),
-            String.format("TE mode consumes %s amperage", AMPERAGE_TE) };
+        return new String[] { String.format("Max Speed Bonus x%d", mAccelerateStatic[mTier]),
+            String.format(">> Blocks Mode: Radius \u2264%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
+            String.format(">> TileEntity Mode: Radius 1 | Amps \u2264%s", AMPERAGE_TE),
+            "Use a screwdriver to change mode, sneak to change radius", "Use a wrench to change speed",
+            "Power consumption increases with speed/radius", "Cannot world accelerate GregTech machines!" };
     }
 
     @Override
