@@ -20,8 +20,6 @@
 
 package kubatech.api.helpers;
 
-import static kubatech.api.Variables.ln4;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -30,6 +28,7 @@ import net.minecraft.network.PacketBuffer;
 
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 
@@ -44,11 +43,11 @@ public class GTHelper {
     }
 
     public static double getVoltageTierD(long voltage) {
-        return Math.log((double) voltage / 8L) / ln4;
+        return GTUtility.log4(voltage / 8);
     }
 
     public static double getVoltageTierD(MTEMultiBlockBase mte) {
-        return Math.log((double) getMaxInputEU(mte) / 8L) / ln4;
+        return GTUtility.log4(getMaxInputEU(mte) / 8L);
     }
 
     public static int getVoltageTier(long voltage) {
