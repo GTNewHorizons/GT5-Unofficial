@@ -78,10 +78,7 @@ class GT_OverclockCalculator_UnitTest {
             .setRecipeHeat(1800)
             .setMachineHeat(3600)
             .calculate();
-        assertEquals(
-            1024 / (GTUtility.powInt(4, 1) * GTUtility.powInt(2, 3)),
-            calculator.getDuration(),
-            messageDuration);
+        assertEquals(1024 / (4.0D * GTUtility.powInt(2, 3)), calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
     }
 
@@ -118,10 +115,7 @@ class GT_OverclockCalculator_UnitTest {
             .setRecipeHeat(486)
             .setMachineHeat(3900)
             .calculate();
-        assertEquals(
-            2048 / (GTUtility.powInt(4, 1) * GTUtility.powInt(2, 4)),
-            calculator.getDuration(),
-            messageDuration);
+        assertEquals(2048 / (4.0D * GTUtility.powInt(2, 4)), calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
     }
 
@@ -382,7 +376,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testCorrectEUtWhenOverclockingUnderOneTickWithHeat_Test() {
-        double heatDiscount = GTUtility.powInt(0.95, (15500 - 2000) / 900);
+        double heatDiscount = GTUtility.powInt(0.95, 15);
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(1920)
             .setParallel(256)
             .setAmperage(1)

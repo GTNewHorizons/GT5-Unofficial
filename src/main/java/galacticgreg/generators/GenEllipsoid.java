@@ -94,13 +94,9 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
                     double dy = _mEllipsoidCenter.yCoord - iY;
                     double dz = _mEllipsoidCenter.zCoord - iZ;
 
-                    double invSizeA2 = 1.0 / (_mSizeA * _mSizeA);
-                    double invSizeB2 = 1.0 / (_mSizeB * _mSizeB);
-                    double invSizeC2 = 1.0 / (_mSizeC * _mSizeC);
-
-                    double tmpX = dx * dx * invSizeA2;
-                    double tmpY = dy * dy * invSizeB2;
-                    double tmpZ = dz * dz * invSizeC2;
+                    double tmpX = dx * dx / (_mSizeA * _mSizeA);
+                    double tmpY = dy * dy / (_mSizeB * _mSizeB);
+                    double tmpZ = dz * dz / (_mSizeC * _mSizeC);
 
                     double val = (tmpX + tmpY + tmpZ);
 

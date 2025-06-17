@@ -13,7 +13,6 @@ import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMul
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
-import static java.lang.Math.max;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
@@ -838,7 +837,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         final long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         final double recipeTimeDiscounted = recipeTime * GTUtility.powInt(2.0, -timeAccelerationFieldMetadata)
             * GTUtility.powInt(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, -spacetimeCasingDifference)
-            / max(1, GTUtility.powInt(2, currentCircuitMultiplier));
+            * Math.min(1, GTUtility.powInt(2, -currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
