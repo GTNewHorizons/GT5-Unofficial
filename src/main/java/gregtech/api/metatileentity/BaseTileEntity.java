@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GTValues.NW;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -99,6 +100,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public boolean isDead = false;
 
     private final ChunkCoordinates mReturnedCoordinates = new ChunkCoordinates();
+
+    private WeakReference<Chunk> lastChunk;
 
     public static ForgeDirection getSideForPlayerPlacing(Entity player, ForgeDirection defaultFacing,
         boolean[] aAllowedFacings) {
@@ -561,10 +564,31 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
     }
 
+    public Chunk getChunk() {
+        Chunk chunk = null;
+
+        // Check the weak ref if it was set
+        if (lastChunk != null) chunk = lastChunk.get();
+
+        int chunkX = xCoord >> 4;
+        int chunkZ = zCoord >> 4;
+
+        // If this tile was moved illegally, we don't want to keep using the old chunk reference
+        if (chunk != null && (chunk.xPosition != chunkX || chunk.zPosition != chunkZ)) chunk = null;
+
+        // If there wasn't a cached chunk, fetch it again
+        if (chunk == null) {
+            chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
+            lastChunk = new WeakReference<>(chunk);
+        }
+
+        return chunk;
+    }
+
     @Override
     public void markDirty() {
         // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
-        final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+        final Chunk chunk = getChunk();
         if (chunk != null) {
             chunk.setChunkModified();
         }

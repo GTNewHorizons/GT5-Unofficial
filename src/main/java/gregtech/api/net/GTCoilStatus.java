@@ -73,11 +73,14 @@ public class GTCoilStatus extends GTPacket {
 
             if (world.getBlock(x, y, z) == GregTechAPI.sBlockCasings5) {
                 int meta = world.getBlockMetadata(x, y, z);
+                int originalMeta = meta;
 
                 meta %= BlockCasings5.ACTIVE_OFFSET;
                 if (isActive) meta += BlockCasings5.ACTIVE_OFFSET;
 
-                world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                if (originalMeta != meta) {
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                }
             }
         }
     }

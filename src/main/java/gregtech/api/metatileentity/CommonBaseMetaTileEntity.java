@@ -79,13 +79,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         try {
             updateEntityProfiled();
         } catch (Throwable e) {
-            e.printStackTrace();
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("updateEntityProfiled", e);
             try {
                 onTickFail();
             } catch (Throwable ex) {
-                ex.printStackTrace();
-                ex.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("onTickFail", ex);
             }
         }
 

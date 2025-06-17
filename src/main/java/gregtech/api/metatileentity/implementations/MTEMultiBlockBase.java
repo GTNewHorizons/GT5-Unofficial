@@ -2443,9 +2443,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         for (int i = 0; i < l; i++) {
             MTEHatchMuffler aMuffler = mMufflerHatches.get(i);
             final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+            if (iGTTileEntity != null) iGTTileEntity.setActive(state);
         }
     }
 
