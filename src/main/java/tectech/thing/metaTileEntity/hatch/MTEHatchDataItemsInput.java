@@ -57,11 +57,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchDataItemsInput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
@@ -90,11 +85,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

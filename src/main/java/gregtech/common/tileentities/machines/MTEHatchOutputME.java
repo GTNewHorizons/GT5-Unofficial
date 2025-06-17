@@ -51,6 +51,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.core.stats.Stats;
 import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
@@ -60,6 +61,7 @@ import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IMEConnectable;
@@ -360,6 +362,25 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -625,6 +646,25 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
+        tag.setLong("baseCapacity", baseCapacity);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        baseCapacity = data.getLong("baseCapacity");
     }
 
     @Override

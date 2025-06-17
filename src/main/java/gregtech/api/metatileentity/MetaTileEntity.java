@@ -138,6 +138,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
+    @Nullable
     @Override
     public IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;

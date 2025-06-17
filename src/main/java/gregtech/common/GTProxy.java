@@ -143,6 +143,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
+import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
@@ -732,6 +733,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
 
+    public GTSpawnEventHandler spawnEventHandler;
+
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
         oreDictBurnTimes.put("dustTinySodium", 44);
@@ -1205,9 +1208,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public void onServerStarting() {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        GTLog.ore.println("GTMod: ServerStarting-Phase started!");
 
         GTMusicSystem.ServerSystem.reset();
+
+        spawnEventHandler = new GTSpawnEventHandler();
+        MinecraftForge.EVENT_BUS.register(spawnEventHandler);
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
@@ -1262,6 +1267,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
+        WirelessChargerManager.clearChargerMap();
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+            spawnEventHandler = null;
+        }
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {

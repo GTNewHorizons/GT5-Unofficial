@@ -43,8 +43,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         mTier < 5 ? "Requires an Air Filter"
             : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
         "Can take Air Filters from an input bus of the multiblock",
-        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%",
-        "Recovers " + (100 - calculatePollutionReduction(100, true)) + "% of CO2/CO/SO2", GTPPCore.GT_Tooltip.get() };
+        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%", GTPPCore.GT_Tooltip.get() };
 
     @Override
     public String[] getDescription() {
@@ -325,9 +324,6 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
                 zSpd);
         }
     }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     @Override
     public GUITextureSet getGUITextureSet() {

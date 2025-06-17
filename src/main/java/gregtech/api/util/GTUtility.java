@@ -4644,6 +4644,29 @@ public class GTUtility {
     }
 
     /**
+     * Computes base raised to the power of an integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
+    public static double powInt(double base, int exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative integer exponent.
+     */
+    private static double powBySquaring(double base, int exp) {
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
      * Hash an item stack for the purpose of storing hash across launches
      */
     public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {

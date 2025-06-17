@@ -415,7 +415,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             if (aGuiStack != null) {
                 if (GTUtility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
                     this.mUpgraded = true;
-                    mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                    mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 }
             }
         }

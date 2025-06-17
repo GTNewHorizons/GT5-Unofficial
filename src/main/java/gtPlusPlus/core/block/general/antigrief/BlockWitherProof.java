@@ -57,10 +57,6 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void onBlockDestroyedByExplosion(final World p_149723_1_, final int p_149723_2_, final int p_149723_3_,
-        final int p_149723_4_, final Explosion p_149723_5_) {}
-
-    @Override
     public boolean canDropFromExplosion(final Explosion p_149659_1_) {
         return false;
     }

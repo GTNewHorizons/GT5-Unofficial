@@ -303,7 +303,7 @@ public class OverclockCalculator {
 
     public boolean getAllowedTierSkip() {
         if (this.maxTierSkip == Integer.MAX_VALUE) return true;
-        return recipeEUt <= machineVoltage * Math.pow(4, maxTierSkip);
+        return recipeEUt <= machineVoltage << (2 * maxTierSkip);
     }
 
     public boolean hasDurationUnderOneTickSupplier() {
@@ -327,7 +327,7 @@ public class OverclockCalculator {
 
     public double calculateHeatDiscountMultiplier() {
         int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
-        return Math.pow(heatDiscountExponent, heatDiscounts);
+        return GTUtility.powInt(heatDiscountExponent, heatDiscounts);
     }
 
     protected void calculateOverclock() {
