@@ -4597,6 +4597,33 @@ public class GTUtility {
      * Computes base raised to non-negative integer exponent.
      */
     private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
         double result = 1.0;
         while (exp > 0) {
             if ((exp & 1) == 1) result *= base;
@@ -5031,7 +5058,7 @@ public class GTUtility {
 
         int exp = (int) (Math.log(number) / Math.log(1000));
         char suffix = "kMGTPE".charAt(exp - 1);
-        double shortened = number / Math.pow(1000, exp);
+        double shortened = number / GTUtility.powInt(1000, exp);
 
         if (shortened == (long) shortened) {
             return String.format("%d%c", (long) shortened, suffix);
