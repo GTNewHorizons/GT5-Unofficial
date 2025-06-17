@@ -30,6 +30,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -50,6 +52,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -191,10 +194,16 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(getEUMultiplier())
-            .setSpeedBonus(1.0f / getSpeedBonus());
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                setEuModifier(getEUMultiplier());
+                setSpeedBonus(1.0f / getSpeedBonus());
+                return super.process();
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -402,7 +411,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     public float getEUMultiplier() {
-        double heatingBonus = (mCoilLevel == null ? 0 : Math.pow(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
+        double heatingBonus = (mCoilLevel == null ? 0
+            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }

@@ -4584,6 +4584,128 @@ public class GTUtility {
     }
 
     /**
+     * Computes base raised to the power of an integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
+    public static double powInt(double base, int exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative integer exponent.
+     */
+    private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return 33 - Integer.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return 65 - Long.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
      * Hash an item stack for the purpose of storing hash across launches
      */
     public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {
@@ -5008,7 +5130,7 @@ public class GTUtility {
 
         int exp = (int) (Math.log(number) / Math.log(1000));
         char suffix = "kMGTPE".charAt(exp - 1);
-        double shortened = number / Math.pow(1000, exp);
+        double shortened = number / GTUtility.powInt(1000, exp);
 
         if (shortened == (long) shortened) {
             return String.format("%d%c", (long) shortened, suffix);

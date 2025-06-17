@@ -1326,8 +1326,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
                     metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(getControllerSlot())
-                            * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(mEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -2405,12 +2406,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
-            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
+            final MTEHatchMuffler muffler = mMufflerHatches.get(i);
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
+            if (tile == null || tile.isDead()) continue;
+            tile.setActive(state);
         }
     }
 
