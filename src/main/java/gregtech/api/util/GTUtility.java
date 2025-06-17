@@ -4634,6 +4634,78 @@ public class GTUtility {
     }
 
     /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return 33 - Integer.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return 65 - Long.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
      * Hash an item stack for the purpose of storing hash across launches
      */
     public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {

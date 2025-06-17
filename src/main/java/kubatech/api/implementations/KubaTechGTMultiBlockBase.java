@@ -21,7 +21,6 @@
 package kubatech.api.implementations;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static kubatech.api.Variables.ln2;
 import static kubatech.api.Variables.ln4;
 
 import java.util.ArrayList;
@@ -62,6 +61,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import kubatech.Tags;
 
@@ -139,14 +139,14 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
      */
     protected int calculateOverclock(long aEUt, int aDuration, final long maxInputEU, final boolean isPerfect) {
         final int minDuration = getOverclockTimeLimit();
-        int tiers = (int) (Math.log((double) maxInputEU / (double) aEUt) / ln4);
+        int tiers = (int) GTUtility.log4(maxInputEU / aEUt);
         if (tiers <= 0) {
             this.lEUt = aEUt;
             this.mMaxProgresstime = aDuration;
             return 0;
         }
-        int durationTiers = (int) Math
-            .ceil(Math.log((double) aDuration / (double) minDuration) / (isPerfect ? ln4 : ln2));
+        int durationTiers = isPerfect ? GTUtility.log4ceil(aDuration / minDuration)
+            : GTUtility.log2ceil(aDuration / minDuration);
         if (durationTiers < 0) durationTiers = 0; // We do not support downclocks (yet)
         if (durationTiers > tiers) durationTiers = tiers;
         if (!isOverclockingInfinite()) {

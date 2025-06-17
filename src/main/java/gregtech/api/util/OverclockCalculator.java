@@ -73,7 +73,6 @@ public class OverclockCalculator {
     // Constants
     protected static final int HEAT_DISCOUNT_THRESHOLD = 900;
     protected static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
-    protected static final double LOG4 = Math.log(4);
 
     /** Creates calculator that doesn't do OC at all. Will use recipe duration. */
     public static OverclockCalculator ofNoOverclock(@Nonnull GTRecipe recipe) {
@@ -340,9 +339,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -377,12 +375,12 @@ public class OverclockCalculator {
         }
 
         // Limit overclocks allowed by power tier.
-        overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
+        overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
@@ -415,9 +413,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // Special handling for laser overclocking.
         if (laserOC) {
@@ -448,12 +445,12 @@ public class OverclockCalculator {
         }
 
         // Limit overclocks allowed by power tier.
-        int overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
+        int overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
