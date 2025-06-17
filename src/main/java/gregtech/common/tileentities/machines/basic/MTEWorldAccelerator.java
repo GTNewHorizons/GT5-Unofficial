@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -119,11 +120,19 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { String.format("Max Speed Bonus x%d", mAccelerateStatic[mTier]),
-            String.format(">> Blocks Mode: Radius \u2264%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
-            String.format(">> TileEntity Mode: Radius 1 | Amps \u2264%s", AMPERAGE_TE),
+        return new String[] {
+            "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA" + EnumChatFormatting.RESET,
+            "Max Speed Bonus " + EnumChatFormatting.GREEN
+                + String.format("x%d", mAccelerateStatic[mTier])
+                + EnumChatFormatting.RESET,
+            EnumChatFormatting.GOLD + "Blocks Mode"
+                + EnumChatFormatting.RESET
+                + String.format(": Radius 1-%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
+            EnumChatFormatting.GOLD + "TileEntity Mode"
+                + EnumChatFormatting.RESET
+                + String.format(": Radius 1 | Amps \u2264%s", AMPERAGE_TE),
             "Use a screwdriver to change mode, sneak to change radius", "Use a wrench to change speed",
-            "Power consumption increases with speed/radius", "Cannot world accelerate GregTech machines!" };
+            "Power consumption increases with speed/radius" };
     }
 
     @Override
