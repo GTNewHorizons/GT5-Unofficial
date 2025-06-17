@@ -491,7 +491,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     if (!ToConnectNext.isEmpty()) {
                         cable = ToConnectNext.remove();
                         from = ToConnectFrom.remove();
-                        if (ConnectedAll.contains(cable)) continue; // This triggers if we already connected this cable from another direction.
+                        if (ConnectedAll.contains(cable)) continue; // This triggers if we already connected this cable
+                                                                    // from another direction.
                         cable.connect(from);
                         ++cablesConnected;
 
