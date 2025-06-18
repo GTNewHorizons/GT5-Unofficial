@@ -7,11 +7,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.datastructs.spatialhashgrid.SpatialHashGrid;
-import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import baubles.api.BaubleType;
@@ -54,17 +55,22 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     @Override
     public void onWornTick(ItemStack itemstack, EntityLivingBase entityLivingBase) {
         if (entityLivingBase.worldObj == null || entityLivingBase.worldObj.isRemote) return;
-        if (!(entityLivingBase instanceof EntityPlayer player)) return;
+        if (!(entityLivingBase instanceof EntityPlayerMP player)) return;
         if (player instanceof FakePlayer) return;
 
         Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
-        var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
-        var nearbyPylon = getClosestActivePylon(grid, (int) player.posX, (int) player.posY, (int) player.posZ, 48);
+        SpatialHashGrid<Tether> grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
+        Tether closestActivePylon = getClosestActivePylon(
+            grid,
+            (int) player.posX,
+            (int) player.posY,
+            (int) player.posZ,
+            48);
 
         Tether newTether = null;
 
-        if (nearbyPylon != null) {
-            newTether = nearbyPylon;
+        if (closestActivePylon != null) {
+            newTether = closestActivePylon;
         }
 
         if (activeTether == newTether) return;
@@ -72,13 +78,14 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (newTether != null) {
             GTValues.NW.sendToPlayer(
                 new GTPacketTether(newTether.sourceX(), newTether.sourceY(), newTether.sourceZ()),
-                (EntityPlayerMP) player);
+                player);
         } else { // only run on tether disconnect
             if (Math.random() <= 0.03) {
-                AboveHotbarHUD.renderTextAboveHotbar(
-                    StatCollector.translateToLocal("GT5U.maglevHarness.pylons"),
+                GTNHLib.proxy.sendMessageAboveHotbar(
+                    player,
+                    new ChatComponentTranslation(StatCollector.translateToLocal("GT5U.maglevHarness.pylons")),
                     25,
-                    false,
+                    true,
                     false);
             }
         }
@@ -150,17 +157,18 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         double closestDistance = Double.MAX_VALUE;
 
         while (iterator.hasNext()) {
-            Tether obj = iterator.next();
-            if (!obj.active()) continue;
-            double distance = DistanceUtil.chebyshevDistance(x, y, z, obj.sourceX(), obj.sourceY(), obj.sourceZ());
+            Tether tether = iterator.next();
+            if (!tether.active()) continue;
+            double distance = DistanceUtil
+                .chebyshevDistance(x, y, z, tether.sourceX(), tether.sourceY(), tether.sourceZ());
 
-            if (distance > obj.range()) {
+            if (distance > tether.range()) {
                 continue;
             }
 
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestTether = obj;
+                closestTether = tether;
             }
         }
 
