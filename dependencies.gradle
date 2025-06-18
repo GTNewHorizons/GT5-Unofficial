@@ -59,7 +59,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.67:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta46:dev') { transitive = false }
+    implementation('com.github.GTNewHorizons:Angelica:1.0.0-beta46:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.43:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.18:dev") { transitive = false }
@@ -130,6 +130,8 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
+
+    implementation(rfg.deobf("curse.maven:spark-361579:4271867"))
 }
 
 // deps may transitively add Baubles, so we replace it
