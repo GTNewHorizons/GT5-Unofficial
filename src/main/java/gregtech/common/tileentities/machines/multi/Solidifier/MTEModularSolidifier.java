@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.Solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -21,6 +22,7 @@ import static gregtech.api.util.GTUtility.getTier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,10 +30,12 @@ import java.util.stream.Collectors;
 import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.OverclockCalculator;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -62,6 +66,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+
+import javax.annotation.Nonnull;
 
 enum Modules {
 
@@ -147,11 +153,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // offsets, for building the structure, redirect to build the bottom left corner of the structure piece at
     // Controller pos + offsets.
     private Modules[] lookupArray = Modules.values();
-    private Modules[] modules = new Modules[4];
-    private int[] module1Offset = { 3, 3, -2 };
-    private int[] module2Offset = { 3, 3, -6 };
-    private int[] module3Offset = { 3, 3, -10 };
-    private int[] module4Offset = { 3, 3, -14 };
+    private Modules[] modules = {lookupArray[4],lookupArray[4],lookupArray[4],lookupArray[4]};
+
+    //these are all the same as of right now, but MAY change with diff structure
+    private int[] moduleHorizontalOffsets = {3,3,3,3};
+    private int[] moduleVerticalOffsets = {3,3,3,3};
+    private int[] moduleDepthOffsets = {-2,-6,-10,-14};
     private static final String STRUCTURE_PIECE_MAIN = "main";
     // Hypercooler is limited to 1, either dont read the second one or strucure check fail
 
@@ -172,6 +179,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         ))
         .addShape(Modules.HYPERCOOLER.structureID, transpose(new String[][]{
             {"EEEFEEE","EEFGFEE","EEEFEEE"}
+        }))
+        .addShape(Modules.UNSET.structureID, transpose(new String[][]{
+            {"       ","       ","       "}
         }))
         //spotless:on
         .addElement(
@@ -273,34 +283,19 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, 0);
-        buildPiece(
-            Modules.TRANSCENDENT_REINFORCEMENT.structureID,
-            stackSize,
-            hintsOnly,
-            module1Offset[0],
-            module1Offset[1],
-            module1Offset[2]);
-        buildPiece(
-            Modules.HYPERCOOLER.structureID,
-            stackSize,
-            hintsOnly,
-            module2Offset[0],
-            module2Offset[1],
-            module2Offset[2]);
-        buildPiece(
-            Modules.TRANSCENDENT_REINFORCEMENT.structureID,
-            stackSize,
-            hintsOnly,
-            module3Offset[0],
-            module3Offset[1],
-            module3Offset[2]);
-        buildPiece(
-            Modules.HYPERCOOLER.structureID,
-            stackSize,
-            hintsOnly,
-            module4Offset[0],
-            module4Offset[1],
-            module4Offset[2]);
+        for (int i = 0; i < 2 + (mTier - 1); i++) {
+            Modules m = modules[i];
+            if (m != Modules.UNSET)
+            {
+                buildPiece(
+                    m.structureID,
+                    stackSize,
+                    hintsOnly,
+                    moduleHorizontalOffsets[i],
+                    moduleVerticalOffsets[i],
+                    moduleDepthOffsets[i]);
+            }
+        }
     }
 
     @Override
@@ -317,46 +312,23 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             env,
             false,
             true);
-        built += survivalBuildPiece(
-            Modules.TRANSCENDENT_REINFORCEMENT.structureID,
-            stackSize,
-            module1Offset[0],
-            module1Offset[1],
-            module1Offset[2],
-            elementBudget,
-            env,
-            false,
-            true);
-        built += survivalBuildPiece(
-            Modules.HYPERCOOLER.structureID,
-            stackSize,
-            module2Offset[0],
-            module2Offset[1],
-            module1Offset[2],
-            elementBudget,
-            env,
-            false,
-            true);
-        built += survivalBuildPiece(
-            Modules.TRANSCENDENT_REINFORCEMENT.structureID,
-            stackSize,
-            module3Offset[0],
-            module3Offset[1],
-            module3Offset[2],
-            elementBudget,
-            env,
-            false,
-            true);
-        built += survivalBuildPiece(
-            Modules.HYPERCOOLER.structureID,
-            stackSize,
-            module4Offset[0],
-            module4Offset[1],
-            module4Offset[2],
-            elementBudget,
-            env,
-            false,
-            true);
+        for (int i = 0; i < 2 + (mTier - 1); i++) {
+            Modules m = modules[i];
+            if (m != Modules.UNSET)
+            {
+                built += survivalBuildPiece(
+                    m.structureID,
+                    stackSize,
+                    moduleHorizontalOffsets[i],
+                    moduleVerticalOffsets[i],
+                    moduleDepthOffsets[i],
+                    elementBudget,
+                    env,
+                    false,
+                    true);
+            }
+        }
+
         return built;
     }
 
@@ -369,7 +341,35 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14;
+        mTier = 0;
+        //todo: tiered structure 1 - 3
+        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+        {
+            mTier = 3;
+            return structCheckModules();
+        }
+       /* if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+        {
+            mTier = 2;
+            return structCheckModules();
+        }
+        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+        {
+            mTier = 1;
+            return structCheckModules();
+        }*/
+        return false;
+
+
+    }
+
+    private boolean structCheckModules() {
+        for (int i = 0; i < 2 + (mTier - 1); i++) {
+            Modules m = modules[i];
+            if(!checkPiece(m.structureID,moduleHorizontalOffsets[i],moduleVerticalOffsets[i],moduleDepthOffsets[i])) return false;
+        }
+        return true;
+
     }
 
     public CoolingFluid findCoolingFluid()
@@ -453,34 +453,39 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         logic.setAvailableAmperage(1);
         logic.setUnlimitedTierSkips(); //this might cause an issue later, idk the difference between OC and tier skip.
     }
+    @Nonnull
+    @Override
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
+        for (MTEHatchInput solidifierHatch : mInputHatches) {
+            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                List<ItemStack> items = hatch.getNonConsumableItems();
+                FluidStack fluid = solidifierHatch.getFluid();
 
+                if (items != null && fluid != null) {
+                    processingLogic.setInputItems(items);
+                    processingLogic.setInputFluids(fluid);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        lastResult = foundResult;
+                    }
+                }
+            }
+        }
+        processingLogic.clear();
+        return lastResult;
+    }
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-
-            // Override is needed so that switching recipe maps does not stop recipe locking.
-            @Override
-            protected RecipeMap<?> getCurrentRecipeMap() {
-                lastRecipeMap = currentRecipeMap;
-                return currentRecipeMap;
-            }
-
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-
-                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) return result;
-
-                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
-                return super.process();
-            }
-
-            @Override
-            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            protected  CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 additionaloverclocks = 0;
 
                 if (hypercoolerPresent)
@@ -490,12 +495,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
-                    additionaloverclocks = currentCoolingFluid.grantedOC;
+                    additionaloverclocks = currentCoolingFluid.grantedOC ;
                 }
-                //UEV recipes are tier 11 ?
-                if (GTUtility.getTier(recipe.mEUt) >= 11 && !uevRecipesEnabled)
+
+                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && uevRecipesEnabled)
                 {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                   // return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -521,8 +527,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 setInputFluids(inputs.inputFluid);
                 Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
                     .collect(Collectors.toSet());
-                if (recipes.isEmpty())
-                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
                 if (!recipes.isEmpty()) {
                     dualInvWithPatternToRecipeCache.put(inv, recipes);
                     activeDualInv = inv;
