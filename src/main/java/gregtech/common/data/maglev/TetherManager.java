@@ -12,7 +12,6 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import gregtech.api.enums.GTValues;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 @SuppressWarnings("unused")
@@ -30,21 +29,6 @@ public class TetherManager {
      * Used by pylons to determine if a player is connected
      */
     public static final WeakHashMap<EntityPlayer, Tether> PLAYER_TETHERS = new WeakHashMap<>();
-
-    private final static int BASE_PYLON_RANGE = 16;
-
-    /**
-     * MV (2) = 16
-     * HV (3) = 32
-     * EV (4) = 48
-     */
-    public static int getRange(int tier, boolean powered) {
-        return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);
-    }
-
-    public static long getPowerCost(int tier) {
-        return GTValues.VP[tier];
-    }
 
     // client clean up
     @SubscribeEvent

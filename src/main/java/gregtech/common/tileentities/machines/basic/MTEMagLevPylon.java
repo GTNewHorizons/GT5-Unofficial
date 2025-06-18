@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,10 +22,12 @@ import gregtech.common.data.maglev.TetherManager;
 @EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
+    private final static int BASE_PYLON_RANGE = 16;
+
     public Tether machineTether;
-    private final int poweredRange = TetherManager.getRange(mTier, true);
-    private final int unpoweredRange = TetherManager.getRange(mTier, false);
-    private final long powerCost = TetherManager.getPowerCost(mTier);
+    private final int poweredRange = getPylonRange(mTier, true);
+    private final int unpoweredRange = getPylonRange(mTier, false);
+    private final long powerCost = getPylonPowerCost(mTier);
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -35,18 +38,9 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             0,
             new String[] { "Grants creative flight to those wearing a MagLev Harness.",
                 "Range is a cube centered on the pylon.",
-                String.format(
-                    "Unpowered Range: %s%d blocks",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getRange(aTier, false)),
-                String.format(
-                    "Powered Range: %s%d blocks",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getRange(aTier, true)),
-                String.format(
-                    "Cost: %s%d EU/t if tethered",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getPowerCost(aTier)), });
+                String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
+                String.format("Powered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, true)),
+                String.format("Cost: %s%d EU/t if tethered", EnumChatFormatting.WHITE, getPylonPowerCost(aTier)), });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -192,4 +186,17 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {}
+
+    /**
+     * MV (2) = 16
+     * HV (3) = 32
+     * EV (4) = 48
+     */
+    private static int getPylonRange(int tier, boolean powered) {
+        return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);
+    }
+
+    private static long getPylonPowerCost(int tier) {
+        return GTValues.VP[tier];
+    }
 }
