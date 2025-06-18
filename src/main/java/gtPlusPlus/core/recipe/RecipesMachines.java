@@ -3118,7 +3118,7 @@ public class RecipesMachines {
                 ItemList.Electric_Pump_LuV.get(4),
                 MaterialsAlloy.STELLITE.getGear(8),
                 MaterialsAlloy.STELLITE.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlate(32),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64))
             .fluidInputs(
                 CI.getTieredFluid(5, 16 * INGOTS),
