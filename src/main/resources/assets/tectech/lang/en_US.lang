@@ -2015,10 +2015,10 @@ tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 
-tt.gui.text.debug.eut=EUT
-tt.gui.text.debug.amp=AMP
-tt.gui.text.debug.sum=SUM
-tt.gui.text.debug.tier=TIER
+tt.gui.text.debug.eut=EUT:
+tt.gui.text.debug.amp=AMP:
+tt.gui.text.debug.sum=SUM: %s
+tt.gui.text.debug.tier=TIER: %s
 
 tt.gui.text.debug_pollutor.pollution=Pollution
 

@@ -323,20 +323,20 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> translateToLocal("tt.gui.text.debug.tier") + ": " + VN[GTUtility.getTier(Math.abs(EUT))])
+                        () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 22))
 
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> translateToLocal("tt.gui.text.debug.sum") + ": " + numberFormat.format((long) AMP * EUT))
+                        () -> translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 46));
 
         addLabelledIntegerTextField(
             builder,
-            translateToLocal("tt.gui.text.debug.eut") + ": ",
+            translateToLocal("tt.gui.text.debug.eut") + " ",
             24,
             this::getEUT,
             this::setEUT,
@@ -344,7 +344,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
             8);
         addLabelledIntegerTextField(
             builder,
-            translateToLocal("tt.gui.text.debug.amp") + ": ",
+            translateToLocal("tt.gui.text.debug.amp") + " ",
             24,
             this::getAMP,
             this::setAMP,
