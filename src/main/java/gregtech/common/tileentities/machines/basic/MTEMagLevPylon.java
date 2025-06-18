@@ -21,7 +21,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     private final static int BASE_PYLON_RANGE = 16;
 
-    public Tether machineTether;
+    private Tether machineTether;
     private final int poweredRange = getPylonRange(mTier, true);
     private final int unpoweredRange = getPylonRange(mTier, false);
     private final long powerCost = getPylonPowerCost(mTier);
@@ -45,54 +45,59 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
-        if (!baseMetaTileEntity.isServerSide()) return;
+    public void onFirstTick(IGregTechTileEntity mte) {
+        if (!mte.isServerSide()) return;
 
         machineTether = new Tether(
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            baseMetaTileEntity.getWorld().provider.dimensionId,
+            mte.getXCoord(),
+            mte.getYCoord(),
+            mte.getZCoord(),
+            mte.getWorld().provider.dimensionId,
             poweredRange);
-        TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
+        TetherManager.ACTIVE_PYLONS.get(mte.getWorld().provider.dimensionId)
             .insert(this.machineTether);
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (!baseMetaTileEntity.isServerSide()) return;
+    public void onPostTick(IGregTechTileEntity mte, long tick) {
+        if (!mte.isServerSide()) return;
 
-        /*
-         * Active state of machine is used to control the animated texture
-         * Should only be active when a player is connected
-         * If machine is fully disabled, also disable the tether and active state
-         * EU should only drain when a player is connected
-         * Tether range is determined if the machine has enough EU
-         */
-        if (baseMetaTileEntity.isAllowedToWork()) {
+        // Active state of machine is used to control the animated texture
+        // Should only be active when a player is connected
+        // If machine is fully disabled, also disable the tether and active state
+        // EU should only drain when a player is connected
+        // Tether range is determined if the machine has enough EU
+        if (mte.isAllowedToWork()) {
             machineTether.active(true);
             boolean playerConnected = TetherManager.PLAYER_TETHERS.containsValue(this.machineTether);
-            baseMetaTileEntity.setActive(playerConnected);
-            if (baseMetaTileEntity.isUniversalEnergyStored(powerCost)) {
+            mte.setActive(playerConnected);
+            if (mte.isUniversalEnergyStored(powerCost)) {
                 machineTether.range(poweredRange);
                 if (playerConnected) {
-                    baseMetaTileEntity.decreaseStoredEnergyUnits(powerCost, false);
+                    mte.decreaseStoredEnergyUnits(powerCost, false);
                 }
             } else {
                 machineTether.range(unpoweredRange);
             }
         } else {
             machineTether.active(false);
-            baseMetaTileEntity.setActive(false);
+            mte.setActive(false);
         }
     }
 
     @Override
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
-            .isServerSide()
-            && TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .contains(this.machineTether)) {
+            .isServerSide()) {
+            TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                .remove(this.machineTether);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
             TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .remove(this.machineTether);
         }
