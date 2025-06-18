@@ -8,8 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -19,7 +17,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
 
-@EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     private final static int BASE_PYLON_RANGE = 16;
