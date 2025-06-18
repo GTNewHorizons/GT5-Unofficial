@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.Solidifier;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -17,8 +18,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
-
+import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.VoltageIndex;
@@ -35,8 +38,12 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.tileentities.machines.multi.MTENanoForge;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -66,66 +73,27 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import tectech.thing.casing.TTCasingsContainer;
 
 import javax.annotation.Nonnull;
 
-enum Modules {
 
-    UNSET("Unset", "Unset", ""),
-    ACTIVE_TIME_DILATION_SYSTEM("Active Time Dilation System", "A.T.D.S", "atds"),
-    EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc"),
-    POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsytems", "P.E.S", "power_efficient_subsystems"),
-    TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "TrRe", "transcendent_reinforcement"),
-    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins"),
-    HYPERCOOLER("Hypercooler", "HC", "hypercooler"),
-    STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters");
-
-    public final String displayName;
-    public final String shorthand;
-    public final String structureID;
-
-    Modules(String display, String shortname, String structid) {
-        this.displayName = display;
-        this.shorthand = shortname;
-        this.structureID = structid;
-    }
-}
 
 
 
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
 
-    private static class CoolingFluid{
-        public Materials material;
-        public int grantedOC;
-        public int amount;
 
-        public CoolingFluid(Materials material, int grantedOC, int amount)
-        {
-            this.material = material;
-            this.grantedOC = grantedOC;
-            this.amount = amount;
-        }
-        public FluidStack getStack()
-        {
-            FluidStack stack = material.getFluid(amount);
-            //shoutout penguin, i think i get why you were upset with this code here :^)
-            if (stack == null){
-                return material.getMolten(amount);
-            }
-            return stack;
-        }
-    }
-
-    private static final ArrayList<CoolingFluid> COOLING_FLUIDS = new ArrayList<>(Arrays.asList
-        (new CoolingFluid(MaterialsUEVplus.SpaceTime,1,100),
+    private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
+        new CoolingFluid(MaterialsUEVplus.SpaceTime,1,100),
         new CoolingFluid(MaterialsUEVplus.Space, 2, 50),
-        new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25)));
+        new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25));
 
     private CoolingFluid currentCoolingFluid = null;
-    private static int horizontalOffset = 4;
-    private static int verticalOffset = 2;
+    private static int horizontalOffset = 7;
+    private static int verticalOffset = 43;
+    private static int depthOffset = 0;
 
     private int mTier = 3; // 1 - base , 2 - ~UEV, 3 - ~UMV
     private final float speedModifierBase = 2F;
@@ -152,13 +120,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     // offsets, for building the structure, redirect to build the bottom left corner of the structure piece at
     // Controller pos + offsets.
-    private Modules[] lookupArray = Modules.values();
-    private Modules[] modules = {lookupArray[4],lookupArray[4],lookupArray[4],lookupArray[4]};
+    private SolidifierModules[] modules = {SolidifierModules.getModule(4),SolidifierModules.getModule(4),SolidifierModules.getModule(4),SolidifierModules.getModule(4)};
 
     //these are all the same as of right now, but MAY change with diff structure
-    private int[] moduleHorizontalOffsets = {3,3,3,3};
-    private int[] moduleVerticalOffsets = {3,3,3,3};
-    private int[] moduleDepthOffsets = {-2,-6,-10,-14};
+    private int[] moduleHorizontalOffsets = {15,15,15,15};
+    private int[] moduleVerticalOffsets = {5,10,15,20};
+    private int[] moduleDepthOffsets = {-2,-2,-2,-2};
     private static final String STRUCTURE_PIECE_MAIN = "main";
     // Hypercooler is limited to 1, either dont read the second one or strucure check fail
 
@@ -169,36 +136,82 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             // spotless:off
             transpose(
                 new String[][]{
-                    {"         ","         ","d       d","d       d","d       d","         ","d       d","d       d","d       d","         ","d       d","d       d","d       d","         ","d       d","d       d","d       d","         ","         "},
-                    {" ABBBBBA ","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A"," ABBBBBA "},
-                    {" AAA~AAA ","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A","A       A"," AAAAAAA "},
-                    {" AAAAAAA ","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA","AAAAAAAAA"," AAAAAAA "}
+                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
+                    {"      HHH      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
+                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
+                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH   B   HH  ","   D   C   D   ","   D BC CB D   ","   D   C   D   ","  HH   B   HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
+                    {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
+                    {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
+                    {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
+                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH   B   HH  ","   D   C   D   ","   D BC CB D   ","   D   C   D   ","  HH   B   HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
+                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
+                    {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
+                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "}
                 }))
-        .addShape(Modules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
-            {"CCCDCCC","CCCDCCC","CCCDCCC"}}
+        .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
+            {"cccdccc","cccdccc","cccdccc"}}
         ))
-        .addShape(Modules.HYPERCOOLER.structureID, transpose(new String[][]{
-            {"EEEFEEE","EEFGFEE","EEEFEEE"}
+        .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
+            {"eeefeee","eefgfee","eeefeee"}
         }))
-        .addShape(Modules.UNSET.structureID, transpose(new String[][]{
+        .addShape(SolidifierModules.UNSET.structureID, transpose(new String[][]{
             {"       ","       ","       "}
         }))
         //spotless:on
+        .addElement('A', chainAllGlasses())
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings11,7))
+        .addElement('C',ofBlock(GregTechAPI.sBlockCasings5,12))
+        // .addElement('D' ,ofBlock(GregTechAPI.sBlockFrames,81))
+        .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
+        .addElement('E', lazy(() -> ofBlock(GodforgeCasings,0)))
+        .addElement('F', ofBlock( GregTechAPI.sBlockCasings2,3)) //temp
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings2,14)) //temp
         .addElement(
-            'A',
+            'H',
             buildHatchAdder(MTEModularSolidifier.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(15))
+                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .buildAndChain(
-                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 15))))
-        .addElement('B', chainAllGlasses())
-        .addElement('C', ofBlock(GregTechAPI.sBlockMetal9, 4))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings13, 11))
-        .addElement('d', ofBlock(GregTechAPI.sBlockCasings10, 2))
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings5, 11))
-        .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings13, 13))
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                .buildAndChain(onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) //placeholder nano forge casing
+        .addElement('c', ofBlock(GregTechAPI.sBlockMetal9, 4))
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasings13, 11))
+        .addElement('e', ofBlock(GregTechAPI.sBlockCasings5, 11))
+        .addElement('f', ofBlock(GregTechAPI.sBlockGlass1, 3))
+        .addElement('g', ofBlock(GregTechAPI.sBlockCasings13, 13))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -227,7 +240,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                         .extFacing()
@@ -240,7 +253,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -253,7 +266,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)) };
         }
         return rTexture;
     }
@@ -261,7 +274,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+        tt.addMachineType("Fluid Solidifier")
             .addInfo("100% faster than singleblock machines of the same voltage")
             .addInfo("Gains 12 parallels per voltage tier")
             .beginStructureBlock(3, 5, 3, true)
@@ -280,12 +293,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return tt;
     }
 
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
         for (int i = 0; i < 2 + (mTier - 1); i++) {
-            Modules m = modules[i];
-            if (m != Modules.UNSET)
+            SolidifierModules m = modules[i];
+            if (m != SolidifierModules.UNSET)
             {
                 buildPiece(
                     m.structureID,
@@ -307,14 +321,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             stackSize,
             horizontalOffset,
             verticalOffset,
-            0,
+            depthOffset,
             elementBudget,
             env,
             false,
             true);
         for (int i = 0; i < 2 + (mTier - 1); i++) {
-            Modules m = modules[i];
-            if (m != Modules.UNSET)
+            SolidifierModules m = modules[i];
+            if (m != SolidifierModules.UNSET)
             {
                 built += survivalBuildPiece(
                     m.structureID,
@@ -343,29 +357,29 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         mCasingAmount = 0;
         mTier = 0;
         //todo: tiered structure 1 - 3
-        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14)
         {
             mTier = 3;
-            return structCheckModules();
+            return checkModules();
         }
        /* if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
         {
             mTier = 2;
-            return structCheckModules();
+            return checkModules();
         }
         if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
         {
             mTier = 1;
-            return structCheckModules();
+            return checkModules();
         }*/
         return false;
 
 
     }
 
-    private boolean structCheckModules() {
+    private boolean checkModules() {
         for (int i = 0; i < 2 + (mTier - 1); i++) {
-            Modules m = modules[i];
+            SolidifierModules m = modules[i];
             if(!checkPiece(m.structureID,moduleHorizontalOffsets[i],moduleVerticalOffsets[i],moduleDepthOffsets[i])) return false;
         }
         return true;
@@ -399,11 +413,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         uevRecipesEnabled = false;
     }
 
-    public void checkModules() {
+    public void checkSolidifierModules() {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
         for (int i = 0; i < 2 + (mTier - 1); i++) {
-            Modules checkedModule = modules[i];
+            SolidifierModules checkedModule = modules[i];
             switch (checkedModule) {
                 case UNSET:
                     break;
@@ -445,13 +459,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        checkModules();
+        checkSolidifierModules();
         logic.setSpeedBonus(1F / speedMultiplier);
         logic.setMaxParallel((int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
         logic.setEuModifier(euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
-        logic.setUnlimitedTierSkips(); //this might cause an issue later, idk the difference between OC and tier skip.
+        logic.setMaxTierSkips(3); //capped at 3 for now (current solidifier can do the same)
     }
     @Nonnull
     @Override
@@ -498,10 +512,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     additionaloverclocks = currentCoolingFluid.grantedOC ;
                 }
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && uevRecipesEnabled)
+                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && !uevRecipesEnabled)
                 {
-                   // return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
-                    return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mEUt);
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -536,11 +549,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             }
 
         };
-    }
-
-    @Override
-    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
     }
 
     @Override
@@ -595,18 +603,18 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // getters/setters for mui syncing
     public String[] getModuleNames(int index) {
         // just in case
-        if (index > Modules.values().length - 1) index = 0;
+        if (index > SolidifierModules.values().length - 1) index = 0;
 
-        Modules modulegiven = modules[index];
+        SolidifierModules modulegiven = modules[index];
         return new String[] { modulegiven.displayName, modulegiven.shorthand, modulegiven.structureID };
     }
 
     public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
-        if (index > modules.length - 1 || ordinal > lookupArray.length - 1) return;
-        Modules moduleToAdd = lookupArray[index];
-        if (moduleToAdd == Modules.HYPERCOOLER) {
-            checkModules();
+        if (index > modules.length - 1 || ordinal > SolidifierModules.size()) return;
+        SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
+        if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
+            checkSolidifierModules();
             if (hypercoolerPresent) return;
         }
         modules[index] = moduleToAdd;
@@ -616,4 +624,27 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return (speedModifierAdj - 1) * 100 + "%";
     }
 
+
+
+    private static class CoolingFluid{
+        public Materials material;
+        public int grantedOC;
+        public int amount;
+
+        public CoolingFluid(Materials material, int grantedOC, int amount)
+        {
+            this.material = material;
+            this.grantedOC = grantedOC;
+            this.amount = amount;
+        }
+        public FluidStack getStack()
+        {
+            FluidStack stack = material.getFluid(amount);
+            //shoutout penguin, i think i get why you were upset with this code here :^)
+            if (stack == null){
+                return material.getMolten(amount);
+            }
+            return stack;
+        }
+    }
 }
