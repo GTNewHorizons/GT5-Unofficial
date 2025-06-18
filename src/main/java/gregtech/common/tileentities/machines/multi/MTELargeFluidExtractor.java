@@ -321,12 +321,14 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mStructureBadCasingCount) {
-                return String.format(
-                    "%sNot enough casings: need %d, but\nhave %d.%s",
-                    EnumChatFormatting.DARK_RED,
-                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                    mCasingAmount,
-                    RESET);
+                return EnumChatFormatting.DARK_RED
+                    + StatCollector
+                        .translateToLocalFormatted(
+                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
+                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
+                            mCasingAmount)
+                        .replace("\\n", "\n")
+                    + EnumChatFormatting.RESET;
             }
 
             if (mStructureBadGlassTier) {
