@@ -33,6 +33,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -74,8 +75,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> implements ISurvivalConstructable {
 
@@ -364,8 +363,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
-        final ObjectArrayList<FluidStack> rList = new ObjectArrayList<>();
-        Map<Fluid, FluidStack> inputsFromME = new Object2ObjectOpenHashMap<>();
+        final ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             byte hatchColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
@@ -424,7 +423,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
-        return new ArrayList<>(rList);
+        return rList;
     }
 
     @Override

@@ -87,7 +87,6 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -146,9 +145,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1695,8 +1692,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
-        ObjectArrayList<FluidStack> rList = new ObjectArrayList<>();
-        Map<Fluid, FluidStack> inputsFromME = new Object2ObjectOpenHashMap<>();
+        ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             byte hatchColor = tHatch.getColor();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
@@ -1725,7 +1722,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
-        return new ArrayList<>(rList);
+        return rList;
     }
 
     /**
@@ -1899,7 +1896,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public void startRecipeProcessing() {
-        mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
+        if (!mDualInputHatches.isEmpty()) {
+            mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
+        }
 
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
@@ -2426,13 +2425,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     private @Nullable MufflerState prevMufflerState;
 
-    enum MufflerState {
-        OFF,
-        ON;
-    }
-
-    private @Nullable MufflerState prevMufflerState;
-
     protected void setMufflers(boolean state) {
         if (prevMufflerState != null) {
             MufflerState expected = state ? MufflerState.ON : MufflerState.OFF;
@@ -2445,7 +2437,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         final int size = mMufflerHatches.size();
         for (int i = 0; i < size; i++) {
             final MTEHatchMuffler muffler = mMufflerHatches.get(i);
-            final IGregTechTileEntity tile = aMuffler.getBaseMetaTileEntity();
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
             if (tile != null) tile.setActive(state);
         }
     }

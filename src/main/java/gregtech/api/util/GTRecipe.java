@@ -32,9 +32,11 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import it.unimi.dsi.fastutil.ints.Int2LongArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2LongMap;
+import it.unimi.dsi.fastutil.ints.Int2LongMaps;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2LongArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
+import it.unimi.dsi.fastutil.longs.Long2LongMaps;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
@@ -376,7 +378,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     /**
-     * Checks if this recipe could run a single time or more with the given inputs.
+     * Checks if this recipe could run a single time or more with the given inputs. In most cases, this is much faster
+     * than {@link #maxParallelCalculatedByInputs}.
      * @param items The items in the machine's inputs.
      * @param fluids The fluids in the machine's inputs.
      * @param ignoreStackSizes When true, stack sizes will be ignored and only item/fluid presence will be checked.
@@ -397,17 +400,17 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (ignoreStackSizes) return true;
 
         if (mInputs.length > 0) {
-            var presentItems = getItemHistogram(items);
+            Long2LongMap presentItems = getItemHistogram(items);
 
-            for (var requiredItem : cachedInputState.fastItemInputMap.long2LongEntrySet()) {
+            for (Long2LongMap.Entry requiredItem : Long2LongMaps.fastIterable(cachedInputState.fastItemInputMap)) {
                 if (presentItems.get(requiredItem.getLongKey()) < requiredItem.getLongValue()) return false;
             }
         }
 
         if (mFluidInputs.length > 0) {
-            var presentFluids = getFluidHistogram(fluids);
+            Int2LongMap presentFluids = getFluidHistogram(fluids);
 
-            for (var requiredFluid : cachedInputState.fastFluidInputMap.int2LongEntrySet()) {
+            for (Int2LongMap.Entry requiredFluid : Int2LongMaps.fastIterable(cachedInputState.fastFluidInputMap)) {
                 if (presentFluids.get(requiredFluid.getIntKey()) < requiredFluid.getLongValue()) return false;
             }
         }
@@ -496,9 +499,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
             if (stack == null || stack.getItem() == null) continue;
 
-            // Use the object identity hashcode here because Item references cannot change.
-            // An id lookup would be too slow, even if it makes more sense. We just care about a unique int value.
-            long key = ((long) Objects.hashCode(stack.getItem())) << 32 | (long) stack.itemDamage;
+            long key = GTOreDictUnificator.stackHash(stack);
 
             map.put(key, map.get(key) + stack.stackSize);
         }
@@ -516,7 +517,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (stack == null || stack.getFluid() == null) continue;
 
             // Same as above, the fluid reference will never change, and we just want a unique key
-            int key = Objects.hashCode(stack.getFluid());
+            int key = GTOreDictUnificator.stackHash(stack);
 
             map.put(key, map.get(key) + stack.amount);
         }
@@ -525,7 +526,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     private CachedInputState getCachedInputs() {
-        if (!GregTechAPI.sFullLoadFinished) throw new IllegalStateException("cannot unificate recipe inputs before everything has loaded");
+        if (!GregTechAPI.sFullLoadFinished) throw new IllegalStateException("cannot cache recipe inputs before everything has loaded");
 
         if (cachedInputState == null) {
             cachedInputState = new CachedInputState();
@@ -561,7 +562,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     /**
-     * Checks if this recipe could be ran a configurable number of times.
+     * Checks if this recipe could be ran a specific number of times.
      * @param items The input items present in the machine
      * @param fluids The input fluids present in the machine
      * @param amountMultiplier The multiplier for this recipe. A value of 1 means this recipe will be 'ran' once.
@@ -599,9 +600,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
         CachedInputState cachedInputState = getCachedInputs();
 
         if (mFluidInputs.length > 0) {
-            var presentFluids = getFluidHistogram(fluids);
+            Int2LongMap presentFluids = getFluidHistogram(fluids);
 
-            for (var requiredFluid : cachedInputState.fastFluidInputMap.int2LongEntrySet()) {
+            for (Int2LongMap.Entry requiredFluid : Int2LongMaps.fastIterable(cachedInputState.fastFluidInputMap)) {
                 if (requiredFluid.getLongValue() == 0) continue;
 
                 long possibleParallels = presentFluids.get(requiredFluid.getIntKey()) / requiredFluid.getLongValue();
@@ -613,14 +614,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
 
         if (mInputs.length > 0) {
-            ItemStack[] unificatedInputs = GTOreDictUnificator.unificate(items, false);
-
             if (!cachedInputState.useFastItemCheck) {
-                maxParallel = getMaxParallelsItemNBTSensitive(cachedInputState, unificatedInputs, maxParallel);
+                maxParallel = getMaxParallelsItemNBTSensitive(cachedInputState, items, maxParallel);
             } else {
-                var presentItems = getItemHistogram(items);
+                Long2LongMap presentItems = getItemHistogram(items);
 
-                for (var requiredItem : cachedInputState.fastItemInputMap.long2LongEntrySet()) {
+                for (Long2LongMap.Entry requiredItem : Long2LongMaps.fastIterable(cachedInputState.fastItemInputMap)) {
                     long required = requiredItem.getLongValue();
 
                     if (required == 0) continue;
@@ -683,6 +682,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                     if (providedFluid.amount >= remainingCost) {
                         providedFluid.amount -= (int) remainingCost;
+                        remainingCost = 0;
                         break;
                     } else {
                         remainingCost -= providedFluid.amount;
@@ -724,6 +724,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     remainingCost -= providedItem.stackSize;
                     providedItem.stackSize = 0;
                 }
+            }
+
+            if (remainingCost > 0) {
+                GTMod.GT_FML_LOGGER.error("Did not consume enough items! Recipe={}", this);
+                GTMod.GT_FML_LOGGER.error("", new Exception());
             }
         }
     }
@@ -925,6 +930,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         public final Long2LongMap fastItemInputMap;
         public final Int2LongMap fastFluidInputMap;
         public final RecipeItemInput[] mergedInputs;
+        /** When true, this recipe doesn't care about NBT or oredict and we can use the sketchy stack hashes for comparing items. */
         public final boolean useFastItemCheck;
 
         public CachedInputState() {

@@ -11,13 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
@@ -31,6 +32,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.mixin.ObjectWithId;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -69,8 +71,27 @@ public class GTOreDictUnificator {
         return stackHash(stack.getItem(), stack.itemDamage);
     }
 
+    /**
+     * Calculates a long equivalent of an ItemStack. This contains the same info as {@link GTItemStack#ITEMSTACK_HASH_STRATEGY2}, i.e. no NBT.
+     */
     public static long stackHash(Item item, int meta) {
-        return ((long) Objects.hashCode(item)) << 32 | (long) meta;
+        // Use a mixin'd id mechanism here because we only care about having a unique value.
+        // An id lookup would be too slow, even if it makes more sense.
+        // We can't use the System.identityHashCode here because it isn't guaranteed to be unique.
+        return ((long) ((ObjectWithId) item).getId()) << 32 | (long) meta;
+    }
+
+    public static int stackHash(FluidStack stack) {
+        if (stack == null) return 0;
+
+        return stackHash(stack.getFluid());
+    }
+
+    /**
+     * Calculates an int equivalent of a FluidStack. Similar idea to the item stack equivalent above.
+     */
+    public static int stackHash(Fluid fluid) {
+        return ((ObjectWithId) fluid).getId();
     }
 
     /**
@@ -102,8 +123,9 @@ public class GTOreDictUnificator {
         aStack = GTUtility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(aPrefix.get(aMaterial).toString()))) {
-            sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
+        String oredictName = aPrefix.get(aMaterial).toString();
+        if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(oredictName))) {
+            sName2StackMap.put(oredictName, aStack);
         }
         isAddingOre--;
     }
@@ -243,13 +265,13 @@ public class GTOreDictUnificator {
             return inputStack;
         }
 
-        // Check if this stack should be unificated. If not, do nothing.
+        // Check if this stack should be unificated. If not, blacklist it and do nothing.
         if (aUseBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(inputStack)) {
             itemData.mBlackListed = true;
             return inputStack;
         }
 
-        // If the unification target isn't populated already,
+        // Try to populate the unification target if it isn't set already
         if (itemData.mUnificationTarget == null) {
             itemData.mUnificationTarget = sName2StackMap.get(itemData.toString());
         }
@@ -412,9 +434,9 @@ public class GTOreDictUnificator {
     }
 
     /**
-     * Converts an array of items to their unificated (GT) versions.
-     * @param items The items to be unificated to their GT version.
-     * @param copy  Whether the stacks should be copied. You must not mutate the returned stacks if this is false.
+     * Converts an array of items to their unificated (likely GT) versions.
+     * @param items The items to be unificated to their GT versions.
+     * @param copy  Whether the stacks should be copied. You must not mutate the returned data if this is false.
      */
     public static ItemStack[] unificate(ItemStack[] items, boolean copy) {
         ItemStack[] itemsOut = null;

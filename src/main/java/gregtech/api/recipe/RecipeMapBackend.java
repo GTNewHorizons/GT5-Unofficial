@@ -328,7 +328,7 @@ public class RecipeMapBackend {
      * @return True if collision is found.
      */
     boolean checkCollision(GTRecipe recipe) {
-        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, true, true, -1, null)
+        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true, -1, null)
             .hasNext();
     }
 
@@ -417,7 +417,7 @@ public class RecipeMapBackend {
 
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
-            items = TOreDictUnificator.unificate(rawItems, false);
+            items = GTOreDictUnificator.unificate(rawItems, false);
         } else {
             items = rawItems;
         }

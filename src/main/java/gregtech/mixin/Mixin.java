@@ -134,12 +134,19 @@ public enum Mixin {
         .setSide(Side.BOTH)
         .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.explosionPollutionAmount != 0F)
         .addTargetedMod(TargetedMod.VANILLA)),
-
     VANILLA_TRADING(new Builder("Change Vanilla Trades").setPhase(Phase.EARLY)
         .addMixinClasses("minecraft.VanillaTradingMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setSide(Side.BOTH)),
+    FastItemFluidIds(
+        new Builder("Fast mechanism for unique item/fluid ids")
+            .addMixinClasses("minecraft.ItemMixin_Ids", "minecraft.FluidMixin_Ids")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.BOTH)),
+
     POLLUTION_IC2_IRON_FURNACE(
         new Builder("Ic2 Iron Furnace Pollutes").addMixinClasses("ic2.MixinIC2IronFurnacePollution")
             .setPhase(Phase.LATE)
