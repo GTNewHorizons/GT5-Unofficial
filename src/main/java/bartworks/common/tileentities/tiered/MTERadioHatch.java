@@ -565,7 +565,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                         .openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
                 }
             })
-                .addTooltip("Radiation Shutter")
+                .addTooltip(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(153, 5)
                 .setSize(18, 18))
@@ -582,7 +582,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         builder.setGuiTint(this.getGUIColorization());
 
         builder.widget(
-            new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get())
+            new TextWidget(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter_control"))
+                .setDefaultColor(this.COLOR_TITLE.get())
                 .setPos(10, 9))
             .widget(
                 new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME)
