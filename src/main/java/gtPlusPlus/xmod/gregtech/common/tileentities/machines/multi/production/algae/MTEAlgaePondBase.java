@@ -411,7 +411,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     private static int compostForTier(int aTier) {
-        return aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1;
+        return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
     private static GTRecipe generateBaseRecipe(int aTier, boolean isUsingCompost) {

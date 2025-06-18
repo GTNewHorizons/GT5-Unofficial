@@ -611,7 +611,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private double getDurationMultiplierFromRoughness() {
-        return Math.pow(mRoughnessMultiplier, 2);
+        return mRoughnessMultiplier * mRoughnessMultiplier;
     }
 
     private int ticker = 0;

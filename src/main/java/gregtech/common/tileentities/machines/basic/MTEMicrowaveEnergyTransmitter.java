@@ -284,13 +284,12 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     private int distanceCalculation() {
+        double dx = getBaseMetaTileEntity().getXCoord() - this.mTargetX;
+        double dy = getBaseMetaTileEntity().getYCoord() - this.mTargetY;
+        double dz = getBaseMetaTileEntity().getZCoord() - this.mTargetZ;
         return Math.abs(
             ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                && (isDimensionalTeleportAvailable()) ? 100 : 1)
-                * (int) Math.sqrt(
-                    Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
+                && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(dx * dx + dy * dy + dz * dz));
     }
 
     @Override
