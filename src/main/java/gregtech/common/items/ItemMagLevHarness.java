@@ -53,7 +53,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public void onWornTick(ItemStack itemstack, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
+        if (entityLivingBase.worldObj == null || entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
