@@ -446,7 +446,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] {
-                BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                BlockIcons.getCasingTextureForId(
+                    GTUtility.getCasingTextureIndex(
+                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                        mSpecialTier < 4 ? 10 : 6)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                     .extFacing()
@@ -457,7 +460,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     .glow()
                     .build() };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                BlockIcons.getCasingTextureForId(
+                    GTUtility.getCasingTextureIndex(
+                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                        mSpecialTier < 4 ? 10 : 6)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                     .extFacing()
@@ -469,7 +475,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     .build() };
         }
         return new ITexture[] {
-            BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)) };
+                BlockIcons.getCasingTextureForId(
+                    GTUtility.getCasingTextureIndex(
+                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                        mSpecialTier < 4 ? 10 : 6))
+        };
     }
 
     @Override
