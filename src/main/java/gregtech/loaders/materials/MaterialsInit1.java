@@ -1124,6 +1124,30 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .constructMaterial();
 
+        Materials.VO17_lubricant = new MaterialBuilder( 180, TextureSet.SET_FLUID, "VO-17 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("vo17")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO43_lubricant = new MaterialBuilder( 181, TextureSet.SET_FLUID, "VO-43 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("vo43")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO75_lubricant = new MaterialBuilder( 182, TextureSet.SET_FLUID, "VO-75 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("vo75")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
         Materials.PrismarineSolution = new MaterialBuilder( 135, TextureSet.SET_METALLIC, "Prismarine Solution")
             .addFluid()
             .addCell()
