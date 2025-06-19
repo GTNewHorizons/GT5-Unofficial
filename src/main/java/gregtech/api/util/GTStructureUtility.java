@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
-import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.BUILDING;
-import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.REMOVING;
+import static com.gtnewhorizon.structurelib.item.ModeToggleableItem.TriggerMode.*;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
@@ -37,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger;
-import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode;
+import com.gtnewhorizon.structurelib.item.ModeToggleableItem.TriggerMode;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
