@@ -726,6 +726,9 @@ GT5U.power_goggles_config.text_ok_tooltip=Affects Text color when EU change is 0
 GT5U.power_goggles_config.text_good=Good Text Color
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
+GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
+GT5U.maglevHarness.pylons=§4YOU MUST CONSTRUCT ADDITIONAL PYLONS!
+
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
@@ -1415,9 +1418,11 @@ GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
 GT5U.gui.text.drill_current_vein=Current Vein: §a%s
 GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
+GT5U.gui.text.drill_extracting_ores=Extracting Ores
+GT5U.gui.text.drill_extracting_ores_failed=Extraction Failed
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
-GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
+GT5U.gui.text.drone_noDrone=§4Can't find any drone in Input Buses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
@@ -1504,6 +1509,113 @@ GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
+
+GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
+
+GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
+GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
+
+GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
+GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
+GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
+
+GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
+GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
+GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
+GT5U.gui.text.fluid_limiter.threshold=Percent threshold
+GT5U.gui.text.volumetric_flask.capacity=Capacity
+GT5U.gui.text.volumetric_flask.confirm=Confirm
+
+GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=No Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=>= 1 Issue
+GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=>= 2 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=>= 3 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=>= 4 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=Rotor < 20%
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=Rotor ≈ 0%
+
+GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
+GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
+
+GT5U.gui.text.large_fluid_extractor.not_enough_casings=Not enough casings: need %d, but\nhave %d.
+GT5U.gui.text.wormhole_generator.missing_entangled_singularity=§7Missing Entangled Singularity§f
+GT5U.gui.text.wormhole_generator.status.no_destination=§7Wormhole status: §cNo destination§f
+GT5U.gui.text.wormhole_generator.status.decaying=§7Wormhole status: §6Decaying§f
+GT5U.gui.text.wormhole_generator.status.active=§7Wormhole status: §bActive§f
+GT5U.gui.text.wormhole_generator.status.inactive=§7Wormhole status: Inactive§f
+GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%,d§7 Å§f
+GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch: §b%,d§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 EU/t§f
+
+GT5U.gui.text.status.active=Active
+GT5U.gui.text.status.online=Online
+GT5U.gui.text.status.disabled=Disabled
+GT5U.gui.text.status.incomplete=Incomplete Structure
+GT5U.gui.text.x=X: %s
+GT5U.gui.text.y=Y: %s
+GT5U.gui.text.z=Z: %s
+GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.dim.valid=Dim Valid: Yes
+GT5U.gui.text.dim.invalid=Dim Valid: No
+
+GT5U.gui.title.unknown=Unknown
+GT5U.gui.text.item_amount=Item Amount
+
+GT5U.gui.circuit.generic.data_display.off=OFF
+GT5U.gui.circuit.generic.data_display.on=ON
+GT5U.gui.circuit.data_description.delay=Delay
+GT5U.gui.circuit.data_description.length=Length
+GT5U.gui.circuit.data_description.rs_on=RS => ON
+GT5U.gui.circuit.data_description.rs_off=RS => OFF
+
+GT5U.gui.circuit.basic.name=Basic Logic
+GT5U.gui.circuit.basic.description=Regular Logic Gates
+GT5U.gui.circuit.data_description.or=OR
+GT5U.gui.circuit.data_description.nor=NOR
+GT5U.gui.circuit.data_description.xor=XOR
+GT5U.gui.circuit.data_description.xnor=XNOR
+GT5U.gui.circuit.data_description.and=AND
+GT5U.gui.circuit.data_description.nand=NAND
+GT5U.gui.circuit.data_description.invert=INVERT
+GT5U.gui.circuit.data_description.bit_or=BIT_OR
+GT5U.gui.circuit.data_description.bit_nor=BIT_NOR
+GT5U.gui.circuit.data_description.bit_xor=BIT_XOR
+GT5U.gui.circuit.data_description.bit_xnor=BIT_XNOR
+GT5U.gui.circuit.data_description.bit_and=BIT_AND
+GT5U.gui.circuit.data_description.bit_nand=BIT_NAND
+GT5U.gui.circuit.data_description.bit_invert=BIT_INVERT
+GT5U.gui.circuit.bit_and.name=Hardcode Bit-AND
+GT5U.gui.circuit.bit_and.description=( signal & this ) != 0
+GT5U.gui.circuit.bit_and.data_description=Bit %d:
+GT5U.gui.circuit.combination_lock.name=Combination Lock
+GT5U.gui.circuit.combination_lock.description=Checks Combinations
+GT5U.gui.circuit.combination_lock.data_description=Power %d
+GT5U.gui.circuit.equals.name=Equals
+GT5U.gui.circuit.equals.description=signal == this
+GT5U.gui.circuit.equals.data_description.signal=Signal
+GT5U.gui.circuit.equals.data_description.equal=Equal
+GT5U.gui.circuit.equals.data_description.unequal=Unequal
+GT5U.gui.circuit.pulser.name=Pulser
+GT5U.gui.circuit.pulser.description=Limits & Lengthens
+GT5U.gui.circuit.pulser.data_description.rs_out=RS Out
+GT5U.gui.circuit.pulser.data_display.highest=HIGHEST
+GT5U.gui.circuit.pulser.data_display.lowest=LOWEST
+GT5U.gui.circuit.randomizer.name=Randomizer
+GT5U.gui.circuit.randomizer.description=Randomizes Redstone
+GT5U.gui.circuit.randomizer.data_description.status=Status
+GT5U.gui.circuit.redstone_meter.name=Redstone Meter
+GT5U.gui.circuit.redstone_meter.description=Checks Boundaries
+GT5U.gui.circuit.redstone_meter.data_description.lower=Lower
+GT5U.gui.circuit.redstone_meter.data_description.upper=Upper
+GT5U.gui.circuit.redstone_meter.data_description.invert=Invert:
+GT5U.gui.circuit.redstone_meter.data_description.rs_out=RS Out:
+GT5U.gui.circuit.repeater.name=Repeater
+GT5U.gui.circuit.repeater.description=Delays RS-Signal
+GT5U.gui.circuit.timer.name=Timer
+GT5U.gui.circuit.timer.description=Pulses Redstone
+GT5U.gui.circuit.timer.data_description.pulses=Pulses
+GT5U.gui.circuit.timer.data_description.time=Time
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

@@ -11,7 +11,6 @@ import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -22,16 +21,6 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
     public TileEntityPooCollector() {
         super(9, 8000);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return true;
     }
 
     @Override

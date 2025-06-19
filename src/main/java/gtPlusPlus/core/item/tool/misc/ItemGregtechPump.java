@@ -71,11 +71,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
-    }
-
     /**
      * GT Code
      */
@@ -707,7 +702,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
 
-        return 2000 * (int) Math.pow(4, aMeta);
+        return 2000 * (int) GTUtility.powInt(4, aMeta);
     }
 
     public int fill(ItemStack container, FluidStack resource) {
@@ -843,7 +838,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aNewNBT.setString("mFluid", "@@@@@");
             aNewNBT.setInteger("mFluidAmount", 0);
             if (!aNewNBT.hasKey("capacityInit")) {
-                int aCapacity = 2000 * (int) Math.pow(4, aMeta);
+                int aCapacity = 2000 * (int) GTUtility.powInt(4, aMeta);
                 aNewNBT.setInteger("mCapacity", aCapacity);
                 aNewNBT.setBoolean("capacityInit", true);
             }
@@ -867,7 +862,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 int aTier = (aStack.getItemDamage() - 1000);
                 int removal = 0;
                 if (aTier != 0) {
-                    removal = 8 * (int) Math.pow(4, aTier);
+                    removal = 8 * (int) GTUtility.powInt(4, aTier);
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
                     PlayerUtils.messagePlayer(aPlayer, "Not enough power.");

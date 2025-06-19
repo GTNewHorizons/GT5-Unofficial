@@ -232,7 +232,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     this.tRecipe = assRecipe;
                                     // Set property
                                     computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
-                                        * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                        * GTUtility.powInt(2, getTier(assRecipe.mResearchVoltage) - 1));
                                     mMaxProgresstime = 20;
                                     mEfficiencyIncrease = 10000;
                                     eRequiredData = 1;

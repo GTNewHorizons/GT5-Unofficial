@@ -404,18 +404,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
-    }
 }

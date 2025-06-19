@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -65,11 +66,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -487,11 +483,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return true;
-    }
-
-    @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[10][17][];
         for (byte i = -1; i < 16; i++) {
@@ -631,7 +622,11 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .setProgress(() -> (float) getFluidAmount() / getCapacity())
                     .setSynced(false, false)
                     .dynamicTooltip(
-                        () -> Collections.singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
+                        () -> Collections.singletonList(
+                            StatCollector.translateToLocalFormatted(
+                                "gtpp.gui.crop_harvestor.tooltip.water",
+                                getFluidAmount(),
+                                getCapacity())))
                     .setPos(47, 7)
                     .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));

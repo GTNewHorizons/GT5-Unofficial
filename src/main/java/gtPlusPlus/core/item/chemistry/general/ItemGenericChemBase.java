@@ -27,7 +27,7 @@ public class ItemGenericChemBase extends Item {
 
     protected final IIcon[] base;
 
-    private final int aMetaSize = 35;
+    private final int aMetaSize = 36;
 
     /*
      * 0 - Red Metal Catalyst //FeCu
@@ -63,6 +63,7 @@ public class ItemGenericChemBase extends Item {
      * 30 - Flawless Water Catalyst (for advanced waterline skip)
      * 33 - Algagenic Growth Promoter Catalyst (for seaweed skip)
      * 34 - Hellish Force Catalyst (for Netherite skip)
+     * 35 - Crystal Colorization Catalyst (for Prismatic Acid)
      */
 
     public ItemGenericChemBase() {
@@ -122,11 +123,6 @@ public class ItemGenericChemBase extends Item {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
-    }
-
-    @Override
     public boolean isRepairable() {
         return false;
     }
@@ -134,11 +130,6 @@ public class ItemGenericChemBase extends Item {
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override

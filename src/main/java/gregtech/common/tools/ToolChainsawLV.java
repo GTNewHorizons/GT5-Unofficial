@@ -26,28 +26,8 @@ import gregtech.api.items.MetaGeneratedTool;
 public class ToolChainsawLV extends ToolSaw {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
-        return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -58,11 +38,6 @@ public class ToolChainsawLV extends ToolSaw {
     @Override
     public float getSpeedMultiplier() {
         return 2.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
     }
 
     @Override
@@ -78,11 +53,6 @@ public class ToolChainsawLV extends ToolSaw {
     @Override
     public String getMiningSound() {
         return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
     }
 
     @Override
@@ -164,12 +134,6 @@ public class ToolChainsawLV extends ToolSaw {
             ? MetaGeneratedTool.getPrimaryMaterial(
                 aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadChainsaw.mTextureIndex]
             : Textures.ItemIcons.POWER_UNIT_LV;
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override

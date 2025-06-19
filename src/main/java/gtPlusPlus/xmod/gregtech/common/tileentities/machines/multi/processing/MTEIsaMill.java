@@ -96,7 +96,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
             .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
             .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
-            .addOtherStructurePart("Milling Ball Hatch", "Any Casing")
+            .addOtherStructurePart("Ball Housing", "Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -404,18 +404,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Grinding Machine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     /*
