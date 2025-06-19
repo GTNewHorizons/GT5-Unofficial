@@ -1174,7 +1174,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
         /** @return aEU/t needed for chemical and autoclave process related to the Tier **/
         public int getVoltageFromEU() {
-            return (int) Math.max(Math.floor(Math.log(2 * this.getVoltage()) / Math.log(4) - 1), 0);
+            return Math.max(GTUtility.log4(2 * this.getVoltage()) - 1, 0);
         }
 
         /** @return Voltage tier according to EU provided. 0 = ULV, 1 = LV, 2 = MV ... **/
@@ -1183,7 +1183,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         }
 
         public int getAutoClaveEnergy() {
-            return (int) ((this.getVoltage() * 3 / 4) * (Math.max(1, Math.pow(2, 5 - this.ordinal()))));
+            return (int) ((this.getVoltage() * 3 / 4) * (Math.max(1, GTUtility.powInt(2, 5 - this.ordinal()))));
         }
 
         /** @return FluidStack needed for chemical process related to the Tier **/
@@ -1193,10 +1193,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             } else if (this.compareTo(Voltage.HV) < 0) {
                 return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
-                return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * INGOTS));
+                return Materials.HydrofluoricAcid
+                    .getFluid((long) (GTUtility.powInt(2, this.compareTo(Voltage.HV)) * INGOTS));
             } else if (this.compareTo(Voltage.UHV) < 0) {
                 return FluidRegistry
-                    .getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LuV)) * INGOTS));
+                    .getFluidStack("mutagen", (int) (GTUtility.powInt(2, this.compareTo(Voltage.LuV)) * INGOTS));
             } else {
                 return NF;
             }

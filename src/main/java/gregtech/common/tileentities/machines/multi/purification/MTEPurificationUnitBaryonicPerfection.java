@@ -446,7 +446,7 @@ public class MTEPurificationUnitBaryonicPerfection
             }
         }
         // Cost is exponential in function of amount of duplicate catalysts
-        return (int) (Math.pow(2, count) * CATALYST_BASE_COST);
+        return (int) (GTUtility.powInt(2, count) * CATALYST_BASE_COST);
     }
 
     // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence
