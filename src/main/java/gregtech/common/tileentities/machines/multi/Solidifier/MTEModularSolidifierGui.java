@@ -146,6 +146,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
+                base.terminalSwitch = !base.terminalSwitch;
                 if (!moduleConfigPanel.isPanelOpen()) {
                     moduleConfigPanel.openPanel();
                 } else {
@@ -165,16 +166,16 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child( base.terminalSwitch ?
                         createModuleTerminalTextWidget(syncManager,panel) .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                        .collapseDisabledChild()
+                        .collapseDisabledChild().child(
+                                new SingleChildWidget<>().bottomRel(0, 10, 0)
+                                    .rightRel(0, 10, 0)
+                                    .size(18, 18)
+                                    .widgetTheme(GTWidgetThemes.PICTURE_LOGO))
                         :
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .child(
-                        new SingleChildWidget<>().bottomRel(0, 10, 0)
-                            .rightRel(0, 10, 0)
-                            .size(18, 18)
-                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)));
+                    );
     }
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
@@ -202,7 +203,6 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         return new ListWidget<>()
             .child(
                 new TextWidget("bello")
-                    .setEnabledIf(widget -> !base.mWrench)
                     .marginBottom(2)
                     .widthRel(1));
 
