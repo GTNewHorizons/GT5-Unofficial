@@ -34,23 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.config.Actionable;
-import appeng.api.implementations.IPowerChannelState;
-import appeng.api.networking.GridFlags;
-import appeng.api.networking.energy.IEnergyGrid;
-import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.MachineSource;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
-import appeng.core.localization.WailaText;
-import appeng.me.GridAccessException;
-import appeng.me.helpers.AENetworkProxy;
-import appeng.me.helpers.IGridProxyable;
-import appeng.util.Platform;
-import appeng.util.item.AEItemStack;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
@@ -68,6 +51,24 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+
+import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.security.BaseActionSource;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.core.localization.WailaText;
+import appeng.me.GridAccessException;
+import appeng.me.helpers.AENetworkProxy;
+import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
+import appeng.util.item.AEItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -113,13 +114,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean expediteRecipeCheck = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            autoPullAvailable ? 6 : 3,
-            2,
-            getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, 2, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
@@ -348,7 +343,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
                 // Copy of the current mInventory loading code, because otherwise the upper stacks are discarded due to
                 // the reduced mInventory size.
-                //noinspection unchecked
+                // noinspection unchecked
                 for (NBTTagCompound tag : (List<NBTTagCompound>) inventory.tagList) {
                     oldInventory[tag.getInteger("IntSlot")] = GTUtility.loadItem(tag);
                 }
@@ -374,7 +369,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             case 1 -> {
                 NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
-                //noinspection unchecked
+                // noinspection unchecked
                 for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
@@ -393,10 +388,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public String[] getInfoData() {
-        return new String[] { getProxy().isActive()
-            ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-            : StatCollector
-                .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
+        return new String[] {
+            getProxy().isActive() ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()) };
     }
 
     @Override
@@ -620,8 +616,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         Iterator<IAEItemStack> iterator;
 
         try {
-            sg = getProxy().getStorage().getItemInventory();
-            iterator = sg.getStorageList().iterator();
+            sg = getProxy().getStorage()
+                .getItemInventory();
+            iterator = sg.getStorageList()
+                .iterator();
         } catch (final GridAccessException ignored) {
             return;
         }
@@ -687,7 +685,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         IEnergyGrid energy;
 
         try {
-            sg = getProxy().getStorage().getItemInventory();
+            sg = getProxy().getStorage()
+                .getItemInventory();
             energy = getProxy().getEnergy();
         } catch (GridAccessException e) {
             controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
@@ -734,7 +733,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             return;
         }
 
-        IMEMonitor<IAEItemStack> sg = getProxy().getStorage().getItemInventory();
+        IMEMonitor<IAEItemStack> sg = getProxy().getStorage()
+            .getItemInventory();
 
         IAEItemStack request = AEItemStack.create(slot.config);
         request.setStackSize(Integer.MAX_VALUE);
@@ -1070,6 +1070,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected static class Slot {
+
         /** The item to pull into this slot. */
         public ItemStack config;
 
@@ -1097,7 +1098,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         public final boolean equals(Object o) {
             if (!(o instanceof Slot slot)) return false;
 
-            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config) && Objects.equals(extracted, slot.extracted);
+            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config)
+                && Objects.equals(extracted, slot.extracted);
         }
 
         public Slot copy() {
@@ -1151,7 +1153,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         @Override
-        public @org.jetbrains.annotations.Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
+        public @org.jetbrains.annotations.Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack,
+            boolean simulate) {
             return stack;
         }
 

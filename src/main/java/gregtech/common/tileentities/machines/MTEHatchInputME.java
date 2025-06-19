@@ -36,23 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
-import appeng.api.config.Actionable;
-import appeng.api.implementations.IPowerChannelState;
-import appeng.api.networking.GridFlags;
-import appeng.api.networking.energy.IEnergyGrid;
-import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.MachineSource;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
-import appeng.core.localization.WailaText;
-import appeng.me.GridAccessException;
-import appeng.me.helpers.AENetworkProxy;
-import appeng.me.helpers.IGridProxyable;
-import appeng.util.Platform;
-import appeng.util.item.AEFluidStack;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -71,6 +54,24 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+
+import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.security.BaseActionSource;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.core.localization.WailaText;
+import appeng.me.GridAccessException;
+import appeng.me.helpers.AENetworkProxy;
+import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
+import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -201,8 +202,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         Iterator<IAEFluidStack> iterator;
 
         try {
-            sg = getProxy().getStorage().getFluidInventory();
-            iterator = sg.getStorageList().iterator();
+            sg = getProxy().getStorage()
+                .getFluidInventory();
+            iterator = sg.getStorageList()
+                .iterator();
         } catch (final GridAccessException ignored) {
             return;
         }
@@ -289,7 +292,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             IMEMonitor<IAEFluidStack> sg;
 
             try {
-                sg = getProxy().getStorage().getFluidInventory();
+                sg = getProxy().getStorage()
+                    .getFluidInventory();
             } catch (GridAccessException e) {
                 return EMPTY_FLUID_TANK_INFOS;
             }
@@ -366,7 +370,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             try {
                 AENetworkProxy proxy = getProxy();
-                sg = proxy.getStorage().getFluidInventory();
+                sg = proxy.getStorage()
+                    .getFluidInventory();
                 energy = proxy.getEnergy();
             } catch (GridAccessException e) {
                 return null;
@@ -393,7 +398,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         try {
             AENetworkProxy proxy = getProxy();
-            sg = proxy.getStorage().getFluidInventory();
+            sg = proxy.getStorage()
+                .getFluidInventory();
             energy = proxy.getEnergy();
         } catch (GridAccessException e) {
             controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
@@ -416,7 +422,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             if (result == null || result.getStackSize() != toExtract) {
                 controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-                checkRecipeResult = SimpleCheckRecipeResult.ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                checkRecipeResult = SimpleCheckRecipeResult
+                    .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
         }
 
@@ -558,7 +565,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             return;
         }
 
-        IMEMonitor<IAEFluidStack> sg = getProxy().getStorage().getFluidInventory();
+        IMEMonitor<IAEFluidStack> sg = getProxy().getStorage()
+            .getFluidInventory();
 
         IAEFluidStack request = AEFluidStack.create(slot.config);
         request.setStackSize(Integer.MAX_VALUE);
@@ -731,7 +739,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             case 1 -> {
                 NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
-                //noinspection unchecked
+                // noinspection unchecked
                 for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
@@ -1135,6 +1143,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     protected static class Slot {
+
         /** The fluid to pull into this slot. */
         public FluidStack config;
 
@@ -1165,7 +1174,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public final boolean equals(Object o) {
             if (!(o instanceof Slot slot)) return false;
 
-            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config) && Objects.equals(extracted, slot.extracted);
+            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config)
+                && Objects.equals(extracted, slot.extracted);
         }
 
         public Slot copy() {
