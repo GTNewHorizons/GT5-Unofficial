@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -56,21 +58,23 @@ public class CircuitBitAnd extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Hardcode Bit-AND";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.bit_and.name");
     }
 
     @Override
     public String getDescription() {
-        return "( signal & this ) != 0";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.bit_and.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        return "Bit " + aCircuitDataIndex + ":";
+        return StatCollector.translateToLocalFormatted("GT5U.gui.circuit.bit_and.data_description", aCircuitDataIndex);
     }
 
     @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
-        return aCircuitData[aCircuitDataIndex] == 0 ? "OFF" : "ON";
+        return aCircuitData[aCircuitDataIndex] == 0
+            ? StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.off")
+            : StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.on");
     }
 }
