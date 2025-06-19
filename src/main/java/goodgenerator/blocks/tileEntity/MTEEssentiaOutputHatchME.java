@@ -50,31 +50,26 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         super.readFromNBT(aNBT);
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.readFromNBT(aNBT);
+        getProxy().readFromNBT(aNBT);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(aNBT);
+        getProxy().writeToNBT(aNBT);
     }
 
     void onChunkUnloadAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.onChunkUnload();
+        getProxy().onChunkUnload();
     }
 
     void invalidateAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.invalidate();
+        getProxy().invalidate();
     }
 
     @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override
@@ -104,8 +99,7 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
 
     @Override
     public IGridNode getActionableNode() {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override
