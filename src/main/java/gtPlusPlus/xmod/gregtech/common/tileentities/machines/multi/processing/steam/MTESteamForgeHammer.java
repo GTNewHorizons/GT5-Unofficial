@@ -317,7 +317,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
