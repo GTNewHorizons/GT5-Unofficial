@@ -830,8 +830,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setByte("color", this.getColor());
 
-        NBTTagList stockingFluids = new NBTTagList();
-
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = new NBTTagList();
 
