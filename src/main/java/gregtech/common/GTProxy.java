@@ -1273,17 +1273,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
-        WirelessChargerManager.clearChargerMap();
-        if (spawnEventHandler != null) {
-            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
-            spawnEventHandler = null;
-        }
-        if (tetherManager != null) {
-            FMLCommonHandler.instance()
-                .bus()
-                .unregister(tetherManager);
-            tetherManager = null;
-        }
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -1298,6 +1287,20 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         this.mUniverse = null;
+    }
+
+    public void onServerStopped() {
+        WirelessChargerManager.clearChargerMap();
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+            spawnEventHandler = null;
+        }
+        if (tetherManager != null) {
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(tetherManager);
+            tetherManager = null;
+        }
     }
 
     @SubscribeEvent

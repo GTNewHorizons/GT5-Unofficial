@@ -15,6 +15,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 
 public class TetherManager {
 
+    // TODO delete tether class and directly reference mte ?
+
     /**
      * DimID, list of active pylons
      **/
@@ -39,6 +41,7 @@ public class TetherManager {
         final SpatialHashGrid<Tether> grid = ACTIVE_PYLONS.get(dimID);
         if (grid == null) return;
         grid.remove(tether);
+        // TODO remove the grid from the dimension if empty
     }
 
     public Tether getClosestActivePylon(EntityPlayer player, int radius) {
