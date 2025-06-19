@@ -21,6 +21,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,6 +75,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 import javax.annotation.Nonnull;
@@ -95,10 +98,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static int verticalOffset = 43;
     private static int depthOffset = 0;
 
+    public boolean terminalSwitch = false;
     private int mTier = 3; // 1 - base , 2 - ~UEV, 3 - ~UMV
-    private final float speedModifierBase = 2F;
-    private final float euEffBase = 0.9F;
-    private final int parallelScaleBase = 8;
+    private final float speedModifierBase = 2.5F;
+    private final float euEffBase = 1F;
+    private final int parallelScaleBase = 16;
     private final float ocFactorBase = 2.0F;
     private int additionaloverclocks = 0;
     private boolean uevRecipesEnabled = false;
@@ -120,14 +124,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     // offsets, for building the structure, redirect to build the bottom left corner of the structure piece at
     // Controller pos + offsets.
-    private SolidifierModules[] modules = {SolidifierModules.getModule(4),SolidifierModules.getModule(4),SolidifierModules.getModule(4),SolidifierModules.getModule(4)};
+    private SolidifierModules[] modules = {SolidifierModules.getModule(1),SolidifierModules.getModule(1),SolidifierModules.getModule(1),SolidifierModules.getModule(1)};
 
-    //these are all the same as of right now, but MAY change with diff structure
-    private int[] moduleHorizontalOffsets = {15,15,15,15};
-    private int[] moduleVerticalOffsets = {5,10,15,20};
-    private int[] moduleDepthOffsets = {-2,-2,-2,-2};
+    private int[] moduleHorizontalOffsets = {7,7,7,7};
+    private int[] moduleVerticalOffsets = {12,20,28,36};
+    private int[] moduleDepthOffsets = {0,0,0,0};
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    // Hypercooler is limited to 1, either dont read the second one or strucure check fail
 
     private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEModularSolidifier>builder()
@@ -183,13 +185,41 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "}
                 }))
         .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
-            {"cccdccc","cccdccc","cccdccc"}}
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
+            {"     gghgg     ","   ggg d ggg   ","  gg   d   gg  "," gg         gg "," g           g ","gg           gg","g             g","hdd         ddh","g             g","gg           gg"," g           g "," gg         gg ","  gg   d   gg  ","   ggg d ggg   ","     gghgg     "},
+            {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+        }
         ))
         .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
-            {"eeefeee","eefgfee","eeefeee"}
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
+            {"     AbcbA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","b             b","cdd         ddc","b             b","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AbcbA     "},
+            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+        }))
+        .addShape(SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
+            {"               ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","               "},
+            {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
+            {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
+            {"      jkj      ","       d       ","       d       ","               ","               ","               ","l             l","kdd         ddk","l             l","               ","               ","               ","       d       ","       d       ","      jkj      "},
+            {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
+            {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
+            {"               ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","               "}
         }))
         .addShape(SolidifierModules.UNSET.structureID, transpose(new String[][]{
-            {"       ","       ","       "}
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         //spotless:on
         .addElement('A', chainAllGlasses())
@@ -198,8 +228,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         // .addElement('D' ,ofBlock(GregTechAPI.sBlockFrames,81))
         .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
         .addElement('E', lazy(() -> ofBlock(GodforgeCasings,0)))
-        .addElement('F', ofBlock( GregTechAPI.sBlockCasings2,3)) //temp
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings2,14)) //temp
+        .addElement('F', ofBlock( GregTechAPI.sBlockCasings9,0)) //temp
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11,7)) //temp
         .addElement(
             'H',
             buildHatchAdder(MTEModularSolidifier.class)
@@ -207,11 +237,17 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) //placeholder nano forge casing
-        .addElement('c', ofBlock(GregTechAPI.sBlockMetal9, 4))
-        .addElement('d', ofBlock(GregTechAPI.sBlockCasings13, 11))
-        .addElement('e', ofBlock(GregTechAPI.sBlockCasings5, 11))
-        .addElement('f', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('g', ofBlock(GregTechAPI.sBlockCasings13, 13))
+        .addElement('b',ofBlock(GregTechAPI.sBlockCasings8,14))
+        .addElement('c', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT,6)))
+        .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc,14)))
+        .addElement('e', ofBlock(GregTechAPI.sBlockFrames,581))
+        .addElement('f', lazy(() -> ofBlock(GodforgeCasings,3)))
+        .addElement('g', lazy(() -> ofBlock(GodforgeCasings,5)))
+        .addElement('h', lazy(()-> ofBlock(BlockGodforgeGlass.INSTANCE,0)))
+        .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
+        .addElement('j',lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)) )
+        .addElement('k', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
+        .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))//this cant be real
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -585,10 +621,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     // mui2 stuff
 
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
 
     @Override
     protected @NotNull MTEModularSolidifierGui getGui() {
@@ -619,10 +651,45 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         }
         modules[index] = moduleToAdd;
     }
-
+    //its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
     public String getSpeedStr() {
+        checkSolidifierModules();
         return (speedModifierAdj - 1) * 100 + "%";
     }
+
+    public String getParallelsString()
+    {
+        checkSolidifierModules();
+        return (int) parallelScaleAdj+"";
+    }
+
+    public String getEuEFFString()
+    {
+        checkSolidifierModules();
+        return ((int) (euEffAdj*100)) + "%";
+    }
+
+    public String getOCFactorString()
+    {
+        checkSolidifierModules();
+        return 2+ocFactorAdditive +" : 4";
+    }
+
+    public String getTrReStatus()
+    {
+        checkSolidifierModules();
+        String retval = Boolean.toString(uevRecipesEnabled);
+        return retval.substring(0,1).toUpperCase() + retval.substring(1);
+    }
+
+    public String getHCStatus()
+    {
+        checkSolidifierModules();
+        String retval = Boolean.toString(hypercoolerPresent);
+        return retval.substring(0,1).toUpperCase() + retval.substring(1);
+
+    }
+
 
 
 
