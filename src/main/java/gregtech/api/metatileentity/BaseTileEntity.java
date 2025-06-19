@@ -658,7 +658,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     public String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder) {
