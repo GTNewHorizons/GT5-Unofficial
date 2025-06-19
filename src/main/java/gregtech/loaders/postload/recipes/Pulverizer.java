@@ -205,7 +205,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 10))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16),
+                ItemList.Netherite_Nanoparticles.get(2))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -216,7 +217,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 11))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 24),
+                ItemList.Netherite_Nanoparticles.get(3))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -227,7 +229,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 12))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 32),
+                ItemList.Netherite_Nanoparticles.get(4))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -238,7 +241,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 9L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 24L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 48),
+                ItemList.Netherite_Nanoparticles.get(6))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -249,7 +253,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 48L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
+                ItemList.Netherite_Nanoparticles.get(8))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -260,8 +265,8 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 64L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 64L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
+                ItemList.Netherite_Nanoparticles.get(16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .recipeCategory(RecipeCategories.maceratorRecycling)

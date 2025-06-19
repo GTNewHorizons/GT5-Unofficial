@@ -85,7 +85,7 @@ public class ForgeOfGodsUI {
             })
             .setPos(174, 148)
             .setSize(16, 16);
-        button.addTooltip("Power Switch")
+        button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
@@ -900,7 +900,7 @@ public class ForgeOfGodsUI {
         String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
         int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < deleno.length(); i++) {
             nameRow.addChild(
                 new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
                     .setScale(0.8f)
