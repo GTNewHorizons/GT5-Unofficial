@@ -1612,11 +1612,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     "" + YELLOW + (timeAccelerationFieldMetadata + 1) + RESET));
         }
         if (stabilisationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation_grade"));
+            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation.grade.none"));
         } else {
             str.add(
                 StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.stabilisation_grade.none",
+                    "tt.infodata.eoh.stabilisation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(stabilisationFieldMetadata) + RESET,
                     "" + YELLOW + (stabilisationFieldMetadata + 1) + RESET));
         }
