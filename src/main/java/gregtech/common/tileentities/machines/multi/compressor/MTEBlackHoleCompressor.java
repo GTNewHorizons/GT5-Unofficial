@@ -637,7 +637,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel)
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.7F)
             .setSpeedBonus(0.2F);
     }

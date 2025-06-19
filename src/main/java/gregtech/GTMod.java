@@ -44,6 +44,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
@@ -77,7 +78,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
-import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
@@ -135,7 +135,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.5.22,);"
+        + " required-after:gtnhlib@[0.6.31,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"
@@ -295,7 +295,6 @@ public class GTMod implements IGTMod {
         new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
-        new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();
@@ -338,7 +337,6 @@ public class GTMod implements IGTMod {
         }
 
         gregtechproxy.onLoad();
-
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
@@ -755,6 +753,11 @@ public class GTMod implements IGTMod {
         }
         // Interrupt IDLE Threads to close down cleanly
         RunnableMachineUpdate.shutdownExecutorService();
+    }
+
+    @Mod.EventHandler
+    public void onServerStopped(FMLServerStoppedEvent event) {
+        gregtechproxy.onServerStopped();
     }
 
     @Mod.EventHandler
