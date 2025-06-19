@@ -50,6 +50,7 @@ public final class FindRecipeQuery {
     private boolean notUnificated;
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
+    private boolean caching = false;
 
     FindRecipeQuery(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
@@ -86,7 +87,12 @@ public final class FindRecipeQuery {
                 notUnificated,
                 dontCheckStackSizes,
                 forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
+            .peek(
+                recipe -> {
+                    if (caching) recipeMap.getBackend()
+                        .cache(items, fluids, recipe);
+                });
     }
 
     /**
@@ -171,6 +177,14 @@ public final class FindRecipeQuery {
      */
     public FindRecipeQuery dontCheckStackSizes(boolean dontCheckStackSizes) {
         this.dontCheckStackSizes = dontCheckStackSizes;
+        return this;
+    }
+
+    /**
+     * @param caching If this is set to true, the query will cache matched recipes.
+     */
+    public FindRecipeQuery caching(boolean caching) {
+        this.caching = caching;
         return this;
     }
 
