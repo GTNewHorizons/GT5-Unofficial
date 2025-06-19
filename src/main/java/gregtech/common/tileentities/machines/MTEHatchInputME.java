@@ -171,8 +171,21 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public void onEnableWorking() {
+        super.onEnableWorking();
+
         if (expediteRecipeCheck) {
             justHadNewFluids = true;
+        }
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+
+        if (autoPullFluidList) {
+            clearSlotConfigs();
+        } else {
+            clearExtractedStacks();
         }
     }
 
@@ -212,7 +225,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         int index = 0;
 
-        Arrays.fill(slots, null);
+        clearSlotConfigs();
 
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEFluidStack curr = iterator.next();
@@ -514,7 +527,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (autoPullFluidList != pullFluidList) {
             autoPullFluidList = pullFluidList;
 
-            Arrays.fill(slots, null);
+            clearSlotConfigs();
 
             if (autoPullFluidList) {
                 refreshFluidList();
@@ -540,11 +553,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 // :P
             }
         } else {
-            for (Slot slot : slots) {
-                if (slot == null) continue;
-
-                slot.resetExtracted();
-            }
+            clearExtractedStacks();
         }
     }
 
@@ -553,7 +562,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     /**
-     * Polls the AE network to update the available items for the given slot.
+     * Polls the AE network to update the available fluids for the given slot.
      */
     public void updateInformationSlot(int index) throws GridAccessException {
         Slot slot = GTDataUtils.getIndexSafe(slots, index);
@@ -581,6 +590,18 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         // We want to track changes in any FluidStack to notify any connected controllers to make a recipe check early
         if (expediteRecipeCheck && slot.extracted != null) {
             justHadNewFluids = !GTUtility.areFluidsEqual(slot.extracted, previous);
+        }
+    }
+
+    protected void clearSlotConfigs() {
+        Arrays.fill(slots, null);
+    }
+
+    protected void clearExtractedStacks() {
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+
+            slot.resetExtracted();
         }
     }
 
@@ -781,7 +802,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
-            Arrays.fill(slots, null);
+
+            clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
                 slots[i] = new Slot(GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i)));
             }

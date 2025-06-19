@@ -168,8 +168,21 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public void onEnableWorking() {
+        super.onEnableWorking();
+
         if (expediteRecipeCheck) {
             justHadNewItems = true;
+        }
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+
+        if (autoPullItemList) {
+            clearSlotConfigs();
+        } else {
+            clearExtractedStacks();
         }
     }
 
@@ -303,7 +316,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         if (autoPullItemList != pullItemList) {
             autoPullItemList = pullItemList;
 
-            Arrays.fill(slots, null);
+            clearSlotConfigs();
 
             if (autoPullItemList) {
                 refreshItemList();
@@ -331,7 +344,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
-        Arrays.fill(slots, null);
+        clearSlotConfigs();
 
         switch (aNBT.getInteger("version")) {
             case 0 -> {
@@ -486,7 +499,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         if (!autoPullItemList) {
             NBTTagList stockingItems = nbt.getTagList("itemsToStock", Constants.NBT.TAG_COMPOUND);
-            Arrays.fill(slots, null);
+
+            clearSlotConfigs();
+
             for (int i = 0; i < stockingItems.tagCount(); i++) {
                 slots[i] = new Slot(GTUtility.loadItem(stockingItems.getCompoundTagAt(i)));
             }
@@ -626,7 +641,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         int index = 0;
 
-        Arrays.fill(slots, null);
+        clearSlotConfigs();
 
         while (iterator.hasNext() && index < SLOT_COUNT) {
             IAEItemStack curr = iterator.next();
@@ -669,11 +684,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                 // :P
             }
         } else {
-            for (Slot slot : slots) {
-                if (slot == null) continue;
-
-                slot.resetExtracted();
-            }
+            clearExtractedStacks();
         }
     }
 
@@ -749,6 +760,18 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         // We want to track changes in any ItemStack to notify any connected controllers to make a recipe check early
         if (expediteRecipeCheck && slot.extracted != null) {
             justHadNewItems = !ItemStack.areItemStacksEqual(slot.extracted, previous);
+        }
+    }
+
+    protected void clearSlotConfigs() {
+        Arrays.fill(slots, null);
+    }
+
+    protected void clearExtractedStacks() {
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+
+            slot.resetExtracted();
         }
     }
 
