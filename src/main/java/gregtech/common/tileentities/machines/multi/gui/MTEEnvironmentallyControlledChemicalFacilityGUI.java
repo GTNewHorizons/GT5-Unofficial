@@ -1,8 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui;
 
-import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -19,12 +16,12 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
-
-import static buildcraft.robotics.statements.ActionRobotWorkInArea.getArea;
 
 public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlockBaseGui {
 
@@ -93,7 +90,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
 
     public ModularPanel createECCFPanel(PanelSyncManager syncManager) {
         int eccfPanelWidth = 176;
-        int eccfPanelHeight =136;
+        int eccfPanelHeight = 136;
         ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
             .size(eccfPanelWidth, eccfPanelHeight)
             .background(GTGuiTextures.BACKGROUND_STANDARD);
@@ -129,166 +126,186 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
                     .right(5)
                     .size(54, 48))
             .child(new DynamicDrawable(() -> {
-                    if (coolCoilSyncer.getValue() >= 0) {
-                        return GTGuiTextures.COOL_MODULE_ECCF_INDICATOR;
-                    }
-                    if (heatCoilSyncer.getValue() >= 0) {
-                        return GTGuiTextures.HEAT_MODULE_ECCF_INDICATOR;
-                    }
-                    if (leftParallelSyncer.getValue() >= 0) {
-                        return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
-                    }
-                    return GTGuiTextures.EMPTY_ECCF_INDICATOR_L;
-                }).asWidget()
-                .size(48,48)
+                if (coolCoilSyncer.getValue() >= 0) {
+                    return GTGuiTextures.COOL_MODULE_ECCF_INDICATOR;
+                }
+                if (heatCoilSyncer.getValue() >= 0) {
+                    return GTGuiTextures.HEAT_MODULE_ECCF_INDICATOR;
+                }
+                if (leftParallelSyncer.getValue() >= 0) {
+                    return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
+                }
+                return GTGuiTextures.EMPTY_ECCF_INDICATOR_L;
+            }).asWidget()
+                .size(48, 48)
                 .horizontalCenter())
             .child(new DynamicDrawable(() -> {
-                    if (compressCoilSyncer.getValue() >= 0) {
-                        return GTGuiTextures.PRESSURE_MODULE_ECCF_INDICATOR;
-                    }
-                    if (vacuumCoilSyncer.getValue() >= 0) {
-                        return GTGuiTextures.VACUUM_MODULE_ECCF_INDICATOR;
-                    }
-                    if (rightParallelSyncer.getValue() >= 0) {
-                        return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
-                    }
-                    return GTGuiTextures.EMPTY_ECCF_INDICATOR_R;
-                }).asWidget()
-                .size(48,48)
+                if (compressCoilSyncer.getValue() >= 0) {
+                    return GTGuiTextures.PRESSURE_MODULE_ECCF_INDICATOR;
+                }
+                if (vacuumCoilSyncer.getValue() >= 0) {
+                    return GTGuiTextures.VACUUM_MODULE_ECCF_INDICATOR;
+                }
+                if (rightParallelSyncer.getValue() >= 0) {
+                    return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
+                }
+                return GTGuiTextures.EMPTY_ECCF_INDICATOR_R;
+            }).asWidget()
+                .size(48, 48)
                 .horizontalCenter())
-            .child(new Column().marginTop(43)
-                .child(new Row().marginTop(10)
+            .child(
+                new Column().marginTop(43)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(pressureSyncer.getValue(), false, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Values"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(
+                                    IKey.dynamic(() -> valueConverter(pressureSyncer.getValue(), false, "Pa")))
+                                        .marginLeft(5)
+                                        .size(54, 10)
+                                        .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Values")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(initTemp.getValue(), false, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(initPres.getValue(), false, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Ambient"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(initTemp.getValue(), false, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(initPres.getValue(), false, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Ambient")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(deltaTemp.getValue(), true, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(deltaPres.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Recipe"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(deltaTemp.getValue(), true, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(deltaPres.getValue(), true, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Recipe")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(lossTemp.getValue(), true, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(lossPres.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Loss"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(lossTemp.getValue(), true, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(lossPres.getValue(), true, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Loss")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.str("-"))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(leakPres.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Leak"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.str("-")).marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(leakPres.getValue(), true, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Leak")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Modules"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Modules")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Modules"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
+                                    .marginRight(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
+                                    .marginLeft(5)
+                                    .size(54, 10)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Modules")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10)
 
-                .child(new Row().marginTop(10)
                     .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue() + lossTemp.getValue() + deltaTemp.getValue(), true, "K")))
-                            .marginRight(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue() + lossPres.getValue() + deltaPres.getValue() + leakPres.getValue(), true, "Pa")))
-                            .marginLeft(5)
-                            .size(54, 10)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.str("Total"))
-                            .size(54, 10)
-                            .alignment(Alignment.Center))).height(10)).coverChildrenHeight();
+                        new Row().marginTop(10)
+                            .child(
+                                new TextWidget(
+                                    IKey.dynamic(
+                                        () -> valueConverter(
+                                            tempModule.getValue() + lossTemp.getValue() + deltaTemp.getValue(),
+                                            true,
+                                            "K"))).marginRight(5)
+                                                .size(54, 10)
+                                                .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(
+                                    IKey.dynamic(
+                                        () -> valueConverter(
+                                            presModule.getValue() + lossPres.getValue()
+                                                + deltaPres.getValue()
+                                                + leakPres.getValue(),
+                                            true,
+                                            "Pa"))).marginLeft(5)
+                                                .size(54, 10)
+                                                .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(IKey.str("Total")).size(54, 10)
+                                    .alignment(Alignment.Center)))
+                    .height(10))
+            .coverChildrenHeight();
 
         infoPage.sizeRel(1.0f);
         return ui.child(
             pagedWidget.addPage(infoPage)
                 .sizeRel(1.0f))
-            .pos(0,0); // temporary
+            .pos(0, 0); // temporary
     }
 }
