@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -32,6 +35,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.storage.FluidCellInventory;
+import com.glodblock.github.common.storage.FluidCellInventoryHandler;
 import com.glodblock.github.common.storage.IStorageFluidCell;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -47,7 +52,9 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.security.PlayerSource;
 import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -64,6 +71,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -75,10 +83,11 @@ import gregtech.common.items.ItemFluidDisplay;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable {
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
     private long baseCapacity = DEFAULT_CAPACITY;
+    public static final String COPIED_DATA_IDENTIFIER = "outputHatchME";
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -282,12 +291,51 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return fluidAmount;
     }
 
+    private static final MethodHandle GET_RESTRICTION_LONG;
+
+    static {
+        try {
+            Field field = FluidCellInventory.class.getDeclaredField("restrictionLong");
+            field.setAccessible(true);
+            GET_RESTRICTION_LONG = MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Could not unreflect getter for FluidCellInventory.restrictionLong", e);
+        }
+    }
+
+    private static long getRestrictionLong(FluidCellInventory cellInventory) {
+        try {
+            return (long) GET_RESTRICTION_LONG.invokeExact(cellInventory);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
-            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 2048;
+
+        if (upgradeItemStack == null) return baseCapacity;
+        if (!(upgradeItemStack.getItem() instanceof FCBaseItemCell storageCell)) return baseCapacity;
+
+        final IMEInventoryHandler<?> inventory = AEApi.instance()
+            .registries()
+            .cell()
+            .getCellInventory(upgradeItemStack, null, StorageChannel.FLUIDS);
+
+        long capacity = storageCell.getBytes(upgradeItemStack) * 2048;
+
+        if (inventory instanceof FluidCellInventoryHandler handler) {
+            final FluidCellInventory cellInventory = (FluidCellInventory) handler.getCellInv();
+
+            long restriction = getRestrictionLong(cellInventory);
+
+            if (restriction > 0) {
+                capacity = Math.min(capacity, restriction);
+            }
         }
-        return baseCapacity;
+
+        return capacity;
     }
 
     /**
@@ -647,6 +695,33 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
     }
 
     @Override

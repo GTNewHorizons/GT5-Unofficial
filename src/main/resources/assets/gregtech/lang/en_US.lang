@@ -863,6 +863,13 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
+GT5U.ECCF.pressure=Current pressure
+GT5U.ECCF.temperature=Current temperature
+GT5U.ECCF.pressure_threshold=Pressure threshold
+GT5U.ECCF.temperature_threshold=Temperature threshold
+GT5U.ECCF.pressure_required=Pressure required
+GT5U.ECCF.temperature_required=Temperature required
+
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None
@@ -1037,6 +1044,8 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.eccf=Environmentally Controlled Chemical Facility
+
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1048,6 +1057,7 @@ gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+gt.recipe.category.planets=Planet Conditions
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -1069,8 +1079,20 @@ GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
+GT5U.machines.digitalchest.voidoverflow.tooltip=Overflow Voiding Mode
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
+GT5U.machines.digitalchest.autooutput.enabled=Item Auto Output Enabled
+GT5U.machines.digitalchest.autooutput.disabled=Item Auto Output Disabled
+GT5U.machines.digitalchest.lockItem.enabled=Lock Item Mode Enabled
+GT5U.machines.digitalchest.lockItem.disabled=Lock Item Mode Disabled
+GT5U.machines.digitalchest.lockItem.none=Currently nothing to lock, will be locked to the next that is put in
+GT5U.machines.digitalchest.lockItem.tooltip=Lock Item Mode
+GT5U.machines.digitalchest.lockItem.tooltip.1=§7This chest will be locked to only accept one type of item
+GT5U.machines.digitalchest.lockItem.tooltip.2=§7It will be locked to the first item type that enters the chest
+GT5U.machines.digitalchest.inputfromoutput.tooltip=Input Item from Output Side
+GT5U.machines.digitalchest.voidfull.tooltip=Void Full Mode
+GT5U.machines.digitalchest.voidfull.tooltip.1=§7Voids all items that enter the chest
 GT5U.machines.digitaltank.tooltip=Stores %sL of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.autooutput.tooltip=Fluid Auto-Output
@@ -1294,6 +1316,12 @@ channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generato
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.eccf_heater=Decides the tier of §6ECCF heating module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.eccf_freezer=Decides the tier of §6ECCF freezing module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.eccf_vacuum=Decides the tier of §6ECCF compressor module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.eccf_compress=Decides the tier of §6ECCF vacuum pump module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.eccf_parallel_left=Decides the tier of §6ECCF parallel module§r. Starts at value 1 and ends at value 3.
+channels.gregtech.eccf_parallel_right=Decides the tier of §6ECCF parallel module§r. Starts at value 1 and ends at value 3.
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
@@ -1336,6 +1364,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
+GT5U.gui.text.locked=Locked
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.amount=§fAmount:
@@ -1445,7 +1474,9 @@ GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.conditions_range=§4Conditions outside recipe range
 GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
+GT5U.gui.text.item.amount=Item Amount
 GT5U.gui.text.microwave_energy_transmitter.x=Target X
 GT5U.gui.text.microwave_energy_transmitter.y=Target Y
 GT5U.gui.text.microwave_energy_transmitter.z=Target Z
@@ -1721,7 +1752,14 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
-
+GT5U.nei.temperature=Temperature: %s - %s K
+GT5U.nei.pressure=Pressure: %s - %s
+GT5U.nei.temperature_delta=Temperature change: %s K/s
+GT5U.nei.pressure_delta=Pressure change: %s Pa/s
+GT5U.nei.bare_temperature=Temperature
+GT5U.nei.bare_pressure=Pressure
+GT5U.nei.bare_tier=Tier
+GT5U.nei.bare_name=Name
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -2738,6 +2776,7 @@ gt.time.second.plural=seconds
 
 #Tool modes
 gt.wrench.mode.1=Line Mode
+gt.wrench.mode.2=Precise Mode
 
 # Tooltip for vajra
 gt.vajra.tooltip.flavor=Your friendly instant block breaker
@@ -2887,6 +2926,10 @@ GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
 GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
 GTPP.tooltip.meta_food.warm_touch=Warm to the touch
 GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
+
+tooltip.blockECCFTemp=§6Temperature loss: %d%%
+tooltip.blockECCFPressure=§6Pressure loss: %d%%
+tooltip.blockECCFParallel=§6Parallel multiplier: %d
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
@@ -3291,3 +3334,65 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
+# Fission Fuels
+item.gt.rodLithium.name=Fuel Rod (Lithium)
+item.gt.rodGlowstone.name=Fuel Rod (Glowstone)
+item.gt.rodThorium.name=Fuel Rod (Thorium)
+item.gt.rodThorium2.name=Dual Fuel Rod (Thorium)
+item.gt.rodThorium4.name=Quad Fuel Rod (Thorium)
+item.gt.rodUranium.name=Fuel Rod (Uranium)
+item.gt.rodUranium2.name=Dual Fuel Rod (Uranium)
+item.gt.rodUranium4.name=Quad Fuel Rod (Uranium)
+item.gt.rodMOX.name=Fuel Rod (MOX)
+item.gt.rodMOX2.name=Dual Fuel Rod (MOX)
+item.gt.rodMOX4.name=Quad Fuel Rod (MOX)
+item.gt.rodHighDensityUranium.name=Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityUranium2.name=Dual Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityUranium4.name=Quad Fuel Rod (High Density Uranium)
+item.gt.rodHighDensityPlutonium.name=Fuel Rod (High Density Plutonium)
+item.gt.rodHighDensityPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
+item.gt.rodHighDensityPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
+item.gt.rodExcitedUranium.name=Fuel Rod (Excited Uranium)
+item.gt.rodExcitedUranium2.name=Dual Fuel Rod (Excited Uranium)
+item.gt.rodExcitedUranium4.name=Quad Fuel Rod (Excited Uranium)
+item.gt.rodExcitedPlutonium.name=Fuel Rod (Excited Plutonium)
+item.gt.rodExcitedPlutonium2.name=Dual Fuel Rod (Excited Plutonium)
+item.gt.rodExcitedPlutonium4.name=Quad Fuel Rod (Excited Plutonium)
+item.gt.rodNaquadah.name=Fuel Rod (Naquadah)
+item.gt.rodNaquadah2.name=Dual Fuel Rod (Naquadah)
+item.gt.rodNaquadah4.name=Quad Fuel Rod (Naquadah)
+item.gt.rodNaquadah32.name=The Core
+item.gt.rodNaquadria.name=Fuel Rod (Naquadria)
+item.gt.rodNaquadria2.name=Dual Fuel Rod (Naquadria)
+item.gt.rodNaquadria4.name=Quad Fuel Rod (Naquadria)
+
+item.gt.depletedRodLithium.name=Fuel Rod (Tritium)
+item.gt.depletedRodGlowstone.name=Fuel Rod (Sunnarium)
+item.gt.depletedRodThorium.name=Fuel Rod (Depleted Thorium)
+item.gt.depletedRodThorium2.name=Dual Fuel Rod (Depleted Thorium)
+item.gt.depletedRodThorium4.name=Quad Fuel Rod (Depleted Thorium)
+item.gt.depletedRodUranium.name=Fuel Rod (Depleted Uranium)
+item.gt.depletedRodUranium2.name=Dual Fuel Rod (Depleted Uranium)
+item.gt.depletedRodUranium4.name=Quad Fuel Rod (Depleted Uranium)
+item.gt.depletedRodMOX.name=Fuel Rod (Depleted MOX)
+item.gt.depletedRodMOX2.name=Dual Fuel Rod (Depleted MOX)
+item.gt.depletedRodMOX4.name=Quad Fuel Rod (Depleted MOX)
+item.gt.depletedRodHighDensityUranium.name=Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityUranium2.name=Dual Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityUranium4.name=Quad Fuel Rod (Depleted High Density Uranium)
+item.gt.depletedRodHighDensityPlutonium.name=Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodHighDensityPlutonium2.name=Dual Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodHighDensityPlutonium4.name=Quad Fuel Rod (Depleted High Density Plutonium)
+item.gt.depletedRodExcitedUranium.name=Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedUranium2.name=Dual Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedUranium4.name=Quad Fuel Rod (Depleted Excited Uranium)
+item.gt.depletedRodExcitedPlutonium.name=Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodExcitedPlutonium2.name=Dual Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodExcitedPlutonium4.name=Quad Fuel Rod (Depleted Excited Plutonium)
+item.gt.depletedRodNaquadah.name=Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah2.name=Dual Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah4.name=Quad Fuel Rod (Depleted Naquadah)
+item.gt.depletedRodNaquadah32.name=The Core (Depleted)
+item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
+item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
+item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)

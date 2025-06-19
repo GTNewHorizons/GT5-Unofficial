@@ -3,6 +3,7 @@ package gregtech.api.modularui2;
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GregTech;
 
+import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
@@ -320,6 +321,25 @@ public final class GTGuiTextures {
         .canApplyTheme(true)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+    public static final UITexture COOL_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/cool_module_ECCF_indicator");
+    public static final UITexture HEAT_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/heat_module_ECCF_indicator");
+    public static final UITexture PRESSURE_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/pressure_module_ECCF_indicator");
+    public static final UITexture VACUUM_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/vacuum_module_ECCF_indicator");
+    public static final UITexture EMPTY_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_L");
+    public static final UITexture EMPTY_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_R");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_L");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
+
     // endregion slot overlay
 
     // region progressbar
@@ -375,6 +395,13 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD_PRESSED)
+        .build();
+    public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.builder()
+        .location(GregTech.ID, "gui/button/standard_toggle")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_STANDARD_TOGGLE)
         .build();
     private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
         .location("gui/button/%s_pressed")
@@ -447,6 +474,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = fullImageGT("overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = fullImageGT("overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
@@ -460,6 +489,11 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = fullImageGT(
         "overlay_button/use_inverted_processing_state");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
+    public static final UITexture OVERLAY_BUTTON_LOCK = fullImageGT("overlay_button/lock");
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = fullImageGT(
+        "overlay_button/input_from_output_side");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = fullImageGT("overlay_button/tank_void_excess");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = fullImageGT("overlay_button/tank_void_all");
 
     // endregion button overlay
 
@@ -482,6 +516,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = (AdaptableUITexture) AdaptableUITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .name(GTTextureIds.PICTURE_GT_SCREEN_BLACK)
+        .adaptable(2)
+        .tiled(16, 16)
         .build();
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
@@ -523,6 +563,17 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
+    public static final UITexture PROGRESSBAR_ECCF_TEMPERATURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_temperature")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_TEMPERATURE)
+        .build();
+    public static final UITexture PROGRESSBAR_ECCF_PRESSURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_pressure")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_PRESSURE)
         .build();
 
     // endregion picture

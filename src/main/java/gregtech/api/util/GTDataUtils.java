@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.stream.Stream;
 
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
@@ -98,5 +99,9 @@ public class GTDataUtils {
         }
 
         return count;
+    }
+
+    public static <T> Stream<T> ofNullableStream(T value) {
+        return value == null ? Stream.empty() : Stream.of(value);
     }
 }

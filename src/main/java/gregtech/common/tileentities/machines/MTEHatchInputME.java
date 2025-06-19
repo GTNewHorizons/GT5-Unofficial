@@ -811,6 +811,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         updateValidGridProxySides();
         updateAllInformationSlots();
+
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         return true;
     }
 
@@ -823,6 +828,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
+        tag.setByte("color", this.getColor());
+
+        NBTTagList stockingFluids = new NBTTagList();
 
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = new NBTTagList();
