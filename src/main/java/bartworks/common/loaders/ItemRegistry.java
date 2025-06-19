@@ -165,7 +165,6 @@ import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.processingLoaders.LoadItemContainers;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
@@ -520,7 +519,5 @@ public class ItemRegistry {
             .getStackForm(1L);
         ItemRegistry.voidminer[0] = new MTEVoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
             .getStackForm(1L);
-
-        LoadItemContainers.run();
     }
 }
