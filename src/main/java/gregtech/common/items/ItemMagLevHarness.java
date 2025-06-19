@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -12,19 +11,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.gtnewhorizon.gtnhlib.GTNHLib;
-import com.gtnewhorizon.gtnhlib.datastructs.spatialhashgrid.SpatialHashGrid;
-import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import baubles.api.BaubleType;
 import baubles.api.expanded.BaubleItemHelper;
 import baubles.api.expanded.IBaubleExpanded;
 import baubles.common.lib.PlayerHandler;
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketTether;
 import gregtech.common.data.maglev.Tether;
-import gregtech.common.data.maglev.TetherManager;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -58,15 +55,8 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayerMP player)) return;
         if (player instanceof FakePlayer) return;
 
-        Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
-        SpatialHashGrid<Tether> grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
-        Tether closestActivePylon = getClosestActivePylon(
-            grid,
-            (int) player.posX,
-            (int) player.posY,
-            (int) player.posZ,
-            48);
-
+        Tether activeTether = GTMod.gregtechproxy.tetherManager.getConnectedPylon(player);
+        Tether closestActivePylon = GTMod.gregtechproxy.tetherManager.getClosestActivePylon(player, 48);
         Tether newTether = null;
 
         if (closestActivePylon != null) {
@@ -90,7 +80,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
             }
         }
 
-        TetherManager.PLAYER_TETHERS.replace(player, newTether);
+        GTMod.gregtechproxy.tetherManager.connectPlayer(player, newTether);
 
         setFly(player, player.capabilities.isCreativeMode || newTether != null);
     }
@@ -118,7 +108,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        TetherManager.PLAYER_TETHERS.replace(player, null);
+        GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
     }
 
     @Override
@@ -127,7 +117,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        TetherManager.PLAYER_TETHERS.replace(player, null);
+        GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
         setFly(player, false);
     }
 
@@ -148,30 +138,5 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     @Override
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase entityLivingBase) {
         return true;
-    }
-
-    private Tether getClosestActivePylon(SpatialHashGrid<Tether> grid, int x, int y, int z, int radius) {
-        Iterator<Tether> iterator = grid
-            .iterNearbyWithMetric(x, y, z, radius, SpatialHashGrid.DistanceFormula.Chebyshev);
-        Tether closestTether = null;
-        double closestDistance = Double.MAX_VALUE;
-
-        while (iterator.hasNext()) {
-            Tether tether = iterator.next();
-            if (!tether.active()) continue;
-            double distance = DistanceUtil
-                .chebyshevDistance(x, y, z, tether.sourceX(), tether.sourceY(), tether.sourceZ());
-
-            if (distance > tether.range()) {
-                continue;
-            }
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestTether = tether;
-            }
-        }
-
-        return closestTether;
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,7 +16,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.data.maglev.Tether;
-import gregtech.common.data.maglev.TetherManager;
 
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
@@ -54,8 +54,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             mte.getZCoord(),
             mte.getWorld().provider.dimensionId,
             poweredRange);
-        TetherManager.ACTIVE_PYLONS.get(mte.getWorld().provider.dimensionId)
-            .insert(this.machineTether);
+        GTMod.gregtechproxy.tetherManager.registerPylon(mte.getWorld().provider.dimensionId, this.machineTether);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
         // Tether range is determined if the machine has enough EU
         if (mte.isAllowedToWork()) {
             machineTether.active(true);
-            boolean playerConnected = TetherManager.PLAYER_TETHERS.containsValue(this.machineTether);
+            boolean playerConnected = GTMod.gregtechproxy.tetherManager.hasPlayerConnect(this.machineTether);
             mte.setActive(playerConnected);
             if (mte.isUniversalEnergyStored(powerCost)) {
                 machineTether.range(poweredRange);
@@ -89,8 +88,8 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .remove(this.machineTether);
+            GTMod.gregtechproxy.tetherManager
+                .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
         }
     }
 
@@ -98,8 +97,8 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onUnload() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .remove(this.machineTether);
+            GTMod.gregtechproxy.tetherManager
+                .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
         }
     }
 
