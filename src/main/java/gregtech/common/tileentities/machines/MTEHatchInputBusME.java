@@ -509,7 +509,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         updateValidGridProxySides();
         updateAllInformationSlots();
-      
+
         byte color = nbt.getByte("color");
         this.getBaseMetaTileEntity()
             .setColorization(color);
