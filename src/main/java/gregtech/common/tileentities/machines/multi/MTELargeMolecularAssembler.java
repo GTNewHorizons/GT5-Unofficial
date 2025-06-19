@@ -188,7 +188,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             mMaxProgresstime = 20;
             long craftingProgressTime = 20;
             long craftingEUt = EU_PER_TICK_CRAFTING;
-            mEUt = -EU_PER_TICK_BASIC;
+            lEUt = -EU_PER_TICK_BASIC;
             // Tier EU_PER_TICK_CRAFTING == 2
             int extraTier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()) - 2);
             // The first two Overclocks reduce the Finish time to 0.5s and 0.25s

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -119,7 +120,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(59, 42))
             .widget(
-                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
@@ -277,11 +279,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override

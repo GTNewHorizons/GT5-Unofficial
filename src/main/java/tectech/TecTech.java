@@ -13,7 +13,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import eu.usrv.yamcore.auxiliary.LogHelper;
-import gregtech.api.enums.Mods;
 import gregtech.api.objects.XSTR;
 import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
@@ -59,11 +58,6 @@ public class TecTech {
 
     public static EnderWorldSavedData enderWorldSavedData;
 
-    /**
-     * For Loader.isModLoaded checks during the runtime
-     */
-    public static boolean hasCOFH = false;
-
     public static final byte tectechTexturePage1 = 8;
 
     @Mod.EventHandler
@@ -85,8 +79,6 @@ public class TecTech {
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void Load(FMLInitializationEvent event) {
-        hasCOFH = Mods.COFHCore.isModLoaded();
-
         MainLoader.load();
     }
 

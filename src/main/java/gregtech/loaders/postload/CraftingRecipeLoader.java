@@ -1,9 +1,6 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.NotEnoughItems;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -2022,5 +2019,14 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             GTModHandler.getIC2Item("electronicCircuit", 1L),
             new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
+
+        if (Thaumcraft.isModLoaded()) {
+            GTModHandler.addCraftingRecipe(
+                ItemList.MagLevHarness.get(1),
+                bits_no_remove_buffered,
+                new Object[] { "RAR", "SBS", "RSR", 'R', OrePrefixes.stick.get(Materials.Thaumium), 'A',
+                    OrePrefixes.plate.get(Materials.InfusedAir), 'S', OrePrefixes.plate.get(Materials.SteelMagnetic),
+                    'B', GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 2), });
+        }
     }
 }

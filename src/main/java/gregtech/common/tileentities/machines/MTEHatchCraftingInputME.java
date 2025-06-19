@@ -45,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -172,7 +171,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         public boolean hasChanged(ItemStack newPattern, World world) {
-            return newPattern == null
+            return newPattern == null || patternDetails == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                         .getPatternForItem(newPattern, world)));
@@ -860,7 +859,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE)
-                .addTooltips(ImmutableList.of("Place manual items"))
+                .addTooltip(
+                    StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
                 .setSize(16, 16)
                 .setPos(170, 46))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -870,7 +870,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
-                .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.export"))
                 .setSize(16, 16)
                 .setPos(170, 28))
             .widget(

@@ -717,6 +717,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
     HellishForceCatalyst,
+    CrystalColorizationCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,
@@ -907,6 +908,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     AmmoniumNitrateDust,
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
+
+    SimpleHandPump,
+    AdvancedHandPump,
+    SuperHandPump,
+    UltimateHandPump,
+    ExpandableHandPump,
+    DehydratorCoilWireEV,
+    DehydratorCoilWireIV,
+    DehydratorCoilWireLuV,
+    DehydratorCoilWireZPM,
+    PersonalCloakingDevice,
+    PersonalHealingDevice,
 
     ;
 

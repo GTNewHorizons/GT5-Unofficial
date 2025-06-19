@@ -314,11 +314,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return maxEnergy;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
     private String[] aCachedToolTip;
 
     /*
@@ -1241,7 +1236,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             new ItemDrawable(() -> mToolStacks.get(getBaseMetaTileEntity().isActive() + "GLASS")).asWidget()
                 .setPos(156, 22))
             .widget(
-                TextWidget.dynamicString(() -> getBaseMetaTileEntity().isActive() ? "On" : "Off")
+                TextWidget
+                    .dynamicString(
+                        () -> getBaseMetaTileEntity().isActive() ? StatCollector.translateToLocal("gtpp.gui.text.on")
+                            : StatCollector.translateToLocal("gtpp.gui.text.off"))
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(157, 31))
@@ -1287,15 +1285,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.multiblock.progress") + ": "
-                            + EnumChatFormatting.GREEN
-                            + getBaseMetaTileEntity().getProgress() / 20
-                            + EnumChatFormatting.RESET
-                            + " s / "
-                            + EnumChatFormatting.YELLOW
-                            + getBaseMetaTileEntity().getMaxProgress() / 20
-                            + EnumChatFormatting.RESET
-                            + " s")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.progress.text",
+                            "" + EnumChatFormatting.GREEN
+                                + getBaseMetaTileEntity().getProgress() / 20
+                                + EnumChatFormatting.RESET,
+                            "" + EnumChatFormatting.YELLOW
+                                + getBaseMetaTileEntity().getMaxProgress() / 20
+                                + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1307,15 +1304,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal(
-                            "" + EnumChatFormatting.GREEN
-                                + getStoredEnergyInAllEnergyHatches()
-                                + EnumChatFormatting.RESET
-                                + " EU / "
-                                + EnumChatFormatting.YELLOW
-                                + getMaxEnergyStorageOfAllEnergyHatches()
-                                + EnumChatFormatting.RESET
-                                + " EU"))
+                        () -> "" + EnumChatFormatting.GREEN
+                            + getStoredEnergyInAllEnergyHatches()
+                            + EnumChatFormatting.RESET
+                            + " EU / "
+                            + EnumChatFormatting.YELLOW
+                            + getMaxEnergyStorageOfAllEnergyHatches()
+                            + EnumChatFormatting.RESET
+                            + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1325,9 +1321,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
             .widget(
-                TextWidget.dynamicString(
-                    () -> StatCollector.translateToLocal(
-                        "" + EnumChatFormatting.RED + -getLastRecipeEU() + EnumChatFormatting.RESET + " EU/t/parallel"))
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.eu_t_p.text",
+                            "" + EnumChatFormatting.RED + -getLastRecipeEU() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
@@ -1339,22 +1337,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal(
-                            "" + EnumChatFormatting.GREEN
-                                + getLastRecipeEU()
-                                + EnumChatFormatting.RESET
-                                + " EU/t/parallel"))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.eu_t_p.text",
+                            "" + EnumChatFormatting.GREEN + getLastRecipeEU() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() < 0 && getLastRecipeDuration() > 0))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.multiblock.duration") + ": "
-                            + EnumChatFormatting.RED
-                            + getLastRecipeDuration()
-                            + EnumChatFormatting.RESET
-                            + " ticks")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.duration.text",
+                            "" + EnumChatFormatting.RED + getLastRecipeDuration() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() != 0 && getLastRecipeDuration() > 0))
@@ -1379,15 +1373,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal(
-                            "" + EnumChatFormatting.YELLOW
-                                + getMaxInputVoltage()
-                                + EnumChatFormatting.RESET
-                                + " EU/t(*2A) "
-                                + StatCollector.translateToLocal("GTPP.machines.tier")
-                                + ": "
-                                + EnumChatFormatting.YELLOW
-                                + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.max_voltage.txt",
+                            "" + EnumChatFormatting.YELLOW + getMaxInputVoltage() + EnumChatFormatting.RESET,
+                            EnumChatFormatting.YELLOW + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
                                 + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
@@ -1406,11 +1395,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
-                            + EnumChatFormatting.RED
-                            + getPollutionPerSecond(null)
-                            + EnumChatFormatting.RESET
-                            + "/sec")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.multiblock.pollution.txt",
+                            "" + EnumChatFormatting.RED + getPollutionPerSecond(null) + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1426,56 +1413,52 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                new TextWidget("Total Time Since Built: ").setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> mMachine))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> "" + EnumChatFormatting.DARK_GREEN
-                            + getRuntimeWeeksDisplay()
-                            + EnumChatFormatting.RESET
-                            + " Weeks,")
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.time_since_built") + ": ")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> "" + EnumChatFormatting.DARK_GREEN
-                            + getRuntimeDaysDisplay()
-                            + EnumChatFormatting.RESET
-                            + " Days,")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.time.week",
+                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeWeeksDisplay() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> "" + EnumChatFormatting.DARK_GREEN
-                            + getRuntimeHoursDisplay()
-                            + EnumChatFormatting.RESET
-                            + " Hours,")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.time.days",
+                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeDaysDisplay() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> "" + EnumChatFormatting.DARK_GREEN
-                            + getRuntimeMinutesDisplay()
-                            + EnumChatFormatting.RESET
-                            + " Minutes,")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.time.hours",
+                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeHoursDisplay() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> "" + EnumChatFormatting.DARK_GREEN
-                            + getRuntimeSecondsDisplay()
-                            + EnumChatFormatting.RESET
-                            + " Seconds")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.time.minutes",
+                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeMinutesDisplay() + EnumChatFormatting.RESET))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> mMachine))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.time.seconds",
+                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeSecondsDisplay() + EnumChatFormatting.RESET))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine));
