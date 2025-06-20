@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -336,32 +337,22 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (!this.eDynamoMulti.isEmpty()) for (MTEHatch tHatch : this.eDynamoMulti) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
-            } else {
-                addEnergyOutput_EM(outputPower, 1);
+        if (!this.eDynamoMulti.isEmpty()) {
+            MTEHatchDynamoMulti tHatch = this.eDynamoMulti.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + outputPower));
+            }
+            else {
+                stopMachine(ShutDownReasonRegistry.NONE);
             }
         }
-        if (!this.mDynamoHatches.isEmpty()) for (MTEHatch tHatch : this.mDynamoHatches) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
-            } else {
-                addEnergyOutput_EM(outputPower, 1);
+        if (!this.mDynamoHatches.isEmpty()) {
+            MTEHatchDynamo tHatch = this.mDynamoHatches.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + outputPower));
+            }
+            else {
+                stopMachine(ShutDownReasonRegistry.NONE);
             }
         }
     }
