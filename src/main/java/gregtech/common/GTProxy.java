@@ -147,6 +147,7 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -734,6 +735,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
 
     public GTSpawnEventHandler spawnEventHandler;
+    public TetherManager tetherManager;
 
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
@@ -1220,6 +1222,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
         spawnEventHandler = new GTSpawnEventHandler();
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
+        tetherManager = new TetherManager();
+        FMLCommonHandler.instance()
+            .bus()
+            .register(tetherManager);
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
@@ -1274,11 +1280,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
-        WirelessChargerManager.clearChargerMap();
-        if (spawnEventHandler != null) {
-            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
-            spawnEventHandler = null;
-        }
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -1293,6 +1294,20 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         this.mUniverse = null;
+    }
+
+    public void onServerStopped() {
+        WirelessChargerManager.clearChargerMap();
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+            spawnEventHandler = null;
+        }
+        if (tetherManager != null) {
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(tetherManager);
+            tetherManager = null;
+        }
     }
 
     @SubscribeEvent
