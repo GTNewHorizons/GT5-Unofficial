@@ -39,11 +39,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -91,34 +87,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return DescTextLocalization.addText("MultiNqGenerator.hint", 8);
-    }
-
-    public final boolean addToGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof MTEHatch) {
-                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                }
-                if (aMetaTileEntity instanceof MTEHatchInput) {
-                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                    return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                    return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                    return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-                } else {
-                    return false;
-                }
-            }
-        }
     }
 
     @Override
