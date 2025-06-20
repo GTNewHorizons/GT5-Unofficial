@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -48,6 +47,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
@@ -308,19 +308,25 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         if (!this.eDynamoMulti.isEmpty()) {
             MTEHatchDynamoMulti tHatch = this.eDynamoMulti.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
-                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + outputPower));
-            }
-            else {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
+            } else {
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
         if (!this.mDynamoHatches.isEmpty()) {
             MTEHatchDynamo tHatch = this.mDynamoHatches.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
-                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + outputPower));
-            }
-            else {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
+            } else {
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }
