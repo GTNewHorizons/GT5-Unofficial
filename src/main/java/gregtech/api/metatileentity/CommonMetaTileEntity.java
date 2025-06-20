@@ -208,6 +208,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         }
     }
 
+    @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);

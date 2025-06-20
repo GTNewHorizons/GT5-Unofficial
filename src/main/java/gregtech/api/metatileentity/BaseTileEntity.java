@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.enums.GTValues.NW;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -58,11 +60,11 @@ import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
+import gregtech.api.net.GTPacketBlockEvent;
 import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
-import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -536,7 +538,11 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        GTBlockEventTracker.enqueue(worldObj, xCoord, yCoord, zCoord, aID, aValue);
+        NW.sendPacketToAllPlayersInRange(
+            worldObj,
+            new GTPacketBlockEvent(xCoord, (short) yCoord, zCoord, aID, aValue),
+            xCoord,
+            zCoord);
     }
 
     protected boolean crossedChunkBorder(int x, int z) {
