@@ -57,10 +57,10 @@ public class GTPacketBlockEvent extends GTPacket {
         if (!(blockAccess instanceof World world)) return;
         if (world.provider.dimensionId != worldId) return;
         for (int i = 0; i < eventCount; ++i) {
-            final long packedCoord = packedCoordinates.getLong(i);
-            final int x = CoordinatePacker.unpackX(packedCoord);
-            final int y = CoordinatePacker.unpackY(packedCoord);
-            final int z = CoordinatePacker.unpackZ(packedCoord);
+            final long packedCoordinate = packedCoordinates.getLong(i);
+            final int x = CoordinatePacker.unpackX(packedCoordinate);
+            final int y = CoordinatePacker.unpackY(packedCoordinate);
+            final int z = CoordinatePacker.unpackZ(packedCoordinate);
             final TileEntity tileEntity = world.getTileEntity(x, y, z);
             if (tileEntity == null) continue;
             final short idAndValue = idsAndValues.getShort(i);
