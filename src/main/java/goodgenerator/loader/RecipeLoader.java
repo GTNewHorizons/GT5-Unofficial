@@ -878,6 +878,13 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemRefer.Special_Ceramics_Dust.get(2), ItemList.Shape_Mold_Casing.get(0))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
+
         // Advanced Recipe with netherite
         GTValues.RA.stdBuilder()
             .itemInputs(
