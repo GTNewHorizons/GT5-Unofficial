@@ -54,7 +54,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTEMultiNqGenerator> multiDefinition = null;
-    protected long leftEnergy = 0;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected FluidStack lockedFluid = null;
@@ -139,7 +138,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.times = aNBT.getInteger("mTimes");
-        this.leftEnergy = aNBT.getLong("mLeftEnergy");
         this.basicOutput = aNBT.getInteger("mbasicOutput");
         if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null) this.lockedFluid = new FluidStack(
             FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")),
@@ -151,7 +149,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mTimes", this.times);
-        aNBT.setLong("mLeftEnergy", this.leftEnergy);
         aNBT.setInteger("mbasicOutput", this.basicOutput);
         if (lockedFluid != null) {
             aNBT.setString(
