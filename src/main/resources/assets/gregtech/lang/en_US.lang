@@ -727,7 +727,7 @@ GT5U.power_goggles_config.text_good=Good Text Color
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pylon
-GT5U.maglevHarness.pylons=§cYOU MUST CONSTRUCT ADDITIONAL PYLONS!
+GT5U.maglevHarness.pylons=§4YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
@@ -1409,7 +1409,7 @@ GT5U.gui.text.drill_extracting_ores=Extracting Ores
 GT5U.gui.text.drill_extracting_ores_failed=Extraction Failed
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
-GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
+GT5U.gui.text.drone_noDrone=§4Can't find any drone in Input Buses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name

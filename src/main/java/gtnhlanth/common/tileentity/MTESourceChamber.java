@@ -174,6 +174,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
         GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
+            .caching(false)
             .items(tItems)
             .voltage(tVoltageActual)
             .find();
