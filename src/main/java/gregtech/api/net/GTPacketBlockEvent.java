@@ -8,7 +8,9 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
+import it.unimi.dsi.fastutil.shorts.ShortArrayList;
 import it.unimi.dsi.fastutil.shorts.ShortList;
 
 /**
@@ -43,6 +45,8 @@ public class GTPacketBlockEvent extends GTPacket {
         GTPacketBlockEvent packet = new GTPacketBlockEvent();
         packet.worldId = buffer.readInt();
         packet.eventCount = buffer.readInt();
+        packet.packedCoordinates = new LongArrayList();
+        packet.idsAndValues = new ShortArrayList();
         for (int i = 0; i < packet.eventCount; ++i) packet.packedCoordinates.add(buffer.readLong());
         for (int i = 0; i < packet.eventCount; ++i) packet.idsAndValues.add(buffer.readShort());
         return packet;
