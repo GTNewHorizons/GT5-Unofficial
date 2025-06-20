@@ -24,9 +24,9 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.interfaces.tileentity.IRedstoneTileEntity;
-import gregtech.api.net.GTPacketBlockEvent;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
@@ -814,11 +814,7 @@ public class TileEntityBase extends TileEntity
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        GTValues.NW.sendPacketToAllPlayersInRange(
-            this.worldObj,
-            new GTPacketBlockEvent(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
-            this.xCoord,
-            this.zCoord);
+        GTBlockEventTracker.enqueue(worldObj, xCoord, yCoord, zCoord, aID, aValue);
     }
 
     private boolean crossedChunkBorder(int aX, int aZ) {
