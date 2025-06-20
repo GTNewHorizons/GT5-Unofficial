@@ -913,6 +913,13 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
+        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
+        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
+        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
+        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
+        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
+        ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
+        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
@@ -2552,6 +2559,31 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent);
             }
         }
+    }
+
+    /**
+     * This method will be called when
+     * {@link net.minecraftforge.common.ForgeHooks#blockStrength(Block, EntityPlayer, World, int, int, int)} returns,
+     * giving a chance to modify the block strength.
+     * <p>
+     * This method will be invoked by the mixin (forge.ForgeHooksMixin).
+     *
+     * @param block                the block to break
+     * @param player               the player breaking the block
+     * @param world                the world the block is in
+     * @param x                    the x coordinate of the block
+     * @param y                    the y coordinate of the block
+     * @param z                    the z coordinate of the block
+     * @param defaultBlockStrength the default block strength (the default return value)
+     * @return the new block strength
+     */
+    public static float onBlockStrength(Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        ItemStack stack = player.getCurrentEquippedItem();
+        if (stack != null && stack.getItem() instanceof MetaGeneratedTool tool) {
+            return tool.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
     }
 
     public static class OreDictEventContainer {

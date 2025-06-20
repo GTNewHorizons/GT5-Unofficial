@@ -1,23 +1,48 @@
 package gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -36,23 +61,71 @@ import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITESRProvider;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.DigitalStorageRenderer;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider {
 
+    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
     protected boolean mVoidOverflow = false;
+    protected boolean mVoidFull = false;
     protected boolean mDisableFilter;
+    public boolean mFacingHasBeenUpdated = false;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
+    public ForgeDirection mMainFacing = UNKNOWN;
+    protected ItemStack lockedItem = null;
+    private ItemStack displayItemCache = null;
+    private int displayCountCache = 0;
+    private ThreadLocal<DigitalStorageRenderer> storageRenderer = ThreadLocal.withInitial(DigitalStorageRenderer::new);
+    /**
+     * Note this value may have incorrect item count.
+     */
+    public ItemStack displayItem = null;
+    public int displayItemCount = 0;
+
+    private final IntSyncValue itemCountSyncHandler = new IntSyncValue(
+        this::getItemCount,
+        value -> clientItemCount = value);
+    private final ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
+    private final BooleanSyncValue autoOutputHandler = new BooleanSyncValue(
+        () -> mOutputItem,
+        value -> mOutputItem = value);
+
+    private final BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
+        mLockItem = value;
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (mLockItem) {
+                setLockedItem(getItemStack());
+            } else {
+                clearLock();
+            }
+        }
+    });
+
+    private final BooleanSyncValue allowInputFromOutputSideHandler = new BooleanSyncValue(
+        () -> mAllowInputFromOutputSide,
+        value -> mAllowInputFromOutputSide = value);
+
+    private final BooleanSyncValue voidOverflowHandler = new BooleanSyncValue(
+        () -> mVoidOverflow,
+        value -> mVoidOverflow = value);
+
+    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(() -> mVoidFull, value -> mVoidFull = value);
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -83,6 +156,77 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
+        storageRenderer.get()
+            .renderMachine(this, world, x, y, z, block, renderer);
+        return true;
+    }
+
+    @Override
+    public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
+        storageRenderer.get()
+            .renderMachine(this, null, 0, 0, 0, block, renderer);
+        return true;
+    }
+
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+        if (getItemStack() != null) {
+            data.setInteger("count", getItemCount());
+            getItemStack().writeToNBT(data);
+        }
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        if (data.hasKey("count")) {
+            displayItemCount = data.getInteger("count");
+            displayItem = ItemStack.loadItemStackFromNBT(data);
+        } else {
+            displayItemCount = 0;
+            displayItem = null;
+        }
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        mMainFacing = ForgeDirection.getOrientation(aValue);
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) mMainFacing.ordinal();
+    }
+
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+
+        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
+        // arrives
+        if (mMainFacing == UNKNOWN) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te != null && te.getWorld().isRemote) {
+                mMainFacing = te.getFrontFacing();
+                te.setFrontFacing(te.getBackFacing());
+            }
+        }
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        super.initDefaultModes(aNBT);
+        mMainFacing = ForgeDirection.UNKNOWN;
     }
 
     @Override
@@ -236,11 +380,29 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking() && setMainFacing(wrenchingSide)) {
+            GTModHandler.damageOrDechargeItem(aTool, 1, 1000, aPlayer);
+        } else if (super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool)) {
+            GTModHandler.damageOrDechargeItem(aTool, 1, 1000, aPlayer);
+        }
+
+        if (aTool.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, aTool);
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide()) {
-            if ((getItemCount() <= 0)) {
-                setItemStack(null);
+            doDisplayThings();
+
+            if ((getItemCount() <= 0) || mVoidFull) {
+                if (getLockedItem() == null || (getLockedItem() != null && getItemStack() != null
+                    && !getItemStack().isItemEqual(getLockedItem()))) {
+                    setItemStack(null);
+                }
                 setItemCount(0);
             }
             if (getItemStack() == null && mInventory[0] != null) {
@@ -259,7 +421,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     mInventory[0] = null;
                 }
             }
-            if (mInventory[1] == null && stack != null) {
+            if (mInventory[1] == null && stack != null && (count > 0)) {
                 mInventory[1] = stack.copy();
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
@@ -271,6 +433,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             setItemCount(count);
             if (stack != null) {
+                if (mLockItem && getLockedItem() == null) {
+                    setLockedItem(stack);
+                }
                 mInventory[2] = stack.copy();
                 mInventory[2].stackSize = Math.min(stack.getMaxStackSize(), count);
             } else {
@@ -279,6 +444,67 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
+
+            if (mOutputItem && mInventory[1] != null && (aTimer % 20 == 0)) {
+                final IInventory tTileEntity = aBaseMetaTileEntity
+                    .getIInventoryAtSide(getBaseMetaTileEntity().getFrontFacing());
+                if (tTileEntity != null) {
+                    moveMultipleItemStacks(
+                        aBaseMetaTileEntity,
+                        tTileEntity,
+                        getBaseMetaTileEntity().getFrontFacing(),
+                        getBaseMetaTileEntity().getBackFacing(),
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1,
+                        mInventory.length);
+                    for (int i = 0; i < mInventory.length; i++)
+                        if (mInventory[i] != null && mInventory[i].stackSize <= 0 && (i != 2 || !isLocked()))
+                            mInventory[i] = null;
+                }
+            }
+
+            boolean sameStack = displayItemCache == null ? stack == null
+                : GTUtility.areStacksEqual(stack, displayItemCache);
+            boolean sameStackSize = displayItemCache == null ? stack == null : displayCountCache == count;
+            if (!sameStack || !sameStackSize) {
+                if (stack != null) {
+                    displayItemCache = stack;
+                    displayCountCache = count;
+                } else {
+                    displayItemCache = null;
+                    displayCountCache = 0;
+                }
+                getBaseMetaTileEntity().issueTileUpdate();
+            }
+        }
+    }
+
+    protected boolean isValidMainFacing(ForgeDirection side) {
+        return (side.flag & UNKNOWN.flag) == 0;
+    }
+
+    public boolean setMainFacing(ForgeDirection side) {
+        if (!isValidMainFacing(side)) return false;
+        mMainFacing = side;
+        if (getBaseMetaTileEntity().getFrontFacing() == mMainFacing) {
+            getBaseMetaTileEntity().setFrontFacing(side.getOpposite());
+        }
+        onFacingChange();
+        onMachineBlockUpdate();
+        return true;
+    }
+
+    protected void doDisplayThings() {
+        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
+            mMainFacing = getBaseMetaTileEntity().getFrontFacing();
+        }
+        if (isValidMainFacing(mMainFacing) && !mFacingHasBeenUpdated) {
+            mFacingHasBeenUpdated = true;
+            getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }
     }
 
@@ -290,7 +516,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
+        return (facing.flag & ~mMainFacing.flag) != 0;
     }
 
     @Override
@@ -349,11 +575,31 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected abstract String localizedChestName();
 
     @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        savePersistentNBTData(aNBT);
+        super.setItemNBT(aNBT);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        savePersistentNBTData(aNBT);
+
+        aNBT.setBoolean("mFacingHasBeenUpdated", mFacingHasBeenUpdated);
+        aNBT.setInteger("mMainFacing", mMainFacing.ordinal());
+    }
+
+    private void savePersistentNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mItemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
+        aNBT.setBoolean("mOutputItem", mOutputItem);
+        aNBT.setBoolean("mLockItem", mLockItem);
+        if (lockedItem != null) {
+            aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
+        }
+        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
+        aNBT.setBoolean("mVoidFull", mVoidFull);
     }
 
     @Override
@@ -363,6 +609,23 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
+        mOutputItem = aNBT.getBoolean("mOutputItem");
+        mLockItem = aNBT.getBoolean("mLockItem");
+        if (aNBT.hasKey("lockedItem")) {
+            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedKey"));
+        }
+        if (aNBT.hasKey("mAllowInputFromOutputSide")) {
+            mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        } else {
+            mAllowInputFromOutputSide = true; // previous version has no output side
+        }
+        mVoidFull = aNBT.getBoolean("mVoidFull");
+        if (aNBT.hasKey("mMainFacing")) {
+            mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
+        } else {
+            mMainFacing = UNKNOWN;
+        }
+        mFacingHasBeenUpdated = aNBT.getBoolean("mFacingHasBeenUpdated");
     }
 
     @Override
@@ -376,6 +639,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
+        if (lockedItem != null && !lockedItem.isItemEqual(aStack)) return false;
+        if (!mAllowInputFromOutputSide && side == getBaseMetaTileEntity().getFrontFacing()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
@@ -386,12 +651,37 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
-        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_SCHEST_GLOW)
-                .glow()
-                .build() };
+        return null;
+    }
+
+    @Override
+    public void setLockedItem(@Nullable ItemStack itemStack) {
+        if (itemStack == null) {
+            clearLock();
+        } else {
+            lockedItem = ItemHandlerHelper.copyStackWithSize(itemStack, 1);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getLockedItem() {
+        return lockedItem;
+    }
+
+    @Override
+    public void clearLock() {
+        lockedItem = null;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return lockedItem != null;
+    }
+
+    @Override
+    public boolean acceptsItemLock() {
+        return true;
     }
 
     @Override
@@ -457,5 +747,200 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
 
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        syncUIValues(syncManager);
+
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build();
+        buildChestIO(panel);
+        buildDigitalInterface(panel);
+        buildToggleButtons(panel, syncManager);
+        return panel;
+    }
+
+    private void syncUIValues(PanelSyncManager syncManager) {
+        syncManager.registerSlotGroup("item_inv", 0);
+        syncManager.syncValue("digital_chest_amount", itemCountSyncHandler);
+        syncManager.syncValue("digital_chest_ghost", new ItemSlotSH(ghost));
+        syncManager.syncValue("auto_output", autoOutputHandler);
+        syncManager.syncValue("lock_item", lockItemHandler);
+        syncManager.syncValue("allow_input_from_output_side", allowInputFromOutputSideHandler);
+        syncManager.syncValue("void_overflow", voidOverflowHandler);
+        syncManager.syncValue("void_full", voidFullHandler);
+    }
+
+    private void buildChestIO(ModularPanel panel) {
+        panel.child(
+            new ItemSlot().slot(
+                new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
+                    .filter(
+                        itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null
+                            || ghost.getStack()
+                                .isItemEqual(itemStack)))
+                .pos(79, 16)
+                .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
+            .child(
+                new ItemSlot().slot(
+                    new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
+                        .accessibility(false, true))
+                    .pos(79, 52)
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT));
+    }
+
+    private void buildDigitalInterface(ModularPanel panel) {
+        panel.child(
+            new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_SCREEN_BLACK).pos(7, 16)
+                .size(71, 45))
+            .child(
+                IKey.lang("GT5U.gui.text.item.amount")
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .alignment(Alignment.CenterLeft)
+                    .pos(10, 20))
+            .child(
+                IKey.dynamic(() -> numberFormat.format(clientItemCount))
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .alignment(Alignment.CenterLeft)
+                    .pos(10, 30)
+                    .size(60, 10))
+            .child(
+                IKey.lang(
+                    () -> (lockItemHandler.getBoolValue() && ghost.getStack() != null) ? "GT5U.gui.text.locked" : "")
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .alignment(Alignment.CenterLeft)
+                    .pos(10, 40)
+                    .size(60, 10))
+            .child(
+                new DynamicDrawable(() -> new ItemDrawable().setItem(ghost.getStack())).asIcon()
+                    .asWidget()
+                    .tooltipBuilder(richTooltip -> {
+                        if (ghost.getStack() != null) {
+                            richTooltip.addFromItem(ghost.getStack());
+                        }
+                        richTooltip.markDirty();
+                    })
+                    .pos(59, 42));
+    }
+
+    private void buildToggleButtons(ModularPanel panel, PanelSyncManager syncManager) {
+        panel.child(new ToggleButton().value(new BoolValue.Dynamic(autoOutputHandler::getBoolValue, val -> {
+            autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue());
+            syncManager.getPlayer()
+                .addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocal(
+                            mOutputItem ? "GT5U.machines.digitalchest.autooutput.enabled"
+                                : "GT5U.machines.digitalchest.autooutput.disabled")));
+        }))
+            .tooltip(
+                false,
+                richTooltip -> richTooltip
+                    .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
+            .tooltip(
+                true,
+                richTooltip -> richTooltip
+                    .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
+            .pos(7, 63)
+            .size(18, 18))
+            .child(new ToggleButton().value(new BoolValue.Dynamic(lockItemHandler::getBoolValue, val -> {
+                lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue());
+                syncManager.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            !mLockItem ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")
+                                : displayItem != null
+                                    ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
+                                    : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
+            }))
+                .tooltip(
+                    false,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.lockItem.tooltip").text))
+                .tooltip(
+                    true,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.lockItem.tooltip").text))
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
+                .pos(25, 63)
+                .size(18, 18))
+            .child(
+                new ToggleButton().value(new BoolValue.Dynamic(allowInputFromOutputSideHandler::getBoolValue, val -> {
+                    allowInputFromOutputSideHandler.setBoolValue(!allowInputFromOutputSideHandler.getBoolValue());
+                    syncManager.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
+                                    : GTUtility.trans("096", "Input from Output Side forbidden")));
+                }))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.inputfromoutput.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.inputfromoutput.tooltip").text))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+                    .pos(43, 63)
+                    .size(18, 18))
+            .child(new ToggleButton().value(new BoolValue.Dynamic(voidOverflowHandler::getBoolValue, val -> {
+                voidOverflowHandler.setBoolValue(!voidOverflowHandler.getBoolValue());
+                syncManager.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
+                                : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
+            }))
+                .tooltip(
+                    false,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
+                .tooltip(
+                    true,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
+                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
+                .pos(98, 63)
+                .size(18, 18))
+            .child(new ToggleButton().value(new BoolValue.Dynamic(voidFullHandler::getBoolValue, val -> {
+                voidFullHandler.setBoolValue(!voidFullHandler.getBoolValue());
+                syncManager.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
+                                : GTUtility.trans("269", "Void Full Mode Disabled")));
+            }))
+                .tooltip(
+                    false,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                .tooltip(
+                    true,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
+                .pos(116, 63)
+                .size(18, 18));
     }
 }

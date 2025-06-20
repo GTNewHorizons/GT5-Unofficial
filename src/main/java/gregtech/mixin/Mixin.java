@@ -20,6 +20,11 @@ import gregtech.common.pollution.PollutionConfig;
 public enum Mixin {
 
     // Minecraft
+    GregtechCapes(new Builder("Injects the gregtech capes").addMixinClasses("minecraft.AbstractClientPlayerMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)),
     SoundManagerMixin(new Builder("Seeking sound playback")
         .addMixinClasses("minecraft.SoundManagerMixin", "minecraft.SoundManagerInnerMixin")
         .addTargetedMod(VANILLA)
@@ -76,6 +81,19 @@ public enum Mixin {
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
 
+    LoadWorldHook(new Builder("Hook into world loading to reset some renderers")
+        .addMixinClasses("minecraft.MinecraftLoadWorldMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)),
+
+    ForgeHooksMixin(new Builder("Adds missing hooks in ForgeHooks").addMixinClasses("forge.ForgeHooksMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+
     IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
         .addTargetedMod(TargetedMod.IC2)
@@ -88,6 +106,11 @@ public enum Mixin {
             .setApplyIf(() -> true)
             .setPhase(Phase.LATE)
             .setSide(Side.BOTH)),
+    IC2_REMOVE_FISSION_FUELS(new Builder("Removes IC2 Fission Fuels").addMixinClasses("ic2.MixinIc2FissionFuelRemoval")
+        .addTargetedMod(TargetedMod.IC2)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)),
 
     // Hazmat armors
     IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)

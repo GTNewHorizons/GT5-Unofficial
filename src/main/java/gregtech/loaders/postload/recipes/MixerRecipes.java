@@ -1252,14 +1252,6 @@ public class MixerRecipes implements Runnable {
         // radiation manufacturing
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemStack(Items.glowstone_dust, 9))
-            .itemOutputs(ItemList.GlowstoneCell.get(1))
-            .fluidInputs(Materials.Helium.getGas(250))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .fluidInputs(Materials.Water.getFluid(500))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
