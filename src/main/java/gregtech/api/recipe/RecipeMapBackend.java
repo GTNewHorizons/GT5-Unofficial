@@ -443,6 +443,7 @@ public class RecipeMapBackend {
         int hash = 0;
         for (int i = 0; i < items.length; i++) {
             ItemStack stack = items[i];
+            if (stack == null) continue;
             Item item = stack.getItem();
             assert item != null;
             hash += item.hashCode();
@@ -450,6 +451,7 @@ public class RecipeMapBackend {
         }
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];
+            if (stack == null) continue;
             Fluid fluid = stack.getFluid();
             hash += fluid.hashCode();
         }
