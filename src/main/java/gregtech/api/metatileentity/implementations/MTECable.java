@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -484,7 +483,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                             return true;
                         }
 
-                        for (ForgeDirection to : ForgeDirection.VALID_DIRECTIONS) {
+                        // Start search continuing in the same direction.
+                        // This makes connections more consistent with different cardinal orientations.
+                        int start = from.getOpposite()
+                            .ordinal();
+                        for (int offset = 0; offset < 6; ++offset) {
+                            ForgeDirection to = ForgeDirection.VALID_DIRECTIONS[(start + offset) % 6];
                             if (to == from) continue; // Do not go backwards.
 
                             if (cable.isConnectedAtSide(to) && cable.getBaseMetaTileEntity()
@@ -555,7 +559,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     /**
-     * This method is a part of the group connection algorithm. It checks whether the given side of the cable is facing
+     * This method is a part of the multi-connection algorithm. It checks whether the given side of the cable is facing
      * a MetaTileEntity that can be safely connected to this cable. This can be:
      * <ul>
      * <li>A machine that can output or accept power of the same voltage as this cable on that side.</li>
@@ -821,9 +825,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 }
             }
             if (dontAllow) {
-                pipe.addToLock(pipe, DOWN);
+                pipe.addToLock(pipe, ForgeDirection.DOWN);
             } else {
-                pipe.removeFromLock(pipe, DOWN);
+                pipe.removeFromLock(pipe, ForgeDirection.DOWN);
             }
         }
     }
