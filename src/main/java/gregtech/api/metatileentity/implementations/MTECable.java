@@ -422,7 +422,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 Set<MTECable> ToConnectAll = new HashSet<>();
 
                 // Initialize search.
-                MTECable cable = getSameMaterialCableOnSide(wrenchingSide);
+                MTECable cable = getConnectableCableOnSide(wrenchingSide);
                 ForgeDirection from = wrenchingSide.getOpposite();
 
                 if (cable != null) {
@@ -466,7 +466,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
                         for (ForgeDirection to : ForgeDirection.VALID_DIRECTIONS) {
                             if (to == from) continue; // Do not go backwards.
-                            MTECable nextCable = cable.getSameMaterialCableOnSide(to);
+                            MTECable nextCable = cable.getConnectableCableOnSide(to);
                             if (nextCable != null) {
                                 ForgeDirection nextFrom = to.getOpposite();
                                 if (cable.isConnectedAtSide(to) && nextCable.isConnectedAtSide(nextFrom)) {
@@ -512,10 +512,24 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         return false;
     }
 
-    public MTECable getSameMaterialCableOnSide(ForgeDirection side) {
+    /**
+     * If the tile on the given side matches the following conditions:
+     * * It is a GT EU cable (MTECable),
+     * * It is made of the same material as this cable,
+     * * It is colored by the same color as this cable, or both are colorless,
+     * then it returns that cable. Otherwise it returns null.
+     * 
+     * @param side The side to look towards.
+     * @return Adjacent cable or null.
+     */
+    public MTECable getConnectableCableOnSide(ForgeDirection side) {
         return (getBaseMetaTileEntity().getTileEntityAtSide(side) instanceof IGregTechTileEntity GTTE
             && GTTE.getMetaTileEntity() instanceof MTECable cable
-            && cable.mMaterial == this.mMaterial) ? cable : null;
+            && cable.mMaterial == this.mMaterial
+            && cable.mInsulated == this.mInsulated
+            // Do not connect uncolored cables to colored ones for electrical safety.
+            && GTTE.getColorization() == this.getBaseMetaTileEntity()
+                .getColorization()) ? cable : null;
     }
 
     @Override
