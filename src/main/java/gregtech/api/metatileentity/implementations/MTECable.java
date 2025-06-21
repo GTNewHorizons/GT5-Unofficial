@@ -42,6 +42,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
@@ -421,41 +422,50 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 Queue<ForgeDirection> ToConnectFrom = new ArrayDeque<>();
                 Set<MTECable> ToConnectAll = new HashSet<>();
 
-                // Initialize search.
-                MTECable cable = getConnectableCableOnSide(wrenchingSide);
-                ForgeDirection from = wrenchingSide.getOpposite();
-
-                if (cable != null) {
-                    // Search in the direction that was clicked.
-                    if (this.isConnectedAtSide(wrenchingSide) && cable.isConnectedAtSide(from)) {
-                        ConnectedNext.add(cable);
-                        ConnectedFrom.add(from);
-                        ConnectedAll.add(cable);
-                    } else {
-                        ToConnectNext.add(cable);
-                        ToConnectFrom.add(from);
-                        ToConnectAll.add(cable);
-                    }
+                if (wrenchingSide == side) {
+                    // Clicked the middle of the block, search in all directions other than the one clicked.
+                    ConnectedNext.add(this);
+                    ConnectedFrom.add(wrenchingSide);
                 } else {
-                    if (wrenchingSide == side) {
-                        // Clicked the middle of the block, search in all directions other than the one clicked.
-                        ConnectedNext.add(this);
-                        ConnectedFrom.add(wrenchingSide);
+                    // Search in the direction that was clicked.
+                    IMetaTileEntity mte = getConnectableMTE(wrenchingSide);
+                    if (mte instanceof MTECable cable) {
+                        // Connect to a cable and begin search for other connectable cables.
+                        ForgeDirection from = wrenchingSide.getOpposite();
+                        if (this.isConnectedAtSide(wrenchingSide) && cable.isConnectedAtSide(from)) {
+                            // Already connected, search for more connections.
+                            ConnectedNext.add(cable);
+                            ConnectedFrom.add(from);
+                            ConnectedAll.add(cable);
+                        } else {
+                            // Connect here.
+                            ToConnectNext.add(cable);
+                            ToConnectFrom.add(from);
+                            ToConnectAll.add(cable);
+                        }
+                    } else if (mte != null) {
+                        // Connect to a single machine.
+                        connect(wrenchingSide);
+                        return true;
                     } else {
-                        // Nothing to connect in this direction.
+                        // Nothing to do.
                         return true;
                     }
                 }
                 ConnectedAll.add(this);
 
+                // Begin search.
+
                 int cablesTraversed = 0;
                 int cablesConnected = 0;
+                int blocksConnected = 0;
+
                 // While there is still something to do
                 while (!ConnectedNext.isEmpty() || !ToConnectNext.isEmpty()) {
                     // First add any cables that are already connected.
                     while (!ConnectedNext.isEmpty()) {
-                        cable = ConnectedNext.remove();
-                        from = ConnectedFrom.remove();
+                        MTECable cable = ConnectedNext.remove();
+                        ForgeDirection from = ConnectedFrom.remove();
                         ++cablesTraversed;
                         if (cablesTraversed > TRAVERSAL_LIMIT) {
                             GTUtility.sendChatToPlayer(
@@ -466,8 +476,17 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
                         for (ForgeDirection to : ForgeDirection.VALID_DIRECTIONS) {
                             if (to == from) continue; // Do not go backwards.
-                            MTECable nextCable = cable.getConnectableCableOnSide(to);
-                            if (nextCable != null) {
+
+                            if (cable.getBaseMetaTileEntity()
+                                .getAirAtSide(to)) {
+                                // Clean up loose ends.
+                                cable.disconnect(to);
+                                continue;
+                            }
+                            // Check for a connection.
+                            IMetaTileEntity mte = cable.getConnectableMTE(to);
+                            if (mte instanceof MTECable nextCable) {
+                                // Connect to a cable and continue search.
                                 ForgeDirection nextFrom = to.getOpposite();
                                 if (cable.isConnectedAtSide(to) && nextCable.isConnectedAtSide(nextFrom)) {
                                     if (!ConnectedAll.contains(nextCable)) {
@@ -484,13 +503,19 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                                         ToConnectAll.add(nextCable);
                                     }
                                 }
+                            } else if (mte != null) {
+                                // Connect to a machine.
+                                if (!cable.isConnectedAtSide(to)) {
+                                    cable.connect(to);
+                                    ++blocksConnected;
+                                }
                             }
                         }
                     }
 
                     if (!ToConnectNext.isEmpty()) {
-                        cable = ToConnectNext.remove();
-                        from = ToConnectFrom.remove();
+                        MTECable cable = ToConnectNext.remove();
+                        ForgeDirection from = ToConnectFrom.remove();
                         if (ConnectedAll.contains(cable)) continue; // This triggers if we already connected this cable
                                                                     // from another direction.
                         cable.connect(from);
@@ -505,7 +530,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    String.format("Traversed %d cables, connected %d cables.", cablesTraversed, cablesConnected));
+                    String.format(
+                        "Found %d cables, connected %d cables and %d blocks.",
+                        cablesTraversed,
+                        cablesConnected,
+                        blocksConnected));
                 return true;
             }
         }
@@ -513,23 +542,38 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     /**
-     * If the tile on the given side matches the following conditions:
-     * * It is a GT EU cable (MTECable),
-     * * It is made of the same material as this cable,
-     * * It is colored by the same color as this cable, or both are colorless,
-     * then it returns that cable. Otherwise it returns null.
-     * 
-     * @param side The side to look towards.
-     * @return Adjacent cable or null.
+     * This method is a part of the group connection algorithm. It checks whether the given side of the cable is facing
+     * a MetaTileEntity that can be safely connected to this cable. This can be:
+     * <ul>
+     * <li>A machine that can output or accept power of the same voltage as this cable on that side.</li>
+     * <li>A cable that is made of the same material and colored by the same color as this cable.</li>
+     * </ul>
+     * If a valid MTE is found, it is returned. Otherwise, the method returns null.
+     *
+     * @param side The side to check.
+     * @return A connectable tile or null.
      */
-    public MTECable getConnectableCableOnSide(ForgeDirection side) {
-        return (getBaseMetaTileEntity().getTileEntityAtSide(side) instanceof IGregTechTileEntity GTTE
-            && GTTE.getMetaTileEntity() instanceof MTECable cable
-            && cable.mMaterial == this.mMaterial
-            && cable.mInsulated == this.mInsulated
-            // Do not connect uncolored cables to colored ones for electrical safety.
-            && GTTE.getColorization() == this.getBaseMetaTileEntity()
-                .getColorization()) ? cable : null;
+    public IMetaTileEntity getConnectableMTE(ForgeDirection side) {
+        IGregTechTileEntity thisBMTE = this.getBaseMetaTileEntity();
+        if (thisBMTE.getTileEntityAtSide(side) instanceof IGregTechTileEntity otherBMTE) {
+            IMetaTileEntity otherMTE = otherBMTE.getMetaTileEntity();
+            if (otherMTE instanceof MTECable cable) {
+                return (cable.mMaterial == this.mMaterial && cable.mInsulated == this.mInsulated
+                // Do not connect uncolored cables to colored ones for electrical safety.
+                    && otherBMTE.getColorization() == thisBMTE.getColorization()) ? cable : null;
+            }
+            if (otherMTE instanceof MetaTileEntity metaTile) {
+                if (metaTile.isEnetInput() && metaTile.isInputFacing(side.getOpposite())
+                    && metaTile.maxEUInput() == this.mVoltage) {
+                    return otherMTE;
+                }
+                if (metaTile.isEnetOutput() && metaTile.isOutputFacing(side.getOpposite())
+                    && metaTile.maxEUOutput() == this.mVoltage) {
+                    return otherMTE;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
