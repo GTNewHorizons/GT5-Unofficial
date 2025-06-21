@@ -393,7 +393,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     /**
      * Consumes enough durability to connect one cable.
-     * 
+     *
      * @param aPlayer The player using the tool.
      * @return True if the tool has enough durability.
      */
@@ -401,13 +401,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         return GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer);
     }
 
-    private static final int TRAVERSAL_LIMIT = 10000; // To prevent infinite loops
-
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (GTMod.gregtechproxy.gt6Cable) {
-            if (!aPlayer.isSneaking()) {
+            if (!aPlayer.isSneaking() || !GTMod.gregtechproxy.cableMultiConnectEnabled) {
                 // Regular connection.
                 if (consumeDurabilityForConnection(aPlayer)) {
                     if (isConnectedAtSide(wrenchingSide)) {
@@ -478,7 +476,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         MTECable cable = ConnectedNext.remove();
                         ForgeDirection from = ConnectedFrom.remove();
                         ++cablesTraversed;
-                        if (cablesTraversed > TRAVERSAL_LIMIT) {
+                        if (cablesTraversed > GTMod.gregtechproxy.cableMultiConnectLimit) {
                             GTUtility.sendChatToPlayer(
                                 aPlayer,
                                 "Error: cable traversal limit exceeded. This is probably a bug, please report it.");
