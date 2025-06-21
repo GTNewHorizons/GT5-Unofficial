@@ -1,0 +1,521 @@
+package gregtech.common.tileentities.machines.multi.Solidifier;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import ggfab.api.GGFabRecipeMaps;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTDualInputPattern;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
+    implements ISurvivalConstructable {
+
+    private int glassTier = -1;
+    protected int width;
+    private int casingAmount;
+    protected int casingTier;
+
+    private static final int DEFAULT_MODULE_AMOUNT = 2;
+    private final int ModuleAmount = DEFAULT_MODULE_AMOUNT;
+
+    // spotless:off
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String MODULE_1 = "Module Slot 1";
+    private static final String MODULE_2 = "Module Slot 2";
+    private static final String MODULE_3 = "Module Slot 3";
+    private static final String MODULE_4 = "Module Slot 4";
+
+
+    private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEModularSolidifier>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            // spotless:off
+            new String[][]{
+                {"     "," AAA "," AAA "," AAA "," A~A "," AAA "},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","AJ JA","AJ JA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {"     "," AAA "," AAA "," AAA "," AAA "," AAA "}}
+        )
+        .addShape(
+            MODULE_1,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","C ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_2,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","C ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_3,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","C ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_4,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","C ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )// spotless:on
+        .addElement('P', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement(
+            'A',
+            buildHatchAdder(MTEModularSolidifier.class)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, ExoticEnergy)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings11, 7))
+        .addElement(
+            'C',
+            GTStructureChannels.SOLIDIFIER_MODULES.use(
+                ofBlocksTiered(
+                    MTEModularSolidifier::getModuleMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings12, 4),
+                        Pair.of(GregTechAPI.sBlockCasings12, 5),
+                        Pair.of(GregTechAPI.sBlockCasings12, 6),
+                        Pair.of(GregTechAPI.sBlockCasings12, 7),
+                        Pair.of(GregTechAPI.sBlockCasings12, 8),
+                        Pair.of(GregTechAPI.sBlockCasings12, 9),
+                        Pair.of(GregTechAPI.sBlockCasings12, 13)),
+                    -1,
+                    MTEModularSolidifier::setCasingTier,
+                    MTEModularSolidifier::getCasingTier)))
+        .build();
+
+    @Nullable
+    public static Integer getModuleMeta(Block block, int meta) {
+        if (block == GregTechAPI.sBlockCasings12) {
+            return switch (meta) {
+                case 4 -> 1;
+                case 5 -> 2;
+                case 6 -> 3;
+                case 7 -> 4;
+                case 8 -> 5;
+                case 9 -> 6;
+                case 13 -> 7;
+                default -> null;
+            };
+        }
+        return null;
+    }
+
+    public int getCasingTier() {
+        return casingTier;
+    }
+
+    public void setCasingTier(int i) {
+        casingTier = i;
+    }
+
+    public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEModularSolidifier(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEModularSolidifier(this.mName);
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
+        }
+        return rTexture;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+            .addInfo(
+                "Can use " + EnumChatFormatting.YELLOW
+                    + "Solidifier Hatches"
+                    + EnumChatFormatting.GRAY
+                    + " to hold different molds")
+            .addInfo("Speeds up to a maximum of 250% faster than singleblock machines while running")
+            .addInfo("Decays at double the rate that it speeds up at")
+            .addInfo("Only uses 80% of the EU/t normally required")
+            .addInfo("Processes an additional " + 20 + " items per voltage")
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp")
+            .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
+            .addController("Front Center bottom")
+            .addCasingInfoMin("Solidifier Casing", 220, false)
+            .addCasingInfoMin("Solidifier Radiator", 73, false)
+            .addCasingInfoMin("Heat Proof Machine Casing", 16, false)
+            .addCasingInfoMin("Clean Stainless Steel Machine Casing", 16, false)
+            .addCasingInfoMin("Any Tiered Glass", 110, true)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(AuthorOmdaCZ);
+        return tt;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
+        buildPiece(MODULE_1, stackSize, hintsOnly, 63, 14, -59);
+        buildPiece(MODULE_2, stackSize, hintsOnly, 55, 11, -67);
+        buildPiece(MODULE_3, stackSize, hintsOnly, 47, 13, -76);
+        buildPiece(MODULE_4, stackSize, hintsOnly, 39, 11, -84);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = 0;
+
+        survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 4, 1, elementBudget, env, false, true);
+
+        if (stackSize.stackSize > 0) {
+            built += survivialBuildPiece(MODULE_1, stackSize, 63, 14, -59, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 1) {
+            built += survivialBuildPiece(MODULE_2, stackSize, 55, 11, -67, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 2 && ModuleAmount < 3) {
+            built += survivialBuildPiece(MODULE_3, stackSize, 47, 13, -76, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 3 && ModuleAmount < 4) {
+            built += survivialBuildPiece(MODULE_4, stackSize, 39, 11, -84, elementBudget, env, false, true);
+        }
+        return built;
+    }
+
+    @Override
+    public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    private void onCasingAdded() {
+        casingAmount++;
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 4, 1)) return false;
+
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1);
+        }
+
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
+                return false;
+            }
+        }
+
+        return casingAmount >= 220;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+
+            // Override is needed so that switching recipe maps does not stop recipe locking.
+            @Override
+            protected RecipeMap<?> getCurrentRecipeMap() {
+                lastRecipeMap = currentRecipeMap;
+                return currentRecipeMap;
+            }
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) return result;
+
+                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
+                return super.process();
+            }
+
+            @Override
+            public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
+                    activeDualInv = inv;
+                    return true;
+                }
+
+                GTDualInputPattern inputs = inv.getPatternInputs();
+                setInputItems(inputs.inputItems);
+                setInputFluids(inputs.inputFluid);
+                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
+                    .collect(Collectors.toSet());
+                if (recipes.isEmpty())
+                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
+                if (!recipes.isEmpty()) {
+                    dualInvWithPatternToRecipeCache.put(inv, recipes);
+                    activeDualInv = inv;
+                    return true;
+                }
+                return false;
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                return super.validateRecipe(recipe);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(0.8F);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputEu()));
+        logic.setAvailableAmperage(1L);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (20 * GTUtility.getTierExtended(this.getMaxInputEu()));
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fluidSolidifierRecipes;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("parallels"));
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
+        for (MTEHatchInput solidifierHatch : mInputHatches) {
+            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                ItemStack mold = hatch.getMold();
+                FluidStack fluid = solidifierHatch.getFluid();
+
+                if (mold != null && fluid != null) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    inputItems.add(mold);
+
+                    processingLogic.setInputItems(inputItems);
+                    processingLogic.setInputFluids(fluid);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        lastResult = foundResult;
+                    }
+                }
+            }
+        }
+        processingLogic.clear();
+        return lastResult;
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
+    }
+}
