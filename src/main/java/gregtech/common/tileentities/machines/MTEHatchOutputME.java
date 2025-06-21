@@ -64,6 +64,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -75,10 +76,11 @@ import gregtech.common.items.ItemFluidDisplay;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable {
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
     private long baseCapacity = DEFAULT_CAPACITY;
+    public static final String COPIED_DATA_IDENTIFIER = "outputHatchME";
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -647,6 +649,33 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
     }
 
     @Override
