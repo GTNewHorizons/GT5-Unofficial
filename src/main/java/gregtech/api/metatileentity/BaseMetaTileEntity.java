@@ -51,8 +51,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -2134,18 +2132,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void gridChanged() {
         if (mMetaTileEntity != null) mMetaTileEntity.gridChanged();
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
     }
 
     void onChunkUnloadAE() {
