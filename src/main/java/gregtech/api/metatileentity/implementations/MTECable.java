@@ -410,10 +410,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 if (consumeDurabilityForConnection(aPlayer)) {
                     if (isConnectedAtSide(wrenchingSide)) {
                         disconnect(wrenchingSide);
-                        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
+                        GTUtility
+                            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.disconnected"));
                     } else if (!GTMod.gregtechproxy.costlyCableConnection) {
-                        if (connect(wrenchingSide) > 0)
-                            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
+                        if (connect(wrenchingSide) > 0) GTUtility
+                            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.connected"));
                     }
                     return true;
                 }
@@ -479,7 +480,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         if (cablesTraversed > GTMod.gregtechproxy.cableMultiConnectLimit) {
                             GTUtility.sendChatToPlayer(
                                 aPlayer,
-                                "Error: cable traversal limit exceeded. This is probably a bug, please report it.");
+                                StatCollector.translateToLocal("GT5U.item.cable.multi.infinite_loop"));
                             return true;
                         }
 
@@ -542,8 +543,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    String.format(
-                        "Found %d cables, connected %d cables and %d blocks.",
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.item.cable.multi.success",
                         cablesTraversed,
                         cablesConnected,
                         blocksConnected));
@@ -595,10 +596,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.disconnected"));
             } else if (!GTMod.gregtechproxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
                 if (connect(wrenchingSide) > 0)
-                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
+                    GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.connected"));
             }
             return true;
         }
