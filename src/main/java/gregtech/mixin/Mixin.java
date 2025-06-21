@@ -76,6 +76,12 @@ public enum Mixin {
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
 
+    ForgeHooksMixin(new Builder("Adds missing hooks in ForgeHooks").addMixinClasses("forge.ForgeHooksMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+
     IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
         .addTargetedMod(TargetedMod.IC2)
