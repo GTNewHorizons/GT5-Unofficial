@@ -2682,6 +2682,13 @@ public enum ItemList implements IItemContainer {
     TaHfNanoparticles,
     NtNanoparticles,
 
+    NanoForgeBaseCasing1,
+    NanoForgeBaseCasing2,
+    NanoForgeBaseCasing3,
+    NanoForgeBaseCasing4,
+    NaniteCore,
+    NaniteShieldingFrame,
+
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
 
