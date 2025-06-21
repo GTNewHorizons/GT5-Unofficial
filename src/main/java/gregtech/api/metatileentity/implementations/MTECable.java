@@ -391,6 +391,16 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         }
     }
 
+    /**
+     * Consumes enough durability to connect one cable.
+     * 
+     * @param aPlayer The player using the tool.
+     * @return True if the tool has enough durability.
+     */
+    private boolean consumeDurabilityForConnection(EntityPlayer aPlayer) {
+        return GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer);
+    }
+
     private static final int TRAVERSAL_LIMIT = 10000; // To prevent infinite loops
 
     @Override
@@ -399,7 +409,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (GTMod.gregtechproxy.gt6Cable) {
             if (!aPlayer.isSneaking()) {
                 // Regular connection.
-                if (GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
+                if (consumeDurabilityForConnection(aPlayer)) {
                     if (isConnectedAtSide(wrenchingSide)) {
                         disconnect(wrenchingSide);
                         GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
@@ -445,6 +455,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         }
                     } else if (mte != null) {
                         // Connect to a single machine.
+                        if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
                         connect(wrenchingSide);
                         return true;
                     } else {
@@ -477,9 +488,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         for (ForgeDirection to : ForgeDirection.VALID_DIRECTIONS) {
                             if (to == from) continue; // Do not go backwards.
 
-                            if (cable.getBaseMetaTileEntity()
+                            if (cable.isConnectedAtSide(to) && cable.getBaseMetaTileEntity()
                                 .getAirAtSide(to)) {
                                 // Clean up loose ends.
+                                if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
                                 cable.disconnect(to);
                                 continue;
                             }
@@ -506,6 +518,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                             } else if (mte != null) {
                                 // Connect to a machine.
                                 if (!cable.isConnectedAtSide(to)) {
+                                    if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
                                     cable.connect(to);
                                     ++blocksConnected;
                                 }
@@ -518,6 +531,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         ForgeDirection from = ToConnectFrom.remove();
                         if (ConnectedAll.contains(cable)) continue; // This triggers if we already connected this cable
                                                                     // from another direction.
+                        if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
                         cable.connect(from);
                         ++cablesConnected;
 
