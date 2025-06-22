@@ -15,11 +15,11 @@ public class BlockCasings13 extends BlockCasingsAbstract {
 
     public BlockCasings13() {
         super(ItemCasings.class, "gt.blockcasings13", MaterialCasings.INSTANCE, 16);
-        register(5, ItemList.NanoForgeBaseCasing1, "Precision Field Sync Casing");
-        register(6, ItemList.NanoForgeBaseCasing2, "Magnetic Anchor Casing");
-        register(7, ItemList.NanoForgeBaseCasing3, "Field Energy Absorber Casing");
-        register(8, ItemList.NanoForgeBaseCasing4, "Loadbearing Distribution Casing");
-        register(9, ItemList.NaniteCore, "Nanite Replication Framework");
+        register(5, ItemList.PrecisionFieldSyncCasing, "Precision Field Sync Casing");
+        register(6, ItemList.MagneticAnchorCasing, "Magnetic Anchor Casing");
+        register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
+        register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
+        register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
     }
 
     @Override
