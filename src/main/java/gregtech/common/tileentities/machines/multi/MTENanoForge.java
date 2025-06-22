@@ -35,6 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -54,6 +55,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -79,7 +81,8 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import tectech.thing.gui.TecTechUITextures;
 
-public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> implements ISurvivalConstructable {
+public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -335,15 +338,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
-        // A (Radiant Casings) -> J, S
-        // B (Black Casings) -> K, V
-        // C (dark grey casings) -> L, T
-        // D (Magmatter Frames) -> M
-        // E (Grey frames) -> N
-        // F (White dwarf matter frames) -> O,
-        // G (Wire factory casings) -> P, U
-        // H (Matter Coils) -> Q
-        // I (Quantum Glass) -> R
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
         .addElement('M', ofFrame(MaterialsUEVplus.MagMatter))
@@ -351,21 +345,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         .addElement('O', ofFrame(MaterialsUEVplus.WhiteDwarfMatter))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
-        .addElement('S', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement(
             'V',
-            buildHatchAdder(MTENanoForge.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTENanoForge.class).atLeast(
+                ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
                 .dot(1)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
-        .addElement('T', ofBlock(GregTechAPI.sBlockCasings13, 7))
-        .addElement(
-            'U',
-            buildHatchAdder(MTENanoForge.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(8))
-                .buildAndChain(GregTechAPI.sBlockCasings13, 8))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
         .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
@@ -711,6 +697,15 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 true);
         }
         return built;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        mSpecialTier = (byte) trigger.stackSize;
+        if (mSpecialTier == 4) {
+            buildPiece(STRUCTURE_PIECE_TIER4_BASE, trigger, false, 20, 33, 0);
+            buildPiece(STRUCTURE_PIECE_TIER4_RENDER, trigger, false, 20, 50, 0);
+        }
     }
 
     @Override
