@@ -5,13 +5,14 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.GregTechAPI;
+import org.jetbrains.annotations.NotNull;
 
 public class FluidGT6 extends Fluid implements Runnable {
 
     private final short[] mRGBa;
     public final String mTextureName;
 
-    public FluidGT6(final String aName, final String aTextureName, final short[] aRGBa) {
+    public FluidGT6(final @NotNull String aName, final String aTextureName, final short[] aRGBa) {
         super(aName);
         this.mRGBa = aRGBa;
         this.mTextureName = aTextureName;

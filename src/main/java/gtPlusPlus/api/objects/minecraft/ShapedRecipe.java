@@ -10,13 +10,15 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
 
     private static final String CHARS = "abcdefghijklmnop";
-    public ShapedOreRecipe mRecipe;
+    public @Nullable ShapedOreRecipe mRecipe;
 
-    ItemStack[] mBlackList = null;
+    ItemStack @Nullable [] mBlackList = null;
 
     public ShapedRecipe(Object aInput1, Object aInput2, Object aInput3, Object aInput4, Object aInput5, Object aInput6,
         Object aInput7, Object aInput8, Object aInput9, ItemStack aOutput) {
@@ -24,7 +26,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
         this(new Object[] { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 }, aOutput);
     }
 
-    public ShapedRecipe(Object[] aInputs, ItemStack aOutput) {
+    public ShapedRecipe(Object @NotNull [] aInputs, @Nullable ItemStack aOutput) {
         StringBuilder aGridWhole = new StringBuilder();
         String[] aGrid = new String[3];
         char[] aChar = new char[9];
