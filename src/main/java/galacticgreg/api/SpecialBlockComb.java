@@ -1,6 +1,7 @@
 package galacticgreg.api;
 
 import net.minecraft.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 public class SpecialBlockComb extends BlockMetaComb {
 
@@ -49,7 +50,7 @@ public class SpecialBlockComb extends BlockMetaComb {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other == null) return false;
         if (other == this) return true;
         if (!(other instanceof SpecialBlockComb otherObj)) return false;

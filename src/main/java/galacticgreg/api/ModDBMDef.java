@@ -1,6 +1,8 @@
 package galacticgreg.api;
 
 import net.minecraft.block.Block;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Mod "Dimension Block Meta Definition" Defines the Block-Meta combination for Blocks that can be replaced by the
@@ -33,7 +35,7 @@ public class ModDBMDef {
      * @param pBlock the Block in question
      * @return
      */
-    public Enums.ReplaceState blockEquals(Block pBlock) {
+    public Enums.@NotNull ReplaceState blockEquals(@Nullable Block pBlock) {
         if (pBlock == null) return Enums.ReplaceState.Unknown;
 
         if (Block.blockRegistry.getNameForObject(pBlock)
@@ -50,7 +52,7 @@ public class ModDBMDef {
      * @param pMeta  the metadata in question
      * @return
      */
-    public Enums.ReplaceState blockEquals(Block pBlock, int pMeta) {
+    public Enums.@NotNull ReplaceState blockEquals(Block pBlock, int pMeta) {
         Enums.ReplaceState tFlag = Enums.ReplaceState.Unknown;
         if (blockEquals(pBlock) == Enums.ReplaceState.CanReplace) {
             if (pMeta == _targetMeta || _canAlwaysReplace) tFlag = Enums.ReplaceState.CanReplace;
@@ -61,7 +63,7 @@ public class ModDBMDef {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other == null) return false;
         if (other == this) return true;
         if (!(other instanceof ModDBMDef otherModDBMDef)) return false;
