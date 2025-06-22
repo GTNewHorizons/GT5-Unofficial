@@ -2,11 +2,12 @@ package kubatech.api.enums;
 
 import java.util.HashMap;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGIC2Mode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGNormalMode;
-import org.jetbrains.annotations.NotNull;
 
 public class EIGModes {
 

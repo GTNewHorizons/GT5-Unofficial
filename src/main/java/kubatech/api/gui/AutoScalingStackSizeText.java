@@ -2,13 +2,14 @@ package kubatech.api.gui;
 
 import java.util.Collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.TextRenderer;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.common.internal.Theme;
-import org.jetbrains.annotations.NotNull;
 
 public class AutoScalingStackSizeText implements IDrawable {
 

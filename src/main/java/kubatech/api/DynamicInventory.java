@@ -50,10 +50,14 @@ public class DynamicInventory<T> {
     private int usedSlots = 0;
     List<T> inventory;
     TInventoryGetter<T> inventoryGetter;
-    @Nullable TInventoryInjector inventoryInjector = null;
-    @Nullable TInventoryExtractor<T> inventoryExtractor = null;
-    @Nullable TInventoryReplacerOrMerger inventoryReplacer = null;
-    @Nullable Supplier<Boolean> isEnabledGetter = null;
+    @Nullable
+    TInventoryInjector inventoryInjector = null;
+    @Nullable
+    TInventoryExtractor<T> inventoryExtractor = null;
+    @Nullable
+    TInventoryReplacerOrMerger inventoryReplacer = null;
+    @Nullable
+    Supplier<Boolean> isEnabledGetter = null;
     boolean isEnabled = true;
 
     public DynamicInventory(int width, int height, Supplier<Integer> slotsGetter, List<T> inventory,
@@ -167,7 +171,8 @@ public class DynamicInventory<T> {
         return container;
     }
 
-    @NotNull List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
+    @NotNull
+    List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
 
     private Widget createWidget(EntityPlayer player) {
         Scrollable dynamicInventoryWidget = new Scrollable().setVerticalScroll();

@@ -26,12 +26,13 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import org.jetbrains.annotations.NotNull;
 
 public class GTHelper {
 

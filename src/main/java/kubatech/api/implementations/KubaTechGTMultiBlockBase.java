@@ -33,6 +33,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -64,15 +67,13 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import kubatech.Tags;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
-            @NotNull KTContainerConstructor<K> containerConstructor) {
+        @NotNull KTContainerConstructor<K> containerConstructor) {
         return UIBuilder.of()
             .container((player, world, x, y, z) -> {
                 TileEntity te = world.getTileEntity(x, y, z);
