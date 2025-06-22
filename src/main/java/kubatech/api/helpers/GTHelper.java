@@ -31,6 +31,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import org.jetbrains.annotations.NotNull;
 
 public class GTHelper {
 
@@ -60,7 +61,7 @@ public class GTHelper {
 
     public static class StackableItemSlot {
 
-        public StackableItemSlot(int count, ItemStack stack, ArrayList<Integer> realSlots) {
+        public StackableItemSlot(int count, @NotNull ItemStack stack, ArrayList<Integer> realSlots) {
             this.count = count;
             this.stack = stack;
             this.hashcode = ItemId.createNoCopyWithStackSize(stack)
@@ -73,12 +74,12 @@ public class GTHelper {
         private final int hashcode;
         public final ArrayList<Integer> realSlots;
 
-        public void write(PacketBuffer buffer) throws IOException {
+        public void write(@NotNull PacketBuffer buffer) throws IOException {
             buffer.writeVarIntToBuffer(count);
             buffer.writeItemStackToBuffer(stack);
         }
 
-        public static StackableItemSlot read(PacketBuffer buffer) throws IOException {
+        public static @NotNull StackableItemSlot read(@NotNull PacketBuffer buffer) throws IOException {
             return new StackableItemSlot(
                 buffer.readVarIntFromBuffer(),
                 buffer.readItemStackFromBuffer(),

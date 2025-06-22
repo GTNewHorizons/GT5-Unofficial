@@ -9,16 +9,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import kubatech.savedata.PlayerData;
 import kubatech.savedata.PlayerDataManager;
 import kubatech.tileentity.TeaStorageTile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TeaNetwork {
 
     // TODO: Optimize later :P
-    public BigInteger teaAmount = BigInteger.ZERO;
-    public BigInteger teaLimit = BigInteger.valueOf(Long.MAX_VALUE);
+    public @NotNull BigInteger teaAmount = BigInteger.ZERO;
+    public @NotNull BigInteger teaLimit = BigInteger.valueOf(Long.MAX_VALUE);
     PlayerData owner;
     private final HashSet<TeaStorageTile> teaStorageExtenders = new HashSet<>();
 
-    public static TeaNetwork getNetwork(UUID player) {
+    public static @Nullable TeaNetwork getNetwork(UUID player) {
         PlayerData p = PlayerDataManager.getPlayer(player);
         if (p == null) return null;
         TeaNetwork n = p.teaNetwork;
@@ -67,11 +69,11 @@ public class TeaNetwork {
             .compareTo(teaLimit) <= 0;
     }
 
-    public void registerTeaStorageExtender(TeaStorageTile storageTile) {
+    public void registerTeaStorageExtender(@NotNull TeaStorageTile storageTile) {
         if (teaStorageExtenders.add(storageTile)) teaLimit = teaLimit.add(storageTile.teaExtendAmount());
     }
 
-    public void unregisterTeaStorageExtender(TeaStorageTile storageTile) {
+    public void unregisterTeaStorageExtender(@NotNull TeaStorageTile storageTile) {
         if (teaStorageExtenders.remove(storageTile)) teaLimit = teaLimit.subtract(storageTile.teaExtendAmount());
     }
 
@@ -79,13 +81,13 @@ public class TeaNetwork {
         owner.markDirty();
     }
 
-    public NBTTagCompound toNBT() {
+    public @NotNull NBTTagCompound toNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setByteArray("teaAmount", teaAmount.toByteArray());
         return nbt;
     }
 
-    public static TeaNetwork fromNBT(NBTTagCompound nbt) {
+    public static @NotNull TeaNetwork fromNBT(@NotNull NBTTagCompound nbt) {
         TeaNetwork teaNetwork = new TeaNetwork();
         teaNetwork.teaAmount = new BigInteger(nbt.getByteArray("teaAmount"));
         return teaNetwork;

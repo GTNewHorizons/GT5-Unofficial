@@ -6,6 +6,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGIC2Mode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGNormalMode;
+import org.jetbrains.annotations.NotNull;
 
 public class EIGModes {
 
@@ -17,7 +18,7 @@ public class EIGModes {
     // this is basically a fake enum, plz don't instantiate
     private EIGModes() {}
 
-    private static EIGMode addMode(EIGMode mode) {
+    private static @NotNull EIGMode addMode(@NotNull EIGMode mode) {
         modes.put(mode.getName(), mode);
         return mode;
     }
@@ -26,7 +27,7 @@ public class EIGModes {
         return modes.get(name);
     }
 
-    public static EIGMode getNextMode(EIGMode from) {
+    public static @NotNull EIGMode getNextMode(@NotNull EIGMode from) {
         int id = (from.getUIIndex() + 1) % modes.size();
         for (EIGMode mode : modes.values()) {
             if (mode.getUIIndex() == id) return mode;

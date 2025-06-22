@@ -23,6 +23,7 @@ package kubatech.api.utils;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
+import org.jetbrains.annotations.NotNull;
 
 public class StringUtils {
 
@@ -35,7 +36,7 @@ public class StringUtils {
         EnumChatFormatting.WHITE.toString(), EnumChatFormatting.GRAY.toString(),
         EnumChatFormatting.DARK_GRAY.toString(), EnumChatFormatting.BLACK.toString(), };
 
-    public static String applyRainbow(String str, int offset, String additional) {
+    public static @NotNull String applyRainbow(@NotNull String str, int offset, String additional) {
         StringBuilder final_string = new StringBuilder();
         int i = offset;
         for (char c : str.toCharArray()) final_string.append(rainbow[i++ % rainbow.length])
@@ -44,15 +45,15 @@ public class StringUtils {
         return final_string.toString();
     }
 
-    public static String applyRainbow(String str, int offset) {
+    public static @NotNull String applyRainbow(@NotNull String str, int offset) {
         return applyRainbow(str, offset, "");
     }
 
-    public static String applyRainbow(String str) {
+    public static @NotNull String applyRainbow(@NotNull String str) {
         return applyRainbow(str, 0, "");
     }
 
-    public static String voltageTooltipFormatted(int tier) {
+    public static @NotNull String voltageTooltipFormatted(int tier) {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
     }
 }
