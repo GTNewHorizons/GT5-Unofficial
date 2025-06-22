@@ -10,17 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-import bartworks.util.BWUtil;
 import org.jetbrains.annotations.NotNull;
+
+import bartworks.util.BWUtil;
 
 public class BWNBTDependantCraftingRecipe implements IRecipe {
 
     ItemStack result;
-    @NotNull Map<Character, ItemStack> charToStackMap = new HashMap<>(9, 1);
+    @NotNull
+    Map<Character, ItemStack> charToStackMap = new HashMap<>(9, 1);
     String[] shape;
 
     @SuppressWarnings({ "SuspiciousSystemArraycopy" })
-    public BWNBTDependantCraftingRecipe(ItemStack result, Object @NotNull ... recipe) {
+    public BWNBTDependantCraftingRecipe(ItemStack result, Object @NotNull... recipe) {
         this.result = result;
         this.shape = new String[3];
         System.arraycopy(recipe, 0, this.shape, 0, 3);

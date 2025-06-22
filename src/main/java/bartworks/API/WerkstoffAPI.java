@@ -13,9 +13,10 @@
 
 package bartworks.API;
 
+import org.jetbrains.annotations.NotNull;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import org.jetbrains.annotations.NotNull;
 
 public final class WerkstoffAPI {
 

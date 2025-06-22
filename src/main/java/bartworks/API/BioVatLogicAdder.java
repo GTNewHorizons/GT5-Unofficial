@@ -21,14 +21,15 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class BioVatLogicAdder {
 
@@ -179,7 +180,8 @@ public final class BioVatLogicAdder {
             IsColor.put(stack, materials.getRGBA());
         }
 
-        public static void giveItemStackRadioHatchAbilites(ItemStack stack, @NotNull Materials materials, int kg, int divider) {
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, @NotNull Materials materials, int kg,
+            int divider) {
             giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials) / divider, kg);
             IsColor.put(stack, materials.getRGBA());
         }
