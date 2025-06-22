@@ -175,7 +175,7 @@ public class BWUtil {
 
     @Deprecated
     public static int getMachineVoltageFromTier(int tier) {
-        return (int) (30 * Math.pow(4, tier - 1));
+        return (int) (30 * GTUtility.powInt(4, tier - 1));
     }
 
     public static byte getTier(long voltage) {
