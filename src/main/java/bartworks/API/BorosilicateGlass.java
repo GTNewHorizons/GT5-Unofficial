@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.LinkedHashMultimap;
@@ -25,8 +27,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * @deprecated use gregtech.api.util.GlassTier
@@ -51,7 +51,7 @@ public class BorosilicateGlass {
     }
 
     private static void doRegister(byte level, @NotNull Block block, int meta,
-                                   @NotNull SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
+        @NotNull SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
         allLevels.put(level, Pair.of(block, meta));
         allLevelsReverse.put(block, meta, level);
     }
@@ -170,7 +170,7 @@ public class BorosilicateGlass {
      */
     @Deprecated
     public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, @NotNull BiConsumer<T, Byte> setter,
-                                                                @NotNull Function<T, Byte> getter) {
+        @NotNull Function<T, Byte> getter) {
         return lazy(
             t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
     }
@@ -184,7 +184,7 @@ public class BorosilicateGlass {
      * @param maxTier      maximal accepted tier. inclusive.
      */
     public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier,
-                                                                @NotNull BiConsumer<T, Byte> setter, @NotNull Function<T, Byte> getter) {
+        @NotNull BiConsumer<T, Byte> setter, @NotNull Function<T, Byte> getter) {
         if (minTier > maxTier || minTier < 0) throw new IllegalArgumentException();
         return lazy(
             t -> ofBlocksTiered(
