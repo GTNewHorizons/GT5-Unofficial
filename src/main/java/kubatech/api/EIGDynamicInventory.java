@@ -53,10 +53,14 @@ public class EIGDynamicInventory<T> {
     private int usedSeedCount = 0;
     List<T> inventory;
     TInventoryGetter<T> inventoryGetter;
-    @Nullable TInventoryInjector inventoryInjector = null;
-    @Nullable TInventoryExtractor<T> inventoryExtractor = null;
-    @Nullable TInventoryReplacerOrMerger inventoryReplacer = null;
-    @Nullable Supplier<Boolean> isEnabledGetter = null;
+    @Nullable
+    TInventoryInjector inventoryInjector = null;
+    @Nullable
+    TInventoryExtractor<T> inventoryExtractor = null;
+    @Nullable
+    TInventoryReplacerOrMerger inventoryReplacer = null;
+    @Nullable
+    Supplier<Boolean> isEnabledGetter = null;
     boolean isEnabled = true;
 
     public EIGDynamicInventory(int width, int height, Supplier<Integer> maxSeedTypeGetter,
@@ -198,7 +202,8 @@ public class EIGDynamicInventory<T> {
         return container;
     }
 
-    @NotNull List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
+    @NotNull
+    List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
 
     private @NotNull Widget createWidget(EntityPlayer player) {
         Scrollable dynamicInventoryWidget = new Scrollable().setVerticalScroll();

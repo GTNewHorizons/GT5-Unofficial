@@ -11,8 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 public class EIGDropTable {
 

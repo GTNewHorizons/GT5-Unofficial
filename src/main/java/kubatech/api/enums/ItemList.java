@@ -9,13 +9,14 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public enum ItemList implements IItemContainer {
 
@@ -209,7 +210,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public @NotNull IItemContainer registerOre(Object @NotNull ... aOreNames) {
+    public @NotNull IItemContainer registerOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
@@ -217,7 +218,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public @NotNull IItemContainer registerWildcardAsOre(Object @NotNull ... aOreNames) {
+    public @NotNull IItemContainer registerWildcardAsOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));

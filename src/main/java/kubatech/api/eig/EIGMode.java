@@ -10,10 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import gregtech.api.util.MultiblockTooltipBuilder;
-import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import gregtech.api.util.MultiblockTooltipBuilder;
+import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public abstract class EIGMode {
 
@@ -107,8 +108,8 @@ public abstract class EIGMode {
      * @param simulate   Whether to actually consume the seed.
      * @return Null if no bucket could be created from the item.
      */
-    public @Nullable EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input, int maxConsume,
-                                                  boolean simulate) {
+    public @Nullable EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input,
+        int maxConsume, boolean simulate) {
         // Validate inputs
         if (input == null) return null;
         maxConsume = Math.min(input.stackSize, maxConsume);

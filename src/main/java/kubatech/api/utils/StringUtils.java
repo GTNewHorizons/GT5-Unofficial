@@ -22,8 +22,9 @@ package kubatech.api.utils;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GTValues;
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.enums.GTValues;
 
 public class StringUtils {
 
