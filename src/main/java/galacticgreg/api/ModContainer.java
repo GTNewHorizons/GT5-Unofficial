@@ -3,8 +3,9 @@ package galacticgreg.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.enums.Mods;
 
 /**
  * Defines a Mod where this Generator shall be active. Note: This will only work (obviously) for Dimensions where
