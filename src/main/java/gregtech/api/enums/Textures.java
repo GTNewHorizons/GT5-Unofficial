@@ -605,6 +605,7 @@ public class Textures {
         FLUID_STEAM_IN_SIGN,
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
+        ITEM_VOID_SIGN,
         OVERLAY_MUFFLER,
 
         OVERLAY_PIPE_COLOR_BLACK,
