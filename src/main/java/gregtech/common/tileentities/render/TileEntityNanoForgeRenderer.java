@@ -33,6 +33,11 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
         return boundingBox;
     }
 
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return Double.MAX_VALUE;
+    }
+
     public void setRunning(boolean running) {
         if (!worldObj.isRemote && this.running != running) {
             this.running = running;
