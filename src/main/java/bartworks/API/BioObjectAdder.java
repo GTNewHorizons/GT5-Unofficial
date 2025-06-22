@@ -33,6 +33,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import org.jetbrains.annotations.Nullable;
 
 public final class BioObjectAdder {
 
@@ -45,8 +46,8 @@ public final class BioObjectAdder {
      * @param rarity    visual
      * @return
      */
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
-        EnumRarity rarity, boolean breedable) {
+    public static @Nullable BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
+                                                                   EnumRarity rarity, boolean breedable) {
         if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
             return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, rarity, breedable);
         new Exception(
@@ -65,8 +66,8 @@ public final class BioObjectAdder {
      * @param breedable if the culture can be inserted into the BacterialVat
      * @return
      */
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
-        boolean breedable) {
+    public static @Nullable BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
+                                                                   boolean breedable) {
         if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
             return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, breedable);
         new Exception(
@@ -84,7 +85,7 @@ public final class BioObjectAdder {
      * @param tier   the tier of this BioData 0=HV, 1=EV etc.
      * @return
      */
-    public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
+    public static @Nullable BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
             return BioData.createAndRegisterBioData(aName, rarity, chance, tier);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
@@ -99,7 +100,7 @@ public final class BioObjectAdder {
      * @param rarity visual
      * @return
      */
-    public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
+    public static @Nullable BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioDNA.createAndRegisterBioDNA(aName, rarity);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
             .printStackTrace();
@@ -113,7 +114,7 @@ public final class BioObjectAdder {
      * @param rarity visual
      * @return
      */
-    public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity) {
+    public static @Nullable BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
             .printStackTrace();
@@ -127,7 +128,7 @@ public final class BioObjectAdder {
      * @param tier   tier needed to extract 0=HV, 1=EV etc.
      * @return
      */
-    public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
+    public static @Nullable BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioDNA.createAndRegisterBioDNA(aName, rarity, chance, tier);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
             .printStackTrace();
@@ -141,7 +142,7 @@ public final class BioObjectAdder {
      * @param tier   tier needed to extract 0=HV, 1=EV etc.
      * @return
      */
-    public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity, int chance, int tier) {
+    public static @Nullable BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity, int chance, int tier) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
             return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity, chance, tier);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")

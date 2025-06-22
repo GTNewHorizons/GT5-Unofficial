@@ -7,12 +7,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
 import gregtech.api.util.GTRecipe;
+import org.jetbrains.annotations.Nullable;
 
 public class DynamicGTRecipe extends GTRecipe {
 
     public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-        int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-        int aSpecialValue, GTRecipe originalRecipe) {
+                           int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
+                           int aSpecialValue, @Nullable GTRecipe originalRecipe) {
         super(
             aOptimize,
             aInputs,

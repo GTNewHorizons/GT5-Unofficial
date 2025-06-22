@@ -15,10 +15,11 @@ package bartworks.API;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
+import org.jetbrains.annotations.NotNull;
 
 public final class WerkstoffAPI {
 
-    public static Werkstoff getWerkstoff(String aName) throws NoSuchFieldException, IllegalAccessException {
+    public static Werkstoff getWerkstoff(@NotNull String aName) throws NoSuchFieldException, IllegalAccessException {
         return (Werkstoff) WerkstoffLoader.class.getField(aName)
             .get(null);
     }
