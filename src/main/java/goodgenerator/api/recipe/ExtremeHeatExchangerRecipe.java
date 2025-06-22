@@ -4,6 +4,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTRecipe;
+import org.jetbrains.annotations.Nullable;
 
 public class ExtremeHeatExchangerRecipe extends GTRecipe {
 
@@ -18,21 +19,21 @@ public class ExtremeHeatExchangerRecipe extends GTRecipe {
         return 0;
     }
 
-    public Fluid getNormalSteam() {
+    public @Nullable Fluid getNormalSteam() {
         if (this.mFluidOutputs != null) {
             return this.mFluidOutputs[0].getFluid();
         }
         return null;
     }
 
-    public Fluid getHeatedSteam() {
+    public @Nullable Fluid getHeatedSteam() {
         if (this.mFluidOutputs != null) {
             return this.mFluidOutputs[1].getFluid();
         }
         return null;
     }
 
-    public Fluid getCooledFluid() {
+    public @Nullable Fluid getCooledFluid() {
         if (this.mFluidOutputs != null) {
             return this.mFluidOutputs[2].getFluid();
         }
