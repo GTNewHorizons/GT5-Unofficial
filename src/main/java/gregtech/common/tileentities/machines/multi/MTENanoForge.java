@@ -522,7 +522,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 } else {
                     drainedMagmatter = 0;
                 }
-                maxParallel = Math.max((int) (drainedMagmatter / (144 / Math.pow(2, 4 - mSpecialTier))), 1);
+                maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -538,7 +538,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
                     .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
-                    .setDurationModifier(mSpecialTier >= 4 ? Math.pow(0.9999, maxParallel) : 1);
+                    .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
             }
         };
     }
