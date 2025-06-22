@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 import net.minecraft.world.World;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class BlockPos implements Serializable {
 

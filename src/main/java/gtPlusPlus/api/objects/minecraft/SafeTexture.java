@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 import net.minecraft.util.IIcon;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gtPlusPlus.core.util.Utils;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A Server Side safe object that can hold {@link IIcon}s.

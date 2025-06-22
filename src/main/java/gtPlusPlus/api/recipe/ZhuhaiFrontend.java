@@ -2,6 +2,8 @@ package gtPlusPlus.api.recipe;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
@@ -9,12 +11,11 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.common.gui.modularui.UIHelper;
-import org.jetbrains.annotations.NotNull;
 
 public class ZhuhaiFrontend extends RecipeMapFrontend {
 
     public ZhuhaiFrontend(@NotNull BasicUIPropertiesBuilder uiPropertiesBuilder,
-                          @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 100)));
     }
 
