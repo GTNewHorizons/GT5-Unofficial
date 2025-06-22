@@ -3,6 +3,7 @@ package gtPlusPlus.api.objects.minecraft;
 import java.util.ArrayList;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

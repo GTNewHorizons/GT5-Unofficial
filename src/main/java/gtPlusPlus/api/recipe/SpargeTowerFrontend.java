@@ -7,6 +7,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -14,16 +16,16 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
-import org.jetbrains.annotations.NotNull;
 
 public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
     public SpargeTowerFrontend(@NotNull BasicUIPropertiesBuilder uiPropertiesBuilder,
-                               @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
-    protected List<String> handleNEIByproductTooltip(@NotNull ItemStack stack, @NotNull List<String> currentTip, @NotNull GTRecipe recipe) {
+    protected List<String> handleNEIByproductTooltip(@NotNull ItemStack stack, @NotNull List<String> currentTip,
+        @NotNull GTRecipe recipe) {
         int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
         FluidStack spargeGas = recipe.mFluidInputs[0];
         if (stack.isItemEqual(GTUtility.getFluidDisplayStack(spargeGas.getFluid()))) {
@@ -41,7 +43,7 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
     @Override
     public @NotNull List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-                                                      GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
         GTRecipe recipe = neiCachedRecipe.mRecipe;
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
             if (stack == pStack.item) {

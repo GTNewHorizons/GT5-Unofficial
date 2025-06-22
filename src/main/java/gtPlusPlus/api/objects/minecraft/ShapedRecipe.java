@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
 

@@ -4,8 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import net.minecraftforge.fluids.Fluid;
 
-import gregtech.api.GregTechAPI;
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.GregTechAPI;
 
 public class FluidGT6 extends Fluid implements Runnable {
 
