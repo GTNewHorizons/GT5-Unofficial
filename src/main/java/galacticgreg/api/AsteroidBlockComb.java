@@ -1,6 +1,7 @@
 package galacticgreg.api;
 
 import net.minecraft.block.Block;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

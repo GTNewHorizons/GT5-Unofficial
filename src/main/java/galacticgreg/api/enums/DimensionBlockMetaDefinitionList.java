@@ -5,8 +5,9 @@ import java.util.List;
 
 import net.minecraft.init.Blocks;
 
-import galacticgreg.api.ModDBMDef;
 import org.jetbrains.annotations.NotNull;
+
+import galacticgreg.api.ModDBMDef;
 
 public enum DimensionBlockMetaDefinitionList {
 
