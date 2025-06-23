@@ -3,12 +3,15 @@ package gregtech.common.data;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.UUID;
@@ -17,8 +20,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -26,11 +27,17 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
-import org.spongepowered.libraries.com.google.common.reflect.TypeToken;
-
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.MapMaker;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
@@ -38,6 +45,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -78,6 +86,7 @@ public class GTPowerfailTracker {
         default List<EntityPlayerMP> getPlayerEntities() {
             return getPlayers().stream()
                 .map(GTPowerfailTracker::getPlayer)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         }
     }
@@ -136,6 +145,8 @@ public class GTPowerfailTracker {
     private static class TeamInfo {
 
         public Int2ObjectOpenHashMap<DimensionInfo> byWorld = new Int2ObjectOpenHashMap<>();
+
+        public long lastInfoMessage;
     }
 
     private static class DimensionInfo {
@@ -222,6 +233,21 @@ public class GTPowerfailTracker {
 
         if ((powerfail.count == 1 || secs > 60) && owner.isOnline()) {
             owner.sendMessage(powerfail.toString());
+
+            for (UUID playerId : owner.getPlayers()) {
+                EntityPlayerMP player = getPlayer(playerId);
+
+                // if they aren't online, don't send them a hint message
+                if (player == null) continue;
+
+                if (INSTANCE.playerUsageHints.add(playerId)) {
+                    // spotless:off
+                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails help for more info.");
+                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails clear or /powerfails clear-dim to clear powerfails.");
+                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails show or /powerfails hide to toggle overlay rendering.");
+                    // spotless:on
+                }
+            }
         }
 
         PENDING_UPDATES.addAll(owner.getPlayers());
@@ -321,10 +347,10 @@ public class GTPowerfailTracker {
 
         if (!powerfails.isEmpty()) {
             // spotless:off
-            event.player.addChatMessage(new ChatComponentText(GRAY + "You have " + GOLD + powerfails.size() + GRAY + " uncleared powerfail" + (powerfails.size() > 1 ? "s" : "") + "."));
-            event.player.addChatMessage(new ChatComponentText(GRAY + "Use /powerfails list or /powerfails show for more info."));
-            event.player.addChatMessage(new ChatComponentText(GRAY + "Use /powerfails clear or /powerfails clear-dim to clear powerfails."));
-            event.player.addChatMessage(new ChatComponentText(GRAY + "Use /powerfails show or /powerfails hide to toggle overlay rendering."));
+            GTUtility.sendChatToPlayer(event.player, GRAY + "You have " + GOLD + powerfails.size() + GRAY + " uncleared powerfail" + (powerfails.size() > 1 ? "s" : "") + ".");
+            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails list for more info.");
+            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails clear or /powerfails clear-dim to clear powerfails.");
+            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails show or /powerfails hide to toggle overlay rendering.");
             // spotless:on
         }
 
@@ -404,7 +430,55 @@ public class GTPowerfailTracker {
         }
     }
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(MachineOwner.class, new TeamAdapter())
+        .registerTypeAdapter(TeamOwner.class, new TeamAdapter())
+        .registerTypeAdapter(PlayerOwner.class, new TeamAdapter())
+        .create();
+
+    private static class TeamAdapter implements JsonSerializer<MachineOwner>, JsonDeserializer<MachineOwner> {
+
+        @Override
+        public MachineOwner deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+            if (!(json instanceof JsonPrimitive primitive)) throw new JsonParseException("team must be a string");
+            if (!primitive.isString()) throw new JsonParseException("team must be a string");
+
+            String string = json.getAsString();
+
+            String[] ownerText = string.split(":");
+
+            if (ownerText.length != 2) {
+                throw new JsonParseException("team must be a string of the format [prefix:uuid]");
+            }
+
+            try {
+                switch (ownerText[0]) {
+                    case "team" -> {
+                        return new TeamOwner(UUID.fromString(ownerText[1]));
+                    }
+                    case "player" -> {
+                        return new PlayerOwner(UUID.fromString(ownerText[1]));
+                    }
+                    default -> {
+                        throw new JsonParseException("team prefix must be 'team' or 'player'");
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                throw new JsonParseException("invalid team uuid: " + ownerText[1]);
+            }
+        }
+
+        @Override
+        public JsonElement serialize(MachineOwner src, Type typeOfSrc, JsonSerializationContext context) {
+            if (src instanceof TeamOwner team) {
+                return new JsonPrimitive("team:" + team.leader.toString());
+            } else if (src instanceof PlayerOwner player) {
+                return new JsonPrimitive("player:" + player.player.toString());
+            } else {
+                throw new IllegalArgumentException("expected TeamOwner or PlayerOwner");
+            }
+        }
+    }
 
     public static class SaveData extends WorldSavedData {
 
@@ -415,8 +489,43 @@ public class GTPowerfailTracker {
         // data
         final HashSet<UUID> playerNoRendering = new HashSet<>();
 
+        final HashSet<UUID> playerUsageHints = new HashSet<>();
+
         public SaveData(String key) {
             super(key);
+        }
+
+        static class DimState {
+
+            public ArrayList<Powerfail> powerfails = new ArrayList<>();
+        }
+
+        static class TeamState {
+
+            public Int2ObjectOpenHashMap<DimState> byWorld = new Int2ObjectOpenHashMap<>();
+
+            public long lastInfoMessage;
+        }
+
+        // Gson won't use type adapters for map keys, so this is a workaround for that problem
+        static class TeamPair {
+
+            public MachineOwner owner;
+            public TeamState teamState;
+
+            public TeamPair() {}
+
+            public TeamPair(MachineOwner owner, TeamState teamState) {
+                this.owner = owner;
+                this.teamState = teamState;
+            }
+        }
+
+        static class State {
+
+            final ArrayList<TeamPair> powerfailInfo = new ArrayList<>();
+            final HashSet<UUID> playerNoRendering = new HashSet<>();
+            final HashSet<UUID> playerUsageHints = new HashSet<>();
         }
 
         @Override
@@ -425,56 +534,32 @@ public class GTPowerfailTracker {
             playerNoRendering.clear();
             PENDING_UPDATES.clear();
 
-            // spotless:off
-            playerNoRendering.addAll(GSON.fromJson(
-                NBTPersist.toJsonObject(tag.getTag("noRendering")),
-                new TypeToken<List<UUID>>(){}.getType()));
+            try {
+                State state = GSON.fromJson(NBTPersist.toJsonObject(tag), State.class);
 
-            Map<String, Map<String, List<Powerfail>>> powerfails = GSON.fromJson(
-                NBTPersist.toJsonObject(tag.getTag("powerfails")),
-                new TypeToken<Map<String, Map<String, List<Powerfail>>>>(){}.getType());
-            // spotless:on
+                if (state != null) {
+                    playerNoRendering.addAll(state.playerNoRendering);
+                    playerUsageHints.addAll(state.playerUsageHints);
 
-            for (Map.Entry<String, Map<String, List<Powerfail>>> byOwners : powerfails.entrySet()) {
-                String[] ownerText = byOwners.getKey()
-                    .split(":");
+                    for (TeamPair pair : state.powerfailInfo) {
+                        TeamInfo teamInfo = new TeamInfo();
+                        powerfailInfo.put(pair.owner, teamInfo);
 
-                if (ownerText.length != 2) continue;
+                        teamInfo.lastInfoMessage = pair.teamState.lastInfoMessage;
 
-                MachineOwner owner;
+                        for (Int2ObjectMap.Entry<DimState> dimState : pair.teamState.byWorld.int2ObjectEntrySet()) {
+                            DimensionInfo dimInfo = new DimensionInfo();
+                            teamInfo.byWorld.put(dimState.getIntKey(), dimInfo);
 
-                try {
-                    switch (ownerText[0]) {
-                        case "team" -> owner = new TeamOwner(UUID.fromString(ownerText[1]));
-                        case "player" -> owner = new PlayerOwner(UUID.fromString(ownerText[1]));
-                        default -> {
-                            continue;
+                            for (Powerfail powerfail : dimState.getValue().powerfails) {
+                                dimInfo.byCoord
+                                    .put(CoordinatePacker.pack(powerfail.x, powerfail.y, powerfail.z), powerfail);
+                            }
                         }
                     }
-                } catch (IllegalArgumentException e) {
-                    continue;
                 }
-
-                TeamInfo teamInfo = new TeamInfo();
-                powerfailInfo.put(owner, teamInfo);
-
-                for (Map.Entry<String, List<Powerfail>> byWorld : byOwners.getValue()
-                    .entrySet()) {
-                    int dimId;
-
-                    try {
-                        dimId = Integer.parseInt(byWorld.getKey());
-                    } catch (NumberFormatException e) {
-                        continue;
-                    }
-
-                    DimensionInfo dimInfo = new DimensionInfo();
-                    teamInfo.byWorld.put(dimId, dimInfo);
-
-                    for (Powerfail powerfail : byWorld.getValue()) {
-                        dimInfo.byCoord.put(CoordinatePacker.pack(powerfail.x, powerfail.y, powerfail.z), powerfail);
-                    }
-                }
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.warn("Could not load powerfail data", t);
             }
 
             // Now that everything is loaded, queue an update for all connected players (there should be none, but let's
@@ -491,42 +576,33 @@ public class GTPowerfailTracker {
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
-            tag.setTag(
-                "noRendering",
-                playerNoRendering.stream()
-                    .map(UUID::toString)
-                    .map(NBTTagString::new)
-                    .collect(GTUtility.toNBTTagList()));
+            State state = new State();
 
-            NBTTagCompound powerfails = new NBTTagCompound();
-            tag.setTag("powerfails", powerfails);
+            state.playerNoRendering.addAll(playerNoRendering);
+            state.playerUsageHints.addAll(playerUsageHints);
 
-            for (Map.Entry<MachineOwner, TeamInfo> byOwner : powerfailInfo.entrySet()) {
-                String ownerText;
+            powerfailInfo.forEach((machineOwner, teamInfo) -> {
+                TeamState teamState = new TeamState();
 
-                if (byOwner.getKey() instanceof TeamOwner team) {
-                    ownerText = "team:" + team.leader.toString();
-                } else if (byOwner.getKey() instanceof PlayerOwner player) {
-                    ownerText = "player:" + player.player.toString();
-                } else {
-                    continue;
-                }
+                state.powerfailInfo.add(new TeamPair(machineOwner, teamState));
 
-                NBTTagCompound byOwnerTag = new NBTTagCompound();
+                teamState.lastInfoMessage = teamInfo.lastInfoMessage;
 
-                for (Int2ObjectMap.Entry<DimensionInfo> byWorld : byOwner.getValue().byWorld.int2ObjectEntrySet()) {
-                    NBTTagList byDimList = new NBTTagList();
+                for (Int2ObjectMap.Entry<DimensionInfo> dimInfo : teamInfo.byWorld.int2ObjectEntrySet()) {
+                    DimState dimState = new DimState();
 
-                    for (Powerfail powerfail : byWorld.getValue().byCoord.values()) {
-                        byDimList.appendTag(NBTPersist.toNbt(GSON.toJsonTree(powerfail)));
+                    dimState.powerfails.addAll(dimInfo.getValue().byCoord.values());
+
+                    if (!dimState.powerfails.isEmpty()) {
+                        teamState.byWorld.put(dimInfo.getIntKey(), dimState);
                     }
-
-                    if (!byDimList.tagList.isEmpty())
-                        byOwnerTag.setTag(Integer.toString(byWorld.getIntKey()), byDimList);
                 }
+            });
 
-                if (!byOwnerTag.hasNoTags()) powerfails.setTag(ownerText, byOwnerTag);
-            }
+            JsonElement json = GSON.toJsonTree(state);
+            NBTTagCompound nbt = (NBTTagCompound) NBTPersist.toNbt(json);
+            // noinspection unchecked
+            tag.tagMap.putAll(nbt.tagMap);
         }
     }
 }
