@@ -60,7 +60,7 @@ public class GTPowerfailRenderer {
 
             double dist = GTUtility.clamp(pos.distance(x, y, z), 0, 32);
 
-            if (dist < 4 || dist > 128) continue;
+            if (dist < 4 || dist > 512) continue;
 
             double size = dist * 0.25;
 
@@ -69,9 +69,9 @@ public class GTPowerfailRenderer {
                 size *= GTUtility.linearCurve(dist, 4d, 0d, 8d, 1d);
             }
 
-            if (dist > 16d) {
-                // Fade to 25% when the player is more than 32 blocks away
-                size *= GTUtility.linearCurve(dist, 16d, 1d, 32d, 0.25d);
+            if (dist > 96) {
+                // Fade to 25% when the player is more than 128 blocks away
+                size *= GTUtility.linearCurve(dist, 96, 1d, 128, 0.25d);
             }
 
             Plane plane = Plane.lookingAt(temp.set(x, y, z), pos);
