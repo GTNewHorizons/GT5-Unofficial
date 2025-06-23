@@ -96,6 +96,7 @@ public class GTPowerfailRenderer {
                 .getGlTextureId());
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_ALPHA);
         tessellator.draw();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
