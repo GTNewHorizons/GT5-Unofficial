@@ -508,6 +508,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         updateAllInformationSlots();
         return true;
     }
@@ -521,6 +525,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
         if (!autoPullItemList) {

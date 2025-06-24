@@ -20,6 +20,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,6 +38,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -62,6 +65,11 @@ public class RecipeMapBackend {
      * All the recipes belonging to this backend, indexed by recipe category.
      */
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
+
+    /**
+     * Cached recipes, by commutative hash of all inputs.
+     */
+    private final Int2ObjectLinkedOpenHashMap<GTRecipe> cacheMap = new Int2ObjectLinkedOpenHashMap<>();
 
     /**
      * All the properties specific to this backend.
@@ -392,6 +400,11 @@ public class RecipeMapBackend {
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
+            GTStreamUtil.ofSupplier(() -> cacheMap.get(hash(items, fluids)))
+                .filter(Objects::nonNull)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
             // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
             GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
                 .filter(Objects::nonNull)
@@ -418,6 +431,31 @@ public class RecipeMapBackend {
                 : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
                     .filter(Objects::nonNull))
             .flatMap(Function.identity());
+    }
+
+    protected void cache(ItemStack[] items, FluidStack[] fluids, GTRecipe recipe) {
+        cacheMap.putAndMoveToFirst(hash(items, fluids), recipe);
+        while (cacheMap.size() > 1024) cacheMap.removeLast();
+    }
+
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    protected int hash(ItemStack[] items, FluidStack[] fluids) {
+        int hash = 0;
+        for (int i = 0; i < items.length; i++) {
+            ItemStack stack = items[i];
+            if (stack == null) continue;
+            Item item = stack.getItem();
+            assert item != null;
+            hash += item.hashCode();
+            if (item.getHasSubtypes()) hash += Items.feather.getDamage(stack);
+        }
+        for (int i = 0; i < fluids.length; i++) {
+            FluidStack stack = fluids[i];
+            if (stack == null) continue;
+            Fluid fluid = stack.getFluid();
+            hash += fluid.hashCode();
+        }
+        return hash;
     }
 
     /**
