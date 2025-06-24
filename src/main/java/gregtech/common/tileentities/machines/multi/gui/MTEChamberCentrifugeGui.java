@@ -23,6 +23,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -51,20 +52,9 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
-            .paddingRight(6)
-            .paddingLeft(4)
-            .height(textBoxToInventoryGap)
-            .child(createVoidExcessButton(syncManager))
-            .child(createInputSeparationButton(syncManager))
-            .child(createConfigButton(syncManager, parent))
-            .child(createOverviewButton(syncManager, parent))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
-            .child(createBatchModeButton(syncManager))
-            .child(createLockToSingleRecipeButton(syncManager))
-
-            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createPanelGap(parent,syncManager).child(createConfigButton(syncManager, parent))
+            .child(createOverviewButton(syncManager, parent));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
