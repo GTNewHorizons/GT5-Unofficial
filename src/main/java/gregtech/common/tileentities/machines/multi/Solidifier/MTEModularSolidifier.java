@@ -45,6 +45,7 @@ import gregtech.common.tileentities.machines.multi.MTENanoForge;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -122,10 +123,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private float parallelScaleMultiplier = 1.0F;
     private float parallelScaleAdj = parallelScaleBase;
 
-    // offsets, for building the structure, redirect to build the bottom left corner of the structure piece at
-    // Controller pos + offsets.
-    private SolidifierModules[] modules = {SolidifierModules.getModule(1),SolidifierModules.getModule(1),SolidifierModules.getModule(1),SolidifierModules.getModule(1)};
-
+    //array of ordinals for nbt saving purposes
+    private int[] correspondingOrdinals = {0,0,0,0};
+    private SolidifierModules[] modules = {SolidifierModules.getModule(correspondingOrdinals[0]),SolidifierModules.getModule(correspondingOrdinals[1]),SolidifierModules.getModule(correspondingOrdinals[2]),SolidifierModules.getModule(correspondingOrdinals[3])};
     private int[] moduleHorizontalOffsets = {7,7,7,7};
     private int[] moduleVerticalOffsets = {12,20,28,36};
     private int[] moduleDepthOffsets = {0,0,0,0};
@@ -258,6 +258,24 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         super(aName);
     }
 
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT)
+    {
+        super.loadNBTData(aNBT);
+        mTier = aNBT.getInteger("multiTier");
+        correspondingOrdinals = aNBT.getIntArray("ordinalArr");
+        for( int i = 0; i < correspondingOrdinals.length; i++)
+        {
+            modules[i] = SolidifierModules.getModule(correspondingOrdinals[i]);
+        }
+    }
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT)
+    {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("multiTier", mTier);
+        aNBT.setIntArray("ordinalArr", correspondingOrdinals);
+    }
     @Override
     public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -633,24 +651,24 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     // getters/setters for mui syncing
-    public String[] getModuleNames(int index) {
-        // just in case
+    public int getModuleSynced(int index) {
         if (index > SolidifierModules.values().length - 1) index = 0;
 
-        SolidifierModules modulegiven = modules[index];
-        return new String[] { modulegiven.displayName, modulegiven.shorthand, modulegiven.structureID };
+        return  modules[index].ordinal();
     }
 
-    public void setModule(int index, int ordinal) {
+    public void setModule(int index , int ordinal) {
         // just in case, shouldn't be possible
-        if (index > modules.length - 1 || ordinal > SolidifierModules.size()) return;
+        if (index > modules.length - 1) return;
         SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
+        correspondingOrdinals[index] = ordinal;
         if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
         }
         modules[index] = moduleToAdd;
     }
+
     //its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
     public String getSpeedStr() {
         checkSolidifierModules();

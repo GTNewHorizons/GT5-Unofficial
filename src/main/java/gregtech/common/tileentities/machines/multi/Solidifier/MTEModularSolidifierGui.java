@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -61,9 +62,10 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         syncManager.syncValue("Parallels", new StringSyncValue(base::getParallelsString));
         syncManager.syncValue("EuEFF", new StringSyncValue(base::getEuEFFString));
         syncManager.syncValue("OCFactor", new StringSyncValue(base::getOCFactorString));
-        syncManager.syncValue("uevActive", new StringSyncValue(base::getTrReStatus));
-        syncManager.syncValue("hypercoolerActive", new StringSyncValue(base::getHCStatus));
-
+        syncManager.syncValue("Module1", new IntSyncValue( () -> base.getModuleSynced(0), ordinal -> base.setModule(0,ordinal)));
+        syncManager.syncValue("Module2", new IntSyncValue( () -> base.getModuleSynced(1), ordinal -> base.setModule(1,ordinal)));
+        syncManager.syncValue("Module3", new IntSyncValue( () -> base.getModuleSynced(2), ordinal -> base.setModule(2,ordinal)));
+        syncManager.syncValue("Module4", new IntSyncValue( () -> base.getModuleSynced(3), ordinal -> base.setModule(3,ordinal)));
     }
 
     @Override
@@ -122,8 +124,6 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
          StringSyncValue parallelSync = (StringSyncValue) syncManager.getSyncHandler("Parallels:0");
          StringSyncValue euEffBaseSync = (StringSyncValue) syncManager.getSyncHandler("EuEFF:0");
          StringSyncValue ocFactorSync = (StringSyncValue) syncManager.getSyncHandler("OCFactor:0");
-         StringSyncValue trReSync = (StringSyncValue) syncManager.getSyncHandler("uevActive:0");
-         StringSyncValue hcSync = (StringSyncValue) syncManager.getSyncHandler("hypercoolerActive:0");
         return new ModularPanel("statsPanel").pos(x, y)
             .size(160, 140)
             .widgetTheme("backgroundPopup")
@@ -142,11 +142,6 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
     }
 
     protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler moduleConfigPanel = syncManager
-            .panel(
-                "moduleConfigPanel",
-                (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager),
-                true);
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 28, 0)
             .marginTop(4)
@@ -175,12 +170,34 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                             .collapseDisabledChild())
                     );
     }
+
+    protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
+        IPanelHandler selectPanel = syncManager
+            .panel(
+                "moduleSelectPanel",
+                (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
+                true);
+        return new ButtonWidget<>().size(18, 18)
+            .marginBottom(4)
+            .overlay(GuiTextures.UPLOAD)
+            .onMousePressed(d -> {
+                if (!selectPanel.isPanelOpen()) {
+                    selectPanel.openPanel();
+                } else {
+                    selectPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine("Select Module "+index))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager) {
+        PanelSyncManager syncManager, int index) {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
-        return new ModularPanel("moduleConfigPanel").pos(x, y)
+        return new ModularPanel("moduleSelectPanel").pos(x, y)
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
@@ -191,29 +208,31 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                         new TextWidget("Modules").size(60, 18)
                             .alignment(Alignment.Center)
                             .marginBottom(5))
-
-            /* .child( ) .build()) */ // here will be the modules and what name
-            // to the right of them should be a button that opens a new panel to select modules
-
-            );
+                    .child(SlotGroupWidget.builder()
+                            .row(" I I ")
+                            .row("     ")
+                            .row("I I I")
+                            .row("     ")
+                            .row(" I I ")
+                            .key('I', i -> new ItemDrawable(Objects.requireNonNull(this.itemHandler.getStackInSlot(i+1))).asWidget().tooltipBuilder(t -> t.add(SolidifierModules.getModule(i+1).displayName).newLine()).size(18)/*new ItemSlot().slot(new ModularSlot(this.itemHandler, i + 23))*/)
+                            .build()
+            ));
     }
     protected ListWidget<IWidget, ?> createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new ListWidget<>()
-            .child(
-                new TextWidget("bello")
-                    .marginBottom(2)
-                    .widthRel(1))
-            .child(SlotGroupWidget.builder()
-                .row(" I I ")
-                .row("     ")
-                .row("I I I")
-                .row("     ")
-                .row(" I I ")
-                .key('I', i -> new ItemDrawable(Objects.requireNonNull(this.itemHandler.getStackInSlot(i+1))).asWidget().tooltipBuilder(t -> t.add(SolidifierModules.getModule(i+1).displayName).newLine()).size(18)/*new ItemSlot().slot(new ModularSlot(this.itemHandler, i + 23))*/)
-                .build()
-                .widgetTheme("backgroundPopup")
-                .pos(4, 4)
-            );
+            .child(new Row().sizeRel(1).widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+                .child(
+                    new TextWidget("bello")
+                        .margin(20).size(40,20))
+                .child(
+                    new Column().size(100,100).widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL).paddingTop(4)
+                        .child(createModuleSelectButton(syncManager,parent,0))
+                        .child(createModuleSelectButton(syncManager,parent,1))
+                        .child(createModuleSelectButton(syncManager,parent,2))
+                        .child(createModuleSelectButton(syncManager,parent,3))
+                )
+            )
+            ;
 
     }
 }
