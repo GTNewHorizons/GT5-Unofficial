@@ -1,33 +1,46 @@
 package gregtech.common.tileentities.machines.multi.Solidifier;
 
+import gregtech.api.enums.ItemList;
+import net.minecraft.item.ItemStack;
+
 public enum SolidifierModules {
 
-    UNSET("Unset", "Unset", ""),
-    ACTIVE_TIME_DILATION_SYSTEM("Active Time Dilation System", "A.T.D.S", "atds"),
-    EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc"),
-    POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsytems", "P.E.S", "power_efficient_subsystems"),
-    TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "TrRe", "transcendent_reinforcement"),
-    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins"),
-    HYPERCOOLER("Hypercooler", "HC", "hypercooler"),
-    STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters");
+    UNSET("Unset", "Unset", "", ItemList.Display_ITS_FREE.get(1)),
+    ACTIVE_TIME_DILATION_SYSTEM("Active Time Dilation System", "A.T.D.S", "atds",ItemList.Active_Time_Dilation_System_Solidifier_Modular.get(0)),
+    EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc", ItemList.Efficient_Overclocking_Solidifier_Modular.get(1)),
+    POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsytems", "P.E.S", "power_efficient_subsystems", ItemList.Power_Efficient_Subsystems_Solidifier_Modular.get(1)),
+    TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "TrRe", "transcendent_reinforcement",ItemList.Transcendent_Reinforcement_Solidifier_Modular.get(1)),
+    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1)),
+    HYPERCOOLER("Hypercooler", "HC", "hypercooler", ItemList.Hypercooler_Solidifier_Modular.get(1)),
+    STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters", ItemList.Streamlined_Casters_Solidifier_Modular.get(1));
 
     public final String displayName;
     public final String shorthand;
     public final String structureID;
+    private final ItemStack icon;
 
-    private SolidifierModules(String display, String shortname, String structid) {
+    //declaring it once here, instead of on every call
+    private static final SolidifierModules[] lookupArray = values();
+
+    private SolidifierModules(String display, String shortname, String structid, ItemStack icon) {
         this.displayName = display;
         this.shorthand = shortname;
         this.structureID = structid;
+        this.icon = icon;
     }
 
     public static SolidifierModules getModule(int ordinal)
     {
-        return values()[ordinal];
+        return lookupArray[ordinal];
     }
 
     public static int size()
     {
-        return values().length;
+        return lookupArray.length;
+    }
+
+    public ItemStack getItemIcon()
+    {
+        return this.icon;
     }
 }

@@ -7,10 +7,15 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -20,6 +25,7 @@ import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -30,13 +36,20 @@ import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import net.minecraft.util.StatCollector;
 
+import java.util.Objects;
+
 public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
 
     private final MTEModularSolidifier base;
-
+    private final IItemHandlerModifiable itemHandler = new ItemStackHandler(8);
     public MTEModularSolidifierGui(MTEModularSolidifier base) {
         super(base);
         this.base = base;
+        //manual init :P
+        for(int i = 0; i < 8; i++)
+        {
+            itemHandler.setStackInSlot(i,SolidifierModules.getModule(i).getItemIcon());
+        }
     }
 
     @Override
@@ -80,7 +93,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
 
     // 2 buttons on the panelGap, one opens stats info, other opens module config.
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager // calls the panel itself.
+        IPanelHandler statsPanel = syncManager
             .panel(
                 "statsPanel",
                 (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
@@ -124,19 +137,12 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                       .child(new TextWidget(IKey.dynamic(() -> "Parallels Per Tier: " + parallelSync.getValue())).size(150, 20))
                             .child(new TextWidget(IKey.dynamic(() -> "EU Consumption: " + euEffBaseSync.getValue())).size(150, 20))
                             .child(new TextWidget(IKey.dynamic(() -> "OC Factor: " + ocFactorSync.getValue())).size(150, 20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Transcendent Reinforcement Installed: " + trReSync.getValue())).size(150, 20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Hypercooler Installed: " + hcSync.getValue())).size(150, 20))
-
-
-
-
-
                     );
 
     }
 
     protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler moduleConfigPanel = syncManager // calls the panel itself.
+        IPanelHandler moduleConfigPanel = syncManager
             .panel(
                 "moduleConfigPanel",
                 (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager),
@@ -147,11 +153,6 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
                 base.terminalSwitch = !base.terminalSwitch;
-                if (!moduleConfigPanel.isPanelOpen()) {
-                    moduleConfigPanel.openPanel();
-                } else {
-                    moduleConfigPanel.closePanel();
-                }
                 return true;
             })
             .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.turbinemenu")))
@@ -165,12 +166,9 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .padding(4)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child( base.terminalSwitch ?
-                        createModuleTerminalTextWidget(syncManager,panel) .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                        .collapseDisabledChild().child(
-                                new SingleChildWidget<>().bottomRel(0, 10, 0)
-                                    .rightRel(0, 10, 0)
-                                    .size(18, 18)
-                                    .widgetTheme(GTWidgetThemes.PICTURE_LOGO))
+                        createModuleTerminalTextWidget(syncManager,panel)
+                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
+                            .collapseDisabledChild()
                         :
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
@@ -204,7 +202,18 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .child(
                 new TextWidget("bello")
                     .marginBottom(2)
-                    .widthRel(1));
+                    .widthRel(1))
+            .child(SlotGroupWidget.builder()
+                .row(" I I ")
+                .row("     ")
+                .row("I I I")
+                .row("     ")
+                .row(" I I ")
+                .key('I', i -> new ItemDrawable(Objects.requireNonNull(this.itemHandler.getStackInSlot(i+1))).asWidget().tooltipBuilder(t -> t.add(SolidifierModules.getModule(i+1).displayName).newLine()).size(18)/*new ItemSlot().slot(new ModularSlot(this.itemHandler, i + 23))*/)
+                .build()
+                .widgetTheme("backgroundPopup")
+                .pos(4, 4)
+            );
 
     }
 }
