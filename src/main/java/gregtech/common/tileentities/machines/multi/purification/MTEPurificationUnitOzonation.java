@@ -69,7 +69,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     /**
      * If the player inserts more ozone gas than this amount, the multi will explode.
      */
-    public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) Math.pow(2, 10);
+    public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) GTUtility.powInt(2, 10);
 
     private int casingCount = 0;
     private static final int MIN_CASING = 96;

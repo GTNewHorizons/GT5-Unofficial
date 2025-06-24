@@ -20,6 +20,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -125,7 +126,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (mTier < 2) return (int) (aPollution * 0.95);
         if (mTier > 8) return 0;
 
-        return (int) (aPollution * Math.pow(0.64D, mTier - 1));
+        return (int) (aPollution * GTUtility.powInt(0.64D, mTier - 1));
     }
 
     /**

@@ -1997,7 +1997,7 @@ public class RecipesGregTech {
             ItemStack handPump = GregtechItemList.ExpandableHandPump.get(1);
             ItemStack pumpWithNBT = handPump.copy();
             NBTTagCompound nbt = new NBTTagCompound();
-            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);
+            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) GTUtility.powInt(2, i);
             nbt.setInteger("mMeta", 4);
             nbt.setBoolean("mInit", true);
             nbt.setString("mFluid", "@@@@@");
