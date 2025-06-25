@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.Solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -11,7 +10,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -22,75 +20,60 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
-import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.VoltageIndex;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.tileentities.machines.multi.MTENanoForge;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ggfab.api.GGFabRecipeMaps;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings13;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
-
-import javax.annotation.Nonnull;
-
-
-
-
 
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
 
-
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
-        new CoolingFluid(MaterialsUEVplus.SpaceTime,1,100),
+        new CoolingFluid(MaterialsUEVplus.SpaceTime, 1, 100),
         new CoolingFluid(MaterialsUEVplus.Space, 2, 50),
         new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25));
 
@@ -123,11 +106,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private float parallelScaleMultiplier = 1.0F;
     private float parallelScaleAdj = parallelScaleBase;
 
-    //array of ordinals for nbt saving purposes
-    public SolidifierModules[] modules = {SolidifierModules.UNSET,SolidifierModules.UNSET,SolidifierModules.UNSET,SolidifierModules.UNSET};
-    private int[] moduleHorizontalOffsets = {7,7,7,7};
-    private int[] moduleVerticalOffsets = {12,20,28,36};
-    private int[] moduleDepthOffsets = {0,0,0,0};
+    // array of ordinals for nbt saving purposes
+    public SolidifierModules[] modules = { SolidifierModules.UNSET, SolidifierModules.UNSET, SolidifierModules.UNSET,
+        SolidifierModules.UNSET };
+    private int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
+    private int[] moduleVerticalOffsets = { 12, 20, 28, 36 };
+    private int[] moduleDepthOffsets = { 0, 0, 0, 0 };
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
@@ -222,31 +206,35 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         }))
         //spotless:on
         .addElement('A', chainAllGlasses())
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings11,7))
-        .addElement('C',ofBlock(GregTechAPI.sBlockCasings5,12))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
         // .addElement('D' ,ofBlock(GregTechAPI.sBlockFrames,81))
         .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
-        .addElement('E', lazy(() -> ofBlock(GodforgeCasings,0)))
-        .addElement('F', ofBlock( GregTechAPI.sBlockCasings9,0)) //temp
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11,7)) //temp
+        .addElement('E', lazy(() -> ofBlock(GodforgeCasings, 0)))
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings9, 0)) // temp
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // temp
         .addElement(
             'H',
             buildHatchAdder(MTEModularSolidifier.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                .buildAndChain(onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) //placeholder nano forge casing
-        .addElement('b',ofBlock(GregTechAPI.sBlockCasings8,14))
-        .addElement('c', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT,6)))
-        .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc,14)))
-        .addElement('e', ofBlock(GregTechAPI.sBlockFrames,581))
-        .addElement('f', lazy(() -> ofBlock(GodforgeCasings,3)))
-        .addElement('g', lazy(() -> ofBlock(GodforgeCasings,5)))
-        .addElement('h', lazy(()-> ofBlock(BlockGodforgeGlass.INSTANCE,0)))
+                .buildAndChain(
+                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) // placeholder
+                                                                                                                  // nano
+                                                                                                                  // forge
+                                                                                                                  // casing
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
+        .addElement('c', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 6)))
+        .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 14)))
+        .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
+        .addElement('f', lazy(() -> ofBlock(GodforgeCasings, 3)))
+        .addElement('g', lazy(() -> ofBlock(GodforgeCasings, 5)))
+        .addElement('h', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
         .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
-        .addElement('j',lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)) )
+        .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('k', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
-        .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))//this cant be real
+        .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))// this cant be real
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -258,8 +246,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT)
-    {
+    public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mTier = aNBT.getInteger("multiTier");
         modules[0] = SolidifierModules.getModule(aNBT.getInteger("module1OR"));
@@ -267,9 +254,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
         modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
     }
+
     @Override
-    public void saveNBTData(NBTTagCompound aNBT)
-    {
+    public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("multiTier", mTier);
         aNBT.setInteger("module1OR", modules[0].ordinal());
@@ -277,6 +264,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         aNBT.setInteger("module3OR", modules[2].ordinal());
         aNBT.setInteger("module4OR", modules[3].ordinal());
     }
+
     @Override
     public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -348,14 +336,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return tt;
     }
 
-
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if (m != SolidifierModules.UNSET)
-            {
+            if (m != SolidifierModules.UNSET) {
                 buildPiece(
                     m.structureID,
                     stackSize,
@@ -383,8 +369,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             true);
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if (m != SolidifierModules.UNSET)
-            {
+            if (m != SolidifierModules.UNSET) {
                 built += survivalBuildPiece(
                     m.structureID,
                     stackSize,
@@ -411,40 +396,39 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mTier = 0;
-        //todo: tiered structure 1 - 3
-        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14)
-        {
+        // todo: tiered structure 1 - 3
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) && mCasingAmount >= 14) {
             mTier = 3;
             return checkModules();
         }
-       /* if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
-        {
-            mTier = 2;
-            return checkModules();
-        }
-        if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
-        {
-            mTier = 1;
-            return checkModules();
-        }*/
+        /*
+         * if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+         * {
+         * mTier = 2;
+         * return checkModules();
+         * }
+         * if(checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, 0) && mCasingAmount >= 14)
+         * {
+         * mTier = 1;
+         * return checkModules();
+         * }
+         */
         return false;
-
 
     }
 
     private boolean checkModules() {
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if(!checkPiece(m.structureID,moduleHorizontalOffsets[i],moduleVerticalOffsets[i],moduleDepthOffsets[i])) return false;
+            if (!checkPiece(m.structureID, moduleHorizontalOffsets[i], moduleVerticalOffsets[i], moduleDepthOffsets[i]))
+                return false;
         }
         return true;
 
     }
 
-    public CoolingFluid findCoolingFluid()
-    {
-        for (MTEHatchInput hatch : mInputHatches)
-        {
+    public CoolingFluid findCoolingFluid() {
+        for (MTEHatchInput hatch : mInputHatches) {
             Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
                 .filter(candidate -> drain(hatch, candidate.getStack(), false))
                 .findFirst();
@@ -452,6 +436,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         }
         return null;
     }
+
     private void resetParameters() {
         ocFactorAdditive = 0.0F;
 
@@ -520,8 +505,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         logic.setEuModifier(euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
-        logic.setMaxTierSkips(3); //capped at 3 for now (current solidifier can do the same)
+        logic.setMaxTierSkips(3); // capped at 3 for now (current solidifier can do the same)
     }
+
     @Nonnull
     @Override
     protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
@@ -548,27 +534,25 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         processingLogic.clear();
         return lastResult;
     }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
-            protected  CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 additionaloverclocks = 0;
 
-                if (hypercoolerPresent)
-                {
+                if (hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
-                    if(currentCoolingFluid == null)
-                    {
+                    if (currentCoolingFluid == null) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
-                    additionaloverclocks = currentCoolingFluid.grantedOC ;
+                    additionaloverclocks = currentCoolingFluid.grantedOC;
                 }
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && !uevRecipesEnabled)
-                {
+                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && !uevRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -577,8 +561,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setMaxRegularOverclocks(additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
-                    .setDurationDecreasePerOC(ocFactorBase+ocFactorAdditive);
+                    .setMaxRegularOverclocks(
+                        additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
+                    .setDurationDecreasePerOC(ocFactorBase + ocFactorAdditive);
 
             }
 
@@ -640,7 +625,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     // mui2 stuff
 
-
     @Override
     protected @NotNull MTEModularSolidifierGui getGui() {
         return new MTEModularSolidifierGui(this);
@@ -655,10 +639,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public int getModuleSynced(int index) {
         if (index > SolidifierModules.values().length - 1) index = 0;
 
-        return  modules[index].ordinal();
+        return modules[index].ordinal();
     }
 
-    public void setModule(int index , int ordinal) {
+    public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
         if (index > modules.length - 1) return;
         SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
@@ -670,64 +654,58 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         modules[index] = moduleToAdd;
     }
 
-    //its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
+    // its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
     public String getSpeedStr() {
         checkSolidifierModules();
         return (speedModifierAdj - 1) * 100 + "%";
     }
 
-    public String getParallelsString()
-    {
+    public String getParallelsString() {
         checkSolidifierModules();
-        return (int) parallelScaleAdj+"";
+        return (int) parallelScaleAdj + "";
     }
 
-    public String getEuEFFString()
-    {
+    public String getEuEFFString() {
         checkSolidifierModules();
-        return ((int) (euEffAdj*100)) + "%";
+        return ((int) (euEffAdj * 100)) + "%";
     }
 
-    public String getOCFactorString()
-    {
+    public String getOCFactorString() {
         checkSolidifierModules();
-        return 2+ocFactorAdditive +" : 4";
+        return 2 + ocFactorAdditive + " : 4";
     }
 
-    public String getTrReStatus()
-    {
+    public String getTrReStatus() {
         checkSolidifierModules();
         String retval = Boolean.toString(uevRecipesEnabled);
-        return retval.substring(0,1).toUpperCase() + retval.substring(1);
+        return retval.substring(0, 1)
+            .toUpperCase() + retval.substring(1);
     }
 
-    public String getHCStatus()
-    {
+    public String getHCStatus() {
         checkSolidifierModules();
         String retval = Boolean.toString(hypercoolerPresent);
-        return retval.substring(0,1).toUpperCase() + retval.substring(1);
+        return retval.substring(0, 1)
+            .toUpperCase() + retval.substring(1);
 
     }
 
+    private static class CoolingFluid {
 
-
-
-    private static class CoolingFluid{
         public Materials material;
         public int grantedOC;
         public int amount;
 
-        public CoolingFluid(Materials material, int grantedOC, int amount)
-        {
+        public CoolingFluid(Materials material, int grantedOC, int amount) {
             this.material = material;
             this.grantedOC = grantedOC;
             this.amount = amount;
         }
-        public FluidStack getStack()
-        {
+
+        public FluidStack getStack() {
             FluidStack stack = material.getFluid(amount);
-            //shoutout penguin, i think i get why you were upset with this code here :^)
-            if (stack == null){
+            // shoutout penguin, i think i get why you were upset with this code here :^)
+            if (stack == null) {
                 return material.getMolten(amount);
             }
             return stack;
