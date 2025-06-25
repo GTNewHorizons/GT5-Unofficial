@@ -212,30 +212,33 @@ public class GTRecipe implements Comparable<GTRecipe> {
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
         if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> tList = new ArrayList<>();
-            tList.addAll(Arrays.asList(aInputs));
-            tList.addAll(Arrays.asList(aOutputs));
-            for (int i = 0; i < tList.size(); i++) if (tList.get(i) == null) tList.remove(i--);
+            ArrayList<ItemStack> tList = new ArrayList<>(aInputs.length + aOutputs.length);
+            for (final ItemStack s : aInputs) if (s != null) tList.add(s);
+            for (final ItemStack s : aOutputs) if (s != null) tList.add(s);
 
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) if (aDuration / i >= 16) {
-                boolean temp = true;
-                for (ItemStack stack : tList) if (stack.stackSize % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack aFluidInput : aFluidInputs) if (aFluidInput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack aFluidOutput : aFluidOutputs) if (aFluidOutput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) {
-                    for (ItemStack itemStack : tList) itemStack.stackSize /= i;
-                    for (FluidStack aFluidInput : aFluidInputs) aFluidInput.amount /= i;
-                    for (FluidStack aFluidOutput : aFluidOutputs) aFluidOutput.amount /= i;
-                    aDuration /= i;
+            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
+                if (aDuration / i >= 16) {
+                    boolean temp = true;
+                    for (ItemStack stack : tList) {
+                        if (stack.stackSize % i != 0) {
+                            temp = false;
+                            break;
+                        }
+                    }
+                    if (temp) for (FluidStack aFluidInput : aFluidInputs) if (aFluidInput.amount % i != 0) {
+                        temp = false;
+                        break;
+                    }
+                    if (temp) for (FluidStack aFluidOutput : aFluidOutputs) if (aFluidOutput.amount % i != 0) {
+                        temp = false;
+                        break;
+                    }
+                    if (temp) {
+                        for (ItemStack itemStack : tList) itemStack.stackSize /= i;
+                        for (FluidStack aFluidInput : aFluidInputs) aFluidInput.amount /= i;
+                        for (FluidStack aFluidOutput : aFluidOutputs) aFluidOutput.amount /= i;
+                        aDuration /= i;
+                    }
                 }
             }
         }
