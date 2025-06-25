@@ -136,51 +136,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
     private RecipeItemInput[] mergedInputCache = null;
     private static final RecipeItemInput[] EMPTY_INPUT_CACHE = new RecipeItemInput[0];
 
-    /** A single recipe input, used for an internal cache to speed up recipe matching */
-    public static final class RecipeItemInput {
-
-        /** Item count is ignored on this stack, do not mutate it either */
-        public final ItemStack unifiedStack;
-        /** Number of input items required */
-        public long inputAmount;
-        /** True if the input is NBT-sensitive */
-        public final boolean usesNbtMatching;
-
-        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
-            Objects.requireNonNull(stack);
-            this.inputAmount = stack.stackSize;
-            final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
-            this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
-            if (stackNeedsNBT) {
-                this.unifiedStack = stack;
-            } else {
-                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
-                if (!this.usesNbtMatching) {
-                    this.unifiedStack.setTagCompound(null);
-                }
-            }
-        }
-
-        /**
-         * @return True if the passed in stack is of the same item type as this input (respecting
-         *         {@link RecipeItemInput#usesNbtMatching}).
-         */
-        public boolean matchesType(final ItemStack other) {
-            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
-        }
-
-        /**
-         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
-         */
-        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
-            if (usesNbtMatching) {
-                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
-            } else {
-                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
-            }
-        }
-    }
-
     private GTRecipe(GTRecipe aRecipe, boolean shallow) {
         mInputs = shallow ? aRecipe.mInputs : GTUtility.copyItemArray(aRecipe.mInputs);
         mOutputs = shallow ? aRecipe.mOutputs : GTUtility.copyItemArray(aRecipe.mOutputs);
@@ -843,6 +798,51 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe setEUt(int aEUt) {
         this.mEUt = aEUt;
         return this;
+    }
+
+    /** A single recipe input, used for an internal cache to speed up recipe matching */
+    public static final class RecipeItemInput {
+
+        /** Item count is ignored on this stack, do not mutate it either */
+        public final ItemStack unifiedStack;
+        /** Number of input items required */
+        public long inputAmount;
+        /** True if the input is NBT-sensitive */
+        public final boolean usesNbtMatching;
+
+        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
+            Objects.requireNonNull(stack);
+            this.inputAmount = stack.stackSize;
+            final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
+            this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
+            if (stackNeedsNBT) {
+                this.unifiedStack = stack;
+            } else {
+                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
+                if (!this.usesNbtMatching) {
+                    this.unifiedStack.setTagCompound(null);
+                }
+            }
+        }
+
+        /**
+         * @return True if the passed in stack is of the same item type as this input (respecting
+         *         {@link RecipeItemInput#usesNbtMatching}).
+         */
+        public boolean matchesType(final ItemStack other) {
+            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
+        }
+
+        /**
+         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
+         */
+        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+            if (usesNbtMatching) {
+                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
+            } else {
+                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
+            }
+        }
     }
 
     public static class RecipeAssemblyLine {
