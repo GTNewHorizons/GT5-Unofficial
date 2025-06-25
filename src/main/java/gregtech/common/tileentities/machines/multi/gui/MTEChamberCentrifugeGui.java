@@ -53,7 +53,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent,syncManager).child(createConfigButton(syncManager, parent))
+        return super.createPanelGap(parent, syncManager).child(createConfigButton(syncManager, parent))
             .child(createOverviewButton(syncManager, parent));
     }
 
