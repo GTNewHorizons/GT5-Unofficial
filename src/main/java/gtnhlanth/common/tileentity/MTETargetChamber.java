@@ -50,6 +50,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -334,7 +335,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-        ItemStack[] itemOutputArray = GTUtility.copyItemArray(tRecipe.mOutputs);
+        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         for (ItemStack stack : itemOutputArray) {
             stack.stackSize *= batchAmount;
         }
