@@ -27,8 +27,8 @@ public class DynamicGTRecipe extends GTRecipe {
             aEUt,
             aSpecialValue);
         if (originalRecipe != null) {
-            this.owners = new ArrayList<>(originalRecipe.owners);
-            this.stackTraces = new ArrayList<>(originalRecipe.stackTraces);
+            this.owners = originalRecipe.owners == null ? null : new ArrayList<>(originalRecipe.owners);
+            this.stackTraces = originalRecipe.stackTraces == null ? null : new ArrayList<>(originalRecipe.stackTraces);
             this.setOwner(MainMod.MOD_ID);
         }
     }
