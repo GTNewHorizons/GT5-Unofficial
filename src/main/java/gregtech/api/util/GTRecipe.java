@@ -123,12 +123,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * Stores which mod added this recipe
      */
-    public List<ModContainer> owners = new ArrayList<>();
+    @Nullable
+    public List<ModContainer> owners = GTMod.gregtechproxy.mNEIRecipeOwner ? new ArrayList<>() : null;
     /**
      * Stores stack traces where this recipe was added
      */
     // BW wants to overwrite it, so no final
-    public List<List<String>> stackTraces = new ArrayList<>();
+    @Nullable
+    public List<List<String>> stackTraces = GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace ? new ArrayList<>() : null;
 
     /** Used for simple cache validation */
     private ItemStack[] inputsAtCacheTime = null;
@@ -153,7 +155,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
         metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
-        owners = new ArrayList<>(aRecipe.owners);
+        owners = aRecipe.owners == null ? null : new ArrayList<>(aRecipe.owners);
         reloadOwner();
     }
 
@@ -712,11 +714,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
         "gregtech.common.GTRecipeAdder");
 
     public void reloadOwner() {
-        setOwner(
-            Loader.instance()
-                .activeModContainer());
+        if (owners != null) {
+            setOwner(
+                Loader.instance()
+                    .activeModContainer());
+        }
 
-        if (GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
+        if (stackTraces != null) {
             List<String> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread()
                 .getStackTrace()) {
@@ -744,6 +748,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     public void setOwner(ModContainer newOwner) {
+        if (owners == null) return;
         ModContainer oldOwner = !owners.isEmpty() ? this.owners.get(owners.size() - 1) : null;
         if (newOwner != null && newOwner != oldOwner) {
             owners.add(newOwner);
@@ -754,6 +759,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Use in case {@link Loader#activeModContainer()} isn't helpful
      */
     public void setOwner(String modId) {
+        if (owners == null) return;
         for (ModContainer mod : Loader.instance()
             .getModList()) {
             if (mod.getModId()
