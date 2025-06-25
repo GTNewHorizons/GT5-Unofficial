@@ -205,38 +205,40 @@ public class GTRecipe implements Comparable<GTRecipe> {
         GTOreDictUnificator.setStackArray(true, true, aInputs);
         GTOreDictUnificator.setStackArray(true, true, aOutputs);
 
-        for (ItemStack tStack : aOutputs) GTUtility.updateItemStack(tStack);
+        for (final ItemStack s : aOutputs) GTUtility.updateItemStack(s);
 
         for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
         if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> tList = new ArrayList<>(aInputs.length + aOutputs.length);
-            for (final ItemStack s : aInputs) if (s != null) tList.add(s);
-            for (final ItemStack s : aOutputs) if (s != null) tList.add(s);
+            ArrayList<ItemStack> stacks = new ArrayList<>(aInputs.length + aOutputs.length);
+            for (final ItemStack s : aInputs) if (s != null) stacks.add(s);
+            for (final ItemStack s : aOutputs) if (s != null) stacks.add(s);
 
             for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
                 if (aDuration / i >= 16) {
                     boolean temp = true;
-                    for (ItemStack stack : tList) {
-                        if (stack.stackSize % i != 0) {
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, size = stacks.size(); j < size; j++) {
+                        if (stacks.get(j).stackSize % i != 0) {
                             temp = false;
                             break;
                         }
                     }
-                    if (temp) for (FluidStack aFluidInput : aFluidInputs) if (aFluidInput.amount % i != 0) {
+                    if (temp) for (final FluidStack f : aFluidInputs) if (f.amount % i != 0) {
                         temp = false;
                         break;
                     }
-                    if (temp) for (FluidStack aFluidOutput : aFluidOutputs) if (aFluidOutput.amount % i != 0) {
+                    if (temp) for (final FluidStack f : aFluidOutputs) if (f.amount % i != 0) {
                         temp = false;
                         break;
                     }
                     if (temp) {
-                        for (ItemStack itemStack : tList) itemStack.stackSize /= i;
-                        for (FluidStack aFluidInput : aFluidInputs) aFluidInput.amount /= i;
-                        for (FluidStack aFluidOutput : aFluidOutputs) aFluidOutput.amount /= i;
+                        // noinspection ForLoopReplaceableByForEach
+                        for (int j = 0, size = stacks.size(); j < size; j++) stacks.get(j).stackSize /= i;
+                        for (final FluidStack f : aFluidInputs) f.amount /= i;
+                        for (final FluidStack f : aFluidOutputs) f.amount /= i;
                         aDuration /= i;
                     }
                 }
@@ -908,12 +910,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 aEUt,
                 new ItemStack[aInputs.length][]);
             int tPersistentHash = 1;
-            for (ItemStack tInput : aInputs)
+            for (final ItemStack tInput : aInputs) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tInput, true, false);
+            }
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aResearchItem, true, false);
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aOutput, true, false);
-            for (FluidStack tFluidInput : aFluidInputs)
+            for (final FluidStack tFluidInput : aFluidInputs) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
+            }
             tPersistentHash = tPersistentHash * 31 + aResearchTime;
             tPersistentHash = tPersistentHash * 31 + aResearchVoltage;
             tPersistentHash = tPersistentHash * 31 + aDuration;
