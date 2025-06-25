@@ -46,6 +46,9 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GTRecipe implements Comparable<GTRecipe> {
 
+    static final ItemStack[] ZERO_LEN_ITEMSTACK = new ItemStack[0];
+    static final FluidStack[] ZERO_LEN_FLUIDSTACK = new FluidStack[0];
+
     private static ItemStack dataStick;
     private static ItemStack dataOrb;
     private static ItemStack ic2FluidCell;
@@ -139,12 +142,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
     private static final RecipeItemInput[] EMPTY_INPUT_CACHE = new RecipeItemInput[0];
 
     private GTRecipe(GTRecipe aRecipe, boolean shallow) {
-        mInputs = shallow ? aRecipe.mInputs : GTUtility.copyItemArray(aRecipe.mInputs);
-        mOutputs = shallow ? aRecipe.mOutputs : GTUtility.copyItemArray(aRecipe.mOutputs);
+        mInputs = shallow ? aRecipe.mInputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mInputs);
+        mOutputs = shallow ? aRecipe.mOutputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mOutputs);
         mSpecialItems = aRecipe.mSpecialItems;
         mChances = aRecipe.mChances;
-        mFluidInputs = shallow ? aRecipe.mFluidInputs : GTUtility.copyFluidArray(aRecipe.mFluidInputs);
-        mFluidOutputs = shallow ? aRecipe.mFluidOutputs : GTUtility.copyFluidArray(aRecipe.mFluidOutputs);
+        mFluidInputs = shallow ? aRecipe.mFluidInputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidInputs);
+        mFluidOutputs = shallow ? aRecipe.mFluidOutputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidOutputs);
         mDuration = aRecipe.mDuration;
         mSpecialValue = aRecipe.mSpecialValue;
         mEUt = aRecipe.mEUt;
@@ -190,17 +193,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (aInputs == null) aInputs = new ItemStack[0];
-        if (aOutputs == null) aOutputs = new ItemStack[0];
-        if (aFluidInputs == null) aFluidInputs = new FluidStack[0];
-        if (aFluidOutputs == null) aFluidOutputs = new FluidStack[0];
+        if (aInputs == null) aInputs = ZERO_LEN_ITEMSTACK;
+        else aInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        if (aOutputs == null) aOutputs = ZERO_LEN_ITEMSTACK;
+        else aOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        if (aFluidInputs == null) aFluidInputs = ZERO_LEN_FLUIDSTACK;
+        else aFluidInputs = GTRecipeBuilder.removeNullFluids(aFluidInputs);
+        if (aFluidOutputs == null) aFluidOutputs = ZERO_LEN_FLUIDSTACK;
+        else aFluidOutputs = GTRecipeBuilder.removeNullFluids(aFluidOutputs);
         if (aChances == null) aChances = new int[aOutputs.length];
-        if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
-
-        aInputs = ArrayExt.withoutTrailingNulls(aInputs, ItemStack[]::new);
-        aOutputs = ArrayExt.withoutTrailingNulls(aOutputs, ItemStack[]::new);
-        aFluidInputs = ArrayExt.withoutNulls(aFluidInputs, FluidStack[]::new);
-        aFluidOutputs = ArrayExt.withoutNulls(aFluidOutputs, FluidStack[]::new);
+        else if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
 
         GTOreDictUnificator.setStackArray(true, true, aInputs);
         GTOreDictUnificator.setStackArray(true, true, aOutputs);
@@ -777,22 +779,22 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe setInputs(ItemStack... aInputs) {
         // TODO determine if we need this without trailing nulls call
-        this.mInputs = ArrayExt.withoutTrailingNulls(aInputs, ItemStack[]::new);
+        this.mInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setOutputs(ItemStack... aOutputs) {
-        this.mOutputs = ArrayExt.withoutTrailingNulls(aOutputs, ItemStack[]::new);
+        this.mOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
         return this;
     }
 
     public GTRecipe setFluidInputs(FluidStack... aInputs) {
-        this.mFluidInputs = ArrayExt.withoutTrailingNulls(aInputs, FluidStack[]::new);
+        this.mFluidInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setFluidOutputs(FluidStack... aOutputs) {
-        this.mFluidOutputs = ArrayExt.withoutTrailingNulls(aOutputs, FluidStack[]::new);
+        this.mFluidOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
         return this;
     }
 
