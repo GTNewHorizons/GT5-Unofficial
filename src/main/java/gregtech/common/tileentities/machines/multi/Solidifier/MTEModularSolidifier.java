@@ -124,8 +124,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private float parallelScaleAdj = parallelScaleBase;
 
     //array of ordinals for nbt saving purposes
-    private int[] correspondingOrdinals = {0,0,0,0};
-    private SolidifierModules[] modules = {SolidifierModules.getModule(correspondingOrdinals[0]),SolidifierModules.getModule(correspondingOrdinals[1]),SolidifierModules.getModule(correspondingOrdinals[2]),SolidifierModules.getModule(correspondingOrdinals[3])};
+    public SolidifierModules[] modules = {SolidifierModules.UNSET,SolidifierModules.UNSET,SolidifierModules.UNSET,SolidifierModules.UNSET};
     private int[] moduleHorizontalOffsets = {7,7,7,7};
     private int[] moduleVerticalOffsets = {12,20,28,36};
     private int[] moduleDepthOffsets = {0,0,0,0};
@@ -263,18 +262,20 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     {
         super.loadNBTData(aNBT);
         mTier = aNBT.getInteger("multiTier");
-        correspondingOrdinals = aNBT.getIntArray("ordinalArr");
-        for( int i = 0; i < correspondingOrdinals.length; i++)
-        {
-            modules[i] = SolidifierModules.getModule(correspondingOrdinals[i]);
-        }
+        modules[0] = SolidifierModules.getModule(aNBT.getInteger("module1OR"));
+        modules[1] = SolidifierModules.getModule(aNBT.getInteger("module2OR"));
+        modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
+        modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
     }
     @Override
     public void saveNBTData(NBTTagCompound aNBT)
     {
         super.saveNBTData(aNBT);
         aNBT.setInteger("multiTier", mTier);
-        aNBT.setIntArray("ordinalArr", correspondingOrdinals);
+        aNBT.setInteger("module1OR", modules[0].ordinal());
+        aNBT.setInteger("module2OR", modules[1].ordinal());
+        aNBT.setInteger("module3OR", modules[2].ordinal());
+        aNBT.setInteger("module4OR", modules[3].ordinal());
     }
     @Override
     public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
@@ -661,7 +662,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         // just in case, shouldn't be possible
         if (index > modules.length - 1) return;
         SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
-        correspondingOrdinals[index] = ordinal;
+
         if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
