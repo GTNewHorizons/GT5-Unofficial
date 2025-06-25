@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -72,10 +73,10 @@ public final class FindRecipeQuery {
      */
     public Stream<GTRecipe> findAll() {
         if (items == null) {
-            items = new ItemStack[0];
+            items = GTValues.emptyItemStackArray;
         }
         if (fluids == null) {
-            fluids = new FluidStack[0];
+            fluids = GTValues.emptyFluidStackArray;
         }
 
         return recipeMap.getBackend()

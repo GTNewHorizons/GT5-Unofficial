@@ -86,12 +86,12 @@ public class GTRecipeBuilder {
         ENABLE_COLLISION_CHECK = Boolean.getBoolean("gt.recipebuilder.recipe_collision_check");
     }
 
-    protected ItemStack[] inputsBasic = GTRecipe.ZERO_LEN_ITEMSTACK;
+    protected ItemStack[] inputsBasic = GTValues.emptyItemStackArray;
     protected Object[] inputsOreDict;
-    protected ItemStack[] outputs = GTRecipe.ZERO_LEN_ITEMSTACK;
+    protected ItemStack[] outputs = GTValues.emptyItemStackArray;
     protected ItemStack[][] alts;
-    protected FluidStack[] fluidInputs = GTRecipe.ZERO_LEN_FLUIDSTACK;
-    protected FluidStack[] fluidOutputs = GTRecipe.ZERO_LEN_FLUIDSTACK;
+    protected FluidStack[] fluidInputs = GTValues.emptyFluidStackArray;
+    protected FluidStack[] fluidOutputs = GTValues.emptyFluidStackArray;
     protected int[] chances;
     protected Object special;
     protected int duration = -1;
@@ -153,16 +153,16 @@ public class GTRecipeBuilder {
 
     /**
      * Returns a copy of the array without the null elements.
-     * Returns the singleton {@link gregtech.api.util.GTRecipe#ZERO_LEN_FLUIDSTACK} if the array is empty.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
      */
     @Nonnull
     static FluidStack[] removeNullFluids(@Nonnull FluidStack[] fluids) {
-        if (fluids.length == 0) return GTRecipe.ZERO_LEN_FLUIDSTACK;
+        if (fluids.length == 0) return GTValues.emptyFluidStackArray;
         int count = 0;
         for (final FluidStack f : fluids) {
             if (f != null) count++;
         }
-        if (count == 0) return GTRecipe.ZERO_LEN_FLUIDSTACK;
+        if (count == 0) return GTValues.emptyFluidStackArray;
         final FluidStack[] a = new FluidStack[count];
         int i = 0;
         for (final FluidStack f : fluids) {
@@ -176,11 +176,11 @@ public class GTRecipeBuilder {
 
     /**
      * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.util.GTRecipe#ZERO_LEN_ITEMSTACK} if the array is empty.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyItemStackArray} if the array is empty.
      */
     @Nonnull
     static ItemStack[] removeTrailingNulls(@Nonnull ItemStack[] array) {
-        if (array.length == 0) return GTRecipe.ZERO_LEN_ITEMSTACK;
+        if (array.length == 0) return GTValues.emptyItemStackArray;
         int nullIndex = -1;
         for (int i = array.length - 1; i >= 0; i--) {
             if (array[i] == null) {
@@ -196,7 +196,7 @@ public class GTRecipeBuilder {
             return a;
         } else if (nullIndex == 0) {
             // array has no element
-            return GTRecipe.ZERO_LEN_ITEMSTACK;
+            return GTValues.emptyItemStackArray;
         } else {
             // array has trailing nulls that needs removing
             final ItemStack[] a = new ItemStack[nullIndex];
@@ -207,11 +207,11 @@ public class GTRecipeBuilder {
 
     /**
      * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.util.GTRecipe#ZERO_LEN_FLUIDSTACK} if the array is empty.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
      */
     @Nonnull
     static FluidStack[] removeTrailingNulls(@Nonnull FluidStack[] array) {
-        if (array.length == 0) return GTRecipe.ZERO_LEN_FLUIDSTACK;
+        if (array.length == 0) return GTValues.emptyFluidStackArray;
         int nullIndex = -1;
         for (int i = array.length - 1; i >= 0; i--) {
             if (array[i] == null) {
@@ -227,7 +227,7 @@ public class GTRecipeBuilder {
             return a;
         } else if (nullIndex == 0) {
             // array has no element
-            return GTRecipe.ZERO_LEN_FLUIDSTACK;
+            return GTValues.emptyFluidStackArray;
         } else {
             // array has trailing nulls that needs removing
             final FluidStack[] a = new FluidStack[nullIndex];
@@ -395,21 +395,21 @@ public class GTRecipeBuilder {
                 alts[i] = list.toArray(new ItemStack[0]);
             } else if (input == null) {
                 handleNullRecipeComponents("recipe oredict input");
-                alts[i] = new ItemStack[0];
+                alts[i] = GTValues.emptyItemStackArray;
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
         ArrayList<ItemStack> list = new ArrayList<>(alts.length);
         for (final ItemStack[] ss : alts) list.add(ss.length > 0 ? ss[0] : null);
-        inputsBasic = list.isEmpty() ? GTRecipe.ZERO_LEN_ITEMSTACK : list.toArray(new ItemStack[0]);
+        inputsBasic = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
         return this;
     }
 
     public GTRecipeBuilder itemOutputs(ItemStack... outputs) {
         if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTRecipe.ZERO_LEN_ITEMSTACK : outputs;
+        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
         }
@@ -423,7 +423,7 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
         if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTRecipe.ZERO_LEN_ITEMSTACK : outputs;
+        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
         this.chances = chances;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");

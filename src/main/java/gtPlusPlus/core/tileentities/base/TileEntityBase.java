@@ -257,7 +257,7 @@ public class TileEntityBase extends TileEntity
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         if (canAccessData()) return mInventory.getAccessibleSlotsFromSide(ordinalSide);
-        return new int[0];
+        return GTValues.emptyIntArray;
     }
 
     /**
@@ -1169,7 +1169,7 @@ public class TileEntityBase extends TileEntity
 
     @Override
     public String[] getDescription() {
-        return this.canAccessData() ? this.mMetaTileEntity.getDescription() : new String[0];
+        return this.canAccessData() ? this.mMetaTileEntity.getDescription() : GTValues.emptyStringArray;
     }
 
     @Override
