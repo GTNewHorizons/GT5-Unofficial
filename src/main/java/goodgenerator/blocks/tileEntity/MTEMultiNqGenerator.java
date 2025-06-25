@@ -111,6 +111,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                     .or(gregtech.api.enums.HatchElement.Dynamo),
+                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
+                                    .or(gregtech.api.enums.HatchElement.Energy),
                                 gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
