@@ -168,10 +168,18 @@ public class GTRecipeMapUtil {
             // fix shallow references
             Set<Object> references = Collections.newSetFromMap(new IdentityHashMap<>());
             for (GTRecipe r : derivatives) {
-                if (!references.add(r.mInputs)) r.mInputs = r.mInputs.clone();
-                if (!references.add(r.mOutputs)) r.mOutputs = r.mOutputs.clone();
-                if (!references.add(r.mFluidInputs)) r.mFluidInputs = r.mFluidInputs.clone();
-                if (!references.add(r.mFluidOutputs)) r.mFluidOutputs = r.mFluidOutputs.clone();
+                if (r.mInputs.length != 0 && !references.add(r.mInputs)) {
+                    r.mInputs = r.mInputs.clone();
+                }
+                if (r.mOutputs.length != 0 && !references.add(r.mOutputs)) {
+                    r.mOutputs = r.mOutputs.clone();
+                }
+                if (r.mFluidInputs.length != 0 && !references.add(r.mFluidInputs)) {
+                    r.mFluidInputs = r.mFluidInputs.clone();
+                }
+                if (r.mFluidOutputs.length != 0 && !references.add(r.mFluidOutputs)) {
+                    r.mFluidOutputs = r.mFluidOutputs.clone();
+                }
             }
             return derivatives;
         }
