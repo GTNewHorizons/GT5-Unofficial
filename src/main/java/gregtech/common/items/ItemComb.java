@@ -454,6 +454,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             Voltage.ULV,
             NI,
             30 * 100);
+        addCentrifugeToItemStack(
+            CombType.REFINEDRAREEARTH,
+            new ItemStack[] {GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1) },
+            new int[] { 50 * 100, 10 * 100, 10 * 100 },
+            Voltage.EV);
         addProcessGT(CombType.LAPIS, new Materials[] { Materials.Lapis }, Voltage.LV);
         addProcessGT(CombType.RUBY, new Materials[] { Materials.Ruby }, Voltage.LV);
         addProcessGT(CombType.REDGARNET, new Materials[] { Materials.GarnetRed }, Voltage.LV);
