@@ -6,6 +6,10 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import java.util.Arrays;
 import java.util.Objects;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.widget.Widget;
+import gregtech.api.modularui2.GTGuiTextures;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -32,6 +36,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTWidgetThemes;
+import tectech.thing.gui.TecTechUITextures;
 
 public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
 
@@ -207,7 +212,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                             .addLine(SolidifierModules.getModule(moduleSync.getIntValue()).displayName)
                             .setAutoUpdate(true))
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .overlay(GuiTextures.UPLOAD)
+                    .overlay(GuiTextures.ADD)
                     .onMousePressed(d -> {
                         if (!selectPanel.isPanelOpen()) {
                             selectPanel.openPanel();
@@ -215,8 +220,8 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                             selectPanel.closePanel();
                         }
                         return true;
-                    }))
-            .child(new TextWidget(IKey.dynamic(() -> EnumChatFormatting.WHITE + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).size(14,16));
+                    }).marginRight(2))
+            .child(new TextWidget(IKey.dynamic(() -> EnumChatFormatting.WHITE + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).scale(0.5f).size(20,16));
 
     }
 
@@ -260,16 +265,39 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IntSyncValue module1Sync = (IntSyncValue) syncManager.getSyncHandler("Module1:0");
+        IntSyncValue module2Sync = (IntSyncValue) syncManager.getSyncHandler("Module2:0");
+        IntSyncValue module3Sync = (IntSyncValue) syncManager.getSyncHandler("Module3:0");
+        IntSyncValue module4Sync = (IntSyncValue) syncManager.getSyncHandler("Module4:0");
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             // need the awesome graphic with overlays here
-            .child(
-                new TextWidget("bello").size(100, 80)
-                    .marginRight(50))
 
+            .child(GTGuiTextures.MODULAR_SOLIDIFIER_BASE.asWidget().size(60,80).marginRight(60))
+            .child(new Column().size(60,80).pos(0,0)
+
+                .child(new Column().size(60,40).paddingTop(17)
+                    //module 4 and 3
+                    .child(new Widget<>().size(28,11).marginBottom(1)
+                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module4Sync.getIntValue()).texture)))
+                    .child(new Widget<>().size(28,11)
+                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module3Sync.getIntValue()).texture)))
+
+                )
+
+                .child(new Column().size(60,40).paddingTop(6)
+                    //module 2 and 1
+                    .child(new Widget<>().size(28,11).marginBottom(1)
+                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module2Sync.getIntValue()).texture)))
+                    .child(new Widget<>().size(28,11)
+                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module1Sync.getIntValue()).texture)))
+                )
+
+
+            )
             // module selecting
             .child(
-                new Column().size(24, 80)
+                new Column().size(40, 80)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
                     .child(createModuleSelectButton(syncManager, parent, 3))

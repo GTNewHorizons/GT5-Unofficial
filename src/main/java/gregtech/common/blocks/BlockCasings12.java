@@ -17,7 +17,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
-        register(2, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Active Time Dilation System");
+        register(2, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System");
         register(3, ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
         register(4, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Power Efficient Subsystems Module");
         register(5, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendent Reinforcement Module");

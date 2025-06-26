@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import goodgenerator.loader.Loaders;
+import gregtech.api.casing.Casings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -167,6 +169,16 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
                     {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "}
                 }))
+        .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"     onnno     ","   ooo   ooo   ","  oo       oo  "," oo         oo "," o           o ","oo           oo","n             n","n             n","n             n","oo           oo"," o           o "," oo         oo ","  oo       oo  ","   ooo   ooo   ","     onnno     "},
+                {"     pmmmp     ","   ppp d ppp   ","  pp   d   pp  "," pp         pp "," p           p ","pp           pp","m             m","mdd         ddm","m             m","pp           pp"," p           p "," pp         pp ","  pp   d   pp  ","   ppp d ppp   ","     pmmmp     "},
+                {"     onnno     ","   ooo   ooo   ","  oo       oo  "," oo         oo "," o           o ","oo           oo","n             n","n             n","n             n","oo           oo"," o           o "," oo         oo ","  oo       oo  ","   ooo   ooo   ","     onnno     "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+            }
+        ))
         .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -235,6 +247,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('k', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
         .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))// this cant be real
+        .addElement('m', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc,13)))
+        .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc,9)))
+        .addElement('o',lazy(() -> ofBlock(ModBlocks.blockCasings6Misc,0)))
+        .addElement('p',lazy(() -> ofBlock(Loaders.compactFusionCoil,4)))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -624,7 +640,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     // mui2 stuff
-
+    @Override
+    public int getMaxParallelRecipes() {
+        checkModules();
+        return (int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
     @Override
     protected @NotNull MTEModularSolidifierGui getGui() {
         return new MTEModularSolidifierGui(this);
