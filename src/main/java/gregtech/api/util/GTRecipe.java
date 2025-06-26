@@ -23,6 +23,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -45,9 +46,6 @@ import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GTRecipe implements Comparable<GTRecipe> {
-
-    static final ItemStack[] ZERO_LEN_ITEMSTACK = new ItemStack[0];
-    static final FluidStack[] ZERO_LEN_FLUIDSTACK = new FluidStack[0];
 
     private static ItemStack dataStick;
     private static ItemStack dataOrb;
@@ -193,13 +191,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (aInputs == null) aInputs = ZERO_LEN_ITEMSTACK;
+        if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
         else aInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
-        if (aOutputs == null) aOutputs = ZERO_LEN_ITEMSTACK;
+        if (aOutputs == null) aOutputs = GTValues.emptyItemStackArray;
         else aOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
-        if (aFluidInputs == null) aFluidInputs = ZERO_LEN_FLUIDSTACK;
+        if (aFluidInputs == null) aFluidInputs = GTValues.emptyFluidStackArray;
         else aFluidInputs = GTRecipeBuilder.removeNullFluids(aFluidInputs);
-        if (aFluidOutputs == null) aFluidOutputs = ZERO_LEN_FLUIDSTACK;
+        if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
         else aFluidOutputs = GTRecipeBuilder.removeNullFluids(aFluidOutputs);
         if (aChances == null) aChances = new int[aOutputs.length];
         else if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
