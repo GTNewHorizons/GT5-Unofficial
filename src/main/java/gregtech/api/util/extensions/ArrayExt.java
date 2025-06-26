@@ -1,8 +1,10 @@
 package gregtech.api.util.extensions;
 
+import java.util.Arrays;
 import java.util.function.IntFunction;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -199,5 +201,38 @@ public class ArrayExt {
             System.arraycopy(array, 0, a, 0, nullIndex);
             return a;
         }
+    }
+
+    /**
+     * Fixes the recipe chances array. It will return null if the array is null or if the array doesn't use any
+     * meaningful % chances value.
+     * The values of the returned array will be contained in the interval [1;10000]. It may return the same array
+     * instance or a new instance.
+     *
+     * @param chances     the input chances array to fix
+     * @param expectedLen the expected length of the returned array, can be -1 if you don't need to set the length
+     */
+    @Nullable
+    public static int[] fixChancesArray(@Nullable int[] chances, int expectedLen) {
+        if (chances == null) return null;
+        boolean valid = false;
+        final int len = expectedLen == -1 ? chances.length : Math.min(chances.length, expectedLen);
+        for (int i = 0; i < len; i++) {
+            final int chance = chances[i];
+            if (chance > 0 && chance < 10000) {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) return null;
+        final boolean needCopy = expectedLen != -1 && expectedLen != chances.length;
+        final int[] array = needCopy ? Arrays.copyOf(chances, expectedLen) : chances;
+        for (int i = 0, len2 = array.length; i < len2; i++) {
+            final int chance = array[i];
+            if (chance <= 0 || chance > 10000) {
+                array[i] = 10000;
+            }
+        }
+        return array;
     }
 }
