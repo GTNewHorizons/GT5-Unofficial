@@ -192,13 +192,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
-        else aInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        else aInputs = ArrayExt.removeTrailingNulls(aInputs);
         if (aOutputs == null) aOutputs = GTValues.emptyItemStackArray;
-        else aOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        else aOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         if (aFluidInputs == null) aFluidInputs = GTValues.emptyFluidStackArray;
-        else aFluidInputs = GTRecipeBuilder.removeNullFluids(aFluidInputs);
+        else aFluidInputs = ArrayExt.removeNullFluids(aFluidInputs);
         if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
-        else aFluidOutputs = GTRecipeBuilder.removeNullFluids(aFluidOutputs);
+        else aFluidOutputs = ArrayExt.removeNullFluids(aFluidOutputs);
         if (aChances == null) aChances = new int[aOutputs.length];
         else if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
 
@@ -777,22 +777,22 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe setInputs(ItemStack... aInputs) {
         // TODO determine if we need this without trailing nulls call
-        this.mInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        this.mInputs = ArrayExt.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setOutputs(ItemStack... aOutputs) {
-        this.mOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        this.mOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         return this;
     }
 
     public GTRecipe setFluidInputs(FluidStack... aInputs) {
-        this.mFluidInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        this.mFluidInputs = ArrayExt.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setFluidOutputs(FluidStack... aOutputs) {
-        this.mFluidOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        this.mFluidOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         return this;
     }
 

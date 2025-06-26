@@ -2,9 +2,12 @@ package gregtech.api.util.extensions;
 
 import java.util.function.IntFunction;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 
 public class ArrayExt {
@@ -90,6 +93,29 @@ public class ArrayExt {
         return newArr;
     }
 
+    /**
+     * Returns a copy of the array without the null elements.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
+     */
+    @Nonnull
+    public static FluidStack[] removeNullFluids(@Nonnull FluidStack[] fluids) {
+        if (fluids.length == 0) return GTValues.emptyFluidStackArray;
+        int count = 0;
+        for (final FluidStack f : fluids) {
+            if (f != null) count++;
+        }
+        if (count == 0) return GTValues.emptyFluidStackArray;
+        final FluidStack[] a = new FluidStack[count];
+        int i = 0;
+        for (final FluidStack f : fluids) {
+            if (f != null) {
+                a[i] = f;
+                i++;
+            }
+        }
+        return a;
+    }
+
     public static <T> T[] withoutTrailingNulls(T[] array, IntFunction<T[]> arrayFactory) {
         int firstNull = -1;
         for (int i = array.length - 1; i >= 0; i--) {
@@ -110,6 +136,68 @@ public class ArrayExt {
             T[] newArray = arrayFactory.apply(firstNull);
             System.arraycopy(array, 0, newArray, 0, firstNull);
             return newArray;
+        }
+    }
+
+    /**
+     * Returns a copy of the array without any null elements at the end.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyItemStackArray} if the array is empty.
+     */
+    @Nonnull
+    public static ItemStack[] removeTrailingNulls(@Nonnull ItemStack[] array) {
+        if (array.length == 0) return GTValues.emptyItemStackArray;
+        int nullIndex = -1;
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (array[i] == null) {
+                nullIndex = i;
+            } else {
+                break;
+            }
+        }
+        if (nullIndex == -1) {
+            // array has no trailing null
+            final ItemStack[] a = new ItemStack[array.length];
+            System.arraycopy(array, 0, a, 0, array.length);
+            return a;
+        } else if (nullIndex == 0) {
+            // array has no element
+            return GTValues.emptyItemStackArray;
+        } else {
+            // array has trailing nulls that needs removing
+            final ItemStack[] a = new ItemStack[nullIndex];
+            System.arraycopy(array, 0, a, 0, nullIndex);
+            return a;
+        }
+    }
+
+    /**
+     * Returns a copy of the array without any null elements at the end.
+     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
+     */
+    @Nonnull
+    public static FluidStack[] removeTrailingNulls(@Nonnull FluidStack[] array) {
+        if (array.length == 0) return GTValues.emptyFluidStackArray;
+        int nullIndex = -1;
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (array[i] == null) {
+                nullIndex = i;
+            } else {
+                break;
+            }
+        }
+        if (nullIndex == -1) {
+            // array has no trailing null
+            final FluidStack[] a = new FluidStack[array.length];
+            System.arraycopy(array, 0, a, 0, array.length);
+            return a;
+        } else if (nullIndex == 0) {
+            // array has no element
+            return GTValues.emptyFluidStackArray;
+        } else {
+            // array has trailing nulls that needs removing
+            final FluidStack[] a = new FluidStack[nullIndex];
+            System.arraycopy(array, 0, a, 0, nullIndex);
+            return a;
         }
     }
 }
