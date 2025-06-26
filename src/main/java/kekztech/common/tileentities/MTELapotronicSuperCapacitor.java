@@ -189,6 +189,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final int DEBUG_POWER_WINDOW_ID = 10;
     private static final int WIRELESS_WARNING_WINDOW_ID = 11;
 
+    private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+
     // height channel for height.
     // glass channel for glass
     // capacitor channel for capacitor, but it really just pick whatever capacitor it can find in survival
@@ -1222,7 +1224,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     // called by the getEUCapacity() function in BaseMetaTileEntity
     @Override
     public long maxEUStore() {
-        return capacity.longValue();
+        return capacity.compareTo(LONG_MAX) > 0 ? Long.MAX_VALUE : capacity.longValue();
     }
 
     // called by the getEUStored() function in BaseMetaTileEntity
