@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.glodblock.github.util.Util;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -216,12 +217,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                         if (stack == null) continue;
 
-                        FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(stack);
-
-                        if (tFluid == null && stack.getItem() instanceof IFluidContainerItem)
-                            tFluid = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
-                        if (tFluid == null && stack.getItem() instanceof ItemFluidDisplay)
-                            tFluid = new FluidStack(FluidRegistry.getFluid(stack.getItemDamage()), 1);
+                        FluidStack tFluid = Util.getFluidFromItem(stack);
 
                         if (tFluid != null) {
                             hadFilters = true;
