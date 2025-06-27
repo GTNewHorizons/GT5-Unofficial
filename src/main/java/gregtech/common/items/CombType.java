@@ -213,12 +213,12 @@ public enum CombType {
         ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
     INFUSEDGOLD(165, "infused_gold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
-    // Addition to Gem Line, moved here so we don't shift all comb IDs
-    REFINEDRAREEARTH(166, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
     // Additions to rare metals, moved here so we don't shift all comb IDs
-    NEODYMIUM(167, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
-    EUROPIUM(168, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
-    MACHINIST(169, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
+    NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
+    EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
+    MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
+    // Addition to Gem Line, moved here so we don't shift all comb IDs
+    REFINEDRAREEARTH(169, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
