@@ -41,6 +41,7 @@ import bartworks.MainMod;
 import bartworks.common.tileentities.classic.TileEntityHeatedWaterPump;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
@@ -199,6 +200,6 @@ public class BWTileEntityContainer extends BlockContainer implements ITileAddsIn
                 e.printStackTrace();
             }
         }
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 }
