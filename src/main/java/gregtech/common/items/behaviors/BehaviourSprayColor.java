@@ -49,7 +49,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mColor = ((byte) aColor);
         this.mTooltip = GTLanguageManager.addStringLocalization(
             "gt.behaviour.paintspray." + this.mColor + ".tooltip",
-            "Can Color things in " + Dyes.get(this.mColor).mName);
+            "Can Color things in " + Dyes.get(this.mColor).name);
     }
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {

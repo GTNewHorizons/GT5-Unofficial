@@ -361,7 +361,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         protected List<String> getItemTooltips(final int index) {
             return ImmutableList.of(
                 index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                    : Dyes.getDyeFromIndex((short) index).mName);
+                    : Dyes.getDyeFromIndex((short) index).name);
         }
     }
 }

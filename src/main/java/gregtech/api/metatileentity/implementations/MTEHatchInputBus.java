@@ -141,8 +141,8 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
-        if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+        if (color >= 0 && color < 16) currenttip
+            .add("Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].name + EnumChatFormatting.GRAY);
     }
 
     @Override

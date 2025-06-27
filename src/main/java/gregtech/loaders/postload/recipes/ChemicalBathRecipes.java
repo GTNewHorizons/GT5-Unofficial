@@ -230,7 +230,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 0))
-                .fluidInputs(Dyes.dyeRed.getFluidDye(j, 72))
+                .fluidInputs(Dyes.dyeRed.getFluidDyes(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(16)
                 .addTo(chemicalBathRecipes);
@@ -239,7 +239,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 1))
-                .fluidInputs(Dyes.dyeBlue.getFluidDye(j, 72))
+                .fluidInputs(Dyes.dyeBlue.getFluidDyes(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(16)
                 .addTo(chemicalBathRecipes);
@@ -248,7 +248,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 2))
-                .fluidInputs(Dyes.dyeGreen.getFluidDye(j, 72))
+                .fluidInputs(Dyes.dyeGreen.getFluidDyes(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(16)
                 .addTo(chemicalBathRecipes);
@@ -257,7 +257,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 3))
-                .fluidInputs(Dyes.dyeYellow.getFluidDye(j, 72))
+                .fluidInputs(Dyes.dyeYellow.getFluidDyes(j, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(16)
                 .addTo(chemicalBathRecipes);
@@ -268,7 +268,7 @@ public class ChemicalBathRecipes implements Runnable {
                     GTValues.RA.stdBuilder()
                         .itemInputs(new ItemStack(Blocks.wool, 1, 0))
                         .itemOutputs(new ItemStack(Blocks.wool, 1, 15 - i))
-                        .fluidInputs(Dyes.VALUES[i].getFluidDye(j, 72))
+                        .fluidInputs(Dyes.VALUES[i].getFluidDyes(j, 72))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(2)
                         .addTo(chemicalBathRecipes);
@@ -277,7 +277,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.glass, 1, 0))
                     .itemOutputs(new ItemStack(Blocks.stained_glass, 1, 15 - i))
-                    .fluidInputs(Dyes.VALUES[i].getFluidDye(j, 18))
+                    .fluidInputs(Dyes.VALUES[i].getFluidDyes(j, 18))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(2)
                     .addTo(chemicalBathRecipes);
@@ -285,7 +285,7 @@ public class ChemicalBathRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.hardened_clay, 1, 0))
                     .itemOutputs(new ItemStack(Blocks.stained_hardened_clay, 1, 15 - i))
-                    .fluidInputs(Dyes.VALUES[i].getFluidDye(j, 18))
+                    .fluidInputs(Dyes.VALUES[i].getFluidDyes(j, 18))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(2)
                     .addTo(chemicalBathRecipes);

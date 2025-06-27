@@ -525,7 +525,7 @@ public class GTPreLoad {
 
     public static void loadClientConfig() {
         Arrays.stream(Dyes.values())
-            .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
+            .filter(dye -> (dye != Dyes._NULL) && (dye.index < 0))
             .forEach(dye -> {
                 switch (dye.toString()
                     .toLowerCase()) {

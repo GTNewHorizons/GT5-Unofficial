@@ -624,7 +624,7 @@ public class AssemblerRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.string, 3), GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(new ItemStack(Blocks.carpet, 2, 15 - i))
-                    .fluidInputs(Dyes.VALUES[i].getFluidDye(j, 24))
+                    .fluidInputs(Dyes.VALUES[i].getFluidDyes(j, 24))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(5)
                     .addTo(assemblerRecipes);

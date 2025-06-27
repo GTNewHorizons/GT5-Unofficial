@@ -1863,7 +1863,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             ItemList.DYE_ONLY_ITEMS[i].set(
                 addItem(
                     Dye_Colors[i],
-                    Dyes.get(i).mName + " Dye",
+                    Dyes.get(i).name + " Dye",
                     "",
                     Dyes.get(i)
                         .name(),

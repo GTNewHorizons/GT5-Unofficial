@@ -229,7 +229,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.name.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
 
@@ -302,7 +302,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 }
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.name.replace(" ", ""))) { // Engraver
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
@@ -410,7 +410,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(16)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.name.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
 
@@ -488,7 +488,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(16)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.name.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()

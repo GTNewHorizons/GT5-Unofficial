@@ -81,11 +81,7 @@ public class PrinterBackend extends RecipeMapBackend {
         if (items.length == 0 || items[0] == null || fluids.length == 0 || fluids[0] == null) {
             return null;
         }
-        Dyes dye = null;
-        for (Dyes tDye : Dyes.VALUES) if (tDye.isFluidDye(fluids[0])) {
-            dye = tDye;
-            break;
-        }
+        Dyes dye = Dyes.getAnyFluidDye(fluids[0]);
         if (dye == null) return null;
 
         ItemStack batchRecolorOutput = GTModHandler.getAllRecipeOutput(
@@ -94,7 +90,7 @@ public class PrinterBackend extends RecipeMapBackend {
             items[0],
             items[0],
             items[0],
-            ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1),
+            ItemList.DYE_ONLY_ITEMS[dye.index].get(1),
             items[0],
             items[0],
             items[0],
@@ -113,7 +109,7 @@ public class PrinterBackend extends RecipeMapBackend {
         }
 
         ItemStack singleRecolorOutput = GTModHandler
-            .getAllRecipeOutput(null, items[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1));
+            .getAllRecipeOutput(null, items[0], ItemList.DYE_ONLY_ITEMS[dye.index].get(1));
         if (singleRecolorOutput != null) {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, items[0]))
