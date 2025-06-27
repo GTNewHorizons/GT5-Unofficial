@@ -69,7 +69,7 @@ public class IGRecipeMaps {
         .useCustomFilterForNEI()
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(ItemList.SpaceElevatorModuleMinerT1.get(1))
-                .setHeight(160)
+                .setHeight(162)
                 .setMaxRecipesPerPage(2))
         .frontend(SpaceMiningFrontend::new)
         .build();
