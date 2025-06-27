@@ -165,7 +165,7 @@ public class RecipesRareEarthProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.REFINEDRAREEARTH, 1))
             .itemOutputs(RARE_EARTH_LOW.getDust(1), RARE_EARTH_MID.getDust(1), RARE_EARTH_HIGH.getDust(1))
-            .outputChances(3000, 3000, 3000)
+            .outputChances(3300, 3300, 3300)
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
