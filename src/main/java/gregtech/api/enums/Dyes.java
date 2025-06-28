@@ -1,8 +1,8 @@
 package gregtech.api.enums;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -19,7 +19,7 @@ import gregtech.api.util.GTUtil;
 public enum Dyes implements IColorModulationContainer {
 
     // spotless:off
-    /** The valid Colors, see VALUES Array below */
+    // The valid colors, see `VALUES` array below.
     dyeBlack(         0, 0x20202000,            "Black", EnumChatFormatting.BLACK),
     dyeRed(           1, 0xff000000,              "Red", EnumChatFormatting.RED),
     dyeGreen(         2, 0x00ff0000,            "Green", EnumChatFormatting.DARK_GREEN),
@@ -42,14 +42,22 @@ public enum Dyes implements IColorModulationContainer {
     MACHINE_METAL(   -1, 0xd2dcff00,    "Machine Metal");
     // spotless:on
 
+    /** RGBA color value (0xrrggbbaa). */
+    public final int rgba;
+    /** Dye index in range 0–15, or -1 for special cases. */
+    public final int mIndex;
+    /** Localized dye name. */
+    public final String mName;
+    /** Text formatting color. */
+    public final EnumChatFormatting formatting;
+    /** Set of all fluids that can be converted into this specific dye. */
+    private final HashSet<Fluid> fluidDyesSet = new HashSet<>();
+
+    /** Global mapping of fluids to the dye they produce when processed. */
+    private static final HashMap<Fluid, Dyes> fluidDyesMap = new HashMap<>();
+    /** Valid dye colors, indexed 0-15. */
     public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,
         dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
-
-    public final int rgba;
-    public final int mIndex;
-    public final String mName;
-    public final EnumChatFormatting formatting;
-    private final Set<Fluid> fluidDyes = new HashSet<>();
 
     Dyes(int index, int rgba, @NotNull String name) {
         this(index, rgba, name, EnumChatFormatting.GRAY);
@@ -64,7 +72,7 @@ public enum Dyes implements IColorModulationContainer {
 
     public static Dyes get(int index) {
         if (isDyeIndex(index)) return VALUES[index];
-        return _NULL;
+        return Dyes._NULL;
     }
 
     public static Dyes get(@NotNull String color) {
@@ -126,47 +134,30 @@ public enum Dyes implements IColorModulationContainer {
         return defaultModulation;
     }
 
-    public static boolean isAnyFluidDye(@Nullable FluidStack fluidStack) {
-        if (fluidStack == null) return false;
-        return isAnyFluidDye(fluidStack.getFluid());
-    }
-
-    public static boolean isAnyFluidDye(@Nullable Fluid fluid) {
-        if (fluid == null) return false;
-        final int values = VALUES.length;
-        for (Dyes value : VALUES) {
-            if (value.isFluidDye(fluid)) return true;
-        }
-        return false;
-    }
-
-    public static @Nullable Dyes getAnyFluidDye(@Nullable FluidStack fluidStack) {
+    public static @Nullable Dyes getFluidDye(@Nullable FluidStack fluidStack) {
         if (fluidStack == null) return null;
-        return getAnyFluidDye(fluidStack.getFluid());
+        return getFluidDye(fluidStack.getFluid());
     }
 
-    public static @Nullable Dyes getAnyFluidDye(@Nullable Fluid fluid) {
+    public static @Nullable Dyes getFluidDye(@Nullable Fluid fluid) {
         if (fluid == null) return null;
-        final int values = VALUES.length;
-        for (final Dyes dye : VALUES) {
-            if (dye.isFluidDye(fluid)) return dye;
-        }
-        return null;
+        return fluidDyesMap.get(fluid);
     }
 
-    public boolean isFluidDye(@Nullable FluidStack fluidStack) {
+    public static boolean isFluidDye(@Nullable FluidStack fluidStack) {
         if (fluidStack == null) return false;
         return isFluidDye(fluidStack.getFluid());
     }
 
-    public boolean isFluidDye(@Nullable Fluid fluid) {
+    public static boolean isFluidDye(@Nullable Fluid fluid) {
         if (fluid == null) return false;
-        return fluidDyes.contains(fluid);
+        return fluidDyesMap.containsKey(fluid);
     }
 
     public void addFluidDye(@Nullable Fluid fluid) {
         if (fluid == null) return;
-        fluidDyes.add(fluid);
+        fluidDyesSet.add(fluid);
+        fluidDyesMap.put(fluid, this);
     }
 
     public byte getRed() {
@@ -186,7 +177,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public Iterator<Fluid> getFluidDyes() {
-        return fluidDyes.iterator();
+        return fluidDyesSet.iterator();
     }
 
     @Override

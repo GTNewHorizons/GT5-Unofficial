@@ -81,7 +81,7 @@ public class PrinterBackend extends RecipeMapBackend {
         if (items.length == 0 || items[0] == null || fluids.length == 0 || fluids[0] == null) {
             return null;
         }
-        Dyes dye = Dyes.getAnyFluidDye(fluids[0]);
+        Dyes dye = Dyes.getFluidDye(fluids[0]);
         if (dye == null) return null;
 
         ItemStack batchRecolorOutput = GTModHandler.getAllRecipeOutput(
@@ -133,6 +133,6 @@ public class PrinterBackend extends RecipeMapBackend {
 
     @Override
     public boolean containsInput(Fluid fluid) {
-        return super.containsInput(fluid) || Dyes.isAnyFluidDye(fluid);
+        return super.containsInput(fluid) || Dyes.isFluidDye(fluid);
     }
 }
