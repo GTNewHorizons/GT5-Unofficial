@@ -47,7 +47,7 @@ public enum Dyes implements IColorModulationContainer {
         final int r = GTUtility.clamp(insulation.red, 0, 255);
         final int g = GTUtility.clamp(insulation.green, 0, 255);
         final int b = GTUtility.clamp(insulation.blue, 0, 255);
-        return ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8);
+        return (r << 24) | (g << 16) | (b << 8);
     }
 
     /** Constructs the configured machine metal color. */
@@ -56,7 +56,7 @@ public enum Dyes implements IColorModulationContainer {
         final int r = GTUtility.clamp(metal.red, 0, 255);
         final int g = GTUtility.clamp(metal.green, 0, 255);
         final int b = GTUtility.clamp(metal.blue, 0, 255);
-        return ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8);
+        return (r << 24) | (g << 16) | (b << 8);
     }
 
     /** RGBA color value (0xrrggbbaa). */
