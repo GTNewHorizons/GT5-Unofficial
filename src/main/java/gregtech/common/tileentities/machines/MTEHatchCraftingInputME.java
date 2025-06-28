@@ -88,6 +88,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -212,13 +213,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         @Override
         public ItemStack[] getItemInputs() {
-            if (isItemEmpty()) return new ItemStack[0];
+            if (isItemEmpty()) return GTValues.emptyItemStackArray;
             return itemInventory.toArray(new ItemStack[0]);
         }
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isEmpty()) return new FluidStack[0];
+            if (isEmpty()) return GTValues.emptyFluidStackArray;
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
@@ -231,7 +232,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             GTDualInputPattern dualInputs = new GTDualInputPattern();
 
             ItemStack[] inputItems = this.parentMTE.getSharedItems();
-            FluidStack[] inputFluids = new FluidStack[0];
+            FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             for (IAEItemStack singleInput : this.getPatternDetails()
                 .getInputs()) {
