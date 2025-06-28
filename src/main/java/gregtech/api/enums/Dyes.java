@@ -8,7 +8,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,20 +80,20 @@ public enum Dyes implements IColorModulationContainer {
         this.formatting = formatting;
     }
 
-    public static Dyes get(int index) {
+    public static @NotNull Dyes get(int index) {
         return getOrDefault(index, Dyes._NULL);
     }
 
-    public static Dyes getOrDefault(int index, @NotNull Dyes defaultDye) {
+    public static @NotNull Dyes getOrDefault(int index, @NotNull Dyes defaultDye) {
         if (isDyeIndex(index)) return VALUES[index];
         return defaultDye;
     }
 
-    public static Dyes get(@NotNull String color) {
+    public static @NotNull Dyes get(@NotNull String color) {
         return getOrDefault(color, Dyes._NULL);
     }
 
-    public static Dyes getOrDefault(@NotNull String color, @NotNull Dyes defaultDye) {
+    public static @NotNull Dyes getOrDefault(@NotNull String color, @NotNull Dyes defaultDye) {
         // spotless:off
         return switch (color) {
             case "Black"            -> Dyes.dyeBlack;
@@ -125,6 +124,17 @@ public enum Dyes implements IColorModulationContainer {
         return 0 <= index && index <= 15;
     }
 
+    /**
+     * Transforms a dye index between the GT index for this color and the vanilla index for this color.
+     *
+     * @param index an integer between 0 and 15
+     * @return the transformed index
+     */
+    public static int transformDyeIndex(int index) {
+        if (isDyeIndex(index)) return 15 - index;
+        throw new IllegalArgumentException("Index passed to `transformDyeIndex` must be between 0 and 15");
+    }
+
     public static byte rgbaToRed(int rgba) {
         return (byte) ((rgba >>> 24) & 0xff);
     }
@@ -141,7 +151,7 @@ public enum Dyes implements IColorModulationContainer {
         return (byte) (rgba & 0xff);
     }
 
-    public static short[] rgbaToArray(int rgba) {
+    public static short @NotNull [] rgbaToArray(int rgba) {
         final short r = (short) ((rgba >>> 24) & 0xff);
         final short g = (short) ((rgba >>> 16) & 0xff);
         final short b = (short) ((rgba >>> 8) & 0xff);
@@ -149,11 +159,11 @@ public enum Dyes implements IColorModulationContainer {
         return new short[] { r, g, b, a };
     }
 
-    public static short[] getModulation(int index) {
+    public static short @NotNull [] getModulation(int index) {
         return getModulation(index, Dyes._NULL.getRGBA());
     }
 
-    public static short[] getModulation(int index, short @NotNull [] defaultModulation) {
+    public static short @NotNull [] getModulation(int index, short @NotNull [] defaultModulation) {
         if (isDyeIndex(index)) return Dyes.rgbaToArray(VALUES[index].rgba);
         return defaultModulation;
     }
@@ -200,12 +210,12 @@ public enum Dyes implements IColorModulationContainer {
         return rgbaToAlpha(rgba);
     }
 
-    public HashSet<Fluid> getFluidDyes() {
+    public @NotNull HashSet<@NotNull Fluid> getFluidDyes() {
         return fluidDyesSet;
     }
 
     @Override
-    public short[] getRGBA() {
+    public short @NotNull [] getRGBA() {
         return Dyes.rgbaToArray(rgba);
     }
 
@@ -214,19 +224,7 @@ public enum Dyes implements IColorModulationContainer {
         return rgba >>> 8;
     }
 
-    /**
-     * Transforms a dye index between the GT index for this color and the vanilla index for this color.
-     *
-     * @param index an integer between 0 and 15
-     * @return the transformed index
-     */
-    @Contract(pure = true)
-    public static int transformDyeIndex(final int index) {
-        if (isDyeIndex(index)) return 15 - index;
-        throw new IllegalArgumentException("Index passed to transformColor must be between 0 and 15");
-    }
-
-    public String getLocalizedDyeName() {
+    public @NotNull String getLocalizedDyeName() {
         return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.mName);
     }
 }

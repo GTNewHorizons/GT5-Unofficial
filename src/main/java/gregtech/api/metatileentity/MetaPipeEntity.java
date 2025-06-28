@@ -29,7 +29,6 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
@@ -511,6 +510,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return GTUtil.getRGBInt(dye.getRGBA());
+        return dye.toInt();
     }
 }
