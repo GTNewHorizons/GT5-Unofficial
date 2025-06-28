@@ -450,7 +450,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockFirestone");
     }),
     PRISMATIC(GTBranchDefinition.GEM, "Prismatic", false, new Color(0x117777), new Color(0xcfe4e4), beeSpecies -> {
-        beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.PRISMARINE), 0.1f);
+        beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.PRISMATIC), 0.1f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
