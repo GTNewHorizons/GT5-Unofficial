@@ -216,6 +216,10 @@ public enum Dyes implements IColorModulationContainer {
         return rgbaArray;
     }
 
+    /**
+     * Converts rgba value from `0xrrggbbaa` to `0x00rrggbb`. Required for backwards compatibility.
+     * @deprecated Use format `0xrrggbbaa` instead.
+     */
     @Deprecated
     public int toInt() {
         return rgba >>> 8;
