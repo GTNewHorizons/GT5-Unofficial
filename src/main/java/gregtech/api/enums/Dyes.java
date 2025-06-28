@@ -142,6 +142,7 @@ public enum Dyes implements IColorModulationContainer {
         throw new IllegalArgumentException("Index passed to `transformDyeIndex` must be between 0 and 15");
     }
 
+    @Deprecated
     public static short @NotNull [] getModulation(int index) {
         return getModulation(index, Dyes._NULL.getRGBA());
     }
