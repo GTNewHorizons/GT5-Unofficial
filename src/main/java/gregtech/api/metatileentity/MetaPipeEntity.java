@@ -508,7 +508,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
             if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
         return GTUtil.getRGBInt(dye.getRGBA());

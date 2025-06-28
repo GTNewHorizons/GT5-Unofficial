@@ -30,7 +30,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -513,39 +512,7 @@ public class GTPreLoad {
         GTRecipeBuilder.onConfigLoad();
     }
 
-    /**
-     * Clamp value between 0 and 255
-     *
-     * @param value the value to clamp
-     * @return the clamped value
-     */
-    private static int sanitizeConfigInt(int value) {
-        return Math.min(255, Math.max(0, value));
-    }
-
     public static void loadClientConfig() {
-        Arrays.stream(Dyes.values())
-            .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
-            .forEach(dye -> {
-                switch (dye.toString()
-                    .toLowerCase()) {
-                    case "cable_insulation" -> {
-                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.red);
-                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.green);
-                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.blue);
-                    }
-                    case "machine_metal" -> {
-                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.red);
-                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.green);
-                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.blue);
-                    }
-                    default -> {
-                        GT_FML_LOGGER.warn(
-                            "unknown color modulation entry: " + dye
-                                + ". Report this pls, as config is missing this entry being parsed in code.");
-                    }
-                }
-            });
         GTMod.gregtechproxy.mRenderTileAmbientOcclusion = Client.render.renderTileAmbientOcclusion;
         GTMod.gregtechproxy.mRenderGlowTextures = Client.render.renderGlowTextures;
         GTMod.gregtechproxy.mRenderFlippedMachinesFlipped = Client.render.renderFlippedMachinesFlipped;

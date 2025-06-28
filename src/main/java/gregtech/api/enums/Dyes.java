@@ -13,32 +13,45 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.common.config.Client;
 
 public enum Dyes implements IColorModulationContainer {
 
     // spotless:off
     // The valid colors, see `VALUES` array below.
-    dyeBlack(         0, 0x20202000,            "Black", EnumChatFormatting.BLACK),
-    dyeRed(           1, 0xff000000,              "Red", EnumChatFormatting.RED),
-    dyeGreen(         2, 0x00ff0000,            "Green", EnumChatFormatting.DARK_GREEN),
-    dyeBrown(         3, 0x60400000,            "Brown", EnumChatFormatting.GOLD),
-    dyeBlue(          4, 0x0020ff00,             "Blue", EnumChatFormatting.DARK_BLUE),
-    dyePurple(        5, 0x80008000,           "Purple", EnumChatFormatting.DARK_PURPLE),
-    dyeCyan(          6, 0x00ffff00,             "Cyan", EnumChatFormatting.DARK_AQUA),
-    dyeLightGray(     7, 0xc0c0c000,       "Light Gray", EnumChatFormatting.GRAY),
-    dyeGray(          8, 0x80808000,             "Gray", EnumChatFormatting.DARK_GRAY),
-    dyePink(          9, 0xffc0c000,             "Pink", EnumChatFormatting.LIGHT_PURPLE),
-    dyeLime(         10, 0x80ff8000,             "Lime", EnumChatFormatting.GREEN),
-    dyeYellow(       11, 0xffff0000,           "Yellow", EnumChatFormatting.YELLOW),
-    dyeLightBlue(    12, 0x6080ff00,       "Light Blue", EnumChatFormatting.AQUA),
-    dyeMagenta(      13, 0xff00ff00,          "Magenta", EnumChatFormatting.LIGHT_PURPLE),
-    dyeOrange(       14, 0xff800000,           "Orange", EnumChatFormatting.GOLD),
-    dyeWhite(        15, 0xffffff00,            "White", EnumChatFormatting.WHITE),
+    dyeBlack(         0,   0x20202000,            "Black", EnumChatFormatting.BLACK),
+    dyeRed(           1,   0xff000000,              "Red", EnumChatFormatting.RED),
+    dyeGreen(         2,   0x00ff0000,            "Green", EnumChatFormatting.DARK_GREEN),
+    dyeBrown(         3,   0x60400000,            "Brown", EnumChatFormatting.GOLD),
+    dyeBlue(          4,   0x0020ff00,             "Blue", EnumChatFormatting.DARK_BLUE),
+    dyePurple(        5,   0x80008000,           "Purple", EnumChatFormatting.DARK_PURPLE),
+    dyeCyan(          6,   0x00ffff00,             "Cyan", EnumChatFormatting.DARK_AQUA),
+    dyeLightGray(     7,   0xc0c0c000,       "Light Gray", EnumChatFormatting.GRAY),
+    dyeGray(          8,   0x80808000,             "Gray", EnumChatFormatting.DARK_GRAY),
+    dyePink(          9,   0xffc0c000,             "Pink", EnumChatFormatting.LIGHT_PURPLE),
+    dyeLime(         10,   0x80ff8000,             "Lime", EnumChatFormatting.GREEN),
+    dyeYellow(       11,   0xffff0000,           "Yellow", EnumChatFormatting.YELLOW),
+    dyeLightBlue(    12,   0x6080ff00,       "Light Blue", EnumChatFormatting.AQUA),
+    dyeMagenta(      13,   0xff00ff00,          "Magenta", EnumChatFormatting.LIGHT_PURPLE),
+    dyeOrange(       14,   0xff800000,           "Orange", EnumChatFormatting.GOLD),
+    dyeWhite(        15,   0xffffff00,            "White", EnumChatFormatting.WHITE),
     // Additional Colors only used for direct Color referencing
-    _NULL(           -1, 0xffffff00,    "INVALID COLOR"),
-    CABLE_INSULATION(-1, 0x40404000, "Cable Insulation"),
-    MACHINE_METAL(   -1, 0xd2dcff00,    "Machine Metal");
+    _NULL(           -1,   0xffffff00,    "INVALID COLOR"),
+    CABLE_INSULATION(-2, cableInsulation(), "Cable Insulation"),
+    MACHINE_METAL(   -3,    machineMetal(),    "Machine Metal");
     // spotless:on
+
+    /** Constructs the configured cable insulation color. */
+    private static int cableInsulation() {
+        final Client.ColorModulation.CableInsulation insulation = Client.colorModulation.cableInsulation;
+        return (insulation.red & 0xFF << 24) | (insulation.green & 0xFF << 16) | (insulation.blue & 0xFF << 8);
+    }
+
+    /** Constructs the configured machine metal color. */
+    private static int machineMetal() {
+        final Client.ColorModulation.MachineMetal insulation = Client.colorModulation.machineMetal;
+        return (insulation.red & 0xFF << 24) | (insulation.green & 0xFF << 16) | (insulation.blue & 0xFF << 8);
+    }
 
     /** RGBA color value (0xrrggbbaa). */
     public final int rgba;
@@ -69,11 +82,19 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public static Dyes get(int index) {
+        return getOrDefault(index, Dyes._NULL);
+    }
+
+    public static Dyes getOrDefault(int index, @NotNull Dyes defaultDye) {
         if (isDyeIndex(index)) return VALUES[index];
-        return Dyes._NULL;
+        return defaultDye;
     }
 
     public static Dyes get(@NotNull String color) {
+        return getOrDefault(color, Dyes._NULL);
+    }
+
+    public static Dyes getOrDefault(@NotNull String color, @NotNull Dyes defaultDye) {
         // spotless:off
         return switch (color) {
             case "Black"            -> Dyes.dyeBlack;
@@ -92,9 +113,10 @@ public enum Dyes implements IColorModulationContainer {
             case "Magenta"          -> Dyes.dyeMagenta;
             case "Orange"           -> Dyes.dyeOrange;
             case "White"            -> Dyes.dyeWhite;
+            case "INVALID COLOR"    -> Dyes._NULL;
             case "Cable Insulation" -> Dyes.CABLE_INSULATION;
             case "Machine Metal"    -> Dyes.MACHINE_METAL;
-            default                 -> Dyes._NULL;
+            default                 -> defaultDye;
         };
         // spotless:on
     }
@@ -125,6 +147,10 @@ public enum Dyes implements IColorModulationContainer {
         final short b = (short) ((rgba >>> 8) & 0xff);
         final short a = (short) (rgba & 0xff);
         return new short[] { r, g, b, a };
+    }
+
+    public static short[] getModulation(int index) {
+        return getModulation(index, Dyes._NULL.getRGBA());
     }
 
     public static short[] getModulation(int index, short @NotNull [] defaultModulation) {
@@ -186,11 +212,6 @@ public enum Dyes implements IColorModulationContainer {
     @Deprecated
     public int toInt() {
         return rgba >>> 8;
-    }
-
-    @Deprecated
-    public static Dyes getDyeFromIndex(short index) {
-        return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
     }
 
     /**

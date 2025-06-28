@@ -296,7 +296,7 @@ public class Textures {
                     MACHINECASINGS_BOTTOM_TT[i],
                     MACHINECASINGS_TOP_TT[i],
                     MACHINECASINGS_SIDE_TT[i],
-                    Dyes.getModulation(j - 1, MACHINE_METAL.mRGBa));
+                    Dyes.getModulation(j - 1, MACHINE_METAL.getRGBA()));
             }
         }
         MACHINE_CASINGS = MACHINE_CASINGS_TT;
