@@ -1546,6 +1546,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .takeOne(
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
+                            && s.getItemDamage() != 0 // LSC casing, not a capacitor
                             && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
                                 .getMinimalGlassTier() > glassTier,
                         true);
