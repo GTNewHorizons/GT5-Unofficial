@@ -2,7 +2,6 @@ package gregtech.api.enums;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -176,8 +175,8 @@ public enum Dyes implements IColorModulationContainer {
         return rgbaToAlpha(rgba);
     }
 
-    public Iterator<Fluid> getFluidDyes() {
-        return fluidDyesSet.iterator();
+    public HashSet<Fluid> getFluidDyes() {
+        return fluidDyesSet;
     }
 
     @Override
