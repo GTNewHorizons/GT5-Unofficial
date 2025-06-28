@@ -4546,7 +4546,7 @@ public class GTUtility {
 
     /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
     public static int ceilDiv2(int lhs, int rhs) {
-        int sign = signum(lhs) * signum(rhs);
+        int sign = Integer.signum(lhs) * Integer.signum(rhs);
 
         if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
@@ -4563,18 +4563,22 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    @Deprecated
     public static int signum(int x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Integer.signum(x);
     }
 
+    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    @Deprecated
     public static long signum(long x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Long.signum(x);
     }
 
     public static Vector3i signum(Vector3i v) {
-        v.x = signum(v.x);
-        v.y = signum(v.y);
-        v.z = signum(v.z);
+        v.x = Integer.signum(v.x);
+        v.y = Integer.signum(v.y);
+        v.z = Integer.signum(v.z);
 
         return v;
     }

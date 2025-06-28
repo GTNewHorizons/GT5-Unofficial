@@ -1,6 +1,8 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
@@ -24,6 +26,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialsOres;
@@ -162,5 +166,16 @@ public class RecipesRareEarthProcessing {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
+
+        if (Forestry.isModLoaded()) {
+            // Refined Rare Earth Comb Processing
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.REFINEDRAREEARTH, 1))
+                .itemOutputs(RARE_EARTH_LOW.getDust(1), RARE_EARTH_MID.getDust(1), RARE_EARTH_HIGH.getDust(1))
+                .outputChances(3300, 3300, 3300)
+                .duration(32 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+        }
     }
 }
