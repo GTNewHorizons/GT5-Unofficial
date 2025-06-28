@@ -179,7 +179,6 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     @Override
-    @Deprecated
     public short[] getRGBA() {
         return Dyes.rgbaToArray(rgba);
     }
