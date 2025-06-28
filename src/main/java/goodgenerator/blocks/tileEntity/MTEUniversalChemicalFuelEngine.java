@@ -288,7 +288,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
         if (!eDynamoMulti.isEmpty()) {
@@ -300,7 +300,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }
