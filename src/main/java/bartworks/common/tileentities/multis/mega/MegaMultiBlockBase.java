@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
+import gregtech.api.enums.GTValues;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -33,7 +34,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     }
 
     protected String[] getExtendedInfoData() {
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     protected long[] getCurrentInfoData() {

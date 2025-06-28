@@ -449,8 +449,10 @@ public class GTValues {
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
-    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final FluidStack[] emptyFluidStackArray = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final String[] emptyStringArray = new String[0];
+    public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
