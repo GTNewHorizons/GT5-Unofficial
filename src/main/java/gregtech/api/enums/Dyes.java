@@ -55,7 +55,7 @@ public enum Dyes implements IColorModulationContainer {
     /** RGBA color value (0xrrggbbaa). */
     public final int rgba;
     @Deprecated
-    private final short[] rgbaArray;
+    public final short[] mRGBa;
     /** Dye index in range 0–15, or -1 for special cases. */
     public final int mIndex;
     /** Localized dye name. */
@@ -81,7 +81,7 @@ public enum Dyes implements IColorModulationContainer {
         final short g = (short) ((rgba >>> 16) & 0xff);
         final short b = (short) ((rgba >>> 8) & 0xff);
         final short a = (short) (rgba & 0xff);
-        this.rgbaArray = new short[] { r, g, b, a };
+        this.mRGBa = new short[] { r, g, b, a };
         this.mIndex = index;
         this.mName = name;
         this.formatting = formatting;
@@ -149,7 +149,7 @@ public enum Dyes implements IColorModulationContainer {
 
     @Deprecated
     public static short @NotNull [] getModulation(int index, short @NotNull [] defaultModulation) {
-        if (isDyeIndex(index)) return VALUES[index].rgbaArray;
+        if (isDyeIndex(index)) return VALUES[index].mRGBa;
         return defaultModulation;
     }
 
@@ -186,7 +186,7 @@ public enum Dyes implements IColorModulationContainer {
     @Override
     @Deprecated
     public short @NotNull [] getRGBA() {
-        return rgbaArray;
+        return mRGBa;
     }
 
     /**
