@@ -68,9 +68,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     public FluidStack[] mFluidInputs, mFluidOutputs;
     /**
-     * If you changed the amount of Array-Items inside the Output Array then the length of this Array must be larger or
-     * equal to the Output Array. A chance of 10000 equals 100%
+     * This array describes the % chance of obtention of each output, the values should range from 1 to 10000, 10000
+     * being 100% chance. If the array is null, the chances for all items default to 100%.
+     * If you change the amount of Array-Items inside the Output Array then the length of this Array must be larger or
+     * equal to the Output Array.
      */
+    @Nullable
     public int[] mChances;
     /**
      * An Item that needs to be inside the Special Slot, like for example the Copy Slot inside the Printer. This is only
@@ -171,7 +174,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
         this.mFluidOutputs = mFluidOutputs;
-        this.mChances = mChances;
+        this.mChances = ArrayExt.fixChancesArray(mChances, -1);
         this.mSpecialItems = mSpecialItems;
         this.mDuration = mDuration;
         this.mEUt = mEUt;
@@ -192,22 +195,19 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
-        else aInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        else aInputs = ArrayExt.removeTrailingNulls(aInputs);
         if (aOutputs == null) aOutputs = GTValues.emptyItemStackArray;
-        else aOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        else aOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         if (aFluidInputs == null) aFluidInputs = GTValues.emptyFluidStackArray;
-        else aFluidInputs = GTRecipeBuilder.removeNullFluids(aFluidInputs);
+        else aFluidInputs = ArrayExt.removeNullFluids(aFluidInputs);
         if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
-        else aFluidOutputs = GTRecipeBuilder.removeNullFluids(aFluidOutputs);
-        if (aChances == null) aChances = new int[aOutputs.length];
-        else if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
+        else aFluidOutputs = ArrayExt.removeNullFluids(aFluidOutputs);
 
         GTOreDictUnificator.setStackArray(true, true, aInputs);
         GTOreDictUnificator.setStackArray(true, true, aOutputs);
 
         for (final ItemStack s : aOutputs) GTUtility.updateItemStack(s);
 
-        for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
@@ -248,7 +248,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mInputs = aInputs;
         mOutputs = aOutputs;
         mSpecialItems = aSpecialItems;
-        mChances = aChances;
+        mChances = ArrayExt.fixChancesArray(aChances, aOutputs.length);
         mFluidInputs = aFluidInputs;
         mFluidOutputs = aFluidOutputs;
         mDuration = aDuration;
@@ -777,27 +777,27 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe setInputs(ItemStack... aInputs) {
         // TODO determine if we need this without trailing nulls call
-        this.mInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        this.mInputs = ArrayExt.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setOutputs(ItemStack... aOutputs) {
-        this.mOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        this.mOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         return this;
     }
 
     public GTRecipe setFluidInputs(FluidStack... aInputs) {
-        this.mFluidInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        this.mFluidInputs = ArrayExt.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setFluidOutputs(FluidStack... aOutputs) {
-        this.mFluidOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        this.mFluidOutputs = ArrayExt.removeTrailingNulls(aOutputs);
         return this;
     }
 
     public GTRecipe setChances(int... aChances) {
-        this.mChances = aChances;
+        this.mChances = ArrayExt.fixChancesArray(aChances, -1);
         return this;
     }
 
