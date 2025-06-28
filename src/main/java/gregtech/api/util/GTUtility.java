@@ -2331,14 +2331,6 @@ public class GTUtility {
         return null;
     }
 
-    public static Integer[] stacksToIntegerArray(ItemStack... aStacks) {
-        Integer[] rArray = new Integer[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
-    }
-
     public static int[] stacksToIntArray(ItemStack... aStacks) {
         int[] rArray = new int[aStacks.length];
         for (int i = 0; i < rArray.length; i++) {
