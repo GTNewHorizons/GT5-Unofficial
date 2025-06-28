@@ -18,7 +18,7 @@ public class ChemicalBath implements Runnable {
     @Override
     public void run() {
 
-        for (Fluid dyeFluid : Dyes.dyeBrown.getFluidDyes()) {
+        for (Fluid dyeFluid : Dyes.dyeRed.getFluidDyes()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
                 .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
