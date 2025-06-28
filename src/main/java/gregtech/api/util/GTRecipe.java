@@ -23,6 +23,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -123,12 +124,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * Stores which mod added this recipe
      */
-    public List<ModContainer> owners = new ArrayList<>();
+    @Nullable
+    public List<ModContainer> owners = GTMod.gregtechproxy.mNEIRecipeOwner ? new ArrayList<>() : null;
     /**
      * Stores stack traces where this recipe was added
      */
     // BW wants to overwrite it, so no final
-    public List<List<String>> stackTraces = new ArrayList<>();
+    @Nullable
+    public List<List<String>> stackTraces = GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace ? new ArrayList<>() : null;
 
     /** Used for simple cache validation */
     private ItemStack[] inputsAtCacheTime = null;
@@ -136,58 +139,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
     private RecipeItemInput[] mergedInputCache = null;
     private static final RecipeItemInput[] EMPTY_INPUT_CACHE = new RecipeItemInput[0];
 
-    /** A single recipe input, used for an internal cache to speed up recipe matching */
-    public static final class RecipeItemInput {
-
-        /** Item count is ignored on this stack, do not mutate it either */
-        public final ItemStack unifiedStack;
-        /** Number of input items required */
-        public long inputAmount;
-        /** True if the input is NBT-sensitive */
-        public final boolean usesNbtMatching;
-
-        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
-            Objects.requireNonNull(stack);
-            this.inputAmount = stack.stackSize;
-            final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
-            this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
-            if (stackNeedsNBT) {
-                this.unifiedStack = stack;
-            } else {
-                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
-                if (!this.usesNbtMatching) {
-                    this.unifiedStack.setTagCompound(null);
-                }
-            }
-        }
-
-        /**
-         * @return True if the passed in stack is of the same item type as this input (respecting
-         *         {@link RecipeItemInput#usesNbtMatching}).
-         */
-        public boolean matchesType(final ItemStack other) {
-            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
-        }
-
-        /**
-         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
-         */
-        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
-            if (usesNbtMatching) {
-                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
-            } else {
-                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
-            }
-        }
-    }
-
     private GTRecipe(GTRecipe aRecipe, boolean shallow) {
-        mInputs = shallow ? aRecipe.mInputs : GTUtility.copyItemArray(aRecipe.mInputs);
-        mOutputs = shallow ? aRecipe.mOutputs : GTUtility.copyItemArray(aRecipe.mOutputs);
+        mInputs = shallow ? aRecipe.mInputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mInputs);
+        mOutputs = shallow ? aRecipe.mOutputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mOutputs);
         mSpecialItems = aRecipe.mSpecialItems;
         mChances = aRecipe.mChances;
-        mFluidInputs = shallow ? aRecipe.mFluidInputs : GTUtility.copyFluidArray(aRecipe.mFluidInputs);
-        mFluidOutputs = shallow ? aRecipe.mFluidOutputs : GTUtility.copyFluidArray(aRecipe.mFluidOutputs);
+        mFluidInputs = shallow ? aRecipe.mFluidInputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidInputs);
+        mFluidOutputs = shallow ? aRecipe.mFluidOutputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidOutputs);
         mDuration = aRecipe.mDuration;
         mSpecialValue = aRecipe.mSpecialValue;
         mEUt = aRecipe.mEUt;
@@ -198,7 +156,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
         metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
-        owners = new ArrayList<>(aRecipe.owners);
+        owners = aRecipe.owners == null ? null : new ArrayList<>(aRecipe.owners);
         reloadOwner();
     }
 
@@ -233,52 +191,56 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        if (aInputs == null) aInputs = new ItemStack[0];
-        if (aOutputs == null) aOutputs = new ItemStack[0];
-        if (aFluidInputs == null) aFluidInputs = new FluidStack[0];
-        if (aFluidOutputs == null) aFluidOutputs = new FluidStack[0];
+        if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
+        else aInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
+        if (aOutputs == null) aOutputs = GTValues.emptyItemStackArray;
+        else aOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
+        if (aFluidInputs == null) aFluidInputs = GTValues.emptyFluidStackArray;
+        else aFluidInputs = GTRecipeBuilder.removeNullFluids(aFluidInputs);
+        if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
+        else aFluidOutputs = GTRecipeBuilder.removeNullFluids(aFluidOutputs);
         if (aChances == null) aChances = new int[aOutputs.length];
-        if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
-
-        aInputs = ArrayExt.withoutTrailingNulls(aInputs, ItemStack[]::new);
-        aOutputs = ArrayExt.withoutTrailingNulls(aOutputs, ItemStack[]::new);
-        aFluidInputs = ArrayExt.withoutNulls(aFluidInputs, FluidStack[]::new);
-        aFluidOutputs = ArrayExt.withoutNulls(aFluidOutputs, FluidStack[]::new);
+        else if (aChances.length < aOutputs.length) aChances = Arrays.copyOf(aChances, aOutputs.length);
 
         GTOreDictUnificator.setStackArray(true, true, aInputs);
         GTOreDictUnificator.setStackArray(true, true, aOutputs);
 
-        for (ItemStack tStack : aOutputs) GTUtility.updateItemStack(tStack);
+        for (final ItemStack s : aOutputs) GTUtility.updateItemStack(s);
 
         for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
         if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> tList = new ArrayList<>();
-            tList.addAll(Arrays.asList(aInputs));
-            tList.addAll(Arrays.asList(aOutputs));
-            for (int i = 0; i < tList.size(); i++) if (tList.get(i) == null) tList.remove(i--);
+            ArrayList<ItemStack> stacks = new ArrayList<>(aInputs.length + aOutputs.length);
+            for (final ItemStack s : aInputs) if (s != null) stacks.add(s);
+            for (final ItemStack s : aOutputs) if (s != null) stacks.add(s);
 
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) if (aDuration / i >= 16) {
-                boolean temp = true;
-                for (ItemStack stack : tList) if (stack.stackSize % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack aFluidInput : aFluidInputs) if (aFluidInput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack aFluidOutput : aFluidOutputs) if (aFluidOutput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) {
-                    for (ItemStack itemStack : tList) itemStack.stackSize /= i;
-                    for (FluidStack aFluidInput : aFluidInputs) aFluidInput.amount /= i;
-                    for (FluidStack aFluidOutput : aFluidOutputs) aFluidOutput.amount /= i;
-                    aDuration /= i;
+            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
+                if (aDuration / i >= 16) {
+                    boolean temp = true;
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, size = stacks.size(); j < size; j++) {
+                        if (stacks.get(j).stackSize % i != 0) {
+                            temp = false;
+                            break;
+                        }
+                    }
+                    if (temp) for (final FluidStack f : aFluidInputs) if (f.amount % i != 0) {
+                        temp = false;
+                        break;
+                    }
+                    if (temp) for (final FluidStack f : aFluidOutputs) if (f.amount % i != 0) {
+                        temp = false;
+                        break;
+                    }
+                    if (temp) {
+                        // noinspection ForLoopReplaceableByForEach
+                        for (int j = 0, size = stacks.size(); j < size; j++) stacks.get(j).stackSize /= i;
+                        for (final FluidStack f : aFluidInputs) f.amount /= i;
+                        for (final FluidStack f : aFluidOutputs) f.amount /= i;
+                        aDuration /= i;
+                    }
                 }
             }
         }
@@ -757,11 +719,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
         "gregtech.common.GTRecipeAdder");
 
     public void reloadOwner() {
-        setOwner(
-            Loader.instance()
-                .activeModContainer());
+        if (owners != null) {
+            setOwner(
+                Loader.instance()
+                    .activeModContainer());
+        }
 
-        if (GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
+        if (stackTraces != null) {
             List<String> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread()
                 .getStackTrace()) {
@@ -789,6 +753,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     public void setOwner(ModContainer newOwner) {
+        if (owners == null) return;
         ModContainer oldOwner = !owners.isEmpty() ? this.owners.get(owners.size() - 1) : null;
         if (newOwner != null && newOwner != oldOwner) {
             owners.add(newOwner);
@@ -799,6 +764,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Use in case {@link Loader#activeModContainer()} isn't helpful
      */
     public void setOwner(String modId) {
+        if (owners == null) return;
         for (ModContainer mod : Loader.instance()
             .getModList()) {
             if (mod.getModId()
@@ -811,22 +777,22 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public GTRecipe setInputs(ItemStack... aInputs) {
         // TODO determine if we need this without trailing nulls call
-        this.mInputs = ArrayExt.withoutTrailingNulls(aInputs, ItemStack[]::new);
+        this.mInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setOutputs(ItemStack... aOutputs) {
-        this.mOutputs = ArrayExt.withoutTrailingNulls(aOutputs, ItemStack[]::new);
+        this.mOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
         return this;
     }
 
     public GTRecipe setFluidInputs(FluidStack... aInputs) {
-        this.mFluidInputs = ArrayExt.withoutTrailingNulls(aInputs, FluidStack[]::new);
+        this.mFluidInputs = GTRecipeBuilder.removeTrailingNulls(aInputs);
         return this;
     }
 
     public GTRecipe setFluidOutputs(FluidStack... aOutputs) {
-        this.mFluidOutputs = ArrayExt.withoutTrailingNulls(aOutputs, FluidStack[]::new);
+        this.mFluidOutputs = GTRecipeBuilder.removeTrailingNulls(aOutputs);
         return this;
     }
 
@@ -843,6 +809,51 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe setEUt(int aEUt) {
         this.mEUt = aEUt;
         return this;
+    }
+
+    /** A single recipe input, used for an internal cache to speed up recipe matching */
+    public static final class RecipeItemInput {
+
+        /** Item count is ignored on this stack, do not mutate it either */
+        public final ItemStack unifiedStack;
+        /** Number of input items required */
+        public long inputAmount;
+        /** True if the input is NBT-sensitive */
+        public final boolean usesNbtMatching;
+
+        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
+            Objects.requireNonNull(stack);
+            this.inputAmount = stack.stackSize;
+            final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
+            this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
+            if (stackNeedsNBT) {
+                this.unifiedStack = stack;
+            } else {
+                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
+                if (!this.usesNbtMatching) {
+                    this.unifiedStack.setTagCompound(null);
+                }
+            }
+        }
+
+        /**
+         * @return True if the passed in stack is of the same item type as this input (respecting
+         *         {@link RecipeItemInput#usesNbtMatching}).
+         */
+        public boolean matchesType(final ItemStack other) {
+            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
+        }
+
+        /**
+         * @return True if the given input+oredict data for that input can be used as a valid recipe ingredient.
+         */
+        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+            if (usesNbtMatching) {
+                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
+            } else {
+                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
+            }
+        }
     }
 
     public static class RecipeAssemblyLine {
@@ -899,12 +910,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 aEUt,
                 new ItemStack[aInputs.length][]);
             int tPersistentHash = 1;
-            for (ItemStack tInput : aInputs)
+            for (final ItemStack tInput : aInputs) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tInput, true, false);
+            }
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aResearchItem, true, false);
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aOutput, true, false);
-            for (FluidStack tFluidInput : aFluidInputs)
+            for (final FluidStack tFluidInput : aFluidInputs) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
+            }
             tPersistentHash = tPersistentHash * 31 + aResearchTime;
             tPersistentHash = tPersistentHash * 31 + aResearchVoltage;
             tPersistentHash = tPersistentHash * 31 + aDuration;

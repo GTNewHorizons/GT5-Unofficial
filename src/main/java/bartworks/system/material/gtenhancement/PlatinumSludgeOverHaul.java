@@ -1078,7 +1078,7 @@ public class PlatinumSludgeOverHaul {
         if (input instanceof List || input instanceof Object[]) {
             Set lists = new HashSet(), stacks = new HashSet();
             List ip = input instanceof List ? (List) input : new ArrayList();
-            Object[] ip2 = input instanceof Object[] ? (Object[]) input : new Object[0];
+            Object[] ip2 = input instanceof Object[] ? (Object[]) input : GTValues.emptyObjectArray;
 
             for (Object o : ip) {
                 if (o instanceof List) lists.add(o);

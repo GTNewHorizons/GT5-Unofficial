@@ -287,7 +287,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 return GTStreamUtil.ofNullable(getRecipe());
             }
-        }.setSpeedBonus(1F / 3F)
+        }.noRecipeCaching()
+            .setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

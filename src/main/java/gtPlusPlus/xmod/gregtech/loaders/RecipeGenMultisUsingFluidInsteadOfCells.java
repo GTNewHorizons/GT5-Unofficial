@@ -166,7 +166,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     x.mDuration,
                     x.mEUt,
                     x.mSpecialValue);
-                aNewRecipe.owners = new ArrayList<>(x.owners);
+                aNewRecipe.owners = x.owners == null ? null : new ArrayList<>(x.owners);
 
                 // add all recipes to an intermediate array
                 deDuplicationInputArray.add(aNewRecipe);

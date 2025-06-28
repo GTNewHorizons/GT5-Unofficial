@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.GTDualInputPattern;
@@ -54,6 +55,7 @@ public class ProcessingLogic {
     protected double overClockTimeReduction = 2.0;
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+    protected boolean recipeCaching = true;
 
     // Calculated results
     protected ItemStack[] outputItems;
@@ -278,6 +280,14 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Disable caching of matched recipes.
+     */
+    public ProcessingLogic noRecipeCaching() {
+        this.recipeCaching = false;
+        return this;
+    }
+
     // endregion
 
     // region Overwrite calculated result
@@ -368,10 +378,10 @@ public class ProcessingLogic {
         }
 
         if (inputItems == null) {
-            inputItems = new ItemStack[0];
+            inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
+            inputFluids = GTValues.emptyFluidStackArray;
         }
 
         if (activeDualInv != null) {
@@ -503,6 +513,7 @@ public class ProcessingLogic {
             return Stream.empty();
         }
         return map.findRecipeQuery()
+            .caching(recipeCaching)
             .items(inputItems)
             .fluids(inputFluids)
             .specialSlot(specialSlotItem)
