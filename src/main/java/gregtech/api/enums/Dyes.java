@@ -77,7 +77,11 @@ public enum Dyes implements IColorModulationContainer {
 
     Dyes(int index, int rgba, @NotNull String name, @NotNull EnumChatFormatting formatting) {
         this.rgba = rgba;
-        this.rgbaArray = new short[] { rgbaToRed(rgba), rgbaToGreen(rgba), rgbaToBlue(rgba), rgbaToAlpha(rgba) };
+        final short r = (short) ((rgba >>> 24) & 0xff);
+        final short g = (short) ((rgba >>> 16) & 0xff);
+        final short b = (short) ((rgba >>> 8) & 0xff);
+        final short a = (short) (rgba & 0xff);
+        this.rgbaArray = new short[] { r, g, b, a };
         this.mIndex = index;
         this.mName = name;
         this.formatting = formatting;
@@ -218,7 +222,7 @@ public enum Dyes implements IColorModulationContainer {
 
     /**
      * Converts rgba value from `0xrrggbbaa` to `0x00rrggbb`. Required for backwards compatibility.
-     * 
+     *
      * @deprecated Use format `0xrrggbbaa` instead.
      */
     @Deprecated
