@@ -2229,15 +2229,15 @@ public class RecipesMachines {
             "plateThorium232",
             RECIPE_LFTRController);
         RecipeUtils.addShapedGregtechRecipe(
-            "plateDoubleHastelloyC276",
+            "plateDoubleZeron100",
             ToolDictNames.craftingToolScrewdriver.name(),
-            "plateDoubleHastelloyC276",
+            "plateDoubleZeron100",
             "gearGtTalonite",
             ItemList.Field_Generator_LV.get(1),
             "gearGtTalonite",
-            "plateDoubleHastelloyC276",
+            "plateDoubleZeron100",
             ToolDictNames.craftingToolHardHammer.name(),
-            "plateDoubleHastelloyC276",
+            "plateDoubleZeron100",
             RECIPE_LFTRInnerCasing);
 
         ItemStack IC2HeatPlate = getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1);
