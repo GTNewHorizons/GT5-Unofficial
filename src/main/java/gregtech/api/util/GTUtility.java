@@ -4546,7 +4546,7 @@ public class GTUtility {
 
     /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
     public static int ceilDiv2(int lhs, int rhs) {
-        int sign = signum(lhs) * signum(rhs);
+        int sign = Integer.signum(lhs) * Integer.signum(rhs);
 
         if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
@@ -4563,24 +4563,150 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    @Deprecated
     public static int signum(int x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Integer.signum(x);
     }
 
+    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    @Deprecated
     public static long signum(long x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Long.signum(x);
     }
 
     public static Vector3i signum(Vector3i v) {
-        v.x = signum(v.x);
-        v.y = signum(v.y);
-        v.z = signum(v.z);
+        v.x = Integer.signum(v.x);
+        v.y = Integer.signum(v.y);
+        v.z = Integer.signum(v.z);
 
         return v;
     }
 
     public static int mod(int value, int divisor) {
         return ((value % divisor) + divisor) % divisor;
+    }
+
+    /**
+     * Computes base raised to the power of an integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
+    public static double powInt(double base, int exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative integer exponent.
+     */
+    private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return 33 - Integer.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return 65 - Long.numberOfLeadingZeros(a - 1) >> 1;
     }
 
     /**
@@ -5008,7 +5134,7 @@ public class GTUtility {
 
         int exp = (int) (Math.log(number) / Math.log(1000));
         char suffix = "kMGTPE".charAt(exp - 1);
-        double shortened = number / Math.pow(1000, exp);
+        double shortened = number / GTUtility.powInt(1000, exp);
 
         if (shortened == (long) shortened) {
             return String.format("%d%c", (long) shortened, suffix);

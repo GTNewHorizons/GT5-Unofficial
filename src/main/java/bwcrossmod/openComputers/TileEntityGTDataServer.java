@@ -30,6 +30,7 @@ import bartworks.API.ITileAddsInformation;
 import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.SideReference;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
@@ -122,7 +123,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public String[] getInfoData() {
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     @Override
@@ -130,7 +131,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+        return GTValues.emptyIntArray;
     }
 
     @Override

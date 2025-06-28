@@ -115,7 +115,7 @@ public class PurifiedWaterRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     Materials.Grade1PurifiedWater.getFluid(1_000),
-                    Materials.Ozone.getGas(1000 * (long) Math.pow(2, (tier + 6))))
+                    Materials.Ozone.getGas(1000 * (long) GTUtility.powInt(2, (tier + 6))))
                 .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900))
                 .itemOutputs(Materials.Manganese.getDust(1), Materials.Iron.getDust(1), Materials.Sulfur.getDust(1))
                 .outputChances(500, 500, 500)
