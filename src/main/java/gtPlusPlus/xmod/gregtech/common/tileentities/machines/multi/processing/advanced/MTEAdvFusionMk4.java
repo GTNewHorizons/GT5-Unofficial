@@ -115,18 +115,17 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                TextureFactory
-                    .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)),
                 TextureFactory.builder()
                     .addIcon(this.getIconOverlay())
                     .extFacing()
                     .build() };
         } else if (!aActive) {
-            return new ITexture[] { TextureFactory
-                .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
-            return new ITexture[] { TextureFactory
-                .of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1)) };
         }
     }
 
