@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -49,7 +50,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     private int mRunTimeTicks = 0;
 
     public MTEBoilerSolar(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, new String[0]);
+        super(aID, aName, aNameRegional, GTValues.emptyStringArray);
     }
 
     public MTEBoilerSolar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
