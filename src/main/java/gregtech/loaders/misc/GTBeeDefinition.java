@@ -1448,8 +1448,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(HYDRA, THAUMIUMDUST, 5);
-        if (Thaumcraft.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCosmeticSolid"), 4);
+        tMutation.requireResource("blockThaumium");
         tMutation.restrictTemperature(HELLISH);
     }),
     SNOWQUEEN(GTBranchDefinition.TWILIGHT, "SnowQueen", true, new Color(0xD02001), new Color(0x9C0018), beeSpecies -> {
