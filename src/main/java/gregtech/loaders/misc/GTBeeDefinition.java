@@ -640,7 +640,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(HOT);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(DIAMOND, CHROME, 5);
-        tMutation.requireResource("blockNickel");
+        tMutation.requireResource("blockPlatinum");
     }),
     IRIDIUM(GTBranchDefinition.RAREMETAL, "Iridium", false, new Color(0xDADADA), new Color(0xD1D1E0), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SLAG), 0.30f);
