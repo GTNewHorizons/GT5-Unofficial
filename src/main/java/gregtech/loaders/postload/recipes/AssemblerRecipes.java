@@ -33,6 +33,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
@@ -618,13 +620,12 @@ public class AssemblerRecipes implements Runnable {
             .eut(48)
             .addTo(assemblerRecipes);
 
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
-
+        for (Dyes dye : Dyes.VALUES) {
+            for (Fluid dyeFluid : dye.getFluidDyes()) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.string, 3), GTUtility.getIntegratedCircuit(3))
-                    .itemOutputs(new ItemStack(Blocks.carpet, 2, 15 - i))
-                    .fluidInputs(Dyes.VALUES[i].getFluidDyes(j, 24))
+                    .itemOutputs(new ItemStack(Blocks.carpet, 2, Dyes.transformDyeIndex(dye.mIndex)))
+                    .fluidInputs(new FluidStack(dyeFluid, 24))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(5)
                     .addTo(assemblerRecipes);

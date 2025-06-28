@@ -198,16 +198,13 @@ public enum Dyes implements IColorModulationContainer {
     /**
      * Transforms a dye index between the GT index for this color and the vanilla index for this color.
      *
-     * @param color an integer between 0 and 15
-     * @return the transformed color
+     * @param index an integer between 0 and 15
+     * @return the transformed index
      */
     @Contract(pure = true)
-    public static int transformDyeIndex(final int color) {
-        if (color < 0 || color > 15) {
-            throw new IllegalArgumentException("Color passed to transformColor must be between 0 and 15");
-        }
-
-        return (~(byte) color) & 0xF;
+    public static int transformDyeIndex(final int index) {
+        if (isDyeIndex(index)) return 15 - index;
+        throw new IllegalArgumentException("Index passed to transformColor must be between 0 and 15");
     }
 
     public String getLocalizedDyeName() {
