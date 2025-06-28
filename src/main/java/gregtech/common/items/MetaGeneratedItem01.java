@@ -997,13 +997,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.SPRAY_CAN_DYES[i].set(
                 addItem(
                     Spray_Colors[i],
-                    "Spray Can (" + Dyes.get(i).name + ")",
+                    "Spray Can (" + Dyes.get(i).mName + ")",
                     "Full",
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L)));
             ItemList.SPRAY_CAN_DYES_USED[i].set(
                 addItem(
                     Spray_Colors_Used[i],
-                    "Spray Can (" + Dyes.get(i).name + ")",
+                    "Spray Can (" + Dyes.get(i).mName + ")",
                     "Used",
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 3L),
                     SubTag.INVISIBLE));

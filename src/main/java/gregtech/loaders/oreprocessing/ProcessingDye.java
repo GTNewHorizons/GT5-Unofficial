@@ -34,7 +34,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
         Dyes aDye = Dyes.get(oreDictName);
-        if ((aDye.index >= 0) && (aDye.index < 16) && (GTUtility.getContainerItem(stack, true) == null)) {
+        if ((aDye.mIndex >= 0) && (aDye.mIndex < 16) && (GTUtility.getContainerItem(stack, true) == null)) {
             registerAlloySmelter(stack, aDye);
             registerMixer(stack, aDye);
             registerChemicalReactor(stack, aDye);
@@ -65,14 +65,14 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     public void registerAlloySmelter(ItemStack stack, Dyes dye) {
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L), GTUtility.copyAmount(1, stack))
-            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.index))
+            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.glass, 8, WILDCARD), GTUtility.copyAmount(1, stack))
-            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.index))
+            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);

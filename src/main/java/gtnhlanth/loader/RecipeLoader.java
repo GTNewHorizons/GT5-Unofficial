@@ -810,7 +810,7 @@ public class RecipeLoader {
 
             else {
 
-                for (ItemStack lens : OreDictionary.getOres("craftingLens" + lensColour.name.replace(" ", ""))) {
+                for (ItemStack lens : OreDictionary.getOres("craftingLens" + lensColour.mName.replace(" ", ""))) {
 
                     if (lens == null) continue;
                     if (mask == MaskList.LCC) {

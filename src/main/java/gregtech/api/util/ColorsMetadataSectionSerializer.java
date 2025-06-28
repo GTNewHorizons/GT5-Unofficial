@@ -50,7 +50,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                 .getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
 
             for (Dyes dye : Dyes.values()) {
-                hexGuiTintMap.put(dye.name, GTUtil.toHexString(dye.getRGBA()));
+                hexGuiTintMap.put(dye.mName, GTUtil.toHexString(dye.getRGBA()));
             }
 
             for (String key : hexGuiTintMap.keySet()) {

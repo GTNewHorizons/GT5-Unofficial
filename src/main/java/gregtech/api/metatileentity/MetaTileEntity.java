@@ -771,7 +771,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
                 dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.name, GTUtil.getRGBInt(dye.getRGBA()));
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, GTUtil.getRGBInt(dye.getRGBA()));
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {

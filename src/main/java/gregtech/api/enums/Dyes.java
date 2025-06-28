@@ -46,23 +46,10 @@ public enum Dyes implements IColorModulationContainer {
         dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
 
     public final int rgba;
-    public final int rgbaOriginal;
-    public final int index;
-    public final String name;
+    public final int mIndex;
+    public final String mName;
     public final EnumChatFormatting formatting;
     private final Set<Fluid> fluidDyes = new HashSet<>();
-
-    Dyes(int index, byte red, byte green, byte blue, @NotNull String name) {
-        this(index, red, green, blue, name, EnumChatFormatting.GRAY);
-    }
-
-    Dyes(int index, byte red, byte green, byte blue, @NotNull String name, @NotNull EnumChatFormatting formatting) {
-        this.rgba = (red << 24) | (green << 16) | (blue << 8);
-        this.rgbaOriginal = rgba;
-        this.index = index;
-        this.name = name;
-        this.formatting = formatting;
-    }
 
     Dyes(int index, int rgba, @NotNull String name) {
         this(index, rgba, name, EnumChatFormatting.GRAY);
@@ -70,9 +57,8 @@ public enum Dyes implements IColorModulationContainer {
 
     Dyes(int index, int rgba, @NotNull String name, @NotNull EnumChatFormatting formatting) {
         this.rgba = rgba;
-        this.rgbaOriginal = rgba;
-        this.index = index;
-        this.name = name;
+        this.mIndex = index;
+        this.mName = name;
         this.formatting = formatting;
     }
 
@@ -145,12 +131,11 @@ public enum Dyes implements IColorModulationContainer {
         return isAnyFluidDye(fluidStack.getFluid());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     public static boolean isAnyFluidDye(@Nullable Fluid fluid) {
         if (fluid == null) return false;
         final int values = VALUES.length;
-        for (int i = 0; i < values; ++i) {
-            if (VALUES[i].isFluidDye(fluid)) return true;
+        for (Dyes value : VALUES) {
+            if (value.isFluidDye(fluid)) return true;
         }
         return false;
     }
@@ -160,12 +145,10 @@ public enum Dyes implements IColorModulationContainer {
         return getAnyFluidDye(fluidStack.getFluid());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     public static @Nullable Dyes getAnyFluidDye(@Nullable Fluid fluid) {
         if (fluid == null) return null;
         final int values = VALUES.length;
-        for (int i = 0; i < values; ++i) {
-            final Dyes dye = VALUES[i];
+        for (final Dyes dye : VALUES) {
             if (dye.isFluidDye(fluid)) return dye;
         }
         return null;
@@ -238,6 +221,6 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public String getLocalizedDyeName() {
-        return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.name);
+        return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.mName);
     }
 }

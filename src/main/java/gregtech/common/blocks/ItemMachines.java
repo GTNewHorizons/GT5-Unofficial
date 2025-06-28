@@ -132,7 +132,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         translateToLocalFormatted(
                             "gt.tileentity.colored",
                             Dyes.get(aNBT.getByte("mColor") - 1).formatting,
-                            Dyes.get(aNBT.getByte("mColor") - 1).name));
+                            Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
         } catch (Throwable e) {

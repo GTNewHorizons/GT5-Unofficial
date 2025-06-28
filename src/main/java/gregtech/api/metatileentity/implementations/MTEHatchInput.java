@@ -136,8 +136,8 @@ public class MTEHatchInput extends MTEHatch {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = accessor.getNBTData()
             .getByte("color");
-        if (color >= 0 && color < 16) currenttip
-            .add("Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].name + EnumChatFormatting.GRAY);
+        if (color >= 0 && color < 16) currenttip.add(
+            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
     }
 
     @Override

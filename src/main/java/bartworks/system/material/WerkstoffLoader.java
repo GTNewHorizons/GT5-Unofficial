@@ -2117,7 +2117,7 @@ public class WerkstoffLoader {
             }
 
             if (werkstoff.hasItemType(gem)) OreDictionary.registerOre(
-                "craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).name.replace(" ", ""),
+                "craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""),
                 werkstoff.get(lens));
 
             if (werkstoff.hasItemType(gem) || werkstoff.hasItemType(ingot)) {

@@ -203,7 +203,7 @@ public class GemLoader implements IWerkstoffRunnable {
             CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary
-                .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).name.replace(" ", ""))) {
+                .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
                 is.stackSize = 0;
 
                 GTValues.RA.stdBuilder()
