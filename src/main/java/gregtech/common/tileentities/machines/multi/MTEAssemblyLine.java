@@ -216,8 +216,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
         }
 
-        int[] tStacks = new int[0];
-        FluidStack[] tFluids = new FluidStack[0];
+        int[] tStacks = GTValues.emptyIntArray;
+        FluidStack[] tFluids = GTValues.emptyFluidStackArray;
         long averageVoltage = getAverageInputVoltage();
         int maxParallel = 1;
         long maxAmp = getMaxInputAmps();
