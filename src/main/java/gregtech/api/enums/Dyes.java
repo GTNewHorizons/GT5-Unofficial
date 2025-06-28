@@ -142,22 +142,6 @@ public enum Dyes implements IColorModulationContainer {
         throw new IllegalArgumentException("Index passed to `transformDyeIndex` must be between 0 and 15");
     }
 
-    public static byte rgbaToRed(int rgba) {
-        return (byte) ((rgba >>> 24) & 0xff);
-    }
-
-    public static byte rgbaToGreen(int rgba) {
-        return (byte) ((rgba >>> 16) & 0xff);
-    }
-
-    public static byte rgbaToBlue(int rgba) {
-        return (byte) ((rgba >>> 8) & 0xff);
-    }
-
-    public static byte rgbaToAlpha(int rgba) {
-        return (byte) (rgba & 0xff);
-    }
-
     public static short @NotNull [] getModulation(int index) {
         return getModulation(index, Dyes._NULL.getRGBA());
     }
@@ -192,22 +176,6 @@ public enum Dyes implements IColorModulationContainer {
         if (fluid == null) return;
         fluidDyesSet.add(fluid);
         fluidDyesMap.put(fluid, this);
-    }
-
-    public byte getRed() {
-        return rgbaToRed(rgba);
-    }
-
-    public byte getBlue() {
-        return rgbaToBlue(rgba);
-    }
-
-    public byte getGreen() {
-        return rgbaToGreen(rgba);
-    }
-
-    public byte getAlpha() {
-        return rgbaToAlpha(rgba);
     }
 
     public @NotNull HashSet<@NotNull Fluid> getFluidDyes() {
