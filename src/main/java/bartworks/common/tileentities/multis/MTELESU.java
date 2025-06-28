@@ -53,7 +53,6 @@ import bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -232,8 +231,7 @@ public class MTELESU extends MTEMultiBlockBase {
         if (this.isClientSide()) {
 
             for (int i = 0; i < MTELESU.iTextures.length; i++) {
-                MTELESU.iTextures[i][0] = TextureFactory
-                    .of(MTELESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                MTELESU.iTextures[i][0] = TextureFactory.of(MTELESU.iIconContainers[i]);
             }
 
             if (side == facing && this.getBaseMetaTileEntity()

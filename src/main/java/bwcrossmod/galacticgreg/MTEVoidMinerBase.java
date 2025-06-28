@@ -118,7 +118,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     protected void setElectricityStats() {
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
-        this.mOutputItems = new ItemStack[0];
+        this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
         this.mMaxProgresstime = 10;
         this.mEfficiency = this.getCurrentEfficiency(null);
