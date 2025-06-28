@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.util.GTUtil;
 
 public enum Dyes implements IColorModulationContainer {
 
@@ -105,15 +104,15 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public static byte rgbaToRed(int rgba) {
-        return (byte) ((rgba >> 24) & 0xff);
+        return (byte) ((rgba >>> 24) & 0xff);
     }
 
     public static byte rgbaToGreen(int rgba) {
-        return (byte) ((rgba >> 16) & 0xff);
+        return (byte) ((rgba >>> 16) & 0xff);
     }
 
     public static byte rgbaToBlue(int rgba) {
-        return (byte) ((rgba >> 8) & 0xff);
+        return (byte) ((rgba >>> 8) & 0xff);
     }
 
     public static byte rgbaToAlpha(int rgba) {
@@ -121,9 +120,9 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public static short[] rgbaToArray(int rgba) {
-        final short r = (short) ((rgba >> 24) & 0xff);
-        final short g = (short) ((rgba >> 16) & 0xff);
-        final short b = (short) ((rgba >> 8) & 0xff);
+        final short r = (short) ((rgba >>> 24) & 0xff);
+        final short g = (short) ((rgba >>> 16) & 0xff);
+        final short b = (short) ((rgba >>> 8) & 0xff);
         final short a = (short) (rgba & 0xff);
         return new short[] { r, g, b, a };
     }
@@ -187,7 +186,7 @@ public enum Dyes implements IColorModulationContainer {
 
     @Deprecated
     public int toInt() {
-        return GTUtil.getRGBInt(getRGBA());
+        return rgba >>> 8;
     }
 
     @Deprecated
