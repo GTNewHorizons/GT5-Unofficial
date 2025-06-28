@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -329,12 +328,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+            .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+        tRecipe.consumeInput(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         for (ItemStack stack : itemOutputArray) {
             stack.stackSize *= batchAmount;

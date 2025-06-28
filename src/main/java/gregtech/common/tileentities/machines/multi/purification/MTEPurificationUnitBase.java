@@ -378,22 +378,24 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             fluidOutputs[i].amount *= effectiveParallel;
         }
 
-        ItemStack[] itemOutputs = new ItemStack[this.currentRecipe.mOutputs.length];
+        ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
+        ItemStack[] itemOutputs = new ItemStack[recipeOutputs.length];
+        int[] mChances = this.currentRecipe.mChances;
 
         // If this recipe has random item outputs, roll on it and add to outputs
-        if (this.currentRecipe.mChances != null) {
+        if (mChances != null) {
             // Roll on each output individually
-            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+            for (int i = 0; i < recipeOutputs.length; ++i) {
                 // Recipes store probabilities as a value ranging from 1-10000
                 int roll = random.nextInt(10000);
-                if (roll <= this.currentRecipe.mChances[i]) {
-                    itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
+                if (roll <= mChances[i]) {
+                    itemOutputs[i] = recipeOutputs[i].copy();
                 }
             }
         } else {
             // Guaranteed item output
-            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
-                itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
+            for (int i = 0; i < recipeOutputs.length; ++i) {
+                itemOutputs[i] = recipeOutputs[i].copy();
             }
         }
 

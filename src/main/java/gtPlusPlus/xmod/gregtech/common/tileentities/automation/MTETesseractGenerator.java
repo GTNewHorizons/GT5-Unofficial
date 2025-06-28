@@ -336,7 +336,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             .isAllowedToWork()) && ((tTileEntity instanceof IDigitalChest))) {
             return ((IDigitalChest) tTileEntity).getStoredItemData();
         }
-        return new ItemStack[] {};
+        return GTValues.emptyItemStackArray;
     }
 
     @Override

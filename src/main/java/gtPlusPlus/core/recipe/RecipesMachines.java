@@ -2228,6 +2228,8 @@ public class RecipesMachines {
             ItemList.Hull_IV.get(1),
             "plateThorium232",
             RECIPE_LFTRController);
+
+        // Reactor Shield Casing
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyC276",
             ToolDictNames.craftingToolScrewdriver.name(),
@@ -2239,7 +2241,17 @@ public class RecipesMachines {
             ToolDictNames.craftingToolHardHammer.name(),
             "plateDoubleHastelloyC276",
             RECIPE_LFTRInnerCasing);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.HASTELLOY_C276.getPlateDouble(4),
+                MaterialsAlloy.TALONITE.getGear(2),
+                ItemList.Field_Generator_LV.get(1))
+            .itemOutputs(RECIPE_LFTRInnerCasing)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
 
+        // Hastelloy-N Reactor Casing
         ItemStack IC2HeatPlate = getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1);
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyN",
@@ -2303,6 +2315,15 @@ public class RecipesMachines {
             "plateHastelloyN",
             "plateIncoloyMA956",
             GregtechItemList.Casing_Refinery_External.get(1));
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.HASTELLOY_N.getPlate(4),
+                MaterialsAlloy.INCOLOY_MA956.getPlate(4),
+                MaterialsAlloy.HASTELLOY_C276.getFrameBox(1))
+            .itemOutputs(GregtechItemList.Casing_Refinery_External.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
 
         // Hastelloy-X Structural Casing
         RecipeUtils.addShapedGregtechRecipe(
