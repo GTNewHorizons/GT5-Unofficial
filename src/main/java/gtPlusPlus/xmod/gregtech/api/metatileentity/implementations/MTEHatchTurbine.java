@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
@@ -317,7 +318,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override

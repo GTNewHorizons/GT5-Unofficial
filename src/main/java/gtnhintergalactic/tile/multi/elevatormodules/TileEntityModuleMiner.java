@@ -447,8 +447,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         // Randomly generate ore stacks with the given chances, ores and size
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
-        int totalChance = Arrays.stream(tRecipe.mChances)
-            .sum();
+
+        int totalChance = 0;
+        if (tRecipe.mChances == null) {
+            totalChance = tRecipe.mOutputs.length * 10000;
+        } else {
+            for (int mChance : tRecipe.mChances) totalChance += mChance;
+        }
+
         try {
             for (int i = 0; i < data.maxSize * parallels; i++) {
                 int bonusStackChance = 0;
