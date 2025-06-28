@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gregtech.api.enums.GTValues;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
 
@@ -31,7 +32,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
         String[] aGrid = new String[3];
         char[] aChar = new char[9];
         String[] aLoggingInfo = new String[9];
-        mBlackList = new ItemStack[] {};
+        mBlackList = GTValues.emptyItemStackArray;
 
         // Just to be safe
         try {

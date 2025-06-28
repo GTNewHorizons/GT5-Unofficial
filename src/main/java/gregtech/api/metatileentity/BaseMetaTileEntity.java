@@ -780,7 +780,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -1845,7 +1845,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
             || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
             return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     public double getOutputEnergyUnitsPerTick() {
