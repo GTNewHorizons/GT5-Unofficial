@@ -131,7 +131,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public String[] getExtraInfoData() {
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     @Override
@@ -145,7 +145,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         String[] extra = getExtraInfoData();
 
         if (extra == null) {
-            extra = new String[0];
+            extra = GTValues.emptyStringArray;
         }
         mInfo.addAll(Arrays.asList(extra));
 

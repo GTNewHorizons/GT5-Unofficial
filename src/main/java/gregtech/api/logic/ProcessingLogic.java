@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.GTDualInputPattern;
@@ -377,10 +378,10 @@ public class ProcessingLogic {
         }
 
         if (inputItems == null) {
-            inputItems = new ItemStack[0];
+            inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
+            inputFluids = GTValues.emptyFluidStackArray;
         }
 
         if (activeDualInv != null) {
