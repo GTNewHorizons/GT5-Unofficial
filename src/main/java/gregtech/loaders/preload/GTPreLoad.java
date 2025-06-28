@@ -185,7 +185,7 @@ public class GTPreLoad {
         if (!CraftTweaker.isModLoaded()) return;
 
         GT_FML_LOGGER.info("preReader");
-        final List<String> oreTags = new ArrayList<>();
+        final ArrayList<String> oreTags = new ArrayList<>();
         final File globalDir = new File("scripts");
         if (globalDir.exists()) {
             final List<String> scripts = new ArrayList<>();
@@ -202,10 +202,20 @@ public class GTPreLoad {
                     }
                 }
             }
-            String pattern1 = "<";
-            String pattern2 = ">";
 
-            Pattern p = Pattern.compile(Pattern.quote(pattern1) + "(.*?)" + Pattern.quote(pattern2));
+            final Pattern p = Pattern.compile(Pattern.quote("<") + "(.*?)" + Pattern.quote(">"));
+            final String[] prefixes1 = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
+                "crushedPurified", "crushedCentrifuged", "gem", "nugget", null, "ingot", "ingotHot", null, null, null,
+                null, "plate", "plateDouble", "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick",
+                "lens", "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten", "rawOre",
+                "plateSuperdense" };
+            final String[] prefixes2 = { "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
+                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
+                "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor", "stickLong",
+                "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless",
+                "gemExquisite", "gearGt" };
+            final String[] prefixes3 = { "rawOre", "nanite", "plateSuperdense" };
             for (String text : scripts) {
                 Matcher m = p.matcher(text);
                 while (m.find()) {
@@ -227,25 +237,18 @@ public class GTPreLoad {
                             if (meta > 0 && meta < 32000) {
                                 int prefix = meta / 1000;
                                 int material = meta % 1000;
-                                String tag = "";
-                                String[] tags = new String[] {};
-                                if (mIt == 1) tags = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure",
-                                    "dustPure", "crushed", "crushedPurified", "crushedCentrifuged", "gem", "nugget",
-                                    null, "ingot", "ingotHot", null, null, null, null, "plate", "plateDouble",
-                                    "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens",
-                                    "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten",
-                                    "rawOre", "plateSuperdense" };
-                                if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
-                                    "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
-                                    "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
-                                    "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                                    "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall",
-                                    "rotor", "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic",
-                                    "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
-                                if (mIt == 3) tags = new String[] { "rawOre", "nanite", "plateSuperdense" };
-                                if (tags.length > prefix) tag = tags[prefix];
+                                String[] tags = null;
+                                if (mIt == 1) tags = prefixes1;
+                                if (mIt == 2) tags = prefixes2;
+                                if (mIt == 3) tags = prefixes3;
+                                if (tags == null) tags = GTValues.emptyStringArray;
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
-                                    tag += GregTechAPI.sGeneratedMaterials[material].mName;
+                                    final String tag;
+                                    if (tags.length > prefix) {
+                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                    } else {
+                                        tag = GregTechAPI.sGeneratedMaterials[material].mName;
+                                    }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {
                                     GT_FML_LOGGER.info("MaterialDisabled: " + material + " " + m.group(1));
@@ -257,27 +260,33 @@ public class GTPreLoad {
             }
         }
 
-        final String[] preS = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-            "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble",
-            "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw",
-            "ring", "foil", "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
-            "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
-            "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-            "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring",
-            "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt",
-            "nanite", "cellMolten", "rawOre", "plateSuperdense" };
+        if (oreTags.isEmpty()) return;
 
-        List<String> mMTTags = new ArrayList<>();
-        oreTags.stream()
-            .filter(test -> StringUtils.startsWithAny(test, preS))
-            .forEach(test -> {
-                mMTTags.add(test);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: " + test);
-            });
+        final String[] preS = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed", "crushedPurified",
+            "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple",
+            "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil",
+            "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
+            "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
+            "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
+            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
+            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
+            "cellMolten", "rawOre", "plateSuperdense" };
+
+        final ArrayList<String> mMTTags = new ArrayList<>();
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0, size = oreTags.size(); i < size; i++) {
+            final String str = oreTags.get(i);
+            if (StringUtils.startsWithAny(str, preS)) {
+                mMTTags.add(str);
+                if (GTValues.D1) GT_FML_LOGGER.info("oretag: " + str);
+            }
+        }
 
         GT_FML_LOGGER.info("reenableMetaItems");
 
-        for (String reEnable : mMTTags) {
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0, size = mMTTags.size(); i < size; i++) {
+            final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
                 Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));

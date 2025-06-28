@@ -43,7 +43,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
-            .addInfo("131072EU/t and 320M EU capacity per Energy Hatch")
+            .addInfo("§b131,072§7 EU/t and §b320M§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
