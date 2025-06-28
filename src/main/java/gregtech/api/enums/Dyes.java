@@ -54,6 +54,8 @@ public enum Dyes implements IColorModulationContainer {
 
     /** RGBA color value (0xrrggbbaa). */
     public final int rgba;
+    @Deprecated
+    private final short[] rgbaArray;
     /** Dye index in range 0–15, or -1 for special cases. */
     public final int mIndex;
     /** Localized dye name. */
@@ -75,6 +77,7 @@ public enum Dyes implements IColorModulationContainer {
 
     Dyes(int index, int rgba, @NotNull String name, @NotNull EnumChatFormatting formatting) {
         this.rgba = rgba;
+        this.rgbaArray = new short[] { rgbaToRed(rgba), rgbaToGreen(rgba), rgbaToBlue(rgba), rgbaToAlpha(rgba) };
         this.mIndex = index;
         this.mName = name;
         this.formatting = formatting;
@@ -151,20 +154,13 @@ public enum Dyes implements IColorModulationContainer {
         return (byte) (rgba & 0xff);
     }
 
-    public static short @NotNull [] rgbaToArray(int rgba) {
-        final short r = (short) ((rgba >>> 24) & 0xff);
-        final short g = (short) ((rgba >>> 16) & 0xff);
-        final short b = (short) ((rgba >>> 8) & 0xff);
-        final short a = (short) (rgba & 0xff);
-        return new short[] { r, g, b, a };
-    }
-
     public static short @NotNull [] getModulation(int index) {
         return getModulation(index, Dyes._NULL.getRGBA());
     }
 
+    @Deprecated
     public static short @NotNull [] getModulation(int index, short @NotNull [] defaultModulation) {
-        if (isDyeIndex(index)) return Dyes.rgbaToArray(VALUES[index].rgba);
+        if (isDyeIndex(index)) return VALUES[index].rgbaArray;
         return defaultModulation;
     }
 
@@ -215,8 +211,9 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     @Override
+    @Deprecated
     public short @NotNull [] getRGBA() {
-        return Dyes.rgbaToArray(rgba);
+        return rgbaArray;
     }
 
     @Deprecated
