@@ -2544,11 +2544,14 @@ public enum GTBeeDefinition implements IBeeDefinition {
     RAREEARTH(GTBranchDefinition.RAREMETAL, "RareEarth", false, new Color(0x555643), new Color(0x343428),
         beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.RAREEARTH), 0.20f);
-            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.NEODYMIUM), 0.05f);
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.REFINEDRAREEARTH), 0.05f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(NORMAL);
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
         }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
         dis -> dis.registerMutation(FLUORINE, REDSTONE, 10)),
+
     NEODYMIUM(GTBranchDefinition.RAREMETAL, "Neodymium", false, new Color(0x555555), new Color(0x4F4F4F),
         beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.RAREEARTH), 0.15f);
