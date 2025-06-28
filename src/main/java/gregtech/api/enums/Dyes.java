@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
 public enum Dyes implements IColorModulationContainer {
@@ -43,13 +44,19 @@ public enum Dyes implements IColorModulationContainer {
     /** Constructs the configured cable insulation color. */
     private static int cableInsulation() {
         final Client.ColorModulation.CableInsulation insulation = Client.colorModulation.cableInsulation;
-        return ((insulation.red & 0xFF) << 24) | ((insulation.green & 0xFF) << 16) | ((insulation.blue & 0xFF) << 8);
+        final int r = GTUtility.clamp(insulation.red, 0, 255);
+        final int g = GTUtility.clamp(insulation.green, 0, 255);
+        final int b = GTUtility.clamp(insulation.blue, 0, 255);
+        return ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8);
     }
 
     /** Constructs the configured machine metal color. */
     private static int machineMetal() {
         final Client.ColorModulation.MachineMetal metal = Client.colorModulation.machineMetal;
-        return ((metal.red & 0xFF) << 24) | ((metal.green & 0xFF) << 16) | ((metal.blue & 0xFF) << 8);
+        final int r = GTUtility.clamp(metal.red, 0, 255);
+        final int g = GTUtility.clamp(metal.green, 0, 255);
+        final int b = GTUtility.clamp(metal.blue, 0, 255);
+        return ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8);
     }
 
     /** RGBA color value (0xrrggbbaa). */
