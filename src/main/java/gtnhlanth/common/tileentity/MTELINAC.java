@@ -201,9 +201,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Increasing length increases output energy, but decreases focus")
             .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Output energy does not scale for input energies higher than 7500 keV")
-            .addInfo("")
-            .addInfo("Effective length can be reduced by providing a redstone signal to a Beamline Control Hatch, with a minimum of 19.")
-            .addInfo("This will decrease it by 3 for each redstone level above 0.")
+            .addInfo("Effective length can be reduced (to a minimum of 19) by providing a redstone signal")
+            .addInfo("to a Beamline Control Hatch, decreasing by 3 for each redstone level above 0.")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
