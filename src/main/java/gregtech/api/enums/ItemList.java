@@ -365,6 +365,8 @@ public enum ItemList implements IItemContainer {
 
     GigaChad,
 
+    russel_hobbs,
+
     Circuit_Integrated,
     Circuit_Board_Basic,
     Circuit_Board_Advanced,
