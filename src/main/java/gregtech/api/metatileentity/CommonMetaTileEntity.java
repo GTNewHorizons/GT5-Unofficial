@@ -35,6 +35,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -458,7 +459,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) {
-            return new FluidTankInfo[] {};
+            return GTValues.emptyFluidTankInfo;
         }
         return new FluidTankInfo[] { getInfo() };
     }

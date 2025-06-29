@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -340,7 +341,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new int[0];
+            return GTValues.emptyIntArray;
         }
         return tTileEntity.getAccessibleSlotsFromSide(ordinalSide);
     }
@@ -450,7 +451,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new FluidTankInfo[0];
+            return GTValues.emptyFluidTankInfo;
         }
         return tTileEntity.getTankInfo(aSide);
     }

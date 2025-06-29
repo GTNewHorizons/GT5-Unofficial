@@ -33,6 +33,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -70,7 +73,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
-        KTContainerConstructor<K> containerConstructor) {
+        @NotNull KTContainerConstructor<K> containerConstructor) {
         return UIBuilder.of()
             .container((player, world, x, y, z) -> {
                 TileEntity te = world.getTileEntity(x, y, z);
@@ -200,7 +203,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         return tryOutputAll(list, l -> Collections.singletonList(l));
     }
 
-    protected <Y> boolean tryOutputAll(List<Y> list, Function<Y, List<ItemStack>> mappingFunction) {
+    protected <Y> boolean tryOutputAll(@Nullable List<Y> list, @Nullable Function<Y, List<ItemStack>> mappingFunction) {
         if (list == null || list.isEmpty() || mappingFunction == null) return false;
         int emptySlots = 0;
         boolean ignoreEmptiness = false;
@@ -236,7 +239,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
+    public void addGregTechLogo(ModularWindow.@NotNull Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
                 .setSize(13, 15)
@@ -245,7 +248,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
-    protected List<SlotWidget> slotWidgets = new ArrayList<>(1);
+    protected @NotNull List<SlotWidget> slotWidgets = new ArrayList<>(1);
 
     public void createInventorySlots() {
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
@@ -254,17 +257,17 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     }
 
     @Override
-    public Pos2d getPowerSwitchButtonPos() {
+    public @NotNull Pos2d getPowerSwitchButtonPos() {
         return new Pos2d(174, 166 - (slotWidgets.size() * 18));
     }
 
     @Override
-    public Pos2d getStructureUpdateButtonPos() {
+    public @NotNull Pos2d getStructureUpdateButtonPos() {
         return new Pos2d(174, 148 - (slotWidgets.size() * 18));
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
@@ -309,7 +312,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
 
     }
 
-    protected static String voltageTooltipFormatted(int tier) {
+    protected static @NotNull String voltageTooltipFormatted(int tier) {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
     }
 
