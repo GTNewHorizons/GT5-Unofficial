@@ -717,7 +717,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     // Sulfur bee, Humidity: normal, Temperature: Hot, Parents: PEAT & Ash, Mutationrate: 15%, Combrate: 80%
     SULFUR(GTBranchDefinition.RAREMETAL, "Sulfur", false, new Color(0x1E90FF), new Color(0x3CB4C8), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SULFUR), 0.70f);
-        beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.FIRESTONE), 0.15f);
+        beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.PYRITE), 0.15f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(HOT);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.NORMAL),
