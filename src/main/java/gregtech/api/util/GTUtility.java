@@ -2793,6 +2793,7 @@ public class GTUtility {
         return copyAmount((int) aAmount, aStack);
     }
 
+    @Contract("_, null -> null")
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -2803,6 +2804,7 @@ public class GTUtility {
         return rStack;
     }
 
+    @Contract("_, null -> null")
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
