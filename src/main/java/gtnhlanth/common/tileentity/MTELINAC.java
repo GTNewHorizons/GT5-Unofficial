@@ -45,6 +45,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -88,8 +89,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private int glassTier = -1;
     private int machineTemp = 0;
     private int length;
-    
-    private int lengthEffective;
 
     private float outputEnergy;
     private int outputParticleID;
@@ -169,7 +168,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .dot(1)
                     .build(),
                     
-                    ofSpecificTileAdder(MTELINAC::addBeamLineControlHatch, MTEHatchBeamlineControl.class, Blocks.air, 0),  
+                    buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchBeamlineControl.class)
+                    	.casingIndex(CASING_INDEX)
+                    	.dot(1)
+                    	.adder(MTELINAC::addBeamLineControlHatch)
+                    	.build(),
+                    
                     ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
                     
             .build();
@@ -197,6 +201,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Increasing length increases output energy, but decreases focus")
             .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Output energy does not scale for input energies higher than 7500 keV")
+            .addInfo("")
+            .addInfo("Effective length can be reduced by providing a redstone signal to a Beamline Control Hatch, with a minimum of 19.")
+            .addInfo("This will decrease it by 3 for each redstone level above 0.")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
@@ -219,6 +226,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
             .addEnergyHatch(addDotText(1))
             .addMaintenanceHatch(addDotText(1))
+            .addOtherStructurePart("(Optional) Beamline Control Hatch", addDotText(1))
             .addInputHatch(addDotText(2))
             .addOutputHatch(addDotText(2))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
@@ -254,10 +262,17 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
-    public boolean addBeamLineControlHatch(MTEHatchBeamlineControl te) {
+    public boolean addBeamLineControlHatch(IGregTechTileEntity te, int casingIndex) {
     	if (te == null) return false;
-    	
-    	return this.mControlBeamline.add(te);
+
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
+
+        if (mte instanceof MTEHatchBeamlineControl mtec) {
+            return this.mControlBeamline.add(mtec);
+        }
+
+        return false;
     }
     
     @NotNull
@@ -295,22 +310,24 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         this.mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
             : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
 
+        int lengthEffective = this.getEffectiveLength(length);
+        
         // 1A of full power if one energy hatch, 4A if two
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
-        float machineEnergy = (float) Math.max((this.length - 1) / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50);
+        float machineEnergy = (float) Math.max((lengthEffective - 1) / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50);
         inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
         this.outputEnergy = (float) Math.pow(10, 1 + inputEnergy / inputParticle.maxSourceEnergy()) * machineEnergy;
 
         this.outputParticleID = inputParticleID;
 
-        float machineFocus = ((-0.9f) * (this.length - 1) * tempFactor) + 110;
+        float machineFocus = ((-0.9f) * (lengthEffective - 1) * tempFactor) + 110;
         machineFocus = Math.min(Math.max(machineFocus, 5), 90);
         this.outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2)
             : inputFocus * (machineFocus / 100);
 
         this.outputRate = inputRate;
 
-        final int fluidConsumed = 1000 * (length);
+        final int fluidConsumed = 1000 * (lengthEffective);
         if (Util.coolantFluidCheck(fluidCoolant, fluidConsumed)) {
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -357,6 +374,21 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             return in.dataPacket.getContent();
         }
         return null;
+    }
+    
+    private byte getInputRedstone() {
+    	
+    	if (this.mControlBeamline.isEmpty())
+    		return 0; // Do nothing to effective length
+    	
+    	MTEHatchBeamlineControl redHatch = this.mControlBeamline.get(0);
+    	return redHatch.getRedstoneInput();
+    	
+    }
+    
+    private int getEffectiveLength(int length) {
+    	return Math.max(19, length - 3 * this.getInputRedstone()); // Can't be reduced below the typical minimum length. 
+    															   // Assuming l = 83, leff = 38 at maximum redstone level.
     }
 
     private static float calculateTemperatureFactor(int fluidTemp) {
@@ -555,7 +587,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 + " K", // e.g. "137 K"
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
                 + EnumChatFormatting.AQUA
-                + (length)
+                + (this.getEffectiveLength(length))
                 + EnumChatFormatting.RESET
                 + " kL/s", // e.g. "24 kL/s
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
