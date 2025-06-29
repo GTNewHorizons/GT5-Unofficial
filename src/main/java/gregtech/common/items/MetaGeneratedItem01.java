@@ -1725,6 +1725,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        
+        ItemList.russel_hobbs.set(
+            addItem(
+                russel_hobbs.ID,
+                "Russel Hobbs",
+                "why does this exist",
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
