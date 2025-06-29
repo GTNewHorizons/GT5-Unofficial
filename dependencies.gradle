@@ -42,9 +42,10 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.2.18:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.15-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.8:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-645-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.93-gtnh:dev")
-    api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-632-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.86-gtnh:dev")
+    api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
+    api('com.github.GTNewHorizons:CodeChickenCore:1.4.2:dev')
     api("com.github.GTNewHorizons:Postea:1.1.1:dev")
     api("com.github.GTNewHorizons:Galacticraft:3.3.8-GTNH:dev") { transitive = false }
 
