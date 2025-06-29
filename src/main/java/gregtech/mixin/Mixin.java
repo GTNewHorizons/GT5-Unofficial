@@ -20,6 +20,11 @@ import gregtech.common.pollution.PollutionConfig;
 public enum Mixin {
 
     // Minecraft
+    GregtechCapes(new Builder("Injects the gregtech capes").addMixinClasses("minecraft.AbstractClientPlayerMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)),
     SoundManagerMixin(new Builder("Seeking sound playback")
         .addMixinClasses("minecraft.SoundManagerMixin", "minecraft.SoundManagerInnerMixin")
         .addTargetedMod(VANILLA)

@@ -1986,7 +1986,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             tEvent = i$.next();
             sizeStep--;
             if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%", new Object[0]);
+                GT_FML_LOGGER.info("Baking : " + size + "%");
                 sizeStep = mEvents.size() / 20 - 1;
                 size += 5;
             }
