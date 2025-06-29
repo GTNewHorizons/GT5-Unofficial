@@ -18,6 +18,7 @@ import gtnhlanth.common.block.BlockAntennaCasing;
 import gtnhlanth.common.block.BlockCasing;
 import gtnhlanth.common.block.BlockShieldedAccGlass;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchBeamlineControl;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.item.ItemLanth;
@@ -49,6 +50,8 @@ public final class LanthItemList {
     public static ItemStack LUV_BEAMLINE_OUTPUT_HATCH;
 
     public static ItemStack BEAMLINE_FOCUS_INPUT_BUS;
+    
+    public static ItemStack BEAMLINE_CONTROL_HATCH;
 
     public static Item CAPILLARY_EXCHANGE = new ItemLanth("capillary_exchange");
 
@@ -106,6 +109,8 @@ public final class LanthItemList {
             6).getStackForm(1L);
 
         BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
+        
+        BEAMLINE_CONTROL_HATCH = new MTEHatchBeamlineControl(10510, "Beamline Control Hatch", "Beamline Control Hatch").getStackForm(1L);
 
         LINAC = new MTELINAC(10505, "Linear Accelerator", "Linear Accelerator").getStackForm(1L);
 
