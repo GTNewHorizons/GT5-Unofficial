@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import net.minecraft.util.IIcon;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -29,14 +31,14 @@ public class SafeTexture implements Runnable {
 
     private final String mTextureName;
 
-    private static String getKey(String aTexPath) {
+    private static @NotNull String getKey(@NotNull String aTexPath) {
         String aNameKey = Utils.sanitizeString(aTexPath);
         aNameKey = aNameKey.replace('/', ' ');
         aNameKey = aNameKey.toLowerCase();
         return aNameKey;
     }
 
-    public static SafeTexture register(String aTexturePath) {
+    public static @NotNull SafeTexture register(@NotNull String aTexturePath) {
         String aNameKey = getKey(aTexturePath);
         SafeTexture g = mTextureObjectCache.get(aNameKey);
         if (g == null) {
@@ -47,7 +49,7 @@ public class SafeTexture implements Runnable {
         return g;
     }
 
-    private SafeTexture(String aTexturePath) {
+    private SafeTexture(@NotNull String aTexturePath) {
         mTextureName = aTexturePath;
         mHash = getKey(aTexturePath).hashCode();
         GregTechAPI.sGTBlockIconload.add(this);
