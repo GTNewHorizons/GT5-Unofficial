@@ -398,7 +398,8 @@ public class GTPreLoad {
         GTMod.gregtechproxy.gt6Pipe = Gregtech.general.gt6Pipe;
         GTMod.gregtechproxy.gt6Cable = Gregtech.general.gt6Cable;
         GTMod.gregtechproxy.ic2EnergySourceCompat = Gregtech.general.ic2EnergySourceCompat;
-        GTMod.gregtechproxy.costlyCableConnection = Gregtech.general.costlyCableConnection;
+        GTMod.gregtechproxy.cableMultiConnectEnabled = Gregtech.general.cableMultiConnectEnabled;
+        GTMod.gregtechproxy.cableMultiConnectLimit = Gregtech.general.cableMultiConnectLimit;
         GTMod.gregtechproxy.crashOnNullRecipeInput = Gregtech.general.crashOnNullRecipeInput;
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             GTMod.gregtechproxy.crashOnNullRecipeInput = false; // Use flags in GTRecipeBuilder instead!
