@@ -2561,6 +2561,31 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
+    /**
+     * This method will be called when
+     * {@link net.minecraftforge.common.ForgeHooks#blockStrength(Block, EntityPlayer, World, int, int, int)} returns,
+     * giving a chance to modify the block strength.
+     * <p>
+     * This method will be invoked by the mixin (forge.ForgeHooksMixin).
+     *
+     * @param block                the block to break
+     * @param player               the player breaking the block
+     * @param world                the world the block is in
+     * @param x                    the x coordinate of the block
+     * @param y                    the y coordinate of the block
+     * @param z                    the z coordinate of the block
+     * @param defaultBlockStrength the default block strength (the default return value)
+     * @return the new block strength
+     */
+    public static float onBlockStrength(Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        ItemStack stack = player.getCurrentEquippedItem();
+        if (stack != null && stack.getItem() instanceof MetaGeneratedTool tool) {
+            return tool.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
+    }
+
     public static class OreDictEventContainer {
 
         public final OreDictionary.OreRegisterEvent mEvent;
