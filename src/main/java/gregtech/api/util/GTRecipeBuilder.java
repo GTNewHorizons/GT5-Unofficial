@@ -151,93 +151,8 @@ public class GTRecipeBuilder {
 
     // region helper methods
 
-    /**
-     * Returns a copy of the array without the null elements.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
-     */
-    @Nonnull
-    static FluidStack[] removeNullFluids(@Nonnull FluidStack[] fluids) {
-        if (fluids.length == 0) return GTValues.emptyFluidStackArray;
-        int count = 0;
-        for (final FluidStack f : fluids) {
-            if (f != null) count++;
-        }
-        if (count == 0) return GTValues.emptyFluidStackArray;
-        final FluidStack[] a = new FluidStack[count];
-        int i = 0;
-        for (final FluidStack f : fluids) {
-            if (f != null) {
-                a[i] = f;
-                i++;
-            }
-        }
-        return a;
-    }
-
-    /**
-     * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyItemStackArray} if the array is empty.
-     */
-    @Nonnull
-    static ItemStack[] removeTrailingNulls(@Nonnull ItemStack[] array) {
-        if (array.length == 0) return GTValues.emptyItemStackArray;
-        int nullIndex = -1;
-        for (int i = array.length - 1; i >= 0; i--) {
-            if (array[i] == null) {
-                nullIndex = i;
-            } else {
-                break;
-            }
-        }
-        if (nullIndex == -1) {
-            // array has no trailing null
-            final ItemStack[] a = new ItemStack[array.length];
-            System.arraycopy(array, 0, a, 0, array.length);
-            return a;
-        } else if (nullIndex == 0) {
-            // array has no element
-            return GTValues.emptyItemStackArray;
-        } else {
-            // array has trailing nulls that needs removing
-            final ItemStack[] a = new ItemStack[nullIndex];
-            System.arraycopy(array, 0, a, 0, nullIndex);
-            return a;
-        }
-    }
-
-    /**
-     * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
-     */
-    @Nonnull
-    static FluidStack[] removeTrailingNulls(@Nonnull FluidStack[] array) {
-        if (array.length == 0) return GTValues.emptyFluidStackArray;
-        int nullIndex = -1;
-        for (int i = array.length - 1; i >= 0; i--) {
-            if (array[i] == null) {
-                nullIndex = i;
-            } else {
-                break;
-            }
-        }
-        if (nullIndex == -1) {
-            // array has no trailing null
-            final FluidStack[] a = new FluidStack[array.length];
-            System.arraycopy(array, 0, a, 0, array.length);
-            return a;
-        } else if (nullIndex == 0) {
-            // array has no element
-            return GTValues.emptyFluidStackArray;
-        } else {
-            // array has trailing nulls that needs removing
-            final FluidStack[] a = new FluidStack[nullIndex];
-            System.arraycopy(array, 0, a, 0, nullIndex);
-            return a;
-        }
-    }
-
     private static ItemStack[] fixItemArray(ItemStack[] inputs, boolean aUnsafe) {
-        return GTOreDictUnificator.setStackArray(true, aUnsafe, removeTrailingNulls(inputs));
+        return GTOreDictUnificator.setStackArray(true, aUnsafe, ArrayExt.removeTrailingNulls(inputs));
     }
 
     public static GTRecipeBuilder builder() {
@@ -338,7 +253,7 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
-        inputsBasic = removeTrailingNulls(inputs);
+        inputsBasic = ArrayExt.removeTrailingNulls(inputs);
         inputsOreDict = null;
         alts = null;
         return this;
@@ -434,14 +349,14 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
-        this.fluidInputs = removeNullFluids(fluidInputs);
+        this.fluidInputs = ArrayExt.removeNullFluids(fluidInputs);
         return this;
     }
 
     public GTRecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
-        this.fluidOutputs = removeNullFluids(fluidOutputs);
+        this.fluidOutputs = ArrayExt.removeNullFluids(fluidOutputs);
         return this;
     }
 

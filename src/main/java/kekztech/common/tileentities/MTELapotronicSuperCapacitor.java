@@ -460,10 +460,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
         ForgeDirection forgeDirectionacing, int colorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] sTexture = new ITexture[] {
-            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         if (side == forgeDirectionacing && aActive) {
-            sTexture = new ITexture[] { TextureFactory
-                .of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            sTexture = new ITexture[] {
+                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1)) };
         }
         return sTexture;
     }
@@ -1546,6 +1546,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .takeOne(
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
+                            && s.getItemDamage() != 0 // LSC casing, not a capacitor
                             && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
                                 .getMinimalGlassTier() > glassTier,
                         true);

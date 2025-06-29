@@ -21,6 +21,9 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
@@ -139,19 +142,19 @@ public final class BioVatLogicAdder {
         private static final HashMap<ItemStack, Integer> IsKg = new HashMap<>();
         private static final HashMap<ItemStack, short[]> IsColor = new HashMap<>();
 
-        public static HashSet<BioVatLogicAdder.MaterialSvPair> getMaSv() {
+        public static @NotNull HashSet<BioVatLogicAdder.MaterialSvPair> getMaSv() {
             return RadioHatch.MaSv;
         }
 
-        public static HashMap<ItemStack, Integer> getIsKg() {
+        public static @NotNull HashMap<ItemStack, Integer> getIsKg() {
             return IsKg;
         }
 
-        public static HashMap<ItemStack, Integer> getIsSv() {
+        public static @NotNull HashMap<ItemStack, Integer> getIsSv() {
             return RadioHatch.IsSv;
         }
 
-        public static HashMap<ItemStack, short[]> getIsColor() {
+        public static @NotNull HashMap<ItemStack, short[]> getIsColor() {
             return IsColor;
         }
 
@@ -172,12 +175,13 @@ public final class BioVatLogicAdder {
             IsKg.put(stack, kg);
         }
 
-        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg) {
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, @NotNull Materials materials, int kg) {
             giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials), kg);
             IsColor.put(stack, materials.getRGBA());
         }
 
-        public static void giveItemStackRadioHatchAbilites(ItemStack stack, Materials materials, int kg, int divider) {
+        public static void giveItemStackRadioHatchAbilites(ItemStack stack, @NotNull Materials materials, int kg,
+            int divider) {
             giveItemStackRadioHatchAbilites(stack, BWUtil.calculateSv(materials) / divider, kg);
             IsColor.put(stack, materials.getRGBA());
         }
@@ -212,7 +216,7 @@ public final class BioVatLogicAdder {
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
             if (o == null || this.getClass() != o.getClass()) return false;
             BioVatLogicAdder.MaterialSvPair that = (BioVatLogicAdder.MaterialSvPair) o;
