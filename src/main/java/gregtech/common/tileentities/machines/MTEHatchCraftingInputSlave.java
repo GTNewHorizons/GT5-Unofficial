@@ -184,11 +184,15 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
         if (!(metaTileEntity instanceof MTEHatchCraftingInputME)) return null;
+        if (master != metaTileEntity) {
+            if (master != null) master.removeProxy(this);
+            master = (MTEHatchCraftingInputME) metaTileEntity;
+            master.addProxy(this);
+        }
         masterX = x;
         masterY = y;
         masterZ = z;
         masterSet = true;
-        master = (MTEHatchCraftingInputME) metaTileEntity;
         return master;
     }
 
@@ -245,6 +249,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (master != null) master.removeProxy(this);
+    }
+
+    @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return COPIED_DATA_IDENTIFIER;
     }
@@ -254,10 +264,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         if (nbt.hasKey("master")) {
             NBTTagCompound masterNBT = nbt.getCompoundTag("master");
-            masterX = masterNBT.getInteger("x");
-            masterY = masterNBT.getInteger("y");
-            masterZ = masterNBT.getInteger("z");
-            masterSet = true;
+            trySetMasterFromCoord(masterNBT.getInteger("x"), masterNBT.getInteger("y"), masterNBT.getInteger("z"));
         }
         return true;
     }
