@@ -43,7 +43,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     public MTEWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier,
         final int aSlotCount) {
-        super(aID, aName, aNameRegional, aTier, aSlotCount, new String[] {});
+        super(aID, aName, aNameRegional, aTier, aSlotCount, GTValues.emptyStringArray);
     }
 
     public MTEWirelessCharger(final String name, final int tier, final String[] description,
@@ -290,7 +290,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
