@@ -901,6 +901,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         super.onCreated(aStack, aWorld, aPlayer);
     }
 
+    public float getBlockStrength(ItemStack stack, Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        IToolStats toolStats = getToolStats(stack);
+        if (toolStats != null && player != null) {
+            return toolStats.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
+    }
+
     @Override
     public final boolean doesContainerItemLeaveCraftingGrid(ItemStack aStack) {
         return false;
@@ -999,5 +1008,4 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aNBT != null) aNBT.removeTag("ench");
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
     }
-
 }
