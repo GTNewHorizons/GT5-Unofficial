@@ -3,13 +3,23 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
+import static gregtech.api.enums.GTValues.TIER_COLORS;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,17 +28,27 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.data.IntValue;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -42,6 +62,14 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // tick timer is essentially random, so it was extremely unreliable. Now you are guaranteed the length
     // of one structure check to finish your hotswap before it deforms.
     private boolean grace = false;
+
+    private double transferredLast5Secs = 0d;
+    private double transferredLast30Secs = 0d;
+    private double transferredLast1Min = 0d;
+
+    private static final double TICKS_PER_5SECS_INV = 1d / (20d * 5d);
+    private static final double TICKS_PER_30SECS_INV = 1d / (20d * 30d);
+    private static final double TICKS_PER_MIN_INV = 1d / (20d * 60d);
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -123,6 +151,16 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
+    protected void onPostPowerPass(double eu) {
+        super.onPostPowerPass(eu);
+        // called once per tick
+
+        transferredLast5Secs = (transferredLast5Secs * (1d - TICKS_PER_5SECS_INV)) + (eu * TICKS_PER_5SECS_INV);
+        transferredLast30Secs = (transferredLast30Secs * (1d - TICKS_PER_30SECS_INV)) + (eu * TICKS_PER_30SECS_INV);
+        transferredLast1Min = (transferredLast1Min * (1d - TICKS_PER_MIN_INV)) + (eu * TICKS_PER_MIN_INV);
+    }
+
+    @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
@@ -178,6 +216,123 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
         }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (!ePowerPass) {
+            // Manually add a zero to the averages when the AT is off because it won't happen otherwise
+            onPostPowerPass(0);
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+
+        aNBT.setDouble("transferredLast5Secs", transferredLast5Secs);
+        aNBT.setDouble("transferredLast30Secs", transferredLast30Secs);
+        aNBT.setDouble("transferredLast1Min", transferredLast1Min);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+
+        transferredLast5Secs = aNBT.getDouble("transferredLast5Secs");
+        transferredLast30Secs = aNBT.getDouble("transferredLast30Secs");
+        transferredLast1Min = aNBT.getDouble("transferredLast1Min");
+    }
+
+    private int calculateHatchTier() {
+        long minEUt = Long.MAX_VALUE;
+
+        for (MTEHatchDynamo dynamo : mDynamoHatches) {
+            minEUt = Math.min(minEUt, dynamo.maxEUOutput());
+        }
+
+        for (MTEHatchEnergy energy : mEnergyHatches) {
+            minEUt = Math.min(minEUt, energy.maxEUInput());
+        }
+
+        for (MTEHatchDynamoMulti dynamo : eDynamoMulti) {
+            minEUt = Math.min(minEUt, dynamo.maxEUOutput());
+        }
+
+        for (MTEHatchEnergyMulti energy : eEnergyMulti) {
+            minEUt = Math.min(minEUt, energy.maxEUInput());
+        }
+
+        if (minEUt == Long.MAX_VALUE) minEUt = 0;
+
+        return GTUtility.getTier(minEUt);
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        IntValue hatchTier = new IntValue();
+
+        screenElements
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Secs, value -> transferredLast5Secs = value));
+        screenElements.widget(
+            new FakeSyncWidget.DoubleSyncer(() -> transferredLast30Secs, value -> transferredLast30Secs = value));
+        screenElements
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast1Min, value -> transferredLast1Min = value));
+        screenElements.widget(new FakeSyncWidget.IntegerSyncer(this::calculateHatchTier, hatchTier::setValue));
+
+        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLast5Secs / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_5secs", amperage, tier);
+        })
+            .setSynced(false));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLast30Secs / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_30secs", amperage, tier);
+        })
+            .setSynced(false));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            String amperage = GTUtility.formatNumbers(transferredLast1Min / V[hatchTier.value]);
+            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+
+            return GTUtility.translate("GT5U.gui.text.at_past_min", amperage, tier);
+        })
+            .setSynced(false));
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        lines.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
+        lines.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
+        lines.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
+        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
+
+        return lines.toArray(new String[0]);
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        HashMap<String, String> map = new HashMap<>(super.getInfoMap());
+
+        map.put("minHatchTier", Integer.toString(calculateHatchTier()));
+        map.put("last5Seconds", Double.toString(transferredLast5Secs));
+        map.put("last30Seconds", Double.toString(transferredLast30Secs));
+        map.put("lastMinute", Double.toString(transferredLast1Min));
+
+        return map;
     }
 
     @Override
