@@ -303,7 +303,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.rawOre,
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
-        Object[] o = new Object[0];
+        Object[] o = GTValues.emptyObjectArray;
         ItemList.Item_Power_Goggles.set(
             new ItemPowerGoggles("Power_Goggles", "Power Goggles", "For when you need to look at power storage 24/7"));
         /*

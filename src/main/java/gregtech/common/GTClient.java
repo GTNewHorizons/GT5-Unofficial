@@ -10,14 +10,11 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
@@ -78,13 +75,13 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
+import gregtech.client.capes.GTCapesLoader;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
@@ -95,7 +92,6 @@ import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
-import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
@@ -117,10 +113,8 @@ import paulscode.sound.SoundSystemException;
 // Referenced classes of package gregtech.common:
 // GTProxy
 
-public class GTClient extends GTProxy implements Runnable {
+public class GTClient extends GTProxy {
 
-    public static final String GTNH_CAPE_LIST_URL = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
-    public static final String GT_CAPE_LIST_URL = "http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt";
     private static final List<Block> ROTATABLE_VANILLA_BLOCKS;
 
     private static final int[][] GRID_SWITCH_TABLE = new int[][] { { 0, 5, 3, 1, 2, 4 }, { 5, 0, 1, 3, 2, 4 },
@@ -167,9 +161,7 @@ public class GTClient extends GTProxy implements Runnable {
             Blocks.lit_pumpkin);
     }
 
-    private final HashSet<String> mCapeList = new HashSet<>();
     public static final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
-    private final GTCapeRenderer mCapeRenderer;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -201,7 +193,6 @@ public class GTClient extends GTProxy implements Runnable {
     public static MetaGeneratedItemRenderer metaGeneratedItemRenderer;
 
     public GTClient() {
-        mCapeRenderer = new GTCapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
         mPosR = Arrays.asList(
@@ -599,27 +590,7 @@ public class GTClient extends GTProxy implements Runnable {
 
         new MTEAdvDebugStructureWriter.ForgeEventHandler();
 
-        final String[] arr = { "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321",
-            "Goshen_Ithilien", "manf", "Bimgo", "leagris", "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87",
-            "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan", "Deathlycraft",
-            "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85",
-            "sebastiank30", "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab",
-            "kehaan", "bpgames123", "semig0d", "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp",
-            "bsaa", "SpwnX", "tworf", "Kadah", "kanni", "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly",
-            "Nullav", "BH5432", "Sibmer", "inceee", "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb",
-            "meep310", "Seldron", "yttr1um", "hohounk", "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy",
-            "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774", "lepthymo", "bildeman", "Kremnari", "Aerosalo",
-            "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404", "Abouttabs", "Johnstaal",
-            "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
-            "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot",
-            "chainman564", "NikitaBuker", "Misha999777", "25FiveDetail", "AntiCivilBoy", "michaelbrady",
-            "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic",
-            "diamondguy2798", "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi",
-            "xavier0014", "adamros", "alexbegt" };
-        for (String tName : arr) {
-            mCapeList.add(tName.toLowerCase());
-        }
-        new Thread(this).start();
+        new Thread(new GTCapesLoader(), "GT Cape Loader").start();
 
         mPollutionRenderer.preLoad();
 
@@ -701,36 +672,6 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     @Override
-    public void run() {
-        GTLog.out.println("GTMod: Downloading Cape List.");
-        try (final Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
-            while (tScanner.hasNextLine()) {
-                this.mCapeList.add(
-                    tScanner.nextLine()
-                        .toLowerCase());
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
-        }
-        GTLog.out.println("GT New Horizons: Downloading Cape List.");
-        try (final Scanner tScanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
-            while (tScanner.hasNextLine()) {
-                final String tName = tScanner.nextLine()
-                    .toLowerCase();
-                if (tName.contains(":")) {
-                    if (!this.mCapeList.contains(tName.substring(0, tName.indexOf(":")))) {
-                        this.mCapeList.add(tName);
-                    }
-                } else {
-                    this.mCapeList.add(tName);
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
-        }
-    }
-
-    @Override
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;
@@ -748,11 +689,6 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public int getNEIReloadCount() {
         return mReloadCount;
-    }
-
-    @SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
     }
 
     @SubscribeEvent
