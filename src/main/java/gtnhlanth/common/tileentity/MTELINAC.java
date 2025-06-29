@@ -1,6 +1,11 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofSpecificTileAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+
+
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -19,14 +24,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,12 +53,21 @@ import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.hatch.MTEHatchBeamlineControl;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISurvivalConstructable {
 
@@ -73,12 +79,17 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    
+    private final ArrayList<MTEHatchBeamlineControl> mControlBeamline = new ArrayList<>();
+
 
     private static final int CASING_INDEX = 1662;
 
     private int glassTier = -1;
     private int machineTemp = 0;
     private int length;
+    
+    private int lengthEffective;
 
     private float outputEnergy;
     private int outputParticleID;
@@ -150,10 +161,17 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .build())
             .addElement(
                 'j',
-                buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
+                	ofChain(
+                
+                	buildHatchAdder(MTELINAC.class)
+                	.atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
+                    .build(),
+                    
+                    ofSpecificTileAdder(MTELINAC::addBeamLineControlHatch, MTEHatchBeamlineControl.class, Blocks.air, 0),  
+                    ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
+                    
             .build();
     }
 
@@ -236,6 +254,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
+    public boolean addBeamLineControlHatch(MTEHatchBeamlineControl te) {
+    	if (te == null) return false;
+    	
+    	return this.mControlBeamline.add(te);
+    }
+    
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -343,6 +367,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     public boolean checkMachine(IGregTechTileEntity mte, ItemStack stack) {
         mInputBeamline.clear();
         mOutputBeamline.clear();
+        mControlBeamline.clear();;
 
         this.outputEnergy = 0;
         this.outputRate = 0;
@@ -368,7 +393,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         length += 9;
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
-            && this.mEnergyHatches.size() <= 2
+            && this.mEnergyHatches.size() <= 2 && this.mControlBeamline.size() <= 1
             && this.glassTier >= VoltageIndex.LuV;
     }
 
