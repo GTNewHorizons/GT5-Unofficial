@@ -143,6 +143,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
+    private boolean mSlowMode = false;
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -228,6 +229,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
+        aNBT.setBoolean("mSlowMode",this.mSlowMode);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -238,6 +240,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
+        mSlowMode = aNBT.getBoolean("mSlowMode");
         mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
@@ -431,6 +434,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.mSlowMode = !this.mSlowMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Slow Mode: " + (this.mSlowMode ? "Enabled" : "Disabled"));
+        return true;
+    }
     // We place the event handler in an inner
     // class to prevent high costs of registering
     // the event because forge event bus reflects
@@ -562,7 +572,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             if (getMaxInputEu() < recipe.mEUt / 4) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt / 4);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
             this.mOutputItems = recipe
-                .generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops, voidAllDamagedAndEnchantedItems);
+                .generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops, voidAllDamagedAndEnchantedItems, false);
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
@@ -576,18 +586,17 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
             EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
-
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
                 attackDamage,
                 weaponCache.isValid ? weaponCache.looting : 0,
                 mIsProducingInfernalDrops,
-                voidAllDamagedAndEnchantedItems);
+                voidAllDamagedAndEnchantedItems, mSlowMode);
 
             EECPlayer.currentWeapon = null;
 
-            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
+            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120 * (mSlowMode ? 16 : 1)) };
             ItemStack weapon = weaponCache.getStackInSlot(0);
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             if (weaponCache.isValid && weapon.isItemStackDamageable()) {

@@ -91,9 +91,9 @@ public class MobHandlerLoader {
         }
 
         public ItemStack[] generateOutputs(Random rnd, MTEExtremeEntityCrusher MTE, double attackDamage,
-            int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
+            int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems, boolean slowMode) {
             MTE.lEUt = mEUt;
-            MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
+            MTE.mMaxProgresstime = (slowMode ? 16 : 1) * Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
             this.entityCopy.setPosition(
                 MTE.getBaseMetaTileEntity()
@@ -135,7 +135,7 @@ public class MobHandlerLoader {
                 }
                 if (chance == 10000 || rnd.nextInt(10000) < chance) {
                     ItemStack s = o.stack.copy();
-                    s.stackSize = amount;
+                    s.stackSize = amount * (slowMode ? 16 : 1);
                     if (o.enchantable != null) EnchantmentHelper.addRandomEnchantment(rnd, s, o.enchantable);
                     if (o.damages != null) {
                         int rChance = rnd.nextInt(recipe.mMaxDamageChance);

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.api.interfaces.IDataCopyable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -58,17 +59,18 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IDataCopyable {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
     private int multiplier = 1;
-
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
+    private boolean mSlowMode = false;
+    private static final String DATA_STICK_DATA_TYPE = "voidMinerSlow";
 
     /**
      * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
@@ -88,12 +90,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mBlacklist", this.mBlacklist);
+        aNBT.setBoolean("mSlowMode",this.mSlowMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mBlacklist = aNBT.getBoolean("mBlacklist");
+        this.mSlowMode = aNBT.getBoolean("mSlowMode");
     }
 
     public MTEVoidMinerBase(String aName, int tier) {
@@ -120,7 +124,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10;
+        this.mMaxProgresstime = 10 * (mSlowMode ? 16 : 1);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
@@ -286,7 +290,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
         final ItemStack output = this.nextOre();
-        output.stackSize = multiplier;
+        output.stackSize = multiplier * (mSlowMode ? 16 : 1);
         if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
             .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
@@ -300,6 +304,36 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         ItemStack aTool) {
         this.mBlacklist = !this.mBlacklist;
         GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.mSlowMode = !this.mSlowMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Slow Mode: " + (this.mSlowMode ? "Enabled" : "Disabled"));
+        return true;
+    }
+
+    //implement idatacopyable for matter manipualtor, might be redundant
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player)
+    {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type",DATA_STICK_DATA_TYPE);
+        nbt.setBoolean("mSlowMode",mSlowMode);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if ( nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        if(nbt.hasKey("mSlowMode")) mSlowMode = nbt.getBoolean("mSlowMode");
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     @Override
