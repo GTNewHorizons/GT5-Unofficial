@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import gregtech.api.interfaces.IDataCopyable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,6 +44,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -90,7 +90,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mBlacklist", this.mBlacklist);
-        aNBT.setBoolean("mSlowMode",this.mSlowMode);
+        aNBT.setBoolean("mSlowMode", this.mSlowMode);
     }
 
     @Override
@@ -156,6 +156,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                     + " Ores per Second depending on the Dimension it is build in")
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+            .addInfo("You can enable slow mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addInfo(
                 "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
                     + "VOIDED"
@@ -314,20 +315,19 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return true;
     }
 
-    //implement idatacopyable for matter manipualtor, might be redundant
+    // implement idatacopyable for matter manipualtor, might be redundant
     @Override
-    public NBTTagCompound getCopiedData(EntityPlayer player)
-    {
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
         final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("type",DATA_STICK_DATA_TYPE);
-        nbt.setBoolean("mSlowMode",mSlowMode);
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setBoolean("mSlowMode", mSlowMode);
         return nbt;
     }
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if ( nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
-        if(nbt.hasKey("mSlowMode")) mSlowMode = nbt.getBoolean("mSlowMode");
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey("mSlowMode")) mSlowMode = nbt.getBoolean("mSlowMode");
         return true;
     }
 
