@@ -144,8 +144,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
-    private boolean mSlowMode = false;
-    private static final String DATA_STICK_DATA_TYPE = "eecSlow";
+    private boolean mBatchMode = false;
+    private static final String DATA_STICK_DATA_TYPE = "eecBatch";
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -231,7 +231,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
-        aNBT.setBoolean("mSlowMode", this.mSlowMode);
+        aNBT.setBoolean("mBatchMode", this.mBatchMode);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -242,7 +242,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
-        mSlowMode = aNBT.getBoolean("mSlowMode");
+        mBatchMode = aNBT.getBoolean("mBatchMode");
         mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
@@ -258,7 +258,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     protected int getOverclockTimeLimit() {
-        return (mSlowMode ? 16 : 1) * 20;
+        return (mBatchMode ? 16 : 1) * 20;
     }
 
     @Override
@@ -292,7 +292,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo("You can enable slow mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
@@ -440,8 +440,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        this.mSlowMode = !this.mSlowMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Slow Mode: " + (this.mSlowMode ? "Enabled" : "Disabled"));
+        this.mBatchMode = !this.mBatchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.mBatchMode ? "Enabled" : "Disabled"));
         return true;
     }
 
@@ -599,14 +599,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 voidAllDamagedAndEnchantedItems);
 
             EECPlayer.currentWeapon = null;
-            if (mSlowMode) {
+            if (mBatchMode) {
                 for (ItemStack item : mOutputItems) {
                     item.stackSize *= 16;
                 }
                 this.mMaxProgresstime *= 16;
             }
             this.mOutputFluids = new FluidStack[] {
-                FluidRegistry.getFluidStack("xpjuice", 120 * (mSlowMode ? 16 : 1)) };
+                FluidRegistry.getFluidStack("xpjuice", 120 * (mBatchMode ? 16 : 1)) };
             ItemStack weapon = weaponCache.getStackInSlot(0);
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             if (weaponCache.isValid && weapon.isItemStackDamageable()) {
@@ -869,14 +869,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         final NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("type", DATA_STICK_DATA_TYPE);
-        nbt.setBoolean("mSlowMode", mSlowMode);
+        nbt.setBoolean("mBatchMode", mBatchMode);
         return nbt;
     }
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
         if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
-        if (nbt.hasKey("mSlowMode")) mSlowMode = nbt.getBoolean("mSlowMode");
+        if (nbt.hasKey("mBatchMode")) mBatchMode = nbt.getBoolean("mBatchMode");
         return true;
     }
 
