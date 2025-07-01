@@ -643,7 +643,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     {
         // checks for fluid in hatch, does not drain it.
         if (kerosene100 == null) kerosene100 = new FluidStack(GTPPFluids.Kerosene, 100);
-        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiolcatalyzedPropulsionFluid.getFluid(100) : kerosene100;
+        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(100) : kerosene100;
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
                 return true;
@@ -703,7 +703,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         }
         if (ticker % 21 == 0) {
             if (kerosene10 == null) kerosene10 = new FluidStack(GTPPFluids.Kerosene, 10);
-            FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiolcatalyzedPropulsionFluid.getFluid(amountToDrain)
+            FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
                 : kerosene10; // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) { // worst case, checks all hatches fluid not found, stops
                 // machine
