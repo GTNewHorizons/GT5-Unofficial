@@ -112,6 +112,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -135,7 +136,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
-    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable, IDataCopyable {
 
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
@@ -143,6 +144,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
+    private boolean mBatchMode = false;
+    private static final String DATA_STICK_DATA_TYPE = "eecBatch";
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -228,6 +231,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
+        aNBT.setBoolean("mBatchMode", this.mBatchMode);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -238,6 +242,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
+        mBatchMode = aNBT.getBoolean("mBatchMode");
         mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
@@ -253,7 +258,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     protected int getOverclockTimeLimit() {
-        return 20;
+        return (mBatchMode ? 16 : 1) * 20;
     }
 
     @Override
@@ -287,6 +292,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
@@ -429,6 +435,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.mBatchMode = !this.mBatchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.mBatchMode ? "Enabled" : "Disabled"));
+        return true;
     }
 
     // We place the event handler in an inner
@@ -576,7 +590,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
             EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
-
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
@@ -586,8 +599,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 voidAllDamagedAndEnchantedItems);
 
             EECPlayer.currentWeapon = null;
-
-            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
+            if (mBatchMode) {
+                for (ItemStack item : mOutputItems) {
+                    item.stackSize *= 16;
+                }
+                this.mMaxProgresstime *= 16;
+            }
+            this.mOutputFluids = new FluidStack[] {
+                FluidRegistry.getFluidStack("xpjuice", 120 * (mBatchMode ? 16 : 1)) };
             ItemStack weapon = weaponCache.getStackInSlot(0);
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             if (weaponCache.isValid && weapon.isItemStackDamageable()) {
@@ -843,6 +862,27 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
         }
+    }
+
+    // implement idatacopyable for matter manipualtor, might be redundant
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setBoolean("mBatchMode", mBatchMode);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey("mBatchMode")) mBatchMode = nbt.getBoolean("mBatchMode");
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     private static class EECFakePlayer extends FakePlayer {
