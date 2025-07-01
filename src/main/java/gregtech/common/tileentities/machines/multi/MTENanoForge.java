@@ -354,7 +354,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
-        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
+        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 5))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('Z', ofBlock(Blocks.air, 0))
         .build();
