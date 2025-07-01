@@ -681,7 +681,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tNewDamage >= getToolMaxDamage(aStack)) {
                 IToolStats tStats = getToolStats(aStack);
                 if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                    if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                    if (tStats != null && playSound) playSound(tStats);
                     if (aStack.stackSize > 0) aStack.stackSize--;
                 }
             }
@@ -695,7 +695,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (tNewDamage >= getToolMaxDamage(aStack)) {
                     IToolStats tStats = getToolStats(aStack);
                     if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                        if (tStats != null && playSound) playSound(tStats);
                         if (aStack.stackSize > 0) aStack.stackSize--;
                     }
                 }
@@ -703,6 +703,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             return true;
         }
         return false;
+    }
+
+    protected void playSound(IToolStats aStats) {
+        GTUtility.doSoundAtClient(aStats.getBreakingSound(), 1, 1.0F);
     }
 
     @Override
@@ -741,25 +745,30 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public final ItemStack getContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, true);
+        return getContainerItem(aStack, true, true);
     }
 
     @Override
     public final boolean hasContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, false) != null;
+        return getContainerItem(aStack, false, false) != null;
     }
 
-    private ItemStack getContainerItem(ItemStack aStack, boolean playSound) {
+    private ItemStack getContainerItem(ItemStack aStack, boolean playSound, boolean doDamage) {
         if (!isItemStackUsable(aStack)) return null;
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
-        if (playSound) {
-            doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-        } else {
-            doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+
+        if (doDamage) {
+            if (playSound) {
+                doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+            } else {
+                doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+            }
+            aStack = aStack != null && aStack.stackSize > 0 ? aStack : null;
+        } else if (playSound) {
+            playSound(tStats);
         }
-        aStack = aStack.stackSize > 0 ? aStack : null;
         return aStack;
     }
 
@@ -891,6 +900,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         super.onCreated(aStack, aWorld, aPlayer);
     }
 
+    public float getBlockStrength(ItemStack stack, Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        IToolStats toolStats = getToolStats(stack);
+        if (toolStats != null && player != null) {
+            return toolStats.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
+    }
+
     @Override
     public final boolean doesContainerItemLeaveCraftingGrid(ItemStack aStack) {
         return false;
@@ -908,6 +926,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
+        if (aStack == null) return false;
         IToolStats tStats = getToolStatsInternal(aStack);
         if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
             NBTTagCompound aNBT = aStack.getTagCompound();
@@ -937,29 +956,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2)
                 || tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)
                 tResult.put(tEntry.getKey(), tEntry.getValue());
-            else switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                case weapon:
-                    if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case all:
-                    tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case armor:
-                case armor_feet:
-                case armor_head:
-                case armor_legs:
-                case armor_torso:
-                    break;
-                case bow:
-                    if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case breakable:
-                    break;
-                case fishing_rod:
-                    break;
-                case digger:
-                    if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
+            else {
+                switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
+                    case weapon -> {
+                        if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case all -> {
+                        tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
+                    case bow -> {
+                        if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case digger -> {
+                        if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                }
             }
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
@@ -994,20 +1006,5 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) aNBT.removeTag("ench");
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
     }
 }

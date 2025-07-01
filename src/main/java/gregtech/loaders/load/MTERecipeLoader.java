@@ -2164,12 +2164,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'F',
                 OrePrefixes.frameGt.get(Materials.Osmiridium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningNeutronium.get(1L),
+            ItemList.Casing_MiningNeutronium.get(3L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Neutronium), 'F',
                 OrePrefixes.frameGt.get(Materials.Neutronium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningBlackPlutonium.get(1L),
+            ItemList.Casing_MiningBlackPlutonium.get(2L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.BlackPlutonium), 'F',
                 OrePrefixes.frameGt.get(Materials.BlackPlutonium) });
@@ -3739,6 +3739,24 @@ public class MTERecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_MV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.MV_Coil, 'H', ItemList.Hull_MV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_HV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.HV_Coil, 'H', ItemList.Hull_HV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_EV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.EV_Coil, 'H', ItemList.Hull_EV, 'M',
+                OrePrefixes.block.get(Materials.NeodymiumMagnetic) });
     }
 
     private static void registerShapelessCraftingRecipes() {

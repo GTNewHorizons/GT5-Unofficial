@@ -232,7 +232,7 @@ public class CircuitImprintLoader {
                         in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
                             GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
+                            original.mInputs[index].stackSize * 16L);
                     }
                     // other components
                 } else {

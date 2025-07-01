@@ -246,16 +246,15 @@ public abstract class MetaBaseItem extends GTGenericItem
                     aList.add(
                         EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
                 } else {
-                    aList
-                        .add(
-                            EnumChatFormatting.AQUA
-                                + translateToLocalFormatted(
-                                    "gt.item.desc.eu_info",
-                                    formatNumbers(tCharge),
-                                    formatNumbers(Math.abs(tStats[0])),
-                                    "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1
-                                        : 1)])
-                                + EnumChatFormatting.GRAY);
+                    int voltageTier = (int) GTUtility.clamp(tStats[2], 0, V.length - 1);
+                    aList.add(
+                        EnumChatFormatting.AQUA
+                            + translateToLocalFormatted(
+                                "gt.item.desc.eu_info",
+                                formatNumbers(tCharge),
+                                formatNumbers(Math.abs(tStats[0])),
+                                formatNumbers(V[voltageTier]))
+                            + EnumChatFormatting.GRAY);
                 }
             }
         }
@@ -636,17 +635,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
 

@@ -183,14 +183,13 @@ public class PowerGogglesHudHandler {
                                 : BigInteger
                                     .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
+
         switch (PowerGogglesConfigHandler.readingIndex) {
-            case 0:
-                break;
-            case 1:
+            case 1 -> {
                 change5mString = "5m: " + toFormatted(change5m) + " EU";
                 change1hString = "1h: " + toFormatted(change1h) + " EU";
-                break;
-            case 2:
+            }
+            case 2 -> {
                 change5mString = "5m: " + (change5mDiff != 0 ? String.format(
                     "(%s EU/t) ",
                     toFormatted(
@@ -205,9 +204,8 @@ public class PowerGogglesHudHandler {
                                 BigInteger
                                     .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                     : "0 EU/t");
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
         String percentage = (measurement.compareTo(BigInteger.ZERO) == 0 || highest.compareTo(BigInteger.ZERO) == 0)
             ? "0%"

@@ -121,30 +121,22 @@ public class MTENeutronSensor extends MTEHatch {
         }
 
         switch (operator) {
-            case "<":
+            case "<" -> {
                 threshold = newThreshold;
                 inverted = true;
-                break;
-            case ">":
+            }
+            case ">", "!=" -> {
                 threshold = newThreshold + 1;
                 inverted = false;
-                break;
-            case "<=":
+            }
+            case "<=", "==" -> {
                 threshold = newThreshold + 1;
                 inverted = true;
-                break;
-            case ">=":
+            }
+            case ">=" -> {
                 threshold = newThreshold;
                 inverted = false;
-                break;
-            case "==": // Interpret as <= to keep "==0eV" working as before.
-                threshold = newThreshold + 1;
-                inverted = true;
-                break;
-            case "!=": // Interpret as > to keep "!=0eV" working as before.
-                threshold = newThreshold + 1;
-                inverted = false;
-                break;
+            }
         }
     }
 
@@ -167,11 +159,6 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 

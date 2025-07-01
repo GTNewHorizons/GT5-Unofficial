@@ -92,6 +92,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -271,11 +272,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0;
     }
@@ -412,7 +408,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (shouldCheckMaintenance()) {
             mWrench = aNBT.getBoolean("mWrench");
             mScrewdriver = aNBT.getBoolean("mScrewdriver");
-            mSoftMallet = aNBT.getBoolean("mSoftMallet");
+            mSoftMallet = aNBT.getBoolean("mSoftMallet") || aNBT.getBoolean("mSoftHammer");
             mHardHammer = aNBT.getBoolean("mHardHammer");
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
@@ -1331,8 +1327,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
                     metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(getControllerSlot())
-                            * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(mEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -1804,9 +1801,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (ItemStack item : dualInputHatch.getAllItems()) {
-                    rList.add(item);
-                }
+                rList.addAll(Arrays.asList(dualInputHatch.getAllItems()));
             }
         }
 
@@ -2292,9 +2287,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             // Display locked recipe when the machine is idle
             currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
             String[] lines = lockedRecipe.split("\n");
-            for (String line : lines) {
-                currentTip.add(line);
-            }
+            currentTip.addAll(Arrays.asList(lines));
         } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
@@ -2414,12 +2407,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
-            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
+            final MTEHatchMuffler muffler = mMufflerHatches.get(i);
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
+            if (tile == null || tile.isDead()) continue;
+            tile.setActive(state);
         }
     }
 
@@ -2670,7 +2665,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean canDumpFluidToME() {
-        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+        for (IFluidStore tHatch : getFluidOutputSlots(GTValues.emptyFluidStackArray)) {
             if (tHatch instanceof MTEHatchOutputME) {
                 if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
                     return false;
@@ -2979,9 +2974,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     public boolean shouldDisplayCheckRecipeResult() {
         return true;
@@ -3535,11 +3527,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEMultiBlockBaseGui(this);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
     }
 
     public boolean getDefaultHasMaintenanceChecks() {

@@ -13,8 +13,6 @@ import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMul
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
-import static java.lang.Math.max;
-import static java.lang.Math.pow;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
@@ -793,9 +791,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         double stellarPlasmaExcessPercentage = stellarPlasmaStored
             / (heliumRecipeRequirement * (12.4 / 1_000_000f) * parallelAmount) - 1;
 
-        hydrogenOverflowProbabilityAdjustment = 1 - exp(-pow(30 * hydrogenExcessPercentage, 2));
-        heliumOverflowProbabilityAdjustment = 1 - exp(-pow(30 * heliumExcessPercentage, 2));
-        stellarPlasmaOverflowProbabilityAdjustment = 1 - exp(-pow(30 * stellarPlasmaExcessPercentage, 2));
+        hydrogenOverflowProbabilityAdjustment = 1 - exp(-GTUtility.powInt(30 * hydrogenExcessPercentage, 2));
+        heliumOverflowProbabilityAdjustment = 1 - exp(-GTUtility.powInt(30 * heliumExcessPercentage, 2));
+        stellarPlasmaOverflowProbabilityAdjustment = 1 - exp(-GTUtility.powInt(30 * stellarPlasmaExcessPercentage, 2));
     }
 
     private double recipeChanceCalculator() {
@@ -837,9 +835,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         // = 3%*3% = 5.91% discount.
 
         final long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
-        final double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
-            * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, -spacetimeCasingDifference)
-            / max(1, pow(2, currentCircuitMultiplier));
+        final double recipeTimeDiscounted = recipeTime * GTUtility.powInt(2.0, -timeAccelerationFieldMetadata)
+            * GTUtility.powInt(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, -spacetimeCasingDifference)
+            * Math.min(1, GTUtility.powInt(2, -currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
@@ -976,7 +974,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (GTUtility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
                 mInventory[getControllerSlotIndex()] = heldItem.copy();
                 mInventory[getControllerSlotIndex()].stackSize = 1;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 return true;
             }
         }
@@ -1271,7 +1269,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             parallelExponent = (long) Math.floor(
                 Math.log(PARALLEL_FOR_FIRST_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))
                     / LOG_CONSTANT);
-            parallelAmount = (long) pow(2, parallelExponent);
+            parallelAmount = (long) GTUtility.powInt(2, parallelExponent);
         } else {
             parallelAmount = 1;
         }
@@ -1308,7 +1306,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         }
 
         // Calculate multipliers used in power calculations
-        double powerMultiplier = Math.max(1, Math.pow(POWER_INCREASE_CONSTANT, parallelExponent));
+        double powerMultiplier = Math.max(1, GTUtility.powInt(POWER_INCREASE_CONSTANT, parallelExponent));
 
         // Determine EU recipe input
         startEU = recipeObject.getEUStartCost();
@@ -1318,7 +1316,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
         outputEU_BigInt = BigInteger.valueOf((long) (recipeObject.getEUOutput() * (1 - outputEUPenalty)));
         usedEU = BigInteger.valueOf(-startEU)
-            .multiply(BigInteger.valueOf((long) Math.pow(4, currentCircuitMultiplier)));
+            .multiply(BigInteger.valueOf((long) GTUtility.powInt(4, currentCircuitMultiplier)));
 
         // Calculate parallel EU values
         if (parallelAmount > 1) {
@@ -1456,7 +1454,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             outputFluidToAENetwork(
                 MaterialsUEVplus.SpaceTime.getMolten(1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
-                    * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
+                    * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
                 // Add chance to pity if previous recipe is equal to current one, else reset pity
                 if (previousRecipeChance == successChance) {
@@ -1558,12 +1556,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             ItemStack tmpItem = item.copy();
             tmpItem.stackSize = Integer.MAX_VALUE;
-            ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
+            mOutputBusses.get(0)
+                .storePartial(tmpItem);
             amount -= Integer.MAX_VALUE;
         }
         ItemStack tmpItem = item.copy();
         tmpItem.stackSize = (int) amount;
-        ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
+        mOutputBusses.get(0)
+            .storePartial(tmpItem);
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {
@@ -1612,11 +1612,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     "" + YELLOW + (timeAccelerationFieldMetadata + 1) + RESET));
         }
         if (stabilisationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation_grade"));
+            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation.grade.none"));
         } else {
             str.add(
                 StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.stabilisation_grade.none",
+                    "tt.infodata.eoh.stabilisation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(stabilisationFieldMetadata) + RESET,
                     "" + YELLOW + (stabilisationFieldMetadata + 1) + RESET));
         }

@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.materials;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DustDecayable extends BaseItemTickable {
 
@@ -33,8 +31,8 @@ public class DustDecayable extends BaseItemTickable {
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
         this.maxStackSize = 64;
-        GTOreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
-        new DecayableRecipe(maxTicks, getSimpleStack(this), turnsInto, decayType);
+        GTOreDictUnificator.registerOre(unlocal, new ItemStack(this));
+        new DecayableRecipe(maxTicks, new ItemStack(this), turnsInto, decayType);
     }
 
     @Override
@@ -76,20 +74,6 @@ public class DustDecayable extends BaseItemTickable {
             }
             // don't decay when held by a player
             return;
-        }
-
-        boolean a1, a2;
-
-        a1 = this.isTicking(world, stack);
-        a2 = tickItemTag(world, stack);
-
-        if (!a1 && !a2) {
-            if (entityHolding instanceof EntityPlayer player) {
-                // sanity check to make sure we aren't about to delete an item, this should always be true
-                if (player.inventory.mainInventory[slot] == stack) {
-                    player.inventory.mainInventory[slot] = GTUtility.copyAmount(stack.stackSize, turnsIntoItem);
-                }
-            }
         }
     }
 

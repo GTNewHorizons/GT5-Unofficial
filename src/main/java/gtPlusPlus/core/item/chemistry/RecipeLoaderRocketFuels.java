@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -178,20 +177,20 @@ public class RecipeLoaderRocketFuels {
     private static void addRocketFuelsToMap() {
         addFuelRecipe(GTPPFluids.RP1RocketFuel, 512);
         addFuelRecipe(GTPPFluids.DenseHydrazineFuelMixture, 1024);
-        addFuelRecipe(GTPPFluids.H8N4C2O4RocketFuel, 2048);
-        addFuelRecipe(GTPPFluids.CN3H7O3RocketFuel, 4196);
+        addFuelRecipe(GTPPFluids.CN3H7O3RocketFuel, 2048);
+        addFuelRecipe(GTPPFluids.H8N4C2O4RocketFuel, 4196);
     }
 
     private static void addFuelRecipe(Fluid fluid, int fuelValue) {
         GTPPRecipeMaps.rocketFuels.add(
             new GTRecipe(
                 true,
-                new ItemStack[] {},
-                new ItemStack[] {},
+                GTValues.emptyItemStackArray,
+                GTValues.emptyItemStackArray,
                 null,
-                new int[] {},
+                GTValues.emptyIntArray,
                 new FluidStack[] { new FluidStack(fluid, 1000) },
-                new FluidStack[] {},
+                GTValues.emptyFluidStackArray,
                 0,
                 0,
                 fuelValue));

@@ -45,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -71,6 +70,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IInterfaceViewable;
 import appeng.core.AppEng;
@@ -87,6 +87,8 @@ import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -170,7 +172,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         public boolean hasChanged(ItemStack newPattern, World world) {
-            return newPattern == null
+            return newPattern == null || patternDetails == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                         .getPatternForItem(newPattern, world)));
@@ -211,13 +213,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         @Override
         public ItemStack[] getItemInputs() {
-            if (isItemEmpty()) return new ItemStack[0];
+            if (isItemEmpty()) return GTValues.emptyItemStackArray;
             return itemInventory.toArray(new ItemStack[0]);
         }
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isEmpty()) return new FluidStack[0];
+            if (isEmpty()) return GTValues.emptyFluidStackArray;
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
@@ -230,7 +232,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             GTDualInputPattern dualInputs = new GTDualInputPattern();
 
             ItemStack[] inputItems = this.parentMTE.getSharedItems();
-            FluidStack[] inputFluids = new FluidStack[0];
+            FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             for (IAEItemStack singleInput : this.getPatternDetails()
                 .getInputs()) {
@@ -508,6 +510,25 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
@@ -707,6 +728,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
 
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
     }
 
     @Override
@@ -838,7 +860,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE)
-                .addTooltips(ImmutableList.of("Place manual items"))
+                .addTooltip(
+                    StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
                 .setSize(16, 16)
                 .setPos(170, 46))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -848,7 +871,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
-                .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.export"))
                 .setSize(16, 16)
                 .setPos(170, 28))
             .widget(

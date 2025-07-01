@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.general.ItemGenericToken;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemDummyResearch extends ItemGenericToken {
 
@@ -50,7 +49,7 @@ public class ItemDummyResearch extends ItemGenericToken {
         if (aMeta == null) {
             aMeta = 0;
         }
-        return ItemUtils.simpleMetaStack(ModItems.itemDummyResearch, aMeta, aStacksize);
+        return new ItemStack(ModItems.itemDummyResearch, aStacksize, aMeta);
     }
 
     private int aID = 0;

@@ -113,46 +113,47 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
         if (active) {
             float tThickNess = getThickness();
-            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
-                .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
+                Textures.BlockIcons.INSULATION_FULL,
+                Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.374F) // 0.375 x1
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.499F) // 0.500 x2
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.624F) // 0.625 x4
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.749F) // 0.750 x8
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.874F) // 0.825 x12
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             return new ITexture[] {
                 TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
-                    Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                    Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
         }
         return new ITexture[] { TextureFactory
-            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
     }
 
     @Override
@@ -205,7 +206,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
-        return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
+        return transferElectricity(side, voltage, amperage, null);
     }
 
     @Override

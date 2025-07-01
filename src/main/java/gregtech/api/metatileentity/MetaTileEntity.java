@@ -42,8 +42,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
@@ -137,6 +137,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
+    @Nullable
     @Override
     public IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;
@@ -575,7 +576,21 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        return fill_default(side, aFluid, doFill);
+        if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+            int tSteam = (int) Math.min(
+                Integer.MAX_VALUE,
+                Math.min(
+                    aFluid.amount / 2,
+                    getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+            if (tSteam > 0) {
+                markDirty();
+                if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
+                return tSteam * 2;
+            }
+        } else {
+            return fill_default(side, aFluid, doFill);
+        }
+        return 0;
     }
 
     @Override
@@ -754,17 +769,17 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, GTUtil.getRGBInt(dye.getRGBA()));
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return GTUtil.getRGBInt(dye.getRGBA());
+        return dye.toInt();
     }
 
     @Override

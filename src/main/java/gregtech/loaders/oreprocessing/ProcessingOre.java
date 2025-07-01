@@ -111,7 +111,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
                 tMaterial,
-                GTUtility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
+                GTUtility.copyAmount((long) aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
                 (long) aMaterial.mOreMultiplier * aMultiplier);
         }
 

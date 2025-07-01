@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -262,7 +261,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
+        return (int) GTUtility.powInt(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {

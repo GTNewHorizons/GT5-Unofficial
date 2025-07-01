@@ -143,9 +143,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
+import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -732,6 +734,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
 
+    public GTSpawnEventHandler spawnEventHandler;
+    public TetherManager tetherManager;
+
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
         oreDictBurnTimes.put("dustTinySodium", 44);
@@ -1205,9 +1210,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public void onServerStarting() {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        GTLog.ore.println("GTMod: ServerStarting-Phase started!");
 
         GTMusicSystem.ServerSystem.reset();
+
+        spawnEventHandler = new GTSpawnEventHandler();
+        MinecraftForge.EVENT_BUS.register(spawnEventHandler);
+        tetherManager = new TetherManager();
+        FMLCommonHandler.instance()
+            .bus()
+            .register(tetherManager);
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
@@ -1276,6 +1287,20 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         this.mUniverse = null;
+    }
+
+    public void onServerStopped() {
+        WirelessChargerManager.clearChargerMap();
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+            spawnEventHandler = null;
+        }
+        if (tetherManager != null) {
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(tetherManager);
+            tetherManager = null;
+        }
     }
 
     @SubscribeEvent
@@ -1954,7 +1979,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             tEvent = i$.next();
             sizeStep--;
             if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%", new Object[0]);
+                GT_FML_LOGGER.info("Baking : " + size + "%");
                 sizeStep = mEvents.size() / 20 - 1;
                 size += 5;
             }
@@ -2527,6 +2552,31 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent);
             }
         }
+    }
+
+    /**
+     * This method will be called when
+     * {@link net.minecraftforge.common.ForgeHooks#blockStrength(Block, EntityPlayer, World, int, int, int)} returns,
+     * giving a chance to modify the block strength.
+     * <p>
+     * This method will be invoked by the mixin (forge.ForgeHooksMixin).
+     *
+     * @param block                the block to break
+     * @param player               the player breaking the block
+     * @param world                the world the block is in
+     * @param x                    the x coordinate of the block
+     * @param y                    the y coordinate of the block
+     * @param z                    the z coordinate of the block
+     * @param defaultBlockStrength the default block strength (the default return value)
+     * @return the new block strength
+     */
+    public static float onBlockStrength(Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        ItemStack stack = player.getCurrentEquippedItem();
+        if (stack != null && stack.getItem() instanceof MetaGeneratedTool tool) {
+            return tool.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
     }
 
     public static class OreDictEventContainer {

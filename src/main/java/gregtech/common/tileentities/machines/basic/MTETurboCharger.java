@@ -64,11 +64,6 @@ public class MTETurboCharger extends MTECharger {
     }
 
     @Override
-    public long maxEUInput() {
-        return V[mTier];
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
 

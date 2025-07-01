@@ -64,12 +64,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchCatalysts;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -88,6 +88,22 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private int mCasing;
     private static IStructureDefinition<MTEChemicalPlant> STRUCTURE_DEFINITION = null;
 
+    public static final ItemStack[] chemplantCatalysts = new ItemStack[] { GregtechItemList.BlueMetalCatalyst.get(1),
+        GregtechItemList.BrownMetalCatalyst.get(1), GregtechItemList.OrangeMetalCatalyst.get(1),
+        GregtechItemList.PurpleMetalCatalyst.get(1), GregtechItemList.RedMetalCatalyst.get(1),
+        GregtechItemList.YellowMetalCatalyst.get(1), GregtechItemList.PinkMetalCatalyst.get(1),
+        GregtechItemList.FormaldehydeCatalyst.get(1), GregtechItemList.SolidAcidCatalyst.get(1),
+        GregtechItemList.InfiniteMutationCatalyst.get(1), GregtechItemList.GreenMetalCatalyst.get(1),
+        GregtechItemList.PlatinumGroupCatalyst.get(1), GregtechItemList.PlasticPolymerCatalyst.get(1),
+        GregtechItemList.RubberPolymerCatalyst.get(1), GregtechItemList.AdhesionPromoterCatalyst.get(1),
+        GregtechItemList.TitaTungstenIndiumCatalyst.get(1), GregtechItemList.RadioactivityCatalyst.get(1),
+        GregtechItemList.RareEarthGroupCatalyst.get(1), GregtechItemList.SimpleNaquadahCatalyst.get(1),
+        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.CrystalColorizationCatalyst.get(1),
+        GregtechItemList.AdvancedNaquadahCatalyst.get(1), GregtechItemList.RawIntelligenceCatalyst.get(1),
+        GregtechItemList.UltimatePlasticCatalyst.get(1), GregtechItemList.BiologicalIntelligenceCatalyst.get(1),
+        GregtechItemList.TemporalHarmonyCatalyst.get(1), GregtechItemList.ParticleAccelerationCatalyst.get(1),
+        GregtechItemList.SynchrotronCapableCatalyst.get(1), GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
+
     private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
 
     private static final HashMap<Integer, Triple<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<>();
@@ -103,9 +119,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
         Triple<Block, Integer, Integer> aCasingData = Triple.of(aBlock, aMeta, aCasingTextureID);
         if (mTieredBlockRegistry.containsKey(aTier)) {
-            GTPPCore.crash(
+            Logger.ERROR(
                 "Tried to register a Machine casing for tier " + aTier
                     + " to the Chemical Plant, however this tier already contains one.");
+            throw new IllegalStateException();
         }
         mTieredBlockRegistry.put(aTier, aCasingData);
         GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(aBlock, 1, aMeta), aTier + 1);
@@ -589,7 +606,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 // checks if it has a catalyst
                 ItemStack catalystInRecipe = null;
                 for (ItemStack item : recipe.mInputs) {
-                    if (ItemUtils.isCatalyst(item)) {
+                    if (MTEChemicalPlant.isCatalyst(item)) {
                         catalystInRecipe = item;
                         break;
                     }
@@ -675,5 +692,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             }
         }
         return tItems;
+    }
+
+    public static boolean isCatalyst(ItemStack aStack) {
+        for (ItemStack chemplantCatalyst : chemplantCatalysts) {
+            if (GTUtility.areStacksEqual(aStack, chemplantCatalyst, true)) return true;
+        }
+
+        return false;
     }
 }

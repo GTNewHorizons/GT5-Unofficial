@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.API.BorosilicateGlass;
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -27,6 +28,8 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
@@ -109,6 +112,24 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
+    MiningOsmiridiumCasing
+        (() -> GregTechAPI.sBlockCasings4, 14, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14)),
+    BoltedOsmiridiumCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
+    ReboltedOsmiridiumCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083),
+    MiningBlackPlutoniumCasing
+        (() -> GregTechAPI.sBlockCasings8, 3, ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(3)),
+    BoltedNaquadahAlloyCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 32091,32091),
+    ReboltedNaquadahAlloyCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32091, 32091),
+    MiningNeutroniumCasing
+        (() -> GregTechAPI.sBlockCasings8, 2, ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2)),
+    BoltedIridiumCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 31850,31850),
+    ReboltedIridiumCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
 
 
     TinItemPipeCasing
