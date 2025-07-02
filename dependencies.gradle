@@ -60,7 +60,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.68:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta47:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta48:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.44:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.18:dev") { transitive = false }
@@ -127,7 +127,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.0:dev')
 
     // For testing ctm
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta47:dev') { transitive = false }
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta48:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
