@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -61,9 +60,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,7 +70,6 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
@@ -95,7 +91,6 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -113,13 +108,9 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.hazards.Hazard;
-import gregtech.api.hazards.HazardProtection;
-import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -156,7 +147,7 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 
-public class GTProxy implements IGTMod, IFuelHandler {
+public class GTProxy implements IFuelHandler {
 
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(
         OreGenEvent.GenerateMinable.EventType.COAL,
@@ -530,7 +521,6 @@ public class GTProxy implements IGTMod, IFuelHandler {
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean isFirstServerWorldTick = true;
-    private boolean isFirstWorldTick = true;
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
@@ -574,7 +564,6 @@ public class GTProxy implements IGTMod, IFuelHandler {
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
-    public int mTicksUntilNextCraftSound = 0;
     private World mUniverse = null;
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
@@ -747,29 +736,12 @@ public class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
-    @Override
-    public boolean isServerSide() {
-        return true;
-    }
-
-    @Override
     public boolean isClientSide() {
         return false;
     }
 
-    @Override
-    public boolean isBukkitSide() {
-        return false;
-    }
-
-    @Override
     public EntityPlayer getThePlayer() {
         return null;
-    }
-
-    @Override
-    public int addArmor(String aArmorPrefix) {
-        return 0;
     }
 
     public void onPreLoad() {
@@ -1392,13 +1364,14 @@ public class GTProxy implements IGTMod, IFuelHandler {
     public void onPlayerInteraction(PlayerInteractEvent aEvent) {
         if ((aEvent.entityPlayer == null) || (aEvent.entityPlayer.worldObj == null)
             || (aEvent.action == null)
-            || (aEvent.world.provider == null)) {
+            || (aEvent.world.provider == null)
+            || aEvent.world.isRemote) {
             return;
         }
         ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
         if ((aStack != null) && (aEvent.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
             && (aStack.getItem() == Items.flint_and_steel)) {
-            if ((!aEvent.world.isRemote) && (!aEvent.entityPlayer.capabilities.isCreativeMode)
+            if ((!aEvent.entityPlayer.capabilities.isCreativeMode)
                 && (aEvent.world.rand.nextInt(100) >= this.mFlintChance)) {
                 aEvent.setCanceled(true);
                 aStack.damageItem(1, aEvent.entityPlayer);
@@ -1947,14 +1920,16 @@ public class GTProxy implements IGTMod, IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onLivingUpdate(LivingUpdateEvent aEvent) {
-        if (aEvent.entityLiving.onGround) {
-            int tX = MathHelper.floor_double(aEvent.entityLiving.posX),
-                tY = MathHelper.floor_double(aEvent.entityLiving.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(aEvent.entityLiving.posZ);
-            Block tBlock = aEvent.entityLiving.worldObj.getBlock(tX, tY, tZ);
+    public void applyBlockWalkOverEffects(LivingUpdateEvent event) {
+        final EntityLivingBase entity = event.entityLiving;
+        // the server should handle the movement of all entities except the players
+        if (!entity.worldObj.isRemote && entity.onGround && !(entity instanceof EntityPlayerMP)) {
+            int tX = MathHelper.floor_double(entity.posX),
+                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
+                tZ = MathHelper.floor_double(entity.posZ);
+            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
             if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(aEvent.entityLiving, aEvent.entityLiving.worldObj, tX, tY, tZ);
+                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
         }
     }
 
@@ -1981,97 +1956,95 @@ public class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
+    private boolean isFirstWorldTick = true;
+
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
-        if (aEvent.world.provider.dimensionId == 0) mTicksUntilNextCraftSound--;
+        if (!aEvent.side.isServer()) return;
         if (isFirstWorldTick) {
             for (Runnable runnable : GregTechAPI.sFirstWorldTick) runnable.run();
             isFirstWorldTick = false;
             GTValues.worldTickHappened = true;
         }
-        if (aEvent.side.isServer()) {
-            if (this.mUniverse == null) {
-                this.mUniverse = aEvent.world;
-            }
-            if (this.isFirstServerWorldTick) {
-                File tSaveDiretory = getSaveDirectory();
-                if (tSaveDiretory != null) {
-                    this.isFirstServerWorldTick = false;
-                    for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                        if (GregTechAPI.METATILEENTITIES[i] != null) {
-                            try {
-                                GregTechAPI.METATILEENTITIES[i].onWorldLoad(tSaveDiretory);
-                            } catch (Throwable e) {
-                                throw new RuntimeException(
-                                    "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
-                                    e);
-                            }
+        if (this.isFirstServerWorldTick) {
+            File worldDir = aEvent.world.getSaveHandler()
+                .getWorldDirectory();
+            if (worldDir != null) {
+                this.isFirstServerWorldTick = false;
+                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+                        try {
+                            GregTechAPI.METATILEENTITIES[i].onWorldLoad(worldDir);
+                        } catch (Throwable e) {
+                            throw new RuntimeException(
+                                "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
+                                e);
                         }
                     }
                 }
             }
-            if ((aEvent.world.getTotalWorldTime() % 100L == 0L)
-                && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {
-                long startTime = System.nanoTime();
-                double oldX = 0, oldY = 0, oldZ = 0;
-                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                    GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
-                }
-                for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
-                    if ((aEvent.world.loadedEntityList.get(i) instanceof Entity)) {
-                        Entity tEntity = aEvent.world.loadedEntityList.get(i);
-                        if (((tEntity instanceof EntityItem)) && (this.mItemDespawnTime != 6000)
-                            && (((EntityItem) tEntity).lifespan == 6000)) {
-                            ((EntityItem) tEntity).lifespan = this.mItemDespawnTime;
-                        } else if (((tEntity instanceof EntityLivingBase)) && (this.mMaxEqualEntitiesAtOneSpot > 0)
-                            && (!(tEntity instanceof EntityPlayer))
-                            && (tEntity.canBePushed())
-                            && (((EntityLivingBase) tEntity).getHealth() > 0.0F)) {
-                                List<Entity> tList = tEntity.worldObj.getEntitiesWithinAABBExcludingEntity(
-                                    tEntity,
-                                    tEntity.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-                                Class<? extends Entity> tClass = tEntity.getClass();
-                                int tEntityCount = 1;
-                                if (tList != null) {
-                                    for (Object o : tList) {
-                                        if ((o != null) && (o.getClass() == tClass)) {
-                                            tEntityCount++;
-                                        }
+        }
+        if ((aEvent.world.getTotalWorldTime() % 100L == 0L)
+            && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {
+            long startTime = System.nanoTime();
+            double oldX = 0, oldY = 0, oldZ = 0;
+            if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
+                GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
+            }
+            for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
+                if ((aEvent.world.loadedEntityList.get(i) instanceof Entity)) {
+                    Entity tEntity = aEvent.world.loadedEntityList.get(i);
+                    if (((tEntity instanceof EntityItem)) && (this.mItemDespawnTime != 6000)
+                        && (((EntityItem) tEntity).lifespan == 6000)) {
+                        ((EntityItem) tEntity).lifespan = this.mItemDespawnTime;
+                    } else if (((tEntity instanceof EntityLivingBase)) && (this.mMaxEqualEntitiesAtOneSpot > 0)
+                        && (!(tEntity instanceof EntityPlayer))
+                        && (tEntity.canBePushed())
+                        && (((EntityLivingBase) tEntity).getHealth() > 0.0F)) {
+                            List<Entity> tList = tEntity.worldObj.getEntitiesWithinAABBExcludingEntity(
+                                tEntity,
+                                tEntity.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+                            Class<? extends Entity> tClass = tEntity.getClass();
+                            int tEntityCount = 1;
+                            if (tList != null) {
+                                for (Object o : tList) {
+                                    if ((o != null) && (o.getClass() == tClass)) {
+                                        tEntityCount++;
                                     }
-                                }
-                                if (tEntityCount > this.mMaxEqualEntitiesAtOneSpot) {
-                                    if (debugEntityCramming) {
-                                        // Cheeseball way of not receiving a bunch of spam caused by 1 location
-                                        // obviously fails if there are crammed entities in more than one spot.
-                                        if (tEntity.posX != oldX && tEntity.posY != oldY && tEntity.posZ != oldZ) {
-                                            GTLog.out.println(
-                                                "CRAM: Excess entities: " + tEntityCount
-                                                    + " at X "
-                                                    + tEntity.posX
-                                                    + " Y "
-                                                    + tEntity.posY
-                                                    + " Z "
-                                                    + tEntity.posZ);
-                                            oldX = tEntity.posX;
-                                            oldY = tEntity.posY;
-                                            oldZ = tEntity.posZ;
-                                        }
-                                    }
-                                    tEntity.attackEntityFrom(
-                                        DamageSource.inWall,
-                                        tEntityCount - this.mMaxEqualEntitiesAtOneSpot);
                                 }
                             }
-                    }
-                }
-                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                    GTLog.out.println(
-                        "CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
+                            if (tEntityCount > this.mMaxEqualEntitiesAtOneSpot) {
+                                if (debugEntityCramming) {
+                                    // Cheeseball way of not receiving a bunch of spam caused by 1 location
+                                    // obviously fails if there are crammed entities in more than one spot.
+                                    if (tEntity.posX != oldX && tEntity.posY != oldY && tEntity.posZ != oldZ) {
+                                        GTLog.out.println(
+                                            "CRAM: Excess entities: " + tEntityCount
+                                                + " at X "
+                                                + tEntity.posX
+                                                + " Y "
+                                                + tEntity.posY
+                                                + " Z "
+                                                + tEntity.posZ);
+                                        oldX = tEntity.posX;
+                                        oldY = tEntity.posY;
+                                        oldZ = tEntity.posZ;
+                                    }
+                                }
+                                tEntity.attackEntityFrom(
+                                    DamageSource.inWall,
+                                    tEntityCount - this.mMaxEqualEntitiesAtOneSpot);
+                            }
+                        }
                 }
             }
-
-            Pollution.onWorldTick(aEvent);
+            if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
+                GTLog.out
+                    .println("CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
+            }
         }
+
+        Pollution.onWorldTick(aEvent);
     }
 
     @SubscribeEvent
@@ -2138,12 +2111,11 @@ public class GTProxy implements IGTMod, IFuelHandler {
             }
 
         }
-        for (int i = 0; i < 4; i++) {
-            final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
+        final ItemStack[] inventory = aEvent.player.inventory.armorInventory;
+        for (final ItemStack tStack : inventory) {
             if (tStack == null) {
                 continue;
             }
-
             if (!aEvent.player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
                 final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
@@ -2158,7 +2130,6 @@ public class GTProxy implements IGTMod, IFuelHandler {
             if (tHungerEffect) {
                 tCount += 256;
             }
-
         }
         if (tHungerEffect) {
             aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
@@ -2554,56 +2525,5 @@ public class GTProxy implements IGTMod, IFuelHandler {
     public void onBlockEvent(BlockEvent event) {
         if (event.block.getUnlocalizedName()
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
-    }
-
-    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
-        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
-    }
-
-    @SubscribeEvent
-    public void onItemTooltip(ItemTooltipEvent event) {
-        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
-            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
-            return;
-        }
-
-        // TreeSet so it's always the same order
-        TreeSet<Hazard> protections = new TreeSet<Hazard>();
-        for (Hazard hazard : Hazard.values()) {
-            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
-                protections.add(hazard);
-            }
-        }
-        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
-            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
-        } ;
-
-        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
-            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
-        } ;
-        for (Hazard hazard : protections) {
-            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
-        }
-    }
-
-    /// Used for tool sounds in the crafting grid
-    @SubscribeEvent
-    public void onPlayerCrafting(ItemCraftedEvent event) {
-        for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
-            ItemStack stack = event.craftMatrix.getStackInSlot(i);
-
-            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
-                if (this.mTicksUntilNextCraftSound <= 0) {
-                    this.mTicksUntilNextCraftSound = 10;
-                    IToolStats tStats = mgt.getToolStats(stack);
-                    boolean playBreak = (MetaGeneratedTool.getToolDamage(stack)
-                        + tStats.getToolDamagePerContainerCraft()) >= MetaGeneratedTool.getToolMaxDamage(stack);
-                    String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
-                    GTUtility.doSoundAtClient(sound, 1, 1.0F);
-                }
-            }
-        }
     }
 }

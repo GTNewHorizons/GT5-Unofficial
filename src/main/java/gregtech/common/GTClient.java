@@ -14,25 +14,33 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
@@ -50,9 +58,10 @@ import codechicken.lib.vec.Scale;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -61,10 +70,16 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.HazardProtection;
+import gregtech.api.hazards.HazardProtectionTooltip;
+import gregtech.api.interfaces.IBlockOnWalkOver;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -551,28 +566,13 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public boolean isServerSide() {
-        return true;
-    }
-
-    @Override
     public boolean isClientSide() {
         return true;
     }
 
     @Override
-    public boolean isBukkitSide() {
-        return false;
-    }
-
-    @Override
     public EntityPlayer getThePlayer() {
         return Minecraft.getMinecraft().thePlayer;
-    }
-
-    @Override
-    public int addArmor(String aPrefix) {
-        return RenderingRegistry.addNewArmourRendererPrefix(aPrefix);
     }
 
     @Override
@@ -655,6 +655,23 @@ public class GTClient extends GTProxy {
                         category.unlocalizedName.equals("gt.recipe.scanner")
                             || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
             }
+        }
+    }
+
+    @Override
+    @SubscribeEvent
+    public void applyBlockWalkOverEffects(LivingEvent.LivingUpdateEvent event) {
+        final EntityLivingBase entity = event.entityLiving;
+        // the player should handle its own movement, rest is handled by the server
+        if (entity instanceof EntityClientPlayerMP && entity.onGround) {
+            int tX = MathHelper.floor_double(entity.posX),
+                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
+                tZ = MathHelper.floor_double(entity.posZ);
+            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
+            if (tBlock instanceof IBlockOnWalkOver)
+                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
+        } else {
+            super.applyBlockWalkOverEffects(event);
         }
     }
 
@@ -796,15 +813,15 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onRenderStart(cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent aEvent) {
+    public void onRenderStart(TickEvent.RenderTickEvent aEvent) {
         if (aEvent.phase == TickEvent.Phase.START) {
             renderTickTime = aEvent.renderTickTime;
         }
     }
 
     @SubscribeEvent
-    public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
-        if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
+    public void onClientTickEvent(ClientTickEvent aEvent) {
+        if (aEvent.phase == TickEvent.Phase.END) {
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
@@ -881,6 +898,58 @@ public class GTClient extends GTProxy {
 
             for (Materials tMaterial : mMoltenNegA) {
                 tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onItemTooltip(ItemTooltipEvent event) {
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            return;
+        }
+
+        // TreeSet so it's always the same order
+        TreeSet<Hazard> protections = new TreeSet<>();
+        for (Hazard hazard : Hazard.values()) {
+            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
+                protections.add(hazard);
+            }
+        }
+        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+        }
+
+        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+        }
+        for (Hazard hazard : protections) {
+            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
+        }
+    }
+
+    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
+        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
+    }
+
+    private int mTicksUntilNextCraftSound = 0;
+
+    // Used for tool sounds in the crafting grid
+    @SubscribeEvent
+    public void onPlayerCrafting(PlayerEvent.ItemCraftedEvent event) {
+        if (this.mTicksUntilNextCraftSound > 0) return;
+        for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
+            ItemStack stack = event.craftMatrix.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
+                IToolStats tStats = mgt.getToolStats(stack);
+                boolean playBreak = (MetaGeneratedTool.getToolDamage(stack) + tStats.getToolDamagePerContainerCraft())
+                    >= MetaGeneratedTool.getToolMaxDamage(stack);
+                String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
+                GTUtility.doSoundAtClient(sound, 1, 1.0F);
+                this.mTicksUntilNextCraftSound = 10;
+                return;
             }
         }
     }

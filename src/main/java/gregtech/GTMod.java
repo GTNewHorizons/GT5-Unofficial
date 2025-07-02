@@ -59,7 +59,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
-import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -173,7 +172,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:TConstruct;"
         + " after:Translocator;"
         + " after:gendustry;")
-public class GTMod implements IGTMod {
+public class GTMod {
 
     static {
         try {
@@ -708,24 +707,12 @@ public class GTMod implements IGTMod {
         RunnableMachineUpdate.initExecutorService();
     }
 
-    public boolean isServerSide() {
-        return gregtechproxy.isServerSide();
-    }
-
     public boolean isClientSide() {
         return gregtechproxy.isClientSide();
     }
 
-    public boolean isBukkitSide() {
-        return gregtechproxy.isBukkitSide();
-    }
-
     public EntityPlayer getThePlayer() {
         return gregtechproxy.getThePlayer();
-    }
-
-    public int addArmor(String aArmorPrefix) {
-        return gregtechproxy.addArmor(aArmorPrefix);
     }
 
     @Mod.EventHandler
