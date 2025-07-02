@@ -681,9 +681,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected void updateAllInformationSlots() {
         AENetworkProxy proxy = getProxy();
 
-        boolean isActive = isAllowedToWork() && proxy.isActive();
-
-        if (isActive) {
+        if (isAllowedToWork()) {
             try {
                 for (int index = 0; index < SLOT_COUNT; index++) {
                     updateInformationSlot(index);
