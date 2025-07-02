@@ -156,7 +156,7 @@ public class GTProxy implements IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    private final Collection<OreDictEventContainer> mEvents = new HashSet<>();
+    private final Collection<OreDictEventContainer> oreDictEvents = new HashSet<>();
     private final Collection<String> mIgnoredItems = new HashSet<>(
         Arrays.asList(
             "itemGhastTear",
@@ -1868,9 +1868,9 @@ public class GTProxy implements IFuelHandler {
 
             OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, aMaterial, aMod);
             if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
-                this.mEvents.add(tOre);
+                this.oreDictEvents.add(tOre);
             } else {
-                this.mEvents.clear();
+                this.oreDictEvents.clear();
             }
             if (this.mOreDictActivated) {
                 registerRecipes(tOre);
@@ -2380,7 +2380,7 @@ public class GTProxy implements IFuelHandler {
 
     public void registerUnificationEntries() {
         GTOreDictUnificator.resetUnificationEntries();
-        for (OreDictEventContainer tOre : this.mEvents) {
+        for (OreDictEventContainer tOre : this.oreDictEvents) {
             if ((tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
                 if (GTOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
                     GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
@@ -2403,11 +2403,11 @@ public class GTProxy implements IFuelHandler {
     @SuppressWarnings("deprecation")
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
-        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
+        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
         if (BetterLoadingScreen.isModLoaded()) {
-            GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
+            GTCLSCompat.stepMaterialsCLS(oreDictEvents, progressBar);
         } else {
-            GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+            GTProxy.stepMaterialsVanilla(oreDictEvents, progressBar);
         }
     }
 
