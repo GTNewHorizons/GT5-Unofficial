@@ -36,7 +36,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -144,6 +143,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class GTProxy implements IFuelHandler {
 
@@ -648,7 +648,7 @@ public class GTProxy implements IFuelHandler {
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
-    public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();
+    private static final Map<String, Integer> oreDictBurnTimes = new Object2IntOpenHashMap<>();
 
     // Locking
     public final ReentrantLock TICK_LOCK = new ReentrantLock();
@@ -2108,52 +2108,60 @@ public class GTProxy implements IFuelHandler {
         mClientPrefernces.put(aPlayerID, aPreference);
     }
 
-    private static List<String> getOreDictNames(ItemStack stack) {
-        return Arrays.stream(OreDictionary.getOreIDs(stack))
-            .mapToObj(OreDictionary::getOreName)
-            .collect(Collectors.toList());
-    }
-
     @Override
-    public int getBurnTime(ItemStack aFuel) {
-        if ((aFuel == null) || (aFuel.getItem() == null)) {
+    public int getBurnTime(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) {
             return 0;
         }
-        int rFuelValue = 0;
-        if ((aFuel.getItem() instanceof MetaGeneratedItem)) {
-            final Short tFuelValue = ((MetaGeneratedItem) aFuel.getItem()).mBurnValues
-                .get((short) aFuel.getItemDamage());
-            if (tFuelValue != null) {
-                rFuelValue = Math.max(rFuelValue, tFuelValue);
+        int burnTime = 0;
+        if (stack.getItem() instanceof MetaGeneratedItem) {
+            final Short burnValue = ((MetaGeneratedItem) stack.getItem()).mBurnValues
+                .get((short) stack.getItemDamage());
+            if (burnValue != null) {
+                burnTime = Math.max(burnTime, burnValue);
             }
         }
-        final NBTTagCompound tNBT = aFuel.getTagCompound();
-        if (tNBT != null) {
+        final NBTTagCompound nbtTag = stack.getTagCompound();
+        if (nbtTag != null) {
             // See if we have something defined by NBT
-            final short tValue = tNBT.getShort("GT.ItemFuelValue");
-            rFuelValue = Math.max(rFuelValue, tValue);
+            final short gtBurnTime = nbtTag.getShort("GT.ItemFuelValue");
+            burnTime = Math.max(burnTime, gtBurnTime);
         } else {
             // If not check the ore dict
-            rFuelValue = Math.max(
-                rFuelValue,
-                getOreDictNames(aFuel).stream()
-                    .mapToInt(f -> oreDictBurnTimes.getOrDefault(f, 0))
-                    .max()
-                    .orElse(0));
+            burnTime = Math.max(burnTime, burnTimeFromOreDict(stack));
         }
 
         // If we have something from the GT MetaGenerated_Item, ItemFuelValue, or OreDict return
-        if (rFuelValue > 0) return rFuelValue;
+        if (burnTime > 0) return burnTime;
 
         // Otherwise, a few more checks
-        if (GTUtility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1))) return 150;
-        else if (GTUtility.areStacksEqual(aFuel, new ItemStack(Blocks.ladder, 1))) return 100;
-        else if (GTUtility.areStacksEqual(aFuel, new ItemStack(Items.sign, 1))) return 600;
-        else if (GTUtility.areStacksEqual(aFuel, new ItemStack(Items.wooden_door, 1))) return 600;
-        else if (GTUtility.areStacksEqual(aFuel, ItemList.Block_MSSFUEL.get(1))) return 150000;
-        else if (GTUtility.areStacksEqual(aFuel, ItemList.Block_SSFUEL.get(1))) return 100000;
+        if (GTUtility.areStacksEqual(stack, new ItemStack(Blocks.wooden_button, 1))) return 150;
+        else if (GTUtility.areStacksEqual(stack, new ItemStack(Blocks.ladder, 1))) return 100;
+        else if (GTUtility.areStacksEqual(stack, new ItemStack(Items.sign, 1))) return 600;
+        else if (GTUtility.areStacksEqual(stack, new ItemStack(Items.wooden_door, 1))) return 600;
+        else if (GTUtility.areStacksEqual(stack, ItemList.Block_MSSFUEL.get(1))) return 150000;
+        else if (GTUtility.areStacksEqual(stack, ItemList.Block_SSFUEL.get(1))) return 100000;
 
         return 0;
+    }
+
+    private static int burnTimeFromOreDict(ItemStack stack) {
+        List<String> list = new ArrayList<>();
+        for (int i : OreDictionary.getOreIDs(stack)) {
+            String oreName = OreDictionary.getOreName(i);
+            list.add(oreName);
+        }
+        boolean seen = false;
+        int best = 0;
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            int gtValue = oreDictBurnTimes.getOrDefault(list.get(i), 0);
+            if (!seen || gtValue > best) {
+                seen = true;
+                best = gtValue;
+            }
+        }
+        return seen ? best : 0;
     }
 
     // ------------------------ Adds all fluids corresponding to materials ------------------------
