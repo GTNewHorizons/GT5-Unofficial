@@ -5,7 +5,6 @@
 
 package gregtech.common;
 
-import static gregtech.api.enums.GTValues.calculateMaxPlasmaTurbineEfficiency;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
@@ -673,8 +672,6 @@ public class GTClient extends GTProxy {
         mFirstTick = true;
         mReloadCount++;
         GTMusicSystem.ClientSystem.reset();
-        // For utility methods elsewhere.
-        calculateMaxPlasmaTurbineEfficiency();
     }
 
     @Override

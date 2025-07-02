@@ -11,9 +11,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -615,30 +613,6 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
-
-    // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
-    public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
-        return (5F + (7.5F + material.mToolQuality)) / 10.0;
-    }
-
-    // Called once in GT_Client on world load, has to be called late so that Materials is populated.
-    public static void calculateMaxPlasmaTurbineEfficiency() {
-
-        ArrayList<Double> effArray = new ArrayList<>();
-
-        // Iteration seems to work but need to check turbine as all items appear null.
-        for (Materials material : Materials.values()) {
-            effArray.add(getMaxPlasmaTurbineEfficiencyFromMaterial(material));
-        }
-
-        maxPlasmaTurbineEfficiency = Collections.max(effArray);
-    }
-
-    private static double maxPlasmaTurbineEfficiency;
-
-    public static double getMaxPlasmaTurbineEfficiency() {
-        return maxPlasmaTurbineEfficiency;
-    }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
