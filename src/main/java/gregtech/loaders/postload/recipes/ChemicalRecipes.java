@@ -1903,11 +1903,11 @@ public class ChemicalRecipes implements Runnable {
             .eut(8)
             .addTo(UniversalChemical);
 
-        // 3NaOH + HCl = NaCl + H2O
+        // NaOH + HCl = NaCl + H2O
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(3))
-            .itemOutputs(Materials.Salt.getDust(1))
+            .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(2 * SECONDS)
