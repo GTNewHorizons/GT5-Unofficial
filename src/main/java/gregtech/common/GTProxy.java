@@ -37,6 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1881,26 +1883,6 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SuppressWarnings("deprecated")
-    public static void stepMaterialsVanilla(Collection<GTProxy.OreDictEventContainer> mEvents,
-        ProgressManager.ProgressBar progressBar) {
-        int size = 5;
-        int sizeStep = mEvents.size() / 20 - 1;
-        GTProxy.OreDictEventContainer tEvent;
-        for (Iterator<GTProxy.OreDictEventContainer> i$ = mEvents.iterator(); i$.hasNext(); GTProxy
-            .registerRecipes(tEvent)) {
-            tEvent = i$.next();
-            sizeStep--;
-            if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%");
-                sizeStep = mEvents.size() / 20 - 1;
-                size += 5;
-            }
-            progressBar.step(tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString());
-        }
-        ProgressManager.pop(progressBar);
-    }
-
     @SubscribeEvent
     public void applyBlockWalkOverEffects(LivingUpdateEvent event) {
         final EntityLivingBase entity = event.entityLiving;
@@ -2403,11 +2385,38 @@ public class GTProxy implements IFuelHandler {
     @SuppressWarnings("deprecation")
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
-        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
+        ProgressManager.ProgressBar progressBar;
         if (BetterLoadingScreen.isModLoaded()) {
+            progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
             GTCLSCompat.stepMaterialsCLS(oreDictEvents, progressBar);
         } else {
-            GTProxy.stepMaterialsVanilla(oreDictEvents, progressBar);
+            if (isClientSide()) {
+                progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
+            } else progressBar = null;
+            this.stepMaterialsVanilla(progressBar);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void stepMaterialsVanilla(@Nullable ProgressManager.ProgressBar progressBar) {
+        int size = 5;
+        int sizeStep = oreDictEvents.size() / 20 - 1;
+        GTProxy.OreDictEventContainer event;
+        for (Iterator<GTProxy.OreDictEventContainer> i$ = oreDictEvents.iterator(); i$.hasNext(); GTProxy
+            .registerRecipes(event)) {
+            event = i$.next();
+            sizeStep--;
+            if (sizeStep == 0) {
+                GT_FML_LOGGER.info("Baking : " + size + "%");
+                sizeStep = oreDictEvents.size() / 20 - 1;
+                size += 5;
+            }
+            if (progressBar != null) {
+                progressBar.step(event.mMaterial == null ? "" : event.mMaterial.toString());
+            }
+        }
+        if (progressBar != null) {
+            ProgressManager.pop(progressBar);
         }
     }
 
