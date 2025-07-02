@@ -220,8 +220,9 @@ public enum CombType {
     NETHERITE(169, "netherite", true, Materials._NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
     // Gem Addition
     PRISMATIC(170, "prismatic", true, Materials._NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
-    // Addition to Gem Line, moved here so we don't shift all comb IDs
     REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
+    // Metals Addition
+    PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
