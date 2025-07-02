@@ -236,14 +236,14 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"     ","     ","     ","     "," QGQP"," Q GP"," QGQP","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
-                {"     ","     ","     "," FFF ","FQQQF","FQIQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," QQQ "," QQQ ","     ","     ","     ","     "}})
         )
         .addShape(
             PARALLEL_MODULE_R,
             transpose(new String[][]{
                 {"     ","     ","     ","     ","  Q  "," QQQ ","  Q  ","     ","     ","     ","     "},
-                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQIQF","FQQQF"," FFF ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
                 {"     ","     ","     ","     ","PQGQ ","PQ G ","PQGQ ","     ","     ","     ","     "},
@@ -251,7 +251,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"     ","     ","     ","     ","PQGQ ","PQ G ","PQGQ ","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
-                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQIQF","FQQQF"," FFF ","     ","     ","     "},
                 {"     ","     ","     ","     "," QQQ "," QQQ "," QQQ ","     ","     ","     ","     "}})
         )
         .addElement(
@@ -314,7 +314,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumTier)))
         .addElement(
             'W',
-            GTStructureChannels.ECCF_PARALLEL_R.use(
+            GTStructureChannels.ECCF_PARALLEL_L.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getParallelTier,
                     ImmutableList
@@ -324,7 +324,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.parallelModuleTierL)))
         .addElement(
             'I',
-            GTStructureChannels.ECCF_PARALLEL_L.use(
+            GTStructureChannels.ECCF_PARALLEL_R.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getParallelTier,
                     ImmutableList
@@ -676,10 +676,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 10, 0);
         Pair<Integer, Integer> modules = create_modules(stackSize);
-        int MODULE_LEFT = modules.getLeft();
-        int MODULE_RIGHT = modules.getRight();
 
-        switch (MODULE_LEFT) {
+        switch (modules.getLeft()) {
             case 1 -> buildPiece(
                 HEAT_MODULE_L,
                 stackSize,
@@ -702,7 +700,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 MODULE_OFFSET_V,
                 MODULE_OFFSET_DEPTH);
         }
-        switch (MODULE_RIGHT) {
+        switch (modules.getRight()) {
             case 3 -> buildPiece(
                 COMPRESSION_MODULE_R,
                 stackSize,
@@ -729,10 +727,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine && (create_modules(stackSize).getLeft() == 0) && (create_modules(stackSize).getRight() == 0))
+        Pair<Integer, Integer> modules = create_modules(stackSize);
+        if (mMachine && (modules.getLeft() == 0) && (modules.getRight() == 0))
             return -1;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 10, 0, elementBudget, env, false, true);
-        Pair<Integer, Integer> modules = create_modules(stackSize);
         switch (modules.getLeft()) {
             case 1 -> built += survivialBuildPiece(
                 HEAT_MODULE_L,
@@ -906,7 +904,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 // if recipe doesn't start, clear delta
                 deltaTemp = 0;
                 deltaPressure = 0;
-                stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)

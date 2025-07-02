@@ -127,10 +127,10 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
                     .size(54, 48))
             .child(new DynamicDrawable(() -> {
                 if (coolCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.COOL_MODULE_ECCF_INDICATOR;
+                    return GTGuiTextures.COOLING_ECCF_INDICATOR;
                 }
                 if (heatCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.HEAT_MODULE_ECCF_INDICATOR;
+                    return GTGuiTextures.HEATING_ECCF_INDICATOR;
                 }
                 if (leftParallelSyncer.getValue() >= 0) {
                     return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
@@ -141,10 +141,10 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
                 .horizontalCenter())
             .child(new DynamicDrawable(() -> {
                 if (compressCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.PRESSURE_MODULE_ECCF_INDICATOR;
+                    return GTGuiTextures.PRESSURE_ECCF_INDICATOR;
                 }
                 if (vacuumCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.VACUUM_MODULE_ECCF_INDICATOR;
+                    return GTGuiTextures.VACUUM_ECCF_INDICATOR;
                 }
                 if (rightParallelSyncer.getValue() >= 0) {
                     return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
