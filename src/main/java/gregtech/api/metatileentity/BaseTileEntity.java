@@ -60,7 +60,6 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
 import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
@@ -939,7 +938,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 
     public int getGUIColorization() {
-        return GTUtil.getRGBaInt(Dyes.dyeWhite.getRGBA());
+        return Dyes.dyeWhite.toInt();
     }
 
     public ItemStack getStackForm(long aAmount) {

@@ -173,51 +173,13 @@ public class GTUtil {
             && markChunkDirty(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord);
     }
 
-    public static int mixRGBInt(int aRGB1, int aRGB2) {
-        return getRGBInt(
-            new short[] { (short) ((getR(aRGB1) + getR(aRGB2)) >> 1), (short) ((getG(aRGB1) + getG(aRGB2)) >> 1),
-                (short) ((getB(aRGB1) + getB(aRGB2)) >> 1) });
-    }
-
-    public static int getRGBInt(short[] aColors) {
-        return aColors == null ? 16777215 : (aColors[0] << 16) | (aColors[1] << 8) | aColors[2];
-    }
-
-    public static int getRGBaInt(short[] aColors) {
-        return aColors == null ? 16777215 : (aColors[0]) << 16 | (aColors[1] << 8) | aColors[2] | (aColors[3] << 24);
-    }
-
     public static String toHexString(short[] aColors) {
         return aColors == null ? "FFFFFF" : Integer.toHexString((aColors[0] << 16) | (aColors[1] << 8) | aColors[2]);
-    }
-
-    public static int getRGBInt(short aR, short aG, short aB) {
-        return (aR << 16) | (aG << 8) | aB;
-    }
-
-    public static int getRGBaInt(short aR, short aG, short aB, short aA) {
-        return (aR << 16) | (aG << 8) | aB | (aA << 24);
     }
 
     public static short[] getRGBaArray(int aColors) {
         return new short[] { (short) ((aColors >>> 16) & 255), (short) ((aColors >>> 8) & 255), (short) (aColors & 255),
             (short) ((aColors >>> 24) & 255) };
-    }
-
-    public static short getR(int aColors) {
-        return (short) ((aColors >>> 16) & 255);
-    }
-
-    public static short getG(int aColors) {
-        return (short) ((aColors >>> 8) & 255);
-    }
-
-    public static short getB(int aColors) {
-        return (short) (aColors & 255);
-    }
-
-    public static short getA(int aColors) {
-        return (short) ((aColors >>> 24) & 255);
     }
 
     public static boolean saveMultiblockInputConfiguration(MTEMultiBlockBase controller, EntityPlayer player) {

@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,6 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -328,13 +328,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+            .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-        ItemStack[] itemOutputArray = GTUtility.copyItemArray(tRecipe.mOutputs);
+        tRecipe.consumeInput(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
+        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         for (ItemStack stack : itemOutputArray) {
             stack.stackSize *= batchAmount;
         }

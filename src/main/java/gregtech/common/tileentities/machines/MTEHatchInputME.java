@@ -74,6 +74,7 @@ import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
@@ -120,8 +121,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private boolean expediteRecipeCheck = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
-
-    protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
     protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
@@ -269,7 +268,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (slot.extracted != null) fluids.add(slot.extracted);
             }
 
-            return fluids.toArray(new FluidStack[0]);
+            return fluids.toArray(GTValues.emptyFluidStackArray);
         } else {
             List<FluidStack> fluids = new ObjectArrayList<>(GTDataUtils.countNonNulls(slots));
 
@@ -281,7 +280,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 fluids.add(GTUtility.copyAmount(1, slot.config));
             }
 
-            return fluids.toArray(new FluidStack[0]);
+            return fluids.toArray(GTValues.emptyFluidStackArray);
         }
     }
 
@@ -300,7 +299,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (slot.extracted != null) tanks.add(new FluidTankInfo(slot.extracted, Integer.MAX_VALUE));
             }
 
-            return tanks.toArray(new FluidTankInfo[0]);
+            return tanks.toArray(EMPTY_FLUID_TANK_INFOS);
         } else {
             IMEMonitor<IAEFluidStack> sg;
 
@@ -326,7 +325,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 tanks.add(new FluidTankInfo(result.getFluidStack(), Integer.MAX_VALUE));
             }
 
-            return tanks.toArray(new FluidTankInfo[0]);
+            return tanks.toArray(EMPTY_FLUID_TANK_INFOS);
         }
     }
 
