@@ -1,6 +1,5 @@
 package tectech.thing.metaTileEntity;
 
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_8V_BOTTOM;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_8V_SIDE;
@@ -285,20 +284,29 @@ public class Textures {
         TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
         TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }) };
 
-    public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[15][17];
+    private static final int TIERS = 15;
+    private static final int CASING_COLORS = Dyes.VALUES.length + 1; // MACHINE_METAL followed by Dyes.VALUES
+    public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[TIERS][CASING_COLORS];
 
     public static ITexture TESLA_TRANSCEIVER_TOP_BA = TextureFactory.of(TESLA_TRANSCEIVER_TOP);
 
     public static void run() {
-        for (byte i = 0; i < MACHINE_CASINGS_TT.length; i++) {
-            for (byte j = 0; j < MACHINE_CASINGS_TT[i].length; j++) {
-                MACHINE_CASINGS_TT[i][j] = TextureFactory.of(
-                    MACHINECASINGS_BOTTOM_TT[i],
-                    MACHINECASINGS_TOP_TT[i],
-                    MACHINECASINGS_SIDE_TT[i],
-                    Dyes.getModulation(j - 1, MACHINE_METAL.mRGBa));
+        for (byte tier = 0; tier < TIERS; tier++) {
+            MACHINE_CASINGS_TT[tier][0] = TextureFactory.of(
+                MACHINECASINGS_BOTTOM_TT[tier],
+                MACHINECASINGS_TOP_TT[tier],
+                MACHINECASINGS_SIDE_TT[tier],
+                Dyes.MACHINE_METAL.getRGBA());
+
+            for (Dyes dye : Dyes.VALUES) {
+                MACHINE_CASINGS[tier][dye.mIndex + 1] = TextureFactory.of(
+                    MACHINECASINGS_BOTTOM_TT[tier],
+                    MACHINECASINGS_TOP_TT[tier],
+                    MACHINECASINGS_SIDE_TT[tier],
+                    dye.getRGBA());
             }
         }
+
         MACHINE_CASINGS = MACHINE_CASINGS_TT;
 
         // These will throw IndexOutOfBoundsException if one of the arrays are the wrong length

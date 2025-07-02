@@ -10,6 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
@@ -42,11 +45,11 @@ public abstract class EIGMode {
     /**
      * Used to resolve factory type to an identifier.
      */
-    private final HashMap<String, IEIGBucketFactory> factories;
+    private final @NotNull HashMap<String, IEIGBucketFactory> factories;
     /**
      * A way to have other mods submit custom buckets that can be prioritized over our default buckets
      */
-    private final LinkedList<IEIGBucketFactory> orderedFactories;
+    private final @NotNull LinkedList<IEIGBucketFactory> orderedFactories;
 
     public EIGMode() {
         this.factories = new HashMap<>();
@@ -59,7 +62,7 @@ public abstract class EIGMode {
      *
      * @param factory The bucket factory to add.
      */
-    public void addLowPriorityFactory(IEIGBucketFactory factory) {
+    public void addLowPriorityFactory(@NotNull IEIGBucketFactory factory) {
         String factoryId = factory.getNBTIdentifier();
         dealWithDuplicateFactoryId(factoryId);
         // add factory as lowest priority
@@ -73,7 +76,7 @@ public abstract class EIGMode {
      *
      * @param factory The bucket factory to add.
      */
-    public void addHighPriorityFactory(IEIGBucketFactory factory) {
+    public void addHighPriorityFactory(@NotNull IEIGBucketFactory factory) {
         String factoryId = factory.getNBTIdentifier();
         dealWithDuplicateFactoryId(factoryId);
         // add factory as lowest priority
@@ -105,8 +108,8 @@ public abstract class EIGMode {
      * @param simulate   Whether to actually consume the seed.
      * @return Null if no bucket could be created from the item.
      */
-    public EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input, int maxConsume,
-        boolean simulate) {
+    public @Nullable EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input,
+        int maxConsume, boolean simulate) {
         // Validate inputs
         if (input == null) return null;
         maxConsume = Math.min(input.stackSize, maxConsume);
@@ -128,7 +131,7 @@ public abstract class EIGMode {
      * @see IEIGBucketFactory#restore(NBTTagCompound)
      * @param bucketNBTList The
      */
-    public void restoreBuckets(NBTTagList bucketNBTList, List<EIGBucket> loadTo) {
+    public void restoreBuckets(@NotNull NBTTagList bucketNBTList, @NotNull List<EIGBucket> loadTo) {
         for (int i = 0; i < bucketNBTList.tagCount(); i++) {
             // validate nbt
             NBTTagCompound bucketNBT = bucketNBTList.getCompoundTagAt(i);
