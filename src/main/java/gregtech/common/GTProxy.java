@@ -1032,9 +1032,11 @@ public class GTProxy implements IFuelHandler {
         GTLanguageManager.writePlaceholderStrings();
     }
 
-    public static long tBits = GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED
-        | GTModHandler.RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL
-        | GTModHandler.RecipeBits.NOT_REMOVABLE;
+    /**
+     * @deprecated use {@link gregtech.api.util.GTModHandler.RecipeBits#BITST}
+     */
+    @Deprecated
+    public static long tBits = GTModHandler.RecipeBits.BITST;
 
     public void onPostLoad() {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
