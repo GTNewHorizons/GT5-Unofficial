@@ -239,7 +239,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .padding(2)
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget("Modules").size(60, 18)
+                        new TextWidget("Select Module"+(index+1)).size(60, 18)
                             .alignment(Alignment.Center)
                             .marginBottom(5))
                     .child(
