@@ -2369,11 +2369,11 @@ public class GTProxy implements IFuelHandler {
     }
 
     public long getAnimationTicks() {
-        return 0L;
+        throw new RuntimeException("Client only method called from the dedicated server");
     }
 
     public float getPartialRenderTicks() {
-        return 0;
+        throw new RuntimeException("Client only method called from the dedicated server");
     }
 
     public void registerUnificationEntries() {
