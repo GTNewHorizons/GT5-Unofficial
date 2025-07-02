@@ -30,7 +30,7 @@ import kekztech.common.CommonProxy;
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
-    public static final String MODID = Mods.Names.KEKZ_TECH;
+    public static final String MODID = Mods.ModIDs.KEKZ_TECH;
     public static final String VERSION = GT_Version.VERSION;
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);
@@ -38,7 +38,7 @@ public class KekzCore {
     public static boolean isThaumcraftLoaded = false;
     public static boolean isThaumicTiinkererLoaded = false;
 
-    @Mod.Instance(Mods.Names.KEKZ_TECH)
+    @Mod.Instance(Mods.ModIDs.KEKZ_TECH)
     public static KekzCore instance;
 
     @SidedProxy(clientSide = "kekztech.client.ClientProxy", serverSide = "kekztech.ServerProxy")

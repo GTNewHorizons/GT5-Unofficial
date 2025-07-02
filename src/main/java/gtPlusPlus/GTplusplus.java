@@ -1,8 +1,9 @@
 package gtPlusPlus;
 
-import static gregtech.api.enums.Mods.Names;
+import static gregtech.api.enums.Mods.ModIDs;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -46,7 +47,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = Names.G_T_PLUS_PLUS,
+    modid = ModIDs.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -111,7 +112,7 @@ public class GTplusplus {
     }
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    @Mod.Instance(Names.G_T_PLUS_PLUS)
+    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")

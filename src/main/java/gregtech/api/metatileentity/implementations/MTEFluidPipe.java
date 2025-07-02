@@ -724,13 +724,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
         return false;
     }
 
-    @Optional.Method(modid = Mods.Names.TINKER_CONSTRUCT)
+    @Optional.Method(modid = Mods.ModIDs.TINKER_CONSTRUCT)
     private boolean isTConstructFaucet(TileEntity tTileEntity) {
         // Tinker Construct Faucets return a null tank info, so check the class
         return tTileEntity instanceof tconstruct.smeltery.logic.FaucetLogic;
     }
 
-    @Optional.Method(modid = Mods.Names.TRANSLOCATOR)
+    @Optional.Method(modid = Mods.ModIDs.TRANSLOCATOR)
     private boolean isTranslocator(TileEntity tTileEntity) {
         // Translocators return a TankInfo, but it's of 0 length - so check the class if we see this pattern
         return tTileEntity instanceof codechicken.translocator.TileLiquidTranslocator;
