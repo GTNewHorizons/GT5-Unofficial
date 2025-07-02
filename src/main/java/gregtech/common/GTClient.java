@@ -97,6 +97,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.GTRendererTileEntity;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
@@ -609,6 +610,7 @@ public class GTClient extends GTProxy {
         new LaserRenderer();
         new WormholeRenderer();
         new BlackholeRenderer();
+        new NanoForgeRenderer();
 
         metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
