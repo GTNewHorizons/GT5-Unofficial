@@ -99,7 +99,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
@@ -1036,9 +1035,9 @@ public class GTProxy implements IGTMod, IFuelHandler {
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
 
-        if (!GTMod.gregtechproxy.enableUndergroundGravelGen)
+        if (!this.enableUndergroundGravelGen)
             PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
-        if (!GTMod.gregtechproxy.enableUndergroundDirtGen)
+        if (!this.enableUndergroundDirtGen)
             PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
