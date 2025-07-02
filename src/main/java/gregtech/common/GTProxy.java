@@ -102,6 +102,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -158,7 +159,7 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 
-public abstract class GTProxy implements IGTMod, IFuelHandler {
+public class GTProxy implements IGTMod, IFuelHandler {
 
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(
         OreGenEvent.GenerateMinable.EventType.COAL,
@@ -749,6 +750,31 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
+    @Override
+    public boolean isServerSide() {
+        return true;
+    }
+
+    @Override
+    public boolean isClientSide() {
+        return false;
+    }
+
+    @Override
+    public boolean isBukkitSide() {
+        return false;
+    }
+
+    @Override
+    public EntityPlayer getThePlayer() {
+        return null;
+    }
+
+    @Override
+    public int addArmor(String aArmorPrefix) {
+        return 0;
+    }
+
     public void onPreLoad() {
         GTLog.out.println("GTMod: Preload-Phase started!");
 
@@ -1137,6 +1163,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial) });
             }
         }
+        // Cover GUI needs to know text color which can be configured with resource packs. In theory it's not needed on
+        // server, but it's just convenient to be able to write GUI code without side check. This will be reworked with
+        // MUI2, but for the time being it stays here. -- miozune
+        CoverRegistry.reloadCoverColorOverrides();
     }
 
     public void onLoadComplete() {}

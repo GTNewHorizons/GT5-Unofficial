@@ -208,7 +208,7 @@ public class GTMod implements IGTMod {
     @SidedProxy(
         modId = Mods.Names.GREG_TECH,
         clientSide = "gregtech.common.GTClient",
-        serverSide = "gregtech.common.GTServer")
+        serverSide = "gregtech.common.GTProxy")
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
