@@ -78,6 +78,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
@@ -227,6 +228,22 @@ public class GTMod {
         Textures.BlockIcons.VOID.name();
         // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.ItemIcons.VOID.name();
+    }
+
+    public static GTClient clientProxy() {
+        if (gregtechproxy instanceof GTClient) {
+            return (GTClient) gregtechproxy;
+        } else {
+            throw new RuntimeException("Client Proxy accessed from the dedicated server!");
+        }
+    }
+
+    public boolean isClientSide() {
+        return gregtechproxy.isClientSide();
+    }
+
+    public EntityPlayer getThePlayer() {
+        return gregtechproxy.getThePlayer();
     }
 
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
@@ -701,14 +718,6 @@ public class GTMod {
         aEvent.registerServerCommand(new SpaceProjectCommand());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         RunnableMachineUpdate.initExecutorService();
-    }
-
-    public boolean isClientSide() {
-        return gregtechproxy.isClientSide();
-    }
-
-    public EntityPlayer getThePlayer() {
-        return gregtechproxy.getThePlayer();
     }
 
     @Mod.EventHandler

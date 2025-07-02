@@ -2371,14 +2371,6 @@ public class GTProxy implements IFuelHandler {
         aMaterial.setSteamCrackedFluids(crackedFluids);
     }
 
-    public long getAnimationTicks() {
-        throw new RuntimeException("Client only method called from the dedicated server");
-    }
-
-    public float getPartialRenderTicks() {
-        throw new RuntimeException("Client only method called from the dedicated server");
-    }
-
     public void registerUnificationEntries() {
         GTOreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {

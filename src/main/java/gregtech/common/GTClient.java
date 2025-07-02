@@ -961,12 +961,10 @@ public class GTClient extends GTProxy {
         return (short) tmp;
     }
 
-    @Override
     public long getAnimationTicks() {
         return mAnimationTick;
     }
 
-    @Override
     public float getPartialRenderTicks() {
         return renderTickTime;
     }
