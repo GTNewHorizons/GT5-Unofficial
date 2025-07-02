@@ -231,7 +231,7 @@ public class GTMod {
     }
 
     public static GTClient clientProxy() {
-        if (gregtechproxy instanceof GTClient) {
+        if (gregtechproxy.isClientSide()) {
             return (GTClient) gregtechproxy;
         } else {
             throw new RuntimeException("Client Proxy accessed from the dedicated server!");
