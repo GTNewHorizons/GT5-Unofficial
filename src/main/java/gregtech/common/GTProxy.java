@@ -20,7 +20,6 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTUtil.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.io.File;
@@ -1979,9 +1978,6 @@ public class GTProxy implements IGTMod, IFuelHandler {
                 TICK_LOCK.unlock();
                 GTMusicSystem.ServerSystem.tick();
             }
-
-            // Making sure it is being freed up in order to prevent exploits or Garbage Collection mishaps.
-            LAST_BROKEN_TILEENTITY.set(null);
         }
     }
 
