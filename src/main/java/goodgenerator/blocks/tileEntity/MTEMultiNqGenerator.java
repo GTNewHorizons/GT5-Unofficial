@@ -361,12 +361,12 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     EnumChatFormatting.AQUA,
                     LiquidAirConsumptionPerSecond,
                     EnumChatFormatting.GRAY))
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
             .addInfo(
                 "The reactor will explode when there is more than" + EnumChatFormatting.RED
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
             .addSeparator()
             .addInfo(
                 "Can increase " + EnumChatFormatting.LIGHT_PURPLE
