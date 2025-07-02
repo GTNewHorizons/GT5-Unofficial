@@ -38,11 +38,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -51,13 +47,13 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTEMultiNqGenerator> multiDefinition = null;
-    protected long leftEnergy = 0;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected FluidStack lockedFluid = null;
@@ -92,34 +88,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         return DescTextLocalization.addText("MultiNqGenerator.hint", 8);
     }
 
-    public final boolean addToGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof MTEHatch) {
-                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                }
-                if (aMetaTileEntity instanceof MTEHatchInput) {
-                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                    return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                    return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                    return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-                } else {
-                    return false;
-                }
-            }
-        }
-    }
-
     @Override
     public IStructureDefinition<MTEMultiNqGenerator> getStructure_EM() {
         if (multiDefinition == null) {
@@ -143,6 +111,8 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                     .or(gregtech.api.enums.HatchElement.Dynamo),
+                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
+                                    .or(gregtech.api.enums.HatchElement.Energy),
                                 gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
@@ -170,7 +140,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.times = aNBT.getInteger("mTimes");
-        this.leftEnergy = aNBT.getLong("mLeftEnergy");
         this.basicOutput = aNBT.getInteger("mbasicOutput");
         if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null) this.lockedFluid = new FluidStack(
             FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")),
@@ -182,7 +151,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mTimes", this.times);
-        aNBT.setLong("mLeftEnergy", this.leftEnergy);
         aNBT.setInteger("mbasicOutput", this.basicOutput);
         if (lockedFluid != null) {
             aNBT.setString(
@@ -336,32 +304,28 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (!this.eDynamoMulti.isEmpty()) for (MTEHatch tHatch : this.eDynamoMulti) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
+        if (!this.eDynamoMulti.isEmpty()) {
+            MTEHatchDynamoMulti tHatch = this.eDynamoMulti.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
             } else {
-                addEnergyOutput_EM(outputPower, 1);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
-        if (!this.mDynamoHatches.isEmpty()) for (MTEHatch tHatch : this.mDynamoHatches) {
-            long voltage = tHatch.maxEUOutput();
-            long power = voltage * tHatch.maxAmperesOut();
-            long outputAmperes;
-            if (outputPower > power) doExplosion(8 * GTUtility.getTier(power));
-            if (outputPower >= voltage) {
-                leftEnergy += outputPower;
-                outputAmperes = leftEnergy / voltage;
-                leftEnergy -= outputAmperes * voltage;
-                addEnergyOutput_EM(voltage, outputAmperes);
+        if (!this.mDynamoHatches.isEmpty()) {
+            MTEHatchDynamo tHatch = this.mDynamoHatches.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + outputPower));
             } else {
-                addEnergyOutput_EM(outputPower, 1);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }

@@ -194,7 +194,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / Math.pow(2, tier));
+                : 120) / GTUtility.powInt(2, tier));
     }
 
     protected float computeSpeed() {

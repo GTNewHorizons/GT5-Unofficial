@@ -115,8 +115,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
-                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
+                    .setDuration((int) Math.ceil(recipe.mDuration * GTUtility.powInt(0.9f, height - 4)))
+                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * GTUtility.powInt(0.9f, height - 4));
             }
 
             @NotNull
@@ -344,7 +344,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                            * Math.pow(0.95, height - 4),
+                            * GTUtility.powInt(0.95, height - 4),
                         10);
                 }
             }
@@ -405,7 +405,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             if (tHatch.getBaseMetaTileEntity()
                 .isActive()) {
                 currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                    * Math.pow(0.95, height - 4);
+                    * GTUtility.powInt(0.95, height - 4);
                 anyWorking = true;
             }
         }

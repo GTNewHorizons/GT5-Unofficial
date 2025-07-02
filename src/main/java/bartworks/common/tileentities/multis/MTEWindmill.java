@@ -291,6 +291,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
         GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+            .caching(false)
             .items(itemStack)
             .voltage(V[1])
             .find();

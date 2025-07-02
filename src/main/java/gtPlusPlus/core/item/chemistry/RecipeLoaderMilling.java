@@ -396,8 +396,8 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
             .fluidInputs(Materials.NefariousOil.getFluid(8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1_000))
-            .duration(8 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(flotationCellRecipes);
     }
 

@@ -449,7 +449,24 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, RUBY, 4);
         tMutation.requireResource("blockFirestone");
     }),
-
+    PRISMATIC(GTBranchDefinition.GEM, "Prismatic", false, new Color(0x117777), new Color(0xcfe4e4), beeSpecies -> {
+        beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.PRISMATIC), 0.1f);
+        beeSpecies.setHumidity(DAMP);
+        beeSpecies.setTemperature(COLD);
+        beeSpecies.setHasEffect();
+    }, template -> {
+        AlleleHelper.instance.set(template, SPEED, Speed.NORMAL);
+        AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL);
+        AlleleHelper.instance.set(template, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(template, EFFECT, getEffect(MAGICBEES, "SlowSpeed"));
+        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
+        AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWEST);
+    }, dis -> {
+        IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, getSpecies(EXTRABEES, "ocean"), 10);
+        tMutation.restrictHumidity(DAMP);
+        tMutation.requireResource("blockPrismarine");
+    }),
     // Metal Line
     COPPER(GTBranchDefinition.METAL, "Copper", true, new Color(0xFF6600), new Color(0xE65C00), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SLAG), 0.30f);
@@ -720,6 +737,26 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(60, "Bedrock")); // Thaumic Tinkerer
         // Bedrock Dim
     }),
+    Netherite(GTBranchDefinition.RAREMETAL, "Netherite", false, new Color(0x31291a), new Color(0xada9aa),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.NETHERITE), 0.1f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature((HELLISH));
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectCreeper);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+            AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), DIAMOND, 3);
+            tMutation.restrictTemperature(HELLISH);
+            tMutation.requireResource(GregTechAPI.sBlockMetal9, 12);
+        }),
 
     // IC2
     COOLANT(GTBranchDefinition.IC2, "Coolant", false, new Color(0x144F5A), new Color(0x2494A2), beeSpecies -> {
@@ -2507,11 +2544,14 @@ public enum GTBeeDefinition implements IBeeDefinition {
     RAREEARTH(GTBranchDefinition.RAREMETAL, "RareEarth", false, new Color(0x555643), new Color(0x343428),
         beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.RAREEARTH), 0.20f);
-            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.NEODYMIUM), 0.05f);
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.REFINEDRAREEARTH), 0.05f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(NORMAL);
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
         }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
         dis -> dis.registerMutation(FLUORINE, REDSTONE, 10)),
+
     NEODYMIUM(GTBranchDefinition.RAREMETAL, "Neodymium", false, new Color(0x555555), new Color(0x4F4F4F),
         beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.RAREEARTH), 0.15f);

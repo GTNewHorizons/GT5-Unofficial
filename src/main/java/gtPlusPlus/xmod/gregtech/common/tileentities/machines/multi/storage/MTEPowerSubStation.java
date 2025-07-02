@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -861,7 +862,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 TextWidget
                     .dynamicString(
                         () -> getErrorDisplayID() == 0
-                            ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
+                            ? getBaseMetaTileEntity().isActive()
+                                ? StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.running_perfectly")
+                                : StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.turn_on_with_mallet")
                             : "")
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
@@ -873,27 +876,40 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     val -> getBaseMetaTileEntity().setActive(val)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
-                new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.in"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(178, 10))
             .widget(
-                new TextWidget("Out").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.out"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(176, 28))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Avg In: " + numberFormat.format(clientEUIn) + " EU")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_in",
+                            numberFormat.format(clientEUIn)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Avg Out: " + numberFormat.format(clientEUOut) + " EU")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_out",
+                            numberFormat.format(clientEUOut)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
             .widget(
                 new TextWidget()
-                    .setStringSupplier(() -> "Powerloss: " + numberFormat.format(clientEULoss) + " EU per tick")
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.power_loss",
+                            numberFormat.format(clientEULoss)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 40))
@@ -909,7 +925,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     .setPos(5, 156)
                     .setSize(147, 5))
             .widget(
-                new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.stored"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(10, 132))
             .widget(
