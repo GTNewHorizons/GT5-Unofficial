@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.GTMod;
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
@@ -264,10 +263,6 @@ public class GTValues {
         { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
         { 0, 1, 2, 3, 4, 5, 6 } };
 
-    /**
-     * The Mod Object itself. That is the GTMod-Object. It's needed to open GUI's and similar.
-     */
-    public static GTMod GT;
     /**
      * Use this Object to add Recipes. (Recipe Adder)
      */

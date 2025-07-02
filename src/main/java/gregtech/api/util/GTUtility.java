@@ -4,7 +4,6 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -2175,16 +2174,16 @@ public class GTUtility {
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength) {
         if (aSoundName == null) return false;
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(SoundResource sound, int aTimeUntilNextSound, float aSoundStrength) {
-        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound,
         float aSoundStrength) {
-        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
@@ -2255,10 +2254,10 @@ public class GTUtility {
         float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (!FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote) return false;
+            .isClient() || GTMod.GT.getThePlayer() == null || !GTMod.GT.getThePlayer().worldObj.isRemote) return false;
         if (GregTechAPI.sMultiThreadedSounds) new Thread(
             new RunnableSound(
-                GT.getThePlayer().worldObj,
+                GTMod.GT.getThePlayer().worldObj,
                 aX,
                 aY,
                 aZ,
@@ -2268,7 +2267,7 @@ public class GTUtility {
                 aSoundModulation),
             "Sound Effect").start();
         else new RunnableSound(
-            GT.getThePlayer().worldObj,
+            GTMod.GT.getThePlayer().worldObj,
             aX,
             aY,
             aZ,

@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GTValues.GT;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -82,13 +80,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        if (aAddInfo && GT.isClientSide()) {
+        if (aAddInfo && GTMod.GT.isClientSide()) {
             addInfo(aID);
         }
     }
 
     protected final void addInfo(int aID) {
-        if (!GT.isClientSide()) return;
+        if (!GTMod.GT.isClientSide()) return;
 
         ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, aID);
         Objects.requireNonNull(tStack.getItem())
@@ -107,7 +105,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public float getThickness() {
         // If we are holding a soldering iron, minimize the rendered thickness of the pipe.
-        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) return 0.0625F;
+        if (GTMod.GT.isClientSide() && GTClient.shouldHideThings()) return 0.0625F;
         return getCollisionThickness();
     }
 
@@ -406,7 +404,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return (GTMod.instance.isClientSide() && GTClient.shouldForceFullBlockBoundingBoxes())
+        return (GTMod.GT.isClientSide() && GTClient.shouldForceFullBlockBoundingBoxes())
             || getCollisionThickness() == 1;
     }
 

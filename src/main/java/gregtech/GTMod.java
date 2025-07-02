@@ -129,7 +129,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = Mods.Names.GREG_TECH,
+    modid = "gregtech",
     name = "GregTech",
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
@@ -201,13 +201,10 @@ public class GTMod {
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-    @Mod.Instance(Mods.Names.GREG_TECH)
-    public static GTMod instance;
+    @Mod.Instance("gregtech")
+    public static GTMod GT;
 
-    @SidedProxy(
-        modId = Mods.Names.GREG_TECH,
-        clientSide = "gregtech.common.GTClient",
-        serverSide = "gregtech.common.GTProxy")
+    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
@@ -215,7 +212,6 @@ public class GTMod {
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
     public GTMod() {
-        GTValues.GT = this;
         GTValues.DW = new GTDummyWorld();
         GTValues.NW = new GTNetwork();
         GTValues.RA = new RecipeAdder();
