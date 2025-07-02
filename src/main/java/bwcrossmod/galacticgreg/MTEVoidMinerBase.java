@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -59,7 +58,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable, IDataCopyable {
+    implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
@@ -69,8 +68,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-    private boolean mBatchMode = false;
-    private static final String DATA_STICK_DATA_TYPE = "voidMinerBatch";
 
     /**
      * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
@@ -90,14 +87,12 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mBlacklist", this.mBlacklist);
-        aNBT.setBoolean("mBatchMode", this.mBatchMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mBlacklist = aNBT.getBoolean("mBlacklist");
-        this.mBatchMode = aNBT.getBoolean("mBatchMode");
     }
 
     public MTEVoidMinerBase(String aName, int tier) {
@@ -124,7 +119,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10 * (mBatchMode ? 16 : 1);
+        this.mMaxProgresstime = 10 * (batchMode ? 16 : 1);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
@@ -291,7 +286,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
         final ItemStack output = this.nextOre();
-        output.stackSize = multiplier * (mBatchMode ? 16 : 1);
+        output.stackSize = multiplier * (batchMode ? 16 : 1);
         if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
             .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
@@ -310,30 +305,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        this.mBatchMode = !this.mBatchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.mBatchMode ? "Enabled" : "Disabled"));
-        return true;
-    }
-
-    // implement idatacopyable for matter manipualtor, might be redundant
-    @Override
-    public NBTTagCompound getCopiedData(EntityPlayer player) {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("type", DATA_STICK_DATA_TYPE);
-        nbt.setBoolean("mBatchMode", mBatchMode);
-        return nbt;
-    }
-
-    @Override
-    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
-        if (nbt.hasKey("mBatchMode")) mBatchMode = nbt.getBoolean("mBatchMode");
+        this.batchMode = !this.batchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
         return true;
     }
 
     @Override
-    public String getCopiedDataIdentifier(EntityPlayer player) {
-        return DATA_STICK_DATA_TYPE;
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     @Override
