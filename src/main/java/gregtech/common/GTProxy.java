@@ -1143,6 +1143,7 @@ public class GTProxy implements IFuelHandler {
     public void onServerStarting() {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
 
+        isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
 
         spawnEventHandler = new GTSpawnEventHandler();
