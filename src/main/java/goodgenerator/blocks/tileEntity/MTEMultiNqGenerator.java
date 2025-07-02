@@ -358,7 +358,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                         + " it will void your fuel"
                         + EnumChatFormatting.GRAY
                         + ".",
-                    EnumChatFormatting.AQUA,LiquidAirConsumptionPerSecond, EnumChatFormatting.GRAY))
+                    EnumChatFormatting.AQUA,
+                    LiquidAirConsumptionPerSecond,
+                    EnumChatFormatting.GRAY))
             .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
             .addInfo(
                 "The reactor will explode when there is more than" + EnumChatFormatting.RED
@@ -366,18 +368,34 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
             .addSeparator()
-            .addInfo("Can increase "+EnumChatFormatting.LIGHT_PURPLE+"efficiency "+EnumChatFormatting.GRAY+"by "+EnumChatFormatting.WHITE+"consuming "+EnumChatFormatting.BLUE+"coolants:")
-            .addInfo(getCoolantTextFormatted("IC2 Coolant","1000",CoolantEfficiency[3]))
-            .addInfo(getCoolantTextFormatted("Super Coolant","1000",CoolantEfficiency[2]))
-            .addInfo(getCoolantTextFormatted("Cryotheum","1000",CoolantEfficiency[1]))
-            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid"," 20",CoolantEfficiency[0]))
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "efficiency "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.BLUE
+                    + "coolants:")
+            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
+            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
+            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
+            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
             .addSeparator()
-            .addInfo("Can increase "+EnumChatFormatting.LIGHT_PURPLE+"output power and fuel usage "+EnumChatFormatting.GRAY+"by "+EnumChatFormatting.WHITE+"consuming "+EnumChatFormatting.RED+"excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caseium","180",ExcitedLiquidCoe[4]))
-            .addInfo(getExcitedTextFormatted("Molten Uranium-235","180",ExcitedLiquidCoe[3]))
-            .addInfo(getExcitedTextFormatted("Molten Naquadah","20",ExcitedLiquidCoe[2]))
-            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst","20",ExcitedLiquidCoe[1]))
-            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid","20",ExcitedLiquidCoe[0]))
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "output power and fuel usage "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.RED
+                    + "excited liquid:")
+            .addInfo(getExcitedTextFormatted("Molten Caseium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
+            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
+            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
+            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
@@ -425,16 +443,31 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         return false;
     }
 
-    public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost)
-    {
-        return String.format("%s%s L/s%s : %s%d%% %s: %s%s",EnumChatFormatting.WHITE,litersConsumed,EnumChatFormatting.GRAY,EnumChatFormatting.LIGHT_PURPLE,effBoost,EnumChatFormatting.GRAY,EnumChatFormatting.BLUE,fluidType);
+    public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
+        return String.format(
+            "%s%s L/s%s : %s%d%% %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            effBoost,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.BLUE,
+            fluidType);
     }
 
-    public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier)
-    {
-        return String.format("%s%s L/s %s: %s%dx power %s: %s%s",EnumChatFormatting.WHITE,litersConsumed,EnumChatFormatting.GRAY,EnumChatFormatting.LIGHT_PURPLE,multiplier,EnumChatFormatting.GRAY,EnumChatFormatting.RED,fluidType);
+    public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
+        return String.format(
+            "%s%s L/s %s: %s%dx power %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            multiplier,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.RED,
+            fluidType);
 
     }
-
 
 }
