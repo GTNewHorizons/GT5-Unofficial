@@ -354,28 +354,48 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addInfo("Generate power from high-energy liquids.")
             .addInfo(
                 String.format(
-                    "Consumes %d L/s Liquid Air to keep running, otherwise" + EnumChatFormatting.YELLOW
+                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
                         + " it will void your fuel"
                         + EnumChatFormatting.GRAY
                         + ".",
-                    LiquidAirConsumptionPerSecond))
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+                    EnumChatFormatting.AQUA,
+                    LiquidAirConsumptionPerSecond,
+                    EnumChatFormatting.GRAY))
             .addInfo(
                 "The reactor will explode when there is more than" + EnumChatFormatting.RED
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Can consume coolants to increase efficiency:")
-            .addInfo(String.format("IC2 Coolant | %d%% | 1000 L/s ", CoolantEfficiency[3]))
-            .addInfo(String.format("Super Coolant | %d%% | 1000 L/s", CoolantEfficiency[2]))
-            .addInfo(String.format("Cryotheum | %d%% | 1000 L/s", CoolantEfficiency[1]))
-            .addInfo(String.format("Tachyon Rich Temporal Fluid | %d%% | 20 L/s", CoolantEfficiency[0]))
-            .addInfo("Can consume excited liquid to increase the output power and fuel usage:")
-            .addInfo(String.format("Molten Caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[4]))
-            .addInfo(String.format("Molten Uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[3]))
-            .addInfo(String.format("Molten Naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[2]))
-            .addInfo(String.format("Molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
-            .addInfo(String.format("Spatially Enlarged Fluid | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+            .addSeparator()
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "efficiency "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.BLUE
+                    + "coolants:")
+            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
+            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
+            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
+            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
+            .addSeparator()
+            .addInfo(
+                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
+                    + "output power and fuel usage "
+                    + EnumChatFormatting.GRAY
+                    + "by "
+                    + EnumChatFormatting.WHITE
+                    + "consuming "
+                    + EnumChatFormatting.RED
+                    + "excited liquid:")
+            .addInfo(getExcitedTextFormatted("Molten Caseium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
+            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
+            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
+            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
@@ -422,4 +442,32 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     public boolean showRecipeTextInGUI() {
         return false;
     }
+
+    public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
+        return String.format(
+            "%s%s L/s%s : %s%d%% %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            effBoost,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.BLUE,
+            fluidType);
+    }
+
+    public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
+        return String.format(
+            "%s%s L/s %s: %s%dx power %s: %s%s",
+            EnumChatFormatting.WHITE,
+            litersConsumed,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.LIGHT_PURPLE,
+            multiplier,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.RED,
+            fluidType);
+
+    }
+
 }
