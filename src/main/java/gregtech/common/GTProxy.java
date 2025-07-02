@@ -741,7 +741,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     /** A fast lookup for players. */
-    private static Map<UUID, EntityPlayerMP> PLAYERS_BY_ID;
+    private Map<UUID, EntityPlayerMP> PLAYERS_BY_ID;
 
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
