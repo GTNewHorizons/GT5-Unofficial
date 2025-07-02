@@ -591,8 +591,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     @Override
     public int getSizeInventory() {
         // Add fake slots so that multis can detect the stocked items properly
-        // 0 & 1: circuit and manual slot
-        // 2 to 10: stocked items
+        // 0 to 15: stocked items
+        // 16: circuit
+        // 17: manual slot
         return SLOT_COUNT + 2;
     }
 
@@ -602,9 +603,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         if (slotIndex < 0 || slotIndex >= getSizeInventory()) return null;
 
-        if (slotIndex == getCircuitSlot() || slotIndex == getManualSlot()) return mInventory[slotIndex];
-
-        slotIndex -= 2;
+        // Put the circuit + manual slots at the end. The stocked slots come first, then the circuit, then the manual.
+        // Since machines reverse this order prior to recipe checks, the actual order is: manual, then circuit, then
+        // stocked.
+        if (slotIndex == getCircuitSlot() + SLOT_COUNT) return mInventory[getCircuitSlot()];
+        if (slotIndex == getManualSlot() + SLOT_COUNT) return mInventory[getManualSlot()];
 
         if (!isAllowedToWork()) {
             return null;
