@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -116,12 +115,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onServerStart() {}
-
-    @Override
-    public void onWorldSave(File saveDirectory) {}
-
-    @Override
-    public void onWorldLoad(File saveDirectory) {}
 
     @Override
     public void onConfigLoad() {}

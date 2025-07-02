@@ -22,7 +22,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -520,7 +519,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
-    private boolean isFirstServerWorldTick = true;
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
@@ -564,7 +562,6 @@ public class GTProxy implements IFuelHandler {
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
-    private World mUniverse = null;
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
@@ -1155,8 +1152,6 @@ public class GTProxy implements IFuelHandler {
             .bus()
             .register(tetherManager);
 
-        this.mUniverse = null;
-        this.isFirstServerWorldTick = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1205,23 +1200,8 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStopping() {
         GTMusicSystem.ServerSystem.reset();
-        File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
-        if (tSaveDirectory != null) {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
-                    try {
-                        GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
-                    } catch (Throwable e) {
-                        throw new RuntimeException(
-                            "Could not call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i],
-                            e);
-                    }
-                }
-            }
-        }
-        this.mUniverse = null;
     }
 
     public void onServerStopped() {
@@ -1966,24 +1946,6 @@ public class GTProxy implements IFuelHandler {
             isFirstWorldTick = false;
             GTValues.worldTickHappened = true;
         }
-        if (this.isFirstServerWorldTick) {
-            File worldDir = aEvent.world.getSaveHandler()
-                .getWorldDirectory();
-            if (worldDir != null) {
-                this.isFirstServerWorldTick = false;
-                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                    if (GregTechAPI.METATILEENTITIES[i] != null) {
-                        try {
-                            GregTechAPI.METATILEENTITIES[i].onWorldLoad(worldDir);
-                        } catch (Throwable e) {
-                            throw new RuntimeException(
-                                "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
-                                e);
-                        }
-                    }
-                }
-            }
-        }
         if ((aEvent.world.getTotalWorldTime() % 100L == 0L)
             && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {
             long startTime = System.nanoTime();
@@ -2404,12 +2366,6 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
         }
         aMaterial.setSteamCrackedFluids(crackedFluids);
-    }
-
-    public File getSaveDirectory() {
-        return this.mUniverse == null ? null
-            : this.mUniverse.getSaveHandler()
-                .getWorldDirectory();
     }
 
     public long getAnimationTicks() {
