@@ -652,7 +652,7 @@ public class GTProxy implements IFuelHandler {
     public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();
 
     // Locking
-    public static ReentrantLock TICK_LOCK = new ReentrantLock();
+    public final ReentrantLock TICK_LOCK = new ReentrantLock();
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
 
