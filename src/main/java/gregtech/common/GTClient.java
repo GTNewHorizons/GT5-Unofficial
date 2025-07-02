@@ -660,7 +660,6 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused") // used by the event bus
     public void onSoundSetup(SoundSetupEvent event) {
         try {
             SoundSystemConfig.setCodec(SeekingOggCodec.EXTENSION, SeekingOggCodec.class);
@@ -669,7 +668,6 @@ public class GTClient extends GTProxy {
         }
     }
 
-    @Override
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;

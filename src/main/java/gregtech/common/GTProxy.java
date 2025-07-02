@@ -98,7 +98,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -1270,9 +1269,6 @@ public class GTProxy implements IGTMod, IFuelHandler {
             tetherManager = null;
         }
     }
-
-    @SubscribeEvent
-    public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {}
 
     /**
      * Tells {@link GTNEIDefaultHandler} to reload recipes.
