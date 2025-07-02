@@ -608,121 +608,59 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public OreDropSystem oreDropSystem = OreDropSystem.FortuneItem;
 
-    /**
-     * This enables ambient-occlusion smooth lighting on tiles
-     */
+    /** This enables ambient-occlusion smooth lighting on tiles */
     public boolean mRenderTileAmbientOcclusion = true;
-
-    /**
-     * This enables rendering of glowing textures
-     */
+    /** This enables rendering of glowing textures */
     public boolean mRenderGlowTextures = true;
-
-    /**
-     * Render flipped textures
-     */
+    /** Render flipped textures */
     public boolean mRenderFlippedMachinesFlipped = true;
-
-    /**
-     * This enables indicators on input/output hatches
-     */
+    /** This enables indicators on input/output hatches */
     public boolean mRenderIndicatorsOnHatch = true;
-
-    /**
-     * This enables the rendering of dirt particles if pollution is enabled too
-     */
+    /** This enables the rendering of dirt particles if pollution is enabled too */
     public boolean mRenderDirtParticles = true;
-
-    /**
-     * This enables the rendering of the pollution fog if pollution is enabled too
-     */
+    /** This enables the rendering of the pollution fog if pollution is enabled too */
     public boolean mRenderPollutionFog = true;
-
-    /**
-     * This enables BaseMetaTileEntity block updates handled by BlockUpdateHandler
-     */
+    /** This enables BaseMetaTileEntity block updates handled by BlockUpdateHandler */
     public boolean mUseBlockUpdateHandler = false;
-
-    /**
-     * This makes cover tabs visible on GregTech machines
-     */
+    /** This makes cover tabs visible on GregTech machines */
     public boolean mCoverTabsVisible = true;
-
-    /**
-     * This controls whether cover tabs display on the left (default) or right side of the UI
-     */
+    /** This controls whether cover tabs display on the left (default) or right side of the UI */
     public boolean mCoverTabsFlipped = false;
-
-    /**
-     * How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended
-     */
+    /** How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended */
     public int mTooltipVerbosity = 2;
-
-    /**
-     * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
-     */
+    /** How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended */
     public int mTooltipShiftVerbosity = 3;
-
     /**
      * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
      */
     public int mTitleTabStyle = 0;
-
-    /**
-     * Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
-     */
+    /** Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line */
     public int separatorStyle = 2;
-
     /**
      * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
      * continuous line
      */
     public int tooltipFinisherStyle = 1;
-
     /**
      * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
      * decrement
      */
     public boolean invertCircuitScrollDirection = false;
-
-    /**
-     * Whether to show seconds or ticks on NEI
-     */
+    /** Whether to show seconds or ticks on NEI */
     public boolean mNEIRecipeSecondMode = true;
-
-    /**
-     * This enables "Recipe by" display on NEI
-     */
+    /** This enables "Recipe by" display on NEI */
     public boolean mNEIRecipeOwner = false;
-
-    /**
-     * This enables showing stack traces where the recipe was added. Reboot needed
-     */
+    /** This enables showing stack traces where the recipe was added. Reboot needed */
     public boolean mNEIRecipeOwnerStackTrace = false;
-
-    /**
-     * This enables showing original voltage when overclocked
-     */
+    /** This enables showing original voltage when overclocked */
     public boolean mNEIOriginalVoltage = false;
-
-    /**
-     * This enables the green->red durability for an item's damage value
-     */
+    /** This enables the green->red durability for an item's damage value */
     public boolean mRenderItemDurabilityBar = true;
-
-    /**
-     * This enables the blue charge bar for an electric item's charge
-     */
+    /** This enables the blue charge bar for an electric item's charge */
     public boolean mRenderItemChargeBar = true;
-
-    /**
-     * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
-     */
+    /** This enables showing voltage tier of transformer for Waila, instead of raw voltage number */
     public boolean mWailaTransformerVoltageTier = true;
-
-    /**
-     * This enables showing the cpu load in nanoseconds via waila.
-     */
+    /** This enables showing the cpu load in nanoseconds via waila. */
     public boolean wailaAverageNS = false;
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
