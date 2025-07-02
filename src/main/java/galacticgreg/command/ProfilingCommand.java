@@ -23,7 +23,6 @@ public class ProfilingCommand extends GTBaseCommand {
     public void processCommand(ICommandSender sender, String[] args) {
         sendChatToPlayer(sender, "Average OreGen times:");
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
-            // String tModName = mc.getModName();
             for (ModDimensionDef mdd : mc.getDimensionList()) {
                 long tTime = GalacticGreg.Profiler.GetAverageTime(mdd);
                 String tInfo;
