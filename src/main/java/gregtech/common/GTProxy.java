@@ -1035,10 +1035,8 @@ public class GTProxy implements IGTMod, IFuelHandler {
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
 
-        if (!this.enableUndergroundGravelGen)
-            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
-        if (!this.enableUndergroundDirtGen)
-            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
+        if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
+        if (!this.enableUndergroundDirtGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
@@ -1283,7 +1281,7 @@ public class GTProxy implements IGTMod, IFuelHandler {
 
     @SubscribeEvent
     public void onArrowNockEvent(ArrowNockEvent aEvent) {
-        if ((!aEvent.isCanceled()) && (GTUtility.isStackValid(aEvent.result))
+        if (GTUtility.isStackValid(aEvent.result)
             && (GTUtility.getProjectile(SubTag.PROJECTILE_ARROW, aEvent.entityPlayer.inventory) != null)) {
             aEvent.entityPlayer.setItemInUse(
                 aEvent.result,
@@ -1296,9 +1294,7 @@ public class GTProxy implements IGTMod, IFuelHandler {
     @SubscribeEvent
     public void onArrowLooseEvent(ArrowLooseEvent aEvent) {
         ItemStack aArrow = GTUtility.getProjectile(SubTag.PROJECTILE_ARROW, aEvent.entityPlayer.inventory);
-        if ((!aEvent.isCanceled()) && (GTUtility.isStackValid(aEvent.bow))
-            && (aArrow != null)
-            && ((aEvent.bow.getItem() instanceof ItemBow))) {
+        if (GTUtility.isStackValid(aEvent.bow) && (aArrow != null) && ((aEvent.bow.getItem() instanceof ItemBow))) {
             float tSpeed = aEvent.charge / 20.0F;
             tSpeed = (tSpeed * tSpeed + tSpeed * 2.0F) / 3.0F;
             if (tSpeed < 0.1D) {
