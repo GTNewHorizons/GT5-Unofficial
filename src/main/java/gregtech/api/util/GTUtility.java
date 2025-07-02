@@ -412,24 +412,15 @@ public class GTUtility {
                     .lastIndexOf(".") + 1);
     }
 
-    public static boolean getFullInvisibility(EntityPlayer aPlayer) {
-        try {
-            if (aPlayer.isInvisible()) {
-                for (int i = 0; i < 4; i++) {
-                    if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof ItemEnergyArmor) {
-                            if ((((ItemEnergyArmor) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
-                                != 0) {
-                                if (GTModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+    public static boolean getFullInvisibility(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        for (ItemStack stack : player.inventory.armorInventory) {
+            if (stack == null || !(stack.getItem() instanceof ItemEnergyArmor)) continue;
+            if ((((ItemEnergyArmor) stack.getItem()).mSpecials & 512) != 0) {
+                if (GTModHandler.canUseElectricItem(stack, 10000)) {
+                    return true;
                 }
             }
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
         }
         return false;
     }
