@@ -33,6 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -46,7 +47,6 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
 /**
@@ -139,7 +139,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
+        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
             /*
              * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
              * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related

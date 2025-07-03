@@ -984,7 +984,11 @@ public class GTClient extends GTProxy {
      * client change detection related work and network traffic on different ticks, until it reaches 0.
      * </p>
      */
-    public static int changeDetected = 0;
+    private int changeDetected = 0;
+
+    public int changeDetected() {
+        return changeDetected;
+    }
 
     private static boolean shouldHeldItemHideThings() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
