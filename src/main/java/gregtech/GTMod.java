@@ -207,6 +207,10 @@ public class GTMod {
 
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
     public static GTProxy proxy;
+    /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated // should be removed after all mods have updated..
+    public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;

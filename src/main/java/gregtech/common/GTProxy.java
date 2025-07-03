@@ -91,6 +91,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
@@ -714,6 +715,12 @@ public class GTProxy implements IFuelHandler {
     }
 
     public GTProxy() {
+        // This is a hack to remain backward
+        // compatible after renaming the proxy
+        // for mods still refering the old name
+        // noinspection deprecation
+        GTMod.gregtechproxy = this;
+
         GameRegistry.registerFuelHandler(this);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.ORE_GEN_BUS.register(this);
