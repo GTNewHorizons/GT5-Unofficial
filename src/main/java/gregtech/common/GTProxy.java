@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -145,6 +144,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class GTProxy implements IFuelHandler {
@@ -656,7 +656,7 @@ public class GTProxy implements IFuelHandler {
     public final ReentrantLock TICK_LOCK = new ReentrantLock();
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
-
+    public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
 
@@ -1139,7 +1139,6 @@ public class GTProxy implements IFuelHandler {
     public void onLoadComplete() {}
 
     public void onServerAboutToStart() {
-        dimensionWisePollution.clear(); // !!! IMPORTANT for map switching...
         GTChunkAssociatedData.clearAll();
     }
 
@@ -1220,6 +1219,7 @@ public class GTProxy implements IFuelHandler {
                 .unregister(tetherManager);
             tetherManager = null;
         }
+        dimensionWisePollution.clear();
     }
 
     /**
@@ -2419,8 +2419,6 @@ public class GTProxy implements IFuelHandler {
             ProgressManager.pop(progressBar);
         }
     }
-
-    public static final HashMap<Integer, Pollution> dimensionWisePollution = new HashMap<>(16); // stores
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {

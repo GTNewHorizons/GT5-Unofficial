@@ -1,7 +1,6 @@
 package gregtech.common.pollution;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.common.GTProxy.dimensionWisePollution;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -47,6 +46,11 @@ import gregtech.api.net.GTPacketPollution;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTUtility;
 
+// TODO this whole thing should be reworked,
+// the global pollution manager should be a
+// non static instance in GTProxy
+// and all access to it should be non static and via
+// GTProxy.gregtechProxy.pollutionManager......
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
@@ -69,10 +73,10 @@ public class Pollution {
      * Muffler Hatch Pollution reduction: ** inaccurate ** LV (0%), MV (30%), HV (52%), EV (66%), IV (76%), LuV (84%),
      * ZPM (89%), UV (92%), MAX (95%)
      */
-    private List<ChunkCoordIntPair> pollutionList = new ArrayList<>(); // chunks left to process in this cycle
-
-    private final Set<ChunkCoordIntPair> pollutedChunks = new HashSet<>(); // a global list of all chunks with positive
-                                                                           // pollution
+    // chunks left to process in this cycle
+    private List<ChunkCoordIntPair> pollutionList = new ArrayList<>();
+    // a global list of all chunks with positive pollution
+    private final Set<ChunkCoordIntPair> pollutedChunks = new HashSet<>();
     private int operationsPerTick = 0; // how much chunks should be processed in each cycle
     private static final short cycleLen = 1200;
     private final World world;
@@ -96,7 +100,8 @@ public class Pollution {
         // return if pollution disabled
         if (!GTMod.gregtechproxy.mPollution) return;
         if (aEvent.phase == TickEvent.Phase.START) return;
-        final Pollution pollutionInstance = dimensionWisePollution.get(aEvent.world.provider.dimensionId);
+        final Pollution pollutionInstance = GTMod.gregtechproxy.dimensionWisePollution
+            .get(aEvent.world.provider.dimensionId);
         if (pollutionInstance == null) return;
         pollutionInstance.tickPollutionInWorld((int) (aEvent.world.getTotalWorldTime() % cycleLen));
     }
@@ -328,7 +333,8 @@ public class Pollution {
     }
 
     private static Pollution getPollutionManager(World world) {
-        return dimensionWisePollution.computeIfAbsent(world.provider.dimensionId, i -> new Pollution(world));
+        return GTMod.gregtechproxy.dimensionWisePollution
+            .computeIfAbsent(world.provider.dimensionId, i -> new Pollution(world));
     }
 
     /** @see #addPollution(TileEntity, int) */
