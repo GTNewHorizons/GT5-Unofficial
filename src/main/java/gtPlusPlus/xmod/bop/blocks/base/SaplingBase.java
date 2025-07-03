@@ -30,8 +30,8 @@ import gtPlusPlus.core.util.Utils;
 
 public class SaplingBase extends BlockSapling {
 
-    protected String[] saplingTypes = new String[] {};
-    protected IIcon[] saplingTextures = new IIcon[] {};
+    protected String[] saplingTypes;
+    protected IIcon[] saplingTextures;
 
     // Sapling types - field_149882_a
     // Iicons - field_149881_b
@@ -116,12 +116,8 @@ public class SaplingBase extends BlockSapling {
         Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
         int i1 = 0;
         int j1 = 0;
-        boolean flag = false;
-
         Block block = Blocks.air;
-
         world.setBlock(x, y, z, block, 0, 4);
-
         if (!((WorldGenerator) object).generate(world, rand, x + i1, y, z + j1)) {
             world.setBlock(x, y, z, this, l, 4);
         }
