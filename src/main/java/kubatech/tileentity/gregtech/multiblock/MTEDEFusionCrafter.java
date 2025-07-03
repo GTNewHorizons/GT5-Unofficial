@@ -140,6 +140,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         tt.addMachineType("Fusion Crafter, DEFC")
             .addInfo("Gains One perfect overclock per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
+            .addConditionalPerfectOCInfo()
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)

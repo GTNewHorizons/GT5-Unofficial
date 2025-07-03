@@ -157,7 +157,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addConditionalPerfectOCInfo()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)

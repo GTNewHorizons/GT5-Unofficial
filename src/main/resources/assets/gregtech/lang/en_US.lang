@@ -793,6 +793,8 @@ GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
+GT5U.MBTT.PerfectOC=This machine has Perfect Overclocks!
+GT5U.MBTT.ConditionalPerfectOC=This machine has conditional Perfect Overclocks!
 
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber

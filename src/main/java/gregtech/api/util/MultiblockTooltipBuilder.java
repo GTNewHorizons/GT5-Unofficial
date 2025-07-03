@@ -79,6 +79,9 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
+    private static final String M_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
+    private static final String M_ConditionalPerfectOC = StatCollector
+        .translateToLocal("GT5U.MBTT.ConditionalPerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
@@ -602,6 +605,28 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
         iLines.add(EnumChatFormatting.GREEN + TT_tectechhatch);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine has Perfect Overclocks!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addPerfectOCInfo() {
+        iLines.add(EnumChatFormatting.AQUA + M_PerfectOC);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine has conditional Perfect Overclocks!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addConditionalPerfectOCInfo() {
+        iLines.add(EnumChatFormatting.DARK_AQUA + M_ConditionalPerfectOC);
         return this;
     }
 
