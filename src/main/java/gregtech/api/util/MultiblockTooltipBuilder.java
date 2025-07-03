@@ -610,7 +610,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine has Perfect Overclocks!
+     * This machine is capable of Perfect Overclocks!
      *
      * @return Instance this method was called on.
      */
@@ -621,7 +621,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine has conditional Perfect Overclocks!
+     * This machine is capable of conditional Perfect Overclocks!
      *
      * @return Instance this method was called on.
      */
