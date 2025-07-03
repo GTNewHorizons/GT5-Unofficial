@@ -24,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -119,6 +120,15 @@ public class MTEHatchInput extends MTEHatch {
         super.loadNBTData(aNBT);
         disableFilter = aNBT.getBoolean("disableFilter");
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        if (!getBaseMetaTileEntity().getWorld().isRemote) {
+            GTClientPreference tPreference = GTMod.gregtechproxy
+                .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            if (tPreference != null) disableFilter = !tPreference.isInputHatchInitialFilterEnabled();
+        }
     }
 
     @Override
