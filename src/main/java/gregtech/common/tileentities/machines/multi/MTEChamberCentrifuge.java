@@ -20,7 +20,6 @@ import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.GTDataUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,6 +59,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
