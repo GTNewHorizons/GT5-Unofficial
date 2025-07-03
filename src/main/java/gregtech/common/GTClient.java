@@ -830,7 +830,7 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
+            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBB();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -1005,13 +1005,13 @@ public class GTClient extends GTProxy {
         return false;
     }
 
-    private static boolean forceFullBlockBoundingBoxes;
+    private boolean forceFullBlockBoundingBoxes;
 
-    public static boolean shouldForceFullBlockBoundingBoxes() {
+    public boolean forceFullBlockBB() {
         return forceFullBlockBoundingBoxes;
     }
 
-    private static boolean shouldHeldItemForceFullBlockBoundingBoxes() {
+    private static boolean shouldHeldItemForceFullBlockBB() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return false;
         final ItemStack tCurrentItem = player.getCurrentEquippedItem();

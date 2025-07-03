@@ -28,7 +28,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
 /**
@@ -405,8 +404,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return (GTMod.GT.isClientSide() && GTClient.shouldForceFullBlockBoundingBoxes())
-            || getCollisionThickness() == 1;
+        return (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .forceFullBlockBB()) || getCollisionThickness() == 1;
     }
 
     /**
