@@ -415,9 +415,10 @@ public class Pollution {
      */
     public static int getPollution(World w, int chunkX, int chunkZ) {
         if (!GTMod.proxy.mPollution) return 0;
-        if (w.isRemote)
+        if (w.isRemote) {
             // it really should be querying the client side stuff instead
-            return PollutionRenderer.getKnownPollution(chunkX << 4, chunkZ << 4);
+            return GTMod.clientProxy().mPollutionRenderer.getKnownPollution(chunkX << 4, chunkZ << 4);
+        }
         return STORAGE.get(w, chunkX, chunkZ)
             .getAmount();
     }

@@ -58,6 +58,7 @@ import codechicken.lib.vec.Scale;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -579,7 +580,10 @@ public class GTClient extends GTProxy {
 
         new Thread(new GTCapesLoader(), "GT Cape Loader").start();
 
-        mPollutionRenderer.preLoad();
+        MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(mPollutionRenderer);
 
         mPreference = new GTClientPreference();
 
