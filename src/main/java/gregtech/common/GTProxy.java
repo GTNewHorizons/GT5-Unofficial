@@ -741,7 +741,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     /** A fast lookup for players. */
-    private Map<UUID, EntityPlayerMP> PLAYERS_BY_ID;
+    private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
 
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
@@ -1219,7 +1219,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public void onServerStarting() {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        PLAYERS_BY_ID = new Object2ObjectOpenHashMap<>();
+        PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
         GTMusicSystem.ServerSystem.reset();
 
         spawnEventHandler = new GTSpawnEventHandler();
@@ -1306,7 +1306,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .unregister(tetherManager);
         tetherManager = null;
-        PLAYERS_BY_ID = null;
+        PLAYERS_BY_UUID = null;
     }
 
     @SubscribeEvent
@@ -2664,7 +2664,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_ID.put(
+        PLAYERS_BY_UUID.put(
             player.getGameProfile()
                 .getId(),
             player);
@@ -2676,7 +2676,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_ID.remove(
+        PLAYERS_BY_UUID.remove(
             playerMP.getGameProfile()
                 .getId());
     }
@@ -2687,7 +2687,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_ID.put(
+        PLAYERS_BY_UUID.put(
             player.getGameProfile()
                 .getId(),
             player);
@@ -2699,18 +2699,28 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_ID.put(
+        PLAYERS_BY_UUID.put(
             player.getGameProfile()
                 .getId(),
             player);
     }
 
+    /**
+     * This method allows fast lookup of EntityPlayerMp from UUID.
+     * It should only ever be called from the ServerThread and while the Server is running.
+     *
+     * @param uuid - uuid of the EntityPlayerMP
+     */
     @Nullable
     public EntityPlayerMP getPlayerMP(UUID uuid) {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) {
-            return PLAYERS_BY_ID.get(uuid);
+            if (PLAYERS_BY_UUID != null) {
+                return PLAYERS_BY_UUID.get(uuid);
+            } else {
+                throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
+            }
         } else {
             throw new RuntimeException("Tried to retrieve an EntityPlayerMP from outside of the server thread!");
         }
