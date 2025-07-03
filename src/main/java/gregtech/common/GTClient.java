@@ -585,7 +585,7 @@ public class GTClient extends GTProxy {
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
 
-        new MTEAdvDebugStructureWriter.ForgeEventHandler();
+        MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
 
         new Thread(new GTCapesLoader(), "GT Cape Loader").start();
 

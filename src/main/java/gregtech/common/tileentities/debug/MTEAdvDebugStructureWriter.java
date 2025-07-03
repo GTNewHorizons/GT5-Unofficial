@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -329,11 +328,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         return false;
     }
 
-    public static class ForgeEventHandler {
-
-        public ForgeEventHandler() {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
+    public static class EventHandler {
 
         @SuppressWarnings("unused")
         @SideOnly(Side.CLIENT)
