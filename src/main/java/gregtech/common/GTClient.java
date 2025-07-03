@@ -174,7 +174,7 @@ public class GTClient extends GTProxy {
             Blocks.lit_pumpkin);
     }
 
-    public static final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
+    public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -1028,7 +1028,7 @@ public class GTClient extends GTProxy {
                 && player.isSneaking());
     }
 
-    public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
+    public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
         mPollutionRenderer.processPacket(chunk, pollution);
     }
 }
