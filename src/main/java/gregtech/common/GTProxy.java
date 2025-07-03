@@ -1875,7 +1875,7 @@ public class GTProxy implements IFuelHandler {
                 this.oreDictEvents.clear();
             }
             if (this.mOreDictActivated) {
-                registerRecipes(tOre);
+                OreDictEventContainer.registerRecipes(tOre);
             }
         } catch (Throwable e) {
             GT_FML_LOGGER
@@ -2000,23 +2000,6 @@ public class GTProxy implements IFuelHandler {
                 tileEntity.onChunkUnload();
             }
         }
-    }
-
-    public static void registerRecipes(GTProxy.OreDictEventContainer aOre) {
-        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)
-            || (aOre.mPrefix == null)
-            || (aOre.mPrefix.isIgnored(aOre.mMaterial))) {
-            return;
-        }
-        if (aOre.mEvent.Ore.stackSize != 1) {
-            aOre.mEvent.Ore.stackSize = 1;
-        }
-
-        aOre.mPrefix.processOre(
-            aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
-            aOre.mEvent.Name,
-            aOre.mModID,
-            GTUtility.copyAmount(1, aOre.mEvent.Ore));
     }
 
     @SubscribeEvent
@@ -2401,8 +2384,8 @@ public class GTProxy implements IFuelHandler {
     private void stepMaterialsVanilla(@Nullable ProgressManager.ProgressBar progressBar) {
         int size = 5;
         int sizeStep = oreDictEvents.size() / 20 - 1;
-        GTProxy.OreDictEventContainer event;
-        for (Iterator<GTProxy.OreDictEventContainer> i$ = oreDictEvents.iterator(); i$.hasNext(); GTProxy
+        OreDictEventContainer event;
+        for (Iterator<OreDictEventContainer> i$ = oreDictEvents.iterator(); i$.hasNext(); OreDictEventContainer
             .registerRecipes(event)) {
             event = i$.next();
             sizeStep--;
@@ -2442,22 +2425,6 @@ public class GTProxy implements IFuelHandler {
                     aEvent.metadata,
                     aEvent);
             }
-        }
-    }
-
-    public static class OreDictEventContainer {
-
-        public final OreDictionary.OreRegisterEvent mEvent;
-        public final OrePrefixes mPrefix;
-        public final Materials mMaterial;
-        public final String mModID;
-
-        public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Materials aMaterial,
-            String aModID) {
-            this.mEvent = aEvent;
-            this.mPrefix = aPrefix;
-            this.mMaterial = aMaterial;
-            this.mModID = ((aModID == null) || (aModID.equals("UNKNOWN")) ? null : aModID);
         }
     }
 
