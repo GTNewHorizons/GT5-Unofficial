@@ -674,7 +674,7 @@ public class GTProxy implements IFuelHandler {
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
     private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
-
+    public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
 
@@ -1167,18 +1167,18 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {
+        // spotless:off
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
-
         PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
-
+        wirelessChargerManager = new WirelessChargerManager();
+        FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         spawnEventHandler = new GTSpawnEventHandler();
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         tetherManager = new TetherManager();
-        FMLCommonHandler.instance()
-            .bus()
-            .register(tetherManager);
+        FMLCommonHandler.instance().bus().register(tetherManager);
+        // spotless:off
 
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
@@ -1233,15 +1233,16 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
-        WirelessChargerManager.clearChargerMap();
+        // spotless:off
         MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
         spawnEventHandler = null;
-        FMLCommonHandler.instance()
-            .bus()
-            .unregister(tetherManager);
+        FMLCommonHandler.instance().bus().unregister(tetherManager);
         tetherManager = null;
         dimensionWisePollution.clear();
+        FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        wirelessChargerManager = null;
         PLAYERS_BY_UUID = null;
+        // spotless:on
     }
 
     /**
