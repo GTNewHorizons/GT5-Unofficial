@@ -310,18 +310,8 @@ public class GTClient extends GTProxy {
         mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
     }
 
-    private static boolean checkedForChicken = false;
-
     private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench,
         boolean aIsSneaking) {
-        if (!checkedForChicken) {
-            try {
-                Class.forName("codechicken.lib.vec.Rotation");
-            } catch (ClassNotFoundException e) {
-                return;
-            }
-            checkedForChicken = true;
-        }
 
         GL11.glPushMatrix();
 
