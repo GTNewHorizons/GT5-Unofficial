@@ -79,7 +79,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 mRange = getRepellentRange(mTier, false);
             }
             if (prevRange != mRange) {
-                GTMod.gregtechproxy.spawnEventHandler.putRepellent(
+                GTMod.proxy.spawnEventHandler.putRepellent(
                     mte.getWorld().provider.dimensionId,
                     mte.getXCoord(),
                     mte.getYCoord(),
@@ -93,7 +93,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onRemoval() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
+            GTMod.proxy.spawnEventHandler.removeRepellent(
                 mte.getWorld().provider.dimensionId,
                 mte.getXCoord(),
                 mte.getYCoord(),
@@ -105,7 +105,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onUnload() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
+            GTMod.proxy.spawnEventHandler.removeRepellent(
                 mte.getWorld().provider.dimensionId,
                 mte.getXCoord(),
                 mte.getYCoord(),

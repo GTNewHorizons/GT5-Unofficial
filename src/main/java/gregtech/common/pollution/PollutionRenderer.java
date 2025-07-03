@@ -128,7 +128,7 @@ public class PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
-        if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
+        if (!GTMod.proxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
             || (fogIntensityLastTick < FOG_START_EXP_RATIO)) return;
@@ -145,7 +145,7 @@ public class PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderGTPollutionFog(EntityViewRenderEvent.FogDensity event) {
-        if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
+        if (!GTMod.proxy.mRenderPollutionFog) return;
 
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
 
@@ -201,7 +201,7 @@ public class PollutionRenderer {
     // Adding dirt particles in the air
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (!GTMod.gregtechproxy.mRenderDirtParticles) return;
+        if (!GTMod.proxy.mRenderDirtParticles) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return;
         EntityClientPlayerMP player = mc.thePlayer;

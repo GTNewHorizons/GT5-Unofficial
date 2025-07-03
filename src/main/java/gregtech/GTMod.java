@@ -206,7 +206,7 @@ public class GTMod {
     public static GTMod GT;
 
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
-    public static GTProxy gregtechproxy;
+    public static GTProxy proxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;
@@ -231,19 +231,19 @@ public class GTMod {
     }
 
     public static GTClient clientProxy() {
-        if (gregtechproxy.isClientSide()) {
-            return (GTClient) gregtechproxy;
+        if (proxy.isClientSide()) {
+            return (GTClient) proxy;
         } else {
             throw new RuntimeException("Client Proxy accessed from the dedicated server!");
         }
     }
 
     public boolean isClientSide() {
-        return gregtechproxy.isClientSide();
+        return proxy.isClientSide();
     }
 
     public EntityPlayer getThePlayer() {
-        return gregtechproxy.getThePlayer();
+        return proxy.getThePlayer();
     }
 
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
@@ -272,7 +272,7 @@ public class GTMod {
 
         PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
-        gregtechproxy.onPreLoad();
+        proxy.onPreLoad();
 
         GTLog.out.println("GTMod: Setting Configs");
 
@@ -344,15 +344,15 @@ public class GTMod {
             new GTBees();
 
         // Disable Low Grav regardless of config if Cleanroom is disabled.
-        if (!gregtechproxy.mEnableCleanroom) {
-            gregtechproxy.mLowGravProcessing = false;
+        if (!proxy.mEnableCleanroom) {
+            proxy.mLowGravProcessing = false;
         }
 
-        gregtechproxy.onLoad();
+        proxy.onLoad();
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
-        gregtechproxy.registerUnificationEntries();
+        proxy.registerUnificationEntries();
         new FuelLoader().run();
 
         if (Mods.Waila.isModLoaded()) {
@@ -389,7 +389,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        gregtechproxy.onPostLoad();
+        proxy.onPostLoad();
 
         if (DEBUG) {
             // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
@@ -401,7 +401,7 @@ public class GTMod {
             }
         }
 
-        gregtechproxy.registerUnificationEntries();
+        proxy.registerUnificationEntries();
 
         new BookAndLootLoader().run();
         new ItemMaxStacksizeLoader().run();
@@ -556,7 +556,7 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
-        gregtechproxy.onLoadComplete();
+        proxy.onLoadComplete();
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
@@ -571,7 +571,7 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
-        gregtechproxy.onServerAboutToStart();
+        proxy.onServerAboutToStart();
     }
 
     @Mod.EventHandler
@@ -581,7 +581,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        gregtechproxy.onServerStarting();
+        proxy.onServerStarting();
         GTModHandler.removeAllIC2Recipes();
         GTLog.out.println("GTMod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
@@ -687,7 +687,7 @@ public class GTMod {
                 .getSmeltingList()
                 .values());
 
-        if (gregtechproxy.mCraftingUnification) {
+        if (proxy.mCraftingUnification) {
             GTLog.out.println("GTMod: Crafting Recipes");
             for (IRecipe tRecipe : CraftingManager.getInstance()
                 .getRecipeList()) {
@@ -697,7 +697,7 @@ public class GTMod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
+            if (!proxy.mRegisteredOres.contains(tOutput)) {
                 GTOreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
@@ -738,7 +738,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        gregtechproxy.onServerStopping();
+        proxy.onServerStopping();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
@@ -749,7 +749,7 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onServerStopped(FMLServerStoppedEvent event) {
-        gregtechproxy.onServerStopped();
+        proxy.onServerStopped();
     }
 
     @Mod.EventHandler

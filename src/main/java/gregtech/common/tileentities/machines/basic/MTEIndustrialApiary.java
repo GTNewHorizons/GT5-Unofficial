@@ -216,7 +216,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }

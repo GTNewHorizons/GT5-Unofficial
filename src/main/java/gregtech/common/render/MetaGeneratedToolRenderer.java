@@ -52,7 +52,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
             if ((type == ItemRenderType.INVENTORY)
                 && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
-                if (GTMod.gregtechproxy.mRenderItemDurabilityBar) {
+                if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);
                     long maxDamage = MetaGeneratedTool.getToolMaxDamage(stack);
@@ -67,7 +67,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                     renderIcon(iconContainer);
                 }
 
-                if (GTMod.gregtechproxy.mRenderItemChargeBar) {
+                if (GTMod.proxy.mRenderItemChargeBar) {
                     IIconContainer iconContainer;
                     Long[] stats = item.getElectricStats(stack);
                     if ((stats != null) && (stats[3] < 0L)) {

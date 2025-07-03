@@ -565,12 +565,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int COVER_TAB_LEFT = -16, COVER_TAB_TOP = 1, COVER_TAB_HEIGHT = 20, COVER_TAB_WIDTH = 18,
             COVER_TAB_SPACING = 2, ICON_SIZE = 16;
-        final boolean flipHorizontally = GTMod.gregtechproxy.mCoverTabsFlipped;
+        final boolean flipHorizontally = GTMod.proxy.mCoverTabsFlipped;
 
         final Column columnWidget = new Column();
         builder.widget(columnWidget);
         final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
-        if (GTMod.gregtechproxy.mCoverTabsVisible) {
+        if (GTMod.proxy.mCoverTabsVisible) {
             columnWidget.setPos(xPos, COVER_TAB_TOP + getCoverTabHeightOffset())
                 .setEnabled(
                     widget -> ((Column) widget).getChildren()

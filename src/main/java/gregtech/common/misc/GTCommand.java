@@ -63,7 +63,7 @@ public final class GTCommand extends CommandBase {
             new ChatComponentText(
                 "\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, "
                     + "\n if <amount> isnt specified, will add"
-                    + GTMod.gregtechproxy.mPollutionSmogLimit
+                    + GTMod.proxy.mPollutionSmogLimit
                     + "gibbl."));
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
         sender.addChatMessage(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
@@ -191,8 +191,7 @@ public final class GTCommand extends CommandBase {
             }
             case "pollution" -> {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
-                int amount = (strings.length < 2) ? GTMod.gregtechproxy.mPollutionSmogLimit
-                    : Integer.parseInt(strings[1]);
+                int amount = (strings.length < 2) ? GTMod.proxy.mPollutionSmogLimit : Integer.parseInt(strings[1]);
                 Pollution.addPollution(
                     sender.getEntityWorld()
                         .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),

@@ -35,7 +35,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
 
                 final TileEntity tTileEntity;
 
-                GTMod.gregtechproxy.TICK_LOCK.lock();
+                GTMod.proxy.TICK_LOCK.lock();
                 try {
                     // we dont want to go over cables that are in unloaded chunks
                     // keeping the lock just to make sure no CME happens
@@ -45,7 +45,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                         tTileEntity = null;
                     }
                 } finally {
-                    GTMod.gregtechproxy.TICK_LOCK.unlock();
+                    GTMod.proxy.TICK_LOCK.unlock();
                 }
 
                 // See if the block itself needs an update

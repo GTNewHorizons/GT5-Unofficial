@@ -54,7 +54,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             mte.getZCoord(),
             mte.getWorld().provider.dimensionId,
             poweredRange);
-        GTMod.gregtechproxy.tetherManager.registerPylon(mte.getWorld().provider.dimensionId, this.machineTether);
+        GTMod.proxy.tetherManager.registerPylon(mte.getWorld().provider.dimensionId, this.machineTether);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
         // Tether range is determined if the machine has enough EU
         if (mte.isAllowedToWork()) {
             machineTether.active(true);
-            boolean playerConnected = GTMod.gregtechproxy.tetherManager.hasPlayerConnect(this.machineTether);
+            boolean playerConnected = GTMod.proxy.tetherManager.hasPlayerConnect(this.machineTether);
             mte.setActive(playerConnected);
             if (mte.isUniversalEnergyStored(powerCost)) {
                 machineTether.range(poweredRange);
@@ -88,7 +88,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager
+            GTMod.proxy.tetherManager
                 .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
         }
     }
@@ -97,7 +97,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onUnload() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager
+            GTMod.proxy.tetherManager
                 .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
         }
     }

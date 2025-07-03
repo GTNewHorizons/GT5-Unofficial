@@ -245,7 +245,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
         for (int i = 0; i < mPipeAmount; i++) if (mFluids[i] != null)
             aNBT.setTag("mFluid" + (i == 0 ? "" : i), mFluids[i].writeToNBT(new NBTTagCompound()));
         aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             aNBT.setByte("mConnections", mConnections);
             aNBT.setByte("mDisableInput", mDisableInput);
         }
@@ -256,7 +256,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
         for (int i = 0; i < mPipeAmount; i++)
             mFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid" + (i == 0 ? "" : i)));
         mLastReceivedFrom = aNBT.getByte("mLastReceivedFrom");
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
             mDisableInput = aNBT.getByte("mDisableInput");
         }
@@ -293,7 +293,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 mLastReceivedFrom = 0;
             }
 
-            if (!GTMod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
+            if (!GTMod.proxy.gt6Pipe || mCheckConnections) checkConnections();
 
             final boolean shouldDistribute = (oLastReceivedFrom == mLastReceivedFrom);
             for (int i = 0, j = aBaseMetaTileEntity.getRandomNumber(mPipeAmount); i < mPipeAmount; i++) {
@@ -598,7 +598,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             final int mode = MetaGeneratedTool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
             MTEFluidPipe currentPipe = (MTEFluidPipe) currentPipeBase.getMetaTileEntity();
@@ -739,7 +739,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
-        return GTMod.gregtechproxy.gt6Pipe;
+        return GTMod.proxy.gt6Pipe;
     }
 
     @Override

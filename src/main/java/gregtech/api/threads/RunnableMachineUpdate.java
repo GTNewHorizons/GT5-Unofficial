@@ -134,13 +134,13 @@ public class RunnableMachineUpdate implements Runnable {
                 // `loadedTileEntityList`... which might be in the process
                 // of being iterated over during `UpdateEntities()`... which might cause a
                 // ConcurrentModificationException. So, lock that shit.
-                GTMod.gregtechproxy.TICK_LOCK.lock();
+                GTMod.proxy.TICK_LOCK.lock();
                 try {
                     tTileEntity = world.getTileEntity(posX, posY, posZ);
                     isMachineBlock = GregTechAPI
                         .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
                 } finally {
-                    GTMod.gregtechproxy.TICK_LOCK.unlock();
+                    GTMod.proxy.TICK_LOCK.unlock();
                 }
 
                 // See if the block itself needs an update

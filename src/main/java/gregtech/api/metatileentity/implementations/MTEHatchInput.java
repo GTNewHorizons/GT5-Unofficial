@@ -76,7 +76,7 @@ public class MTEHatchInput extends MTEHatch {
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
                 TextureFactory.of(FLUID_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
@@ -86,7 +86,7 @@ public class MTEHatchInput extends MTEHatch {
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
                 TextureFactory.of(FLUID_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };

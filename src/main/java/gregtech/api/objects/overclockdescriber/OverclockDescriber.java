@@ -61,7 +61,7 @@ public abstract class OverclockDescriber {
         if (getDurationTicks(recipeInfo.calculator) <= 0) return;
 
         String textToDraw = trans("158", "Time: ");
-        if (GTMod.gregtechproxy.mNEIRecipeSecondMode) {
+        if (GTMod.proxy.mNEIRecipeSecondMode) {
             textToDraw += getDurationStringSeconds(recipeInfo.calculator);
             if (getDurationSeconds(recipeInfo.calculator) <= 1.0d) {
                 textToDraw += String.format(" (%s)", getDurationStringTicks(recipeInfo.calculator));
