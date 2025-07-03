@@ -20,6 +20,7 @@ import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -204,7 +205,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     0)))// t1 frame
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0))
         .addElement('C', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block
-        .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 5))
+        .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 6))
         .addElement('E', Casings.IsamillGearBoxCasing.asElement())
         .addElement('F', Casings.TurbineShaft.asElement())
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0))
@@ -224,7 +225,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 .casingIndex(1538)
                 .dot(2)
                 .build())
-        .addElement('K', lazy(t -> ofBlock(LudicrousBlocks.resource_block, 0))) // t2 block
+        .addElement('K', lazy(t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block , 0) : ofBlock(GregTechAPI.sBlockMetal5,2))) // t2 block
         .addElement('L', ofFrame(Materials.Neutronium)) // t2 frame
         .addElement('M', lazy(t -> ofBlock(LudicrousBlocks.resource_block, 1))) // t3 block
         .addElement('N', ofFrame(Materials.Infinity)) // t3 frame
@@ -363,6 +364,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addInfo("200% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Will not perform overclocks over the hatch tier.")
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Gains " + EnumChatFormatting.WHITE
@@ -738,7 +740,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     @Override
-    protected boolean useMui2() {
+    protected boolean forceUseMui2() {
         return true;
     }
 
