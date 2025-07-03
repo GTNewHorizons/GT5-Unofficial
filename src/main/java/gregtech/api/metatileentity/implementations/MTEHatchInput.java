@@ -55,7 +55,7 @@ public class MTEHatchInput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
+            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
         mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
     }
 
