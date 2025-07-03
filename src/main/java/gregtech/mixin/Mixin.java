@@ -81,13 +81,6 @@ public enum Mixin {
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
 
-    LoadWorldHook(new Builder("Hook into world loading to reset some renderers")
-        .addMixinClasses("minecraft.MinecraftLoadWorldMixin")
-        .addTargetedMod(VANILLA)
-        .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)
-        .setSide(Side.CLIENT)),
-
     ForgeHooksMixin(new Builder("Adds missing hooks in ForgeHooks").addMixinClasses("forge.ForgeHooksMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)

@@ -7,6 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
@@ -35,6 +36,11 @@ public class GTPowerfailRenderer {
         if (event.map.getTextureType() == 0) { // blocks
             POWERFAIL_ICON = event.map.registerIcon(Mods.GregTech.getResourcePath("icons", "powerfail"));
         }
+    }
+
+    @SubscribeEvent
+    public static void onWorldUnload(WorldEvent.Unload event) {
+        POWERFAILS = null;
     }
 
     @SubscribeEvent
