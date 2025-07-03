@@ -59,6 +59,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -159,7 +160,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H    F    H   ", "  H    BEB    H  ", "  H   BEEEB   H  ", "  H  BEEEEEB  H  ", "  H   BEEEB   H  ", "  H    BEB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
                     { "                 ", "       GJG       ", "      HG GH      ", "    BH G G HB    ", "   B   GGG   B   ", "   H    B    H   ", "  H    BFB    H  ", "  I   BEBEB   I  ", "  I  BBBEBBB  I  ", "  I   BEBEB   I  ", "  H    BBB    H  ", "   H    B    H   ", "   B   GGG   B   ", "    BH G G HB    ", "      HG GH      ", "       GJG       ", "                 " },
                     { "                 ", "       GGG       ", "      HGGGH      ", "    BH GGG HB    ", "   B   GGG   B   ", "   H   MMM   H   ", "  H   MMMMM   H  ", "  I  MMEEEMM  I  ", "  I  MMEEEMM  I  ", "  I  MMEEEMM  I  ", "  H   MMMMM   H  ", "   H   MMM   H   ", "   B   GGG   B   ", "    BH GGG HB    ", "      HGGGH      ", "       GGG       ", "                 " },
-                    { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
+                    { "                 ", "                 ", "      HHHHH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HHHHH      ", "                 ", "                 " },
                     { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
                     { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
                     { "                 ", "                 ", "      HIIIH      ", "    BH     HB    ", "   B         B   ", "   H   DDD   H   ", "  H   D   D   H  ", "  I  D     D  I  ", "  I  D  N  D  I  ", "  I  D     D  I  ", "  H   D   D   H  ", "   H   DDD   H   ", "   B         B   ", "    BH     HB    ", "      HIIIH      ", "                 ", "                 " },
@@ -529,17 +530,28 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mTier = 0;
-
-        boolean hasEnoughCasings = false;
         if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 1;
-        } else if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset, depthOffset)) {
+        }
+        mCasingAmount = 0;
+        if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 2;
-        } else if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset, depthOffset)) {
+        }
+        mCasingAmount = 0;
+        if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 3;
-        } else if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset, depthOffset)) {
+        }
+        mCasingAmount = 0;
+        if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 4;
         }
+        GTDataUtils.dedupList(mExoticEnergyHatches);
+        GTDataUtils.dedupList(mEnergyHatches);
+        GTDataUtils.dedupList(mOutputBusses);
+        GTDataUtils.dedupList(mOutputHatches);
+        GTDataUtils.dedupList(mInputHatches);
+        GTDataUtils.dedupList(mInputBusses);
+        GTDataUtils.dedupList(mMaintenanceHatches);
 
         return mTier > 0 && mCasingAmount >= 550;
     }

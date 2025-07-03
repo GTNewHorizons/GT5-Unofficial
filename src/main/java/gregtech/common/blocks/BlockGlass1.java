@@ -34,7 +34,8 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             ItemList.Hawking_Glass,
             "Hawking Radiation Realignment Focus",
             translatedText("gt.casing.hawking-focus"));
-        register(5, ItemList.Chamber_Grate, "Chamber Grate");
+
+        register(6, ItemList.Chamber_Grate, "Chamber Grate");
     }
 
     @Override
@@ -73,7 +74,8 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
-            case 5 -> Textures.BlockIcons.SIEVE_MESH.getIcon();
+
+            case 6 -> Textures.BlockIcons.SIEVE_MESH.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
