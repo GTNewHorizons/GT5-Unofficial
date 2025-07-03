@@ -2664,21 +2664,24 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_UUID.put(
-            player.getGameProfile()
-                .getId(),
-            player);
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
     }
 
     @SubscribeEvent
     public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
-        if (!(event.player instanceof EntityPlayerMP playerMP)) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
             return;
         }
-        PLAYERS_BY_UUID.remove(
-            playerMP.getGameProfile()
-                .getId());
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.remove(UUID);
+        }
     }
 
     @SubscribeEvent
@@ -2687,10 +2690,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_UUID.put(
-            player.getGameProfile()
-                .getId(),
-            player);
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
     }
 
     @SubscribeEvent
@@ -2699,10 +2703,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             // this should never happen
             return;
         }
-        PLAYERS_BY_UUID.put(
-            player.getGameProfile()
-                .getId(),
-            player);
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
     }
 
     /**
@@ -2713,16 +2718,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
      */
     @Nullable
     public EntityPlayerMP getPlayerMP(UUID uuid) {
-        if (FMLCommonHandler.instance()
+        if (!FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) {
-            if (PLAYERS_BY_UUID != null) {
-                return PLAYERS_BY_UUID.get(uuid);
-            } else {
-                throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
-            }
-        } else {
             throw new RuntimeException("Tried to retrieve an EntityPlayerMP from outside of the server thread!");
+        }
+        if (PLAYERS_BY_UUID != null) {
+            return PLAYERS_BY_UUID.get(uuid);
+        } else {
+            throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
         }
     }
 
