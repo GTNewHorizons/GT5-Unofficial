@@ -38,6 +38,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -98,6 +100,11 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -154,6 +161,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
@@ -667,6 +675,9 @@ public class GTProxy implements IFuelHandler {
 
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
+    /** A fast lookup for players. */
+    private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
 
@@ -1161,6 +1172,7 @@ public class GTProxy implements IFuelHandler {
     public void onServerStarting(FMLServerStartingEvent event) {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
 
+        PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
 
@@ -1225,17 +1237,14 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStopped(FMLServerStoppedEvent event) {
         WirelessChargerManager.clearChargerMap();
-        if (spawnEventHandler != null) {
-            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
-            spawnEventHandler = null;
-        }
-        if (tetherManager != null) {
-            FMLCommonHandler.instance()
-                .bus()
-                .unregister(tetherManager);
-            tetherManager = null;
-        }
+        MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        spawnEventHandler = null;
+        FMLCommonHandler.instance()
+            .bus()
+            .unregister(tetherManager);
+        tetherManager = null;
         dimensionWisePollution.clear();
+        PLAYERS_BY_UUID = null;
     }
 
     /**
@@ -2449,4 +2458,77 @@ public class GTProxy implements IFuelHandler {
         if (event.block.getUnlocalizedName()
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
+
+    @SubscribeEvent
+    public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            // this should never happen
+            return;
+        }
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
+    }
+
+    @SubscribeEvent
+    public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            // this should never happen
+            return;
+        }
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.remove(UUID);
+        }
+    }
+
+    @SubscribeEvent
+    public void playerMap$onPlayerChangeDim(PlayerChangedDimensionEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            // this should never happen
+            return;
+        }
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
+    }
+
+    @SubscribeEvent
+    public void playerMap$onPlayerRespawn(PlayerRespawnEvent event) {
+        if (!(event.player instanceof EntityPlayerMP player)) {
+            // this should never happen
+            return;
+        }
+        final UUID UUID = player.getGameProfile()
+            .getId();
+        if (UUID != null) {
+            PLAYERS_BY_UUID.put(UUID, player);
+        }
+    }
+
+    /**
+     * This method allows fast lookup of EntityPlayerMp from UUID.
+     * It should only ever be called from the ServerThread and while the Server is running.
+     *
+     * @param uuid - uuid of the EntityPlayerMP
+     */
+    @Nullable
+    public EntityPlayerMP getPlayerMP(UUID uuid) {
+        if (!FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            throw new RuntimeException("Tried to retrieve an EntityPlayerMP from outside of the server thread!");
+        }
+        if (PLAYERS_BY_UUID != null) {
+            return PLAYERS_BY_UUID.get(uuid);
+        } else {
+            throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
+        }
+    }
+
 }
