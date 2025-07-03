@@ -183,16 +183,17 @@ public class BlockOverlayRenderer {
         // draw grid
         GL11.glTranslated(0.0D, -0.502D, 0.0D);
         GL11.glLineWidth(2.5F);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3d(+.50D, .0D, -.25D);
-        GL11.glVertex3d(-.50D, .0D, -.25D);
-        GL11.glVertex3d(+.50D, .0D, +.25D);
-        GL11.glVertex3d(-.50D, .0D, +.25D);
-        GL11.glVertex3d(+.25D, .0D, -.50D);
-        GL11.glVertex3d(+.25D, .0D, +.50D);
-        GL11.glVertex3d(-.25D, .0D, -.50D);
-        GL11.glVertex3d(-.25D, .0D, +.50D);
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawing(GL11.GL_LINES);
+        tess.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
+        tess.addVertex(+.50D, .0D, -.25D);
+        tess.addVertex(-.50D, .0D, -.25D);
+        tess.addVertex(+.50D, .0D, +.25D);
+        tess.addVertex(-.50D, .0D, +.25D);
+        tess.addVertex(+.25D, .0D, -.50D);
+        tess.addVertex(+.25D, .0D, +.50D);
+        tess.addVertex(-.25D, .0D, -.50D);
+        tess.addVertex(-.25D, .0D, +.50D);
         final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
         final Block block = player.worldObj.getBlock(target.blockX, target.blockY, target.blockZ);
         final int meta = player.worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
@@ -222,58 +223,58 @@ public class BlockOverlayRenderer {
                 if ((tConnections & tSide.flag) != 0) {
                     switch (GRID_SWITCH_TABLE[target.sideHit][tSide.ordinal()]) {
                         case 0 -> {
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
+                            tess.addVertex(+.25D, .0D, +.25D);
+                            tess.addVertex(-.25D, .0D, -.25D);
+                            tess.addVertex(-.25D, .0D, +.25D);
+                            tess.addVertex(+.25D, .0D, -.25D);
                         }
                         case 1 -> {
-                            GL11.glVertex3d(-.25D, .0D, +.50D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.50D);
+                            tess.addVertex(-.25D, .0D, +.50D);
+                            tess.addVertex(+.25D, .0D, +.25D);
+                            tess.addVertex(-.25D, .0D, +.25D);
+                            tess.addVertex(+.25D, .0D, +.50D);
                         }
                         case 2 -> {
-                            GL11.glVertex3d(-.50D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.50D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
+                            tess.addVertex(-.50D, .0D, -.25D);
+                            tess.addVertex(-.25D, .0D, +.25D);
+                            tess.addVertex(-.50D, .0D, +.25D);
+                            tess.addVertex(-.25D, .0D, -.25D);
                         }
                         case 3 -> {
-                            GL11.glVertex3d(-.25D, .0D, -.50D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.50D);
+                            tess.addVertex(-.25D, .0D, -.50D);
+                            tess.addVertex(+.25D, .0D, -.25D);
+                            tess.addVertex(-.25D, .0D, -.25D);
+                            tess.addVertex(+.25D, .0D, -.50D);
                         }
                         case 4 -> {
-                            GL11.glVertex3d(+.50D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.50D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
+                            tess.addVertex(+.50D, .0D, -.25D);
+                            tess.addVertex(+.25D, .0D, +.25D);
+                            tess.addVertex(+.50D, .0D, +.25D);
+                            tess.addVertex(+.25D, .0D, -.25D);
                         }
                         case 5 -> {
-                            GL11.glVertex3d(+.50D, .0D, +.50D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.50D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.50D);
-                            GL11.glVertex3d(+.50D, .0D, -.50D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                            GL11.glVertex3d(+.50D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.50D);
-                            GL11.glVertex3d(-.50D, .0D, +.50D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.50D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.50D);
-                            GL11.glVertex3d(-.50D, .0D, -.50D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.50D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.50D);
+                            tess.addVertex(+.50D, .0D, +.50D);
+                            tess.addVertex(+.25D, .0D, +.25D);
+                            tess.addVertex(+.50D, .0D, +.25D);
+                            tess.addVertex(+.25D, .0D, +.50D);
+                            tess.addVertex(+.50D, .0D, -.50D);
+                            tess.addVertex(+.25D, .0D, -.25D);
+                            tess.addVertex(+.50D, .0D, -.25D);
+                            tess.addVertex(+.25D, .0D, -.50D);
+                            tess.addVertex(-.50D, .0D, +.50D);
+                            tess.addVertex(-.25D, .0D, +.25D);
+                            tess.addVertex(-.50D, .0D, +.25D);
+                            tess.addVertex(-.25D, .0D, +.50D);
+                            tess.addVertex(-.50D, .0D, -.50D);
+                            tess.addVertex(-.25D, .0D, -.25D);
+                            tess.addVertex(-.50D, .0D, -.25D);
+                            tess.addVertex(-.25D, .0D, -.50D);
                         }
                     }
                 }
             }
         }
-        GL11.glEnd();
+        tess.draw();
         // draw turning indicator
         Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
             try {
@@ -341,23 +342,24 @@ public class BlockOverlayRenderer {
 
     private static void compileRotationMarkerDisplayList(int displayList) {
         GL11.glNewList(displayList, GL11.GL_COMPILE);
-        GL11.glBegin(GL_LINE_LOOP);
+        Tessellator tess = Tessellator.instance;
+        tess.startDrawing(GL_LINE_LOOP);
         for (int i = 0; i <= ROTATION_MARKER_RESOLUTION; i++) {
-            GL11.glVertex3d(
+            tess.addVertex(
                 Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4,
                 0,
                 Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4);
         }
         for (int i = ROTATION_MARKER_RESOLUTION; i >= 0; i--) {
-            GL11.glVertex3d(
+            tess.addVertex(
                 Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24,
                 0,
                 Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24);
         }
-        GL11.glVertex3d(0.141114561800, 0, 0);
-        GL11.glVertex3d(0.32, 0, -0.178885438199);
-        GL11.glVertex3d(0.498885438199, 0, 0);
-        GL11.glEnd();
+        tess.addVertex(0.141114561800, 0, 0);
+        tess.addVertex(0.32, 0, -0.178885438199);
+        tess.addVertex(0.498885438199, 0, 0);
+        tess.draw();
         GL11.glEndList();
     }
 
