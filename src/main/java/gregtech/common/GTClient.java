@@ -969,9 +969,9 @@ public class GTClient extends GTProxy {
         return renderTickTime;
     }
 
-    private static boolean hideThings = false;
+    private boolean hideThings = false;
 
-    public static boolean shouldHideThings() {
+    public boolean shouldHideThings() {
         return hideThings;
     }
 
