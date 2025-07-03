@@ -1,6 +1,8 @@
 package gregtech.common.misc;
 
-import static gregtech.common.misc.WirelessNetworkManager.*;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
+import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
