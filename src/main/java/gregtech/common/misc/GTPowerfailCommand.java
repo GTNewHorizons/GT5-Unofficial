@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -60,12 +59,7 @@ public class GTPowerfailCommand extends CommandBase {
             l.addAll(Arrays.asList(SUBCOMMANDS));
         } else {
             if (args.length == 1) {
-                if (Stream.of(SUBCOMMANDS)
-                    .anyMatch(s -> s.startsWith(first))) {
-                    Stream.of(SUBCOMMANDS)
-                        .filter(s -> s.startsWith(first))
-                        .forEach(l::add);
-                }
+                l.addAll(getListOfStringsMatchingLastWord(args, SUBCOMMANDS));
             }
         }
 
@@ -135,9 +129,6 @@ public class GTPowerfailCommand extends CommandBase {
             case "hide" -> {
                 GTPowerfailTracker.hidePowerfails(player);
                 sender.addChatMessage(new ChatComponentText("Disabled powerfail overlay rendering."));
-            }
-            case "help" -> {
-                printHelp(sender);
             }
             default -> {
                 printHelp(sender);
