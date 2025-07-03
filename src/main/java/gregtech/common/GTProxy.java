@@ -87,6 +87,15 @@ import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -749,7 +758,7 @@ public class GTProxy implements IFuelHandler {
         return null;
     }
 
-    public void onPreLoad() {
+    public void onPreInitialization(FMLPreInitializationEvent event) {
         GTLog.out.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
@@ -979,7 +988,7 @@ public class GTProxy implements IFuelHandler {
         GTChunkManager.init();
     }
 
-    public void onLoad() {
+    public void onInitialization(FMLInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning Load-Phase.");
         GTLog.ore.println("GTMod: Beginning Load-Phase.");
 
@@ -1046,12 +1055,12 @@ public class GTProxy implements IFuelHandler {
     @Deprecated
     public static long tBits = GTModHandler.RecipeBits.BITST;
 
-    public void onPostLoad() {
+    public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
 
         // This needs to happen late enough that all of the fluids we need have been registered.
-        // onLoad() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
+        // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
 
         GTOreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
@@ -1143,13 +1152,13 @@ public class GTProxy implements IFuelHandler {
         CoverRegistry.reloadCoverColorOverrides();
     }
 
-    public void onLoadComplete() {}
+    public void onLoadComplete(FMLLoadCompleteEvent event) {}
 
-    public void onServerAboutToStart() {
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         GTChunkAssociatedData.clearAll();
     }
 
-    public void onServerStarting() {
+    public void onServerStarting(FMLServerStartingEvent event) {
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
 
         isFirstWorldTick = true;
@@ -1182,7 +1191,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    public void onServerStarted() {
+    public void onServerStarted(FMLServerStartedEvent event) {
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
@@ -1208,13 +1217,13 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    public void onServerStopping() {
+    public void onServerStopping(FMLServerStoppingEvent event) {
         GTMusicSystem.ServerSystem.reset();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
     }
 
-    public void onServerStopped() {
+    public void onServerStopped(FMLServerStoppedEvent event) {
         WirelessChargerManager.clearChargerMap();
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);

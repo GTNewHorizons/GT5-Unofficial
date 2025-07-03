@@ -39,6 +39,10 @@ import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -247,8 +251,8 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public void onPreLoad() {
-        super.onPreLoad();
+    public void onPreInitialization(FMLPreInitializationEvent event) {
+        super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
@@ -260,8 +264,8 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
+    public void onInitialization(FMLInitializationEvent event) {
+        super.onInitialization(event);
         GTRendererBlock.register();
         GTRendererCasing.register();
         new DroneRender();
@@ -292,8 +296,8 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public void onPostLoad() {
-        super.onPostLoad();
+    public void onPostInitialization(FMLPostInitializationEvent event) {
+        super.onPostInitialization(event);
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
@@ -311,8 +315,8 @@ public class GTClient extends GTProxy {
     }
 
     @Override
-    public void onLoadComplete() {
-        super.onLoadComplete();
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        super.onLoadComplete(event);
         for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
             if (category.recipeMap.getFrontend()
                 .getNEIProperties().registerNEI) {

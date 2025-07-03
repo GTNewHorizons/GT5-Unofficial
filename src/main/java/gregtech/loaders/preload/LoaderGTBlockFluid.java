@@ -164,8 +164,8 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
-        // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostLoad() because we need to wait for fluids to be
-        // registered.
+        // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostInitialization()
+        // because we need to wait for fluids to be registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
         // between load and post-load.
         MetaGeneratedItem98.preInit();

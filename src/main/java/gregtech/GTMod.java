@@ -259,7 +259,7 @@ public class GTMod {
     }
 
     @Mod.EventHandler
-    public void onPreLoad(FMLPreInitializationEvent aEvent) {
+    public void onPreInitialization(FMLPreInitializationEvent event) {
         Locale.setDefault(Locale.ENGLISH);
         if (GregTechAPI.sPreloadStarted) {
             return;
@@ -269,14 +269,14 @@ public class GTMod {
             tRunnable.run();
         }
 
-        GTPreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
+        GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(
-            aEvent.getModConfigurationDirectory()
+            event.getModConfigurationDirectory()
                 .getParentFile());
 
-        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
+        PowerGogglesConfigHandler.init(new File(event.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
-        proxy.onPreLoad();
+        proxy.onPreInitialization(event);
 
         GTLog.out.println("GTMod: Setting Configs");
 
@@ -295,7 +295,7 @@ public class GTMod {
         Materials.init();
 
         GTPreLoad.initLocalization(
-            aEvent.getModConfigurationDirectory()
+            event.getModConfigurationDirectory()
                 .getParentFile());
         GTPreLoad.adjustScrap();
 
@@ -330,11 +330,11 @@ public class GTMod {
 
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isServer()) AssemblyLineServer.fillMap(aEvent);
+            .isServer()) AssemblyLineServer.fillMap(event);
     }
 
     @Mod.EventHandler
-    public void onLoad(FMLInitializationEvent aEvent) {
+    public void onInitialization(FMLInitializationEvent event) {
         if (GregTechAPI.sLoadStarted) {
             return;
         }
@@ -343,16 +343,18 @@ public class GTMod {
             tRunnable.run();
         }
 
-        if (Forestry.isModLoaded())
-            // noinspection InstantiationOfUtilityClass//TODO: Refactor GTBees with proper state handling
+        if (Forestry.isModLoaded()) {
+            // TODO: Refactor GTBees with proper state handling
+            // noinspection InstantiationOfUtilityClass
             new GTBees();
+        }
 
         // Disable Low Grav regardless of config if Cleanroom is disabled.
         if (!proxy.mEnableCleanroom) {
             proxy.mLowGravProcessing = false;
         }
 
-        proxy.onLoad();
+        proxy.onInitialization(event);
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
@@ -383,7 +385,7 @@ public class GTMod {
     }
 
     @Mod.EventHandler
-    public void onPostLoad(FMLPostInitializationEvent aEvent) {
+    public void onPostInitialization(FMLPostInitializationEvent event) {
         if (GregTechAPI.sPostloadStarted) {
             return;
         }
@@ -393,7 +395,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        proxy.onPostLoad();
+        proxy.onPostInitialization(event);
 
         if (DEBUG) {
             // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
@@ -559,8 +561,8 @@ public class GTMod {
     }
 
     @Mod.EventHandler
-    public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
-        proxy.onLoadComplete();
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        proxy.onLoadComplete(event);
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
@@ -569,23 +571,18 @@ public class GTMod {
     }
 
     @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent aEvent) {
-        gregtechproxy.onServerStarted();
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        proxy.onServerAboutToStart(event);
     }
 
     @Mod.EventHandler
-    public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
-        proxy.onServerAboutToStart();
-    }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent aEvent) {
+    public void onServerStarting(FMLServerStartingEvent event) {
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstart) {
             tRunnable.run();
         }
 
-        proxy.onServerStarting();
+        proxy.onServerStarting(event);
         GTModHandler.removeAllIC2Recipes();
         GTLog.out.println("GTMod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
@@ -716,34 +713,25 @@ public class GTMod {
             tRunnable.run();
         }
 
-        aEvent.registerServerCommand(new GTCommand());
-        aEvent.registerServerCommand(new SPCommand());
-        aEvent.registerServerCommand(new SPMCommand());
-        aEvent.registerServerCommand(new SpaceProjectCommand());
+        event.registerServerCommand(new GTCommand());
+        event.registerServerCommand(new SPCommand());
+        event.registerServerCommand(new SPMCommand());
+        event.registerServerCommand(new SpaceProjectCommand());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         RunnableMachineUpdate.initExecutorService();
     }
 
     @Mod.EventHandler
-    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        GTUtility.reInit();
-        GTRecipe.reInit();
-        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
-        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
+    public void onServerStarted(FMLServerStartedEvent event) {
+        proxy.onServerStarted(event);
     }
 
     @Mod.EventHandler
-    public void onServerStopping(FMLServerStoppingEvent aEvent) {
+    public void onServerStopping(FMLServerStoppingEvent event) {
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstop) {
             tRunnable.run();
         }
-
-        proxy.onServerStopping();
-
+        proxy.onServerStopping(event);
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
@@ -753,7 +741,19 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onServerStopped(FMLServerStoppedEvent event) {
-        proxy.onServerStopped();
+        proxy.onServerStopped(event);
+    }
+
+    @Mod.EventHandler
+    public void onIDChangingEvent(FMLModIdMappingEvent event) {
+        GTUtility.reInit();
+        GTRecipe.reInit();
+        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
+            GTUtility.reMap(gt_itemStackMap);
+        }
+        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
+            GTUtility.reMap(gt_itemStackMap);
+        }
     }
 
     @Mod.EventHandler
