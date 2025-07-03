@@ -200,10 +200,9 @@ public class GTClient extends GTProxy {
     private boolean mAnimationDirection;
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
-    public static final int ROTATION_MARKER_RESOLUTION = 120;
+    private static final int ROTATION_MARKER_RESOLUTION = 120;
     private int mReloadCount;
     private float renderTickTime;
-    public static MetaGeneratedItemRenderer metaGeneratedItemRenderer;
 
     public GTClient() {
         mAnimationTick = 0L;
@@ -606,13 +605,12 @@ public class GTClient extends GTProxy {
         new LaserRenderer();
         new WormholeRenderer();
         new BlackholeRenderer();
-
-        metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
+        MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
-            metaGeneratedItemRenderer.registerItem(item);
+            metaItemRenderer.registerItem(item);
         }
         if (Forestry.isModLoaded()) {
-            metaGeneratedItemRenderer.registerItem(GTBees.combs);
+            metaItemRenderer.registerItem(GTBees.combs);
         }
         new MetaGeneratedToolRenderer();
         new FlaskRenderer();
