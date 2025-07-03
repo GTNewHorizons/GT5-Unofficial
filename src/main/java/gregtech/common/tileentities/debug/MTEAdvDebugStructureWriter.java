@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -383,36 +384,37 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
 
         @SideOnly(Side.CLIENT)
         static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
-            GL11.glBegin(GL11.GL_LINE_STRIP);
+            final Tessellator tess = Tessellator.instance;
+            tess.startDrawing(GL11.GL_LINE_STRIP);
 
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x1, y2, z1);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x1, y1, z2);
-            GL11.glVertex3d(x1, y1, z1);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x1, y2, z1);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x1, y1, z2);
+            tess.addVertex(x1, y1, z1);
 
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x2, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x2, y1, z1);
 
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x1, y1, z2);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x1, y2, z1);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x1, y1, z2);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x1, y1, z2);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x1, y2, z1);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x1, y1, z2);
 
             GL11.glEnd();
         }
