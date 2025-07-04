@@ -181,13 +181,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return null;
-        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
-        var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if (!(metaTileEntity instanceof MTEHatchCraftingInputME)) return null;
-        if (master != metaTileEntity) {
-            if (master != null) master.removeProxy(this);
-            master = (MTEHatchCraftingInputME) metaTileEntity;
-            master.addProxy(this);
+        if (!(tileEntity instanceof IGregTechTileEntity GTTE)) return null;
+        if (!(GTTE.getMetaTileEntity() instanceof MTEHatchCraftingInputME newMaster)) return null;
+        if (master != newMaster) {
+            if (master != null) master.removeProxyHatch(this);
+            master = newMaster;
+            master.addProxyHatch(this);
         }
         masterX = x;
         masterY = y;
@@ -251,7 +250,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (master != null) master.removeProxy(this);
+        if (master != null) master.removeProxyHatch(this);
     }
 
     @Override

@@ -427,7 +427,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     public List<ProcessingLogic> processingLogics = new ArrayList<>();
-    private List<MTEHatchCraftingInputSlave> proxies = new ArrayList<>();
+    private List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -497,9 +497,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (aTimer % 20 == 0) {
                 getBaseMetaTileEntity().setActive(isActive());
             }
-            if (aTimer % 100 == 0) {
-                updateProxyList();
-            }
         }
     }
 
@@ -519,20 +516,28 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         updateAE2ProxyColor();
     }
 
-    public void addProxy(MTEHatchCraftingInputSlave proxy) {
-        if (!proxies.contains(proxy)) proxies.add(proxy);
+    public void addProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        if (!proxyHatches.contains(proxy)) proxyHatches.add(proxy);
     }
 
-    public void removeProxy(MTEHatchCraftingInputSlave proxy) {
-        proxies.remove(proxy);
+    public void removeProxyHatch(MTEHatchCraftingInputSlave proxy) {
+        proxyHatches.remove(proxy);
     }
 
-    public List<MTEHatchCraftingInputSlave> getProxies() {
-        return Collections.unmodifiableList(proxies);
+    public List<MTEHatchCraftingInputSlave> getProxyHatches() {
+        validateProxyHatchList();
+        return Collections.unmodifiableList(proxyHatches);
     }
 
-    public void updateProxyList() {
-        proxies.removeIf(proxy -> proxy == null || proxy.getBaseMetaTileEntity() == null || proxy.getMaster() != this);
+    private long lastProxyHatchValidationTime = -1;
+
+    private void validateProxyHatchList() {
+        long currentTime = getBaseMetaTileEntity().getTimer();
+        if (currentTime != lastProxyHatchValidationTime) {
+            proxyHatches
+                .removeIf(hatch -> hatch == null || hatch.getBaseMetaTileEntity() == null || hatch.getMaster() != this);
+            lastProxyHatchValidationTime = currentTime;
+        }
     }
 
     public void updateAE2ProxyColor() {
