@@ -481,14 +481,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         }
                     }
 
-                    TileEntityNanoForgeRenderer tile = getRenderer();
-                    ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
-                    if (data != null) {
-                        Materials mat = data.mMaterial.mMaterial;
-                        short[] color = mat.mRGBa;
-                        tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
-                    } else {
-                        tile.setColor(1, 1, 1);
+                    if (renderActive) {
+                        TileEntityNanoForgeRenderer tile = getRenderer();
+                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                        if (data != null) {
+                            Materials mat = data.mMaterial.mMaterial;
+                            short[] color = mat.mRGBa;
+                            tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
+                        } else {
+                            tile.setColor(1, 1, 1);
+                        }
                     }
 
                     if (foundNanite) {
