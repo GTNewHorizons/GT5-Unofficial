@@ -110,7 +110,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
-            .addConditionalPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom")

@@ -218,8 +218,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addInfo("Mixes fluids or solids with a magical catalyst.")
             .addInfo("Catalyst is consumed by the recipe, then returned upon completion.")
             .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC).")
-            .addConditionalPerfectOCInfo();
+            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC).");
 
         tt.beginStructureBlock(true)
             .addAllCasingInfo();

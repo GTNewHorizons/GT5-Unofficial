@@ -618,7 +618,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up, draining")
             .addInfo("the total amount of stored runtime.")
-            .addConditionalPerfectOCInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")

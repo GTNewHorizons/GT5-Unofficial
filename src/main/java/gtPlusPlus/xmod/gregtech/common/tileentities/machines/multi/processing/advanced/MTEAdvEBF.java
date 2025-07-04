@@ -99,7 +99,6 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
             .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
             .addInfo("Constructed exactly the same as a normal EBF")
-            .addConditionalPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Bottom center")
             .addCasingInfoMin(mCasingName, 6, false)
