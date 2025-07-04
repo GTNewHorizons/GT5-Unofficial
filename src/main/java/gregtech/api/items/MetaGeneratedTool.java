@@ -175,7 +175,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind) {
+    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+        if (!keyDown) return;
         ItemStack currentItem = player.inventory.getCurrentItem();
         if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
         byte maxMode = item.getToolMaxMode(currentItem);

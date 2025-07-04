@@ -5,8 +5,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.common.handlers.ToolModeSwitchKeybindHandler;
 
 public class BehaviourSwitchMode extends BehaviourNone {
 
@@ -18,7 +22,14 @@ public class BehaviourSwitchMode extends BehaviourNone {
         if ((aItem instanceof MetaGeneratedTool itemTool)) {
             final int maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode > 1) {
-                aList.add(StatCollector.translateToLocal("gt.behaviour.switch_mode.tooltip"));
+                int keyCode = ToolModeSwitchKeybindHandler.TOOL_MODE_SWITCH_KEYBIND.getKeyCode();
+                String keyName;
+                if (keyCode < 0) {
+                    keyName = Mouse.getButtonName(keyCode + 101);
+                } else {
+                    keyName = Keyboard.getKeyName(keyCode);
+                }
+                aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.switch_mode.tooltip", keyName));
             }
         }
 
