@@ -767,13 +767,13 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onPreInitialization(FMLPreInitializationEvent event) {
+        // spotless:off
         GTLog.out.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
-        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
-            .getRegisteredFluidContainerData()) {
+        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
                 break;
@@ -817,8 +817,7 @@ public class GTProxy implements IFuelHandler {
         ItemList.FR_Bee_Drone.set(GTModHandler.getModItem(Forestry.ID, "beeDroneGE", 1L));
         ItemList.FR_Bee_Princess.set(GTModHandler.getModItem(Forestry.ID, "beePrincessGE", 1L));
         ItemList.FR_Bee_Queen.set(GTModHandler.getModItem(Forestry.ID, "beeQueenGE", 1L));
-        ItemList.FR_Tree_Sapling.set(
-            GTModHandler.getModItem(Forestry.ID, "sapling", 1L, GTModHandler.getModItem(Forestry.ID, "saplingGE", 1L)));
+        ItemList.FR_Tree_Sapling.set(GTModHandler.getModItem(Forestry.ID, "sapling", 1L, GTModHandler.getModItem(Forestry.ID, "saplingGE", 1L)));
         ItemList.FR_Butterfly.set(GTModHandler.getModItem(Forestry.ID, "butterflyGE", 1L));
         ItemList.FR_Larvae.set(GTModHandler.getModItem(Forestry.ID, "beeLarvaeGE", 1L));
         ItemList.FR_Serum.set(GTModHandler.getModItem(Forestry.ID, "serumGE", 1L));
@@ -832,18 +831,10 @@ public class GTProxy implements IFuelHandler {
         ItemList.Bottle_Empty.set(new ItemStack(Items.glass_bottle, 1));
 
         ItemList.Cell_Universal_Fluid.set(GTModHandler.getIC2Item("FluidCell", 1L));
-        ItemList.Cell_Empty.set(
-            GTModHandler.getIC2Item(
-                "cell",
-                1L,
-                GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
+        ItemList.Cell_Empty.set(GTModHandler.getIC2Item("cell", 1L, GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
         ItemList.Cell_Water.set(GTModHandler.getIC2Item("waterCell", 1L, GTModHandler.getIC2Item("cellWater", 1L)));
         ItemList.Cell_Lava.set(GTModHandler.getIC2Item("lavaCell", 1L, GTModHandler.getIC2Item("cellLava", 1L)));
-        ItemList.Cell_Air.set(
-            GTModHandler.getIC2Item(
-                "airCell",
-                1L,
-                GTModHandler.getIC2Item("cellAir", 1L, GTModHandler.getIC2Item("cellOxygen", 1L))));
+        ItemList.Cell_Air.set(GTModHandler.getIC2Item("airCell", 1L, GTModHandler.getIC2Item("cellAir", 1L, GTModHandler.getIC2Item("cellOxygen", 1L))));
 
         ItemList.IC2_Item_Casing_Iron.set(GTModHandler.getIC2Item("casingiron", 1L));
         ItemList.IC2_Item_Casing_Gold.set(GTModHandler.getIC2Item("casinggold", 1L));
@@ -860,8 +851,7 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Hops.set(GTModHandler.getIC2Item("hops", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
         ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
-        ItemList.IC2_PlantballCompressed
-            .set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
+        ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
         ItemList.IC2_Crop_Seeds.set(GTModHandler.getIC2Item("cropSeed", 1L));
         ItemList.IC2_Grin_Powder.set(GTModHandler.getIC2Item("grinPowder", 1L));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
@@ -871,8 +861,7 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
-        ItemList.IC2_Industrial_Diamond
-            .set(GTModHandler.getIC2Item("industrialDiamond", 1L, new ItemStack(Items.diamond, 1)));
+        ItemList.IC2_Industrial_Diamond.set(GTModHandler.getIC2Item("industrialDiamond", 1L, new ItemStack(Items.diamond, 1)));
         ItemList.IC2_Compressed_Coal_Ball.set(GTModHandler.getIC2Item("compressedCoalBall", 1L));
         ItemList.IC2_Compressed_Coal_Chunk.set(GTModHandler.getIC2Item("coalChunk", 1L));
         ItemList.IC2_ShaftIron.set(GTModHandler.getIC2Item("ironshaft", 1L));
@@ -957,19 +946,15 @@ public class GTProxy implements IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.plateNaga", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.legsNaga", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticHelm", 1L, 32767));
-        GTModHandler.sNonReplaceableItems
-            .add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticPlate", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticPlate", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticLegs", 1L, 32767));
-        GTModHandler.sNonReplaceableItems
-            .add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticBoots", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.arcticBoots", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.yetiHelm", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.yetiPlate", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.yetiLegs", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(TwilightForest.ID, "item.yetiBoots", 1L, 32767));
-        GTModHandler.sNonReplaceableItems
-            .add(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ToolCertusQuartzCuttingKnife", 1L, 32767));
-        GTModHandler.sNonReplaceableItems
-            .add(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ToolNetherQuartzCuttingKnife", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ToolCertusQuartzCuttingKnife", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ToolNetherQuartzCuttingKnife", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "apiaristHelmet", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "apiaristChest", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "apiaristLegs", 1L, 32767));
@@ -978,27 +963,18 @@ public class GTProxy implements IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "frameImpregnated", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "frameProven", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(Forestry.ID, "waxCast", 1L, 32767));
-        GTModHandler.sNonReplaceableItems
-            .add(GTModHandler.getModItem(GalacticraftCore.ID, "item.sensorGlasses", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(GTModHandler.getModItem(GalacticraftCore.ID, "item.sensorGlasses", 1L, 32767));
 
-        RecipeSorter.register(
-            "gregtech:shaped",
-            GTShapedRecipe.class,
-            RecipeSorter.Category.SHAPED,
-            "after:minecraft:shaped before:minecraft:shapeless");
-        RecipeSorter.register(
-            "gregtech:shapeless",
-            GTShapelessRecipe.class,
-            RecipeSorter.Category.SHAPELESS,
-            "after:minecraft:shapeless");
+        RecipeSorter.register("gregtech:shaped", GTShapedRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        RecipeSorter.register("gregtech:shapeless", GTShapelessRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
         // Register chunk manager with Forge
         GTChunkManager.init();
+        // spotless:on
     }
 
     public void onInitialization(FMLInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning Load-Phase.");
-        GTLog.ore.println("GTMod: Beginning Load-Phase.");
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -1180,8 +1156,7 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance().bus().register(tetherManager);
         // spotless:off
 
-        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
-            .getRegisteredFluidContainerData()) {
+        for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
                 break;
@@ -1192,21 +1167,16 @@ public class GTProxy implements IFuelHandler {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
                 } catch (Throwable e) {
-                    throw new RuntimeException(
-                        "Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i],
-                        e);
+                    throw new RuntimeException("Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
         }
     }
 
     public void onServerStarted(FMLServerStartedEvent event) {
-        MTEDroneCentre.getCentreMap()
-            .clear();
-        GTLog.out.println(
-            "GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
-        List<IRecipe> tList = CraftingManager.getInstance()
-            .getRecipeList();
+        MTEDroneCentre.getCentreMap().clear();
+        GTLog.out.println("GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
+        List<IRecipe> tList = CraftingManager.getInstance().getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
             if ((tList.get(i) instanceof ShapedOreRecipe)) {
                 for (Object tObject : ((ShapedOreRecipe) tList.get(i)).getInput()) {
