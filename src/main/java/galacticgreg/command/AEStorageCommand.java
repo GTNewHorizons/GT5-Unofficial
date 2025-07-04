@@ -1,16 +1,10 @@
 package galacticgreg.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -20,18 +14,16 @@ import galacticgreg.GalacticGreg;
 import galacticgreg.auxiliary.PlayerChatHelper;
 import galacticgreg.schematics.SpaceSchematic;
 import galacticgreg.schematics.SpaceSchematicFactory;
+import gregtech.commands.GTBaseCommand;
 
 /**
  * This command allows to export any structure that has been stored inside a spatial storage cell to a xml file that can
  * later be enabled for spawning in dimensions.
  */
-public class AEStorageCommand implements ICommand {
-
-    private final List<String> aliases;
+public class AEStorageCommand extends GTBaseCommand {
 
     public AEStorageCommand() {
-        this.aliases = new ArrayList<>();
-        this.aliases.add("exportae");
+        super("exportae");
     }
 
     @Override
@@ -45,27 +37,22 @@ public class AEStorageCommand implements ICommand {
     }
 
     @Override
-    public List<String> getCommandAliases() {
-        return this.aliases;
-    }
-
-    @Override
-    public void processCommand(ICommandSender pCommandSender, String[] pArgs) {
+    public void processCommand(ICommandSender sender, String[] args) {
         try {
-            if (pCommandSender instanceof EntityPlayer tEP) {
-                if (pArgs.length < 1) return;
+            if (sender instanceof EntityPlayer player) {
+                if (args.length < 1) return;
 
-                String tName = pArgs[0];
+                String tName = args[0];
 
                 // Check if item in hand is a spatial storage cell
-                ItemStack tIS = tEP.inventory.getCurrentItem();
+                ItemStack tIS = player.inventory.getCurrentItem();
                 if (tIS.getItem() instanceof ItemSpatialStorageCell tCell) {
                     World tSpatialWorld = tCell.getWorld(tIS);
                     WorldCoord storedSize = tCell.getStoredSize(tIS);
 
                     // Check if SSC is filled
                     if (storedSize.x == 0 || storedSize.y == 0 || storedSize.z == 0) {
-                        PlayerChatHelper.SendError(pCommandSender, "Error: This spatial storage is empty");
+                        PlayerChatHelper.SendError(sender, "Error: This spatial storage is empty");
                         return;
                     }
 
@@ -110,8 +97,7 @@ public class AEStorageCommand implements ICommand {
                                         if (!tTEWarningSend) {
                                             // Send a warning ingame, once per export command
                                             tTEWarningSend = true;
-                                            PlayerChatHelper
-                                                .SendWarn(pCommandSender, "TileEntity states are not exported!");
+                                            PlayerChatHelper.SendWarn(sender, "TileEntity states are not exported!");
                                         }
 
                                     }
@@ -127,21 +113,19 @@ public class AEStorageCommand implements ICommand {
                     // Save structure to disk
                     if (!GalacticGreg.SchematicHandler.SaveSpaceStructure(tSchematic)) {
                         // Something went wrong...
-                        PlayerChatHelper.SendError(pCommandSender, "Something went wrong. Structure not saved");
+                        PlayerChatHelper.SendError(sender, "Something went wrong. Structure not saved");
                     } else {
                         // All good, xml exported. Notify player that he needs to edit the file
                         PlayerChatHelper.SendInfo(
-                            pCommandSender,
+                            sender,
                             "Structure has been exported to " + tSchematic.getName()
                                 + ".xml. It contains "
                                 + tSchematic.coordInfo()
                                     .size()
                                 + " Blocks");
-                        PlayerChatHelper
-                            .SendInfo(pCommandSender, "You have to edit the file before a reload will accept it!");
+                        PlayerChatHelper.SendInfo(sender, "You have to edit the file before a reload will accept it!");
                     }
-                } else PlayerChatHelper
-                    .SendError(pCommandSender, "Error: Item in your hand is not a spatial storage drive!");
+                } else PlayerChatHelper.SendError(sender, "Error: Item in your hand is not a spatial storage drive!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,28 +133,8 @@ public class AEStorageCommand implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender pCommandSender) {
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
         // Command is only enabled for actual players and only if they are OP-ed
-        if (pCommandSender instanceof EntityPlayerMP tEP) {
-            return MinecraftServer.getServer()
-                .getConfigurationManager()
-                .func_152596_g(tEP.getGameProfile());
-        } else return false;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
-        return null;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
-        return false;
+        return isOpedPlayer(sender);
     }
 }
