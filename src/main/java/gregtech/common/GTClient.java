@@ -21,6 +21,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,6 +35,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.lwjgl.input.Keyboard;
 
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
@@ -80,7 +83,6 @@ import gregtech.client.SeekingOggCodec;
 import gregtech.client.capes.GTCapesLoader;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
-import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -111,6 +113,7 @@ import paulscode.sound.SoundSystemException;
 public class GTClient extends GTProxy {
 
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
+    public KeyBinding shakeLockKey;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -309,7 +312,8 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
-        SprayColorInfiniteKeybindHandler.init();
+        shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
+        ClientRegistry.registerKeyBinding(shakeLockKey);
         // spotless:on
     }
 
