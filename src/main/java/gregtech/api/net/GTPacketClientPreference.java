@@ -48,11 +48,17 @@ public class GTPacketClientPreference extends GTPacket {
         aOut.writeBoolean(mPreference.isSingleBlockInitialMultiStackEnabled());
         aOut.writeBoolean(mPreference.isInputBusInitialFilterEnabled());
         aOut.writeBoolean(mPreference.isWailaAverageNSEnabled());
+        aOut.writeBoolean(mPreference.isInputHatchInitialFilterEnabled());
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketClientPreference(
-            new GTClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
+            new GTClientPreference(
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean()));
     }
 }
