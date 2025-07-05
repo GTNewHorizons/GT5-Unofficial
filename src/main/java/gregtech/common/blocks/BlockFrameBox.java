@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         super(new MaterialMachines());
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+        GTLanguageManager
+            .addStringLocalization(getUnlocalizedName() + "." + WILDCARD + ".name", "Any Sub Block of this one");
 
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
@@ -81,6 +82,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
                 textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
             }
         }
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public ItemStack getStackForm(int amount, int meta) {

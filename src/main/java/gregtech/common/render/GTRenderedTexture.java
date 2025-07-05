@@ -17,6 +17,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -31,20 +32,47 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
+    private final Block matBlock;
+    private final int matMeta;
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing) {
+        boolean stdOrient, boolean extFacing, Block matBlock, int matMeta) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
+        this.matBlock = matBlock;
+        this.matMeta = matMeta;
+    }
+
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
+        boolean stdOrient, boolean extFacing) {
+        this(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing, null, 0);
     }
 
     @Override
     public boolean isOldTexture() {
         return false;
+    }
+
+    @Override
+    public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
+        if (matBlock != null && Mods.Angelica.isModLoaded()) {
+            // Iris.setShaderMaterialOverride(matBlock, matMeta);
+        }
+
+        super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
+    }
+
+    @Override
+    public void draw(RenderBlocks aRenderer) {
+        super.draw(aRenderer);
+
+        if (matBlock != null && Mods.Angelica.isModLoaded()) {
+            // Iris.resetShaderMaterialOverride();
+        }
     }
 
     @Override
@@ -220,7 +248,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateBottom = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
 
         aRenderer.renderFaceYNeg(Blocks.air, x, y, z, icon);
 
@@ -234,7 +262,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateTop = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.UP, extendedFacing, icon);
 
         aRenderer.renderFaceYPos(Blocks.air, x, y, z, icon);
 
@@ -248,11 +276,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateEast = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        aRenderer.field_152631_f = true;
+        icon = getFlipped(ForgeDirection.NORTH, extendedFacing, icon);
 
         aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateEast = 0;
+        aRenderer.field_152631_f = false;
     }
 
     /**
@@ -262,7 +292,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateWest = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.SOUTH, extendedFacing, icon);
 
         aRenderer.renderFaceZPos(Blocks.air, x, y, z, icon);
 
@@ -276,7 +306,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateNorth = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.WEST, extendedFacing, icon);
 
         aRenderer.renderFaceXNeg(Blocks.air, x, y, z, icon);
 
@@ -290,11 +320,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateSouth = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        aRenderer.field_152631_f = true;
+        icon = getFlipped(ForgeDirection.EAST, extendedFacing, icon);
 
         aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateSouth = 0;
+        aRenderer.field_152631_f = false;
     }
 
     private static final int NORMAL = 0;
@@ -303,6 +335,9 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private static final int UPSIDE_DOWN = 3;
 
     private int getRotation(ExtendedFacing extendedFacing) {
+        // if we aren't rendering a multi, don't rotate at all
+        if (extendedFacing == null) return NORMAL;
+
         return switch (extendedFacing.getRotation()) {
             case NORMAL -> NORMAL;
             case CLOCKWISE -> CLOCKWISE;
@@ -311,8 +346,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         };
     }
 
-    private GTIconFlipped getFlipped(ExtendedFacing extendedFacing, IIcon icon) {
+    private IIcon getFlipped(ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon) {
+
         boolean flipU = false, flipV = false;
+
+        // if we aren't rendering a multi, don't flip at all
+        if (extendedFacing == null) {
+            if (side == ForgeDirection.EAST || side == ForgeDirection.DOWN) {
+                flipU ^= true;
+            }
+
+            if (side == ForgeDirection.NORTH) {
+                flipV = true;
+            }
+
+            return new GTIconFlipped(icon, flipU, flipV);
+        }
 
         ForgeDirection dir = extendedFacing.getDirection();
 
@@ -327,13 +376,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             // flip V's if clockwise or counter-clockwise
             flipV ^= extendedFacing.getFlip().isHorizontallyFlipped();
 
-            if (dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH) {
+            if (side == ForgeDirection.EAST || side == ForgeDirection.NORTH) {
                 flipU ^= true;
             }
         }
         // spotless:on
 
-        if (dir == ForgeDirection.DOWN) {
+        if (side == ForgeDirection.DOWN) {
             flipU ^= true;
         }
 
@@ -358,10 +407,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
-            } else if (meta != null) {
-                return ExtendedFacing.of(
-                    meta.getBaseMetaTileEntity()
-                        .getFrontFacing());
             }
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();
@@ -369,6 +414,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
         if (alignment != null) return alignment.getExtendedFacing();
 
-        return ExtendedFacing.DEFAULT;
+        // We don't want to rotate the textures if this block isn't a multi
+        return null;
     }
 }

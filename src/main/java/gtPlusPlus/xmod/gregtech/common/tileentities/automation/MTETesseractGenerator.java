@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -21,6 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IDigitalChest;
@@ -71,11 +73,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
     public boolean isInputFacing(final ForgeDirection side) {
         return true;
     }
@@ -103,11 +100,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
     public long maxEUStore() {
         return 512 * 32;
     }
@@ -115,11 +107,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     @Override
     public long maxSteamStore() {
         return this.maxEUStore();
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -236,7 +223,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
 
     @Override
     public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
-        final float aY, final float aZ) {
+        final float aY, final float aZ, ItemStack aTool) {
         if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
@@ -302,8 +289,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
             && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             return ((IGregTechDeviceInformation) tTileEntity).getInfoData();
         }
-        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
-            (getGeneratorEntity() == this) && (this.isWorking >= 20) ? "Active" : "Inactive" };
+        return new String[] { "Tesseract Generator",
+            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            (getGeneratorEntity() == this) && (this.isWorking >= 20)
+                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
+                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
     }
 
     @Override
@@ -346,7 +336,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             .isAllowedToWork()) && ((tTileEntity instanceof IDigitalChest))) {
             return ((IDigitalChest) tTileEntity).getStoredItemData();
         }
-        return new ItemStack[] {};
+        return GTValues.emptyItemStackArray;
     }
 
     @Override
@@ -395,7 +385,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                     .getBackFacing());
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new int[0];
+            return GTValues.emptyIntArray;
         }
         if ((tTileEntity instanceof ISidedInventory)) {
             return ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(ordinalSide);
@@ -551,13 +541,13 @@ public class MTETesseractGenerator extends MTEBasicTank {
                     .getBackFacing());
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new FluidTankInfo[0];
+            return GTValues.emptyFluidTankInfo;
         }
         return tTileEntity.getTankInfo(aSide);
     }
 
     @Override
-    public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
+    public int fill(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
         final IFluidHandler tTileEntity = this.getBaseMetaTileEntity()
             .getITankContainerAtSide(
                 this.getBaseMetaTileEntity()

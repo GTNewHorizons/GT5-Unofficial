@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GTValues.L;
 import static gregtech.api.enums.GTValues.NF;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.V;
@@ -17,6 +16,7 @@ import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -39,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +48,7 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTModHandler;
@@ -55,8 +57,10 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IItemFirestoneBurning {
 
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
@@ -174,7 +178,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ASH,
             new Materials[] { Materials.DarkAsh, Materials.Ash },
             new int[] { 50 * 100, 50 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             50 * 100);
@@ -233,7 +237,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.PYROTHEUM,
             new Materials[] { Materials.Blaze, Materials.Pyrotheum },
             new int[] { 25 * 100, 20 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             NI,
             30 * 100);
@@ -270,7 +274,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.REDALLOY,
             new Materials[] { Materials.RedAlloy },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -278,7 +282,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.REDSTONEALLOY,
             new Materials[] { Materials.RedstoneAlloy },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -286,7 +290,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.CONDUCTIVEIRON,
             new Materials[] { Materials.ConductiveIron },
             new int[] { 90 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.MV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -294,7 +298,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.VIBRANTALLOY,
             new Materials[] { Materials.VibrantAlloy },
             new int[] { 70 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -302,7 +306,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ENERGETICALLOY,
             new Materials[] { Materials.EnergeticAlloy },
             new int[] { 80 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -310,7 +314,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ELECTRICALSTEEL,
             new Materials[] { Materials.ElectricalSteel },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -318,7 +322,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.DARKSTEEL,
             new Materials[] { Materials.DarkSteel },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.MV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -326,7 +330,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.PULSATINGIRON,
             new Materials[] { Materials.PulsatingIron },
             new int[] { 80 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -334,7 +338,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.STAINLESSSTEEL,
             new Materials[] { Materials.StainlessSteel },
             new int[] { 50 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -342,7 +346,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.BEDROCKIUM,
             new Materials[] { Materials.Bedrockium },
             new int[] { 50 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.EV,
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
@@ -384,7 +388,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ASTRALSILVER,
             new Materials[] { Materials.AstralSilver, Materials.Silver },
             new int[] { 20 * 100, 10 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
             50 * 100);
@@ -400,7 +404,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.SHADOWMETAL,
             new Materials[] { Materials.Shadow, Materials.ShadowSteel },
             new int[] { 20 * 100, 10 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.HV,
             GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
             50 * 100);
@@ -426,7 +430,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.THAUMIUMDUST,
             new Materials[] { Materials.Thaumium },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.MV,
             GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
             50 * 100);
@@ -495,6 +499,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.ARSENIC, new Materials[] { Materials.Arsenic }, Voltage.LV);
         addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
         addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
+        addProcessGT(CombType.PYRITE, new Materials[] { Materials.Pyrite }, Voltage.LV);
 
         addCentrifugeToMaterial(
             CombType.SLAG,
@@ -508,7 +513,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.COPPER,
             new Materials[] { Materials.Copper },
             new int[] { 70 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -516,7 +521,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.TIN,
             new Materials[] { Materials.Tin },
             new int[] { 60 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -524,7 +529,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.LEAD,
             new Materials[] { Materials.Lead },
             new int[] { 45 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -532,7 +537,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.IRON,
             new Materials[] { Materials.Iron },
             new int[] { 30 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -540,7 +545,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.STEEL,
             new Materials[] { Materials.Steel },
             new int[] { 40 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -548,7 +553,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.SILVER,
             new Materials[] { Materials.Silver },
             new int[] { 80 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -556,7 +561,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.CRYOLITE,
             new Materials[] { Materials.Cryolite },
             new int[] { 80 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -564,7 +569,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.SULFUR,
             new Materials[] { Materials.Sulfur },
             new int[] { 100 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ULV,
             NI,
             30 * 100);
@@ -759,7 +764,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.INFUSEDGOLD,
             new Materials[] { Materials.InfusedGold, Materials.Gold },
             new int[] { 20 * 100, 10 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.IV,
             200,
             NI,
@@ -769,7 +774,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.MYSTERIOUSCRYSTAL,
             new Materials[] { Materials.MysteriousCrystal },
             new int[] { 10 * 100, 15 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.LuV,
             512,
             NI,
@@ -908,7 +913,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.INFINITYCATALYST,
             new Materials[] { Materials.InfinityCatalyst, Materials.Neutronium },
             new int[] { 25 * 100, 20 * 100 },
-            new int[] {},
+            GTValues.emptyIntArray,
             Voltage.ZPM,
             100,
             NI,
@@ -999,7 +1004,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Neutronium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Neutronium.getMolten(576);
+                        fluidOutput = Materials.Neutronium.getMolten(4 * INGOTS);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1008,7 +1013,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Osmium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Osmium.getMolten(288);
+                        fluidOutput = Materials.Osmium.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1017,7 +1022,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Platinum.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Platinum.getMolten(288);
+                        fluidOutput = Materials.Platinum.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
@@ -1026,7 +1031,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Iridium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Iridium.getMolten(288);
+                        fluidOutput = Materials.Iridium.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
@@ -1170,7 +1175,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         /** @return aEU/t needed for chemical and autoclave process related to the Tier **/
         public int getVoltageFromEU() {
-            return (int) Math.max(Math.floor(Math.log(2 * this.getVoltage()) / Math.log(4) - 1), 0);
+            return Math.max(GTUtility.log4(2 * this.getVoltage()) - 1, 0);
         }
 
         /** @return Voltage tier according to EU provided. 0 = ULV, 1 = LV, 2 = MV ... **/
@@ -1179,7 +1184,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         }
 
         public int getAutoClaveEnergy() {
-            return (int) ((this.getVoltage() * 3 / 4) * (Math.max(1, Math.pow(2, 5 - this.ordinal()))));
+            return (int) ((this.getVoltage() * 3 / 4) * (Math.max(1, GTUtility.powInt(2, 5 - this.ordinal()))));
         }
 
         /** @return FluidStack needed for chemical process related to the Tier **/
@@ -1187,11 +1192,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             if (this.compareTo(Voltage.MV) < 0) {
                 return Materials.HydrofluoricAcid.getFluid((this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
             } else if (this.compareTo(Voltage.HV) < 0) {
-                return GTModHandler.getDistilledWater(1000L);
+                return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
-                return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * L));
+                return Materials.HydrofluoricAcid
+                    .getFluid((long) (GTUtility.powInt(2, this.compareTo(Voltage.HV)) * INGOTS));
             } else if (this.compareTo(Voltage.UHV) < 0) {
-                return FluidRegistry.getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LuV)) * L));
+                return FluidRegistry
+                    .getFluidStack("mutagen", (int) (GTUtility.powInt(2, this.compareTo(Voltage.LuV)) * INGOTS));
             } else {
                 return NF;
             }
@@ -1254,5 +1261,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 return (this.getVoltage() / 16) * 15;
             }
         }
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        return itemStack.isItemEqual(getStackForType(CombType.FIRESTONE));
     }
 }

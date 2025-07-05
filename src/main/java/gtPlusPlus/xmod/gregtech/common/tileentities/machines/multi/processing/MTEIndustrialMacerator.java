@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,10 +71,11 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static final int DEPTH_OFF_SET = 0;
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
-    private static int getStructureCasingTier(Block b, int m) {
+    @Nullable
+    private static Integer getStructureCasingTier(Block b, int m) {
         if (b == GregTechAPI.sBlockCasings4 && m == 2) return 1;
         if (b == ModBlocks.blockCasingsMisc && m == 7) return 2;
-        return 0;
+        return null;
     }
 
     public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
@@ -167,7 +170,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -274,7 +277,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack aGuiStack = this.getControllerSlot();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(aGuiStack, false, true)) {
                 controllerTier = 2;
-                mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 markDirty();
                 // schedule a structure check
                 mUpdated = true;
@@ -289,7 +292,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
                 controllerTier = 2;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 if (getBaseMetaTileEntity().isServerSide()) {
                     markDirty();
                     aPlayer.inventory.markDirty();
@@ -349,7 +352,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.6F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 1.6F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -358,11 +362,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         final long tVoltage = getMaxInputVoltage();
         final byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
         return Math.max(1, (controllerTier == 1 ? 2 : 8) * tTier);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

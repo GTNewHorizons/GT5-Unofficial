@@ -16,4 +16,6 @@ public interface IGT_NetworkHandler {
     void sendToServer(GTPacket aPacket);
 
     void sendPacketToAllPlayersInRange(World aWorld, GTPacket aPacket, int aX, int aZ);
+
+    void sendToWorld(World world, GTPacket packet);
 }

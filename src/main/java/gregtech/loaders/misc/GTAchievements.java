@@ -52,14 +52,8 @@ public class GTAchievements {
             registerAssAchievement(recipe);
         }
 
-        registerAchievement(
-            "flintpick",
-            0,
-            0,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null),
-            "",
-            false);
-        registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "flintpick", false);
+        registerAchievement("gettingstartedwithgt", 0, 0, new ItemStack(Items.wooden_pickaxe), "", false);
+        registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "gettingstartedwithgt", false);
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
         registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1), "crops", false);
         registerAchievement("havesttin", -2, -1, ItemList.Crop_Drop_Tine.get(1), "crops", false);
@@ -75,7 +69,7 @@ public class GTAchievements {
             4,
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, Materials.Iron, Materials.Wood, null),
-            "flintpick",
+            "gettingstartedwithgt",
             false);
         registerAchievement(
             "driltime",
@@ -114,15 +108,7 @@ public class GTAchievements {
             "highpowerdrill",
             false);
 
-        registerAchievement(
-            "unitool",
-            -2,
-            4,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.UNIVERSALSPADE.ID, 1, Materials.Steel, Materials.Iron, null),
-            "tools",
-            false);
-        registerAchievement("recycling", -4, 4, ItemList.Machine_LV_ArcFurnace.get(1), "unitool", false);
+        registerAchievement("recycling", -2, 4, ItemList.Machine_LV_ArcFurnace.get(1), "tools", false);
 
         registerAchievement(
             "crushed",
@@ -168,7 +154,7 @@ public class GTAchievements {
             2,
             0,
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L),
-            "flintpick",
+            "gettingstartedwithgt",
             false);
         registerAchievement(
             "simplyeco",
@@ -274,7 +260,6 @@ public class GTAchievements {
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
         registerAchievement("oilplant", 8, 4, ItemList.Distillation_Tower.get(1), "highpowersmelt", false);
-        registerAchievement("factory", 8, 6, ItemList.Processing_Array.get(1), "oilplant", false);
         registerAchievement("upgradeebf", 8, -2, ItemList.Hatch_Energy_MV.get(1), "gtaluminium", false);
         registerAchievement("maintainance", 10, -2, ItemList.Hatch_Maintenance.get(1), "upgradeebf", false);
 
@@ -470,7 +455,7 @@ public class GTAchievements {
         return null;
     }
 
-    public void issueAchivementHatch(EntityPlayer player, ItemStack stack) {
+    public void issueAchievementHatch(EntityPlayer player, ItemStack stack) {
         if (player == null || stack == null) {
             return;
         }
@@ -505,7 +490,7 @@ public class GTAchievements {
         }
     }
 
-    public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid) {
+    public void issueAchievementHatchFluid(EntityPlayer player, FluidStack fluid) {
         if (player == null || fluid == null) {
             return;
         }
@@ -534,6 +519,7 @@ public class GTAchievements {
             }
         }
         switch (stack.getUnlocalizedName()) {
+            case "item.pickaxeWood" -> issueAchievement(player, "gettingstartedwithgt");
             case "gt.metaitem.01.2300" -> issueAchievement(player, "bronze");
             case "gt.metaitem.01.32700" -> issueAchievement(player, "smallparts");
             case "gt.metaitem.01.32702" -> issueAchievement(player, "bettercircuits");
@@ -572,7 +558,6 @@ public class GTAchievements {
             case "gt.blockmachines.hatch.energy.tier.02" -> issueAchievement(player, "upgradeebf");
             case "gt.blockmachines.multimachine.multifurnace" -> issueAchievement(player, "highpowersmelt");
             case "gt.blockmachines.hatch.energy.tier.01" -> issueAchievement(player, "energyhatch");
-            case "gt.blockmachines.multimachine.processingarray" -> issueAchievement(player, "factory");
             case "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01" -> issueAchievement(player, "magic");
             case "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03" -> issueAchievement(player, "highmage");
             case "gt.blockmachines.basicgenerator.plasmagenerator.tier.07" -> issueAchievement(
@@ -672,7 +657,6 @@ public class GTAchievements {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
             issueAchievement(player, "replication");
-            return;
         }
 
     }

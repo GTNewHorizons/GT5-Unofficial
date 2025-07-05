@@ -1,5 +1,7 @@
 package galacticgreg.api.enums.properties;
 
+import org.jetbrains.annotations.NotNull;
+
 public class AsteroidPropertyBuilder {
 
     public boolean enabled = true;
@@ -19,22 +21,22 @@ public class AsteroidPropertyBuilder {
         public int lootChestTable;
         public boolean randomizeLootItemCount;
 
-        public LootPropertyBuilder lootChestChance(int lootChestChance) {
+        public @NotNull LootPropertyBuilder lootChestChance(int lootChestChance) {
             this.lootChestChance = lootChestChance;
             return this;
         }
 
-        public LootPropertyBuilder lootChestItemCount(int lootChestItemCount) {
+        public @NotNull LootPropertyBuilder lootChestItemCount(int lootChestItemCount) {
             this.lootChestItemCount = lootChestItemCount;
             return this;
         }
 
-        public LootPropertyBuilder lootChestTable(int lootChestTable) {
+        public @NotNull LootPropertyBuilder lootChestTable(int lootChestTable) {
             this.lootChestTable = lootChestTable;
             return this;
         }
 
-        public LootPropertyBuilder isLootItemCountRandomized(boolean randomizeLootItemCount) {
+        public @NotNull LootPropertyBuilder isLootItemCountRandomized(boolean randomizeLootItemCount) {
             this.randomizeLootItemCount = randomizeLootItemCount;
             return this;
         }
@@ -55,44 +57,44 @@ public class AsteroidPropertyBuilder {
         return this;
     }
 
-    public AsteroidPropertyBuilder sizeRange(int sizeMin, int sizeMax) {
+    public @NotNull AsteroidPropertyBuilder sizeRange(int sizeMin, int sizeMax) {
         this.sizeMin = sizeMin;
         this.sizeMax = sizeMax;
         return this;
     }
 
-    public AsteroidPropertyBuilder specialBlockChance(int specialBlockChance) {
+    public @NotNull AsteroidPropertyBuilder specialBlockChance(int specialBlockChance) {
         this.specialBlockChance = specialBlockChance;
         return this;
     }
 
-    public AsteroidPropertyBuilder oreDensityMultiplier(float mult) {
+    public @NotNull AsteroidPropertyBuilder oreDensityMultiplier(float mult) {
         this.oreDensityMultiplier = mult;
         return this;
     }
 
-    public AsteroidPropertyBuilder smallOreChance(int smallOreChance) {
+    public @NotNull AsteroidPropertyBuilder smallOreChance(int smallOreChance) {
         this.smallOreChance = smallOreChance;
         return this;
     }
 
-    public AsteroidPropertyBuilder positiveEllipsoids(int positiveEllipsoids) {
+    public @NotNull AsteroidPropertyBuilder positiveEllipsoids(int positiveEllipsoids) {
         this.positiveEllipsoids = positiveEllipsoids;
         return this;
     }
 
-    public AsteroidPropertyBuilder negativeEllipsoids(int negativeEllipsoids) {
+    public @NotNull AsteroidPropertyBuilder negativeEllipsoids(int negativeEllipsoids) {
         this.negativeEllipsoids = negativeEllipsoids;
         return this;
     }
 
-    public AsteroidPropertyBuilder asteroidYBounds(int minY, int maxY) {
+    public @NotNull AsteroidPropertyBuilder asteroidYBounds(int minY, int maxY) {
         this.asteroidMinY = minY;
         this.asteroidMaxY = maxY;
         return this;
     }
 
-    public AsteroidPropertyBuilder loot(LootPropertyBuilder lootPropertyBuilder) {
+    public @NotNull AsteroidPropertyBuilder loot(LootPropertyBuilder lootPropertyBuilder) {
         this.loot = lootPropertyBuilder;
         return this;
     }

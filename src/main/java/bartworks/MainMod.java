@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
-import bartworks.client.ClientEventHandler.TooltipEventHandler;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
@@ -39,10 +38,8 @@ import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioLabLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.common.loaders.LocalisationLoader;
 import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bartworks.common.loaders.RecipeLoader;
-import bartworks.common.loaders.RegisterGlassTiers;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
@@ -71,6 +68,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -131,14 +129,12 @@ public final class MainMod {
         if (SideReference.Side.Client) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
-
-        RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
         if (SideReference.Side.Client && Configuration.tooltip.addGlassTierInTooltips)
-            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
+            MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (SideReference.Side.Server) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
@@ -151,6 +147,7 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
+        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -164,7 +161,6 @@ public final class MainMod {
         BioObjectAdder.regenerateBioFluids();
 
         WerkstoffLoader.run();
-        LocalisationLoader.localiseAll();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
@@ -198,9 +194,6 @@ public final class MainMod {
         OreDictHandler.adaptCacheForWorld();
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
-        if (!recipesAdded) {
-            StaticRecipeChangeLoaders.addEBFGasRecipes();
-        }
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()

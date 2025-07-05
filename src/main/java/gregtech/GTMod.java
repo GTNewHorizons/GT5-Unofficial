@@ -6,6 +6,7 @@ import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
@@ -57,6 +59,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -76,7 +79,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
-import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
@@ -88,14 +90,15 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
-import gregtech.loaders.load.CoverBehaviorLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
@@ -133,7 +136,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.5.22,);"
+        + " required-after:gtnhlib@[0.6.31,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"
@@ -256,6 +259,8 @@ public class GTMod implements IGTMod {
             aEvent.getModConfigurationDirectory()
                 .getParentFile());
 
+        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
+
         gregtechproxy.onPreLoad();
 
         GTLog.out.println("GTMod: Setting Configs");
@@ -291,8 +296,6 @@ public class GTMod implements IGTMod {
         new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
-        new CoverBehaviorLoader().run();
-        new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();
@@ -303,6 +306,8 @@ public class GTMod implements IGTMod {
         GTLog.ore.println("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
+
+        IBlockWithClientMeta.register();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
@@ -333,7 +338,6 @@ public class GTMod implements IGTMod {
         }
 
         gregtechproxy.onLoad();
-
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
@@ -346,6 +350,8 @@ public class GTMod implements IGTMod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        GTStructureChannels.register();
 
         LHECoolantRegistry.registerBaseCoolants();
 
@@ -749,6 +755,11 @@ public class GTMod implements IGTMod {
         }
         // Interrupt IDLE Threads to close down cleanly
         RunnableMachineUpdate.shutdownExecutorService();
+    }
+
+    @Mod.EventHandler
+    public void onServerStopped(FMLServerStoppedEvent event) {
+        gregtechproxy.onServerStopped();
     }
 
     @Mod.EventHandler

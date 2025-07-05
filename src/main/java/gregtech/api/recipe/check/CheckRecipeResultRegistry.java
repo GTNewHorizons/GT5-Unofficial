@@ -131,6 +131,14 @@ public final class CheckRecipeResultRegistry {
     }
 
     /**
+     * Cannot process recipe because the machine cannot handle required EUt.
+     */
+    @Nonnull
+    public static CheckRecipeResult insufficientVoltage(long required) {
+        return new ResultInsufficientVoltage(required);
+    }
+
+    /**
      * Cannot process recipe because the machine cannot handle its heat.
      */
     @Nonnull
@@ -162,10 +170,12 @@ public final class CheckRecipeResultRegistry {
     static {
         register(new SimpleCheckRecipeResult(false, "", false));
         register(new ResultInsufficientPower(0));
+        register(new ResultInsufficientVoltage(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));
         register(new ResultInsufficientStartupPower(0));
         register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
         register(new ResultMissingItem());
+        register(new ResultMissingApiaryFlowers());
     }
 }

@@ -277,7 +277,6 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 String name = itemData.toString();
                 addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
-                return;
             } catch (Exception e) {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }

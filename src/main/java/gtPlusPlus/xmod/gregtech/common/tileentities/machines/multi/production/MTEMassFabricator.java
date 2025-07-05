@@ -106,9 +106,9 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +0% | EU Usage: 80%")
             .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addInfo("Produces UU-A, UU-M & Scrap")
             .addInfo("Change mode with screwdriver")
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
@@ -213,7 +213,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -223,18 +223,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiMassFabricator;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override

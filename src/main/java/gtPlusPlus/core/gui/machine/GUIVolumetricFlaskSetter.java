@@ -84,7 +84,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
             106,
             14,
             this);
-        mText.setMaxStringLength(5);
+        mText.setMaxStringLength(10);
         mText.setEnableBackgroundDrawing(true);
         mText.setText("0");
         mText.setFocused(true);
@@ -129,7 +129,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                     String aCurrentText = getText();
                     if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
-                        if (getText().length() <= 0) {
+                        if (getText().length() == 0) {
                             setText(0);
                         }
                         sendUpdateToServer();
@@ -198,7 +198,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     public void updateScreen() {
         super.updateScreen();
         // Update Textbox to 0 if Empty
-        if (getText().length() <= 0) {
+        if (getText().length() == 0) {
             this.mText.setText("0");
             sendUpdateToServer();
         }

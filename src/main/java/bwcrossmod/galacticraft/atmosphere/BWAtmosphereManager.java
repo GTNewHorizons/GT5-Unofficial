@@ -14,16 +14,15 @@
 package bwcrossmod.galacticraft.atmosphere;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ArrayListMultimap;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
@@ -34,18 +33,18 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
 public final class BWAtmosphereManager {
 
-    private static final Map<Integer, Integer[]> COEFFICIENT_MAP = new HashMap<>();
+    private static final int[][] COEFFICIENT_ARRAY = new int[9][];
 
     private BWAtmosphereManager() {
-        BWAtmosphereManager.COEFFICIENT_MAP.put(1, new Integer[] { 100 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(2, new Integer[] { 70, 30 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(3, new Integer[] { 60, 25, 15 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(4, new Integer[] { 50, 25, 15, 10 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(5, new Integer[] { 45, 25, 15, 10, 5 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(6, new Integer[] { 45, 20, 15, 10, 5, 5 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(7, new Integer[] { 40, 20, 15, 10, 5, 5, 5 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(8, new Integer[] { 35, 20, 15, 10, 5, 5, 5, 5 });
-        BWAtmosphereManager.COEFFICIENT_MAP.put(9, new Integer[] { 35, 15, 15, 10, 5, 5, 5, 5, 5 });
+        COEFFICIENT_ARRAY[0] = new int[] { 100 };
+        COEFFICIENT_ARRAY[1] = new int[] { 70, 30 };
+        COEFFICIENT_ARRAY[2] = new int[] { 60, 25, 15 };
+        COEFFICIENT_ARRAY[3] = new int[] { 50, 25, 15, 10 };
+        COEFFICIENT_ARRAY[4] = new int[] { 45, 25, 15, 10, 5 };
+        COEFFICIENT_ARRAY[5] = new int[] { 45, 20, 15, 10, 5, 5 };
+        COEFFICIENT_ARRAY[6] = new int[] { 40, 20, 15, 10, 5, 5, 5 };
+        COEFFICIENT_ARRAY[7] = new int[] { 35, 20, 15, 10, 5, 5, 5, 5 };
+        COEFFICIENT_ARRAY[8] = new int[] { 35, 15, 15, 10, 5, 5, 5, 5, 5 };
     }
 
     public static final BWAtmosphereManager INSTANCE = new BWAtmosphereManager();
@@ -69,7 +68,7 @@ public final class BWAtmosphereManager {
     }
 
     public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount) {
-        Pair<ISubTagContainer, Integer> toadd = new Pair<>(gas, amount);
+        Pair<ISubTagContainer, Integer> toadd = Pair.of(gas, amount);
         BWAtmosphereManager.gasConcentration.put(worldID, toadd);
     }
 
@@ -88,7 +87,7 @@ public final class BWAtmosphereManager {
             BWAtmosphereManager.addGasToWorld(
                 worldID,
                 Materials.CarbonDioxide,
-                BWAtmosphereManager.COEFFICIENT_MAP.get(aMaxNumber)[aNumber]);
+                BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
             return true;
         }
         String name = gas.toString();
@@ -101,7 +100,7 @@ public final class BWAtmosphereManager {
         if (mat == Werkstoff.default_null_Werkstoff) {
             return false;
         }
-        BWAtmosphereManager.addGasToWorld(worldID, mat, BWAtmosphereManager.COEFFICIENT_MAP.get(aMaxNumber)[aNumber]);
+        BWAtmosphereManager.addGasToWorld(worldID, mat, BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
         return true;
     }
 

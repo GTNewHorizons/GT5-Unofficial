@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -14,6 +15,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -77,13 +79,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUStore() {
-        return TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
+        return (long) TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
     }
 
     @Override
@@ -188,7 +185,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     @Override
     public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
-        final float aY, final float aZ) {
+        final float aY, final float aZ, ItemStack aTool) {
         if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
@@ -277,8 +274,11 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .isAllowedToWork()) && (tTileEntity.isSendingInformation())) {
             return tTileEntity.getInfoData();
         }
-        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
-            this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
+        return new String[] { StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.name"),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            this.getTesseract(this.mFrequency, false) != null
+                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
+                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
     }
 
     @Override
@@ -341,7 +341,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new int[0];
+            return GTValues.emptyIntArray;
         }
         return tTileEntity.getAccessibleSlotsFromSide(ordinalSide);
     }
@@ -451,13 +451,13 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new FluidTankInfo[0];
+            return GTValues.emptyFluidTankInfo;
         }
         return tTileEntity.getTankInfo(aSide);
     }
 
     @Override
-    public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
+    public int fill(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {

@@ -80,16 +80,6 @@ public class MTELocker extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
@@ -125,18 +115,8 @@ public class MTELocker extends MTETieredMachineBlock {
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
         return getBaseMetaTileEntity().isAllowedToWork() ? this.mInventory.length : 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -167,7 +147,8 @@ public class MTELocker extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             this.mType = ((byte) (this.mType + 1));
         }

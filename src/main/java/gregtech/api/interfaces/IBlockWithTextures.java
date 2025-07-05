@@ -8,5 +8,5 @@ public interface IBlockWithTextures {
      * @return Texture[forge direction ordinal][layer]
      */
     @Nullable
-    public ITexture[][] getTextures(int metadata);
+    ITexture[][] getTextures(int metadata);
 }

@@ -120,9 +120,7 @@ public class Textures {
         INSULATION_MEDIUM_PLUS,
         INSULATION_LARGE,
         INSULATION_HUGE,
-        CFOAM_FRESH,
 
-        CFOAM_HARDENED,
         SOLARPANEL,
         SOLARPANEL_8V,
         SOLARPANEL_LV,
@@ -397,6 +395,13 @@ public class Textures {
 
         MACHINE_CASING_AUTOCLAVE,
 
+        MACHINE_CASING_THAUMIUM,
+        MACHINE_CASING_VOID,
+        MACHINE_CASING_ICHORIUM,
+
+        DECAY_WAREHOUSE_BACKGROUND,
+        DECAY_WAREHOUSE_GLOW,
+
         MACHINE_CASING_RADIATIONPROOF,
         MACHINE_CASING_ADVANCEDRADIATIONPROOF,
         MACHINE_CASING_FIREBOX_BRONZE,
@@ -405,26 +410,55 @@ public class Textures {
         MACHINE_CASING_ENGINE_INTAKE,
         MACHINE_CASING_EXTREME_ENGINE_INTAKE, // changed color in a terrible way
         MACHINE_CASING_CHEMICALLY_INERT,
-        MACHINE_COIL_CUPRONICKEL,
 
         MACHINE_CASING_DENSEBRICKS,
         MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE,
         MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW,
         MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE,
 
+        MACHINE_COIL_CUPRONICKEL,
+        MACHINE_COIL_CUPRONICKEL_BACKGROUND,
+        MACHINE_COIL_CUPRONICKEL_FOREGROUND,
         MACHINE_COIL_KANTHAL,
+        MACHINE_COIL_KANTHAL_BACKGROUND,
+        MACHINE_COIL_KANTHAL_FOREGROUND,
         MACHINE_COIL_NICHROME,
+        MACHINE_COIL_NICHROME_BACKGROUND,
+        MACHINE_COIL_NICHROME_FOREGROUND,
         MACHINE_COIL_TUNGSTENSTEEL,
+        MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND,
+        MACHINE_COIL_TUNGSTENSTEEL_FOREGROUND,
         MACHINE_COIL_HSSG,
+        MACHINE_COIL_HSSG_BACKGROUND,
+        MACHINE_COIL_HSSG_FOREGROUND,
         MACHINE_COIL_NAQUADAH,
+        MACHINE_COIL_NAQUADAH_BACKGROUND,
+        MACHINE_COIL_NAQUADAH_FOREGROUND,
         MACHINE_COIL_NAQUADAHALLOY,
+        MACHINE_COIL_NAQUADAHALLOY_BACKGROUND,
+        MACHINE_COIL_NAQUADAHALLOY_FOREGROUND,
         MACHINE_COIL_ELECTRUMFLUX,
+        MACHINE_COIL_ELECTRUMFLUX_BACKGROUND,
+        MACHINE_COIL_ELECTRUMFLUX_FOREGROUND,
         MACHINE_COIL_AWAKENEDDRACONIUM,
+        MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND,
+        MACHINE_COIL_AWAKENEDDRACONIUM_FOREGROUND,
         MACHINE_COIL_HSSS,
+        MACHINE_COIL_HSSS_BACKGROUND,
+        MACHINE_COIL_HSSS_FOREGROUND,
         MACHINE_COIL_TRINIUM,
+        MACHINE_COIL_TRINIUM_BACKGROUND,
+        MACHINE_COIL_TRINIUM_FOREGROUND,
         MACHINE_COIL_INFINITY,
+        MACHINE_COIL_INFINITY_BACKGROUND,
+        MACHINE_COIL_INFINITY_FOREGROUND,
         MACHINE_COIL_HYPOGEN,
+        MACHINE_COIL_HYPOGEN_BACKGROUND,
+        MACHINE_COIL_HYPOGEN_FOREGROUND,
         MACHINE_COIL_ETERNAL,
+        MACHINE_COIL_ETERNAL_BACKGROUND,
+        MACHINE_COIL_ETERNAL_FOREGROUND,
+
         BOILER_SOLAR,
         BOILER_FRONT,
         BOILER_FRONT_GLOW,
@@ -578,6 +612,40 @@ public class Textures {
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
         OVERLAY_MUFFLER,
+
+        OVERLAY_PIPE_COLOR_BLACK,
+        OVERLAY_PIPE_COLOR_GRAY,
+        OVERLAY_PIPE_COLOR_LIME,
+        OVERLAY_PIPE_COLOR_PURPLE,
+        OVERLAY_PIPE_COLOR_BLUE,
+        OVERLAY_PIPE_COLOR_GREEN,
+        OVERLAY_PIPE_COLOR_MAGENTA,
+        OVERLAY_PIPE_COLOR_RED,
+        OVERLAY_PIPE_COLOR_BROWN,
+        OVERLAY_PIPE_COLOR_LIGHTBLUE,
+        OVERLAY_PIPE_COLOR_ORANGE,
+        OVERLAY_PIPE_COLOR_WHITE,
+        OVERLAY_PIPE_COLOR_CYAN,
+        OVERLAY_PIPE_COLOR_LIGHTGRAY,
+        OVERLAY_PIPE_COLOR_PINK,
+        OVERLAY_PIPE_COLOR_YELLOW,
+
+        OVERLAY_INPUT_HATCH_2x2_BLACK,
+        OVERLAY_INPUT_HATCH_2x2_GRAY,
+        OVERLAY_INPUT_HATCH_2x2_LIME,
+        OVERLAY_INPUT_HATCH_2x2_PURPLE,
+        OVERLAY_INPUT_HATCH_2x2_BLUE,
+        OVERLAY_INPUT_HATCH_2x2_GREEN,
+        OVERLAY_INPUT_HATCH_2x2_MAGENTA,
+        OVERLAY_INPUT_HATCH_2x2_RED,
+        OVERLAY_INPUT_HATCH_2x2_BROWN,
+        OVERLAY_INPUT_HATCH_2x2_LIGHTBLUE,
+        OVERLAY_INPUT_HATCH_2x2_ORANGE,
+        OVERLAY_INPUT_HATCH_2x2_WHITE,
+        OVERLAY_INPUT_HATCH_2x2_CYAN,
+        OVERLAY_INPUT_HATCH_2x2_LIGHTGRAY,
+        OVERLAY_INPUT_HATCH_2x2_PINK,
+        OVERLAY_INPUT_HATCH_2x2_YELLOW,
 
         OVERLAY_EMS_HOUSING,
         OVERLAY_EMS_HOUSING_GLOW,
@@ -744,6 +812,8 @@ public class Textures {
         OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW,
         OVERLAY_FRONT_STEAM_EXTRACTOR,
         OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE,
         OVERLAY_FRONT_DISASSEMBLER,
         OVERLAY_FRONT_DISASSEMBLER_GLOW,
         OVERLAY_FRONT_DISASSEMBLER_ACTIVE,
@@ -912,6 +982,9 @@ public class Textures {
         OVERLAY_TELEPORTER_ACTIVE_GLOW,
         OVERLAY_TELEPORTER_SIDES,
         OVERLAY_TELEPORTER_SIDES_GLOW,
+        OVERLAY_MAGLEV,
+        OVERLAY_MAGLEV_ACTIVE,
+        OVERLAY_MAGLEV_ACTIVE_GLOW,
         FUSIONI_1,
         FUSIONI_2,
         FUSIONI_3,
@@ -1209,6 +1282,8 @@ public class Textures {
         BLOCK_ETERNITY,
         BLOCK_MAGMATTER,
         BLOCK_SIXPHASEDCOPPER,
+        BLOCK_HELLISHMETAL,
+        BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER,
 
         BLOCK_ORIHARUKON,
 
@@ -1235,11 +1310,27 @@ public class Textures {
         OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW,
         OVERLAY_FRONT_HEAT_EXCHANGER,
         OVERLAY_FRONT_HEAT_EXCHANGER_GLOW,
-        OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE,
-        OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW,
 
-        OVERLAY_FRONT_PROCESSING_ARRAY,
-        OVERLAY_FRONT_PROCESSING_ARRAY_GLOW,
+        OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE,
+        OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW,
+        OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE,
+        OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW,
+
+        OVERLAY_FRONT_ORE_FACTORY_ACTIVE,
+        OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW,
+        OVERLAY_FRONT_ORE_FACTORY,
+        OVERLAY_FRONT_ORE_FACTORY_GLOW,
+
+        OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE,
+        OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW,
+        OVERLAY_FRONT_PURIFICATION_PLANT,
+        OVERLAY_FRONT_PURIFICATION_PLANT_GLOW,
+
+        OVERLAY_FRONT_WATER_T8_ACTIVE,
+        OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW,
+        OVERLAY_FRONT_WATER_T8,
+        OVERLAY_FRONT_WATER_T8_GLOW,
+
         OVERLAY_FRONT_OIL_DRILL_ACTIVE,
         OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW,
         OVERLAY_FRONT_OIL_DRILL,
@@ -1486,31 +1577,6 @@ public class Textures {
         ;
 
         /**
-         * Icon for Fresh CFoam
-         */
-        public static final ITexture[] FRESHFOAM = { TextureFactory.of(CFOAM_FRESH) };
-        /**
-         * Icons for Hardened CFoam 0 = No Color 1 - 16 = Colors
-         */
-        public static final ITexture[][] HARDENEDFOAMS = {
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[0].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[1].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[2].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[3].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[4].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[5].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[6].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[7].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[8].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[9].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[10].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[11].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[12].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[13].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[14].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[15].mRGBa) } };
-        /**
          * Machine Casings by Tier 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */
         public static final IIconContainer[] MACHINECASINGS_SIDE = { MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE,
@@ -1538,6 +1604,17 @@ public class Textures {
                 MARBLE_BRICKS_MOSSY, MARBLE_BRICKS_CHISELED, MARBLE_SMOOTH, BASALT_STONE, BASALT_COBBLE,
                 BASALT_COBBLE_MOSSY, BASALT_BRICKS, BASALT_BRICKS_CRACKED, BASALT_BRICKS_MOSSY, BASALT_BRICKS_CHISELED,
                 BASALT_SMOOTH, },
+            OVERLAY_PIPE_COLORS = { OVERLAY_PIPE, OVERLAY_PIPE_COLOR_BLACK, OVERLAY_PIPE_COLOR_RED,
+                OVERLAY_PIPE_COLOR_GREEN, OVERLAY_PIPE_COLOR_BROWN, OVERLAY_PIPE_COLOR_BLUE, OVERLAY_PIPE_COLOR_PURPLE,
+                OVERLAY_PIPE_COLOR_CYAN, OVERLAY_PIPE_COLOR_LIGHTGRAY, OVERLAY_PIPE_COLOR_GRAY, OVERLAY_PIPE_COLOR_PINK,
+                OVERLAY_PIPE_COLOR_LIME, OVERLAY_PIPE_COLOR_YELLOW, OVERLAY_PIPE_COLOR_LIGHTBLUE,
+                OVERLAY_PIPE_COLOR_MAGENTA, OVERLAY_PIPE_COLOR_ORANGE, OVERLAY_PIPE_COLOR_WHITE, },
+            OVERLAY_INPUT_HATCH_2x2_COLORS = { OVERLAY_INPUT_HATCH_2x2, OVERLAY_INPUT_HATCH_2x2_BLACK,
+                OVERLAY_INPUT_HATCH_2x2_RED, OVERLAY_INPUT_HATCH_2x2_GREEN, OVERLAY_INPUT_HATCH_2x2_BROWN,
+                OVERLAY_INPUT_HATCH_2x2_BLUE, OVERLAY_INPUT_HATCH_2x2_PURPLE, OVERLAY_INPUT_HATCH_2x2_CYAN,
+                OVERLAY_INPUT_HATCH_2x2_LIGHTGRAY, OVERLAY_INPUT_HATCH_2x2_GRAY, OVERLAY_INPUT_HATCH_2x2_PINK,
+                OVERLAY_INPUT_HATCH_2x2_LIME, OVERLAY_INPUT_HATCH_2x2_YELLOW, OVERLAY_INPUT_HATCH_2x2_LIGHTBLUE,
+                OVERLAY_INPUT_HATCH_2x2_MAGENTA, OVERLAY_INPUT_HATCH_2x2_ORANGE, OVERLAY_INPUT_HATCH_2x2_WHITE, },
             TURBINE = { LARGETURBINE_ST1, LARGETURBINE_ST2, LARGETURBINE_ST3, LARGETURBINE_ST4, LARGETURBINE_ST5,
                 LARGETURBINE_ST6, LARGETURBINE_ST7, LARGETURBINE_ST8, LARGETURBINE_ST9 },
             TURBINE_ACTIVE = { LARGETURBINE_ST_ACTIVE1, LARGETURBINE_ST_ACTIVE2, LARGETURBINE_ST_ACTIVE3,
@@ -1628,7 +1705,8 @@ public class Textures {
                 BLOCK_BLAZE },
             STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
                 BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
-                BLOCK_UNIVERSIUM, BLOCK_ETERNITY, BLOCK_MAGMATTER, BLOCK_SIXPHASEDCOPPER };
+                BLOCK_UNIVERSIUM, BLOCK_ETERNITY, BLOCK_MAGMATTER, BLOCK_SIXPHASEDCOPPER, BLOCK_HELLISHMETAL,
+                BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER };
 
         public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
             .addIcon(HIDDEN_FACE)
@@ -1783,7 +1861,10 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
 
-        public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
+        private static final int TIERS = 15;
+        private static final int CASING_COLORS = Dyes.VALUES.length + 1; // MACHINE_METAL followed by Dyes.VALUES
+        public static ITexture[][] MACHINE_CASINGS = new ITexture[TIERS][CASING_COLORS];
+
         // spotless:off
         /**
          * by Default pages are null
@@ -1796,19 +1877,29 @@ public class Textures {
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on
-        public static ITexture[][] casingTexturePages = new ITexture[128][]; // page holder so we don't make an short
+        public static ITexture[][] casingTexturePages = new ITexture[128][]; // page holder so we don't make a short
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
-            for (byte i = 0; i < MACHINE_CASINGS.length; i++)
-                for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) MACHINE_CASINGS[i][j] = TextureFactory.of(
-                    MACHINECASINGS_BOTTOM[i],
-                    MACHINECASINGS_TOP[i],
-                    MACHINECASINGS_SIDE[i],
-                    Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
+            for (byte tier = 0; tier < TIERS; tier++) {
+                MACHINE_CASINGS[tier][0] = TextureFactory.of(
+                    MACHINECASINGS_BOTTOM[tier],
+                    MACHINECASINGS_TOP[tier],
+                    MACHINECASINGS_SIDE[tier],
+                    Dyes.MACHINE_METAL.getRGBA());
+
+                for (Dyes dye : Dyes.VALUES) {
+                    MACHINE_CASINGS[tier][dye.mIndex + 1] = TextureFactory.of(
+                        MACHINECASINGS_BOTTOM[tier],
+                        MACHINECASINGS_TOP[tier],
+                        MACHINECASINGS_SIDE[tier],
+                        dye.getRGBA());
+                }
+            }
+
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GTUtility.addTexturePage((byte) 1);

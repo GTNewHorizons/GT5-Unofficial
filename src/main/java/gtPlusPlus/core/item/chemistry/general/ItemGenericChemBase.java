@@ -19,31 +19,51 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class ItemGenericChemBase extends Item {
 
     protected final IIcon[] base;
 
-    private final int aMetaSize = 34;
+    private final int aMetaSize = 36;
 
     /*
-     * 0 - Red Metal Catalyst //FeCu 1 - Yellow Metal Catalyst //WNi 2 - Blue Metal Catalyst //CoTi 3 - Orange Metal
-     * Catalyst //Vanadium Pd 4 - Purple Metal Catalyst //IrIdium Ruthenium 5 - Brown Metal Catalyst //NiAl 6 - Pink
-     * Metal Catalyst //PtRh 7 - Alumina Grinding Ball 8 - Soapstone Grinding Ball 9 - Sodium Ethoxide // 2 Sodium + 1
-     * Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na 11 -
-     * Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O 12 - Potassium Hydroxide // KOH 13 -
-     * Formaldehyde Catalyst //Fe16V1 14 - Solid Acid Catalyst //H2SO4 15 - Infinite Mutation Catalyst (for Mutated
-     * Living Solder) 16 - Platinum Group Catalyst (for platline skip) 17 - Plastic Polymer Catalyst (for early plastics
-     * skip) 18 - Rubber Polymer Catalyst (for early rubbers skip) 19 - Adhesion Promoter Catalyst (for glue/solder
-     * skip) 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip) 21 - Radioactivity Catalyst (for
-     * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
-     * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
-     * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
-     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 29 - Limpid Water
-     * Catalyst (for early waterline skip) 30 - Flawless Water Catalyst (for advanced waterline skip) 33 - Algagenic
-     * Growth Promoter Catalyst (for seaweed skip)
+     * 0 - Red Metal Catalyst //FeCu
+     * 1 - Yellow Metal Catalyst //WNi
+     * 2 - Blue Metal Catalyst //CoTi
+     * 3 - Orange Metal Catalyst //Vanadium Pd
+     * 4 - Purple Metal Catalyst //IrIdium Ruthenium
+     * 5 - Brown Metal Catalyst //NiAl
+     * 6 - Pink Metal Catalyst //PtRh
+     * 7 - Alumina Grinding Ball
+     * 8 - Soapstone Grinding Ball
+     * 9 - Sodium Ethoxide //2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2
+     * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
+     * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+     * 12 - Potassium Hydroxide // KOH
+     * 13 - Formaldehyde Catalyst //Fe16V1
+     * 14 - Solid Acid Catalyst //H2SO4
+     * 15 - Infinite Mutation Catalyst (for Mutated Living Solder)
+     * 16 - Platinum Group Catalyst (for platline skip)
+     * 17 - Plastic Polymer Catalyst (for early plastics skip)
+     * 18 - Rubber Polymer Catalyst (for early rubbers skip)
+     * 19 - Adhesion Promoter Catalyst (for glue/solder skip)
+     * 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip)
+     * 21 - Radioactivity Catalyst (for thorium/uranium/plutonium skip)
+     * 22 - Rare-Earth Group Catalyst (for monaline skip)
+     * 23 - Simple Naquadah Catalyst (for early naqline skip)
+     * 24 - Advanced Naquadah Catalyst (for late naqline skip)
+     * 25 - Raw Intelligence Catalyst (for stem cells skip)
+     * 26 - Ultimate Plasticizer Catalyst (for late plastics skip)
+     * 27 - Biological Intelligence Catalyst (for bio cells skip)
+     * 28 - Temporal Harmonizer Catalyst (for Eternity processing)
+     * 29 - Limpid Water Catalyst (for early waterline skip)
+     * 30 - Flawless Water Catalyst (for advanced waterline skip)
+     * 33 - Algagenic Growth Promoter Catalyst (for seaweed skip)
+     * 34 - Hellish Force Catalyst (for Netherite skip)
+     * 35 - Crystal Colorization Catalyst (for Prismatic Acid)
      */
 
     public ItemGenericChemBase() {
@@ -58,7 +78,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        if (ItemUtils.isMillingBall(stack)) {
+        if (MTEIsaMill.isMillingBall(stack)) {
             return 16;
         }
         return super.getItemStackLimit(stack);
@@ -98,13 +118,8 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < aMetaSize; i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem, 1, i));
         }
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
     }
 
     @Override
@@ -115,11 +130,6 @@ public class ItemGenericChemBase extends Item {
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override
@@ -162,14 +172,14 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createMillingBallNBT(aStack);
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createCatalystNBT(aStack);
@@ -189,14 +199,14 @@ public class ItemGenericChemBase extends Item {
         int aDamageSegment = 0;
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.milling_ball.tumble"));
             aMaxDamage = getMillingBallMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getMillingBallDamage(aStack);
             aHasSpecialTooltips = true;
         }
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
@@ -222,10 +232,10 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             int aDam = getMillingBallDamage(aStack);
             return aDam > 0;
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             int aDam = getCatalystDamage(aStack);
             return aDam > 0;
         }

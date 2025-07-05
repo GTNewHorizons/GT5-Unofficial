@@ -126,7 +126,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -212,23 +212,8 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
+        return new ProcessingLogic().noRecipeCaching();
     }
 
     @Override
@@ -236,13 +221,4 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
         return PollutionConfig.pollutionPerSecondMultiMolecularTransformer;
     }
 
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
 }

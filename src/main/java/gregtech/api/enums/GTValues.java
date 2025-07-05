@@ -19,7 +19,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -79,12 +81,18 @@ public class GTValues {
      * Renamed from "FLUID_MATERIAL_UNIT" to just "L"
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#INGOTS} instead.
      */
+    @Deprecated
     public static final long L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#WILDCARD} instead.
      */
+    @Deprecated
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
     /**
@@ -442,9 +450,19 @@ public class GTValues {
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
-    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final FluidStack[] emptyFluidStackArray = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final String[] emptyStringArray = new String[0];
+    public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+
+    /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
+     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
+     * be ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
@@ -539,18 +557,6 @@ public class GTValues {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "Four"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Is"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "The"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Number";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
@@ -585,6 +591,18 @@ public class GTValues {
         + "APenguin";
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+
+    public static final Supplier<String> AuthorNoc = chain(
+        text("Author: "),
+        animatedText(
+            "Noc",
+            0,
+            500,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
@@ -635,5 +653,18 @@ public class GTValues {
             }
         }
         return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
+    }
+
+    public static String getLocalizedLongVoltageName(int voltage) {
+        if (voltage >= VOLTAGE_NAMES.length) {
+            return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+        }
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
+            .replace(",", "")
+            .replace(' ', '_');
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
     }
 }

@@ -13,7 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 
-public class GTItemOre extends ItemBlock {
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     public final GTBlockOre blockOre;
 
@@ -52,5 +53,14 @@ public class GTItemOre extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
         String formula = StatCollector.translateToLocal(getUnlocalizedName(stack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) desc.add(formula);
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        int metadata = stack.getItemDamage();
+        int matId = blockOre.getMaterialIndex(metadata);
+
+        return GregTechAPI.sGeneratedMaterials[matId] == Materials.Firestone;
     }
 }

@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
@@ -34,6 +35,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -82,7 +84,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         if (GregTechAPI.METATILEENTITIES[id] == null) {
             GregTechAPI.METATILEENTITIES[id] = this;
         } else {
-            throw new IllegalArgumentException("MetaTileEntity id " + id + " is already occupied!");
+            var existing = GregTechAPI.METATILEENTITIES[id];
+            throw new IllegalArgumentException(
+                "MetaTileEntity id " + id
+                    + " is already occupied! Existing MTE is "
+                    + existing.getMetaName()
+                    + "("
+                    + existing.getClass()
+                        .getCanonicalName()
+                    + ").");
         }
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
@@ -199,7 +209,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         }
     }
 
-    @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
@@ -243,6 +252,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
         int logLevel, ArrayList<String> list) {
         return list;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return null;
     }
 
     /**
@@ -344,6 +358,21 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
+    /**
+     * Gets the first ItemStack in the bus, reading from the top left to bottom right
+     *
+     * @return the first ItemStack in the bus
+     */
+    public ItemStack getFirstStack() {
+        for (int index = 0; index < mInventory.length; index++) {
+            ItemStack stackInSlot = getStackInSlot(index);
+            if (stackInSlot != null) {
+                return stackInSlot;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void setInventorySlotContents(int index, ItemStack itemStack) {
         if (index >= 0 && index < mInventory.length) {
@@ -429,8 +458,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) {
-            return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) {
+            return GTValues.emptyFluidTankInfo;
         }
         return new FluidTankInfo[] { getInfo() };
     }
@@ -551,7 +580,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
-        if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
+        if ((GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) || forceUseMui2()) {
             if (!NetworkUtils.isClient(player)) {
                 MetaTileEntityGuiHandler.open(player, this);
             }
@@ -565,6 +594,14 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * MUI1.
      */
     protected boolean useMui2() {
+        return false;
+    }
+
+    /**
+     * Returning true means opening GUI with MUI2, regardless of {@link GTGuis#GLOBAL_SWITCH_MUI2}. Note that cover tabs
+     * are currently unfinished.
+     */
+    protected boolean forceUseMui2() {
         return false;
     }
 
@@ -590,7 +627,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * @inheritDoc
      */
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return null;
     }
 

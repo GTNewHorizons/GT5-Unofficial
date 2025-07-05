@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -82,7 +84,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mRadiusTierOverride;
     }
 
-    private byte mMode = 0; // 0: RandomTicks around 1: TileEntities with range 1
+    private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
@@ -118,13 +120,16 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            String
-                .format("Accelerating things (Max Radius: %d | Max Speed Bonus: x%d)", mTier, mAccelerateStatic[mTier]),
-            "Use a screwdriver to change mode, sneak to change Radius", "Use a wrench to change speed",
-            "To accelerate TileEntities, this machine has to be adjacent to it",
-            String.format("Normal mode consumes up to %s amperage, depending on radius", AMPERAGE_NORMAL),
-            String.format("TE mode consumes %s amperage", AMPERAGE_TE) };
+        return new String[] { "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
+            "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
+            EnumChatFormatting.GOLD + "Blocks Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Radius 1-%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
+            EnumChatFormatting.GOLD + "TileEntity Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Radius 1 | Amps \u2264%s", AMPERAGE_TE),
+            "Use a screwdriver to change mode, sneak to change radius", "Use a wrench to change speed",
+            "Power consumption increases with speed/radius" };
     }
 
     @Override
@@ -136,19 +141,24 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     public String[] getInfoData() {
         List<String> tInfoDisplay = new ArrayList<>();
 
-        tInfoDisplay.add(String.format("Accelerator running in %s mode", mModeStr[mMode]));
         tInfoDisplay.add(
-            String.format(
-                "Speed setting: [%d / %d]",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+        tInfoDisplay.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-            String.format(
-                "Consuming %d EU/t",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
-        if (mMode == 0) tInfoDisplay.add(String.format("Radius setting: [%d / %d]", getRadiusTierOverride(), mTier));
+        if (mMode == 0) tInfoDisplay.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }
@@ -224,11 +234,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer pPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -249,11 +254,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public long getMinimumStoredEU() {
-        return 512;
-    }
-
-    @Override
     public long maxEUStore() {
         return 512 + V[mTier] * 50;
     }
@@ -270,10 +270,13 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     private static final String[] mModeStr = { "Blocks", "TileEntities" };
 
+    private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
+        "GT5U.word_accelerator.mode.tile_entities" };
+
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
 
         markDirty();
@@ -285,7 +288,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();

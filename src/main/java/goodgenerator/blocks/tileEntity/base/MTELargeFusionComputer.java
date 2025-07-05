@@ -211,11 +211,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public abstract ITexture getTextureOverlay();
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         // Migration code
@@ -254,7 +249,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
     }
 
     @Override
@@ -397,11 +392,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void onMachineBlockUpdate() {
         mUpdate = 100;
     }
@@ -470,6 +460,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
+        logic.setUnlimitedTierSkips();
     }
 
     public int getChunkX() {
@@ -509,21 +500,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
@@ -543,7 +519,11 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         double plasmaOut = 0;
         if (mMaxProgresstime > 0) plasmaOut = (double) mOutputFluids[0].amount / mMaxProgresstime;
 
-        return new String[] { EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.fusion_reactor_mk")
+                + " "
+                + EnumChatFormatting.RESET
+                + tier,
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(this.para)

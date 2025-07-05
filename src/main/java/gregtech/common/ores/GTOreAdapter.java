@@ -328,7 +328,10 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
                     // Max applicable fortune
                     if (fortune > 3) fortune = 3;
 
-                    int amount = 1 + Math.max(random.nextInt(fortune * (info.stoneType.isRich() ? 2 : 1) + 2) - 1, 0);
+                    int addedDrops = worldObj.rand.nextInt(fortune + 2) - 1;
+                    if (addedDrops < 0) addedDrops = 0;
+
+                    int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
                         drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, 1));

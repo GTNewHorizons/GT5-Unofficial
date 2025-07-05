@@ -35,13 +35,14 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
 import bartworks.util.NonNullWrappedHashMap;
-import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
@@ -144,7 +145,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             mID,
             materials.mIconSet,
             (List) materials.mOreByProducts,
-            new Pair<>(materials, 1));
+            Pair.of(materials, 1));
         if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
         this.stats.protons = materials.getProtons();
@@ -422,12 +423,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
                 if (p.getKey() instanceof Werkstoff) set.addAll(Arrays.asList(((Werkstoff) p.getKey()).getTCAspects()));
             }
             tc_aspectStacks.forEach(
-                tc_aspectStack -> set.add(new Pair<>(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
+                tc_aspectStack -> set.add(Pair.of(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
             this.stats.mTC_Aspects = set.toArray(new Pair[0]);
         }
         Pair<Object, Integer>[] ret = this.stats.mTC_Aspects.clone();
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = ret[i].copyWithNewValue(ret[i].getValue() * ratio);
+            ret[i] = Pair.of(ret[i].getKey(), ret[i].getValue() * ratio);
         }
         return ret;
     }
@@ -475,7 +476,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
                 ret = 1;
                 break;
         }
-        return new Pair<>(ret, this.CONTENTS);
+        return Pair.of(ret, this.CONTENTS);
     }
 
     public int getNoOfByProducts() {

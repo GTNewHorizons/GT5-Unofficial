@@ -42,7 +42,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
-        setupBlockTexturesOnly(aBlock, aMeta);
+        setupBlockTexturesOnly(aBlock, aMeta, true);
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -65,11 +65,19 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private void setupBlockTexturesOnly(Block aBlock, int aMeta) {
+    private void setupBlockTexturesOnly(Block aBlock, int aMeta, boolean noCoord) {
         ForgeDirection[] validDirections = VALID_DIRECTIONS;
         for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {
             ForgeDirection tFace = validDirections[i];
-            textureArray[i][0] = TextureFactory.of(aBlock, aMeta, tFace);
+            if (noCoord) {
+                textureArray[i][0] = TextureFactory.builder()
+                    .setFromBlock(aBlock, aMeta)
+                    .setFromSide(tFace)
+                    .noWorldCoord()
+                    .build();
+            } else {
+                textureArray[i][0] = TextureFactory.of(aBlock, aMeta, tFace);
+            }
             textureArray[i][1] = null;
         }
     }
@@ -84,7 +92,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
         ITexture[] overlayed = RenderOverlay.get(aWorld, aX, aY, aZ);
         if (overlayed == null) {
-            setupBlockTexturesOnly(aBlock, tMeta);
+            setupBlockTexturesOnly(aBlock, tMeta, false);
         } else {
             ForgeDirection[] validDirections = VALID_DIRECTIONS;
             for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {

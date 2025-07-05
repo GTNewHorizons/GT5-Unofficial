@@ -8,6 +8,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import galacticgreg.api.Enums.DimensionType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
@@ -27,16 +30,16 @@ public class ModDimensionDef {
     private final String chunkProviderName;
     private DimensionType dimensionType;
 
-    private final List<ISpaceObjectGenerator> spaceObjectGenerators;
-    private final List<ISpaceObjectGenerator> spaceStructureGenerators;
+    private final @NotNull List<ISpaceObjectGenerator> spaceObjectGenerators;
+    private final @NotNull List<ISpaceObjectGenerator> spaceStructureGenerators;
 
     private int oreVeinChance = Gregtech.general.oreveinPercentage;
 
     // ------
 
     // Asteroid stuff
-    private final List<IStoneType> validAsteroidMaterials;
-    private final List<SpecialBlockComb> specialBlocksForAsteroids;
+    private final @NotNull List<IStoneType> validAsteroidMaterials;
+    private final @NotNull List<SpecialBlockComb> specialBlocksForAsteroids;
 
     private final XSTR random = new XSTR();
 
@@ -93,7 +96,7 @@ public class ModDimensionDef {
      *
      * @param pSpaceObjectGenerator An instance of your own object generator
      */
-    public void registerSpaceObjectGenerator(ISpaceObjectGenerator pSpaceObjectGenerator) {
+    public void registerSpaceObjectGenerator(@NotNull ISpaceObjectGenerator pSpaceObjectGenerator) {
         Enums.SpaceObjectType tType = pSpaceObjectGenerator.getType();
         switch (tType) {
             case NonOreSchematic:
@@ -113,7 +116,7 @@ public class ModDimensionDef {
     /**
      * Internal function Return a random generator for space objects
      */
-    public ISpaceObjectGenerator getRandomSOGenerator(Enums.SpaceObjectType pTargetType) {
+    public @Nullable ISpaceObjectGenerator getRandomSOGenerator(Enums.@NotNull SpaceObjectType pTargetType) {
         ISpaceObjectGenerator tGen = null;
         List<ISpaceObjectGenerator> tLst = null;
         try {
@@ -221,7 +224,7 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public IStoneType getRandomAsteroidMaterial(Random rng) {
+    public @Nullable IStoneType getRandomAsteroidMaterial(Random rng) {
         if (validAsteroidMaterials.isEmpty()) return null;
 
         if (validAsteroidMaterials.size() == 1) {
@@ -238,7 +241,7 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public SpecialBlockComb getRandomSpecialAsteroidBlock(Random rng) {
+    public @Nullable SpecialBlockComb getRandomSpecialAsteroidBlock(Random rng) {
         if (specialBlocksForAsteroids.isEmpty()) return null;
 
         if (specialBlocksForAsteroids.size() == 1) {

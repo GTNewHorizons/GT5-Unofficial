@@ -133,6 +133,9 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
+            if (fuelValue <= 0) {
+                return 0;
+            }
 
             if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful

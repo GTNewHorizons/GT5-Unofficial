@@ -253,7 +253,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -543,11 +543,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getWaterTier() {
         return 4;
     }
@@ -567,7 +562,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        infoData.add("Current pH Value: " + EnumChatFormatting.YELLOW + currentpHValue + " pH");
+        infoData.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_ph_adjustment.ph",
+                "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});
     }
 

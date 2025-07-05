@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -54,7 +55,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(GTModHandler.getDistilledWater(288L))
+            .fluidInputs(GTModHandler.getDistilledWater(2 * INGOTS))
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 216))
             .duration(16 * TICKS)
             .eut(4)

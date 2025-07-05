@@ -22,7 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -30,6 +29,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
@@ -45,6 +46,9 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -102,7 +106,7 @@ public class MTEBoilerLava extends MTEBoiler {
         ITexture[][][] rTextures = new ITexture[6][17][];
         for (byte color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
+            short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_TOP, colorModulation),
                 TextureFactory.of(OVERLAY_DRAIN), TextureFactory.of(FLUID_IN_SIGN) };
@@ -217,7 +221,7 @@ public class MTEBoilerLava extends MTEBoiler {
                                 (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
                                 (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
                                 (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                                equippedItemStack));
+                                returnedItemStack));
                 } else if (aPlayer instanceof EntityPlayerMP) {
                     ((EntityPlayerMP) aPlayer).sendContainerToPlayer(aPlayer.inventoryContainer);
                 }
@@ -269,15 +273,11 @@ public class MTEBoilerLava extends MTEBoiler {
         final IFluidHandler upTank = aBaseMetaTileEntity.getITankContainerAtSide(ForgeDirection.UP);
         if (upTank == null) return;
         // Simulates drain of maximum lava amount up to 1000L that can fit the internal tank
-        final FluidStack drainableLavaStack = upTank.drain(
-            ForgeDirection.DOWN,
-            FluidRegistry.getFluidStack(
-                "lava",
-                Math.min(
-                    this.lavaTank.getCapacity()
-                        - (this.lavaTank.getFluid() != null ? this.lavaTank.getFluid().amount : 0),
-                    1000)),
-            false);
+        int toDrain = Math.min(
+            this.lavaTank.getCapacity() - (this.lavaTank.getFluid() != null ? this.lavaTank.getFluid().amount : 0),
+            1_000);
+        final FluidStack drainableLavaStack = upTank
+            .drain(ForgeDirection.DOWN, Materials.Lava.getFluid(toDrain), false);
         if (!GTModHandler.isLava(drainableLavaStack) || drainableLavaStack.amount <= 0) return;
         // Performs actual drain up and fill internal tank
         this.lavaTank.fill(upTank.drain(ForgeDirection.DOWN, drainableLavaStack, true), true);
@@ -444,13 +444,29 @@ public class MTEBoilerLava extends MTEBoiler {
     }
 
     @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.STEEL;
+    }
+
+    @Override
+    protected com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
+        return new FluidSlot().syncHandler(lavaTank)
+            .widgetTheme(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN);
+    }
+
+    @Override
+    protected com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
+        return super.createAshSlot().widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK);
+    }
+
+    @Override
     protected IDrawable[] getAshSlotBackground() {
         return new IDrawable[] { getGUITextureSet().getItemSlot(),
             GTUITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
     }
 
     @Override
-    protected Widget createFuelSlot() {
+    protected Widget createFuelSlotMui1() {
         return new FluidSlotWidget(lavaTank).setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn())
             .setPos(115, 61);
     }

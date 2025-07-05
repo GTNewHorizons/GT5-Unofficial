@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,8 +17,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
@@ -34,6 +32,7 @@ import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -134,9 +133,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     @Override
     public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
-        final String ctrlKey = Minecraft.isRunningOnMac
-            ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.ctrl_mac")
-            : StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.ctrl_pc");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
         aList.add(" ");
@@ -145,7 +141,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
         aList.add(
-            StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.prevent_shake", ctrlKey));
+            StatCollector.translateToLocalFormatted(
+                "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
+                GameSettings.getKeyDisplayString(SprayColorInfiniteKeybindHandler.shakeLockKey.getKeyCode())));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
@@ -172,7 +170,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     public boolean onMiddleClick(final MetaBaseItem item, final ItemStack itemStack, final EntityPlayer player) {
         if (player.isSneaking()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.LOCK_CAN);
-        } else if (isCtrlDown()) {
+        } else if (SprayColorInfiniteKeybindHandler.shakeLockKey.isPressed()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK);
         } else if (isLocked(itemStack)) {
             displayLockedMessage();
@@ -197,25 +195,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return true;
     }
 
-    private boolean isCtrlDown() {
-        // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
-        // this later if it is useful elsewhere.
-        try {
-            // noinspection DuplicatedCode
-            if (!Keyboard.isCreated()) {
-                return false;
-            }
-
-            boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
-                || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-            if (!isCtrlKeyDown && Minecraft.isRunningOnMac)
-                isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA);
-
-            return isCtrlKeyDown;
-        } catch (IllegalStateException ignored) {
-            return false;
-        }
-    }
     // endregion
 
     // region GUI
@@ -347,7 +326,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             final byte color = itemStack.getTagCompound()
                 .getByte(COLOR_NBT_TAG);
             if (color != REMOVE_COLOR) {
-                return Dyes.getDyeFromIndex(color);
+                return Dyes.getOrDefault(color, Dyes.MACHINE_METAL);
             }
         }
 
@@ -382,7 +361,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         protected List<String> getItemTooltips(final int index) {
             return ImmutableList.of(
                 index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                    : Dyes.getDyeFromIndex((short) index).mName);
+                    : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
         }
     }
 }

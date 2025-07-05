@@ -55,6 +55,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower> implements ISurvivalConstructable {
@@ -262,6 +263,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
@@ -318,7 +320,8 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 7, 0, 0);
-        int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
+        // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             this.buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 7, 5 * i, 0);
         }
@@ -330,12 +333,13 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         this.mHeight = 0;
-        int built = this.survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, env, false, true);
+        int built = this.survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
+        // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             this.mHeight = i;
-            built = this.survivialBuildPiece(
+            built = this.survivalBuildPiece(
                 STRUCTURE_PIECE_LAYER,
                 stackSize,
                 7,
@@ -348,7 +352,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             if (built >= 0) return built;
         }
         this.mHeight = tTotalHeight - 1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             7,

@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -129,12 +128,23 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
         if (dir == null) return null;
-        for (ForgeDirection bendDir : connectedSides) {
-            if (bendDir != null && bendDir != dir) {
-                chainedFrontFacing = bendDir.getOpposite();
-                return bendDir;
-            }
+
+        if (connectionCount < 2) {
+            return null;
         }
+
+        ForgeDirection a = connectedSides[0];
+        ForgeDirection b = connectedSides[1];
+        if (dir == a) {
+            chainedFrontFacing = b.getOpposite();
+            return b;
+        }
+        if (dir == b) {
+            chainedFrontFacing = a.getOpposite();
+            return a;
+        }
+
+        // the input direction is not connected to this mirror
         return null;
     }
 
@@ -195,10 +205,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
-            return 0.0625F;
-        }
+    public float getCollisionThickness() {
         return 0.6f;
     }
 

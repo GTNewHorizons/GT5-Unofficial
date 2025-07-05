@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.Mods.IC2CropPlugin;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
     private ItemStack mDrop = null;
     private ItemStack[] mSpecialDrops = null;
     private Materials mBlock = null;
+    private String mUnlocalizedName;
     private static boolean bIc2NeiLoaded = IC2CropPlugin.isModLoaded();
 
     /**
@@ -55,7 +57,8 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
      */
     public GTBaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aBaseSeed, int aTier, int aMaxSize,
         int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive,
-        int aStatColor, int aStatWeed, String[] aAttributes, ItemStack aDrop, ItemStack[] aSpecialDrops) {
+        int aStatColor, int aStatWeed, String[] aAttributes, ItemStack aDrop, ItemStack[] aSpecialDrops,
+        String aUnlocalizedName) {
         new GTBaseCrop(
             aID,
             aCropName,
@@ -74,7 +77,8 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
             aAttributes,
             null,
             aDrop,
-            aSpecialDrops);
+            aSpecialDrops,
+            aUnlocalizedName);
     }
 
     /**
@@ -94,9 +98,9 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
     public GTBaseCrop(int aID, String aCropName, String aDiscoveredBy, ItemStack aBaseSeed, int aTier, int aMaxSize,
         int aGrowthSpeed, int aAfterHarvestSize, int aHarvestSize, int aStatChemical, int aStatFood, int aStatDefensive,
         int aStatColor, int aStatWeed, String[] aAttributes, Materials aBlock, ItemStack aDrop,
-        ItemStack[] aSpecialDrops) {
+        ItemStack[] aSpecialDrops, String aUnlocalizedName) {
         mName = aCropName;
-        GTLanguageManager.addStringLocalization("gt.crop." + mName + ".name", mName);
+        mUnlocalizedName = aUnlocalizedName;
         aID = GTConfig.addIDConfig(ConfigCategories.IDs.crops, mName.replaceAll(" ", "_"), aID);
         if (aDiscoveredBy != null && !aDiscoveredBy.equals(E)) mDiscoveredBy = aDiscoveredBy;
         if (aDrop != null && aID > 0 && aID < 256) {
@@ -191,7 +195,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public String displayName() {
-        return GTLanguageManager.getTranslation("gt.crop." + mName + ".name");
+        return translateToLocal(mUnlocalizedName);
     }
 
     @Override
@@ -206,7 +210,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public ItemStack getGain(ICropTile aCrop) {
-        int tDrop = 0;
+        int tDrop;
         if (mSpecialDrops != null && (tDrop = java.util.concurrent.ThreadLocalRandom.current()
             .nextInt(0, (mSpecialDrops.length * 2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GTUtility.copyOrNull(mSpecialDrops[tDrop]);

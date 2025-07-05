@@ -108,7 +108,7 @@ public class EnderWorldSavedData extends WorldSavedData {
         NBTTagList tanks = new NBTTagList();
 
         EnderLiquidTankLink.forEach((tank, tag) -> {
-            if (tank.getFluidHandler() != null) {
+            if (tank.shouldSave()) {
                 usedTags.add(tag);
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setTag("k", tank.save());

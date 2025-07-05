@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWUtil.ofGlassTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -25,6 +24,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
@@ -88,6 +88,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
 
@@ -102,7 +103,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private BioCulture mCulture;
     private ItemStack mStack;
     private boolean needsVisualUpdate = true;
-    private byte mGlassTier;
+    private int glassTier = -1;
     private int mSievert;
     private int mNeededSievert;
     private int mCasing = 0;
@@ -138,9 +139,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 ofHatchAdder(MTEBioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
-        .addElement(
-            'g',
-            ofGlassTiered((byte) 1, (byte) 127, (byte) 0, (te, v) -> te.mGlassTier = v, te -> te.mGlassTier, 1))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
     @Override
@@ -160,7 +159,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 StatCollector.translateToLocal("tooltip.bw.structure.glass"),
                 "Hollow two middle layers",
                 2)
-            .addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass")
+            .addCasingInfoExactly("Any Tiered Glass", 32, true)
             .addStructureInfo("Some Recipes need more advanced Glass Types")
             .addMaintenanceHatch("Any casing", 1)
             .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
@@ -169,6 +168,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             .addInputHatch("Any casing", 1)
             .addOutputHatch("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -199,11 +199,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return BartWorksRecipeMaps.bacterialVatRecipes;
     }
@@ -227,7 +222,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private int calcMod(double x) {
         double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
-        int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
+        int ret = MathUtils.ceilInt((-1D / y * (x - y) * (x - y) + y) / y * z);
         return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
@@ -246,7 +241,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 MTEBioVat.this.mNeededSievert = sievert;
 
-                if (MTEBioVat.this.mGlassTier < glass) {
+                if (MTEBioVat.this.glassTier < glass) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(glass);
                 }
 
@@ -296,8 +291,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     public FluidStack getStoredFluidOutputs() {
-        // Only one output Hatch
-        assert this.mOutputHatches.size() == 1;
+        // Only one output Hatch, enforced in checkMachine.
         return this.mOutputHatches.get(0)
             .getFluid();
     }
@@ -318,26 +312,15 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mRadHatches.clear();
-        this.mGlassTier = 0;
+        this.glassTier = -1;
         this.mCasing = 0;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
 
         return this.mCasing >= 19 && this.mRadHatches.size() <= 1
-            && this.mOutputHatches.size() == 1
+            && !this.mEnergyHatches.isEmpty()
             && this.mMaintenanceHatches.size() == 1
-            && !this.mInputHatches.isEmpty()
-            && !this.mEnergyHatches.isEmpty();
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
+            && this.mOutputHatches.size() == 1;
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
@@ -689,11 +672,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEBioVat(this.mName);
     }
@@ -733,7 +711,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override

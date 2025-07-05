@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -42,7 +43,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
-            .addInfo("131072EU/t and 320M EU capacity per Energy Hatch")
+            .addInfo("§b131,072§7 EU/t and §b320M§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
@@ -114,18 +115,17 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                TextureFactory
-                    .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)),
                 TextureFactory.builder()
                     .addIcon(this.getIconOverlay())
                     .extFacing()
                     .build() };
         } else if (!aActive) {
-            return new ITexture[] { TextureFactory
-                .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
-            return new ITexture[] { TextureFactory
-                .of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1)) };
         }
     }
 
@@ -173,7 +173,9 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             }
         }
 
-        return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + mEUStore + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t" };
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
     }
 }

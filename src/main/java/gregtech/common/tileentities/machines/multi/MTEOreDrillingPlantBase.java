@@ -55,8 +55,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GTUtility.ItemId;
-import gregtech.api.util.LRUCache;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
@@ -144,8 +142,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (getBaseMetaTileEntity().isActive()) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
@@ -162,7 +161,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         replaceWithCobblestone = !replaceWithCobblestone;
         GTUtility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
         return true;
@@ -496,18 +495,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return (int) Math.max(
             1,
             ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM || simulateWorking) ? getBaseProgressTime()
-                : 80) / Math.pow(2, tier));
-    }
-
-    private LRUCache<ItemId, GTRecipe> maceratorRecipes = new LRUCache<>(64, this::findRecipe);
-
-    private GTRecipe findRecipe(ItemId id) {
-        long voltage = getMaxInputVoltage();
-
-        return RecipeMaps.maceratorRecipes.findRecipeQuery()
-            .items(id.getItemStack())
-            .voltage(voltage)
-            .find();
+                : 80) / GTUtility.powInt(2, tier));
     }
 
     private ItemStack[] getOutputByDrops(List<ItemStack> oreBlockDrops) {
@@ -518,8 +506,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 outputItems.add(multiplyStackSize(currentItem));
                 continue;
             }
-
-            GTRecipe tRecipe = maceratorRecipes.get(ItemId.create(currentItem));
+            GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .caching(false)
+                .items(currentItem)
+                .voltage(voltage)
+                .find();
 
             if (tRecipe == null) {
                 outputItems.add(currentItem);

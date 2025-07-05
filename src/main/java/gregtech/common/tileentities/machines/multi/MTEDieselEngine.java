@@ -347,7 +347,9 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 .getEUCapacity();
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Diesel Engine" + EnumChatFormatting.RESET,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
+                + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(storedEnergy)
@@ -395,8 +397,8 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -407,6 +409,6 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 1, elementBudget, env, false, true);
     }
 }

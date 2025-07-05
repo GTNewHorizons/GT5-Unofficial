@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.LinkedHashMultimap;
@@ -27,14 +29,9 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 
 /**
- * API for bartworks borosilicate glass.
- * <p>
- * You might have noticed this API does not expose any Block instance, but only IStructureElements. This is in case we
- * add more glass blocks later, and we run out of meta id for only one block.
- * <p>
- * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else you
- * might end up with wrong autoplace hints.
+ * @deprecated use gregtech.api.util.GlassTier
  */
+@Deprecated
 public class BorosilicateGlass {
 
     private static List<Pair<Block, Integer>> representatives;
@@ -45,21 +42,21 @@ public class BorosilicateGlass {
         return tier > 0 && tier <= Byte.MAX_VALUE;
     }
 
-    public static Block getGlassBlock() {
+    public static @NotNull Block getGlassBlock() {
         return ItemRegistry.bw_realglas;
     }
 
-    public static Block getGlassBlock2() {
+    public static @NotNull Block getGlassBlock2() {
         return ItemRegistry.bw_realglas2;
     }
 
-    private static void doRegister(byte level, Block block, int meta,
-        SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
+    private static void doRegister(byte level, @NotNull Block block, int meta,
+        @NotNull SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
         allLevels.put(level, Pair.of(block, meta));
         allLevelsReverse.put(block, meta, level);
     }
 
-    private static SetMultimap<Byte, Pair<Block, Integer>> getAllLevels() {
+    private static @NotNull SetMultimap<Byte, Pair<Block, Integer>> getAllLevels() {
         if (allLevels == null) {
             SetMultimap<Byte, Pair<Block, Integer>> ret = LinkedHashMultimap.create();
             Block block = getGlassBlock();
@@ -83,7 +80,7 @@ public class BorosilicateGlass {
         return allLevels;
     }
 
-    private static List<Pair<Block, Integer>> getRepresentatives() {
+    private static @NotNull List<Pair<Block, Integer>> getRepresentatives() {
         if (representatives == null) {
             SetMultimap<Byte, Pair<Block, Integer>> allLevels = getAllLevels();
             ArrayList<Pair<Block, Integer>> ret = new ArrayList<>();
@@ -98,7 +95,7 @@ public class BorosilicateGlass {
         return representatives;
     }
 
-    private static Byte checkWithinBound(byte val, byte lo, byte hi) {
+    private static @Nullable Byte checkWithinBound(byte val, byte lo, byte hi) {
         return val > hi || val < lo ? null : val;
     }
 
@@ -117,7 +114,7 @@ public class BorosilicateGlass {
      * <p>
      * Can only be called at INIT stage.
      */
-    public static void registerGlass(Block block, int meta, byte tier) {
+    public static void registerGlass(@NotNull Block block, int meta, byte tier) {
         if (Loader.instance()
             .hasReachedState(LoaderState.POSTINITIALIZATION)) throw new IllegalStateException("register too late!");
         if (!Loader.instance()
@@ -140,7 +137,8 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
-    public static <T> IStructureElement<T> ofBoroGlass(int tier) {
+    @Deprecated
+    public static <T> @NotNull IStructureElement<T> ofBoroGlass(int tier) {
         if (!hasGlassInTier(tier)) throw new IllegalArgumentException();
         return lazy(t -> {
             Pair<Block, Integer> pair = getRepresentatives().get(tier - 3);
@@ -154,7 +152,8 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
-    public static <T> IStructureElement<T> ofBoroGlassAnyTier() {
+    @Deprecated
+    public static <T> @NotNull IStructureElement<T> ofBoroGlassAnyTier() {
         return lazy(t -> ofBlockAnyMeta(getGlassBlock()));
     }
 
@@ -169,8 +168,9 @@ public class BorosilicateGlass {
      *
      * @param initialValue the value set before structure check started
      */
-    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, BiConsumer<T, Byte> setter,
-        Function<T, Byte> getter) {
+    @Deprecated
+    public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, @NotNull BiConsumer<T, Byte> setter,
+        @NotNull Function<T, Byte> getter) {
         return lazy(
             t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
     }
@@ -183,8 +183,8 @@ public class BorosilicateGlass {
      * @param minTier      minimal accepted tier. inclusive. must be greater than 0.
      * @param maxTier      maximal accepted tier. inclusive.
      */
-    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier,
-        BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
+    public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier,
+        @NotNull BiConsumer<T, Byte> setter, @NotNull Function<T, Byte> getter) {
         if (minTier > maxTier || minTier < 0) throw new IllegalArgumentException();
         return lazy(
             t -> ofBlocksTiered(

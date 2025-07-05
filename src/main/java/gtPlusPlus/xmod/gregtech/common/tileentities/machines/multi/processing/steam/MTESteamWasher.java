@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,6 +42,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -60,10 +63,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTESteamWasherGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -115,7 +116,8 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     private int tCountCasing = 0;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
             return 1;
@@ -124,19 +126,21 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             tCountCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
-    public static int getTierGearBoxCasing(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return 0;
+        return null;
     }
 
-    public static int getTierPipeCasing(Block block, int meta) {
+    @Nullable
+    public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -212,12 +216,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
                 .addElement('D', ofBlock(Blocks.glass, 0))
-                .addElement(
-                    'E',
-                    ofChain(
-                        isAir(),
-                        ofBlockAnyMeta(Blocks.water),
-                        ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+                .addElement('E', ofChain(isAir(), ofAnyWater()))
                 .addElement(
                     'A',
                     ofChain(
@@ -251,7 +250,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTUR_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -269,7 +268,6 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing >= 55
@@ -339,7 +337,8 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -352,13 +351,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
+            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(5, 5, 5, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
@@ -368,14 +367,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(EnumChatFormatting.GOLD + "12x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(EnumChatFormatting.GOLD + "12x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
             .toolTipFinisher(GTValues.AuthorEvgenWarGold);
@@ -385,8 +384,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.tier",
+                "" + EnumChatFormatting.YELLOW + tierMachine));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.parallel",
+                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
@@ -417,7 +422,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
         tag.setInteger("mode", machineMode);
     }
 
@@ -537,7 +542,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     private boolean tryConsumeWater() {
         if (getStoredFluids() != null) {
             for (FluidStack waterCapacity : this.getStoredFluids()) {
-                if (waterCapacity.isFluidEqual(FluidUtils.getWater(1000))) {
+                if (waterCapacity.isFluidEqual(Materials.Water.getFluid(1_000))) {
                     if (waterCapacity.amount >= 1000) {
                         waterCapacity.amount -= 1000;
                         return true;
@@ -546,5 +551,10 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             }
         }
         return false;
+    }
+
+    @Override
+    protected @NotNull MTESteamWasherGui getGui() {
+        return new MTESteamWasherGui(this);
     }
 }

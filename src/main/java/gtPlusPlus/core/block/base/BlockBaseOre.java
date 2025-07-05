@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -29,7 +28,6 @@ import gregtech.common.render.GTRendererBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
@@ -55,18 +53,11 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
                 this,
                 ItemBlockOre.class,
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GTOreDictUnificator.registerOre(
-                "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
-                ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator
+                .registerOre("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()), new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
     }
 
     public Material getMaterialEx() {

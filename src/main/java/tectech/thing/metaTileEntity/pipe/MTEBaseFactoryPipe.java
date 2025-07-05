@@ -9,10 +9,11 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -105,14 +106,11 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public String[] getDescription() {
-        return new String[] {};
+        return GTValues.emptyStringArray;
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
-            return 0.0625F;
-        }
+    public float getCollisionThickness() {
         return mThickness;
     }
 
@@ -188,6 +186,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     @Override
     public String[] getInfoData() {
         return new String[] {
-            getActive() ? EnumChatFormatting.GREEN + "Active." : EnumChatFormatting.RED + "Not active." };
+            getActive() ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("tt.infodata.pipe.active")
+                : EnumChatFormatting.RED + StatCollector.translateToLocal("tt.infodata.pipe.inactive") };
     }
 }

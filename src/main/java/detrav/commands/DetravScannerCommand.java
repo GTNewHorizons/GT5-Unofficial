@@ -6,37 +6,27 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.chunk.Chunk;
 
-import com.google.common.collect.ImmutableList;
-
+import gregtech.commands.GTBaseCommand;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 
 /**
  * Created by wital_000 on 17.03.2016.
  */
-public class DetravScannerCommand implements ICommand {
+public class DetravScannerCommand extends GTBaseCommand {
 
-    private final List<String> aliases = ImmutableList.of("DetravScanner", "dscan");
+    public DetravScannerCommand() {
+        super("dscan");
+    }
 
     @Override
     public String getCommandName() {
-        return "DetravScanner";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "DetravScanner [\"Part of Greg ore name\"]";
-    }
-
-    @Override
-    public List<String> getCommandAliases() {
-        return this.aliases;
+        return "detravscanner";
     }
 
     @Override
@@ -119,10 +109,6 @@ public class DetravScannerCommand implements ICommand {
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));
     }
 
-    private void sendHelpMessage(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
-    }
-
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
         return true;
@@ -138,15 +124,5 @@ public class DetravScannerCommand implements ICommand {
             return result;
         }
         return null;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
-        return false;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
     }
 }

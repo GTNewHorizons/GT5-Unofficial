@@ -161,7 +161,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 8),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 10))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(8))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -172,7 +172,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ElectrumFlux, 8),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 11))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(12))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -183,7 +183,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DraconiumAwakened, 8),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ElectrumFlux, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -470,7 +470,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
-            .fluidInputs(Materials.Oxygen.getGas(2000L))
+            .fluidInputs(Materials.Oxygen.getGas(2_000))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);
@@ -480,7 +480,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 9L),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DraconiumAwakened, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 24L))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(24))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(RECYCLE, true)
@@ -491,7 +491,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 48L))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(32))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .metadata(RECYCLE, true)
@@ -502,8 +502,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 64L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 64L))
+                ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(RECYCLE, true)

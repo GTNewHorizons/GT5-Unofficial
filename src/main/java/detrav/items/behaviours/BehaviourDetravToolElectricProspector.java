@@ -88,7 +88,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             }
 
             final DetravMetaGeneratedTool01 tool = (DetravMetaGeneratedTool01) aItem;
-            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
+            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, (long) this.mCosts * chunks.size());
 
             final ProspectingPacket packet = new ProspectingPacket(
                 cX,

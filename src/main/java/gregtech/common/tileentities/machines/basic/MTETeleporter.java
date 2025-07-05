@@ -36,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -183,17 +184,33 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Coordinates:",
-            "X: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-            "Y: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-            "Z: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
-            "Dimension Valid: " + (GTUtility.isRealDimension(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
-            "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET) };
+        return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.x",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.y",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.z",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension",
+                "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.valid",
+                (GTUtility.isRealDimension(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.registered",
+                (DimensionManager.isDimensionRegistered(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)) };
     }
 
     @Override
@@ -367,19 +384,12 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     private int distanceCalculation() {
+        double dx = getBaseMetaTileEntity().getXCoord() - this.mTargetX;
+        double dy = getBaseMetaTileEntity().getYCoord() - this.mTargetY;
+        double dz = getBaseMetaTileEntity().getZCoord() - this.mTargetZ;
         return Math.abs(
             ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                && (isDimensionalTeleportAvailable())
-                    ? 4000
-                    : (int) Math.sqrt(
-                        Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D))));
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
+                && (isDimensionalTeleportAvailable()) ? 4000 : (int) Math.sqrt(dx * dx + dy * dy + dz * dz)));
     }
 
     @Override
@@ -395,11 +405,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -430,21 +435,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     @Override
     public long maxAmperesIn() {
         return 2;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override
@@ -491,23 +481,34 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "X: " + numberFormat.format(mTargetX))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.x", numberFormat.format(mTargetX)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Y: " + numberFormat.format(mTargetY))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.y", numberFormat.format(mTargetY)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Z: " + numberFormat.format(mTargetZ))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.z", numberFormat.format(mTargetZ)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Dim: " + numberFormat.format(mTargetD))
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.dim", numberFormat.format(mTargetD)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32))
             .widget(
-                TextWidget.dynamicString(() -> "Dim Valid: " + (GTUtility.isRealDimension(mTargetD) ? "Yes" : "No"))
+                TextWidget
+                    .dynamicString(
+                        () -> (GTUtility.isRealDimension(mTargetD)
+                            ? StatCollector.translateToLocal("GT5U.gui.text.dim.valid")
+                            : StatCollector.translateToLocal("GT5U.gui.text.dim.invalid")))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> hasDimensionalTeleportCapability())
                     .setPos(46, 40))

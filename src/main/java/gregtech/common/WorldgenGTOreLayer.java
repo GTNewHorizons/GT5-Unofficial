@@ -204,13 +204,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     + " cY="
                     + veinMinY);
         }
+        double dx = chunkX / 16 - seedX / 16;
+        double dz = chunkZ / 16 - seedZ / 16;
 
         // Adjust the density down the more chunks we are away from the oreseed. The 5 chunks surrounding the seed
         // should always be max density due to truncation of Math.sqrt().
-        int localDensity = Math.max(
-            1,
-            this.mDensity
-                / ((int) Math.sqrt(2 + Math.pow(chunkX / 16 - seedX / 16, 2) + Math.pow(chunkZ / 16 - seedZ / 16, 2))));
+        int localDensity = Math.max(1, this.mDensity / (int) Math.sqrt(2 + dx * dx + dz * dz));
 
         LayerGenerator generator = new LayerGenerator();
 

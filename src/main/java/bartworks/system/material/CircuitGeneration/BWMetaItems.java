@@ -14,6 +14,7 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
@@ -60,9 +62,11 @@ public class BWMetaItems {
         return BWMetaItems.NEW_CIRCUIT_PARTS;
     }
 
-    private static final BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+    private static BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS;
 
-    static {
+    public static void init() {
+        NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS
@@ -85,7 +89,7 @@ public class BWMetaItems {
                 new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
                 null,
                 new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
+                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
                 null,
                 300,
                 (int) TierEU.RECIPE_EV,
@@ -164,18 +168,20 @@ public class BWMetaItems {
                 ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
                 String itemName = tagStack != null
                     ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
-                    : "a circuit";
+                    : StatCollector.translateToLocal("tooltip.bw.item.circuit.tagged");
 
                 if (aStack.getItemDamage() == 0) {
-                    aList.add("An imprint for: " + itemName);
+                    aList.add(
+                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.imprint", itemName));
                 } else if (aStack.getItemDamage() == 1) {
-                    aList.add("A sliced " + itemName);
+                    aList.add(
+                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.sliced", itemName));
                 }
             } else {
                 if (aStack.getItemDamage() == 0) {
-                    aList.add("An imprint for a Circuit");
+                    aList.add(StatCollector.translateToLocal("tooltip.bw.item.circuit.imprint"));
                 } else if (aStack.getItemDamage() == 1) {
-                    aList.add("A sliced Circuit");
+                    aList.add(StatCollector.translateToLocal("tooltip.bw.item.circuit.sliced"));
                 }
             }
 

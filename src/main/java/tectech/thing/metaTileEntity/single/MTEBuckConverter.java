@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -19,6 +20,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
@@ -122,16 +124,6 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isEnetOutput() {
         return true;
     }
@@ -202,24 +194,37 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> EUT, val -> EUT = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> AMP, val -> AMP = val));
+
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "EUT: " + numberFormat.format(EUT))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
-                new TextWidget().setStringSupplier(() -> "AMP: " + numberFormat.format(AMP))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
-                new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format((long) AMP * EUT))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32));
 

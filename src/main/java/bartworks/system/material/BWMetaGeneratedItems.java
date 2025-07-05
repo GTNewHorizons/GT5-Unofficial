@@ -13,6 +13,9 @@
 
 package bartworks.system.material;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -38,11 +41,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -120,14 +123,13 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify"));
+            aList.add(translateToLocal("GT5U.tooltip.purify.1"));
         }
-        if (this.orePrefixes == OrePrefixes.crushed)
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
+        if (this.orePrefixes == OrePrefixes.crushed) aList.add(translateToLocal("GT5U.tooltip.purify.2"));
 
         if (aStack != null && aStack.getItem() instanceof BWMetaGeneratedItems
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
+            aList.add(translateToLocal("GT5U.tooltip.nqgen"));
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
         if (werkstoff != null) {
@@ -190,12 +192,12 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         if (w == null || w.getStats() == null) return;
 
         if (w.getStats()
-            .isToxic() && !GTUtility.isWearingFullBioHazmat(bPlayer)) {
+            .isToxic() && !HazardProtection.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
         if (w.getStats()
-            .isRadioactive() && !GTUtility.isWearingFullRadioHazmat(bPlayer)) {
+            .isRadioactive() && !HazardProtection.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
@@ -245,8 +247,11 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten ? 144 : 0;
+            || this.orePrefixes == OrePrefixes.cellPlasma
+                ? 1_000
+                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
+                    ? 1 * INGOTS
+                    : 0;
     }
 
     @Override

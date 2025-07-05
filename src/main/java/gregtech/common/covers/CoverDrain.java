@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -15,9 +17,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
-public class CoverDrain extends CoverBehavior {
+public class CoverDrain extends CoverLegacyData {
 
     public CoverDrain(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -29,20 +30,19 @@ public class CoverDrain extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
-        int coverDataValue = coverData.get();
-        if ((coverDataValue % 3 > 1) && ((coverable instanceof IMachineProgress))) {
+        if ((this.coverData % 3 > 1) && ((coverable instanceof IMachineProgress))) {
             if (((IMachineProgress) coverable).isAllowedToWork()) {
-                return coverData;
+                return;
             }
         }
         if (coverSide != ForgeDirection.UNKNOWN) {
             final Block tBlock = coverable.getBlockAtSide(coverSide);
-            if ((coverDataValue < 3) && ((coverable instanceof IFluidHandler))) {
+            if ((this.coverData < 3) && ((coverable instanceof IFluidHandler))) {
                 if ((coverSide == ForgeDirection.UP) && (coverable.getWorld()
                     .isRaining())
                     && (coverable.getWorld()
@@ -62,10 +62,10 @@ public class CoverDrain extends CoverBehavior {
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                        tLiquid = Materials.Water.getFluid(1000L);
+                        tLiquid = Materials.Water.getFluid(1_000);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                            tLiquid = Materials.Lava.getFluid(1000L);
+                            tLiquid = Materials.Lava.getFluid(1_000);
                         } else if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
                                 coverable.getWorld(),
@@ -90,7 +90,7 @@ public class CoverDrain extends CoverBehavior {
                     }
                 }
             }
-            if ((coverDataValue >= 3) && (tBlock != null)
+            if ((this.coverData >= 3) && (tBlock != null)
                 && ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)
                     || (tBlock == Blocks.water)
                     || (tBlock == Blocks.flowing_water)
@@ -105,35 +105,27 @@ public class CoverDrain extends CoverBehavior {
                         0);
             }
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 6;
+        if (this.coverData < 0) {
+            this.coverData = 5;
         }
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (coverDataValue < 0) {
-            coverDataValue = 5;
+        switch (this.coverData) {
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_cond"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_invert_cond"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_cond"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_invert_cond"));
         }
-        switch (coverDataValue) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("022", "Import"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("023", "Import (conditional)"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("024", "Import (invert cond)"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("025", "Keep Liquids Away"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("026", "Keep Liquids Away (conditional)"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("027", "Keep Liquids Away (invert cond)"));
-        }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
-        return (coveredTile.get() instanceof IMachineProgress machine && machine.isAllowedToWork())
-            == (coverData.get() < 2);
+        return (coveredTile.get() instanceof IMachineProgress machine && machine.isAllowedToWork()) == (coverData < 2);
     }
 
     @Override
@@ -143,6 +135,6 @@ public class CoverDrain extends CoverBehavior {
 
     @Override
     public int getMinimumTickRate() {
-        return coverData.get() < 3 ? 50 : 1;
+        return coverData < 3 ? 50 : 1;
     }
 }

@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,13 +37,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.Reference;
 import tectech.loader.MainLoader;
-import tectech.recipe.TTRecipeAdder;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -191,7 +190,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                         ((EntityItem) entity).delayBeforeCanPickup = 2;
                         entity.setDead();
                     } else if (entity instanceof EntityLivingBase) {
-                        if (!GTUtility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
+                        if (!HazardProtection.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
                             entity.attackEntityFrom(MainLoader.microwaving, damagingFactor);
                         }
                     }
@@ -204,7 +203,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
 
-        mOutputItems = itemsToOutput.toArray(TTRecipeAdder.nullItem);
+        mOutputItems = itemsToOutput.toArray(new ItemStack[0]);
 
         if (remainingTime.get() <= 0) {
             mte.getWorld()
@@ -311,7 +310,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
     }
 
     @Override

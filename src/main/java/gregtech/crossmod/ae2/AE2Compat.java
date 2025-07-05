@@ -2,6 +2,7 @@ package gregtech.crossmod.ae2;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.item.ItemStack;
 
@@ -9,14 +10,13 @@ import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
 import appeng.api.storage.IExternalStorageRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
-import gregtech.common.covers.CoverFacadeAEPlacer;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 public final class AE2Compat {
@@ -40,10 +40,17 @@ public final class AE2Compat {
             .items()
             .facade()
             .maybeItem()
-            .transform(i -> new ItemStack(i, 1, GTValues.W))
+            .transform(i -> new ItemStack(i, 1, WILDCARD))
             .orNull();
         if (facade != null) {
-            CoverRegistry.registerCover(facade, null, CoverFacadeAE::new, new CoverFacadeAEPlacer());
+            CoverRegistry.registerCover(
+                facade,
+                null,
+                CoverFacadeAE::new,
+                CoverPlacer.builder()
+                    .allowOnPrimitiveBlock()
+                    .onlyPlaceIf(CoverFacadeAE.isCoverPlaceable)
+                    .build());
         }
     }
 

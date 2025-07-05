@@ -35,27 +35,11 @@ public class Client {
         @Config.Comment("RGB values for the cable insulation color modulation.")
         public CableInsulation cableInsulation = new CableInsulation();
 
-        @Config.Comment("RGB values for the construction foam color modulation.")
-        public ConstructionFoam constructionFoam = new ConstructionFoam();
-
         @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
         public MachineMetal machineMetal = new MachineMetal();
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
         public static class CableInsulation {
-
-            @Config.DefaultInt(64)
-            public int red;
-
-            @Config.DefaultInt(64)
-            public int green;
-
-            @Config.DefaultInt(64)
-            public int blue;
-        }
-
-        @Config.LangKey("GT5U.gui.config.client.color_modulation.construction_foam")
-        public static class ConstructionFoam {
 
             @Config.DefaultInt(64)
             public int red;
@@ -128,6 +112,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialFilter;
 
+        @Config.Comment("If true, scrolling up while hovering a ghost circuit in a machine UI will increment the circuit number.")
+        @Config.DefaultBoolean(false)
+        public boolean invertCircuitScrollDirection;
+
         @Config.Comment({
             "Overrides the MC total playable sounds limit. MC's default is 28, which causes problems with many machine sounds at once",
             "If sounds are causing large amounts of lag, try lowering this.",
@@ -175,6 +163,16 @@ public class Client {
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
         public boolean useBlockUpdateHandler;
+
+        @Config.Comment("Disables coil lighting. Requires world reload (f3 + a or relog).")
+        @Config.DefaultBoolean(false)
+        @Config.Name("Use Old Coil Textures")
+        public boolean useOldCoils;
+
+        @Config.Comment("Render lines to MagLev Pylons when tethering")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render MagLev Tethers")
+        public boolean renderMagLevTethers;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")

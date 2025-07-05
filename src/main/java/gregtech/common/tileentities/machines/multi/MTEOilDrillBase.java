@@ -144,8 +144,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected abstract int getRangeInChunks();
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         int oldChunkRange = chunkRangeConfig;
         if (aPlayer.isSneaking()) {
             if (chunkRangeConfig > 0) {
@@ -193,7 +194,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             1,
             (workState == STATE_AT_BOTTOM || simulateWorking
                 ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / Math.pow(2, tier));
+                : 120) / GTUtility.powInt(2, tier));
     }
 
     protected float computeSpeed() {
@@ -386,11 +387,13 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                "Drilling fluid: " + EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET,
-                "Drilling flow: " + EnumChatFormatting.GREEN
-                    + getFlowRatePerTick()
-                    + EnumChatFormatting.RESET
-                    + " L/t"));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.oil_drill.drilling_fluid",
+                    EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.oil_drill.drilling_flow",
+                    EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick())
+                        + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
     }

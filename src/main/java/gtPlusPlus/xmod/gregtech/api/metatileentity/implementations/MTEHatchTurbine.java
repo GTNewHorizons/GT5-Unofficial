@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
@@ -93,11 +94,6 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return facing.offsetY == 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -301,6 +297,11 @@ public class MTEHatchTurbine extends MTEHatch {
             overlayTickets);
     }
 
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
+    }
+
     public boolean usingAnimations() {
         return mUsingAnimation;
     }
@@ -317,7 +318,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -342,7 +343,8 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
             PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);
@@ -373,32 +375,30 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (this.getBaseMetaTileEntity()
             .isServerSide() && !aPlayer.isSneaking()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
+            if (aTool != null) {
+                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                    return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }
         }
-        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
+            if (aTool != null) {
+                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                    return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }
         }
-        return false;
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     public boolean onToolClick(ItemStack tCurrentItem, EntityPlayer aPlayer, ForgeDirection side) {

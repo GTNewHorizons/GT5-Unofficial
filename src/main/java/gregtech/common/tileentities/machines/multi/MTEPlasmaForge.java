@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -548,7 +549,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPlasmaForge>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure_string)
-        .addElement('C', ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))
+        .addElement('C', activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel)))
         .addElement(
             'b',
             buildHatchAdder(MTEPlasmaForge.class)
@@ -615,7 +616,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
-                    + " as fast as it builds up.")
+                    + " as fast as it builds up, draining")
+            .addInfo("the total amount of stored runtime.")
+            .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
@@ -715,23 +718,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.plasmaForgeRecipes;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -804,11 +792,12 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        };
+        }.setUnlimitedTierSkips();
     }
 
     @Nonnull
     protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe, FluidStack[] inputFluids) {
+        extraCatalystNeeded = 0;
         GTRecipe tRecipe = recipe.copy();
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
@@ -915,11 +904,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
@@ -954,7 +938,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return new String[] {
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
-                + " Critical Information "
+                + " "
+                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
+                + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -999,15 +985,25 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + GTUtility.formatNumbers(mHeatingCapacity)
                 + EnumChatFormatting.RESET
                 + " K",
-            "Ticks run: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(running_time)
-                + EnumChatFormatting.RESET
-                + ", Fuel Discount: "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(100 * (1 - discount))
-                + EnumChatFormatting.RESET
-                + "%",
-            "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
+                extraCatalystNeeded),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.convergence",
+                (convergence
+                    ? EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                        + EnumChatFormatting.RESET
+                        + (discount == maximum_discount
+                            ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
+                            : StatCollector.translateToLocalFormatted(
+                                "GT5U.infodata.plasma_forge.convergence.progress",
+                                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+
+                    : EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
@@ -1021,16 +1017,18 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
 
+    private int extraCatalystNeeded = 0;
+
     private void calculateCatalystIncrease(GTRecipe recipe, FluidStack[] inputFluids, int fuelIndex) {
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
 
-        long numberOfOverclocks = (long) (Math.log((double) getMaxInputEu() / recipe.mEUt) / Math.log(4));
+        long numberOfOverclocks = GTUtility.log4(getMaxInputEu() / recipe.mEUt);
         long machineConsumption = recipe.mEUt * (1L << (2 * numberOfOverclocks));
-        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        double recipeDuration = recipe.mDuration / GTUtility.powInt(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) (((1L << numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        int extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
+        extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
             .getLeft());
 
         // Check if we have enough catalyst,
@@ -1088,7 +1086,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1240,13 +1238,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 }

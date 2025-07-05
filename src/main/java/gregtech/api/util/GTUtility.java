@@ -5,13 +5,13 @@ import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.GT;
-import static gregtech.api.enums.GTValues.L;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -116,6 +116,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -136,7 +137,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
-import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -148,6 +148,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.events.BlockScanningEvent;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -593,8 +594,7 @@ public class GTUtility {
         ForgeDirection fromSide, ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter,
         byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce,
         boolean dropItem) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMaxMoveAtOnce <= 0
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -800,8 +800,7 @@ public class GTUtility {
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, int aMaxStackTransfer,
         boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce
@@ -1231,8 +1230,7 @@ public class GTUtility {
     private static byte moveOneItemStack(IInventory fromInventory, Object toObject, ForgeDirection fromSide,
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -1423,8 +1421,7 @@ public class GTUtility {
     public static byte moveOneItemStackIntoSlot(Object fromTileEntity, Object toTileEntity, ForgeDirection fromSide,
         int putSlot, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize,
         byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (!(fromTileEntity instanceof IInventory fromInv) || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (!(fromTileEntity instanceof IInventory fromInv) || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -1729,8 +1726,8 @@ public class GTUtility {
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))
                 && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                    || Items.feather.getDamage(aStack1) == W
-                    || Items.feather.getDamage(aStack2) == W);
+                    || Items.feather.getDamage(aStack1) == WILDCARD
+                    || Items.feather.getDamage(aStack2) == WILDCARD);
         }
         return false;
     }
@@ -1754,8 +1751,8 @@ public class GTUtility {
         return aStack1 != null && aStack2 != null
             && aStack1.getItem() == aStack2.getItem()
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                || Items.feather.getDamage(aStack1) == W
-                || Items.feather.getDamage(aStack2) == W)
+                || Items.feather.getDamage(aStack1) == WILDCARD
+                || Items.feather.getDamage(aStack2) == WILDCARD)
             && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))));
@@ -2323,7 +2320,7 @@ public class GTUtility {
 
     public static int stackToWildcard(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (W << 16);
+        return Item.getIdFromItem(aStack.getItem()) | (WILDCARD << 16);
     }
 
     public static ItemStack intToStack(int aStack) {
@@ -2331,14 +2328,6 @@ public class GTUtility {
         Item tItem = Item.getItemById(tID);
         if (tItem != null) return new ItemStack(tItem, 1, tMeta);
         return null;
-    }
-
-    public static Integer[] stacksToIntegerArray(ItemStack... aStacks) {
-        Integer[] rArray = new Integer[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
     }
 
     public static int[] stacksToIntArray(ItemStack... aStacks) {
@@ -2638,81 +2627,6 @@ public class GTUtility {
         return aNBT;
     }
 
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean hasHazmatEnchant(ItemStack aStack) {
-        if (aStack == null) return false;
-        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
-        Integer tLevel = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
-
-        return tLevel != null && tLevel >= 1;
-    }
-
     public static float getHeatDamageFromItem(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
@@ -2731,10 +2645,6 @@ public class GTUtility {
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
 
-    public static boolean isImmuneToBreathingGasses(EntityLivingBase aEntity) {
-        return isWearingFullGasHazmat(aEntity);
-    }
-
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
         return applyHeatDamage(entity, damage, GTDamageSources.getHeatDamage());
     }
@@ -2744,7 +2654,7 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
@@ -2755,7 +2665,7 @@ public class GTUtility {
     }
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullFrostHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getFrostDamage(), aDamage);
         }
         return false;
@@ -2763,7 +2673,7 @@ public class GTUtility {
 
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
-        if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullElectroHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getElectricDamage(), aDamage);
         }
         return false;
@@ -2773,7 +2683,7 @@ public class GTUtility {
         if (aLevel > 0 && aEntity != null
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
-            && !isWearingFullRadioHazmat(aEntity)) {
+            && !HazardProtection.isWearingFullRadioHazmat(aEntity)) {
             PotionEffect tEffect = null;
             aEntity.addPotionEffect(
                 new PotionEffect(
@@ -2870,8 +2780,8 @@ public class GTUtility {
         return null;
     }
 
-    @Nullable
-    public static ItemStack copyOrNull(@Nullable ItemStack stack) {
+    @Contract("null -> null")
+    public static ItemStack copyOrNull(ItemStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -3004,6 +2914,35 @@ public class GTUtility {
         return t;
     }
 
+    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+        NBTTagList list = new NBTTagList();
+
+        if (stacks != null) {
+            for (ItemStack stack : stacks) {
+                if (isStackInvalid(stack)) continue;
+
+                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
+    }
+
     /**
      * Loads an FluidStack properly.
      */
@@ -3042,7 +2981,7 @@ public class GTUtility {
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
-        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W));
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
     /**
@@ -3112,7 +3051,7 @@ public class GTUtility {
      * Translates a Material Amount into an Amount of Fluid in Fluid Material Units.
      */
     public static long translateMaterialToFluidAmount(long aMaterialAmount, boolean aRoundUp) {
-        return translateMaterialToAmount(aMaterialAmount, L, aRoundUp);
+        return translateMaterialToAmount(aMaterialAmount, 1 * INGOTS, aRoundUp);
     }
 
     /**
@@ -3759,19 +3698,11 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use {@link StatCollector}
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
-    }
-
-    /**
-     * @deprecated Use standard translation with {@link StatCollector}.
-     */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**
@@ -3887,6 +3818,10 @@ public class GTUtility {
         } catch (IllegalFormatException ignored) {
             return format;
         }
+    }
+
+    public static String translate(String key, Object... parameters) {
+        return StatCollector.translateToLocalFormatted(key, parameters);
     }
 
     /*
@@ -4367,7 +4302,20 @@ public class GTUtility {
         char[] chars = Long.toString(no)
             .toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            chars[i] += 8272;
+            chars[i] = switch (chars[i]) {
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                case '1' -> '\u2081';
+                case '2' -> '\u2082';
+                case '3' -> '\u2083';
+                case '4' -> '\u2084';
+                case '5' -> '\u2085';
+                case '6' -> '\u2086';
+                case '7' -> '\u2087';
+                case '8' -> '\u2088';
+                case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
+                default -> chars[i];
+            };
         }
         return new String(chars);
     }
@@ -4561,8 +4509,16 @@ public class GTUtility {
             .count();
     }
 
+    public static long clamp(long val, long lo, long hi) {
+        return Math.min(hi, Math.max(val, lo));
+    }
+
     public static int clamp(int val, int lo, int hi) {
-        return MathHelper.clamp_int(val, lo, hi);
+        return Math.min(hi, Math.max(val, lo));
+    }
+
+    public static float clamp(float val, float lo, float hi) {
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static float clamp(float val, float lo, float hi) {
@@ -4607,7 +4563,7 @@ public class GTUtility {
 
     /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
     public static int ceilDiv2(int lhs, int rhs) {
-        int sign = signum(lhs) * signum(rhs);
+        int sign = Integer.signum(lhs) * Integer.signum(rhs);
 
         if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
@@ -4624,20 +4580,150 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    @Deprecated
     public static int signum(int x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Integer.signum(x);
     }
 
+    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    @Deprecated
     public static long signum(long x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Long.signum(x);
     }
 
     public static Vector3i signum(Vector3i v) {
-        v.x = signum(v.x);
-        v.y = signum(v.y);
-        v.z = signum(v.z);
+        v.x = Integer.signum(v.x);
+        v.y = Integer.signum(v.y);
+        v.z = Integer.signum(v.z);
 
         return v;
+    }
+
+    public static int mod(int value, int divisor) {
+        return ((value % divisor) + divisor) % divisor;
+    }
+
+    /**
+     * Computes base raised to the power of an integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
+    public static double powInt(double base, int exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative integer exponent.
+     */
+    private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return 33 - Integer.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return 65 - Long.numberOfLeadingZeros(a - 1) >> 1;
     }
 
     /**
@@ -4879,7 +4965,7 @@ public class GTUtility {
          * This method stores metadata as wildcard and NBT as null.
          */
         public static ItemId createAsWildcard(ItemStack itemStack) {
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, null, null);
         }
 
         public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
@@ -4887,7 +4973,7 @@ public class GTUtility {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, nbt, null);
         }
 
         /**
@@ -4986,7 +5072,7 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
@@ -5056,5 +5142,33 @@ public class GTUtility {
 
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+    }
+
+    public static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / GTUtility.powInt(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    public static String truncateText(String text, int limit) {
+        if (limit < 0) limit = 1;
+        if (text == null) {
+            return null;
+        }
+        if (text.length() <= limit) {
+            return text;
+        } else {
+            return text.substring(0, limit) + "...";
+        }
     }
 }

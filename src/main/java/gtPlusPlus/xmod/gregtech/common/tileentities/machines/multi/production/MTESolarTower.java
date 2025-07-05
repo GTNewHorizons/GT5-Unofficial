@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -362,28 +361,28 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         int built;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
         // Tower
-        built = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, realBudget, env, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece(STRUCTURE_PIECE_TOWER, stackSize, 1, 1, -7, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_TOWER, stackSize, 1, 1, -7, realBudget, env, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 5, 5, -22, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 5, 5, -22, realBudget, env, false, true);
         if (built >= 0) return built;
 
         // Solar Heaters
         if (stackSize.stackSize < 1) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 2) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 3) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 4) return -1;
-        built = survivialBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 5) return -1;
-        return survivialBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
+        return survivalBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
     }
 
     @Override
@@ -452,42 +451,28 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public boolean getConnectedSolarReflectors() {
 
         resetSolarHeaters();
-        int aRing = 1;
 
         if (this.mSolarHeaters.size() < 36) {
             // 15x15
-            boolean aRing1 = checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27);
-            if (aRing1) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27);
+
         }
         if (this.mSolarHeaters.size() < 88) {
             // 17x17
-            boolean aRing2 = checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27);
-            if (aRing2) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27);
+
         }
         if (this.mSolarHeaters.size() < 156) {
             // 19x19
-            boolean aRing3 = checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27);
-            if (aRing3) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27);
         }
         if (this.mSolarHeaters.size() < 240) {
             // 21x21
-            boolean aRing4 = checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27);
-            if (aRing4) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27);
         }
         if (this.mSolarHeaters.size() < 340) {
             // 23x23
-            boolean aRing5 = checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27);
-            if (aRing5) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27);
         }
         return !mSolarHeaters.isEmpty();
     }
@@ -586,21 +571,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return CheckRecipeResultRegistry.GENERATING;
     }
 
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }
@@ -628,9 +598,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
     }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

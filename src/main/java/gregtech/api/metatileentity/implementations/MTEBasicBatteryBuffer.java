@@ -88,16 +88,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -158,16 +148,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
         return mCharge ? mInventory.length : 0;
     }
@@ -185,11 +165,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -297,16 +272,17 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     public String[] getInfoData() {
         updateStorageInfo();
 
-        return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET, "Stored Items:",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMax)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Average input:", GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput()) + " EU/t",
-            "Average output:", GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput()) + " EU/t" };
+        return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.stored_items",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.average_input",
+                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.average_output",
+                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
 
     private void updateStorageInfo() {

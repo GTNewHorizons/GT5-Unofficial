@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -41,7 +42,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             aNameRegional,
             aTier,
             3,
-            "This Chest stores " + (int) (Math.pow(6.0D, aTier) * mStorageFactor) + " Items");
+            "This Chest stores " + (int) (GTUtility.powInt(6.0D, aTier) * mStorageFactor) + " Items");
     }
 
     public MTETieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,16 +55,6 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     }
 
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
         return true;
     }
 
@@ -147,7 +138,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     @Override
     public int getMaxItemCount() {
-        return (int) (Math.pow(6.0D, this.mTier) * mStorageFactor - 128.0D);
+        return (int) (GTUtility.powInt(6.0D, this.mTier) * mStorageFactor - 128.0D);
     }
 
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
@@ -163,10 +154,14 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     @Override
     public String[] getInfoData() {
         return this.mItemStack == null
-            ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
+            ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty"), Integer.toString(0),
                 Integer.toString(this.getMaxItemCount()) }
-            : new String[] { "Super Storage Chest", "Stored Items:", this.mItemStack.getDisplayName(),
-                Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
+            : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
+                Integer.toString(this.getMaxItemCount()) };
     }
 
     @Override
@@ -231,7 +226,8 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(59, 42))
             .widget(
-                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))

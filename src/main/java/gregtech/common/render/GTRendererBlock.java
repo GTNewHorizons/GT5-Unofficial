@@ -12,8 +12,6 @@ import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_NORT
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_SOUTH;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_UP;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_WEST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.HAS_FRESHFOAM;
-import static gregtech.api.interfaces.metatileentity.IConnectable.HAS_HARDENEDFOAM;
 import static gregtech.api.interfaces.metatileentity.IConnectable.NO_CONNECTION;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -170,9 +168,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
         final byte aConnections = aTileEntity.getConnections();
-        if ((aConnections & (HAS_FRESHFOAM | HAS_HARDENEDFOAM)) != 0) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
-        }
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
@@ -183,10 +178,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
             final ForgeDirection iSide = VALID_DIRECTIONS[i];
-            tIsCovered[i] = (aTileEntity.hasCoverAtSide(iSide));
+            tIsCovered[i] = aTileEntity.hasCoverAtSide(iSide);
             tCovers[i] = aTileEntity.getTexture(aBlock, iSide);
             tIcons[i] = aTileEntity.getTextureUncovered(iSide);
-
         }
 
         switch (aConnections) {
@@ -652,7 +646,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
@@ -667,7 +663,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
@@ -682,7 +680,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
@@ -697,7 +697,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
@@ -712,7 +714,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
@@ -727,7 +731,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
@@ -751,7 +757,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         // Otherwise, render the TE instead.
         if (tileEntity == null && aBlock instanceof BlockFrameBox frameBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[][] texture = frameBlock.getTextures(meta);
+            ITexture[] texture = frameBlock.getTextures(meta);
             if (texture == null) return false;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;
