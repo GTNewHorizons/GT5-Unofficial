@@ -13,6 +13,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import goodgenerator.blocks.tileEntity.gui.AntimatterForgeGui;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -62,6 +63,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import org.jetbrains.annotations.NotNull;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -765,19 +767,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + " L" };
     }
 
-    private long getAntimatterAmount() {
+    public long getAntimatterAmount() {
         return this.guiAntimatterAmount;
     }
 
-    private long getPassiveConsumption() {
+    public long getPassiveConsumption() {
         return this.guiPassiveEnergy;
     }
 
-    private long getActiveConsumption() {
+    public long getActiveConsumption() {
         return this.guiActiveEnergy;
     }
 
-    private long getAntimatterChange() {
+    public long getAntimatterChange() {
         return this.guiAntimatterChange;
     }
 
@@ -845,6 +847,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull AntimatterForgeGui getGui(){ return new AntimatterForgeGui(this);}
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
