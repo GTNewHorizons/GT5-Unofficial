@@ -108,19 +108,37 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createTitleTextStyle(String title) {
+        // someone please fix this code this is horrid
+        int addedHeight = 0;
+        if (title.length() > 30) {
+            addedHeight = 12;
+            String[] parts = title.split(" ");
+            int middlepoint = (parts.length / 2);
+            StringBuilder modifiedTitle = new StringBuilder();
+            for (int i = 0; i < parts.length; i++) {
+                parts[i] += " ";
+                if (i == middlepoint) parts[i] += "\n";
+                modifiedTitle.append(parts[i]);
+            }
+            title = modifiedTitle.toString();
+        }
+        TextWidget titleTextWidget = IKey.str(title)
+            .asWidget()
+            .alignment(Alignment.TopLeft)
+            .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+            .marginLeft(5)
+            .marginRight(5)
+            .marginTop(5)
+            .marginBottom(1);
+
+        if (title.length() > 30) titleTextWidget = titleTextWidget.width(188);
+
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
+            .height(18 + addedHeight)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .alignment(Alignment.Center)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
+            .child(titleTextWidget.height(8 + addedHeight));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
