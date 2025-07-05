@@ -13,7 +13,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import goodgenerator.blocks.tileEntity.gui.AntimatterForgeGui;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -36,6 +37,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
+import goodgenerator.blocks.tileEntity.gui.AntimatterForgeGui;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
@@ -63,7 +65,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import org.jetbrains.annotations.NotNull;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -854,7 +855,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    protected @NotNull AntimatterForgeGui getGui(){ return new AntimatterForgeGui(this);}
+    protected @NotNull AntimatterForgeGui getGui() {
+        return new AntimatterForgeGui(this);
+    }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
