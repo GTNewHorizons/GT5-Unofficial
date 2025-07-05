@@ -35,7 +35,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -53,7 +52,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 
 @ThreadSafeISBRH(perThread = true)
@@ -753,19 +751,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
-        // If this block does not have a TE, render it as a normal block.
-        // Otherwise, render the TE instead.
-        if (tileEntity == null && aBlock instanceof BlockFrameBox frameBlock) {
-            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[][] texture = frameBlock.getTextures(meta);
-            if (texture == null) return false;
-            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
-            return true;
-        }
-
         if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[][] texture = texturedBlock.getTextures(meta);
+            ITexture[][] texture = texturedBlock.getTextures(aWorld, aX, aY, aZ);
             if (texture == null) return false;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;

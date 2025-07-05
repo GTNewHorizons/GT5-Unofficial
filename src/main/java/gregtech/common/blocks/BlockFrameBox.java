@@ -457,6 +457,23 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     }
 
     @Override
+    public ITexture[][] getTextures(IBlockAccess world, int x, int y, int z) {
+        TileEntity te = world.getTileEntity(x, y, z);
+
+        if (te instanceof BaseMetaPipeEntity bmpe) {
+            ITexture[][] textures = new ITexture[6][];
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                textures[dir.ordinal()] = bmpe.getTexture(this, dir);
+            }
+
+            return textures;
+        }
+
+        return getTextures(world.getBlockMetadata(x, y, z));
+    }
+
+    @Override
     public ITexture[][] getTextures(int meta) {
         return meta < 0 || meta >= 1000 ? null : textures[meta];
     }
