@@ -107,7 +107,6 @@ public class MTEMultiBlockBaseGui {
                 .child(createInventoryRow(panel, syncManager)));
     }
 
-    //TODO: fix positioning for longer titles. e.g: Semi-Stable Antimatter Stabilization Sequencer
     private IWidget createTitleTextStyle(String title) {
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
