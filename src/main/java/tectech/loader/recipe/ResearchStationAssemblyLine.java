@@ -1205,6 +1205,47 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.hatch_CreativeUncertainty.get(1),
             200 * 20,
             (int) TierEU.RECIPE_UIV);
+
+        // Magnetic Anchor Casing
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.MagneticFluxCasing.get(1),
+            144_000_000,
+            25_600,
+            (int) TierEU.RECIPE_MAX,
+            16,
+            new Object[] { ItemRefer.MagneticFluxCasing.get(16),
+                CustomItemList.Godforge_MagneticConfinementCasing.get(16), ItemList.Field_Generator_UMV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 8L),
+                GGMaterial.shirabon.get(OrePrefixes.plateDense, 64) },
+            new FluidStack[] { MaterialsUEVplus.Space.getMolten(1 * STACKS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16) },
+            ItemList.MagneticAnchorCasing.get(4),
+            20 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Precision Field Sync Casing
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.GravityStabilizationCasing.get(1),
+            144_000_000,
+            25_600,
+            (int) TierEU.RECIPE_MAX,
+            16,
+            new Object[] { ItemRefer.GravityStabilizationCasing.get(16), ItemRefer.Field_Restriction_Coil_T4.get(2),
+                CustomItemList.StabilisationFieldGeneratorTier0.get(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                ItemList.Field_Generator_UMV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.MagMatter, 64L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                GGMaterial.shirabon.get(OrePrefixes.wireFine, 64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Flerovium, 16L), },
+            new FluidStack[] { new FluidStack(CHRONOMATIC_GLASS.getPlasma(), 1 * STACKS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
+                MaterialsUEVplus.Eternity.getMolten(1 * STACKS) },
+            ItemList.PrecisionFieldSyncCasing.get(8),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
     }
 
     private void itemPartsUHVAsslineRecipes() {

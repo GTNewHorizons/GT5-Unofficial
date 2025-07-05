@@ -14,6 +14,7 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -193,6 +194,20 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
             .eut(16)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.SixPhasedCopper, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Eternity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.BlackDwarfMatter, 1L))
+            .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
+            .itemOutputs(ItemList.NaniteFramework.get(1))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(formingPressRecipes);
     }
 }

@@ -206,6 +206,7 @@ public class GlassTier {
             addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
             addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
             addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
         }
 
         private static void registerGlassOreDicts() {

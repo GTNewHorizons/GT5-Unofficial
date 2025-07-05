@@ -273,7 +273,7 @@ public class NaniteChain {
                 MaterialsUEVplus.QuarkGluonPlasma.getFluid(100_000),
                 MaterialsUEVplus.PhononMedium.getFluid(64_000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(128_000))
-            .metadata(NANO_FORGE_TIER, 3)
+            .metadata(NANO_FORGE_TIER, 4)
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
