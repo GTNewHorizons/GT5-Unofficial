@@ -211,15 +211,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("TritiumCell", 1))
-            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
-            .outputChances(10000)
-            .fluidOutputs(Materials.Tritium.getGas(32))
-            .duration(16 * TICKS)
-            .eut(64)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 1L))
             .fluidOutputs(Materials.Glass.getMolten(1 * HALF_INGOTS))
             .duration(30 * SECONDS)
