@@ -15,11 +15,11 @@ import org.lwjgl.opengl.GL11;
 import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import it.unimi.dsi.fastutil.longs.LongList;
 
 @EventBusSubscriber(side = Side.CLIENT)
@@ -45,7 +45,8 @@ public class GTPowerfailRenderer {
 
     @SubscribeEvent
     public static void onRenderWorld(RenderWorldLastEvent event) {
-        if (POWERFAILS == null || !DO_RENDER) return;
+        if (POWERFAILS == null || POWERFAILS.isEmpty()) return;
+        if (!Client.render.renderPowerfailNotifications) return;
 
         Tessellator tessellator = Tessellator.instance;
 

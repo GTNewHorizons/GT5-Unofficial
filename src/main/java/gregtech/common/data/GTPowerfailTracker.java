@@ -40,7 +40,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -145,8 +144,6 @@ public class GTPowerfailTracker {
     private static class TeamInfo {
 
         public Int2ObjectOpenHashMap<DimensionInfo> byWorld = new Int2ObjectOpenHashMap<>();
-
-        public long lastInfoMessage;
     }
 
     private static class DimensionInfo {
@@ -284,43 +281,7 @@ public class GTPowerfailTracker {
         INSTANCE.markDirty();
     }
 
-    public static void showPowerfails(EntityPlayerMP player) {
-        INSTANCE.playerNoRendering.remove(
-            player.getGameProfile()
-                .getId());
-
-        INSTANCE.markDirty();
-
-        sendPlayerRenderingFlag(player);
-        sendPlayerPowerfailStatus(player);
-    }
-
-    public static void hidePowerfails(EntityPlayerMP player) {
-        INSTANCE.playerNoRendering.add(
-            player.getGameProfile()
-                .getId());
-
-        INSTANCE.markDirty();
-
-        sendPlayerRenderingFlag(player);
-    }
-
-    public static void sendPlayerRenderingFlag(EntityPlayerMP player) {
-        boolean shouldRender = !INSTANCE.playerNoRendering.contains(
-            player.getGameProfile()
-                .getId());
-
-        GTPowerfailStatusPacket packet = shouldRender ? GTPowerfailStatusPacket.show() : GTPowerfailStatusPacket.hide();
-
-        GTValues.NW.sendToPlayer(packet, player);
-    }
-
     public static void sendPlayerPowerfailStatus(EntityPlayerMP player) {
-        if (INSTANCE.playerNoRendering.contains(
-            player.getGameProfile()
-                .getId()))
-            return;
-
         GTPowerfailStatusPacket packet = GTPowerfailStatusPacket.set(
             player.dimension,
             getPowerfails(
@@ -354,7 +315,6 @@ public class GTPowerfailTracker {
             // spotless:on
         }
 
-        sendPlayerRenderingFlag(playerMP);
         sendPlayerPowerfailStatus(playerMP);
     }
 
@@ -484,11 +444,6 @@ public class GTPowerfailTracker {
 
         final Map<MachineOwner, TeamInfo> powerfailInfo = new HashMap<>();
 
-        // Storing rendering info on the server is kinda strange, but this is the simplest place to put it because
-        // otherwise we'd have to make some bespoke client-side storage format, whereas this will let us use world save
-        // data
-        final HashSet<UUID> playerNoRendering = new HashSet<>();
-
         final HashSet<UUID> playerUsageHints = new HashSet<>();
 
         public SaveData(String key) {
@@ -503,8 +458,6 @@ public class GTPowerfailTracker {
         static class TeamState {
 
             public Int2ObjectOpenHashMap<DimState> byWorld = new Int2ObjectOpenHashMap<>();
-
-            public long lastInfoMessage;
         }
 
         // Gson won't use type adapters for map keys, so this is a workaround for that problem
@@ -513,6 +466,8 @@ public class GTPowerfailTracker {
             public MachineOwner owner;
             public TeamState teamState;
 
+            // Used by gson
+            @SuppressWarnings("unused")
             public TeamPair() {}
 
             public TeamPair(MachineOwner owner, TeamState teamState) {
@@ -524,28 +479,23 @@ public class GTPowerfailTracker {
         static class State {
 
             final ArrayList<TeamPair> powerfailInfo = new ArrayList<>();
-            final HashSet<UUID> playerNoRendering = new HashSet<>();
             final HashSet<UUID> playerUsageHints = new HashSet<>();
         }
 
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             powerfailInfo.clear();
-            playerNoRendering.clear();
             PENDING_UPDATES.clear();
 
             try {
                 State state = GSON.fromJson(NBTPersist.toJsonObject(tag), State.class);
 
                 if (state != null) {
-                    playerNoRendering.addAll(state.playerNoRendering);
                     playerUsageHints.addAll(state.playerUsageHints);
 
                     for (TeamPair pair : state.powerfailInfo) {
                         TeamInfo teamInfo = new TeamInfo();
                         powerfailInfo.put(pair.owner, teamInfo);
-
-                        teamInfo.lastInfoMessage = pair.teamState.lastInfoMessage;
 
                         for (Int2ObjectMap.Entry<DimState> dimState : pair.teamState.byWorld.int2ObjectEntrySet()) {
                             DimensionInfo dimInfo = new DimensionInfo();
@@ -578,15 +528,12 @@ public class GTPowerfailTracker {
         public void writeToNBT(NBTTagCompound tag) {
             State state = new State();
 
-            state.playerNoRendering.addAll(playerNoRendering);
             state.playerUsageHints.addAll(playerUsageHints);
 
             powerfailInfo.forEach((machineOwner, teamInfo) -> {
                 TeamState teamState = new TeamState();
 
                 state.powerfailInfo.add(new TeamPair(machineOwner, teamState));
-
-                teamState.lastInfoMessage = teamInfo.lastInfoMessage;
 
                 for (Int2ObjectMap.Entry<DimensionInfo> dimInfo : teamInfo.byWorld.int2ObjectEntrySet()) {
                     DimState dimState = new DimState();

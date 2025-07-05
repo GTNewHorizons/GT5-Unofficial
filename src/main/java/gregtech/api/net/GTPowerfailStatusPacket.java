@@ -16,40 +16,16 @@ import it.unimi.dsi.fastutil.longs.LongList;
 
 public class GTPowerfailStatusPacket extends GTPacket {
 
-    public PowerfailAction action;
     /** sanity world id to make sure nothing has gone wrong */
-    public int worldId;
+    private int worldId;
     /** {packed x,y,z for each machine with a powerfail} */
-    public LongList powerfailedMachines;
-
-    public enum PowerfailAction {
-        Set,
-        Show,
-        Hide
-    }
+    private LongList powerfailedMachines;
 
     public GTPowerfailStatusPacket() {}
-
-    public static GTPowerfailStatusPacket show() {
-        GTPowerfailStatusPacket packet = new GTPowerfailStatusPacket();
-
-        packet.action = PowerfailAction.Show;
-
-        return packet;
-    }
-
-    public static GTPowerfailStatusPacket hide() {
-        GTPowerfailStatusPacket packet = new GTPowerfailStatusPacket();
-
-        packet.action = PowerfailAction.Hide;
-
-        return packet;
-    }
 
     public static GTPowerfailStatusPacket set(int worldId, List<GTPowerfailTracker.Powerfail> powerfails) {
         GTPowerfailStatusPacket packet = new GTPowerfailStatusPacket();
 
-        packet.action = PowerfailAction.Set;
         packet.worldId = worldId;
         packet.powerfailedMachines = new LongArrayList(powerfails.size());
 
@@ -67,15 +43,11 @@ public class GTPowerfailStatusPacket extends GTPacket {
 
     @Override
     public void encode(ByteBuf buffer) {
-        buffer.writeByte(action.ordinal());
+        buffer.writeInt(worldId);
+        buffer.writeInt(powerfailedMachines.size());
 
-        if (action == PowerfailAction.Set) {
-            buffer.writeInt(worldId);
-            buffer.writeInt(powerfailedMachines.size());
-
-            for (long l : powerfailedMachines) {
-                buffer.writeLong(l);
-            }
+        for (long l : powerfailedMachines) {
+            buffer.writeLong(l);
         }
     }
 
@@ -83,18 +55,14 @@ public class GTPowerfailStatusPacket extends GTPacket {
     public GTPacket decode(ByteArrayDataInput buffer) {
         GTPowerfailStatusPacket packet = new GTPowerfailStatusPacket();
 
-        packet.action = PowerfailAction.values()[buffer.readByte()];
+        packet.worldId = buffer.readInt();
 
-        if (packet.action == PowerfailAction.Set) {
-            packet.worldId = buffer.readInt();
+        int count = buffer.readInt();
 
-            int count = buffer.readInt();
+        packet.powerfailedMachines = new LongArrayList(count);
 
-            packet.powerfailedMachines = new LongArrayList(count);
-
-            for (int i = 0; i < count; i++) {
-                packet.powerfailedMachines.add(buffer.readLong());
-            }
+        for (int i = 0; i < count; i++) {
+            packet.powerfailedMachines.add(buffer.readLong());
         }
 
         return packet;
@@ -103,19 +71,8 @@ public class GTPowerfailStatusPacket extends GTPacket {
     @Override
     public void process(IBlockAccess blockAccess) {
         if (!(blockAccess instanceof World world)) return;
+        if (this.worldId != world.provider.dimensionId) return;
 
-        switch (action) {
-            case Set -> {
-                if (this.worldId == world.provider.dimensionId) {
-                    GTPowerfailRenderer.POWERFAILS = this.powerfailedMachines;
-                }
-            }
-            case Show -> {
-                GTPowerfailRenderer.DO_RENDER = true;
-            }
-            case Hide -> {
-                GTPowerfailRenderer.DO_RENDER = false;
-            }
-        }
+        GTPowerfailRenderer.POWERFAILS = this.powerfailedMachines;
     }
 }

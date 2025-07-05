@@ -86,6 +86,7 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
+import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -596,6 +597,8 @@ public class GTClient extends GTProxy {
         mPreference = new GTClientPreference();
 
         Materials.initClient();
+
+        GTPowerfailCommandClient.register();
     }
 
     @Override
