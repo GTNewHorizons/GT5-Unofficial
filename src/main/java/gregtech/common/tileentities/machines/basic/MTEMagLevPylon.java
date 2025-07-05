@@ -15,16 +15,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.data.maglev.Tether;
 
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     private final static int BASE_PYLON_RANGE = 16;
 
-    private Tether machineTether;
     private final int poweredRange = getPylonRange(mTier, true);
     private final int unpoweredRange = getPylonRange(mTier, false);
     private final long powerCost = getPylonPowerCost(mTier);
+    private int playersConnected;
     private int range = -1;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
@@ -45,12 +44,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    @Override
-    public void onFirstTick(IGregTechTileEntity mte) {
-        if (!mte.isServerSide()) return;
-        machineTether = new Tether(mte.getXCoord(), mte.getYCoord(), mte.getZCoord());
-    }
-
     // Active state of machine is used to control the animated texture
     // Should only be active when a player is connected
     // If machine is fully disabled, also disable the tether and active state
@@ -60,7 +53,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onPostTick(IGregTechTileEntity mte, long tick) {
         if (!mte.isServerSide()) return;
         if (mte.isAllowedToWork()) {
-            boolean playerConnected = this.machineTether.hasPlayerConnected();
+            boolean playerConnected = hasPlayerConnected();
             mte.setActive(playerConnected);
             int prevRange = range;
             if (mte.isUniversalEnergyStored(powerCost)) {
@@ -72,14 +65,12 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 range = unpoweredRange;
             }
             if (prevRange != range) {
-                GTMod.gregtechproxy.tetherManager
-                    .registerPylon(mte.getWorld().provider.dimensionId, this.machineTether, range);
+                GTMod.gregtechproxy.tetherManager.registerPylon(mte, this, range);
             }
         } else {
             if (range != -1) {
                 mte.setActive(false);
-                GTMod.gregtechproxy.tetherManager
-                    .unregisterPylon(mte.getWorld().provider.dimensionId, this.machineTether);
+                GTMod.gregtechproxy.tetherManager.unregisterPylon(mte);
                 range = -1;
             }
         }
@@ -89,8 +80,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager
-                .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
+            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -98,8 +88,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onUnload() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.gregtechproxy.tetherManager
-                .unregisterPylon(getBaseMetaTileEntity().getWorld().provider.dimensionId, this.machineTether);
+            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -188,6 +177,19 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {}
+
+    private boolean hasPlayerConnected() {
+        return playersConnected > 0;
+    }
+
+    public void connectPlayer() {
+        playersConnected++;
+    }
+
+    public void disconnectPlayer() {
+        playersConnected--;
+        playersConnected = Math.max(0, playersConnected);
+    }
 
     /**
      * MV (2) = 16

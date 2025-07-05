@@ -21,7 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketTether;
-import gregtech.common.data.maglev.Tether;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -59,18 +59,18 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         // remove fly + send funny message if connected to none and was connected before
         // send animation packet when connecting to any and previous was different or null
 
-        final Tether prevTether = GTMod.gregtechproxy.tetherManager.getConnectedPylon(player);
-        final Tether closestTether = GTMod.gregtechproxy.tetherManager.getClosestActivePylon(player);
+        final MTEMagLevPylon prevPylon = GTMod.gregtechproxy.tetherManager.getConnectedPylon(player);
+        final MTEMagLevPylon closestPylon = GTMod.gregtechproxy.tetherManager.getClosestActivePylon(player);
 
         boolean sendAnimPacket = false;
-        if (prevTether == null && closestTether != null) {
-            GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestTether);
+        if (prevPylon == null && closestPylon != null) {
+            GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestPylon);
             setFly(player, true);
             sendAnimPacket = true;
         }
 
-        if (prevTether != null) {
-            if (closestTether == null) {
+        if (prevPylon != null) {
+            if (closestPylon == null) {
                 GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
                 setFly(player, player.capabilities.isCreativeMode);
                 if (Math.random() <= 0.03) {
@@ -81,15 +81,15 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                         true,
                         false);
                 }
-            } else if (closestTether != prevTether) {
+            } else if (closestPylon != prevPylon) {
                 GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
-                GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestTether);
+                GTMod.gregtechproxy.tetherManager.connectPlayer(player, closestPylon);
                 sendAnimPacket = true;
             }
         }
 
         if (sendAnimPacket) {
-            GTValues.NW.sendToPlayer(new GTPacketTether(closestTether), player);
+            GTValues.NW.sendToPlayer(new GTPacketTether(closestPylon), player);
         }
     }
 
