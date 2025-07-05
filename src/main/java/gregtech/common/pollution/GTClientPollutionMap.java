@@ -13,7 +13,7 @@ public class GTClientPollutionMap {
     private int x0, z0;
     private int dim;
     private short[][] chunkMatrix; // short because reasons.
-    private boolean isDirty = false;
+    private boolean isDirty = true;
 
     public void needsRebuild() {
         isDirty = true;
@@ -61,7 +61,7 @@ public class GTClientPollutionMap {
 
     // xy interpolation, between 4 chunks as corners, unknown treated as 0.
     public int getPollution(double fx, double fz) {
-        if (!isDirty) return 0;
+        if (isDirty) return 0;
         int x = MathHelper.floor_double(fx);
         int z = MathHelper.floor_double(fz);
         int xDiff = ((x - 8) >> 4) - x0;
