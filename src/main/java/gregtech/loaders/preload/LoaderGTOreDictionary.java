@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -415,5 +416,10 @@ public class LoaderGTOreDictionary implements Runnable {
             OrePrefixes.block,
             MaterialsBotania.BotaniaDragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
+
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.ore,
+            Materials.Desh,
+            GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 0));
     }
 }
