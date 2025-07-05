@@ -36,7 +36,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     /** {full dim name} */
     private final Set<String> mAllowedDimensions;
     private final Set<IStoneCategory> mAllowedStone;
-    public final String aTextWorldgen = "worldgen.";
 
     public WorldgenGTOreLayer(OreMixBuilder mix) {
         super(mix.oreMixName, sList, mix.enabledByDefault);

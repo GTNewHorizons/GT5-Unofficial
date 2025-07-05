@@ -136,16 +136,8 @@ public enum Mods implements IMod {
     MalisisDoors(Names.MALISIS_DOORS),
     Mantle(Names.MANTLE),
     MatterManipulator(Names.MATTER_MANIPULATOR),
-    Minecraft(Names.MINECRAFT) {
-
-        @Override
-        public boolean isModLoaded() {
-            return true;
-        }
-    },
     Backpack(Names.BACKPACK),
     MinetweakerGT5Addon(Names.MINETWEAKER_G_T_5_ADDON),
-    MineTweaker(Names.MINE_TWEAKER),
     MobsInfo(Names.MOBS_INFO),
     ModTweaker(Names.MOD_TWEAKER),
     ModularUI(Names.MODULAR_U_I),
@@ -282,7 +274,13 @@ public enum Mods implements IMod {
     Witchery(Names.WITCHERY),
     ZTones(Names.Z_TONES),
 
-    Minecraft(Names.MINECRAFT),
+    Minecraft(Names.MINECRAFT) {
+
+        @Override
+        public boolean isModLoaded() {
+            return true;
+        }
+    },
 
     Aroma1997Core(Names.AROMA1997_CORE),
     ExtraCells2(Names.EXTRA_CELLS2),
@@ -616,11 +614,6 @@ public enum Mods implements IMod {
     public String getResourcePath(String... path) {
         return this.getResourceLocation(path)
             .toString();
-    }
-
-    @Override
-    public String getResourceLocation() {
-        return resourceDomain;
     }
 
     public ResourceLocation getResourceLocation(String... path) {

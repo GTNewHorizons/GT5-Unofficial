@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
+import gtneioreplugin.util.DimensionHelper;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
     implements ISurvivalConstructable {
@@ -77,14 +77,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -134,7 +126,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
     }
 
-    @Override
     protected boolean working() {
         if (!canVoidMine) {
             return false;
@@ -178,13 +169,12 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
         if (!canVoidMine) {
             String dimensionName = dimensionDef == null ? "unknown"
-                : I18n.format("gtnop.world." + dimensionDef.getDimensionName());
+                : DimensionHelper.getDimLocalizedName(dimensionDef.getDimensionName());
             String text = I18n.format("GT5U.gui.text.no_void_mining", dimensionName);
             screenElements.addChild(new TextWidget(text).setTextAlignment(Alignment.TopLeft));
         }
     }
 
-    @Override
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, InputBus, OutputBus, Maintenance, Energy);
     }

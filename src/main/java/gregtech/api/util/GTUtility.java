@@ -4521,10 +4521,6 @@ public class GTUtility {
         return Math.min(hi, Math.max(val, lo));
     }
 
-    public static float clamp(float val, float lo, float hi) {
-        return val < lo ? lo : val > hi ? hi : val;
-    }
-
     public static int min(int first, int... rest) {
         for (int i = 0; i < rest.length; i++) {
             int l = rest[i];

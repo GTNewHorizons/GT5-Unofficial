@@ -3,7 +3,7 @@ package galacticgreg.schematics;
 import net.minecraft.block.Block;
 import net.minecraft.util.Vec3;
 
-import galacticgreg.api.Enums.AllowedBlockPosition;
+import galacticgreg.api.Enums;
 import galacticgreg.api.Enums.TargetBlockPosition;
 import galacticgreg.api.SpecialBlockComb;
 import galacticgreg.api.StructureInformation;
@@ -28,6 +28,6 @@ public class SpaceSchematicFactory {
         return new StructureInformation(
             Vec3.createVectorHelper(pX, pY, pZ),
             TargetBlockPosition.Invalid,
-            new SpecialBlockComb(pBlock, pMeta, AllowedBlockPosition.AsteroidCoreAndShell));
+            new SpecialBlockComb(pBlock, pMeta, Enums.AllowedBlockPosition.AsteroidCoreAndShell));
     }
 }

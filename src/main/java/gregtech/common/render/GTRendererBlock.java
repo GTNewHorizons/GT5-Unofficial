@@ -757,7 +757,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         // Otherwise, render the TE instead.
         if (tileEntity == null && aBlock instanceof BlockFrameBox frameBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[] texture = frameBlock.getTextures(meta);
+            ITexture[][] texture = frameBlock.getTextures(meta);
             if (texture == null) return false;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;

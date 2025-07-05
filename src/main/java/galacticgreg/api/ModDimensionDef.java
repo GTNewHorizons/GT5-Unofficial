@@ -58,10 +58,10 @@ public class ModDimensionDef {
     }
 
     /**
-     * @param pDimensionName The provider dimension name (see {@link World#provider} and
-     *                       {@link WorldProvider#getDimensionName()})
-     * @param pChunkProvider The chunk provider class name
-     * @param pDimType       The dimension type (whether it generates asteroids or ore veins)
+     * @param pDimensionName     The provider dimension name (see {@link World#provider} and
+     *                           {@link WorldProvider#getDimensionName()})
+     * @param pChunkProviderName The chunk provider class name
+     * @param pDimType           The dimension type (whether it generates asteroids or ore veins)
      */
     public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType) {
         internalDimIdentifier = STR_NOTDEFINED;

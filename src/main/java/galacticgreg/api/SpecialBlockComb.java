@@ -2,7 +2,9 @@ package galacticgreg.api;
 
 import net.minecraft.block.Block;
 
-public class SpecialBlockComb extends BlockMetaComb {
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+
+public class SpecialBlockComb extends BlockMeta {
 
     private final Enums.AllowedBlockPosition _mBlockPosition;
 

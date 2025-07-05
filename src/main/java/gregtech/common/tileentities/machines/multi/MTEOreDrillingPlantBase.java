@@ -499,6 +499,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private ItemStack[] getOutputByDrops(List<ItemStack> oreBlockDrops) {
+        long voltage = getMaxInputVoltage();
         List<ItemStack> outputItems = new ArrayList<>();
 
         for (ItemStack currentItem : oreBlockDrops) {

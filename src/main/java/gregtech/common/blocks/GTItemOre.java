@@ -10,8 +10,11 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
@@ -58,7 +61,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
     @Override
     @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
-        int metadata = stack.getItemDamage();
+        int metadata = itemStack.getItemDamage();
         int matId = blockOre.getMaterialIndex(metadata);
 
         return GregTechAPI.sGeneratedMaterials[matId] == Materials.Firestone;
