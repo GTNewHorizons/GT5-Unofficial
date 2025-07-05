@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,14 +15,6 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 
 public class MetaGeneratedToolRenderer implements IItemRenderer {
-
-    public MetaGeneratedToolRenderer() {
-        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
-            if (tItem != null) {
-                MinecraftForgeClient.registerItemRenderer(tItem, this);
-            }
-        }
-    }
 
     @Override
     public boolean handleRenderType(ItemStack stack, ItemRenderType type) {

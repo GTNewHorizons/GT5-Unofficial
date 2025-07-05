@@ -28,6 +28,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -38,6 +39,7 @@ import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -51,6 +53,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -93,15 +96,17 @@ import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.TileEntityDrone;
+import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityWormhole;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.nei.NEIGTConfig;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
-
-// Referenced classes of package gregtech.common:
-// GTProxy
 
 public class GTClient extends GTProxy {
 
@@ -265,13 +270,15 @@ public class GTClient extends GTProxy {
 
     @Override
     public void onInitialization(FMLInitializationEvent event) {
+        // spotless:off
         super.onInitialization(event);
         GTRendererBlock.register();
         GTRendererCasing.register();
-        new DroneRender();
-        new LaserRenderer();
-        new WormholeRenderer();
-        new BlackholeRenderer();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
+
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
             metaItemRenderer.registerItem(item);
@@ -279,20 +286,31 @@ public class GTClient extends GTProxy {
         if (Forestry.isModLoaded()) {
             metaItemRenderer.registerItem(GTBees.combs);
         }
-        new MetaGeneratedToolRenderer();
-        new FlaskRenderer();
-        new FluidDisplayStackRenderer();
-        new DataStickRenderer();
-        new InfiniteSprayCanRenderer();
+
+        final MetaGeneratedToolRenderer metaToolRenderer = new MetaGeneratedToolRenderer();
+        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
+            if (tItem != null) {
+                MinecraftForgeClient.registerItemRenderer(tItem, metaToolRenderer);
+            }
+        }
+
+        final FlaskRenderer flaskRenderer = new FlaskRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.KLEIN_BOTTLE.getItem(), flaskRenderer);
+
+        MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(mPollutionRenderer);
+        FMLCommonHandler.instance().bus().register(mPollutionRenderer);
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
         SprayColorInfiniteKeybindHandler.init();
+        // spotless:on
     }
 
     @Override
