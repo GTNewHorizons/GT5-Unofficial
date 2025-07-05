@@ -70,21 +70,23 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public void onPostTick(IGregTechTileEntity mte, long aTimer) {
-        if (mte.isAllowedToWork() && mte.isServerSide()) {
-            final int prevRange = mRange;
-            if (mte.isUniversalEnergyStored(getMinimumStoredEU())
-                && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
-                mRange = getRepellentRange(mTier, true);
+        if (mte.isServerSide()) {
+            if (mte.isAllowedToWork()) {
+                final int prevRange = mRange;
+                if (mte.isUniversalEnergyStored(getMinimumStoredEU())
+                    && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
+                    mRange = getRepellentRange(mTier, true);
+                } else {
+                    mRange = getRepellentRange(mTier, false);
+                }
+                if (prevRange != mRange) {
+                    GTMod.proxy.spawnEventHandler.putRepellent(mte, mRange);
+                }
             } else {
-                mRange = getRepellentRange(mTier, false);
-            }
-            if (prevRange != mRange) {
-                GTMod.proxy.spawnEventHandler.putRepellent(
-                    mte.getWorld().provider.dimensionId,
-                    mte.getXCoord(),
-                    mte.getYCoord(),
-                    mte.getZCoord(),
-                    mRange);
+                if (mRange != -1) {
+                    GTMod.proxy.spawnEventHandler.removeRepellent(mte);
+                    mRange = -1;
+                }
             }
         }
     }
@@ -93,11 +95,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onRemoval() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.proxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.proxy.spawnEventHandler.removeRepellent(mte);
         }
     }
 
@@ -105,11 +103,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onUnload() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.proxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.proxy.spawnEventHandler.removeRepellent(mte);
         }
     }
 

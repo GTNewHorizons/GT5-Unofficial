@@ -1151,6 +1151,7 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(tetherManager);
+        MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
 
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
@@ -1203,6 +1204,7 @@ public class GTProxy implements IFuelHandler {
         // spotless:off
         MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
         FMLCommonHandler.instance().bus().unregister(tetherManager);
+        MinecraftForge.EVENT_BUS.unregister(tetherManager);
         FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
         dimensionWisePollution.clear();
         spawnEventHandler = null;
