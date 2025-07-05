@@ -143,7 +143,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond;
+        return GTMod.proxy.mPollutionMultiSmelterPerSecond;
     }
 
     // Not GPL

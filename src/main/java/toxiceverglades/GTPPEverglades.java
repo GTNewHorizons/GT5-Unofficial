@@ -27,7 +27,7 @@ import toxiceverglades.gen.WorldGenEvergladesOreLayer;
 import toxiceverglades.gen.WorldGenEvergladesOres;
 
 @Mod(
-    modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
+    modid = Mods.ModIDs.G_T_PLUS_PLUS_EVERGLADES,
     name = GTPPEverglades.NAME,
     version = GTPPEverglades.VERSION,
     dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
@@ -37,7 +37,7 @@ public class GTPPEverglades {
     public static final String VERSION = GT_Version.VERSION;
 
     // Mod Instance
-    @Mod.Instance(Mods.Names.G_T_PLUS_PLUS_EVERGLADES)
+    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS_EVERGLADES)
     public static GTPPEverglades instance;
 
     // Dark World Handler

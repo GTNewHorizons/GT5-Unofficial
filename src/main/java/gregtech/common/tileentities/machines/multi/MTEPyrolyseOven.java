@@ -185,7 +185,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond;
+        return GTMod.proxy.mPollutionPyrolyseOvenPerSecond;
     }
 
     @Override

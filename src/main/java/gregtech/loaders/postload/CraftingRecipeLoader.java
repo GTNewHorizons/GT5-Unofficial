@@ -149,14 +149,12 @@ public class CraftingRecipeLoader implements Runnable {
             .removeRecipe(new ItemStack(Blocks.planks, 1, 0), null, null, new ItemStack(Blocks.planks, 1, 0));
         if (tStack != null) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(
-                    GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                    tStack),
+                GTUtility
+                    .copyAmount(GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack),
                 bits_no_remove_buffered,
                 new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
             GTModHandler.addCraftingRecipe(
-                GTUtility
-                    .copyAmount(GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, tStack),
+                GTUtility.copyAmount(GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, tStack),
                 bits_no_remove_buffered,
                 new Object[] { "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
         }

@@ -60,7 +60,7 @@ import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneBase;
 
-@Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.Names.CHISEL_API)
+@Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.ModIDs.CHISEL_API)
 public class BlockMachines extends GTGenericBlock implements IDebugableBlock, ITileEntityProvider, IFacade {
 
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();

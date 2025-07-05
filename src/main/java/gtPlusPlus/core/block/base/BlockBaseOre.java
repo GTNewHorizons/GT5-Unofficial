@@ -139,7 +139,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         if (shouldSilkTouch) {
             drops.add(new ItemStack(this, 1, metadata));
         } else {
-            switch (GTMod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.proxy.oreDropSystem) {
                 case Item -> drops.add(
                     ItemUtils
                         .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));

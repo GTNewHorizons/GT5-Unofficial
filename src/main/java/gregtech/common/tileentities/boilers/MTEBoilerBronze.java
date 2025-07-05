@@ -48,7 +48,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             aName,
             aNameRegional,
             new String[] { "An early way to get Steam Power", "Produces 120L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
+                "Causes " + GTMod.proxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
     }
 
     public MTEBoilerBronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -154,7 +154,7 @@ public class MTEBoilerBronze extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond;
+        return GTMod.proxy.mPollutionSmallCoalBoilerPerSecond;
     }
 
     @Override

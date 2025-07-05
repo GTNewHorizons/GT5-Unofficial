@@ -12,19 +12,15 @@ public class GTClientPollutionMap {
 
     private int x0, z0;
     private int dim;
+    private short[][] chunkMatrix; // short because reasons.
+    private boolean isDirty = true;
 
-    private boolean initialized = false;
-
-    private static short[][] chunkMatrix; // short because reasons.
-
-    public GTClientPollutionMap() {}
-
-    public void reset() {
-        initialized = false;
+    public void needsRebuild() {
+        isDirty = true;
     }
 
     private void initialize(int playerChunkX, int playerChunkZ, int dimension) {
-        initialized = true;
+        isDirty = false;
         chunkMatrix = new short[SIZE][SIZE];
         x0 = playerChunkX;
         z0 = playerChunkZ;
@@ -38,7 +34,7 @@ public class GTClientPollutionMap {
         int playerXChunk = MathHelper.floor_double(player.posX) >> 4;
         int playerZChunk = MathHelper.floor_double(player.posZ) >> 4; // posX/Z seems to be always loaded,
 
-        if (!initialized) {
+        if (isDirty) {
             initialize(playerXChunk, playerZChunk, player.dimension);
         }
 
@@ -65,7 +61,7 @@ public class GTClientPollutionMap {
 
     // xy interpolation, between 4 chunks as corners, unknown treated as 0.
     public int getPollution(double fx, double fz) {
-        if (!initialized) return 0;
+        if (isDirty) return 0;
         int x = MathHelper.floor_double(fx);
         int z = MathHelper.floor_double(fz);
         int xDiff = ((x - 8) >> 4) - x0;

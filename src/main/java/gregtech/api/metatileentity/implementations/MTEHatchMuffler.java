@@ -108,7 +108,7 @@ public class MTEHatchMuffler extends MTEHatch {
         boolean chk1, chk2, chk3;
         float ran1 = XSTR_INSTANCE.nextFloat(), ran2, ran3;
         chk1 = ran1 * 100 < calculatePollutionReduction(100);
-        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = XSTR_INSTANCE.nextFloat();
             ran3 = XSTR_INSTANCE.nextFloat();
             chk2 = ran2 * 100 < calculatePollutionReduction(100);

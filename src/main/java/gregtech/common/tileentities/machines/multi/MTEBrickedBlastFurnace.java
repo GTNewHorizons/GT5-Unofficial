@@ -146,7 +146,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder.addMachineType("Blast Furnace, BBF")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
-                .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
+                .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
                 .addController("Front center")
                 .addOtherStructurePart("Firebricks", "Everything except the controller")
@@ -318,9 +318,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                Pollution.addPollution(
-                    this.getBaseMetaTileEntity(),
-                    GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
+                Pollution
+                    .addPollution(this.getBaseMetaTileEntity(), GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));

@@ -7,23 +7,17 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.common.items.ItemFluidDisplay;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
-
-    public FluidDisplayStackRenderer() {
-        MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), this);
-    }
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {

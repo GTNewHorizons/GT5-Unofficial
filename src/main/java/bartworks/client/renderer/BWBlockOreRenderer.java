@@ -135,7 +135,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.gregtechproxy.mRenderTileAmbientOcclusion;
+        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.setRenderBoundsFromBlock(aBlock);
         renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true);
         renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.UP), true);

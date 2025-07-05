@@ -206,7 +206,7 @@ public class CommonProxy implements IFuelHandler {
         return 0;
     }
 
-    @Optional.Method(modid = Mods.Names.BAUBLES)
+    @Optional.Method(modid = Mods.ModIDs.BAUBLES)
     @SubscribeEvent
     public void onPlayerAttacked(LivingAttackEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) {

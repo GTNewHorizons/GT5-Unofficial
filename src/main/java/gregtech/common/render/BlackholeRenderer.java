@@ -24,7 +24,6 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 
 public class BlackholeRenderer extends TileEntitySpecialRenderer {
@@ -48,10 +47,6 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
     private static final float WIDTH = .1f;
     private static final float EXCLUSION = 1f;
-
-    public BlackholeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, this);
-    }
 
     private void init() {
         try {

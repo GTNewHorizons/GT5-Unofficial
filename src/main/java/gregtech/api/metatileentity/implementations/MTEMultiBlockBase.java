@@ -773,7 +773,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean polluteEnvironment(int aPollutionLevel) {
         final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
-        if (!GTMod.gregtechproxy.mPollution) return true;
+        if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
         if (mMufflerHatches.size() == 0) {
@@ -1364,7 +1364,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     .getWorld().provider.dimensionId
                 + ".");
 
-        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.gregtechproxy.mPollutionOnExplosion);
+        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
         // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
@@ -2324,7 +2324,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tag.getInteger("maxProgress"),
                 tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
@@ -2386,7 +2386,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         }
 
-        final GTClientPreference preference = GTMod.gregtechproxy.getClientPreference(player.getUniqueID());
+        final GTClientPreference preference = GTMod.proxy.getClientPreference(player.getUniqueID());
         if (preference != null && preference.isWailaAverageNSEnabled()) {
             getBaseMetaTileEntity().startTimeStatistics();
             int tAverageTime = 0;

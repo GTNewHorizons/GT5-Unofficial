@@ -336,7 +336,7 @@ public class RecipesGeneral {
                 MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
 
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
                 BITSD,

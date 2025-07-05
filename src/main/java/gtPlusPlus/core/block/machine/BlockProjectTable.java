@@ -27,7 +27,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.item.tool.ItemToolWrench;
 
-@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O)
+@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O)
 public class BlockProjectTable extends BlockContainer implements ITileTooltip {
 
     @SideOnly(Side.CLIENT)

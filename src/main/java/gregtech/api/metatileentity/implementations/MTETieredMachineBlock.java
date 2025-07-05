@@ -1,12 +1,12 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -36,7 +36,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
@@ -47,7 +47,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
 
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 

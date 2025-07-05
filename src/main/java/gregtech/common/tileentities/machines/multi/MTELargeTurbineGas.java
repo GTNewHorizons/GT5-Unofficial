@@ -121,7 +121,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionLargeGasTurbinePerSecond;
+        return GTMod.proxy.mPollutionLargeGasTurbinePerSecond;
     }
 
     @Override

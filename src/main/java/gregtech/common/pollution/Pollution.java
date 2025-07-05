@@ -1,7 +1,6 @@
 package gregtech.common.pollution;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.common.GTProxy.dimensionWisePollution;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -47,6 +46,11 @@ import gregtech.api.net.GTPacketPollution;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTUtility;
 
+// TODO this whole thing should be reworked,
+// the global pollution manager should be a
+// non static instance in GTProxy
+// and all access to it should be non static and via
+// GTProxy.gregtechProxy.pollutionManager......
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
@@ -69,10 +73,10 @@ public class Pollution {
      * Muffler Hatch Pollution reduction: ** inaccurate ** LV (0%), MV (30%), HV (52%), EV (66%), IV (76%), LuV (84%),
      * ZPM (89%), UV (92%), MAX (95%)
      */
-    private List<ChunkCoordIntPair> pollutionList = new ArrayList<>(); // chunks left to process in this cycle
-
-    private final Set<ChunkCoordIntPair> pollutedChunks = new HashSet<>(); // a global list of all chunks with positive
-                                                                           // pollution
+    // chunks left to process in this cycle
+    private List<ChunkCoordIntPair> pollutionList = new ArrayList<>();
+    // a global list of all chunks with positive pollution
+    private final Set<ChunkCoordIntPair> pollutedChunks = new HashSet<>();
     private int operationsPerTick = 0; // how much chunks should be processed in each cycle
     private static final short cycleLen = 1200;
     private final World world;
@@ -94,9 +98,9 @@ public class Pollution {
 
     public static void onWorldTick(TickEvent.WorldTickEvent aEvent) { // called from proxy
         // return if pollution disabled
-        if (!GTMod.gregtechproxy.mPollution) return;
+        if (!GTMod.proxy.mPollution) return;
         if (aEvent.phase == TickEvent.Phase.START) return;
-        final Pollution pollutionInstance = dimensionWisePollution.get(aEvent.world.provider.dimensionId);
+        final Pollution pollutionInstance = GTMod.proxy.dimensionWisePollution.get(aEvent.world.provider.dimensionId);
         if (pollutionInstance == null) return;
         pollutionInstance.tickPollutionInWorld((int) (aEvent.world.getTotalWorldTime() % cycleLen));
     }
@@ -169,7 +173,7 @@ public class Pollution {
 
                 // Create Pollution effects
                 // Smog filter TODO
-                if (tPollution > GTMod.gregtechproxy.mPollutionSmogLimit) {
+                if (tPollution > GTMod.proxy.mPollutionSmogLimit) {
                     AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(
                         actualPos.chunkXPos << 4,
                         0,
@@ -206,7 +210,7 @@ public class Pollution {
                     }
 
                     // Poison effects
-                    if (tPollution > GTMod.gregtechproxy.mPollutionPoisonLimit) {
+                    if (tPollution > GTMod.proxy.mPollutionPoisonLimit) {
                         for (EntityLivingBase tEnt : tEntitys) {
                             if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                                 continue;
@@ -237,13 +241,13 @@ public class Pollution {
                         }
 
                         // killing plants
-                        if (tPollution > GTMod.gregtechproxy.mPollutionVegetationLimit) {
+                        if (tPollution > GTMod.proxy.mPollutionVegetationLimit) {
                             int f = 20;
                             for (; f < (tPollution / 25000); f++) {
                                 int x = (actualPos.chunkXPos << 4) + XSTR_INSTANCE.nextInt(16);
                                 int y = 60 + (-f + XSTR_INSTANCE.nextInt(f * 2 + 1));
                                 int z = (actualPos.chunkZPos << 4) + XSTR_INSTANCE.nextInt(16);
-                                damageBlock(world, x, y, z, tPollution > GTMod.gregtechproxy.mPollutionSourRainLimit);
+                                damageBlock(world, x, y, z, tPollution > GTMod.proxy.mPollutionSourRainLimit);
                             }
                         }
                     }
@@ -328,7 +332,8 @@ public class Pollution {
     }
 
     private static Pollution getPollutionManager(World world) {
-        return dimensionWisePollution.computeIfAbsent(world.provider.dimensionId, i -> new Pollution(world));
+        return GTMod.proxy.dimensionWisePollution
+            .computeIfAbsent(world.provider.dimensionId, i -> new Pollution(world));
     }
 
     /** @see #addPollution(TileEntity, int) */
@@ -342,7 +347,7 @@ public class Pollution {
      * @see #addPollution(World, int, int, int)
      */
     public static void addPollution(TileEntity te, int aPollution) {
-        if (!GTMod.gregtechproxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
+        if (!GTMod.proxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
 
         if (aPollution > 0) {
             ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
@@ -372,7 +377,7 @@ public class Pollution {
      * @param aPollution desired delta. Positive means the pollution in chunk would go higher.
      */
     public static void addPollution(World w, int chunkX, int chunkZ, int aPollution) {
-        if (!GTMod.gregtechproxy.mPollution || aPollution == 0 || w.isRemote) return;
+        if (!GTMod.proxy.mPollution || aPollution == 0 || w.isRemote) return;
         mutatePollution(w, chunkX, chunkZ, d -> d.changeAmount(aPollution), null);
     }
 
@@ -409,16 +414,17 @@ public class Pollution {
      *         info about this chunk
      */
     public static int getPollution(World w, int chunkX, int chunkZ) {
-        if (!GTMod.gregtechproxy.mPollution) return 0;
-        if (w.isRemote)
+        if (!GTMod.proxy.mPollution) return 0;
+        if (w.isRemote) {
             // it really should be querying the client side stuff instead
-            return PollutionRenderer.getKnownPollution(chunkX << 4, chunkZ << 4);
+            return GTMod.clientProxy().mPollutionRenderer.getKnownPollution(chunkX << 4, chunkZ << 4);
+        }
         return STORAGE.get(w, chunkX, chunkZ)
             .getAmount();
     }
 
     public static boolean hasPollution(Chunk ch) {
-        if (!GTMod.gregtechproxy.mPollution) return false;
+        if (!GTMod.proxy.mPollution) return false;
         return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch)
             .getAmount() > 0;
     }
@@ -434,7 +440,7 @@ public class Pollution {
 
         @SubscribeEvent
         public void chunkWatch(ChunkWatchEvent.Watch event) {
-            if (!GTMod.gregtechproxy.mPollution) return;
+            if (!GTMod.proxy.mPollution) return;
             World world = event.player.worldObj;
             if (STORAGE.isCreated(world, event.chunk)) {
                 int pollution = STORAGE.get(world, event.chunk)

@@ -74,14 +74,14 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }

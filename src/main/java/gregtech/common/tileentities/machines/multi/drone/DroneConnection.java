@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import static gregtech.GTMod.gregtechproxy;
+import static gregtech.GTMod.proxy;
 
 import java.util.Optional;
 
@@ -47,7 +47,7 @@ public class DroneConnection {
     public DroneConnection(NBTTagCompound aNBT) {
         NBTTagCompound machineTag = aNBT.getCompoundTag("machine");
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
-        if (!gregtechproxy.isClientSide()) {
+        if (!proxy.isClientSide()) {
             this.world = DimensionManager.getWorld(aNBT.getInteger("worldID"));
         } else {
             this.world = Minecraft.getMinecraft().thePlayer.worldObj;

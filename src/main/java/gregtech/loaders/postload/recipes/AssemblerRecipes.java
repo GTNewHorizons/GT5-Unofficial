@@ -559,7 +559,7 @@ public class AssemblerRecipes implements Runnable {
         }
 
         // If Cleanroom is enabled, add an assembler recipe
-        if (GTMod.gregtechproxy.mEnableCleanroom) {
+        if (GTMod.proxy.mEnableCleanroom) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),

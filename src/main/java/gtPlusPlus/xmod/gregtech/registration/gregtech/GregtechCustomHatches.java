@@ -68,7 +68,7 @@ public class GregtechCustomHatches {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
         run1();
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             run2();
         }
         run3();

@@ -11,12 +11,12 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoiler {
 
     public MTELargeBoilerTungstenSteel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        pollutionPerSecond = GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond;
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond;
     }
 
     public MTELargeBoilerTungstenSteel(String aName) {
         super(aName);
-        pollutionPerSecond = GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond;
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTungstenSteelBoilerPerSecond;
     }
 
     public static final int EUT_GENERATED = 16000;

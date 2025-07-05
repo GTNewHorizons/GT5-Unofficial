@@ -69,7 +69,7 @@ public class MTEBoilerLava extends MTEBoiler {
             aName,
             aNameRegional,
             new String[] { "A Boiler running off Lava", "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond + " Pollution per second",
+                "Causes " + GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond + " Pollution per second",
                 "Consumes " + ((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA)
                     + "L of Lava every "
                     + COOLDOWN_INTERVAL
@@ -142,7 +142,7 @@ public class MTEBoilerLava extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond;
+        return GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond;
     }
 
     @Override

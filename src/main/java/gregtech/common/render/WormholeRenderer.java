@@ -11,14 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
 public class WormholeRenderer extends TileEntitySpecialRenderer {
-
-    public WormholeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, this);
-    }
 
     private static final double trimPercentage = .95;
     private static final double corePercentage = trimPercentage / Math.sqrt(3);

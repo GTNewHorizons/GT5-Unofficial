@@ -23,7 +23,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 public class WirelessChargerManager {
 
     public static final int CHARGE_TICK = 20;
-    private static final Map<Long, IWirelessCharger> CHARGER_MAP = new HashMap<>();
+    private final Map<Long, IWirelessCharger> CHARGER_MAP = new HashMap<>();
     private int tickCounter = 0;
 
     @SubscribeEvent
@@ -37,22 +37,18 @@ public class WirelessChargerManager {
         }
     }
 
-    public static void addCharger(@NotNull IWirelessCharger charger) {
+    public void addCharger(@NotNull IWirelessCharger charger) {
         final IGregTechTileEntity te = charger.getChargerTE();
         CHARGER_MAP.put(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()), charger);
     }
 
-    public static IWirelessCharger getCharger(int x, int y, int z) {
+    public IWirelessCharger getCharger(int x, int y, int z) {
         return CHARGER_MAP.get(CoordinatePacker.pack(x, y, z));
     }
 
-    public static void removeCharger(@NotNull IWirelessCharger charger) {
+    public void removeCharger(@NotNull IWirelessCharger charger) {
         final IGregTechTileEntity te = charger.getChargerTE();
         CHARGER_MAP.remove(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()));
-    }
-
-    public static void clearChargerMap() {
-        CHARGER_MAP.clear();
     }
 
     private void chargePlayerItems(@NotNull EntityPlayer player) {

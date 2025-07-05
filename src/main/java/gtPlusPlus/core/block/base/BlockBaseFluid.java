@@ -66,7 +66,7 @@ public class BlockBaseFluid extends BlockFluidClassic {
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.C_O_F_H_CORE)
+    @Optional.Method(modid = Mods.ModIDs.C_O_F_H_CORE)
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World arg0, int arg1, int arg2, int arg3, Random arg4) {
         super.randomDisplayTick(arg0, arg1, arg2, arg3, arg4);

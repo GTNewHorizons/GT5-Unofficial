@@ -434,7 +434,7 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(centrifugeRecipes);
     }
 
-    @Optional.Method(modid = Mods.Names.FORESTRY)
+    @Optional.Method(modid = Mods.ModIDs.FORESTRY)
     private static void addMiscForestryRecipes() {
         if (ItemList.FR_Fertilizer.hasBeenSet()) {
             GTValues.RA.stdBuilder()

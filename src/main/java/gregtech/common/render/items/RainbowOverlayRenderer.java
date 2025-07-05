@@ -8,6 +8,7 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.GTMod;
+import gregtech.common.GTClient;
 import gregtech.common.render.GTRenderUtil;
 
 public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
@@ -24,8 +25,9 @@ public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
-        long animationTicks = GTMod.gregtechproxy.getAnimationTicks();
-        float partialTicks = GTMod.gregtechproxy.getPartialRenderTicks();
+        final GTClient clientProxy = GTMod.clientProxy();
+        long animationTicks = clientProxy.getAnimationTicks();
+        float partialTicks = clientProxy.getPartialRenderTicks();
 
         if (shouldModulateColor) {
             Color color = Color.getHSBColor((animationTicks % 180 + partialTicks) % 90 / 90f, 0.4f, 0.9f);

@@ -152,7 +152,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public List<CachedDefaultRecipe> getCache() {
         SortedRecipeListCache cacheHolder = getCacheHolder();
         List<CachedDefaultRecipe> cache;
-        if (cacheHolder.getCachedRecipesVersion() != GTMod.gregtechproxy.getNEIReloadCount()
+        if (cacheHolder.getCachedRecipesVersion() != GTMod.proxy.getNEIReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
             try {
                 RecipeCategory defaultCategory = recipeMap.getDefaultRecipeCategory();
@@ -195,7 +195,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 // even if it does break, at worst case it's just recreating the cache multiple times, which should be
                 // fine
                 cacheHolder.setCachedRecipes(cache);
-                cacheHolder.setCachedRecipesVersion(GTMod.gregtechproxy.getNEIReloadCount());
+                cacheHolder.setCachedRecipesVersion(GTMod.proxy.getNEIReloadCount());
             } catch (Exception e) {
                 throw new RuntimeException(
                     "Could not construct GT NEI Handler cache for category " + recipeCategory

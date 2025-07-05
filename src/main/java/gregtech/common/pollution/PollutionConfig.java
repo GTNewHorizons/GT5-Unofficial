@@ -6,7 +6,7 @@ import gregtech.api.enums.Mods;
 
 // needs to be loaded early from the coremod because
 // it decides to load some mixins or not
-@Config(modid = Mods.Names.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
 public class PollutionConfig {
 
     // override name to be at the top of the cfg file

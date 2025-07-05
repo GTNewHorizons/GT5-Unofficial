@@ -30,8 +30,8 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public abstract class ElectricBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager, IBauble {
 
     public final int mTier;

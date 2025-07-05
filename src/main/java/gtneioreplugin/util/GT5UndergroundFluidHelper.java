@@ -33,7 +33,7 @@ public class GT5UndergroundFluidHelper {
             Field fieldDimensionList = GTUODimensionList.class.getDeclaredField("fDimensionList");
             fieldDimensionList.setAccessible(true);
             BiMap<String, GTUODimension> dimensionList = (BiMap<String, GTUODimension>) fieldDimensionList
-                .get(GTMod.gregtechproxy.mUndergroundOil);
+                .get(GTMod.proxy.mUndergroundOil);
             for (Map.Entry<String, GTUODimension> dimensionEntry : dimensionList.entrySet()) {
                 String rawDimension = dimensionEntry.getKey();
                 String dimension;

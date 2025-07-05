@@ -172,7 +172,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.gregtechproxy.separatorStyle) {
+        switch (GTMod.proxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
             default -> iLines
@@ -854,7 +854,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
         boolean useFinisherConfig) {
         if (useFinisherConfig) {
-            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+            switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
                 case 1 -> sLines.add(TAB + " ");
                 case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
@@ -864,7 +864,7 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.gregtechproxy.separatorStyle) {
+            switch (GTMod.proxy.separatorStyle) {
                 case 0 -> sLines.add(TAB + " ");
                 case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines
@@ -984,7 +984,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
 
-        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+        switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> iLines.add(" ");
             case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));

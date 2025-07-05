@@ -38,7 +38,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
         if (shouldShowAmperage(recipeInfo.calculator)) {
             recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
         }
-        if (GTMod.gregtechproxy.mNEIOriginalVoltage) {
+        if (GTMod.proxy.mNEIOriginalVoltage) {
             EUNoOverclockDescriber originalPower = new EUNoOverclockDescriber(tier, amperage);
             OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
                 .calculate();
