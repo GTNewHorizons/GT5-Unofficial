@@ -1016,9 +1016,6 @@ public class GTProxy implements IFuelHandler {
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
         FMLCommonHandler.instance()
             .bus()
-            .register(new WirelessChargerManager());
-        FMLCommonHandler.instance()
-            .bus()
             .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
 
@@ -1149,10 +1146,10 @@ public class GTProxy implements IFuelHandler {
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
-        FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         spawnEventHandler = new GTSpawnEventHandler();
-        MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         tetherManager = new TetherManager();
+        FMLCommonHandler.instance().bus().register(wirelessChargerManager);
+        MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(tetherManager);
         // spotless:off
 
@@ -1205,11 +1202,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerStopped(FMLServerStoppedEvent event) {
         // spotless:off
         MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
-        spawnEventHandler = null;
         FMLCommonHandler.instance().bus().unregister(tetherManager);
-        tetherManager = null;
-        dimensionWisePollution.clear();
         FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        dimensionWisePollution.clear();
+        spawnEventHandler = null;
+        tetherManager = null;
         wirelessChargerManager = null;
         PLAYERS_BY_UUID = null;
         // spotless:on
