@@ -39,6 +39,9 @@ public class DrillingLogicDelegate {
     /** Cached fake player */
     private FakePlayer mFakePlayer;
 
+    private final XSTR rng = new XSTR();
+
+
     public DrillingLogicDelegate(IDrillingLogicDelegateOwner owner) {
         this.owner = owner;
     }
@@ -174,11 +177,13 @@ public class DrillingLogicDelegate {
             return;
         }
 
-        XSTR rng = new XSTR();
+        long seed = rng.getSeed();
 
         // see if we can store all of the outputs
         List<ItemStack> drops = OreManager
             .mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
+
+        rng.setSeed(seed);
 
         for (ItemStack drop : drops) {
             if (!owner.pushOutputs(drop, drop.stackSize, true, false)) {
