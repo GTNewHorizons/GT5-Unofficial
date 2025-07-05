@@ -25,6 +25,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private final int poweredRange = getPylonRange(mTier, true);
     private final int unpoweredRange = getPylonRange(mTier, false);
     private final long powerCost = getPylonPowerCost(mTier);
+    private int range = -1;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -47,40 +48,40 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     @Override
     public void onFirstTick(IGregTechTileEntity mte) {
         if (!mte.isServerSide()) return;
-
-        machineTether = new Tether(
-            mte.getXCoord(),
-            mte.getYCoord(),
-            mte.getZCoord(),
-            mte.getWorld().provider.dimensionId,
-            poweredRange);
-        GTMod.gregtechproxy.tetherManager.registerPylon(mte.getWorld().provider.dimensionId, this.machineTether);
+        machineTether = new Tether(mte.getXCoord(), mte.getYCoord(), mte.getZCoord());
     }
 
+    // Active state of machine is used to control the animated texture
+    // Should only be active when a player is connected
+    // If machine is fully disabled, also disable the tether and active state
+    // EU should only drain when a player is connected
+    // Tether range is determined if the machine has enough EU
     @Override
     public void onPostTick(IGregTechTileEntity mte, long tick) {
         if (!mte.isServerSide()) return;
-
-        // Active state of machine is used to control the animated texture
-        // Should only be active when a player is connected
-        // If machine is fully disabled, also disable the tether and active state
-        // EU should only drain when a player is connected
-        // Tether range is determined if the machine has enough EU
         if (mte.isAllowedToWork()) {
-            machineTether.active(true);
-            boolean playerConnected = GTMod.gregtechproxy.tetherManager.hasPlayerConnect(this.machineTether);
+            boolean playerConnected = this.machineTether.hasPlayerConnected();
             mte.setActive(playerConnected);
+            int prevRange = range;
             if (mte.isUniversalEnergyStored(powerCost)) {
-                machineTether.range(poweredRange);
+                range = poweredRange;
                 if (playerConnected) {
                     mte.decreaseStoredEnergyUnits(powerCost, false);
                 }
             } else {
-                machineTether.range(unpoweredRange);
+                range = unpoweredRange;
+            }
+            if (prevRange != range) {
+                GTMod.gregtechproxy.tetherManager
+                    .registerPylon(mte.getWorld().provider.dimensionId, this.machineTether, range);
             }
         } else {
-            machineTether.active(false);
-            mte.setActive(false);
+            if (range != -1) {
+                mte.setActive(false);
+                GTMod.gregtechproxy.tetherManager
+                    .unregisterPylon(mte.getWorld().provider.dimensionId, this.machineTether);
+                range = -1;
+            }
         }
     }
 

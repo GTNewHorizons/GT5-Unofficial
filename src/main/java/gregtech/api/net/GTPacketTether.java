@@ -5,6 +5,7 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.client.TetherLineRenderer;
+import gregtech.common.data.maglev.Tether;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketTether extends GTPacket {
@@ -19,6 +20,12 @@ public class GTPacketTether extends GTPacket {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public GTPacketTether(Tether tether) {
+        this.x = tether.sourceX();
+        this.y = tether.sourceY();
+        this.z = tether.sourceZ();
     }
 
     @Override

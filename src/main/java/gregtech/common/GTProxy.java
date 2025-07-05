@@ -1228,6 +1228,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(tetherManager);
+        MinecraftForge.EVENT_BUS.register(tetherManager);
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
