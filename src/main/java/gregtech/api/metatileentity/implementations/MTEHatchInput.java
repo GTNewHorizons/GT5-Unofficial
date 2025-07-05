@@ -125,9 +125,10 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GTClientPreference tPreference = GTMod.gregtechproxy
-                .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
-            if (tPreference != null) disableFilter = !tPreference.isInputHatchInitialFilterEnabled();
+            GTClientPreference preference = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            if (preference != null) {
+                disableFilter = !preference.isInputHatchInitialFilterEnabled();
+            }
         }
     }
 
