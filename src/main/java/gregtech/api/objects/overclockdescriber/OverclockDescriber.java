@@ -1,7 +1,5 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.GTMod;

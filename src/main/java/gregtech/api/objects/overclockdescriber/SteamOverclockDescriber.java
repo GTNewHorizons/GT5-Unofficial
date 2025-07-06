@@ -1,7 +1,5 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
@@ -44,8 +42,8 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
-        recipeInfo.drawText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
+        recipeInfo.drawText(getTotalPowerString(recipeInfo.calculator));
+        recipeInfo.drawText(getSteamUsageString(recipeInfo.calculator));
     }
 
     private String getTotalPowerString(OverclockCalculator calculator) {

@@ -1796,8 +1796,8 @@ GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
 
 # NEI Display
-GT5U.nei.display.steam_total=%s L of Steam
-GT5U.nei.display.steam_usage=%s L/s of Steam
+GT5U.nei.display.steam_total=Total: %s L of Steam
+GT5U.nei.display.steam_usage=Usage: %s L/s of Steam
 GT5U.nei.display.duration_seconds=Time: %s seconds
 GT5U.nei.display.duration_ticks=Time: %s ticks
 GT5U.nei.display.total_power_EU=Total: %s EUs
