@@ -211,11 +211,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","      HHH      ","               ","               ","               ","               "," H           H "," H           H "," H           H ","               ","               ","               ","               ","      HHH      ","               "},
+            {"               ","      qqq      ","               ","               ","               ","               "," H           H "," H           H "," H           H ","               ","               ","               ","               ","      qqq      ","               "},
             {"     HHHHH     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","HH           HH","H             H","H             H","H             H","HH           HH"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     HHHHH     "},
             {"     AHCHA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","H             H","Cdd         ddC","H             H","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AHCHA     "},
             {"     HHHHH     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","HH           HH","H             H","H             H","H             H","HH           HH"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     HHHHH     "},
-            {"               ","      HHH      ","               ","               ","               ","               "," H           H "," H           H "," H           H ","               ","               ","               ","               ","      HHH      ","               "},
+            {"               ","      qqq      ","               ","               ","               ","               "," q           q "," q           q "," q           q ","               ","               ","               ","               ","      qqq      ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
@@ -278,6 +278,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 9)))
         .addElement('o', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
         .addElement('p', lazy(() -> ofBlock(Loaders.compactFusionCoil, 4)))
+        .addElement('q', ofBlock(GregTechAPI.sBlockCasings12,5))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
