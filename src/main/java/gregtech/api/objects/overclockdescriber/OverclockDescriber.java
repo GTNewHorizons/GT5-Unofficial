@@ -92,10 +92,10 @@ public abstract class OverclockDescriber {
     }
 
     private String getDurationStringSeconds(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration_seconds", GTUtility.formatNumbers(getDurationSeconds(calculator)));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds", GTUtility.formatNumbers(getDurationSeconds(calculator)));
     }
 
     private String getDurationStringTicks(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration_ticks", GTUtility.formatNumbers(getDurationTicks(calculator)));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.ticks", GTUtility.formatNumbers(getDurationTicks(calculator)));
     }
 }

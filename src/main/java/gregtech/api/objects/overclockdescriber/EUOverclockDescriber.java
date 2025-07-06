@@ -62,7 +62,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
         OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe).calculate();
         String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? "" : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
         String original_voltage = GTUtility.formatNumbers(originalPowerCalculator.getConsumption());
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.original_power_consumption", original_voltage, original_tier_displayed);
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
     }
 
     protected boolean wasOverclocked(OverclockCalculator calculator) {

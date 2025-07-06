@@ -61,7 +61,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total_power_EU", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
@@ -76,7 +76,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      */
     protected String getEUtDisplay(OverclockCalculator calculator) {
         String tier_displayed = shouldShowAmperage(calculator) ? "" : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.power_consumption",
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage",
             GTUtility.formatNumbers(calculator.getConsumption()),
             tier_displayed);
     }
