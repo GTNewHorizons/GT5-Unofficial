@@ -50,11 +50,11 @@ public class SteamOverclockDescriber extends OverclockDescriber {
 
     private String getTotalPowerString(OverclockCalculator calculator) {
         return GTUtility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
-            + " Steam";
+            + " L of Steam";
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
+        return GTUtility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s of Steam";
     }
 
     private static long convertEUToSteam(long eu) {
