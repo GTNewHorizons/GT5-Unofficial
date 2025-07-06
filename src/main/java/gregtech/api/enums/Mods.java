@@ -274,7 +274,13 @@ public enum Mods implements IMod {
     Witchery(Names.WITCHERY),
     ZTones(Names.Z_TONES),
 
-    Minecraft(Names.MINECRAFT),
+    Minecraft(Names.MINECRAFT) {
+
+        @Override
+        public boolean isModLoaded() {
+            return true;
+        }
+    },
 
     Aroma1997Core(Names.AROMA1997_CORE),
     ExtraCells2(Names.EXTRA_CELLS2),
