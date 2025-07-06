@@ -4,6 +4,8 @@ import static gregtech.api.enums.GTValues.V;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.google.common.primitives.Ints;
 
 import gregtech.GTMod;
@@ -12,7 +14,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -50,7 +51,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     protected String getVoltageString(OverclockCalculator calculator) {
         String voltageString = super.getVoltageString(calculator);
         if (wasOverclocked(calculator)) {
-            voltageString+= StatCollector.translateToLocal("GT5U.nei.display.overclock");
+            voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");
         }
         return voltageString;
     }
@@ -59,10 +60,13 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
      * @return Whole original EU/t usage. Also displays voltage tier if it should be shown.
      */
     protected String getOriginalEUtDisplay(RecipeDisplayInfo recipeInfo) {
-        OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe).calculate();
-        String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? "" : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
+        OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
+            .calculate();
+        String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? ""
+            : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
         String original_voltage = GTUtility.formatNumbers(originalPowerCalculator.getConsumption());
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
+        return StatCollector
+            .translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
     }
 
     protected boolean wasOverclocked(OverclockCalculator calculator) {

@@ -218,12 +218,13 @@ public class MTEMassfabricator extends MTEBasicMachine {
         protected String getVoltageString(OverclockCalculator calculator) {
             // standard amperage calculation doesn't work here
             long voltage = V[mTier];
-            String voltageString = StatCollector.translateToLocalFormatted("GT5U.nei.display.voltage",
+            String voltageString = StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.voltage",
                 GTUtility.formatNumbers(voltage),
                 GTUtility.getTierNameWithParentheses(voltage));
 
             if (wasOverclocked(calculator)) {
-                voltageString+= StatCollector.translateToLocal("GT5U.nei.display.overclock");
+                voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");
             }
             return voltageString;
         }
