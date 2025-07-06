@@ -505,7 +505,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
-        ItemList.Machine_Multi_ModularSolidifier.set(
+        ItemList.Machine_Multi_Modular_Solidifier.set(
             new MTEModularSolidifier(
                 MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
                 "multimachine.modularsolidifier",
