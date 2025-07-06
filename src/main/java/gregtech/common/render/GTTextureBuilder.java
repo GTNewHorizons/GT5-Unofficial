@@ -34,7 +34,7 @@ public class GTTextureBuilder implements ITextureBuilder {
     public GTTextureBuilder() {
         textureLayers = new ArrayList<>();
         iconContainerList = new ArrayList<>();
-        rgba = Dyes._NULL.mRGBa;
+        rgba = Dyes._NULL.getRGBA();
         allowAlpha = true;
         stdOrient = false;
         glow = false;

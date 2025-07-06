@@ -382,7 +382,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (dataTitle == null || dataTitle.isEmpty()) {
             dataTitle = DATA_ORB_TITLE;
             BehaviourDataOrb.setDataName(dataOrb, dataTitle);
-            BehaviourDataOrb.setNBTInventory(dataOrb, new ItemStack[0]);
+            BehaviourDataOrb.setNBTInventory(dataOrb, GTValues.emptyItemStackArray);
         }
         if (!dataTitle.equals(DATA_ORB_TITLE)) {
             cachedDataOrb = null;

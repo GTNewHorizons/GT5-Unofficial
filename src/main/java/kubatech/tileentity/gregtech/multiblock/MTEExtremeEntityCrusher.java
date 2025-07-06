@@ -253,7 +253,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     protected int getOverclockTimeLimit() {
-        return 20;
+        return (batchMode ? 16 : 1) * 20;
     }
 
     @Override
@@ -287,6 +287,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
@@ -429,6 +430,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.batchMode = !this.batchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        return true;
     }
 
     // We place the event handler in an inner
@@ -576,7 +585,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
             EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
-
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
@@ -586,8 +594,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 voidAllDamagedAndEnchantedItems);
 
             EECPlayer.currentWeapon = null;
-
-            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
+            if (batchMode) {
+                for (ItemStack item : mOutputItems) {
+                    item.stackSize *= 16;
+                }
+                this.mMaxProgresstime *= 16;
+            }
+            this.mOutputFluids = new FluidStack[] {
+                FluidRegistry.getFluidStack("xpjuice", 120 * (batchMode ? 16 : 1)) };
             ItemStack weapon = weaponCache.getStackInSlot(0);
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             if (weaponCache.isValid && weapon.isItemStackDamageable()) {
@@ -731,7 +745,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Ritual mode")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -749,8 +763,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Is allowed to spawn infernal mobs")
-            .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal))
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop"))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
+                    .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -767,9 +783,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Void all damaged and enchanted items")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
             .addTooltip(
-                new Text("Does not affect infernal drops and some special drops like Sticky Sword!")
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
@@ -841,6 +857,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
         }
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     private static class EECFakePlayer extends FakePlayer {
