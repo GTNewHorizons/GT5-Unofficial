@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,26 @@ public class GTDataUtils {
         return out;
     }
 
+    public static <T> T[] withoutNulls(T[] array) {
+        if (array.length == 0) return array;
+
+        int nonNullCount = GTDataUtils.countNonNulls(array);
+
+        if (nonNullCount == array.length) return array;
+
+        T[] out = Arrays.copyOf(array, nonNullCount);
+
+        int j = 0, l = array.length;
+
+        for (int i = 0; i < l; i++) {
+            T t = array[i];
+
+            if (t != null) out[j++] = t;
+        }
+
+        return out;
+    }
+
     public static <T> int findIndex(T[] array, T value) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == value) return i;
@@ -70,5 +91,16 @@ public class GTDataUtils {
 
     public static <T> Stream<T> ofNullableStream(T value) {
         return value == null ? Stream.empty() : Stream.of(value);
+    }
+ public static int countNonNulls(Object[] array) {
+        int l = array.length;
+        int count = 0;
+
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < l; i++) {
+            if (array[i] != null) count++;
+        }
+
+        return count;
     }
 }
