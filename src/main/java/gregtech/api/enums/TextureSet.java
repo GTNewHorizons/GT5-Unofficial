@@ -32,6 +32,14 @@ public class TextureSet {
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM };
     private static final String[] SUFFIXES = new String[] { "/dustTiny", "/dustSmall", "/dust", "/dustImpure",
         "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall", "/ingot",
@@ -46,15 +54,22 @@ public class TextureSet {
         "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
         "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", "/toolTurbine", "/toolWrench",
-        "/toolCrowbar", "/toolWireCutter", "/toolScoop", "/toolBranchCutter", "/toolKnife", "/toolKnifeButchery",
-        "/toolPlunger", "/toolJackHammer", "/pocketMultiToolClosed", "/pocketMultiToolKnife", "/pocketMultiToolSaw",
-        "/pocketMultiToolFile", "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter",
-        "/pocketMultiToolBranchCutter", "/toolTrowel", "/toolHeadAngleGrinder", "/toolHeadElectricSnips", "/handleFile",
-        "/handleTrowel", "/handleSaw", "/handleScrewdriver", "/plateSuperdense", "/handleMallet", "/toolHeadMallet",
-        "/toolProspector", "/toolProspectorElectricLuV", "/toolProspectorElectricZPM", "/toolProspectorElectricUV",
-        "/toolProspectorElectricUHV", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir };
+        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
+        "/handleMallet", "/toolHeadMallet", "/toolTurbine", "/toolWrench", "/toolCrowbar", "/toolWireCutter",
+        "/toolScoop", "/toolBranchCutter", "/toolKnife", "/toolKnifeButchery", "/toolPlunger", "/toolJackHammer",
+        "/pocketMultiToolClosed", "/pocketMultiToolKnife", "/pocketMultiToolSaw", "/pocketMultiToolFile",
+        "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter", "/pocketMultiToolBranchCutter", "/toolTrowel",
+        "/toolHeadAngleGrinder", "/toolHeadElectricSnips", "/handleFile", "/handleTrowel", "/handleSaw",
+        "/handleScrewdriver", "/toolHeadMallet", "/toolProspector", "/toolProspectorElectricLuV",
+        "/toolProspectorElectricZPM", "/toolProspectorElectricUV", "/toolProspectorElectricUHV", aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir };
 
     public boolean is_custom = false;
 
@@ -91,21 +106,21 @@ public class TextureSet {
     /**
      * For Tools that don't have a prefix associated with them
      */
-    public static final short INDEX_turbine = 101, INDEX_wrench = 102, INDEX_crowbar = 103, INDEX_wireCutter = 104,
-        INDEX_scoop = 105, INDEX_branchCutter = 106, INDEX_knife = 107, INDEX_butcheryKnife = 108, INDEX_plunger = 109,
-        INDEX_jackHammer = 110, INDEX_pocketMultiToolClosed = 111, INDEX_pocketMultiToolKnife = 112,
-        INDEX_pocketMultiToolSaw = 113, INDEX_pocketMultiToolFile = 114, INDEX_pocketMultiToolScrewdriver = 115,
-        INDEX_pocketMultiToolWireCutter = 116, INDEX_pocketMultiToolBranchCutter = 117, INDEX_trowel = 118,
-        INDEX_angleGrinder = 119, INDEX_electricSnips = 120, INDEX_handleFile = 121, INDEX_handleTrowel = 122,
-        INDEX_handleSaw = 123, INDEX_handleScrewdriver = 124, INDEX_prospector = 128, INDEX_prospectorElectricLuV = 129,
-        INDEX_prospectorElectricZPM = 130, INDEX_prospectorElectricUV = 131, INDEX_prospectorElectricUHV = 132;
+    public static final short INDEX_turbine = 128, INDEX_wrench = 129, INDEX_crowbar = 130, INDEX_wireCutter = 131,
+        INDEX_scoop = 132, INDEX_branchCutter = 133, INDEX_knife = 134, INDEX_butcheryKnife = 135, INDEX_plunger = 136,
+        INDEX_jackHammer = 137, INDEX_pocketMultiToolClosed = 138, INDEX_pocketMultiToolKnife = 139,
+        INDEX_pocketMultiToolSaw = 140, INDEX_pocketMultiToolFile = 141, INDEX_pocketMultiToolScrewdriver = 142,
+        INDEX_pocketMultiToolWireCutter = 143, INDEX_pocketMultiToolBranchCutter = 144, INDEX_trowel = 145,
+        INDEX_angleGrinder = 146, INDEX_electricSnips = 147, INDEX_handleFile = 148, INDEX_handleTrowel = 149,
+        INDEX_handleSaw = 150, INDEX_handleScrewdriver = 151, INDEX_prospector = 153, INDEX_prospectorElectricLuV = 154,
+        INDEX_prospectorElectricZPM = 155, INDEX_prospectorElectricUV = 156, INDEX_prospectorElectricUHV = 157;
 
-    public final IIconContainer[] mTextures = new IIconContainer[144];
+    public final IIconContainer[] mTextures = new IIconContainer[192];
     public final String mSetName;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (int i = 0; i < 144; i++) {
+        for (int i = 0; i < 192; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 mTextures[i] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + aSetName + SUFFIXES[i]);
             } else {
@@ -136,7 +151,7 @@ public class TextureSet {
         mSetName = "CUSTOM/" + aSetName;
         this.is_custom = true;
 
-        for (int i = 0; i < 144; i++) {
+        for (int i = 0; i < 192; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 if (overrideBlock) {
                     mTextures[i] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + SUFFIXES[i]);
