@@ -255,7 +255,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public FluidStack[] getStoredFluids() {
         if (!isAllowedToWork()) {
-            return EMPTY_FLUID_STACK;
+            return new FluidStack[0];
         }
 
         if (processingRecipe) {
