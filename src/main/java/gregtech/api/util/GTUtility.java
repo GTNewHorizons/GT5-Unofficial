@@ -21,7 +21,6 @@ import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
@@ -242,17 +241,6 @@ public class GTUtility {
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
-    public static Field getPublicField(Object aObject, String aField) {
-        Field rField = null;
-        try {
-            rField = aObject.getClass()
-                .getDeclaredField(aField);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rField;
-    }
-
     public static Field getField(Object aObject, String aField) {
         Field rField = null;
         try {
@@ -274,29 +262,6 @@ public class GTUtility {
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
-    }
-
-    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
-    }
-
-    public static Method getMethod(Object aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getClass()
-                .getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
     }
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
@@ -327,14 +292,6 @@ public class GTUtility {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
-    }
-
-    public static Object callPublicMethod(Object aObject, String aMethod, Object... aParameters) {
-        return callMethod(aObject, aMethod, false, false, true, aParameters);
-    }
-
-    public static Object callPrivateMethod(Object aObject, String aMethod, Object... aParameters) {
-        return callMethod(aObject, aMethod, true, false, true, aParameters);
     }
 
     public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes,
@@ -368,30 +325,6 @@ public class GTUtility {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
-    }
-
-    public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
-        boolean aLogErrors, Object... aParameters) {
-        if (aConstructorIndex < 0) {
-            try {
-                for (Constructor<?> tConstructor : aClass.getConstructors()) {
-                    try {
-                        return tConstructor.newInstance(aParameters);
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
-                    }
-                }
-            } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
-            }
-        } else {
-            try {
-                return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
-            } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
-            }
-        }
-        return aReplacementObject;
     }
 
     public static String capitalizeString(String s) {
