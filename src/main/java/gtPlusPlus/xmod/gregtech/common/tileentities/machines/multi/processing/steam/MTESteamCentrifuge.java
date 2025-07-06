@@ -423,4 +423,5 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
     }
+
 }
