@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import goodgenerator.loader.Loaders;
-import gregtech.api.casing.Casings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -94,6 +93,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private int additionaloverclocks = 0;
     private boolean uevRecipesEnabled = false;
     private boolean hypercoolerPresent = false;
+    private boolean tdsPresent = false;
 
     // modified values for display and calculations
     private float ocFactorAdditive = 0.0F;
@@ -235,7 +235,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 .buildAndChain(
                     onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) // placeholder
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement('c', ofBlock(GregTechAPI.sBlockCasings12,7 ))
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings12, 6))
         .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 14)))
         .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
         .addElement('f', lazy(() -> ofBlock(GodforgeCasings, 3)))
@@ -244,12 +244,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('k', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings12,2))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings12, 1))
         .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))// this cant be real
-        .addElement('m', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc,13)))
-        .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc,9)))
-        .addElement('o',lazy(() -> ofBlock(ModBlocks.blockCasings6Misc,0)))
-        .addElement('p',lazy(() -> ofBlock(Loaders.compactFusionCoil,4)))
+        .addElement('m', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 13)))
+        .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 9)))
+        .addElement('o', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
+        .addElement('p', lazy(() -> ofBlock(Loaders.compactFusionCoil, 4)))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -329,36 +329,77 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return rTexture;
     }
 
-    /*Colors for stats
-
-    Speed bonus - White
-    Parallels - Aqua
-    Eu Eff - Red
-    OC Factor - Dark Purple
-    OC Total - Light Purple
-    mTier - Gold
-    spaces for module info - 4
+    /*
+     * Colors for stats
+     * Speed bonus - White
+     * Parallels - Aqua
+     * Eu Eff - Red
+     * OC Factor - Dark Purple
+     * OC Total - Light Purple
+     * mTier - Gold
+     * spaces for module info - 4
      */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo(EnumChatFormatting.WHITE+"150%"+EnumChatFormatting.GRAY+" faster than singleblock machines of the same voltage")
-            .addInfo("Gains "+EnumChatFormatting.AQUA+"16"+EnumChatFormatting.GRAY+" parallels per voltage tier")
-            .addInfo("Will "+EnumChatFormatting.BOLD+"not"+EnumChatFormatting.GRAY+" perform "+EnumChatFormatting.LIGHT_PURPLE+"overclocks"+EnumChatFormatting.GRAY+" over the hatch tier without modules.")
-            .addInfo("Has "+EnumChatFormatting.GOLD+"3 Tiers"+EnumChatFormatting.GRAY+", depending on Central Chassis Casing")
-            .addInfo("Has "+EnumChatFormatting.GOLD+"2 - 4"+EnumChatFormatting.GRAY+" Module Slots, based on machine tier")
-            .addInfo("Each Module Slot has "+EnumChatFormatting.GOLD+"7"+EnumChatFormatting.GRAY+" different options.")
+            .addInfo(
+                EnumChatFormatting.WHITE + "150%"
+                    + EnumChatFormatting.GRAY
+                    + " faster than singleblock machines of the same voltage")
+            .addInfo(
+                "Gains " + EnumChatFormatting.AQUA + "16" + EnumChatFormatting.GRAY + " parallels per voltage tier")
+            .addInfo(
+                "Will " + EnumChatFormatting.BOLD
+                    + "not"
+                    + EnumChatFormatting.GRAY
+                    + " perform "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "overclocks"
+                    + EnumChatFormatting.GRAY
+                    + " over the hatch tier without modules.")
+            .addInfo(
+                "Has " + EnumChatFormatting.GOLD
+                    + "3 Tiers"
+                    + EnumChatFormatting.GRAY
+                    + ", depending on Central Chassis Casing")
+            .addInfo(
+                "Has " + EnumChatFormatting.GOLD
+                    + "2 - 4"
+                    + EnumChatFormatting.GRAY
+                    + " Module Slots, based on machine tier")
+            .addInfo(
+                "Each Module Slot has " + EnumChatFormatting.GOLD
+                    + "7"
+                    + EnumChatFormatting.GRAY
+                    + " different options.")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("" + EnumChatFormatting.BOLD + EnumChatFormatting.RED + "Glorious Evolution!")
 
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
-            .addCasingInfoRangeColored("Module-Enabled Foundry Casing",EnumChatFormatting.GRAY,300,500,EnumChatFormatting.GOLD,false)
-            .addCasingInfoExactlyColored("Central Magnetic Foundry Chassis", EnumChatFormatting.GRAY, 120, EnumChatFormatting.GOLD,true)
-            .addCasingInfoRangeColored("Any Tiered Glass",EnumChatFormatting.GRAY,100,140,EnumChatFormatting.GOLD,true)
-            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 120, EnumChatFormatting.GOLD,false)
+            .addCasingInfoRangeColored(
+                "Module-Enabled Foundry Casing",
+                EnumChatFormatting.GRAY,
+                300,
+                500,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Central Magnetic Foundry Chassis",
+                EnumChatFormatting.GRAY,
+                120,
+                EnumChatFormatting.GOLD,
+                true)
+            .addCasingInfoRangeColored(
+                "Any Tiered Glass",
+                EnumChatFormatting.GRAY,
+                100,
+                140,
+                EnumChatFormatting.GOLD,
+                true)
+            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 120, EnumChatFormatting.GOLD, false)
             .addInputBus("Any Foundry Casing", 1)
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
@@ -366,38 +407,127 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addMaintenanceHatch("Any Foundry Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.AQUA+"Hypercooler Module")
-            .addStructureInfo("Consumes "+EnumChatFormatting.AQUA+"Cooling Fluid"+EnumChatFormatting.GRAY+" for "+EnumChatFormatting.LIGHT_PURPLE+"Extra Overclocks"+EnumChatFormatting.GRAY+". Limit of "+EnumChatFormatting.WHITE+"1"+EnumChatFormatting.GRAY+" Per "+EnumChatFormatting.GOLD+"Solidifier")
-            .addStructureInfo("Drains "+coolingStrOrder("100","50","25")+" L/s of "+coolingStrOrder("Super Coolant","Spacetime","Eternity")+" to gain "+coolingStrOrder("1","2","3") +" Maximum Overclocks")
-            // .addStructureInfo("    Fluids: "+coolingStrOrder("Super Coolant","Spacetime","Eternity"))
-          //  .addStructureInfo("    L/s: "+coolingStrOrder("100","50","25"))
-           // .addStructureInfo("    Overclocks: "+coolingStrOrder("1","2","3"))
-            .addStructureInfo(EnumChatFormatting.AQUA+"20x"+EnumChatFormatting.GRAY+" Hypercooler Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD+"44x"+EnumChatFormatting.GRAY+" Any Tiered Glass")
-            .addStructureInfo(EnumChatFormatting.GOLD+"104x"+EnumChatFormatting.GRAY+" Infinity Cooled Casing")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
+            .addStructureInfo(
+                "Consumes " + EnumChatFormatting.AQUA
+                    + "Cooling Fluid"
+                    + EnumChatFormatting.GRAY
+                    + " for "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Extra Overclocks"
+                    + EnumChatFormatting.GRAY
+                    + ". Limit of "
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Per "
+                    + EnumChatFormatting.GOLD
+                    + "Solidifier")
+            .addStructureInfo(
+                "Drains " + coolingStrOrder("100", "50", "25")
+                    + " L/s of "
+                    + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
+                    + " to gain "
+                    + coolingStrOrder("1", "2", "3")
+                    + " Maximum Overclocks")
+            .addStructureInfo(EnumChatFormatting.AQUA + "20x" + EnumChatFormatting.GRAY + " Hypercooler Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "44x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "104x" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.LIGHT_PURPLE+"Transcendent Reinforcement")
-            .addStructureInfo("Allows for "+EnumChatFormatting.LIGHT_PURPLE+"UEV+ Recipes"+EnumChatFormatting.GRAY+" to be processed")
-            .addStructureInfo(EnumChatFormatting.GOLD+"4x"+EnumChatFormatting.GRAY+" Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(EnumChatFormatting.GOLD+"24x"+EnumChatFormatting.GRAY+" Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD+"52x"+EnumChatFormatting.GRAY+" Remote Graviton Flow Modulator")
-            .addStructureInfo(EnumChatFormatting.GOLD+"48x"+EnumChatFormatting.GRAY+" Transcendent Metal Frame Box")
+            .addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Transcendent Reinforcement")
+            .addStructureInfo(
+                "Allows for " + EnumChatFormatting.LIGHT_PURPLE
+                    + "UEV+ Recipes"
+                    + EnumChatFormatting.GRAY
+                    + " to be processed")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "4x"
+                    + EnumChatFormatting.GRAY
+                    + " Spatially Transcendent Gravitational Lens Block")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "24x"
+                    + EnumChatFormatting.GRAY
+                    + " Transcendentally Amplified Magnetic Confinement Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "52x" + EnumChatFormatting.GRAY + " Remote Graviton Flow Modulator")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "48x" + EnumChatFormatting.GRAY + " Transcendent Metal Frame Box")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.YELLOW+"Time Dilation System")
-            .addStructureInfo("Multiplies "+EnumChatFormatting.WHITE+"Speed"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.WHITE+"6x"+EnumChatFormatting.GRAY+". Multiplies "+EnumChatFormatting.RED+"EU Consumption"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.RED+"6x")
+            .addStructureInfo(EnumChatFormatting.YELLOW + "Time Dilation System")
+            .addStructureInfo(
+                "Multiplies " + EnumChatFormatting.WHITE
+                    + "Speed"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "6x"
+                    + EnumChatFormatting.GRAY
+                    + ". Multiplies "
+                    + EnumChatFormatting.RED
+                    + "EU Consumption"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.RED
+                    + "6x")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.RED+"Efficient Overclocking Module")
-            .addStructureInfo("Adds "+EnumChatFormatting.DARK_PURPLE+"0.2"+EnumChatFormatting.GRAY+" to the "+EnumChatFormatting.DARK_PURPLE+"Overclock Factor")
+            .addStructureInfo(EnumChatFormatting.RED + "Efficient Overclocking Module")
+            .addStructureInfo(
+                "Adds " + EnumChatFormatting.DARK_PURPLE
+                    + "0.2"
+                    + EnumChatFormatting.GRAY
+                    + " to the "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "Overclock Factor")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.DARK_AQUA+"Power Efficient Subsystems")
-            .addStructureInfo("Subtracts initial "+EnumChatFormatting.RED+"EU Consumption"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.RED+"25%"+EnumChatFormatting.GRAY+". Multiplies "+EnumChatFormatting.WHITE+"Speed Bonus"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.WHITE+"0.75x")
+            .addStructureInfo(EnumChatFormatting.DARK_AQUA + "Power Efficient Subsystems")
+            .addStructureInfo(
+                "Subtracts initial " + EnumChatFormatting.RED
+                    + "EU Consumption"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.RED
+                    + "20%"
+                    + EnumChatFormatting.GRAY
+                    + ". Multiplies "
+                    + EnumChatFormatting.WHITE
+                    + "Speed Bonus"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "0.75x")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.GREEN+"Streamlined Casters")
-            .addStructureInfo("Multiplies "+EnumChatFormatting.WHITE+"Speed Bonus"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.WHITE+"1.25x"+EnumChatFormatting.GRAY+". Ramps up "+EnumChatFormatting.WHITE+"speed"+EnumChatFormatting.GRAY+" over time to a maximum of "+EnumChatFormatting.WHITE+"2.5x"+EnumChatFormatting.GRAY+", cools down at double that rate.")
-            .addStructureInfo("Multiplies "+EnumChatFormatting.AQUA+"Parallels"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.AQUA+"0.5x")
+            .addStructureInfo(EnumChatFormatting.GREEN + "Streamlined Casters")
+            .addStructureInfo(
+                "Multiplies " + EnumChatFormatting.WHITE
+                    + "Speed Bonus"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "1.25x"
+                    + EnumChatFormatting.GRAY
+                    + ". Ramps up "
+                    + EnumChatFormatting.WHITE
+                    + "speed"
+                    + EnumChatFormatting.GRAY
+                    + " over time to a maximum of "
+                    + EnumChatFormatting.WHITE
+                    + "2.5x"
+                    + EnumChatFormatting.GRAY
+                    + ", cools down at double that rate.")
+            .addStructureInfo(
+                "Multiplies " + EnumChatFormatting.AQUA
+                    + "Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.AQUA
+                    + "0.5x")
             .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.WHITE+"Extra Casting Basins")
-            .addStructureInfo("Adds "+EnumChatFormatting.AQUA+"12 Parallels"+EnumChatFormatting.GRAY+" per tier. Casings are valid for extra hatch space.")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Extra Casting Basins")
+            .addStructureInfo(
+                "Adds " + EnumChatFormatting.AQUA
+                    + "12 Parallels"
+                    + EnumChatFormatting.GRAY
+                    + " per tier. Casings are valid for extra hatch space.")
 
             .toolTipFinisher();
 
@@ -518,6 +648,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         hypercoolerPresent = false;
         uevRecipesEnabled = false;
+        tdsPresent = false;
     }
 
     public void checkSolidifierModules() {
@@ -538,6 +669,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     ocFactorAdditive += 0.2F;
                     break;
                 case ACTIVE_TIME_DILATION_SYSTEM:
+                    if (tdsPresent) break;
+                    tdsPresent = true;
                     euEffMultiplier *= 6;
                     speedMultiplier *= 6;
                     break;
@@ -696,13 +829,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         checkModules();
         return (int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
+
     @Override
     protected @NotNull MTEModularSolidifierGui getGui() {
         return new MTEModularSolidifierGui(this);
     }
 
     @Override
-    protected boolean useMui2() {
+    protected boolean forceUseMui2() {
         return true;
     }
 
@@ -721,6 +855,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
+        }
+        if (moduleToAdd == SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM) {
+            checkSolidifierModules();
+            if (tdsPresent) return;
         }
         modules[index] = moduleToAdd;
     }
@@ -746,9 +884,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return 2 + ocFactorAdditive + " : 4";
     }
 
-    public String coolingStrOrder(String val1, String val2, String val3)
-    {
-        return EnumChatFormatting.BLUE+val1+"/"+EnumChatFormatting.LIGHT_PURPLE+val2+"/"+EnumChatFormatting.GREEN+val3+EnumChatFormatting.GRAY;
+    public String coolingStrOrder(String val1, String val2, String val3) {
+        return EnumChatFormatting.BLUE + val1
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + val2
+            + "/"
+            + EnumChatFormatting.GREEN
+            + val3
+            + EnumChatFormatting.GRAY;
     }
 
     private static class CoolingFluid {

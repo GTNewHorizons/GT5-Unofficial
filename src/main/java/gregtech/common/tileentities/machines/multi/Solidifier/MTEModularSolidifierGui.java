@@ -3,18 +3,14 @@ package gregtech.common.tileentities.machines.multi.Solidifier;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.Arrays;
 import java.util.Objects;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.widget.Widget;
-import gregtech.api.modularui2.GTGuiTextures;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -26,6 +22,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -35,8 +32,8 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import tectech.thing.gui.TecTechUITextures;
 
 public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
 
@@ -204,7 +201,8 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
             true);
         IntSyncValue moduleSync = (IntSyncValue) syncManager.getSyncHandler("Module" + (index + 1) + ":0");
-        return new Row().size(30, 16) .marginBottom(index != 0 ? 2 : 0)
+        return new Row().size(30, 16)
+            .marginBottom(index != 0 ? 2 : 0)
             .child(
                 new ButtonWidget<>().size(16, 16)
                     .tooltipBuilder(
@@ -220,8 +218,14 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                             selectPanel.closePanel();
                         }
                         return true;
-                    }).marginRight(2))
-            .child(new TextWidget(IKey.dynamic(() -> EnumChatFormatting.WHITE + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).scale(0.5f).size(20,16));
+                    })
+                    .marginRight(2))
+            .child(
+                new TextWidget(
+                    IKey.dynamic(
+                        () -> EnumChatFormatting.WHITE
+                            + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).scale(0.5f)
+                                .size(20, 16));
 
     }
 
@@ -239,7 +243,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .padding(2)
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget("Select Module"+(index+1)).size(60, 18)
+                        new TextWidget("Select Module " + (index + 1)).size(60, 18)
                             .alignment(Alignment.Center)
                             .marginBottom(5))
                     .child(
@@ -273,26 +277,47 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             // need the awesome graphic with overlays here
 
-            .child(GTGuiTextures.MODULAR_SOLIDIFIER_BASE.asWidget().size(60,80).marginRight(60))
-            .child(new Column().size(60,80).pos(0,0)
+            .child(
+                GTGuiTextures.MODULAR_SOLIDIFIER_BASE.asWidget()
+                    .size(60, 80)
+                    .marginRight(60))
+            .child(
+                new Column().size(60, 80)
+                    .pos(0, 0)
 
-                .child(new Column().size(60,40).paddingTop(17)
-                    //module 4 and 3
-                    .child(new Widget<>().size(28,11).marginBottom(1)
-                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module4Sync.getIntValue()).texture)))
-                    .child(new Widget<>().size(28,11)
-                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module3Sync.getIntValue()).texture)))
+                    .child(
+                        new Column().size(60, 40)
+                            .paddingTop(17)
+                            // module 4 and 3
+                            .child(
+                                new Widget<>().size(28, 11)
+                                    .marginBottom(1)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> SolidifierModules.getModule(module4Sync.getIntValue()).texture)))
+                            .child(
+                                new Widget<>().size(28, 11)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> SolidifierModules.getModule(module3Sync.getIntValue()).texture)))
 
-                )
+                    )
 
-                .child(new Column().size(60,40).paddingTop(6)
-                    //module 2 and 1
-                    .child(new Widget<>().size(28,11).marginBottom(1)
-                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module2Sync.getIntValue()).texture)))
-                    .child(new Widget<>().size(28,11)
-                        .overlay(new DynamicDrawable( () -> SolidifierModules.getModule(module1Sync.getIntValue()).texture)))
-                )
-
+                    .child(
+                        new Column().size(60, 40)
+                            .paddingTop(6)
+                            // module 2 and 1
+                            .child(
+                                new Widget<>().size(28, 11)
+                                    .marginBottom(1)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> SolidifierModules.getModule(module2Sync.getIntValue()).texture)))
+                            .child(
+                                new Widget<>().size(28, 11)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> SolidifierModules.getModule(module1Sync.getIntValue()).texture))))
 
             )
             // module selecting
