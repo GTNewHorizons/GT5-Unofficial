@@ -28,7 +28,7 @@ public class SteamOverclockDescriber extends OverclockDescriber {
 
     @Override
     public String getTierString() {
-        return StatCollector.translateToLocal("GT5U.nei.display.steam_variant" + steamVariant.toString());
+        return StatCollector.translateToLocal("GT5U.nei.display.steam_variant." + steamVariant.toString());
     }
 
     @Override
