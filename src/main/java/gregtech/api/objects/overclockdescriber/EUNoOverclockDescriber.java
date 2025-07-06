@@ -2,12 +2,13 @@ package gregtech.api.objects.overclockdescriber;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -61,7 +62,9 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.total",
+            GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
@@ -75,8 +78,10 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      * @return Whole EU/t usage. Also displays voltage tier if it should be shown.
      */
     protected String getEUtDisplay(OverclockCalculator calculator) {
-        String tier_displayed = shouldShowAmperage(calculator) ? "" : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage",
+        String tier_displayed = shouldShowAmperage(calculator) ? ""
+            : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.usage",
             GTUtility.formatNumbers(calculator.getConsumption()),
             tier_displayed);
     }
@@ -86,15 +91,15 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      */
     protected String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.voltage",
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.voltage",
             GTUtility.formatNumbers(voltage),
             GTUtility.getTierNameWithParentheses(voltage));
 
     }
 
     protected String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage",
-            GTUtility.formatNumbers(amperage));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(amperage));
     }
 
     protected long computeVoltageForEURate(long euPerTick) {

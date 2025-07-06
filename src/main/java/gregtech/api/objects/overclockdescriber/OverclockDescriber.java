@@ -2,13 +2,14 @@ package gregtech.api.objects.overclockdescriber;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.GTMod;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
 
 /**
  * Provides an overclock behavior that will run on machines with the ability to draw information about it on NEI.
@@ -92,10 +93,14 @@ public abstract class OverclockDescriber {
     }
 
     private String getDurationStringSeconds(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds", GTUtility.formatNumbers(getDurationSeconds(calculator)));
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.duration.seconds",
+            GTUtility.formatNumbers(getDurationSeconds(calculator)));
     }
 
     private String getDurationStringTicks(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.ticks", GTUtility.formatNumbers(getDurationTicks(calculator)));
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.duration.ticks",
+            GTUtility.formatNumbers(getDurationTicks(calculator)));
     }
 }
