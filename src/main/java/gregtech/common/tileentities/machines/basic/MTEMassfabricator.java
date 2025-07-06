@@ -231,6 +231,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         @Override
         protected String getAmperageString(OverclockCalculator calculator) {
             int amperage = this.amperage;
+            String amperageValue;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {
                 amperage >>= 1;
@@ -239,10 +240,11 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 }
             }
             if (amperage > 0) {
-                return GTUtility.formatNumbers(amperage);
+                amperageValue = GTUtility.formatNumbers(amperage);
             } else {
-                return "1/" + denominator;
+                amperageValue = "1/" + denominator;
             }
+            return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", amperageValue);
         }
     }
 }
