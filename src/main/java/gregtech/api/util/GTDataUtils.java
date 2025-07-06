@@ -92,7 +92,8 @@ public class GTDataUtils {
     public static <T> Stream<T> ofNullableStream(T value) {
         return value == null ? Stream.empty() : Stream.of(value);
     }
- public static int countNonNulls(Object[] array) {
+
+    public static int countNonNulls(Object[] array) {
         int l = array.length;
         int count = 0;
 
