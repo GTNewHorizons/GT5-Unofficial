@@ -1,7 +1,5 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
