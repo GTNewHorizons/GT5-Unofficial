@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_STEAM_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
@@ -23,15 +24,20 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
@@ -40,11 +46,15 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -57,7 +67,10 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T> {
+public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T>
+    implements IOverclockDescriptionProvider {
+
+    private final OverclockDescriber overclockDescriber;
 
     public ArrayList<MTEHatchSteamBusInput> mSteamInputs = new ArrayList<>();
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
@@ -67,10 +80,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     public MTESteamMultiBase(String aName) {
         super(aName);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     public MTESteamMultiBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     @Override
@@ -425,6 +440,37 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     private int uiSteamStored = 0;
     private int uiSteamCapacity = 0;
 
+    protected BasicUIProperties getUIProperties() {
+        if (getRecipeMap() != null) {
+            BasicUIProperties originalProperties = getRecipeMap().getFrontend()
+                .getUIProperties();
+            return originalProperties.toBuilder()
+                .maxItemInputs(1)
+                .maxItemOutputs(mOutputItems.length)
+                .maxFluidInputs(Math.min(originalProperties.maxFluidInputs, 1))
+                .maxFluidOutputs(Math.min(originalProperties.maxFluidOutputs, 1))
+                .build();
+        }
+        return BasicUIProperties.builder()
+            .maxItemInputs(1)
+            .maxItemOutputs(mOutputItems.length)
+            .maxFluidInputs(getCapacity() != 0 ? 1 : 0)
+            .maxFluidOutputs(0)
+            .build();
+    }
+
+    protected Widget setNEITransferRect(Widget widget, String transferRectID) {
+        OverclockDescriber overclockDescriber = createOverclockDescriber();
+
+        if (GTUtility.isStringInvalid(transferRectID)) {
+            return widget;
+        }
+        final String transferRectTooltip;
+        transferRectTooltip = translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
+        widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
+        return widget;
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
@@ -448,6 +494,20 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
                 .setPos(-48 + 21, -8 + 21)
                 .setSize(18, 4));
+
+        BasicUIProperties uiProperties = getUIProperties();
+
+        builder.widget(
+            setNEITransferRect(
+                new ProgressBar()
+                    .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
+                    .setTexture(
+                        uiProperties.progressBarTextureSteam.get(getSteamVariant()),
+                        uiProperties.progressBarImageSize)
+                    .setDirection(uiProperties.progressBarDirection)
+                    .setPos(uiProperties.progressBarPos)
+                    .setSize(uiProperties.progressBarSize),
+                uiProperties.neiTransferRectId));
     }
 
     @Override
@@ -511,6 +571,15 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
             .hatchIds(31040)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+    }
+
+    protected static OverclockDescriber createOverclockDescriber() {
+        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
+    }
+
+    @Override
+    public @Nullable OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     protected enum SteamHatchElement implements IHatchElement<MTESteamMultiBase<?>> {

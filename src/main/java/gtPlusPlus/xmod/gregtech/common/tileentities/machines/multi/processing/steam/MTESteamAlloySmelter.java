@@ -305,7 +305,8 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
+                return createOverclockDescriber().createCalculator(super.createOverclockCalculator(recipe), recipe)
+                    .setNoOverclock(true)
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
@@ -373,5 +374,4 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
     }
-
 }

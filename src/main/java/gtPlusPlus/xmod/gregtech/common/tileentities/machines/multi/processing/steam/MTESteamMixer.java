@@ -315,7 +315,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
+                return createOverclockDescriber().createCalculator(super.createOverclockCalculator(recipe), recipe)
+                    .setNoOverclock(true)
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
