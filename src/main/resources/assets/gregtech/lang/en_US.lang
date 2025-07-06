@@ -1795,12 +1795,12 @@ GT5U.interface.coverTabs.redstone.unknown=<unknown>
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
 
-GT5U.steam_total=%s L of Steam
-GT5U.steam_usage=%s L/s of Steam
-
-GT5U.duration_seconds=Time: %s seconds
-GT5U.duration_ticks=Time: %s ticks
-GT5U.total_power_EU=Total: %s EUs
+# NEI Display
+GT5U.nei.display.steam_total=%s L of Steam
+GT5U.nei.display.steam_usage=%s L/s of Steam
+GT5U.nei.display.duration_seconds=Time: %s seconds
+GT5U.nei.display.duration_ticks=Time: %s ticks
+GT5U.nei.display.total_power_EU=Total: %s EUs
 
 GT5U.biomes.humidity=Humidity:
 

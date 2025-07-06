@@ -62,7 +62,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.total_power_EU", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total_power_EU", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
