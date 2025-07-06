@@ -61,7 +61,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 "Use Soft Mallet to disable and retract the pipe",
                 String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
                 String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Fortune bonus of %d", aTier) },
+                String.format("Small ore fortune bonus of %d", aTier) },
             2,
             2,
             TextureFactory.of(

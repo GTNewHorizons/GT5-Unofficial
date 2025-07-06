@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -15,34 +14,21 @@ import net.minecraft.world.chunk.Chunk;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.commands.GTBaseCommand;
 import gregtech.common.blocks.TileEntityOres;
 
 /**
  * Created by wital_000 on 17.03.2016.
  */
-public class DetravScannerCommand implements ICommand {
-
-    private final List aliases;
+public class DetravScannerCommand extends GTBaseCommand {
 
     public DetravScannerCommand() {
-        this.aliases = new ArrayList<String>();
-        this.aliases.add("DetravScanner");
-        this.aliases.add("dscan");
+        super("dscan");
     }
 
     @Override
     public String getCommandName() {
-        return "DetravScanner";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "DetravScanner [\"Part of Greg ore name\"]";
-    }
-
-    @Override
-    public List getCommandAliases() {
-        return this.aliases;
+        return "detravscanner";
     }
 
     @Override
@@ -129,10 +115,6 @@ public class DetravScannerCommand implements ICommand {
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));
     }
 
-    private void sendHelpMessage(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
-    }
-
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
         return true;
@@ -148,15 +130,5 @@ public class DetravScannerCommand implements ICommand {
             return result;
         }
         return null;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
-        return false;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
     }
 }

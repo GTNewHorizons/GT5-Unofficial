@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 
+import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -20,7 +19,7 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 /**
  * @author BlueWeabo
  */
-public class SPMCommand extends CommandBase {
+public class SPMCommand extends GTBaseCommand {
 
     private static final String RESET = "reset";
     private static final String UNLOCK = "unlock";
@@ -50,27 +49,24 @@ public class SPMCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] arguments) {
         if (arguments.length < 1) {
-            printHelp(sender);
+            sendHelpMessage(sender);
             return;
         }
         switch (arguments[0]) {
             case RESET:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sender.addChatMessage(
-                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
                     return;
                 }
                 processReset(sender, arguments.length >= 2 ? arguments[1] : sender.getCommandSenderName());
                 break;
             case UNLOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sender.addChatMessage(
-                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
                     return;
                 }
                 if (arguments.length < 3) {
-                    sender.addChatMessage(
-                        new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
+                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention a project and a location");
                     return;
                 }
                 processUnlock(
@@ -81,14 +77,13 @@ public class SPMCommand extends CommandBase {
                 break;
             case UNLOCK_UPGRADE:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sender.addChatMessage(
-                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
                     return;
                 }
                 if (arguments.length < 4) {
-                    sender.addChatMessage(
-                        new ChatComponentText(
-                            "Not enough arguments. Needs to mention a project a location and an upgrade name"));
+                    sendChatToPlayer(
+                        sender,
+                        "Not enough arguments. Needs to mention a project a location and an upgrade name");
                     return;
                 }
                 processUnlock(
@@ -100,13 +95,11 @@ public class SPMCommand extends CommandBase {
                 break;
             case LOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sender.addChatMessage(
-                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
                     return;
                 }
                 if (arguments.length < 3) {
-                    sender.addChatMessage(
-                        new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
+                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention a project and a location");
                     return;
                 }
                 processLock(
@@ -116,21 +109,20 @@ public class SPMCommand extends CommandBase {
                     arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
             case LIST:
                 if (arguments.length < 2) {
-                    sender.addChatMessage(
-                        new ChatComponentText(
-                            "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked"));
+                    sendChatToPlayer(
+                        sender,
+                        "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked");
                     return;
                 }
                 processList(sender, arguments[1], arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
                 break;
             case COPY:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sender.addChatMessage(
-                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
                     return;
                 }
                 if (arguments.length < 3) {
-                    sender.addChatMessage(new ChatComponentText("Not enough arguments. Needs to mention 2 players"));
+                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention 2 players");
                     return;
                 }
                 processCopy(sender, arguments[1], arguments[2]);
@@ -212,13 +204,13 @@ public class SPMCommand extends CommandBase {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         SpaceProjectManager.spaceTeamProjects.put(tID, null);
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
-        sender.addChatMessage(new ChatComponentText("Cleared away map"));
+        sendChatToPlayer(sender, "Cleared away map");
     }
 
     private void processLock(ICommandSender sender, String projectName, String location, String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, null);
-        sender.addChatMessage(new ChatComponentText("Project locked"));
+        sendChatToPlayer(sender, "Project locked");
     }
 
     private void processUnlock(ICommandSender sender, String projectName, String location, String playerName) {
@@ -227,9 +219,9 @@ public class SPMCommand extends CommandBase {
         if (tProject != null) {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
-            sender.addChatMessage(new ChatComponentText("Project unlocked"));
+            sendChatToPlayer(sender, "Project unlocked");
         } else {
-            sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
+            sendChatToPlayer(sender, "Incorrect internal project name. Try again");
         }
     }
 
@@ -240,7 +232,7 @@ public class SPMCommand extends CommandBase {
         if (tProject != null) {
             ISpaceProject.ISP_Upgrade upgrade = tProject.getUpgrade(upgradeName);
             if (upgrade == null) {
-                sender.addChatMessage(new ChatComponentText("Incorrect internal project upgrade name. Try again"));
+                sendChatToPlayer(sender, "Incorrect internal project upgrade name. Try again");
                 return;
             }
             if (!tProject.isFinished()) {
@@ -248,9 +240,9 @@ public class SPMCommand extends CommandBase {
                 SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
             }
             tProject.setBuiltUpgrade(upgrade);
-            sender.addChatMessage(new ChatComponentText("Project Upgrade unlocked"));
+            sendChatToPlayer(sender, "Project Upgrade unlocked");
         } else {
-            sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
+            sendChatToPlayer(sender, "Incorrect internal project name. Try again");
         }
     }
 
@@ -260,19 +252,19 @@ public class SPMCommand extends CommandBase {
             case ALL -> {
                 for (String project : SpaceProjectManager.getProjectsMap()
                     .keySet()) {
-                    sender.addChatMessage(new ChatComponentText(project));
+                    sendChatToPlayer(sender, project);
                 }
             }
             case AVAILABLE -> {
                 for (ISpaceProject project : SpaceProjectManager.getAllProjects()) {
                     if (project.meetsRequirements(tID, false)) {
-                        sender.addChatMessage(new ChatComponentText(project.getProjectName()));
+                        sendChatToPlayer(sender, project.getProjectName());
                     }
                 }
             }
             case UNLOCKED -> {
                 for (ISpaceProject project : SpaceProjectManager.getTeamSpaceProjects(tID)) {
-                    sender.addChatMessage(new ChatComponentText(project.getProjectName()));
+                    sendChatToPlayer(sender, project.getProjectName());
                 }
             }
         }
@@ -280,9 +272,5 @@ public class SPMCommand extends CommandBase {
 
     private void processCopy(ICommandSender sender, String playerToCopyFrom, String playerCopyingTo) {
         // This will take a while
-    }
-
-    private void printHelp(ICommandSender sender) {
-
     }
 }
