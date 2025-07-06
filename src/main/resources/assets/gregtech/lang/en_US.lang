@@ -1801,6 +1801,11 @@ GT5U.nei.display.steam_usage=%s L/s of Steam
 GT5U.nei.display.duration_seconds=Time: %s seconds
 GT5U.nei.display.duration_ticks=Time: %s ticks
 GT5U.nei.display.total_power_EU=Total: %s EUs
+GT5U.nei.display.power_consumption=Usage: %s EU/t %s
+GT5U.nei.display.original_power_consumption=Original usage: %s EU/t %s
+GT5U.nei.display.voltage=Voltage: %s EU/t %s
+GT5U.nei.display.amperage=Amperage: %s A
+GT5U.nei.display.overclock= (Overclocked)
 
 GT5U.biomes.humidity=Humidity:
 
