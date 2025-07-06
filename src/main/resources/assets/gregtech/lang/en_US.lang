@@ -1798,6 +1798,9 @@ GT5U.steam_variant.steel=Steel
 GT5U.steam_total=%s L of Steam
 GT5U.steam_usage=%s L/s of Steam
 
+GT5U.duration_seconds=Time: %s seconds
+GT5U.duration_ticks=Time: %s ticks
+
 GT5U.biomes.humidity=Humidity:
 
 # NEI options

@@ -10,6 +10,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.StatCollector;
 
 /**
  * Provides an overclock behavior that will run on machines with the ability to draw information about it on NEI.
@@ -60,14 +61,12 @@ public abstract class OverclockDescriber {
     public void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
         if (getDurationTicks(recipeInfo.calculator) <= 0) return;
 
-        String textToDraw = trans("158", "Time: ");
-        if (GTMod.gregtechproxy.mNEIRecipeSecondMode) {
-            textToDraw += getDurationStringSeconds(recipeInfo.calculator);
-            if (getDurationSeconds(recipeInfo.calculator) <= 1.0d) {
-                textToDraw += String.format(" (%s)", getDurationStringTicks(recipeInfo.calculator));
-            }
+        String textToDraw;
+
+        if (GTMod.gregtechproxy.mNEIRecipeSecondMode && getDurationSeconds(recipeInfo.calculator) > 1.0d) {
+            textToDraw = getDurationStringSeconds(recipeInfo.calculator);
         } else {
-            textToDraw += getDurationStringTicks(recipeInfo.calculator);
+            textToDraw = getDurationStringTicks(recipeInfo.calculator);
         }
         recipeInfo.drawText(textToDraw);
     }
@@ -95,12 +94,10 @@ public abstract class OverclockDescriber {
     }
 
     private String getDurationStringSeconds(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(getDurationSeconds(calculator)) + GTUtility.trans("161", " secs");
+        return StatCollector.translateToLocalFormatted("GT5U.duration_seconds", GTUtility.formatNumbers(getDurationSeconds(calculator)));
     }
 
     private String getDurationStringTicks(OverclockCalculator calculator) {
-        String ticksString = getDurationTicks(calculator) == 1 ? GTUtility.trans("209.1", " tick")
-            : GTUtility.trans("209", " ticks");
-        return GTUtility.formatNumbers(getDurationTicks(calculator)) + ticksString;
+        return StatCollector.translateToLocalFormatted("GT5U.duration_ticks", GTUtility.formatNumbers(getDurationTicks(calculator)));
     }
 }
