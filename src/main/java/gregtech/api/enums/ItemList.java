@@ -1747,6 +1747,14 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Fluxed_Electrum,
     Casing_Item_Pipe_Black_Plutonium,
 
+    Hyper_Cooler,
+    Extra_Casing_Basins,
+    Transcendent_Reinforcement,
+    Streamlined_Casters,
+    Power_Efficient_Subsystems,
+    Active_Time_Dilation_System,
+    Efficient_Overclocking,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,

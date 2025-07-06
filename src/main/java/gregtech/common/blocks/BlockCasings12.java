@@ -17,6 +17,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
+
         register(1, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System");
         register(2, ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
         register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Power Efficient Subsystems Module");
@@ -28,6 +29,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
+        register(13, ItemList.Efficient_Overclocking, "Efficient Overclocking Module");
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
