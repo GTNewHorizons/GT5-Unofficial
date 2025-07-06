@@ -321,6 +321,25 @@ public final class GTGuiTextures {
         .canApplyTheme(true)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+    public static final UITexture COOLING_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_cool_indicator");
+    public static final UITexture HEATING_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_heat_indicator");
+    public static final UITexture PRESSURE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_pressure_indicator");
+    public static final UITexture VACUUM_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_vacuum_indicator");
+    public static final UITexture EMPTY_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_empty_indicator_L");
+    public static final UITexture EMPTY_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_empty_indicator_R");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_parallel_indicator_L");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/ECCF_parallel_indicator_R");
+
     // endregion slot overlay
 
     // region progressbar
@@ -544,6 +563,17 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
+    public static final UITexture PROGRESSBAR_ECCF_TEMPERATURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_temperature")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_TEMPERATURE)
+        .build();
+    public static final UITexture PROGRESSBAR_ECCF_PRESSURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_pressure")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_PRESSURE)
         .build();
 
     // endregion picture
