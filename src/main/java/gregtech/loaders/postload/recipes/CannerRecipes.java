@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -11,7 +10,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class CannerRecipes implements Runnable {
@@ -191,61 +189,6 @@ public class CannerRecipes implements Runnable {
             .itemOutputs(ItemList.BatteryHull_UxV_Full.get(1L))
             .duration(30 * SECONDS)
             .eut(251520)
-            .addTo(cannerRecipes);
-
-        // fuel rod canner recipes
-
-        if (IndustrialCraft2.isModLoaded()) {
-            // todo: remove tiny dust in this recipe
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.IC2_Fuel_Rod_Empty.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
-                .itemOutputs(GTModHandler.getIC2Item("reactorLithiumCell", 1, 1))
-                .duration(16 * TICKS)
-                .eut(64)
-                .addTo(cannerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.IC2_Fuel_Rod_Empty.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
-                .itemOutputs(ItemList.ThoriumCell_1.get(1L))
-                .duration(1 * SECONDS + 10 * TICKS)
-                .eut(16)
-                .addTo(cannerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("UranFuel", 1))
-                .itemOutputs(ItemList.Uraniumcell_1.get(1))
-                .duration(1 * SECONDS + 10 * TICKS)
-                .eut(16)
-                .addTo(cannerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("MOXFuel", 1))
-                .itemOutputs(ItemList.Moxcell_1.get(1))
-                .duration(1 * SECONDS + 10 * TICKS)
-                .eut(16)
-                .addTo(cannerRecipes);
-        }
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
-            .itemOutputs(ItemList.NaquadahCell_1.get(1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
-            .itemOutputs(ItemList.MNqCell_1.get(1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
             .addTo(cannerRecipes);
     }
 }
