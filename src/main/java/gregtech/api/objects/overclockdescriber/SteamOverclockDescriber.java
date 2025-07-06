@@ -49,12 +49,13 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     }
 
     private String getTotalPowerString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
-            + " Steam";
+        long steamTotal = convertEUToSteam(calculator.getConsumption() * calculator.getDuration());
+        return StatCollector.translateToLocalFormatted("GT5U.steam_total", GTUtility.formatNumbers(steamTotal));
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
+        long steamUsage = 20 * convertEUToSteam(calculator.getConsumption());
+        return StatCollector.translateToLocalFormatted("GT5U.steam_usage", GTUtility.formatNumbers(steamUsage));
     }
 
     private static long convertEUToSteam(long eu) {

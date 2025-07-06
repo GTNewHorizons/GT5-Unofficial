@@ -92,6 +92,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -2406,12 +2407,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
-            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
+            final MTEHatchMuffler muffler = mMufflerHatches.get(i);
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
+            if (tile == null || tile.isDead()) continue;
+            tile.setActive(state);
         }
     }
 
@@ -2662,7 +2665,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean canDumpFluidToME() {
-        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+        for (IFluidStore tHatch : getFluidOutputSlots(GTValues.emptyFluidStackArray)) {
             if (tHatch instanceof MTEHatchOutputME) {
                 if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
                     return false;

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -30,6 +32,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchInput extends MTEHatch {
 
     public RecipeMap<?> mRecipeMap = null;
+    // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
+    public boolean disableFilter = true;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
         this(
@@ -37,7 +41,7 @@ public class MTEHatchInput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Fluid Input for Multiblocks",
+            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
                 "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
     }
 
@@ -105,6 +109,7 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("disableFilter", disableFilter);
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
@@ -113,7 +118,17 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        disableFilter = aNBT.getBoolean("disableFilter");
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        if (!getBaseMetaTileEntity().getWorld().isRemote) {
+            GTClientPreference tPreference = GTMod.gregtechproxy
+                .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            if (tPreference != null) disableFilter = !tPreference.isInputHatchInitialFilterEnabled();
+        }
     }
 
     @Override
@@ -168,7 +183,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return mRecipeMap == null || mRecipeMap.containsInput(aFluid);
+        return mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aFluid);
     }
 
     @Override
@@ -181,7 +196,8 @@ public class MTEHatchInput extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0
-            && (mRecipeMap == null || mRecipeMap.containsInput(aStack)
+            && (mRecipeMap == null || disableFilter
+                || mRecipeMap.containsInput(aStack)
                 || mRecipeMap.containsInput(GTUtility.getFluidForFilledItem(aStack, true)));
     }
 
@@ -190,4 +206,15 @@ public class MTEHatchInput extends MTEHatch {
         return 8000 * (1 << mTier);
     }
 
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
+            .isGUIClickable()) return;
+        else {
+            disableFilter = !disableFilter;
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        }
+    }
 }

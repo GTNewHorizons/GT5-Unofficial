@@ -10,6 +10,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
@@ -111,12 +112,55 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             new Aspect[] { Aspect.LIGHT, Aspect.ENERGY },
             new ResourceLocation("gregtech:textures/aspects/" + TCAspects.RADIO.name() + ".png"),
             1);
+        TCAspects.AEQUALITAS.mAspect = new LocalizedCustomAspectName(
+            "custom1",
+            0xEEF0EA,
+            new Aspect[] { Aspect.MIND, Aspect.ORDER },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.AEQUALITAS.name() + ".png"),
+            1);
+        TCAspects.VESANIA.mAspect = new LocalizedCustomAspectName(
+            "custom2",
+            0x1B122C,
+            new Aspect[] { Aspect.MIND, Aspect.TAINT },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.VESANIA.name() + ".png"),
+            1);
+        TCAspects.PRIMORDIUM.mAspect = new LocalizedCustomAspectName(
+            "custom3",
+            0xF7F7DB,
+            new Aspect[] { Aspect.VOID, Aspect.MOTION },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.PRIMORDIUM.name() + ".png"),
+            1);
+        TCAspects.ASTRUM.mAspect = new LocalizedCustomAspectName(
+            "custom4",
+            0x2D2C2B,
+            new Aspect[] { Aspect.LIGHT, Aspect.getAspect("custom3") },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ASTRUM.name() + ".png"),
+            1);
+        TCAspects.GLORIA.mAspect = new LocalizedCustomAspectName(
+            "custom5",
+            0xFFE980,
+            new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
+            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
+            1);
 
         GTLanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
         GTLanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
         GTLanguageManager.addStringLocalization("tc.aspect.electrum", "Electricity, Lightning");
         GTLanguageManager.addStringLocalization("tc.aspect.magneto", "Magnetism, Attraction");
         GTLanguageManager.addStringLocalization("tc.aspect.radio", "Radiation");
+    }
+
+    public class LocalizedCustomAspectName extends Aspect {
+
+        public LocalizedCustomAspectName(String tag, int color, Aspect[] components, ResourceLocation image,
+            int blend) {
+            super(tag, color, components, image, blend);
+        }
+
+        @Override
+        public String getName() {
+            return StatCollector.translateToLocal("tc.aspect." + this.getTag() + ".name");
+        }
     }
 
     private static AspectList getAspectList(List<TCAspects.TC_AspectStack> aAspects) {
@@ -282,4 +326,5 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
         ThaumcraftApi.portableHoleBlackList.add(aBlock);
         return true;
     }
+
 }

@@ -8,23 +8,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.data.maglev.Tether;
-import gregtech.common.data.maglev.TetherManager;
 
-@EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
-    public Tether machineTether;
-    private final int poweredRange = TetherManager.getRange(mTier, true);
-    private final int unpoweredRange = TetherManager.getRange(mTier, false);
-    private final long powerCost = TetherManager.getPowerCost(mTier);
+    private final static int BASE_PYLON_RANGE = 16;
+
+    private final int poweredRange = getPylonRange(mTier, true);
+    private final int unpoweredRange = getPylonRange(mTier, false);
+    private final long powerCost = getPylonPowerCost(mTier);
+    private int playersConnected;
+    private int range = -1;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -35,75 +35,60 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             0,
             new String[] { "Grants creative flight to those wearing a MagLev Harness.",
                 "Range is a cube centered on the pylon.",
-                String.format(
-                    "Unpowered Range: %s%d blocks",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getRange(aTier, false)),
-                String.format(
-                    "Powered Range: %s%d blocks",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getRange(aTier, true)),
-                String.format(
-                    "Cost: %s%d EU/t if tethered",
-                    EnumChatFormatting.WHITE,
-                    TetherManager.getPowerCost(aTier)), });
+                String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
+                String.format("Powered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, true)),
+                String.format("Cost: %s%d EU/t if tethered", EnumChatFormatting.WHITE, getPylonPowerCost(aTier)), });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    // Active state of machine is used to control the animated texture
+    // Should only be active when a player is connected
+    // If machine is fully disabled, also disable the tether and active state
+    // EU should only drain when a player is connected
+    // Tether range is determined if the machine has enough EU
     @Override
-    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
-        if (!baseMetaTileEntity.isServerSide()) return;
-
-        machineTether = new Tether(
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            baseMetaTileEntity.getWorld().provider.dimensionId,
-            poweredRange);
-        TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
-            .insert(this.machineTether);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (!baseMetaTileEntity.isServerSide()) return;
-
-        /*
-         * Active state of machine is used to control the animated texture
-         * Should only be active when a player is connected
-         * If machine is fully disabled, also disable the tether and active state
-         * EU should only drain when a player is connected
-         * Tether range is determined if the machine has enough EU
-         */
-        if (baseMetaTileEntity.isAllowedToWork()) {
-            machineTether.active(true);
-            boolean playerConnected = TetherManager.PLAYER_TETHERS.containsValue(this.machineTether);
-            baseMetaTileEntity.setActive(playerConnected);
-            if (baseMetaTileEntity.isUniversalEnergyStored(powerCost)) {
-                machineTether.range(poweredRange);
+    public void onPostTick(IGregTechTileEntity mte, long tick) {
+        if (!mte.isServerSide()) return;
+        if (mte.isAllowedToWork()) {
+            boolean playerConnected = hasPlayerConnected();
+            mte.setActive(playerConnected);
+            int prevRange = range;
+            if (mte.isUniversalEnergyStored(powerCost)) {
+                range = poweredRange;
                 if (playerConnected) {
-                    baseMetaTileEntity.decreaseStoredEnergyUnits(powerCost, false);
+                    mte.decreaseStoredEnergyUnits(powerCost, false);
                 }
             } else {
-                machineTether.range(unpoweredRange);
+                range = unpoweredRange;
+            }
+            if (prevRange != range) {
+                GTMod.gregtechproxy.tetherManager.registerPylon(mte, this, range);
             }
         } else {
-            machineTether.active(false);
-            baseMetaTileEntity.setActive(false);
+            if (range != -1) {
+                mte.setActive(false);
+                GTMod.gregtechproxy.tetherManager.unregisterPylon(mte);
+                range = -1;
+            }
         }
     }
 
     @Override
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
-            .isServerSide()
-            && TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .contains(this.machineTether)) {
-            TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .remove(this.machineTether);
+            .isServerSide()) {
+            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
+            GTMod.gregtechproxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -192,4 +177,30 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {}
+
+    private boolean hasPlayerConnected() {
+        return playersConnected > 0;
+    }
+
+    public void connectPlayer() {
+        playersConnected++;
+    }
+
+    public void disconnectPlayer() {
+        playersConnected--;
+        playersConnected = Math.max(0, playersConnected);
+    }
+
+    /**
+     * MV (2) = 16
+     * HV (3) = 32
+     * EV (4) = 48
+     */
+    private static int getPylonRange(int tier, boolean powered) {
+        return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);
+    }
+
+    private static long getPylonPowerCost(int tier) {
+        return GTValues.VP[tier];
+    }
 }
