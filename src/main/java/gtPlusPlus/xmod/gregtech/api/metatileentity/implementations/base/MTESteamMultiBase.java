@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_STEAM_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
@@ -28,10 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -54,7 +51,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -440,37 +436,6 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     private int uiSteamStored = 0;
     private int uiSteamCapacity = 0;
 
-    protected BasicUIProperties getUIProperties() {
-        if (getRecipeMap() != null) {
-            BasicUIProperties originalProperties = getRecipeMap().getFrontend()
-                .getUIProperties();
-            return originalProperties.toBuilder()
-                .maxItemInputs(1)
-                .maxItemOutputs(mOutputItems.length)
-                .maxFluidInputs(Math.min(originalProperties.maxFluidInputs, 1))
-                .maxFluidOutputs(Math.min(originalProperties.maxFluidOutputs, 1))
-                .build();
-        }
-        return BasicUIProperties.builder()
-            .maxItemInputs(1)
-            .maxItemOutputs(mOutputItems.length)
-            .maxFluidInputs(getCapacity() != 0 ? 1 : 0)
-            .maxFluidOutputs(0)
-            .build();
-    }
-
-    protected Widget setNEITransferRect(Widget widget, String transferRectID) {
-        OverclockDescriber overclockDescriber = createOverclockDescriber();
-
-        if (GTUtility.isStringInvalid(transferRectID)) {
-            return widget;
-        }
-        final String transferRectTooltip;
-        transferRectTooltip = translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
-        widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
-        return widget;
-    }
-
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
@@ -494,20 +459,6 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
                 .setPos(-48 + 21, -8 + 21)
                 .setSize(18, 4));
-
-        BasicUIProperties uiProperties = getUIProperties();
-
-        builder.widget(
-            setNEITransferRect(
-                new ProgressBar()
-                    .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
-                    .setTexture(
-                        uiProperties.progressBarTextureSteam.get(getSteamVariant()),
-                        uiProperties.progressBarImageSize)
-                    .setDirection(uiProperties.progressBarDirection)
-                    .setPos(uiProperties.progressBarPos)
-                    .setSize(uiProperties.progressBarSize),
-                uiProperties.neiTransferRectId));
     }
 
     @Override

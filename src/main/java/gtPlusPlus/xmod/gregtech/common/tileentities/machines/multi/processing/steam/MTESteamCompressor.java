@@ -260,8 +260,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return createOverclockDescriber().createCalculator(super.createOverclockCalculator(recipe), recipe)
-                    .setNoOverclock(true)
+                return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
