@@ -9,6 +9,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -40,7 +41,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     @Override
     public final void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getDuration() > 0 && recipeInfo.calculator.getConsumption() > 0) {
-            recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+            recipeInfo.drawText(getTotalPowerString(recipeInfo.calculator));
         }
         drawEnergyInfoImpl(recipeInfo);
     }
@@ -61,7 +62,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()) + " EU";
+        return StatCollector.translateToLocalFormatted("GT5U.total_power_EU", GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
