@@ -510,15 +510,7 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        byte tier = getTier(voltage);
-        if (tier < 0) {
-            return "";
-        } else if (tier == 0) {
-            return " (" + GTValues.VN[1] + ")";
-        } else if (tier >= GTValues.VN.length - 1) {
-            return " (MAX+)";
-        }
-        return " (" + GTValues.VN[tier] + ")";
+        return " ("+GTValues.VN[getTier(voltage)]+")";
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
