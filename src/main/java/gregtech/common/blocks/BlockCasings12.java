@@ -18,13 +18,13 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
-        register(1, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System");
-        register(2, ItemList.Efficient_Overclocking_Solidifier_Modular, "Efficient Overclocking Module");
-        register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Power Efficient Subsystems Module");
-        register(4, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendent Reinforcement Module");
-        register(5, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Extra Casting Basins Module");
-        register(6, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Module");
-        register(7, ItemList.Streamlined_Casters_Solidifier_Modular, "Streamlined Casters Module");
+        register(1, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System Casing");
+        register(2, ItemList.Efficient_Overclocking_Solidifier_Modular, "Sentient Overclocking Casing");
+        register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Volt Stabilizer Casing");
+        register(4, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendental Bolted Shirabon Casing");
+        register(5, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Superdense Casting Basin Casing");
+        register(6, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Siphon Casing");
+        register(7, ItemList.Streamlined_Casters_Solidifier_Modular, "Streamlined Casting Casing");
         register(8, ItemList.Casing_Solidifier_Modular, "Modular Solidifier Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
