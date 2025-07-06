@@ -510,7 +510,7 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        return " ("+GTValues.VN[getTier(voltage)]+")";
+        return " (" + GTValues.VN[getTier(voltage)] + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
