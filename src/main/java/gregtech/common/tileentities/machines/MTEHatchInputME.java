@@ -427,6 +427,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             if (toExtract <= 0) continue;
 
+            // Reset the extracted amount to prevent double endRecipeProcessing calls from extracting twice, but keep
+            // the extracted stack intact so that it looks nice.
+            slot.extractedAmount = slot.extracted.amount;
+
             IAEFluidStack request = AEFluidStack.create(slot.extracted);
             request.setStackSize(toExtract);
 
