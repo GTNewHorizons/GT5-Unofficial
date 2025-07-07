@@ -1,5 +1,6 @@
 package gregtech.common.covers.gui;
 
+import com.cleanroommc.modularui.factory.GuiData;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -48,7 +49,17 @@ public class CoverGui<T extends Cover> {
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {}
 
     /**
-     * Creates a standalone panel holding the UI for this cover.
+     * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account, useful for player data.
+     * If you want highly customize GUI,
+     * override {@link Cover#buildUI} instead.
+     *
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @param column      main column to add child widgets
+     */
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {}
+
+    /**
+     * Creates a standalone panel holding the UI for this cover. GuiData can be passed in as well.
      * <br>
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
@@ -61,16 +72,51 @@ public class CoverGui<T extends Cover> {
         return basePanel;
     }
 
+    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings, GuiData data) {
+        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
+        if (doesBindPlayerInventory()) {
+            basePanel.bindPlayerInventory();
+        }
+        return basePanel;
+    }
+
     /**
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}.
      * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
-     * instead.
+     * instead. Has a version with GuiData passed in, for player uuid grabbing.
      *
      * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
     public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
+        syncManager.addCloseListener(player -> {
+            if (!NetworkUtils.isClient(player)) {
+                cover.getTile()
+                    .markDirty();
+            }
+        });
+        final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
+            .debugName(getGuiId());
+        final Flow widgetsColumn = Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginLeft(WIDGET_MARGIN)
+            .marginTop(WIDGET_MARGIN);
+        panel.child(widgetsColumn);
+        addTitleToUI(widgetsColumn);
+        addUIWidgets(syncManager, widgetsColumn);
+
+        if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
+            panel.child(
+                new CoverTickRateButton(cover, syncManager).right(4)
+                    .bottom(4));
+        }
+
+        return panel;
+    }
+
+    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings, GuiData data) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()

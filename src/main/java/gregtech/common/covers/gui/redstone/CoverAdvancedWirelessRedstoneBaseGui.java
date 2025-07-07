@@ -1,6 +1,7 @@
 package gregtech.common.covers.gui.redstone;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -10,6 +11,8 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 
+import java.util.UUID;
+
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class CoverAdvancedWirelessRedstoneBaseGui extends CoverGui<CoverAdvancedWirelessRedstoneBase> {
@@ -18,9 +21,12 @@ public class CoverAdvancedWirelessRedstoneBaseGui extends CoverGui<CoverAdvanced
 
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency,cover::setFrequency);
         syncManager.syncValue("frequency", frequencySyncer);
+        UUID uuid = data.getPlayer().getUniqueID();
+        column.child(makeFrequencyRow(frequencySyncer))
+            .child(makePrivateSelectRow(uuid));
 
     }
 
@@ -33,11 +39,13 @@ public class CoverAdvancedWirelessRedstoneBaseGui extends CoverGui<CoverAdvanced
     {
         return Flow.row().child(
             new TextFieldWidget().width(80).value(freqSync))
-            .child(new TextWidget(translateToLocal("gt.interact.desc.freq")).color(Color.GREY.main))
-            ;
+            .child(new TextWidget(translateToLocal("gt.interact.desc.freq")).color(Color.GREY.main)).marginBottom(4);
     }
-    private static Flow makePrivateFrequencyRow()
+    private static Flow makePrivateSelectRow(UUID uuid)
     {
         //TODO: implement uuid
-        return Flow.row();}
+        return Flow.row();
+    }
+
+
 }
