@@ -253,15 +253,15 @@ public class GTUtility {
         return rField;
     }
 
-    public static Field getField(Class<?> aObject, String aField) {
-        Field rField = null;
+    public static Field getField(Class<?> clazz, String fieldName) {
         try {
-            rField = aObject.getDeclaredField(aField);
-            rField.setAccessible(true);
+            final Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field;
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
-        return rField;
+        return null;
     }
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {

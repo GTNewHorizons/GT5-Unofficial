@@ -63,7 +63,8 @@ public enum Mixin {
             "minecraft.accessors.ForgeShapelessRecipeMixin",
             "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
-            "minecraft.accessors.EntityPlayerMPMixin")
+            "minecraft.accessors.EntityPlayerMPMixin",
+            "minecraft.accessors.WeightedRandomFishableMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
