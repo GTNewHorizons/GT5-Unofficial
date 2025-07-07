@@ -12,8 +12,8 @@ import gtPlusPlus.api.objects.Logger;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ReflectionUtils {
 
-    public static Map<String, CachedField> mCachedFields = new HashMap<>();
-    public static Map<Field, Fields.ClassFields.Field> mCachedFieldAccessors = new HashMap<>();
+    private static final Map<String, CachedField> mCachedFields = new HashMap<>();
+    private static final Map<Field, Fields.ClassFields.Field> mCachedFieldAccessors = new HashMap<>();
 
     private static class CachedField {
 
