@@ -132,7 +132,7 @@ public class CoverGui<T extends Cover> {
             .marginTop(WIDGET_MARGIN);
         panel.child(widgetsColumn);
         addTitleToUI(widgetsColumn);
-        addUIWidgets(syncManager, widgetsColumn);
+        addUIWidgets(syncManager, widgetsColumn, data);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
