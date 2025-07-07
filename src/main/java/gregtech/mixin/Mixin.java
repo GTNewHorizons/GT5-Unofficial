@@ -187,11 +187,12 @@ public enum Mixin {
             .setSide(Side.BOTH)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
             .addTargetedMod(TargetedMod.GALACTICRAFT_CORE)),
-    FORESTRY_ACCESSOR(new Builder("Forestry accessors").addMixinClasses("forestry.TreeDefinitionMixin")
-        .setPhase(Phase.LATE)
-        .setSide(Side.BOTH)
-        .setApplyIf(() -> true)
-        .addTargetedMod(TargetedMod.FORESTRY))
+    FORESTRY_ACCESSOR(
+        new Builder("Forestry accessors").addMixinClasses("forestry.TreeDefinitionMixin", "forestry.MutationMixin")
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)
+            .setApplyIf(() -> true)
+            .addTargetedMod(TargetedMod.FORESTRY))
 
     ;
 
