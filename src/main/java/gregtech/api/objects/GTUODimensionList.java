@@ -101,6 +101,10 @@ public class GTUODimensionList {
         }
     }
 
+    public BiMap<String, GTUODimension> getDimensionList() {
+        return fDimensionList;
+    }
+
     public void SetConfigValues(String aDimensionName, String aDimension, String aName, String aRegistry,
         int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
         String Category = fCategory + "." + aDimensionName;

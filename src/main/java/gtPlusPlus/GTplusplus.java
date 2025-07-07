@@ -37,7 +37,6 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.plugin.fixes.vanilla.VanillaBedHeightFix;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -154,7 +153,6 @@ public class GTplusplus {
         Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
         fixVanillaOreDict();
-        new VanillaBedHeightFix();
     }
 
     @EventHandler
