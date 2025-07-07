@@ -231,6 +231,10 @@ public class GTUtility {
         sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
     }
 
+    public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
+        return sFilledContainerToData;
+    }
+
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
     }
