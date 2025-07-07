@@ -225,18 +225,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     private boolean checkMachine() {
+        mDataAccessHatches.clear();
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         return checkMachine(true) || checkMachine(false);
     }
 
     private boolean checkMachine(boolean leftToRight) {
-        clearHatches();
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
-            if (!mOutputBusses.isEmpty()) {
+            if (!mOutputBusses.isEmpty())
                 return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1
                     && mDataAccessHatches.size() <= 1;
-            }
         }
         return false;
     }
