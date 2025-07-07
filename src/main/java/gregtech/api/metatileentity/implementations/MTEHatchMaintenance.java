@@ -58,12 +58,12 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         mSolderingTool = false, mCrowbar = false, mAuto;
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 1, "For maintaining multiblocks");
         mAuto = false;
     }
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
-        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining multiblocks");
         mAuto = aAuto;
     }
 
@@ -87,13 +87,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (mAuto) {
             desc = new String[mDescriptionArray.length + 3];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "4 Ducttape, 2 Lubricant Cells";
-            desc[mDescriptionArray.length + 1] = "4 Steel Screws, 2 HV Circuits";
-            desc[mDescriptionArray.length + 2] = "For each autorepair";
+            desc[mDescriptionArray.length] = "Consumes 4 Duct Tape, 2 Lubricant Cells,";
+            desc[mDescriptionArray.length + 1] = "4 Steel Screws, and 2 HV Circuits";
+            desc[mDescriptionArray.length + 2] = "for each autorepair.";
         } else {
             desc = new String[mDescriptionArray.length + 1];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "Cannot be shared between Multiblocks!";
+            desc[mDescriptionArray.length] = "Right-click with a Tool Box to fix issues.";
         }
         return desc;
     }
