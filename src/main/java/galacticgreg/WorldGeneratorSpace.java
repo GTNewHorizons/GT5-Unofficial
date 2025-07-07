@@ -127,12 +127,12 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 oreLayer = WorldgenQuery.small()
                     .inDimension(dimensionDef)
                     .inStone(asteroidStone.getCategory())
-                    .find(rng.clone());
+                    .findRandom(rng.clone());
             } else {
                 oreLayer = WorldgenQuery.veins()
                     .inDimension(dimensionDef)
                     .inStone(asteroidStone.getCategory())
-                    .find(rng.clone());
+                    .findRandom(rng.clone());
             }
 
             if (oreLayer == null) return null;

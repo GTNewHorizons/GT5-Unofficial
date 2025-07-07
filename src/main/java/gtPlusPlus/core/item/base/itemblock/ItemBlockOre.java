@@ -105,7 +105,7 @@ public class ItemBlockOre extends ItemBlock {
 
             Set<String> dims = mMapOreBlockItemToDimName.get(this.mThisMaterial);
 
-            list.add("Found:");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
             if (dims != null && !dims.isEmpty()) {
                 for (String m : dims) {
                     list.add("- " + DimensionHelper.getDimLocalizedName(m));

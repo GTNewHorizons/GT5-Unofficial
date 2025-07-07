@@ -97,15 +97,15 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     }
 
     @Nullable
-    public TLayer find(Random random) {
+    public TLayer findRandom(Random random) {
         if (checkWeight) {
-            return findWithWeight(random);
+            return findRandomWithWeight(random);
         } else {
-            return findWithoutWeight(random);
+            return findRandomWithoutWeight(random);
         }
     }
 
-    private TLayer findWithWeight(Random random) {
+    private TLayer findRandomWithWeight(Random random) {
         int totalAmount = 0;
 
         for (TLayer layer : list) {
@@ -129,7 +129,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
         return null;
     }
 
-    private TLayer findWithoutWeight(Random random) {
+    private TLayer findRandomWithoutWeight(Random random) {
         int count = 0;
 
         for (TLayer layer : list) {

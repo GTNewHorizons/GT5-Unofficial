@@ -179,7 +179,7 @@ public class DrillingLogicDelegate {
 
         long seed = rng.getSeed();
 
-        // see if we can store all of the outputs
+        // See if we can store all of the outputs
         List<ItemStack> drops = OreManager
             .mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
 
@@ -195,7 +195,7 @@ public class DrillingLogicDelegate {
             owner.pushOutputs(drop, drop.stackSize, false, false);
         }
 
-        // actually mine it
+        // Actually mine it
         OreManager.mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), false, true);
     }
 

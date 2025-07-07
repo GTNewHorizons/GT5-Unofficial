@@ -101,7 +101,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 + " SIZE: "
                 + PENDING_TASKS.size());
 
-        // hack to prevent cascading worldgen lag
+        // Hack to prevent cascading worldgen lag
         if (!this.mIsGenerating) {
             this.mIsGenerating = true;
 
@@ -292,7 +292,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             // Search for a valid orevein for this dimension
 
             if (validOreveins.containsKey(oreveinSeed)) {
-                // oreseed is located in the previously processed table
+                // Oreseed is located in the previously processed table
                 if (debugOrevein) GTLog.out
                     .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
                 WorldgenGTOreLayer tWorldGen = validOreveins.get(oreveinSeed);
@@ -352,9 +352,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                     && !oreveinFound; i++) {
                     WorldgenGTOreLayer oreLayer = WorldgenQuery.veins()
                         .inDimension(dimensionName)
-                        .find(oreveinRNG);
+                        .findRandom(oreveinRNG);
 
-                    // there aren't any veins in this dimension so there's no point in retrying
+                    // There aren't any veins in this dimension so there's no point in retrying
                     if (oreLayer == null) break;
 
                     int placementResult = 0;
