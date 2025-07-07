@@ -93,7 +93,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         } else {
             desc = new String[mDescriptionArray.length + 1];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "Cannot be shared between Multiblocks!";
+            desc[mDescriptionArray.length] = "Right-click with a Tool Box to fix issues";
         }
         return desc;
     }
