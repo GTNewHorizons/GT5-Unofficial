@@ -1200,13 +1200,18 @@ public class GTProxy implements IFuelHandler {
         GregTechAPI.sAdvancedWirelessRedstone.clear();
     }
 
-    public void onServerStopped(FMLServerStoppedEvent event) {
+    public void onServerStopped() {
         // spotless:off
-        MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
-        FMLCommonHandler.instance().bus().unregister(tetherManager);
-        MinecraftForge.EVENT_BUS.unregister(tetherManager);
-        FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
-        dimensionWisePollution.clear();
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        }
+        if (tetherManager != null) {
+            FMLCommonHandler.instance().bus().unregister(tetherManager);
+            MinecraftForge.EVENT_BUS.unregister(tetherManager);
+        }
+        if (wirelessChargerManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
+        }
         spawnEventHandler = null;
         tetherManager = null;
         wirelessChargerManager = null;
