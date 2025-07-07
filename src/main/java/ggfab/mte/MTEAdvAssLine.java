@@ -234,7 +234,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
             if (!mOutputBusses.isEmpty())
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
+                return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1
+                    && mDataAccessHatches.size() <= 1;
         }
         return false;
     }
