@@ -3,7 +3,6 @@ package gregtech.nei;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,12 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import codechicken.nei.recipe.ShapelessRecipeHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.ItemMachines;
+import gregtech.common.recipes.CALImprintRecipe;
 
 public class GTNEIImprintHandler extends ShapelessRecipeHandler {
 
@@ -46,20 +43,20 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        ItemStack circuit = getCircuitFromCAL(result);
+        ItemStack circuit = CALImprintRecipe.getCircuitFromCAL(result);
 
         if (circuit != null) {
-            loadRecipe(null, getImprintForCircuit(circuit));
+            loadRecipe(null, CALImprintRecipe.getImprintForCircuit(circuit));
         }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        if (isCAL(ingredient) && getCircuitFromCAL(ingredient) == null) {
+        if (CALImprintRecipe.isCAL(ingredient) && CALImprintRecipe.getCircuitFromCAL(ingredient) == null) {
             loadAllRecipes(ingredient);
         }
 
-        if (getCircuitFromImprint(ingredient) != null) {
+        if (CALImprintRecipe.getCircuitFromImprint(ingredient) != null) {
             loadRecipe(null, ingredient);
         }
     }
@@ -69,7 +66,7 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
 
         for (GTRecipe recipe : BartWorksRecipeMaps.circuitAssemblyLineRecipes.getAllRecipes()) {
             ItemStack imprint = (ItemStack) recipe.mSpecialItems;
-            ItemStack circuit = getCircuitFromImprint(imprint);
+            ItemStack circuit = CALImprintRecipe.getCircuitFromImprint(imprint);
 
             if (imprint == null) continue;
             if (circuit == null) continue;
@@ -86,51 +83,6 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
         arecipes.add(
             new CachedShapelessRecipe(
                 new Object[] { GTUtility.copyAmount(1, cal), GTUtility.copyAmount(1, imprint), },
-                installImprint(GTUtility.copyAmount(1, cal), imprint)));
-    }
-
-    public static ItemStack installImprint(@NotNull ItemStack cal, @NotNull ItemStack imprint) {
-        NBTTagCompound tag = cal.getTagCompound();
-
-        if (tag == null) {
-            tag = new NBTTagCompound();
-            cal.setTagCompound(tag);
-        }
-
-        tag.setTag(MTECircuitAssemblyLine.IMPRINT_KEY, imprint.getTagCompound());
-
-        return cal;
-    }
-
-    public static boolean isCAL(@Nullable ItemStack stack) {
-        return ItemMachines.getMetaTileEntity(stack) instanceof MTECircuitAssemblyLine;
-    }
-
-    public static ItemStack getImprintForCircuit(@NotNull ItemStack circuit) {
-        ItemStack imprint = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
-
-        imprint.setTagCompound(circuit.writeToNBT(new NBTTagCompound()));
-
-        return imprint;
-    }
-
-    public static ItemStack getCircuitFromCAL(@NotNull ItemStack cal) {
-        if (!isCAL(cal)) return null;
-
-        NBTTagCompound tag = cal.getTagCompound();
-
-        if (tag == null || !tag.hasKey(MTECircuitAssemblyLine.IMPRINT_KEY)) return null;
-
-        return ItemStack.loadItemStackFromNBT(tag.getCompoundTag(MTECircuitAssemblyLine.IMPRINT_KEY));
-    }
-
-    public static ItemStack getCircuitFromImprint(@Nullable ItemStack imprint) {
-        if (imprint == null) return null;
-        if (imprint.getItem() == null) return null;
-        if (!(imprint.getItem() instanceof BWMetaItems.BW_GT_MetaGenCircuits)) return null;
-        if (imprint.getItemDamage() != 0) return null;
-        if (imprint.getTagCompound() == null) return null;
-
-        return ItemStack.loadItemStackFromNBT(imprint.getTagCompound());
+                CALImprintRecipe.installImprint(GTUtility.copyAmount(1, cal), imprint)));
     }
 }
