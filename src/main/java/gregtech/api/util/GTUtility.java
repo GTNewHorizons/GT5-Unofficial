@@ -22,7 +22,6 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -288,39 +287,6 @@ public class GTUtility {
                         .getDeclaredField(aField);
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
-        } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
-        }
-        return null;
-    }
-
-    public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes,
-        boolean aLogErrors, Object... aParameters) {
-        try {
-            Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
-            for (byte i = 0; i < aParameters.length; i++) {
-                if (aParameters[i] instanceof Class) {
-                    tParameterTypes[i] = (Class<?>) aParameters[i];
-                    aParameters[i] = null;
-                } else {
-                    tParameterTypes[i] = aParameters[i].getClass();
-                }
-                if (!aUseUpperCasedDataTypes) {
-                    if (tParameterTypes[i] == Boolean.class) tParameterTypes[i] = boolean.class;
-                    else if (tParameterTypes[i] == Byte.class) tParameterTypes[i] = byte.class;
-                    else if (tParameterTypes[i] == Short.class) tParameterTypes[i] = short.class;
-                    else if (tParameterTypes[i] == Integer.class) tParameterTypes[i] = int.class;
-                    else if (tParameterTypes[i] == Long.class) tParameterTypes[i] = long.class;
-                    else if (tParameterTypes[i] == Float.class) tParameterTypes[i] = float.class;
-                    else if (tParameterTypes[i] == Double.class) tParameterTypes[i] = double.class;
-                }
-            }
-
-            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
-                : aObject.getClass()
-                    .getMethod(aMethod, tParameterTypes);
-            if (aPrivate) tMethod.setAccessible(true);
-            return tMethod.invoke(aObject, aParameters);
         } catch (Throwable e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
