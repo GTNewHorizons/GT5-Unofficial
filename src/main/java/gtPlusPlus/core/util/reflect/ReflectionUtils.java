@@ -78,21 +78,6 @@ public class ReflectionUtils {
         }
     }
 
-    /**
-     * Returns a cached {@link Field} object.
-     *
-     * @param aInstance  - {@link Object} to get the field instance from.
-     * @param aFieldName - Field name in {@link String} form.
-     * @return - Valid, non-final, {@link Field} object, or {@link null}.
-     */
-    public static <T> T getField(final Object aInstance, final String aFieldName) {
-        try {
-            return (T) getField(aInstance.getClass(), aFieldName).get(aInstance);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            return null;
-        }
-    }
-
     /*
      * Utility Functions
      */

@@ -179,7 +179,14 @@ public enum Mixin {
             .setPhase(Phase.LATE)
             .setSide(Side.BOTH)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE));
+            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE)),
+    FORESTRY_ACCESSOR(new Builder("Forestry accessors").addMixinClasses("forestry.TreeDefinitionMixin")
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.FORESTRY))
+
+    ;
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 
