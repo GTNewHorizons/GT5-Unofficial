@@ -24,7 +24,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.Names.MOBS_INFO)
+@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.ModIDs.MOBS_INFO)
 public class EntityDeathHandler implements IMobExtraInfoProvider {
 
     private static final HashMap<Class<?>, ArrayList<Triple<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
@@ -124,7 +124,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         }
     }
 
-    @Optional.Method(modid = Mods.Names.MOBS_INFO)
+    @Optional.Method(modid = Mods.ModIDs.MOBS_INFO)
     @Override
     public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
         @NotNull MobRecipe recipe) {

@@ -26,7 +26,7 @@ public class GT5UndergroundFluidHelper {
     private static final Map<String, List<UndergroundFluidWrapper>> fluidMap = new HashMap<>();
 
     public static void init() {
-        BiMap<String, GTUODimension> dimensionList = GTMod.gregtechproxy.mUndergroundOil.getDimensionList();
+        BiMap<String, GTUODimension> dimensionList = GTMod.proxy.mUndergroundOil.getDimensionList();
         for (Map.Entry<String, GTUODimension> dimensionEntry : dimensionList.entrySet()) {
             String rawDimension = dimensionEntry.getKey();
             String dimension;

@@ -82,6 +82,13 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
+    SplitPhysicRenderingPipeBoundingBox(
+        new Builder("Allows pipes to have different bounding box for the rendering, physics and player pickblock")
+            .addMixinClasses("minecraft.MinecraftMixin_MouseOver")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.CLIENT)),
 
     VanillaToolChanges(
         new Builder("Changes wooden tools to be a little faster").addMixinClasses("minecraft.ItemToolMaterialMixin")

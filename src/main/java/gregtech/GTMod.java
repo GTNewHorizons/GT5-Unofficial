@@ -59,7 +59,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
-import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -79,6 +78,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
@@ -131,7 +131,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = Mods.Names.GREG_TECH,
+    modid = "gregtech",
     name = "GregTech",
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
@@ -174,7 +174,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:TConstruct;"
         + " after:Translocator;"
         + " after:gendustry;")
-public class GTMod implements IGTMod {
+public class GTMod {
 
     static {
         try {
@@ -203,13 +203,14 @@ public class GTMod implements IGTMod {
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-    @Mod.Instance(Mods.Names.GREG_TECH)
-    public static GTMod instance;
+    @Mod.Instance("gregtech")
+    public static GTMod GT;
 
-    @SidedProxy(
-        modId = Mods.Names.GREG_TECH,
-        clientSide = "gregtech.common.GTClient",
-        serverSide = "gregtech.common.GTServer")
+    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
+    public static GTProxy proxy;
+    /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated // should be removed after all mods have updated..
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
@@ -217,7 +218,6 @@ public class GTMod implements IGTMod {
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
     public GTMod() {
-        GTValues.GT = this;
         GTValues.DW = new GTDummyWorld();
         GTValues.NW = new GTNetwork();
         GTValues.RA = new RecipeAdder();
@@ -235,6 +235,22 @@ public class GTMod implements IGTMod {
         Textures.ItemIcons.VOID.name();
     }
 
+    public static GTClient clientProxy() {
+        if (proxy.isClientSide()) {
+            return (GTClient) proxy;
+        } else {
+            throw new RuntimeException("Client Proxy accessed from the dedicated server!");
+        }
+    }
+
+    public boolean isClientSide() {
+        return proxy.isClientSide();
+    }
+
+    public EntityPlayer getThePlayer() {
+        return proxy.getThePlayer();
+    }
+
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
         return calculateTotalGTVersion(majorVersion, minorVersion, 0);
     }
@@ -244,7 +260,7 @@ public class GTMod implements IGTMod {
     }
 
     @Mod.EventHandler
-    public void onPreLoad(FMLPreInitializationEvent aEvent) {
+    public void onPreInitialization(FMLPreInitializationEvent event) {
         Locale.setDefault(Locale.ENGLISH);
         if (GregTechAPI.sPreloadStarted) {
             return;
@@ -254,14 +270,14 @@ public class GTMod implements IGTMod {
             tRunnable.run();
         }
 
-        GTPreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
+        GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(
-            aEvent.getModConfigurationDirectory()
+            event.getModConfigurationDirectory()
                 .getParentFile());
 
-        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
+        PowerGogglesConfigHandler.init(new File(event.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
-        gregtechproxy.onPreLoad();
+        proxy.onPreInitialization(event);
 
         GTLog.out.println("GTMod: Setting Configs");
 
@@ -280,7 +296,7 @@ public class GTMod implements IGTMod {
         Materials.init();
 
         GTPreLoad.initLocalization(
-            aEvent.getModConfigurationDirectory()
+            event.getModConfigurationDirectory()
                 .getParentFile());
         GTPreLoad.adjustScrap();
 
@@ -315,11 +331,11 @@ public class GTMod implements IGTMod {
 
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isServer()) AssemblyLineServer.fillMap(aEvent);
+            .isServer()) AssemblyLineServer.fillMap(event);
     }
 
     @Mod.EventHandler
-    public void onLoad(FMLInitializationEvent aEvent) {
+    public void onInitialization(FMLInitializationEvent event) {
         if (GregTechAPI.sLoadStarted) {
             return;
         }
@@ -328,20 +344,22 @@ public class GTMod implements IGTMod {
             tRunnable.run();
         }
 
-        if (Forestry.isModLoaded())
-            // noinspection InstantiationOfUtilityClass//TODO: Refactor GTBees with proper state handling
+        if (Forestry.isModLoaded()) {
+            // TODO: Refactor GTBees with proper state handling
+            // noinspection InstantiationOfUtilityClass
             new GTBees();
-
-        // Disable Low Grav regardless of config if Cleanroom is disabled.
-        if (!gregtechproxy.mEnableCleanroom) {
-            gregtechproxy.mLowGravProcessing = false;
         }
 
-        gregtechproxy.onLoad();
+        // Disable Low Grav regardless of config if Cleanroom is disabled.
+        if (!proxy.mEnableCleanroom) {
+            proxy.mLowGravProcessing = false;
+        }
+
+        proxy.onInitialization(event);
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
-        gregtechproxy.registerUnificationEntries();
+        proxy.registerUnificationEntries();
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
@@ -369,7 +387,7 @@ public class GTMod implements IGTMod {
     }
 
     @Mod.EventHandler
-    public void onPostLoad(FMLPostInitializationEvent aEvent) {
+    public void onPostInitialization(FMLPostInitializationEvent event) {
         if (GregTechAPI.sPostloadStarted) {
             return;
         }
@@ -379,7 +397,7 @@ public class GTMod implements IGTMod {
             tRunnable.run();
         }
 
-        gregtechproxy.onPostLoad();
+        proxy.onPostInitialization(event);
 
         if (DEBUG) {
             // Prints all the used MTE id and their associated TE name, turned on with -Dgt.debug=true in jvm args
@@ -391,7 +409,7 @@ public class GTMod implements IGTMod {
             }
         }
 
-        gregtechproxy.registerUnificationEntries();
+        proxy.registerUnificationEntries();
 
         new BookAndLootLoader().run();
         new ItemMaxStacksizeLoader().run();
@@ -544,8 +562,8 @@ public class GTMod implements IGTMod {
     }
 
     @Mod.EventHandler
-    public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
-        gregtechproxy.onLoadComplete();
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        proxy.onLoadComplete(event);
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
@@ -554,23 +572,18 @@ public class GTMod implements IGTMod {
     }
 
     @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent aEvent) {
-        gregtechproxy.onServerStarted();
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        proxy.onServerAboutToStart(event);
     }
 
     @Mod.EventHandler
-    public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
-        gregtechproxy.onServerAboutToStart();
-    }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent aEvent) {
+    public void onServerStarting(FMLServerStartingEvent event) {
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstart) {
             tRunnable.run();
         }
 
-        gregtechproxy.onServerStarting();
+        proxy.onServerStarting(event);
         GTModHandler.removeAllIC2Recipes();
         GTLog.out.println("GTMod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
@@ -676,7 +689,7 @@ public class GTMod implements IGTMod {
                 .getSmeltingList()
                 .values());
 
-        if (gregtechproxy.mCraftingUnification) {
+        if (proxy.mCraftingUnification) {
             GTLog.out.println("GTMod: Crafting Recipes");
             for (IRecipe tRecipe : CraftingManager.getInstance()
                 .getRecipeList()) {
@@ -686,7 +699,7 @@ public class GTMod implements IGTMod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
+            if (!proxy.mRegisteredOres.contains(tOutput)) {
                 GTOreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
@@ -701,55 +714,26 @@ public class GTMod implements IGTMod {
             tRunnable.run();
         }
 
-        aEvent.registerServerCommand(new GTCommand());
-        aEvent.registerServerCommand(new SPCommand());
-        aEvent.registerServerCommand(new SPMCommand());
-        aEvent.registerServerCommand(new SpaceProjectCommand());
-        aEvent.registerServerCommand(new GTPowerfailCommand());
+        event.registerServerCommand(new GTCommand());
+        event.registerServerCommand(new SPCommand());
+        event.registerServerCommand(new SPMCommand());
+        event.registerServerCommand(new SpaceProjectCommand());
+        event.registerServerCommand(new GTPowerfailCommand());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         RunnableMachineUpdate.initExecutorService();
     }
 
-    public boolean isServerSide() {
-        return gregtechproxy.isServerSide();
-    }
-
-    public boolean isClientSide() {
-        return gregtechproxy.isClientSide();
-    }
-
-    public boolean isBukkitSide() {
-        return gregtechproxy.isBukkitSide();
-    }
-
-    public EntityPlayer getThePlayer() {
-        return gregtechproxy.getThePlayer();
-    }
-
-    public int addArmor(String aArmorPrefix) {
-        return gregtechproxy.addArmor(aArmorPrefix);
+    @Mod.EventHandler
+    public void onServerStarted(FMLServerStartedEvent event) {
+        proxy.onServerStarted(event);
     }
 
     @Mod.EventHandler
-    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        GTUtility.reInit();
-        GTRecipe.reInit();
-        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
-        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
-    }
-
-    @Mod.EventHandler
-    public void onServerStopping(FMLServerStoppingEvent aEvent) {
+    public void onServerStopping(FMLServerStoppingEvent event) {
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstop) {
             tRunnable.run();
         }
-
-        gregtechproxy.onServerStopping();
-
+        proxy.onServerStopping(event);
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
@@ -759,7 +743,19 @@ public class GTMod implements IGTMod {
 
     @Mod.EventHandler
     public void onServerStopped(FMLServerStoppedEvent event) {
-        gregtechproxy.onServerStopped();
+        proxy.onServerStopped(event);
+    }
+
+    @Mod.EventHandler
+    public void onIDChangingEvent(FMLModIdMappingEvent event) {
+        GTUtility.reInit();
+        GTRecipe.reInit();
+        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
+            GTUtility.reMap(gt_itemStackMap);
+        }
+        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
+            GTUtility.reMap(gt_itemStackMap);
+        }
     }
 
     @Mod.EventHandler
