@@ -41,7 +41,6 @@ public class DrillingLogicDelegate {
 
     private final XSTR rng = new XSTR();
 
-
     public DrillingLogicDelegate(IDrillingLogicDelegateOwner owner) {
         this.owner = owner;
     }
