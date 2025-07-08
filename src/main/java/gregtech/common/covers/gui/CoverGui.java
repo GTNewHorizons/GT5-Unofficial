@@ -1,9 +1,9 @@
 package gregtech.common.covers.gui;
 
-import com.cleanroommc.modularui.factory.GuiData;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -49,7 +49,8 @@ public class CoverGui<T extends Cover> {
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {}
 
     /**
-     * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account, useful for player data.
+     * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account,
+     * useful for player data.
      * If you want highly customize GUI,
      * override {@link Cover#buildUI} instead.
      *
@@ -116,7 +117,8 @@ public class CoverGui<T extends Cover> {
         return panel;
     }
 
-    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings, GuiData data) {
+    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings,
+        GuiData data) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()

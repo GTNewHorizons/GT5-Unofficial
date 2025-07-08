@@ -1,32 +1,46 @@
 package gregtech.common.covers.gui.redstone;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
-import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
+import net.minecraft.util.StatCollector;
 
-public class CoverAdvancedWirelessRedstoneBaseGui extends CoverGui<CoverAdvancedWirelessRedstoneBase> {
+import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover) {super(cover);}
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 
+public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWirelessRedstoneBase> extends CoverGui<T> {
+
+    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
+        super((T) cover);
+    }
+
+    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover, boolean buttonRowSpacing) {
+        this(cover);
+        this.buttonRowSpacing = buttonRowSpacing;
+    }
+
+    protected boolean buttonRowSpacing = false;
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
-        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency,cover::setFrequency);
+        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
         syncManager.syncValue("frequency", frequencySyncer);
-        UUID uuid = data.getPlayer().getUniqueID();
-        column.child(makeFrequencyRow(frequencySyncer))
-            .child(makePrivateSelectRow(uuid));
+        UUID uuid = data.getPlayer()
+            .getUniqueID();
+        column.child(makeFrequencyRow().paddingTop(10))
+            .child(makeButtonRow(uuid))
+            .child(makeThirdRow(syncManager));
 
     }
 
@@ -35,17 +49,40 @@ public class CoverAdvancedWirelessRedstoneBaseGui extends CoverGui<CoverAdvanced
         return 250;
     }
 
-    private Flow makeFrequencyRow(StringSyncValue freqSync)
-    {
-        return Flow.row().child(
-            new TextFieldWidget().width(80).value(freqSync))
-            .child(new TextWidget(translateToLocal("gt.interact.desc.freq")).color(Color.GREY.main)).marginBottom(4);
-    }
-    private static Flow makePrivateSelectRow(UUID uuid)
-    {
-        //TODO: implement uuid
-        return Flow.row();
+    @Override
+    protected int getGUIHeight() {
+        return 120;
     }
 
+    protected Flow makeFrequencyRow() {
+        return Flow.row()
+            .height(16)
+            .child(
+                new TextFieldWidget().syncHandler("frequency")
+                    .height(12)
+                    .width(88)
+                    .marginRight(2))
+            .child(new TextWidget(translateToLocal("gt.interact.desc.freq")))
+            .marginBottom(4);
+    }
+
+    protected Flow makeButtonRow(UUID uuid) {
+        return Flow.row()
+            .height(20)
+            .child(
+                new ToggleButton().size(16, 16)
+                    .value(new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)))
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                    .marginRight(buttonRowSpacing ? 74 : 2))
+            .child(new TextWidget(StatCollector.translateToLocal("gt.interact.desc.privfreq")).marginRight(20))
+            .marginBottom(4);
+    }
+
+    // allows for overriding in sublcasses for better ui positioning
+    protected Flow makeThirdRow(PanelSyncManager syncManager) {
+        return Flow.row()
+            .size(1, 1);
+    }
 
 }
