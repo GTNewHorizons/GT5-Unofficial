@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -47,12 +49,15 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
         // the EU/t.
         long multiplier = recipeInfo.recipe.getMetadataOrDefault(EU_MULTIPLIER, 10);
         recipeInfo.drawText(
-            GTUtility.trans("152", "Total: ")
-                + formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)
-                + " EU");
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.total",
+                formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)));
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
         long averageUsage = multiplier * recipeInfo.recipe.mEUt;
         recipeInfo.drawText(
-            "Average: " + formatNumbers(averageUsage) + " EU/t" + GTUtility.getTierNameWithParentheses(averageUsage));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.average",
+                formatNumbers(averageUsage),
+                GTUtility.getTierNameWithParentheses(averageUsage)));
     }
 }

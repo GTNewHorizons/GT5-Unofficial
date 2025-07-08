@@ -1228,6 +1228,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(tetherManager);
+        MinecraftForge.EVENT_BUS.register(tetherManager);
 
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
@@ -1300,11 +1301,16 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public void onServerStopped() {
         WirelessChargerManager.clearChargerMap();
-        MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        if (spawnEventHandler != null) {
+            MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
+        }
+        if (tetherManager != null) {
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(tetherManager);
+            MinecraftForge.EVENT_BUS.unregister(tetherManager);
+        }
         spawnEventHandler = null;
-        FMLCommonHandler.instance()
-            .bus()
-            .unregister(tetherManager);
         tetherManager = null;
         PLAYERS_BY_UUID = null;
     }
