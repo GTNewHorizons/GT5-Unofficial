@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -386,8 +387,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     .append("V")
                     .append(EnumChatFormatting.RESET);
             }
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.swapped", message));
         }
     }
 
@@ -410,11 +410,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 if (consumeDurabilityForConnection(aPlayer)) {
                     if (isConnectedAtSide(wrenchingSide)) {
                         disconnect(wrenchingSide);
-                        GTUtility
-                            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.disconnected"));
+                        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.disconnected"));
                     } else if (!GTMod.gregtechproxy.costlyCableConnection) {
-                        if (connect(wrenchingSide) > 0) GTUtility
-                            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.connected"));
+                        if (connect(wrenchingSide) > 0)
+                            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.connected"));
                     }
                     return true;
                 }
@@ -478,9 +477,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         ForgeDirection from = ConnectedFrom.remove();
                         ++cablesTraversed;
                         if (cablesTraversed > GTMod.gregtechproxy.cableMultiConnectLimit) {
-                            GTUtility.sendChatToPlayer(
-                                aPlayer,
-                                StatCollector.translateToLocal("GT5U.item.cable.multi.infinite_loop"));
+                            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.multi.infinite_loop"));
                             return true;
                         }
 
@@ -546,9 +543,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     }
                 }
 
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocalFormatted(
+                aPlayer.addChatMessage(
+                    new ChatComponentTranslation(
                         "GT5U.item.cable.multi.success",
                         cablesTraversed,
                         cablesConnected,
@@ -601,10 +597,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.disconnected"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.disconnected"));
             } else if (!GTMod.gregtechproxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
                 if (connect(wrenchingSide) > 0)
-                    GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.connected"));
+                    aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.connected"));
             }
             return true;
         }
