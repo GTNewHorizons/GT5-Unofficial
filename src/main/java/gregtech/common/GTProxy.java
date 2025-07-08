@@ -1200,7 +1200,7 @@ public class GTProxy implements IFuelHandler {
         GregTechAPI.sAdvancedWirelessRedstone.clear();
     }
 
-    public void onServerStopped() {
+    public void onServerStopped(FMLServerStoppedEvent event) {
         // spotless:off
         if (spawnEventHandler != null) {
             MinecraftForge.EVENT_BUS.unregister(spawnEventHandler);
