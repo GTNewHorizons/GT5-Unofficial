@@ -666,9 +666,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public static boolean playSound = true;
 
     public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
+        final boolean previousState = playSound;
         playSound = false;
         boolean ret = doDamage(aStack, aAmount);
-        playSound = true;
+        playSound = previousState;
         return ret;
     }
 
