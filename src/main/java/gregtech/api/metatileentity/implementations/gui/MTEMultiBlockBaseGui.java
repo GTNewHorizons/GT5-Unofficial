@@ -60,6 +60,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -116,10 +117,10 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createTitleTextStyle(String title) {
-
+        boolean clientSide = GTMod.instance.isClientSide();
         // workaround is slightly better, pretty meh
         int addedHeight = 0;
-        int width = IKey.renderer.getMaxWidth(Collections.singletonList(title));
+        int width = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 180;
 
         if (width > getBasePanelWidth() - 10) {
             String[] parts = title.split(" ");
@@ -132,7 +133,7 @@ public class MTEMultiBlockBaseGui {
             }
             title = modifiedTitle.toString();
             width = getBasePanelWidth() - 10;
-            addedHeight = (int) (1.3 * IKey.renderer.getFontHeight());
+            addedHeight = clientSide ? (int) (1.3 * IKey.renderer.getFontHeight()) : 20;
 
         }
         TextWidget titleTextWidget = IKey.str(title)
