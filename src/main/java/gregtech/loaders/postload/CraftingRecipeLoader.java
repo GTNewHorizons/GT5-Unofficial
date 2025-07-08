@@ -2028,5 +2028,15 @@ public class CraftingRecipeLoader implements Runnable {
                     OrePrefixes.plate.get(Materials.InfusedAir), 'S', OrePrefixes.plate.get(Materials.SteelMagnetic),
                     'B', GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 2), });
         }
+
+        if (TwilightForest.isModLoaded()) {
+            GTModHandler.addCraftingRecipe(
+                GTModHandler.getModItem(TwilightForest.ID, "tile.TFThorns", 1, 0),
+                bits_no_remove_buffered,
+                new Object[] { "TWT", "LWL", "TWT", 'T',
+                    GTModHandler.getModItem(TwilightForest.ID, "tile.TFThornRose", 1, 0), 'L',
+                    ItemList.TF_LiveRoot.get(1), 'W',
+                    GTModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0), });
+        }
     }
 }

@@ -1699,8 +1699,9 @@ GT5U.interface.coverTabs.redstone.west=запад
 GT5U.interface.coverTabs.redstone.east=восток
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
-GT5U.steam_variant.bronze=Бронза
-GT5U.steam_variant.steel=Сталь
+# NEI Display
+GT5U.nei.display.steam_variant.bronze=Бронза
+GT5U.nei.display.steam_variant.steel=Сталь
 
 GT5U.biomes.humidity=Влажность:
 

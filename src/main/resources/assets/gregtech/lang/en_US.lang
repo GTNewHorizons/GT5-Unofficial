@@ -793,7 +793,7 @@ GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
-
+GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked.
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
 GT5U.MBTT.PCB.RotBio=Bio Rotation
@@ -1792,8 +1792,20 @@ GT5U.interface.coverTabs.redstone.west=west
 GT5U.interface.coverTabs.redstone.east=east
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
-GT5U.steam_variant.bronze=Bronze
-GT5U.steam_variant.steel=Steel
+# NEI Display
+GT5U.nei.display.steam_variant.bronze=Bronze
+GT5U.nei.display.steam_variant.steel=Steel
+GT5U.nei.display.duration.seconds=Time: %s seconds
+GT5U.nei.display.duration.ticks=Time: %s ticks
+GT5U.nei.display.total=Total: %s EUs
+GT5U.nei.display.total.steam=Total: %s L of Steam
+GT5U.nei.display.usage=Usage: %s EU/t %s
+GT5U.nei.display.usage.original=Original usage: %s EU/t %s
+GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
+GT5U.nei.display.voltage=Voltage: %s EU/t %s
+GT5U.nei.display.amperage=Amperage: %s A
+GT5U.nei.display.overclock= (OC)
+GT5U.nei.display.average=Average: %s EU/t %s
 
 GT5U.biomes.humidity=Humidity:
 
