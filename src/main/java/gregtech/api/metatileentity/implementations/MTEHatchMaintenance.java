@@ -7,6 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -93,7 +95,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         } else {
             desc = new String[mDescriptionArray.length + 1];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "Right-click with a Tool Box to fix issues.";
+            desc[mDescriptionArray.length] = "Use tools to fix issues.";
         }
         return desc;
     }
@@ -373,7 +375,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 12));
+                        .setPos(8, 12))
+                .widget(
+                    new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
+                        .addTooltips(
+                            Arrays.asList(
+                                GTUtility.breakLines(StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
+                        .setPos(163, 5)
+                        .setSize(7, 18));
         }
     }
 
