@@ -663,7 +663,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
-    private static boolean playSound = true;
+    public static boolean playSound = true;
 
     public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
         playSound = false;
