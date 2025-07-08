@@ -46,7 +46,7 @@ public class CoverGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @param column      main column to add child widgets
      */
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {}
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {}
 
     /**
      * Override this method to implement cover GUI if {@link Cover#hasCoverGUI} is true. Takes GuiData into account,
@@ -57,7 +57,6 @@ public class CoverGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @param column      main column to add child widgets
      */
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {}
 
     /**
      * Creates a standalone panel holding the UI for this cover. GuiData can be passed in as well.
@@ -65,14 +64,6 @@ public class CoverGui<T extends Cover> {
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
-    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings);
-        if (doesBindPlayerInventory()) {
-            basePanel.bindPlayerInventory();
-        }
-        return basePanel;
-    }
-
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings, GuiData data) {
         ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
         if (doesBindPlayerInventory()) {
@@ -90,33 +81,6 @@ public class CoverGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.addCloseListener(player -> {
-            if (!NetworkUtils.isClient(player)) {
-                cover.getTile()
-                    .markDirty();
-            }
-        });
-        final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
-            .debugName(getGuiId());
-        final Flow widgetsColumn = Flow.column()
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginLeft(WIDGET_MARGIN)
-            .marginTop(WIDGET_MARGIN);
-        panel.child(widgetsColumn);
-        addTitleToUI(widgetsColumn);
-        addUIWidgets(syncManager, widgetsColumn);
-
-        if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
-            panel.child(
-                new CoverTickRateButton(cover, syncManager).right(4)
-                    .bottom(4));
-        }
-
-        return panel;
-    }
-
     public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings,
         GuiData data) {
         syncManager.addCloseListener(player -> {

@@ -23,6 +23,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
@@ -195,7 +196,7 @@ public final class GTBaseGuiBuilder {
         return syncManager.panel(
             panelKey,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(panelKey, syncManager, uiSettings)
+                .buildPopUpUI((CoverGuiData) this.posGuiData, panelKey, syncManager, uiSettings)
                 .child(ButtonWidget.panelCloseButton()),
             true);
     }

@@ -45,7 +45,7 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
                 new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.privfreq")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
     }
 

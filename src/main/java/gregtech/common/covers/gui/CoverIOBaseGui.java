@@ -3,6 +3,7 @@ package gregtech.common.covers.gui;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -32,7 +33,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,

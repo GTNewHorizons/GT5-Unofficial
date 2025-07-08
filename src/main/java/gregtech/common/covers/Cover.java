@@ -296,7 +296,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     @Override
     public ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createStandalonePanel(syncManager, uiSettings);
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings, guiData);
     }
 
     /**
@@ -306,8 +306,9 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public final ModularPanel buildPopUpUI(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings);
+    public final ModularPanel buildPopUpUI(CoverGuiData guiData, String panelName, PanelSyncManager syncManager,
+        UISettings uiSettings) {
+        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings, guiData);
     }
 
     /**
