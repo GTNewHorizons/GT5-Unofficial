@@ -81,7 +81,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.12:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.87:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.6.89:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.12.12-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.4-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
@@ -96,7 +96,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.3.10:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.5.10:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Binnie:2.5.12:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.3.16:dev'){transitive=false}
 
@@ -107,7 +107,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.13:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.4-GTNH:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.10:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.12:dev')
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
