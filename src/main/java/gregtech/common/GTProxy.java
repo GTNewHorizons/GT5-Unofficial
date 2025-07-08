@@ -2648,6 +2648,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     /// Used for tool sounds in the crafting grid
     @SubscribeEvent
     public void onPlayerCrafting(ItemCraftedEvent event) {
+        if (!MetaGeneratedTool.playSound) return;
+
         for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
             ItemStack stack = event.craftMatrix.getStackInSlot(i);
 
