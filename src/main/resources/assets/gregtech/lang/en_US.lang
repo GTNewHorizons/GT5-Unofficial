@@ -229,6 +229,7 @@ gt.interact.desc.analogmode=ANALOG Mode
 gt.interact.desc.recipeprogress=Recipe Progress
 gt.interact.desc.machineidle=Machine Idle
 gt.interact.desc.fluidthreshold=Fluid Threshold
+gt.interact.desc.itemthreshold=Item Threshold
 gt.interact.desc.freq_format=Frequency: %s
 gt.interact.desc.freq_perm=Frequency: %s, Transmission: %s
 gt.interact.desc.normal=Normal
