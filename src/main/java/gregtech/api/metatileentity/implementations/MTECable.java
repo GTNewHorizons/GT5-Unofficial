@@ -404,13 +404,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (GTMod.proxy.gt6Cable) {
-            if (!aPlayer.isSneaking() || !GTMod.gregtechproxy.cableMultiConnectEnabled) {
+            if (!aPlayer.isSneaking() || !GTMod.proxy.cableMultiConnectEnabled) {
                 // Regular connection.
                 if (consumeDurabilityForConnection(aPlayer)) {
                     if (isConnectedAtSide(wrenchingSide)) {
                         disconnect(wrenchingSide);
                         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.disconnected"));
-                    } else if (!GTMod.gregtechproxy.costlyCableConnection) {
+                    } else if (!GTMod.proxy.costlyCableConnection) {
                         if (connect(wrenchingSide) > 0)
                             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.connected"));
                     }
@@ -475,7 +475,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         MTECable cable = ConnectedNext.remove();
                         ForgeDirection from = ConnectedFrom.remove();
                         ++cablesTraversed;
-                        if (cablesTraversed > GTMod.gregtechproxy.cableMultiConnectLimit) {
+                        if (cablesTraversed > GTMod.proxy.cableMultiConnectLimit) {
                             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.multi.infinite_loop"));
                             return true;
                         }
