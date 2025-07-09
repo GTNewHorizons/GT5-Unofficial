@@ -23,6 +23,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -32,6 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
@@ -40,11 +43,14 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -57,23 +63,25 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T> {
+public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T>
+    implements IOverclockDescriptionProvider {
+
+    private final OverclockDescriber overclockDescriber;
 
     public ArrayList<MTEHatchSteamBusInput> mSteamInputs = new ArrayList<>();
     public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
-    protected static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
-    protected static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
-    protected static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "Processing Speed & Steam Consumption is doubled under High Pressure";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     public MTESteamMultiBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     @Override
@@ -488,7 +496,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 tag.getInteger("maxProgress"),
                 tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add(
                 StatCollector
@@ -514,6 +522,15 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
             .hatchIds(31040)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+    }
+
+    protected static OverclockDescriber createOverclockDescriber() {
+        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
+    }
+
+    @Override
+    public @Nullable OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     protected enum SteamHatchElement implements IHatchElement<MTESteamMultiBase<?>> {

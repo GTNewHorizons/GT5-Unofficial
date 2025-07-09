@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -50,6 +51,7 @@ public final class FindRecipeQuery {
     private boolean notUnificated;
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
+    private boolean caching = false;
 
     FindRecipeQuery(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
@@ -71,10 +73,10 @@ public final class FindRecipeQuery {
      */
     public Stream<GTRecipe> findAll() {
         if (items == null) {
-            items = new ItemStack[0];
+            items = GTValues.emptyItemStackArray;
         }
         if (fluids == null) {
-            fluids = new FluidStack[0];
+            fluids = GTValues.emptyFluidStackArray;
         }
 
         return recipeMap.getBackend()
@@ -86,7 +88,12 @@ public final class FindRecipeQuery {
                 notUnificated,
                 dontCheckStackSizes,
                 forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
+            .peek(
+                recipe -> {
+                    if (caching) recipeMap.getBackend()
+                        .cache(items, fluids, recipe);
+                });
     }
 
     /**
@@ -171,6 +178,14 @@ public final class FindRecipeQuery {
      */
     public FindRecipeQuery dontCheckStackSizes(boolean dontCheckStackSizes) {
         this.dontCheckStackSizes = dontCheckStackSizes;
+        return this;
+    }
+
+    /**
+     * @param caching If this is set to true, the query will cache matched recipes.
+     */
+    public FindRecipeQuery caching(boolean caching) {
+        this.caching = caching;
         return this;
     }
 

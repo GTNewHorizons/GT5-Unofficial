@@ -4,6 +4,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpg
 
 import java.math.BigInteger;
 
+import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -23,15 +24,15 @@ public class GodforgeMath {
             upgradeFactor = 0.8;
         }
         if (godforge.getFuelType() == 0) {
-            return godforge.getFuelFactor() * 300 * Math.pow(1.15, godforge.getFuelFactor()) * upgradeFactor;
+            return godforge.getFuelFactor() * 300 * GTUtility.powInt(1.15, godforge.getFuelFactor()) * upgradeFactor;
         }
         if (godforge.getFuelType() == 1) {
-            return godforge.getFuelFactor() * 2 * Math.pow(1.08, godforge.getFuelFactor()) * upgradeFactor;
+            return godforge.getFuelFactor() * 2 * GTUtility.powInt(1.08, godforge.getFuelFactor()) * upgradeFactor;
         } else return godforge.getFuelFactor() / 25f * upgradeFactor;
     }
 
     public static int calculateStartupFuelConsumption(MTEForgeOfGods godforge) {
-        return (int) Math.max(godforge.getFuelFactor() * 25 * Math.pow(1.2, godforge.getFuelFactor()), 1);
+        return (int) Math.max(godforge.getFuelFactor() * 25 * GTUtility.powInt(1.2, godforge.getFuelFactor()), 1);
     }
 
     public static int calculateMaxFuelFactor(MTEForgeOfGods godforge) {
@@ -212,9 +213,10 @@ public class GodforgeMath {
             double fillRatioMinusZeroPointFive = (double) godforge.getBatteryCharge() / godforge.getMaxBatteryCharge()
                 - 0.5;
             if (module instanceof MTEPlasmaModule) {
-                fillRatioDiscount = 1 - (Math.pow(fillRatioMinusZeroPointFive, 2) * (-0.6) + 0.15);
+                fillRatioDiscount = 1 - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15);
             } else {
-                fillRatioDiscount = 1 - (Math.pow(fillRatioMinusZeroPointFive, 2) * (-0.6) + 0.15) * 2 / 3;
+                fillRatioDiscount = 1
+                    - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15) * 2 / 3;
             }
         }
 
@@ -244,7 +246,7 @@ public class GodforgeMath {
         }
 
         if (godforge.isUpgradeActive(NGMS)) {
-            voltage *= Math.pow(4, godforge.getRingAmount());
+            voltage *= GTUtility.powInt(4, godforge.getRingAmount());
         }
 
         module.setProcessingVoltage(voltage);
@@ -268,7 +270,7 @@ public class GodforgeMath {
             }
             if (module instanceof MTEExoticModule) {
                 if (godforge.isUpgradeActive(PA)) {
-                    overclockTimeFactor = 2 + Math.pow(overclockTimeFactor - 2, 2);
+                    overclockTimeFactor = 2 + (overclockTimeFactor - 2) * (overclockTimeFactor - 2);
                 } else {
                     overclockTimeFactor = 2;
                 }

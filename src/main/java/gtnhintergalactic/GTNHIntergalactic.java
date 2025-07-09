@@ -46,7 +46,7 @@ public class GTNHIntergalactic {
         }
     }
 
-    public static final String MODID = Mods.Names.G_T_N_H_INTERGALACTIC;
+    public static final String MODID = Mods.ModIDs.G_T_N_H_INTERGALACTIC;
     public static final String MODNAME = "GTNH-Intergalactic";
     /** Logger used by this mod */
     public static final Logger LOG = LogManager.getLogger(MODID);

@@ -1,6 +1,5 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.util.GTUtil;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -106,17 +105,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called in the registered MetaTileEntity when the Server starts, to reset static variables
      */
     void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the
-     * World Save
-     */
-    void onWorldLoad(File aSaveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     */
-    void onWorldSave(File aSaveDirectory);
 
     /**
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,
@@ -405,7 +393,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+            return Dyes.MACHINE_METAL.toInt();
         }
     }
 
@@ -475,7 +463,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     default String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
     }
 
     default boolean doesBindPlayerInventory() {

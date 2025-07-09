@@ -98,6 +98,7 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -141,6 +142,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int MOB_SPAWN_INTERVAL = 55;
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
+    private EECEventHandler eventHandler;
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -151,12 +153,17 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public MTEExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.register(this);
+        if (BloodMagic.isModLoaded() && FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            eventHandler = new EECEventHandler();
+            MinecraftForge.EVENT_BUS.register(eventHandler);
+        }
     }
 
     @Override
     public void onRemoval() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
@@ -164,7 +171,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     public void onUnload() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
@@ -178,13 +185,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
-                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                    {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "gsssg", "gsssg", "gsssg", "fgggf"},
+                    {"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                 })) // spotless:on
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
@@ -246,7 +253,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     protected int getOverclockTimeLimit() {
-        return 20;
+        return (batchMode ? 16 : 1) * 20;
     }
 
     @Override
@@ -280,6 +287,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
@@ -424,53 +432,69 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
-    @SuppressWarnings("unused")
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onRitualPerform(RitualRunEvent event) {
-        if (!isInRitualMode) return;
-        if (masterStoneRitual == null) return;
-        if (this.mMaxProgresstime == 0) return;
-        if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
-            Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
-            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
-                event.setCanceled(true); // we will handle that
-                String owner = event.mrs.getOwner();
-                int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
-                World world = event.mrs.getWorld();
-                int x = event.mrs.getXCoord();
-                int y = event.mrs.getYCoord();
-                int z = event.mrs.getZCoord();
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.batchMode = !this.batchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        return true;
+    }
 
-                if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+    // We place the event handler in an inner
+    // class to prevent high costs of registering
+    // the event because forge event bus reflects
+    // through all the methods and super of the class
+    // in order to find the @SubscribeEvent annotations
+    public class EECEventHandler {
 
-                if (tileAltar == null || tileAltar.isInvalid()) {
-                    tileAltar = null;
-                    for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
-                        if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
-                            tileAltar = world.getTileEntity(x + i, y + k, z + j);
+        @SuppressWarnings("unused")
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public void onRitualPerform(RitualRunEvent event) {
+            if (!isInRitualMode) return;
+            if (masterStoneRitual == null) return;
+            if (mMaxProgresstime == 0) return;
+            if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
+                Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
+                if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
+                    event.setCanceled(true); // we will handle that
+                    String owner = event.mrs.getOwner();
+                    int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
+                    World world = event.mrs.getWorld();
+                    int x = event.mrs.getXCoord();
+                    int y = event.mrs.getYCoord();
+                    int z = event.mrs.getZCoord();
+
+                    if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+
+                    if (tileAltar == null || tileAltar.isInvalid()) {
+                        tileAltar = null;
+                        for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
+                            if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
+                                tileAltar = world.getTileEntity(x + i, y + k, z + j);
+                    }
+                    if (tileAltar == null) return;
+
+                    if (currentEssence < effect.getCostPerRefresh() * 100) {
+                        SoulNetworkHandler.causeNauseaToPlayer(owner);
+                        return;
+                    }
+
+                    ((IBloodAltar) tileAltar).sacrificialDaggerCall(
+                        100 * RitualEffectWellOfSuffering.amount
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.offensaReagent,
+                                RitualEffectWellOfSuffering.offensaDrain,
+                                true) ? 2 : 1)
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.tenebraeReagent,
+                                RitualEffectWellOfSuffering.tennebraeDrain,
+                                true) ? 2 : 1),
+                        true);
+
+                    SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
                 }
-                if (tileAltar == null) return;
-
-                if (currentEssence < effect.getCostPerRefresh() * 100) {
-                    SoulNetworkHandler.causeNauseaToPlayer(owner);
-                    return;
-                }
-
-                ((IBloodAltar) tileAltar).sacrificialDaggerCall(
-                    100 * RitualEffectWellOfSuffering.amount
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.offensaReagent,
-                            RitualEffectWellOfSuffering.offensaDrain,
-                            true) ? 2 : 1)
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.tenebraeReagent,
-                            RitualEffectWellOfSuffering.tennebraeDrain,
-                            true) ? 2 : 1),
-                    true);
-
-                SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
             }
         }
     }
@@ -561,7 +585,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
             EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
-
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
@@ -571,8 +594,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 voidAllDamagedAndEnchantedItems);
 
             EECPlayer.currentWeapon = null;
-
-            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
+            if (batchMode) {
+                for (ItemStack item : mOutputItems) {
+                    item.stackSize *= 16;
+                }
+                this.mMaxProgresstime *= 16;
+            }
+            this.mOutputFluids = new FluidStack[] {
+                FluidRegistry.getFluidStack("xpjuice", 120 * (batchMode ? 16 : 1)) };
             ItemStack weapon = weaponCache.getStackInSlot(0);
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             if (weaponCache.isValid && weapon.isItemStackDamageable()) {
@@ -716,7 +745,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Ritual mode")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -734,8 +763,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Is allowed to spawn infernal mobs")
-            .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal))
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop"))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
+                    .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -752,9 +783,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Void all damaged and enchanted items")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
             .addTooltip(
-                new Text("Does not affect infernal drops and some special drops like Sticky Sword!")
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
@@ -826,6 +857,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
         }
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     private static class EECFakePlayer extends FakePlayer {

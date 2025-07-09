@@ -42,7 +42,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
 
@@ -64,11 +63,11 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick, 2),
-                    GTProxy.tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick),
-                    GTProxy.tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
 
                 GTValues.RA.stdBuilder()
@@ -94,19 +93,19 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(stick, 2),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(stick),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(plate),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(foil, 2),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
             benderRecipes.add(

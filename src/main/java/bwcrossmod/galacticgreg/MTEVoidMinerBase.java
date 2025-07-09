@@ -40,6 +40,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
@@ -55,14 +57,14 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
-public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T> {
+public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
+    implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
     private int multiplier = 1;
-
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
@@ -115,9 +117,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     protected void setElectricityStats() {
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
-        this.mOutputItems = new ItemStack[0];
+        this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10;
+        this.mMaxProgresstime = 10 * (batchMode ? 16 : 1);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
@@ -149,6 +151,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                     + " Ores per Second depending on the Dimension it is build in")
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .addInfo(
                 "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
                     + "VOIDED"
@@ -283,7 +286,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
         final ItemStack output = this.nextOre();
-        output.stackSize = multiplier;
+        output.stackSize = multiplier * (batchMode ? 16 : 1);
         if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
             .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
@@ -297,6 +300,19 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         ItemStack aTool) {
         this.mBlacklist = !this.mBlacklist;
         GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.batchMode = !this.batchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     @Override
@@ -330,6 +346,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             && !mOutputBusses.isEmpty()
             && !mEnergyHatches.isEmpty();
     }
+
+    public abstract int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env);
 
     protected abstract int getControllerTextureIndex();
 
