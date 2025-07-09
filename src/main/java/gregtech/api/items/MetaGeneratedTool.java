@@ -42,7 +42,6 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -70,11 +69,11 @@ import mrtjp.projectred.api.IScrewdriver;
  * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
-        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
-        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
-        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O),
-        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.Names.PROJECT_RED_CORE), })
+    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
+        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
+        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
+        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
+        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
     implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
@@ -268,7 +267,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * Called by the Block Harvesting Event within the GTProxy
      */
-    @Mod.EventHandler
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,
         int aX, int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
@@ -279,7 +277,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 * tStats.getToolDamagePerDropConversion());
     }
 
-    @Mod.EventHandler
     public float onBlockBreakSpeedEvent(float aDefault, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, int aMetaData, PlayerEvent.BreakSpeed aEvent) {
         IToolStats tStats = getToolStats(aStack);
@@ -676,12 +673,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
-    private static boolean playSound = true;
+    public static boolean playSound = true;
 
     public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
+        final boolean previousState = playSound;
         playSound = false;
         boolean ret = doDamage(aStack, aAmount);
-        playSound = true;
+        playSound = previousState;
         return ret;
     }
 

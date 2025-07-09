@@ -136,7 +136,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond;
+        return GTMod.proxy.mPollutionExtremeCombustionEnginePerSecond;
     }
 
     @Override

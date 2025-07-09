@@ -32,8 +32,8 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalHealingDevice";
