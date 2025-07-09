@@ -29,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -83,6 +84,7 @@ import gregtech.client.SeekingOggCodec;
 import gregtech.client.capes.GTCapesLoader;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -271,6 +273,8 @@ public class GTClient extends GTProxy {
         new Thread(new GTCapesLoader(), "GT Cape Loader").start();
         mPreference = new GTClientPreference();
         Materials.initClient();
+
+        ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
     }
 
     @Override

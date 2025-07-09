@@ -3,6 +3,7 @@ package gregtech.common.config;
 import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
@@ -28,6 +29,10 @@ public class Client {
 
     @Config.Comment("NEI section")
     public static final NEI nei = new NEI();
+
+    public static void save() {
+        ConfigurationManager.save(Client.class);
+    }
 
     @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static class ColorModulation {
@@ -181,6 +186,10 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Render MagLev Tethers")
         public boolean renderMagLevTethers;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render powerfail notifications")
+        public boolean renderPowerfailNotifications;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
