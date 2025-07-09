@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -598,7 +599,7 @@ public class GTClient extends GTProxy {
 
         Materials.initClient();
 
-        GTPowerfailCommandClient.register();
+        ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
     }
 
     @Override

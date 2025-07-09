@@ -6,15 +6,9 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
-import net.minecraftforge.client.ClientCommandHandler;
-
 import gregtech.common.config.Client;
 
 public class GTPowerfailCommandClient extends GTPowerfailCommand {
-
-    public static void register() {
-        ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
-    }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
