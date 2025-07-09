@@ -117,7 +117,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createTitleTextStyle(String title) {
-        boolean clientSide = GTMod.instance.isClientSide();
+        boolean clientSide = GTMod.GT.isClientSide();
         // workaround is slightly better, pretty meh
         int addedHeight = 0;
         int width = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 180;
