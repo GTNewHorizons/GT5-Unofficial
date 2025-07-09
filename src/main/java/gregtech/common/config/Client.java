@@ -8,7 +8,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
 @Config.LangKey("GT5U.gui.config.client")
 public class Client {
 
@@ -108,6 +108,10 @@ public class Client {
         @Config.Comment("if true, input filter will initially be on when input buses are placed in the world.")
         @Config.DefaultBoolean(false)
         public boolean inputBusInitialFilter;
+
+        @Config.Comment("if true, input filter will initially be on when input hatches are placed in the world.")
+        @Config.DefaultBoolean(false)
+        public boolean inputHatchInitialFilter;
 
         @Config.Comment("if true, allow multistacks on single blocks by default when they are first placed in the world.")
         @Config.DefaultBoolean(false)
