@@ -1601,6 +1601,8 @@ public class Textures {
         NANO_FORGE_CASING_4,
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
+        MACHINE_CASING_CHAMBER_CENTRIFUGE,
+        SIEVE_MESH
 
         // semicolon after the comment to reduce merge conflicts
         ;

@@ -1530,6 +1530,9 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_ChamberCentrifuge,
+    Chamber_Casing,
+    Chamber_Grate,
     Machine_Multi_ECCF,
     ECCF_freezer_block_0,
     ECCF_freezer_block_1,
