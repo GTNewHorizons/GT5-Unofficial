@@ -10,7 +10,6 @@ import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.common.GTProxy;
 
 public class RunnableCableUpdate extends RunnableMachineUpdate {
 
@@ -36,7 +35,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
 
                 final TileEntity tTileEntity;
 
-                GTProxy.TICK_LOCK.lock();
+                GTMod.proxy.TICK_LOCK.lock();
                 try {
                     // we dont want to go over cables that are in unloaded chunks
                     // keeping the lock just to make sure no CME happens
@@ -46,7 +45,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                         tTileEntity = null;
                     }
                 } finally {
-                    GTProxy.TICK_LOCK.unlock();
+                    GTMod.proxy.TICK_LOCK.unlock();
                 }
 
                 // See if the block itself needs an update
