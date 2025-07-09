@@ -22,7 +22,7 @@ public class BehaviourSwitchMode extends BehaviourNone {
         if ((aItem instanceof MetaGeneratedTool itemTool)) {
             final int maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode > 1) {
-                int keyCode = GTMod.gregtechproxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode();
+                int keyCode = GTMod.proxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode();
                 String keyName;
                 if (keyCode < 0) {
                     keyName = Mouse.getButtonName(keyCode + 101);
