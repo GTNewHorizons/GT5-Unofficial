@@ -66,7 +66,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
                 TextureFactory.of(FLUID_STEAM_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
@@ -74,7 +74,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
                 TextureFactory.of(FLUID_STEAM_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };

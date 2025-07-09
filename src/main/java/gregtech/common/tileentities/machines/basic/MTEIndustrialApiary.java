@@ -112,7 +112,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import gregtech.mixin.interfaces.accessors.AlleleEffectThrottledAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -215,7 +214,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
@@ -537,7 +536,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (GTClient.changeDetected == 4) {
+            if (GTMod.clientProxy()
+                .changeDetected() == 4) {
                 /*
                  * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
                  * client tick when reaching 4, with provision for 3 more update tasks, spreading client change

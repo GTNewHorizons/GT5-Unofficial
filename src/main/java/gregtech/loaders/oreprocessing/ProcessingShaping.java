@@ -26,7 +26,6 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -327,7 +326,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             && GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L),
-                                GTProxy.tBits,
+                                GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h ", "fX", 'X', OrePrefixes.stick.get(aMaterial) });
                         }
                     }
