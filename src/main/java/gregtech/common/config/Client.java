@@ -3,8 +3,8 @@ package gregtech.common.config;
 import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
-
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 

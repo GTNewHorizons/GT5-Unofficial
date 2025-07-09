@@ -43,8 +43,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
 
     @Override
     protected List<IChatComponent> getHelpMessages() {
+        // spotless:off
         List<IChatComponent> messages = new ArrayList<>();
-
         messages.add(new ChatComponentText(getCommandUsage(null)));
         messages.add(new ChatComponentText(" clear - Clears all powerfails for your team"));
         messages.add(new ChatComponentText(" clear-dim - Clears all powerfails for your team in the current dimension"));
@@ -54,8 +54,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
         messages.add(new ChatComponentText(" help - Prints this help text"));
         messages.add(new ChatComponentText(""));
         messages.add(new ChatComponentText("Aliases: powerfails, powerfail, pf"));
-
         return messages;
+        // spotless:on
     }
 
     @Override
@@ -97,7 +97,11 @@ public class GTPowerfailCommand extends GTBaseCommand {
             }
             case "clear-dim" -> {
                 GTPowerfailTracker.clearPowerfails(player, OptionalInt.of(player.worldObj.provider.dimensionId));
-                sendChatToPlayer(sender, new ChatComponentText("Cleared all of your powerfails in the current dimension.").setChatStyle(new ChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("hello world")))));
+                sendChatToPlayer(
+                    sender,
+                    new ChatComponentText("Cleared all of your powerfails in the current dimension.").setChatStyle(
+                        new ChatStyle().setChatHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("hello world")))));
             }
             case "list" -> {
                 final UUID playerId = player.getGameProfile()

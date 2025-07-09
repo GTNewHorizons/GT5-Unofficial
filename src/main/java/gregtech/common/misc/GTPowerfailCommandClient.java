@@ -40,7 +40,7 @@ public class GTPowerfailCommandClient extends GTPowerfailCommand {
             case "help" -> {
                 sendHelpMessage(sender);
             }
-            case "clear", "clear-dim",  "list" -> {
+            case "clear", "clear-dim", "list" -> {
                 // Pass it to the server
                 player.sendChatMessage("/" + getCommandName() + " " + String.join(" ", args));
             }
