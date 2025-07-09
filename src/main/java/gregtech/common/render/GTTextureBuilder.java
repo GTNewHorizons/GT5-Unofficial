@@ -34,7 +34,7 @@ public class GTTextureBuilder implements ITextureBuilder {
     public GTTextureBuilder() {
         textureLayers = new ArrayList<>();
         iconContainerList = new ArrayList<>();
-        rgba = Dyes._NULL.mRGBa;
+        rgba = Dyes._NULL.getRGBA();
         allowAlpha = true;
         stdOrient = false;
         glow = false;
@@ -151,7 +151,7 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GTMod.gregtechproxy.mCTMBlockCache.computeIfAbsent(fromBlock, fromMeta, GTTextureBuilder::apply);
+        return GTMod.proxy.mCTMBlockCache.computeIfAbsent(fromBlock, fromMeta, GTTextureBuilder::apply);
     }
 
     private static Boolean apply(Block b, int m) {

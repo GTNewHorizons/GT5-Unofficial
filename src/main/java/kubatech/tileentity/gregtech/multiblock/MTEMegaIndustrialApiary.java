@@ -334,7 +334,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      */
     protected void onStorageContentChanged(boolean ignoreFlowerCheck) {
         flowerRequiredMap = mStorage.stream()
-            .collect(Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription));
+            .collect(
+                Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription, (k1, k2) -> k1));
         flowerRequiredMap.remove("");
 
         if (!ignoreFlowerCheck) {

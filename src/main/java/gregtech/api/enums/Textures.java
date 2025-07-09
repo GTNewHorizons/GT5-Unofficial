@@ -813,6 +813,8 @@ public class Textures {
         OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW,
         OVERLAY_FRONT_STEAM_EXTRACTOR,
         OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE,
         OVERLAY_FRONT_DISASSEMBLER,
         OVERLAY_FRONT_DISASSEMBLER_GLOW,
         OVERLAY_FRONT_DISASSEMBLER_ACTIVE,
@@ -1860,7 +1862,10 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
 
-        public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
+        private static final int TIERS = 15;
+        private static final int CASING_COLORS = Dyes.VALUES.length + 1; // MACHINE_METAL followed by Dyes.VALUES
+        public static ITexture[][] MACHINE_CASINGS = new ITexture[TIERS][CASING_COLORS];
+
         // spotless:off
         /**
          * by Default pages are null
@@ -1880,12 +1885,22 @@ public class Textures {
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
-            for (byte i = 0; i < MACHINE_CASINGS.length; i++)
-                for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) MACHINE_CASINGS[i][j] = TextureFactory.of(
-                    MACHINECASINGS_BOTTOM[i],
-                    MACHINECASINGS_TOP[i],
-                    MACHINECASINGS_SIDE[i],
-                    Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
+            for (byte tier = 0; tier < TIERS; tier++) {
+                MACHINE_CASINGS[tier][0] = TextureFactory.of(
+                    MACHINECASINGS_BOTTOM[tier],
+                    MACHINECASINGS_TOP[tier],
+                    MACHINECASINGS_SIDE[tier],
+                    Dyes.MACHINE_METAL.getRGBA());
+
+                for (Dyes dye : Dyes.VALUES) {
+                    MACHINE_CASINGS[tier][dye.mIndex + 1] = TextureFactory.of(
+                        MACHINECASINGS_BOTTOM[tier],
+                        MACHINECASINGS_TOP[tier],
+                        MACHINECASINGS_SIDE[tier],
+                        dye.getRGBA());
+                }
+            }
+
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GTUtility.addTexturePage((byte) 1);

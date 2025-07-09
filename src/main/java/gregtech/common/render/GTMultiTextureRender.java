@@ -19,7 +19,7 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     protected final ITexture[] mTextures;
 
     public static GTMultiTextureRender get(ITexture... aTextures) {
-        return GTMod.instance.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
+        return GTMod.GT.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
     }
 
     protected GTMultiTextureRender(ITexture... aTextures) {

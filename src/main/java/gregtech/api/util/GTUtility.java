@@ -4,7 +4,6 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -412,24 +411,15 @@ public class GTUtility {
                     .lastIndexOf(".") + 1);
     }
 
-    public static boolean getFullInvisibility(EntityPlayer aPlayer) {
-        try {
-            if (aPlayer.isInvisible()) {
-                for (int i = 0; i < 4; i++) {
-                    if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof ItemEnergyArmor) {
-                            if ((((ItemEnergyArmor) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
-                                != 0) {
-                                if (GTModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+    public static boolean getFullInvisibility(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        for (ItemStack stack : player.inventory.armorInventory) {
+            if (stack == null || !(stack.getItem() instanceof ItemEnergyArmor)) continue;
+            if ((((ItemEnergyArmor) stack.getItem()).mSpecials & 512) != 0) {
+                if (GTModHandler.canUseElectricItem(stack, 10000)) {
+                    return true;
                 }
             }
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
         }
         return false;
     }
@@ -510,15 +500,7 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        byte tier = getTier(voltage);
-        if (tier < 0) {
-            return "";
-        } else if (tier == 0) {
-            return " (" + GTValues.VN[1] + ")";
-        } else if (tier >= GTValues.VN.length - 1) {
-            return " (MAX+)";
-        }
-        return " (" + GTValues.VN[tier] + ")";
+        return "(" + GTValues.VN[getTier(voltage)] + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
@@ -2184,16 +2166,16 @@ public class GTUtility {
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength) {
         if (aSoundName == null) return false;
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(SoundResource sound, int aTimeUntilNextSound, float aSoundStrength) {
-        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound,
         float aSoundStrength) {
-        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
@@ -2264,10 +2246,10 @@ public class GTUtility {
         float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (!FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote) return false;
+            .isClient() || GTMod.GT.getThePlayer() == null || !GTMod.GT.getThePlayer().worldObj.isRemote) return false;
         if (GregTechAPI.sMultiThreadedSounds) new Thread(
             new RunnableSound(
-                GT.getThePlayer().worldObj,
+                GTMod.GT.getThePlayer().worldObj,
                 aX,
                 aY,
                 aZ,
@@ -2277,7 +2259,7 @@ public class GTUtility {
                 aSoundModulation),
             "Sound Effect").start();
         else new RunnableSound(
-            GT.getThePlayer().worldObj,
+            GTMod.GT.getThePlayer().worldObj,
             aX,
             aY,
             aZ,
@@ -2329,14 +2311,6 @@ public class GTUtility {
         Item tItem = Item.getItemById(tID);
         if (tItem != null) return new ItemStack(tItem, 1, tMeta);
         return null;
-    }
-
-    public static Integer[] stacksToIntegerArray(ItemStack... aStacks) {
-        Integer[] rArray = new Integer[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
     }
 
     public static int[] stacksToIntArray(ItemStack... aStacks) {
@@ -4546,7 +4520,7 @@ public class GTUtility {
 
     /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
     public static int ceilDiv2(int lhs, int rhs) {
-        int sign = signum(lhs) * signum(rhs);
+        int sign = Integer.signum(lhs) * Integer.signum(rhs);
 
         if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
@@ -4563,18 +4537,22 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    @Deprecated
     public static int signum(int x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Integer.signum(x);
     }
 
+    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    @Deprecated
     public static long signum(long x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Long.signum(x);
     }
 
     public static Vector3i signum(Vector3i v) {
-        v.x = signum(v.x);
-        v.y = signum(v.y);
-        v.z = signum(v.z);
+        v.x = Integer.signum(v.x);
+        v.y = Integer.signum(v.y);
+        v.z = Integer.signum(v.z);
 
         return v;
     }
