@@ -548,7 +548,9 @@ import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
@@ -4772,7 +4774,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null

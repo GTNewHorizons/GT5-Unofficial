@@ -275,7 +275,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public int getMaxParallelRecipes() {
-        return mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1));
+        return mode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
     }
 
     @Override

@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -174,6 +173,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
         GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
+            .caching(false)
             .items(tItems)
             .voltage(tVoltageActual)
             .find();
@@ -182,7 +182,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
+        if (!tRecipe.isRecipeInputEqual(true, GTValues.emptyFluidStackArray, tItems)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 

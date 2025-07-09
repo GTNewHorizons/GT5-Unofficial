@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -211,7 +212,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     }
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
+        if (!GTMod.proxy.mPollution) {
             PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
@@ -257,7 +258,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override

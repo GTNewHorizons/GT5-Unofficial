@@ -60,6 +60,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
@@ -448,7 +449,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGui(aPlayer);
             return true;
         }
@@ -466,7 +467,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public void initDefaultModes(NBTTagCompound aNBT) {
         mMainFacing = ForgeDirection.UNKNOWN;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            final GTClientPreference tPreference = GTMod.gregtechproxy
+            final GTClientPreference tPreference = GTMod.proxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
@@ -1020,7 +1021,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
         if (tRecipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (GTMod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
+        if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
@@ -1382,7 +1383,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
+            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, GTValues.emptyStringArray)
                 .setBackground(getGUITextureSet().getItemSlot());
         } else {
             return super.createChargerSlot(x, y);

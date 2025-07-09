@@ -15,6 +15,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyContainerItem;
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -43,7 +44,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     public MTEWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier,
         final int aSlotCount) {
-        super(aID, aName, aNameRegional, aTier, aSlotCount, new String[] {});
+        super(aID, aName, aNameRegional, aTier, aSlotCount, GTValues.emptyStringArray);
     }
 
     public MTEWirelessCharger(final String name, final int tier, final String[] description,
@@ -290,7 +291,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -372,12 +373,12 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
         if (tick % 20 == 0) {
             boolean mapped = this.equals(
-                WirelessChargerManager.getCharger(
+                GTMod.proxy.wirelessChargerManager.getCharger(
                     baseMetaTileEntity.getXCoord(),
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord()));
             if (!mapped) {
-                WirelessChargerManager.addCharger(this);
+                GTMod.proxy.wirelessChargerManager.addCharger(this);
             }
 
             for (EntityPlayer player : baseMetaTileEntity.getWorld().playerEntities) {
@@ -440,10 +441,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void onRemoval() {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         longRangeMap.clear();
         localRangeMap.clear();
-
         super.onRemoval();
     }
 
@@ -521,13 +521,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void onExplosion() {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         super.onExplosion();
     }
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         super.doExplosion(aExplosionPower);
     }
 
