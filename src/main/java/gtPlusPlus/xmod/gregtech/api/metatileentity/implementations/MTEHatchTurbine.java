@@ -405,7 +405,7 @@ public class MTEHatchTurbine extends MTEHatch {
         if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
             boolean aHasTurbine = this.hasTurbine();
             if (aPlayer.inventory.getFirstEmptyStack() >= 0 && aHasTurbine) {
-                if (PlayerUtils.isCreative(aPlayer)
+                if (aPlayer.capabilities.isCreativeMode
                     || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                     aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
                     this.mInventory[0] = null;
@@ -421,7 +421,7 @@ public class MTEHatchTurbine extends MTEHatch {
         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
             if (mControllerLocation != null) {
                 if (setController(mControllerLocation)) {
-                    if (PlayerUtils.isCreative(aPlayer)
+                    if (aPlayer.capabilities.isCreativeMode
                         || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         String tChat = "Trying to Reset linked Controller";
                         IGregTechTileEntity g = this.getBaseMetaTileEntity();

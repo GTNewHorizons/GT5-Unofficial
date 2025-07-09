@@ -79,14 +79,6 @@ public class PlayerUtils {
         Utils.sendServerMessage(string);
     }
 
-    public static boolean isCreative(EntityPlayer aPlayer) {
-        return aPlayer.capabilities.isCreativeMode;
-    }
-
-    public static boolean canTakeDamage(EntityPlayer aPlayer) {
-        return !aPlayer.capabilities.disableDamage;
-    }
-
     public static boolean isRealPlayer(EntityLivingBase entity) {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
