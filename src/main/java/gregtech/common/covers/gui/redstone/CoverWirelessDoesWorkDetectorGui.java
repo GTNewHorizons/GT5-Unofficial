@@ -2,6 +2,7 @@ package gregtech.common.covers.gui.redstone;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -30,26 +31,32 @@ public class CoverWirelessDoesWorkDetectorGui
     }
 
     @Override
-    protected Flow makeThirdRow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
         EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode>) syncManager
             .getSyncHandler("activityMode:0");
-        return Flow.row()
-            .size(140, 18)
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        return Flow.column()
+            .coverChildren()
+            .child(
+                Flow.row()
+                    .marginBottom(4)
+                    .size(140, 18)
 
-            .child(
-                new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
-                    .overlay(
-                        GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
-                        GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
-                        GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                    .build()
-                    .width(120)
-                    .marginRight(2))
-            .child(
-                new TextWidget(
-                    IKey.dynamic(
-                        () -> activityMode.getValue()
-                            .getKey()
-                            .get())));
+                    .child(
+                        new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
+                            .overlay(
+                                GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
+                                GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
+                                GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                            .build()
+                            .width(120)
+                            .marginRight(2))
+                    .child(
+                        new TextWidget(
+                            IKey.dynamic(
+                                () -> activityMode.getValue()
+                                    .getKey()
+                                    .get()))))
+            .child(physicalRow(physicalSyncer));
     }
 }

@@ -40,4 +40,22 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                             () -> invertedSyncer.getBoolValue() ? translateToLocal("gt.interact.desc.inverted")
                                 : translateToLocal("gt.interact.desc.normal"))).height(16)));
     }
+
+    // method for sublclasses that have in-world functionality
+    protected Flow physicalRow(BooleanSyncValue physicalSyncer) {
+        return Flow.row()
+            .size(140, 16)
+            .child(
+                new ToggleButton().size(16)
+                    .marginRight(2)
+                    .value(physicalSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
+            .child(
+                new TextWidget(
+                    IKey.dynamic(
+                        () -> translateToLocal(
+                            physicalSyncer.getValue() ? "gt.cover.wirelessdetector.redstone.1"
+                                : "gt.cover.wirelessdetector.redstone.0"))).height(16))
+            .leftRel(0);
+    }
 }

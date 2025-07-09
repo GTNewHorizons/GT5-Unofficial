@@ -40,7 +40,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
             .getUniqueID();
         column.child(makeFrequencyRow().paddingTop(10))
             .child(makeButtonRow(uuid))
-            .child(makeThirdRow(syncManager));
+            .child(makeThirdFlow(syncManager));
 
     }
 
@@ -80,7 +80,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
     }
 
     // allows for overriding in sublcasses for better ui positioning
-    protected Flow makeThirdRow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
         return Flow.row()
             .size(1, 1);
     }

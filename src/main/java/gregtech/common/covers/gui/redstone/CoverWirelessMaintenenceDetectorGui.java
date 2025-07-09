@@ -3,6 +3,7 @@ package gregtech.common.covers.gui.redstone;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -33,8 +34,9 @@ public class CoverWirelessMaintenenceDetectorGui
     }
 
     @Override
-    protected Flow makeThirdRow(PanelSyncManager syncManager) {
+    protected Flow makeThirdFlow(PanelSyncManager syncManager) {
         // column contains 4 other rows, each has 2 enum values
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager
             .getSyncHandler("maintenanceMode:0");
         return Flow.column()
@@ -58,12 +60,12 @@ public class CoverWirelessMaintenenceDetectorGui
                 makeSyncedBoolRow(
                     maintenanceSync,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_80,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_100));
+                    CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_100))
+            .child(physicalRow(physicalSyncer));
     }
 
     protected Flow makeSyncedBoolRow(EnumSyncValue syncValue, CoverWirelessMaintenanceDetector.MaintenanceMode value1,
         CoverWirelessMaintenanceDetector.MaintenanceMode value2) {
-        // TODO: find workaround to "format
         return Flow.row()
             .coverChildren()
             .child(
