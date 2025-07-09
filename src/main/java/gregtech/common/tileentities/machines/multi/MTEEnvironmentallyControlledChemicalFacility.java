@@ -728,8 +728,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         Pair<Integer, Integer> modules = create_modules(stackSize);
-        if (mMachine && (modules.getLeft() == 0) && (modules.getRight() == 0))
-            return -1;
+        if (mMachine && (modules.getLeft() == 0) && (modules.getRight() == 0)) return -1;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 10, 0, elementBudget, env, false, true);
         switch (modules.getLeft()) {
             case 1 -> built += survivialBuildPiece(

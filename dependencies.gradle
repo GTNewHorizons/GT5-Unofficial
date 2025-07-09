@@ -34,7 +34,7 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:1.4.12:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.4.14-pre:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.7.62-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.9:dev")
@@ -45,7 +45,7 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-652-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.99-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
-    api('com.github.GTNewHorizons:CodeChickenCore:1.4.2:dev')
+    api('com.github.GTNewHorizons:CodeChickenCore:1.4.3:dev')
     api("com.github.GTNewHorizons:Postea:1.1.2:dev")
     api("com.github.GTNewHorizons:Galacticraft:3.3.8-GTNH:dev") { transitive = false }
 
