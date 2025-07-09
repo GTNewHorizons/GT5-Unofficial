@@ -57,8 +57,8 @@ public class BlockCasings4 extends BlockCasingsAbstract {
         register(14, ItemList.Casing_MiningOsmiridium, "Mining Osmiridium Casing");
         register(15, ItemList.Casing_Firebricks, "Firebricks");
 
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 6, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 8, true);
     }
 
     @Override

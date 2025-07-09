@@ -74,7 +74,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                             outputSize = 10;
                             outputPrefix = OrePrefixes.nugget;
                         } else {
-                            if (GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
+                            if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                                 outputSize = 6;
                                 outputPrefix = OrePrefixes.nugget;
                             } else {
@@ -84,7 +84,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                         }
                         break;
                     case dust:
-                        int outputAmount = GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
+                        int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
                         if (aMaterial.mDirectSmelting != aMaterial) {
                             if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
                                 && aMaterial.mDirectSmelting.getIngots(1) != null) {
@@ -162,7 +162,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                             outputPrefix = OrePrefixes.ingot;
                             outputSize = 1;
                         } else {
-                            if (GTMod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
+                            if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                                 outputSize = 6;
                                 outputPrefix = OrePrefixes.nugget;
                             } else {
