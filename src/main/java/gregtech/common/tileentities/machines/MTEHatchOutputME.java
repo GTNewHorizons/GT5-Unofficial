@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,6 +32,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.storage.FluidCellInventory;
+import com.glodblock.github.common.storage.FluidCellInventoryHandler;
 import com.glodblock.github.common.storage.IStorageFluidCell;
 import com.glodblock.github.util.Util;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -45,7 +50,9 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.security.PlayerSource;
 import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -276,12 +283,51 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return fluidAmount;
     }
 
+    private static final MethodHandle GET_RESTRICTION_LONG;
+
+    static {
+        try {
+            Field field = FluidCellInventory.class.getDeclaredField("restrictionLong");
+            field.setAccessible(true);
+            GET_RESTRICTION_LONG = MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Could not unreflect getter for FluidCellInventory.restrictionLong", e);
+        }
+    }
+
+    private static long getRestrictionLong(FluidCellInventory cellInventory) {
+        try {
+            return (long) GET_RESTRICTION_LONG.invokeExact(cellInventory);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
-            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 2048;
+
+        if (upgradeItemStack == null) return baseCapacity;
+        if (!(upgradeItemStack.getItem() instanceof FCBaseItemCell storageCell)) return baseCapacity;
+
+        final IMEInventoryHandler<?> inventory = AEApi.instance()
+            .registries()
+            .cell()
+            .getCellInventory(upgradeItemStack, null, StorageChannel.FLUIDS);
+
+        long capacity = storageCell.getBytes(upgradeItemStack) * 2048;
+
+        if (inventory instanceof FluidCellInventoryHandler handler) {
+            final FluidCellInventory cellInventory = (FluidCellInventory) handler.getCellInv();
+
+            long restriction = getRestrictionLong(cellInventory);
+
+            if (restriction > 0) {
+                capacity = Math.min(capacity, restriction);
+            }
         }
-        return baseCapacity;
+
+        return capacity;
     }
 
     /**
