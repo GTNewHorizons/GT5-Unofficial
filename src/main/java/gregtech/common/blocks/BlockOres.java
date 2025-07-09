@@ -100,9 +100,8 @@ public class BlockOres extends BlockOresAbstract {
 
     @Override
     public boolean[] getEnabledMetas() {
-        return new boolean[] { true, true, true, GTMod.gregtechproxy.enableBlackGraniteOres,
-            GTMod.gregtechproxy.enableRedGraniteOres, GTMod.gregtechproxy.enableMarbleOres,
-            GTMod.gregtechproxy.enableBasaltOres, true };
+        return new boolean[] { true, true, true, GTMod.proxy.enableBlackGraniteOres, GTMod.proxy.enableRedGraniteOres,
+            GTMod.proxy.enableMarbleOres, GTMod.proxy.enableBasaltOres, true };
     }
 
     @Override
