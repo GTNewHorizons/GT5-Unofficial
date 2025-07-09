@@ -95,7 +95,12 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        GL11.glRotatef((GTMod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
+        GL11.glRotatef(
+            (GTMod.clientProxy()
+                .getAnimationTicks() * 3.5f) % 360,
+            0.3f,
+            0.5f,
+            0.2f);
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {

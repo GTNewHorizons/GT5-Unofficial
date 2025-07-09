@@ -39,7 +39,7 @@ public class GTPacketClientPreference extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (mPlayer != null) GTMod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
+        if (mPlayer != null) GTMod.proxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
     }
 
     @Override
@@ -48,11 +48,17 @@ public class GTPacketClientPreference extends GTPacket {
         aOut.writeBoolean(mPreference.isSingleBlockInitialMultiStackEnabled());
         aOut.writeBoolean(mPreference.isInputBusInitialFilterEnabled());
         aOut.writeBoolean(mPreference.isWailaAverageNSEnabled());
+        aOut.writeBoolean(mPreference.isInputHatchInitialFilterEnabled());
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketClientPreference(
-            new GTClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
+            new GTClientPreference(
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean()));
     }
 }

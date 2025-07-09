@@ -128,13 +128,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Stores which mod added this recipe
      */
     @Nullable
-    public List<ModContainer> owners = GTMod.gregtechproxy.mNEIRecipeOwner ? new ArrayList<>() : null;
+    public List<ModContainer> owners = GTMod.proxy.mNEIRecipeOwner ? new ArrayList<>() : null;
     /**
      * Stores stack traces where this recipe was added
      */
     // BW wants to overwrite it, so no final
     @Nullable
-    public List<List<String>> stackTraces = GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace ? new ArrayList<>() : null;
+    public List<List<String>> stackTraces = GTMod.proxy.mNEIRecipeOwnerStackTrace ? new ArrayList<>() : null;
 
     /** Used for simple cache validation */
     private ItemStack[] inputsAtCacheTime = null;
