@@ -150,7 +150,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return mAuto && GTMod.gregtechproxy.mAMHInteraction;
+        return mAuto && GTMod.proxy.mAMHInteraction;
     }
 
     @Override
@@ -326,13 +326,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return mAuto && GTMod.gregtechproxy.mAMHInteraction;
+        return mAuto && GTMod.proxy.mAMHInteraction;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (mAuto && GTMod.gregtechproxy.mAMHInteraction) {
+        if (mAuto && GTMod.proxy.mAMHInteraction) {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
