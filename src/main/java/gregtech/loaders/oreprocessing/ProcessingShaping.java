@@ -326,7 +326,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             && GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L),
-                                GTModHandler.RecipeBits.BITST,
+                                GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h ", "fX", 'X', OrePrefixes.stick.get(aMaterial) });
                         }
                     }

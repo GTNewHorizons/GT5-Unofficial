@@ -77,7 +77,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
-                GTModHandler.RecipeBits.BITST,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "GGf", 'G', gem.get(werkstoff.getBridgeMaterial()) });
         }
 
@@ -98,7 +98,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadWrench, werkstoff.getBridgeMaterial(), 1L),
-                GTModHandler.RecipeBits.BITST,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hXW", "XRX", "WXd", 'X', plate.get(werkstoff.getBridgeMaterial()), 'S',
                     plate.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'R',
                     ring.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'W',
@@ -417,13 +417,13 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(toolHeadHammer, werkstoff.getBridgeMaterial(), 1L),
-            GTModHandler.RecipeBits.BITST,
+            GTModHandler.RecipeBits.BITS_STD,
             new Object[] { "II ", "IIh", "II ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                 ingot.get(werkstoff.getBridgeMaterial()) });
         if (werkstoff.hasItemType(plateDouble) && werkstoff.hasItemType(cellMolten)) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L),
-                GTModHandler.RecipeBits.BITST,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "fPd", "SPS", " P ", 'P', plateDouble.get(werkstoff.getBridgeMaterial()), 'S',
                     screw.get(werkstoff.getBridgeMaterial()) });
 
@@ -513,7 +513,7 @@ public class ToolLoader implements IWerkstoffRunnable {
         if (!werkstoff.hasItemType(gem)) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
-                GTModHandler.RecipeBits.BITST,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "PP ", "fh ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                     ingot.get(werkstoff.getBridgeMaterial()) });
         }

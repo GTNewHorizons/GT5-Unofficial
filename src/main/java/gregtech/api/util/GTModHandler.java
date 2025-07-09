@@ -2013,7 +2013,7 @@ public class GTModHandler {
          * Combination of common bits.
          * DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL, NOT_REMOVABLE
          */
-        public static final long BITST = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
+        public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
             | ONLY_ADD_IF_RESULT_IS_NOT_NULL
             | NOT_REMOVABLE;
     }

@@ -1031,10 +1031,10 @@ public class GTProxy implements IFuelHandler {
     }
 
     /**
-     * @deprecated use {@link gregtech.api.util.GTModHandler.RecipeBits#BITST}
+     * @deprecated use {@link gregtech.api.util.GTModHandler.RecipeBits#BITS_STD}
      */
     @Deprecated
-    public static long tBits = GTModHandler.RecipeBits.BITST;
+    public static long tBits = GTModHandler.RecipeBits.BITS_STD;
 
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");

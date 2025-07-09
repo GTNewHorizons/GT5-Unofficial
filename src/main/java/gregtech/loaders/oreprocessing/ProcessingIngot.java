@@ -101,7 +101,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     && aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                        GTModHandler.RecipeBits.BITST,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
                 if (!aNoSmashing) {

@@ -36,7 +36,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
 
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(2, aStack),
-            GTModHandler.RecipeBits.BITST,
+            GTModHandler.RecipeBits.BITS_STD,
             new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
 
     }

@@ -36,11 +36,11 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
-                    GTModHandler.RecipeBits.BITST,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 4L),
-                    GTModHandler.RecipeBits.BITST,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "fXh", 'X', OrePrefixes.ingot.get(aMaterial) });
             }
         }

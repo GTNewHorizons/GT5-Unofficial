@@ -95,7 +95,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     && (aMaterial.getProcessingMaterialTierEU() < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
-                        GTModHandler.RecipeBits.BITST,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "Xx", 'X', OrePrefixes.plate.get(aMaterial) });
 
                 }

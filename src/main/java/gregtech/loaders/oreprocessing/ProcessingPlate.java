@@ -10,7 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITST;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS_STD;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -125,7 +125,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            BITST,
+            BITS_STD,
             new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
 
         if (aMaterial == Materials.Paper) {
@@ -142,13 +142,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         aMaterial.getPlates(1),
-                        BITST,
+                        BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", "X", 'X', OrePrefixes.ingot.get(aMaterial) });
 
                     GTModHandler.addCraftingRecipe(
                         aMaterial.getPlates(1),
-                        BITST,
+                        BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", 'X', OrePrefixes.gem.get(aMaterial) });
                 }
@@ -159,7 +159,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addShapelessCraftingRecipe(
                         aMaterial.getDust(1),
-                        BITST,
+                        BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.plate.get(aMaterial) });
                 }
             }
@@ -417,7 +417,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
-                    BITST,
+                    BITS_STD,
                     new Object[] { "h X", 'X', OrePrefixes.plate.get(aMaterial) });
             }
         }
