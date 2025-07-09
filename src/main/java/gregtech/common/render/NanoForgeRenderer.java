@@ -14,21 +14,19 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 
 public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
-    private boolean initialized = false;
-
-    private static IModelCustomExt nanoforgeCoreModel;
+    private static boolean initialized;
     private static ResourceLocation coreTexture;
-    private static IModelCustomExt nanoforgeShieldModel;
     private static ResourceLocation shieldTexture;
+    private static ResourceLocation ringTexture;
+    private static IModelCustomExt nanoforgeCoreModel;
+    private static IModelCustomExt nanoforgeShieldModel;
     private static IModelCustomExt nanoforgeRingOneModel;
     private static IModelCustomExt nanoforgeRingTwoModel;
     private static IModelCustomExt nanoforgeRingThreeModel;
-    private static ResourceLocation ringTexture;
 
     private static final float WARM_UP_TIME = 25.0f;
     private static final float FULL_CHAOS_TIME = 75.0f;
@@ -56,26 +54,18 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
             + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
 
-    public NanoForgeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class, this);
-    }
-
     private void init() {
-        nanoforgeCoreModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"));
+        // spotless:off
         coreTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Core.png");
-        nanoforgeShieldModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"));
         shieldTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Shield.png");
-        nanoforgeRingOneModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
-        nanoforgeRingTwoModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"));
-        nanoforgeRingThreeModel = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"));
         ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
-
+        nanoforgeCoreModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"));
+        nanoforgeShieldModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"));
+        nanoforgeRingOneModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
+        nanoforgeRingTwoModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"));
+        nanoforgeRingThreeModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"));
         initialized = true;
+        // spotless:on
     }
 
     private void renderNanoForge(TileEntityNanoForgeRenderer tile, double x, double y, double z, float deltaT) {
