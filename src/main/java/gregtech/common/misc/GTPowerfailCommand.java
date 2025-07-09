@@ -15,6 +15,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.GTMod;
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.data.GTPowerfailTracker;
 
@@ -92,11 +93,12 @@ public class GTPowerfailCommand extends GTBaseCommand {
 
         switch (args[0]) {
             case "clear" -> {
-                GTPowerfailTracker.clearPowerfails(player, OptionalInt.empty());
+                GTMod.proxy.powerfailTracker.clearPowerfails(player, OptionalInt.empty());
                 sendChatToPlayer(sender, "Cleared all of your powerfails.");
             }
             case "clear-dim" -> {
-                GTPowerfailTracker.clearPowerfails(player, OptionalInt.of(player.worldObj.provider.dimensionId));
+                GTMod.proxy.powerfailTracker
+                    .clearPowerfails(player, OptionalInt.of(player.worldObj.provider.dimensionId));
                 sendChatToPlayer(
                     sender,
                     new ChatComponentText("Cleared all of your powerfails in the current dimension.").setChatStyle(
@@ -106,7 +108,7 @@ public class GTPowerfailCommand extends GTBaseCommand {
             case "list" -> {
                 final UUID playerId = player.getGameProfile()
                     .getId();
-                List<GTPowerfailTracker.Powerfail> powerfails = GTPowerfailTracker
+                List<GTPowerfailTracker.Powerfail> powerfails = GTMod.proxy.powerfailTracker
                     .getPowerfails(playerId, OptionalInt.empty());
 
                 sendChatToPlayer(sender, "");

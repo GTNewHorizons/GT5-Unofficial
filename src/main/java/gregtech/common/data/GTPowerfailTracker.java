@@ -5,7 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +36,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -57,16 +56,15 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
-@EventBusSubscriber
 public class GTPowerfailTracker {
 
     public static final String DATA_NAME = "gt.powerfails";
 
     /** The powerfail state. When a world is loaded, this will never be null. */
-    private static SaveData INSTANCE;
+    private SaveData INSTANCE;
 
     /** Players with pending powerfail syncs. Used to debounce updates to once per tick. */
-    private static final HashSet<UUID> PENDING_UPDATES = new HashSet<>();
+    private final HashSet<UUID> PENDING_UPDATES = new HashSet<>();
 
     /** Something that can own a machine, usually a player but may also be a team. */
     interface MachineOwner {
@@ -90,7 +88,7 @@ public class GTPowerfailTracker {
 
         @Override
         public Set<UUID> getPlayers() {
-            return new HashSet<>(Arrays.asList(player));
+            return new HashSet<>(Collections.singletonList(player));
         }
 
         @Override
@@ -207,7 +205,7 @@ public class GTPowerfailTracker {
         return new TeamOwner(leader);
     }
 
-    public static void createPowerfailEvent(IGregTechTileEntity igte) {
+    public void createPowerfailEvent(IGregTechTileEntity igte) {
         MachineOwner owner = getMachineOwner(igte.getOwnerUuid());
 
         TeamInfo teamInfo = INSTANCE.powerfailInfo.computeIfAbsent(owner, ignored -> new TeamInfo());
@@ -246,7 +244,7 @@ public class GTPowerfailTracker {
         INSTANCE.markDirty();
     }
 
-    public static List<Powerfail> getPowerfails(UUID player, OptionalInt inDim) {
+    public List<Powerfail> getPowerfails(UUID player, OptionalInt inDim) {
         MachineOwner owner = getMachineOwner(player);
 
         // spotless:off
@@ -257,7 +255,7 @@ public class GTPowerfailTracker {
         // spotless:on
     }
 
-    public static void clearPowerfails(EntityPlayerMP player, OptionalInt inDim) {
+    public void clearPowerfails(EntityPlayerMP player, OptionalInt inDim) {
         MachineOwner owner = getMachineOwner(
             player.getGameProfile()
                 .getId());
@@ -276,7 +274,7 @@ public class GTPowerfailTracker {
         INSTANCE.markDirty();
     }
 
-    public static void sendPlayerPowerfailStatus(EntityPlayerMP player) {
+    public void sendPlayerPowerfailStatus(EntityPlayerMP player) {
         GTPowerfailStatusPacket packet = GTPowerfailStatusPacket.set(
             player.dimension,
             getPowerfails(
@@ -288,7 +286,7 @@ public class GTPowerfailTracker {
     }
 
     @SubscribeEvent
-    public static void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
+    public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
 
         List<Powerfail> powerfails = getPowerfails(
@@ -309,19 +307,19 @@ public class GTPowerfailTracker {
     }
 
     @SubscribeEvent
-    public static void onPlayerTeleported(PlayerEvent.PlayerChangedDimensionEvent event) {
+    public void onPlayerTeleported(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
         sendPlayerPowerfailStatus(playerMP);
     }
 
     @SubscribeEvent
-    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+    public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
         sendPlayerPowerfailStatus(playerMP);
     }
 
     @SubscribeEvent
-    public static void onPostTick(TickEvent.ServerTickEvent event) {
+    public void onPostTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
         for (UUID playerId : PENDING_UPDATES) {
@@ -340,7 +338,7 @@ public class GTPowerfailTracker {
     }
 
     @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event) {
+    public void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             INSTANCE = (SaveData) event.world.mapStorage.loadData(SaveData.class, DATA_NAME);
             if (INSTANCE == null) {
@@ -348,13 +346,6 @@ public class GTPowerfailTracker {
                 event.world.mapStorage.setData(DATA_NAME, INSTANCE);
             }
             INSTANCE.markDirty();
-        }
-    }
-
-    @SubscribeEvent
-    public static void onWorldUnload(WorldEvent.Unload event) {
-        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
-            INSTANCE = null;
         }
     }
 
@@ -408,7 +399,7 @@ public class GTPowerfailTracker {
         }
     }
 
-    public static class SaveData extends WorldSavedData {
+    public class SaveData extends WorldSavedData {
 
         final Map<MachineOwner, TeamInfo> powerfailInfo = new HashMap<>();
 
