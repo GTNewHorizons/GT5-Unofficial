@@ -175,7 +175,7 @@ public class BWUtil {
 
     @Deprecated
     public static int getMachineVoltageFromTier(int tier) {
-        return (int) (30 * Math.pow(4, tier - 1));
+        return (int) (30 * GTUtility.powInt(4, tier - 1));
     }
 
     public static byte getTier(long voltage) {
@@ -366,8 +366,8 @@ public class BWUtil {
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return createGTCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
@@ -393,7 +393,7 @@ public class BWUtil {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return null;
+        if (aRecipe == null || aRecipe.length == 0) return null;
 
         boolean tThereWasARecipe = false;
 
@@ -623,7 +623,6 @@ public class BWUtil {
 
         return new GTShapedRecipe(
             GTUtility.copy(aResult),
-            aDismantleable,
             aRemovable,
             aKeepNBT,
             aEnchantmentsAdded,

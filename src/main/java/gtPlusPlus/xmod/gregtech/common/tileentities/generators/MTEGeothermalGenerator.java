@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,12 +39,6 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
             "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
             aPollution,
             GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        openGui(aPlayer);
-        return true;
     }
 
     @Override

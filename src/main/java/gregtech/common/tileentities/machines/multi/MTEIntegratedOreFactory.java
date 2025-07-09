@@ -9,10 +9,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_GLOW;
 import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -62,6 +61,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -123,48 +123,56 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .build();
 
-    private static final HashSet<Integer> isCrushedOre = new HashSet<>();
-    private static final HashSet<Integer> isCrushedPureOre = new HashSet<>();
-    private static final HashSet<Integer> isPureDust = new HashSet<>();
-    private static final HashSet<Integer> isImpureDust = new HashSet<>();
-    private static final HashSet<Integer> isThermal = new HashSet<>();
-    private static final HashSet<Integer> isOre = new HashSet<>();
+    private static final IntOpenHashSet isCrushedOre = new IntOpenHashSet();
+    private static final IntOpenHashSet isCrushedPureOre = new IntOpenHashSet();
+    private static final IntOpenHashSet isPureDust = new IntOpenHashSet();
+    private static final IntOpenHashSet isImpureDust = new IntOpenHashSet();
+    private static final IntOpenHashSet isThermal = new IntOpenHashSet();
+    private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
     private ItemStack[] sMidProduct;
     private int sMode = 0;
     private boolean sVoidStone = false;
     private int currentParallelism = 0;
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     private static void initHash() {
         for (String name : OreDictionary.getOreNames()) {
             if (name == null || name.isEmpty()) continue;
             if (name.startsWith("crushedPurified")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isCrushedPureOre.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isCrushedPureOre.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("crushedCentrifuged")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isThermal.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isThermal.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("crushed")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isCrushedOre.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isCrushedOre.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("dustImpure")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isImpureDust.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isImpureDust.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("dustPure")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isPureDust.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isPureDust.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("ore")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isOre.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isOre.add(GTUtility.stackToInt(ores.get(i)));
                 }
             } else if (name.startsWith("rawOre")) {
-                for (ItemStack stack : OreDictionary.getOres(name)) {
-                    isOre.add(GTUtility.stackToInt(stack));
+                ArrayList<ItemStack> ores = OreDictionary.getOres(name);
+                for (int i = 0, size = ores.size(); i < size; i++) {
+                    isOre.add(GTUtility.stackToInt(ores.get(i)));
                 }
             }
         }
@@ -251,20 +259,21 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     @NotNull
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public CheckRecipeResult checkProcessing() {
         if (!isInit) {
             initHash();
             isInit = true;
         }
 
-        List<ItemStack> tInput = getStoredInputs();
-        List<FluidStack> tInputFluid = getStoredFluids();
+        ArrayList<ItemStack> tInput = getStoredInputs();
+        ArrayList<FluidStack> tInputFluid = getStoredFluids();
+        if (tInput.isEmpty() || tInputFluid.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
         long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
-        }
-        if (tInput.isEmpty() || tInputFluid.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         int maxParallel = MAX_PARA;
@@ -286,7 +295,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         // Calculate parallel by fluids
         int tLube = 0;
         int tWater = 0;
-        for (FluidStack fluid : tInputFluid) {
+        for (int i = 0, size = tInputFluid.size(); i < size; i++) {
+            FluidStack fluid = tInputFluid.get(i);
             if (fluid != null && fluid.equals(GTModHandler.getDistilledWater(1L))) {
                 tWater += fluid.amount;
             } else if (fluid != null && fluid.equals(Materials.Lubricant.getFluid(1L))) {
@@ -301,7 +311,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         // Calculate parallel by items
         int itemParallel = 0;
-        for (ItemStack ore : tInput) {
+        for (int i = 0, size = tInput.size(); i < size; i++) {
+            ItemStack ore = tInput.get(i);
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isPureDust.contains(tID) || isImpureDust.contains(tID)
@@ -345,7 +356,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         // Consume items and generate outputs
         List<ItemStack> tOres = new ArrayList<>();
         int remainingCost = finalParallel;
-        for (ItemStack ore : tInput) {
+        for (int i = 0, size = tInput.size(); i < size; i++) {
+            ItemStack ore = tInput.get(i);
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isPureDust.contains(tID) || isImpureDust.contains(tID)
@@ -418,9 +430,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    @SafeVarargs
-    private boolean checkTypes(int aID, HashSet<Integer>... aTables) {
-        for (HashSet<Integer> set : aTables) {
+    private boolean checkTypes(int aID, IntOpenHashSet... aTables) {
+        for (IntOpenHashSet set : aTables) {
             if (set.contains(aID)) {
                 return true;
             }
@@ -459,14 +470,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         super.saveNBTData(aNBT);
     }
 
-    @SafeVarargs
-    private void doMac(HashSet<Integer>... aTables) {
+    private void doMac(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .find();
                     if (tRecipe != null) {
@@ -482,14 +493,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
-    @SafeVarargs
-    private void doWash(HashSet<Integer>... aTables) {
+    private void doWash(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
                         .find();
@@ -506,14 +517,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
-    @SafeVarargs
-    private void doThermal(HashSet<Integer>... aTables) {
+    private void doThermal(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
+                        .caching(false)
                         .items(aStack)
                         .find();
                     if (tRecipe != null) {
@@ -529,8 +540,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
-    @SafeVarargs
-    private void doCentrifuge(HashSet<Integer>... aTables) {
+    private void doCentrifuge(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -552,8 +562,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
-    @SafeVarargs
-    private void doSift(HashSet<Integer>... aTables) {
+    private void doSift(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -575,8 +584,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         doCompress(tProduct);
     }
 
-    @SafeVarargs
-    private void doChemWash(HashSet<Integer>... aTables) {
+    private void doChemWash(IntOpenHashSet... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -710,20 +718,20 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                .addIcon(OVERLAY_FRONT_ORE_FACTORY)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
                     .extFacing()
                     .glow()
                     .build() };

@@ -257,8 +257,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Industrial_Extruder,
     Casing_Extruder,
 
-    // Multi-Machine
-    Industrial_MultiMachine,
     Casing_Multi_Use,
 
     // Bedrock Mining Platforms
@@ -378,6 +376,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamMixerMulti,
     // Big Steam Mixer
     Controller_SteamCompressorMulti,
+    // Big Steam Alloy Smelter
+    Controller_SteamAlloySmelterMulti,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,
@@ -719,6 +719,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
     HellishForceCatalyst,
+    CrystalColorizationCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,
@@ -909,6 +910,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     AmmoniumNitrateDust,
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
+
+    SimpleHandPump,
+    AdvancedHandPump,
+    SuperHandPump,
+    UltimateHandPump,
+    ExpandableHandPump,
+    DehydratorCoilWireEV,
+    DehydratorCoilWireIV,
+    DehydratorCoilWireLuV,
+    DehydratorCoilWireZPM,
+    PersonalCloakingDevice,
+    PersonalHealingDevice,
 
     ;
 

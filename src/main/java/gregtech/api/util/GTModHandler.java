@@ -566,8 +566,8 @@ public class GTModHandler {
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.MIRRORED) != 0,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
@@ -1072,7 +1072,6 @@ public class GTModHandler {
             if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1081,7 +1080,6 @@ public class GTModHandler {
             else GameRegistry.addRecipe(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1107,8 +1105,8 @@ public class GTModHandler {
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
@@ -1164,7 +1162,6 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1174,7 +1171,6 @@ public class GTModHandler {
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1678,9 +1674,10 @@ public class GTModHandler {
         if (isElectricItem(aStack)) {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                    aCharge,
-                    V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (!aIgnoreLimit && tTier >= 0) {
+                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
+                }
                 if (aCharge > 0) {
                     int rCharge = (int) Math.max(
                         0,
@@ -1942,76 +1939,82 @@ public class GTModHandler {
         /**
          * Mirrors the Recipe
          */
-        public static long MIRRORED = B[0];
+        public static final long MIRRORED = B[0];
         /**
          * Buffers the Recipe for later addition. This makes things more efficient.
          */
-        public static long BUFFERED = B[1];
+        public static final long BUFFERED = B[1];
         /**
          * This is a special Tag I used for crafting Coins up and down.
          * If all the input items have the same NBT, keep it in the output item.
          */
-        public static long KEEPNBT = B[2];
+        public static final long KEEPNBT = B[2];
         /**
          * Makes the Recipe Reverse Craftable in the Disassembler.
          */
-        public static long DISMANTLEABLE = B[3];
+        public static final long DISMANTLEABLE = B[3];
         /**
          * Prevents the Recipe from accidentally getting removed by my own Handlers.
          */
-        public static long NOT_REMOVABLE = B[4];
+        public static final long NOT_REMOVABLE = B[4];
         /**
          * Reverses the Output of the Recipe for smelting and pulverising.
          */
-        public static long REVERSIBLE = B[5];
+        public static final long REVERSIBLE = B[5];
         /**
          * Removes all Recipes with the same Output Item regardless of NBT, unless another Recipe Deletion Bit is added
          * too.
          */
-        public static long DELETE_ALL_OTHER_RECIPES = B[6];
+        public static final long DELETE_ALL_OTHER_RECIPES = B[6];
         /**
          * Removes all Recipes with the same Output Item limited to the same NBT.
          */
-        public static long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
+        public static final long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
         /**
          * Removes all Recipes with the same Output Item limited to Shaped Recipes.
          */
-        public static long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
+        public static final long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
         /**
          * Removes all Recipes with the same Output Item limited to native Recipe Handlers.
          */
-        public static long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
+        public static final long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
         /**
          * Disables the check for colliding Recipes.
          */
-        public static long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
+        public static final long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
         /**
          * Only adds the Recipe if there is another Recipe having that Output
          */
-        public static long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
+        public static final long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
         /**
          * Only adds the Recipe if it has an Output
          */
-        public static long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
+        public static final long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
         /**
          * Don't remove shapeless recipes with this output
          */
-        public static long DONT_REMOVE_SHAPELESS = B[13];
+        public static final long DONT_REMOVE_SHAPELESS = B[13];
         /**
          * Keep input item's NBT if the input item is the same as output item, and try to overwrite input item's NBT
          * tags with output item's NBT tags if exists
          */
-        public static long OVERWRITE_NBT = B[14];
-
+        public static final long OVERWRITE_NBT = B[14];
         /**
          * Combination of common bits.
          * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
-        public static long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
+        public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
          * Combination of common bits.
          * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
          */
-        public static long BITSD = BITS | DISMANTLEABLE;
+        public static final long BITSD = BITS | DISMANTLEABLE;
+        /**
+         * Combination of common bits.
+         * DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL, NOT_REMOVABLE
+         */
+        public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
+            | ONLY_ADD_IF_RESULT_IS_NOT_NULL
+            | NOT_REMOVABLE;
     }
 }

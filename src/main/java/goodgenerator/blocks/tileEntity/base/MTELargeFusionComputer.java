@@ -211,11 +211,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public abstract ITexture getTextureOverlay();
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         // Migration code

@@ -62,7 +62,7 @@ import squeek.applecore.api.food.ItemFoodProxy;
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
  *         Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.Names.APPLE_CORE)
+@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.ModIDs.APPLE_CORE)
 public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_ItemWithMaterialRenderer, IEdible {
 
     /**
@@ -347,13 +347,13 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return aStack;
     }
 
-    @Optional.Method(modid = Mods.Names.APPLE_CORE)
+    @Optional.Method(modid = Mods.ModIDs.APPLE_CORE)
     private static ItemFood getFoodProxy(Object edible) {
         return new ItemFoodProxy((IEdible) edible);
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLE_CORE)
+    @Optional.Method(modid = Mods.ModIDs.APPLE_CORE)
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         return tStat == null ? null
@@ -404,18 +404,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
-    }
 }

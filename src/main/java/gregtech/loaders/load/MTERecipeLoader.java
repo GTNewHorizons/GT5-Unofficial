@@ -32,7 +32,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
-import gregtech.loaders.postload.ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -2165,12 +2164,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'F',
                 OrePrefixes.frameGt.get(Materials.Osmiridium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningNeutronium.get(1L),
+            ItemList.Casing_MiningNeutronium.get(3L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Neutronium), 'F',
                 OrePrefixes.frameGt.get(Materials.Neutronium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningBlackPlutonium.get(1L),
+            ItemList.Casing_MiningBlackPlutonium.get(2L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.BlackPlutonium), 'F',
                 OrePrefixes.frameGt.get(Materials.BlackPlutonium) });
@@ -3468,7 +3467,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',
                 OrePrefixes.stick.get(Materials.Americium) });
 
-        ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GTModHandler.addCraftingRecipe(
             ItemList.Distillation_Tower.get(1L),
             bitsd,
@@ -3680,7 +3678,7 @@ public class MTERecipeLoader implements Runnable {
                 'F', ItemList.Casing_RobustTungstenSteel, 'P', OrePrefixes.rotor.get(Materials.TungstenSteel) });
 
         // If Cleanroom is enabled, add a recipe, else hide from NEI.
-        if (GTMod.gregtechproxy.mEnableCleanroom) {
+        if (GTMod.proxy.mEnableCleanroom) {
             GTModHandler.addCraftingRecipe(
                 ItemList.Machine_Multi_Cleanroom.get(1L),
                 bitsd,
@@ -3741,6 +3739,24 @@ public class MTERecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_MV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.MV_Coil, 'H', ItemList.Hull_MV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_HV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.HV_Coil, 'H', ItemList.Hull_HV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_EV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.EV_Coil, 'H', ItemList.Hull_EV, 'M',
+                OrePrefixes.block.get(Materials.NeodymiumMagnetic) });
     }
 
     private static void registerShapelessCraftingRecipes() {

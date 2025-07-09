@@ -93,6 +93,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private final int MACHINE_LIST_WINDOW_ID = 10;
     private final int CUSTOM_NAME_WINDOW_ID = 11;
     private static final int CASINGS_MIN = 85;
@@ -121,7 +122,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         .addElement(
             'C',
             buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
-                .casingIndex(59)
+                .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTEDroneCentre::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
@@ -148,23 +149,25 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (getBaseMetaTileEntity().isActive()) {
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                    .addIcon(ACTIVE)
-                    .extFacing()
-                    .build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(ACTIVE)
+                        .extFacing()
+                        .build() };
             } else {
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                    .addIcon(INACTIVE)
-                    .extFacing()
-                    .build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(INACTIVE)
+                        .extFacing()
+                        .build() };
             }
         } else if (side == aFacing.getOpposite()) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                 .addIcon(FACE)
                 .extFacing()
                 .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override

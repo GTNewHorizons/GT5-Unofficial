@@ -51,8 +51,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -81,6 +79,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -318,7 +317,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mNeedsUpdate) {
-                    if (GTMod.gregtechproxy.mUseBlockUpdateHandler) {
+                    if (GTMod.proxy.mUseBlockUpdateHandler) {
                         BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
                     } else {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -781,7 +780,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -1288,7 +1287,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mReleaseEnergy = false;
             // Normal Explosion Code
             mMetaTileEntity.onExplosion();
-            if (GTMod.gregtechproxy.mExplosionItemDrop) {
+            if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (this.isValidSlot(i))) {
@@ -1297,7 +1296,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                 }
             }
-            Pollution.addPollution((TileEntity) this, GTMod.gregtechproxy.mPollutionOnExplosion);
+            Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }
@@ -1846,7 +1845,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
             || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
             return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     public double getOutputEnergyUnitsPerTick() {
@@ -1898,6 +1897,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public boolean isAddedToEnergyNet() {
         return false;
+    }
+
+    @Override
+    public boolean isSteampowered() {
+        return getSteamCapacity() > 0;
     }
 
     public int demandsEnergy() {
@@ -2130,18 +2134,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mMetaTileEntity != null) mMetaTileEntity.gridChanged();
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
-    }
-
     void onChunkUnloadAE() {
         final AENetworkProxy gp = getProxy();
         if (gp != null) gp.onChunkUnload();
@@ -2208,5 +2200,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void setCustomName(String name) {
         if (getMetaTileEntity() instanceof ICustomNameObject customNameObject) customNameObject.setCustomName(name);
+    }
+
+    @Override
+    protected int getCoverTabHeightOffset() {
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
     }
 }

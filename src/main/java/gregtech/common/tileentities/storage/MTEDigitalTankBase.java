@@ -89,12 +89,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     private static int tierPump(int tier) {
         return switch (tier) {
             case 1 -> 2;
-            case 2 -> 3;
-            case 3 -> 3;
-            case 4 -> 4;
-            case 5 -> 4;
-            case 6 -> 5;
-            case 7 -> 5;
+            case 2, 3 -> 3;
+            case 4, 5 -> 4;
+            case 6, 7 -> 5;
             case 8 -> 6;
             case 9 -> 7;
             case 10 -> 8;
@@ -438,23 +435,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     public boolean allowOverflow() {

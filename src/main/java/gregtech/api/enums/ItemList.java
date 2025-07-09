@@ -1624,7 +1624,6 @@ public enum ItemList implements IItemContainer {
     Depleted_Thorium_2,
     Depleted_Thorium_4,
 
-    Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
@@ -1757,6 +1756,10 @@ public enum ItemList implements IItemContainer {
     MobRep_UV,
     Cover_PlayerDetector,
     Machine_Multi_HeatExchanger,
+
+    MagLevPython_MV,
+    MagLevPython_HV,
+    MagLevPython_EV,
 
     Block_BronzePlate,
     Block_SteelPlate,
@@ -2619,6 +2622,10 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Prismarine_Precipitate,
+    Prismatic_Crystal,
+    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
+    Naquarite_Universal_Insulator_Foil,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,
@@ -2677,6 +2684,8 @@ public enum ItemList implements IItemContainer {
 
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
+
+    MagLevHarness,
 
     // semicolon after the comment to reduce merge conflicts
     ;

@@ -39,7 +39,6 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -67,11 +66,11 @@ import mrtjp.projectred.api.IScrewdriver;
  * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
-        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
-        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
-        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O),
-        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.Names.PROJECT_RED_CORE), })
+    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
+        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
+        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
+        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
+        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
     implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
@@ -255,7 +254,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * Called by the Block Harvesting Event within the GTProxy
      */
-    @Mod.EventHandler
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,
         int aX, int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
@@ -266,7 +264,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 * tStats.getToolDamagePerDropConversion());
     }
 
-    @Mod.EventHandler
     public float onBlockBreakSpeedEvent(float aDefault, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, int aMetaData, PlayerEvent.BreakSpeed aEvent) {
         IToolStats tStats = getToolStats(aStack);
@@ -663,12 +660,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
-    private static boolean playSound = true;
+    public static boolean playSound = true;
 
     public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
+        final boolean previousState = playSound;
         playSound = false;
         boolean ret = doDamage(aStack, aAmount);
-        playSound = true;
+        playSound = previousState;
         return ret;
     }
 
@@ -681,7 +679,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tNewDamage >= getToolMaxDamage(aStack)) {
                 IToolStats tStats = getToolStats(aStack);
                 if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                    if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                    if (tStats != null && playSound) playSound(tStats);
                     if (aStack.stackSize > 0) aStack.stackSize--;
                 }
             }
@@ -695,7 +693,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (tNewDamage >= getToolMaxDamage(aStack)) {
                     IToolStats tStats = getToolStats(aStack);
                     if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                        if (tStats != null && playSound) playSound(tStats);
                         if (aStack.stackSize > 0) aStack.stackSize--;
                     }
                 }
@@ -703,6 +701,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             return true;
         }
         return false;
+    }
+
+    protected void playSound(IToolStats aStats) {
+        GTUtility.doSoundAtClient(aStats.getBreakingSound(), 1, 1.0F);
     }
 
     @Override
@@ -741,25 +743,30 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public final ItemStack getContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, true);
+        return getContainerItem(aStack, true, true);
     }
 
     @Override
     public final boolean hasContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, false) != null;
+        return getContainerItem(aStack, false, false) != null;
     }
 
-    private ItemStack getContainerItem(ItemStack aStack, boolean playSound) {
+    private ItemStack getContainerItem(ItemStack aStack, boolean playSound, boolean doDamage) {
         if (!isItemStackUsable(aStack)) return null;
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
-        if (playSound) {
-            doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-        } else {
-            doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+
+        if (doDamage) {
+            if (playSound) {
+                doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+            } else {
+                doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+            }
+            aStack = aStack != null && aStack.stackSize > 0 ? aStack : null;
+        } else if (playSound) {
+            playSound(tStats);
         }
-        aStack = aStack.stackSize > 0 ? aStack : null;
         return aStack;
     }
 
@@ -891,6 +898,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         super.onCreated(aStack, aWorld, aPlayer);
     }
 
+    public float getBlockStrength(ItemStack stack, Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        IToolStats toolStats = getToolStats(stack);
+        if (toolStats != null && player != null) {
+            return toolStats.getBlockStrength(stack, block, player, world, x, y, z, defaultBlockStrength);
+        }
+        return defaultBlockStrength;
+    }
+
     @Override
     public final boolean doesContainerItemLeaveCraftingGrid(ItemStack aStack) {
         return false;
@@ -908,6 +924,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
+        if (aStack == null) return false;
         IToolStats tStats = getToolStatsInternal(aStack);
         if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
             NBTTagCompound aNBT = aStack.getTagCompound();
@@ -937,29 +954,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2)
                 || tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)
                 tResult.put(tEntry.getKey(), tEntry.getValue());
-            else switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                case weapon:
-                    if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case all:
-                    tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case armor:
-                case armor_feet:
-                case armor_head:
-                case armor_legs:
-                case armor_torso:
-                    break;
-                case bow:
-                    if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case breakable:
-                    break;
-                case fishing_rod:
-                    break;
-                case digger:
-                    if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
+            else {
+                switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
+                    case weapon -> {
+                        if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case all -> {
+                        tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
+                    case bow -> {
+                        if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case digger -> {
+                        if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                }
             }
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
@@ -994,20 +1004,5 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) aNBT.removeTag("ench");
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
     }
 }

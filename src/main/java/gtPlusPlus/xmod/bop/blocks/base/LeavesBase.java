@@ -14,20 +14,23 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class LeavesBase extends BlockLeaves {
 
     protected IIcon[][] leafTextures = new IIcon[2][];
     protected String[][] leafType = new String[][] { {}, {} };
-    protected String[] treeType = new String[] {};
+    protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
     public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
@@ -35,7 +38,7 @@ public class LeavesBase extends BlockLeaves {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeLeaves", true);
+        OreDictionary.registerOre("treeLeaves", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 80, 150);
     }
@@ -50,7 +53,7 @@ public class LeavesBase extends BlockLeaves {
         Logger.INFO("Dropping Bonus Drops");
         for (ItemStack bonusDrop : this.bonusDrops) {
             if (bonusDrop != null && world.rand.nextInt(randomChance) == 0) {
-                this.dropBlockAsItem(world, x, y, z, ItemUtils.getSimpleStack(bonusDrop, 1));
+                this.dropBlockAsItem(world, x, y, z, GTUtility.copyAmount(1, bonusDrop));
             }
         }
     }

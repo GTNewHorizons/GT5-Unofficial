@@ -65,11 +65,6 @@ public class MTEHeatSensor extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }

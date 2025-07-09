@@ -94,6 +94,6 @@ public class ReplicatorBackend extends RecipeMapBackend {
     }
 
     private static int getUUMAmountFromMass(long mass) {
-        return GTUtility.safeInt((long) Math.pow(mass, GTMod.gregtechproxy.replicatorExponent), 1);
+        return GTUtility.safeInt((long) Math.pow(mass, GTMod.proxy.replicatorExponent), 1);
     }
 }
