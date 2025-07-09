@@ -227,9 +227,8 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     private double getEfficiency() {
-        return Math.min(
-            Math.pow((this.fuelSupply - minCapacityToStart) / ((maxCapacity - minCapacityToStart) / 10D), 2D) + 1,
-            100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+        double base = (this.fuelSupply - minCapacityToStart) / ((maxCapacity - minCapacityToStart) / 10D);
+        return Math.min(base * base + 1, 100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
     }
 
     @Override

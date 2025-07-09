@@ -19,8 +19,8 @@ import codechicken.nei.recipe.HandlerInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -63,7 +63,7 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
-            GTValues.GT,
+            GTMod.GT,
             "NEIPlugins",
             "register-crafting-handler",
             "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());

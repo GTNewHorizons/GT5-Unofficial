@@ -419,6 +419,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         return true;
     }
 
@@ -431,6 +435,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
         NBTTagList stockingItems = new NBTTagList();
@@ -1006,7 +1011,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
+        strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
     }
 }

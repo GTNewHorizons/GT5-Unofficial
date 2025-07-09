@@ -92,6 +92,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -271,11 +272,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0;
     }
@@ -412,7 +408,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (shouldCheckMaintenance()) {
             mWrench = aNBT.getBoolean("mWrench");
             mScrewdriver = aNBT.getBoolean("mScrewdriver");
-            mSoftMallet = aNBT.getBoolean("mSoftMallet");
+            mSoftMallet = aNBT.getBoolean("mSoftMallet") || aNBT.getBoolean("mSoftHammer");
             mHardHammer = aNBT.getBoolean("mHardHammer");
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
@@ -777,7 +773,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean polluteEnvironment(int aPollutionLevel) {
         final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
-        if (!GTMod.gregtechproxy.mPollution) return true;
+        if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
         if (mMufflerHatches.size() == 0) {
@@ -1331,8 +1327,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
                     metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(getControllerSlot())
-                            * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(mEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -1367,7 +1364,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     .getWorld().provider.dimensionId
                 + ".");
 
-        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.gregtechproxy.mPollutionOnExplosion);
+        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
         // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
@@ -2327,7 +2324,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tag.getInteger("maxProgress"),
                 tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
@@ -2389,7 +2386,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         }
 
-        final GTClientPreference preference = GTMod.gregtechproxy.getClientPreference(player.getUniqueID());
+        final GTClientPreference preference = GTMod.proxy.getClientPreference(player.getUniqueID());
         if (preference != null && preference.isWailaAverageNSEnabled()) {
             getBaseMetaTileEntity().startTimeStatistics();
             int tAverageTime = 0;
@@ -2410,12 +2407,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
-            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
+            final MTEHatchMuffler muffler = mMufflerHatches.get(i);
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
+            if (tile == null || tile.isDead()) continue;
+            tile.setActive(state);
         }
     }
 
@@ -2666,7 +2665,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean canDumpFluidToME() {
-        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+        for (IFluidStore tHatch : getFluidOutputSlots(GTValues.emptyFluidStackArray)) {
             if (tHatch instanceof MTEHatchOutputME) {
                 if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
                     return false;
@@ -2975,9 +2974,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     public boolean shouldDisplayCheckRecipeResult() {
         return true;
@@ -3531,11 +3527,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEMultiBlockBaseGui(this);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
     }
 
     public boolean getDefaultHasMaintenanceChecks() {

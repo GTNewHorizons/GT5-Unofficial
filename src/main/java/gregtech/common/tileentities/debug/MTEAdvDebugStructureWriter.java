@@ -7,13 +7,13 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -204,11 +204,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip"), // Scans Blocks Around
             translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE
@@ -334,11 +329,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         return false;
     }
 
-    public static class ForgeEventHandler {
-
-        public ForgeEventHandler() {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
+    public static class EventHandler {
 
         @SuppressWarnings("unused")
         @SideOnly(Side.CLIENT)
@@ -393,36 +384,37 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
 
         @SideOnly(Side.CLIENT)
         static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
-            GL11.glBegin(GL11.GL_LINE_STRIP);
+            final Tessellator tess = Tessellator.instance;
+            tess.startDrawing(GL11.GL_LINE_STRIP);
 
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x1, y2, z1);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x1, y1, z2);
-            GL11.glVertex3d(x1, y1, z1);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x1, y2, z1);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x1, y1, z2);
+            tess.addVertex(x1, y1, z1);
 
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x2, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x2, y1, z1);
 
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x1, y1, z2);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x2, y1, z1);
-            GL11.glVertex3d(x2, y2, z1);
-            GL11.glVertex3d(x1, y2, z1);
-            GL11.glVertex3d(x1, y2, z2);
-            GL11.glVertex3d(x2, y2, z2);
-            GL11.glVertex3d(x2, y1, z2);
-            GL11.glVertex3d(x1, y1, z2);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x1, y1, z2);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x1, y1, z1);
+            tess.addVertex(x2, y1, z1);
+            tess.addVertex(x2, y2, z1);
+            tess.addVertex(x1, y2, z1);
+            tess.addVertex(x1, y2, z2);
+            tess.addVertex(x2, y2, z2);
+            tess.addVertex(x2, y1, z2);
+            tess.addVertex(x1, y1, z2);
 
             GL11.glEnd();
         }

@@ -583,6 +583,15 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCAAdvancedImplosionActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionActiveGlow");
 
+    public static final CustomIcon oMCALargeFluidExtractor = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractor");
+    public static final CustomIcon oMCALargeFluidExtractorGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorGlow");
+    public static final CustomIcon oMCALargeFluidExtractorActive = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorActive");
+    public static final CustomIcon oMCALargeFluidExtractorActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorActiveGlow");
+
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(
         "TileEntities/gt4/machine_top_crafting");

@@ -1,5 +1,7 @@
 package gregtech.common.pollution;
 
+import gregtech.GTMod;
+
 public enum ColorOverrideType {
 
     FLOWER,
@@ -19,10 +21,10 @@ public enum ColorOverrideType {
 
     public int getColor(int oColor, int x, int z) {
         return switch (this) {
-            case FLOWER -> PollutionRenderer.colorFoliage(oColor, x, z);
-            case GRASS -> PollutionRenderer.colorGrass(oColor, x, z);
-            case LEAVES -> PollutionRenderer.colorLeaves(oColor, x, z);
-            case LIQUID -> PollutionRenderer.colorLiquid(oColor, x, z);
+            case FLOWER -> GTMod.clientProxy().mPollutionRenderer.colorFoliage(oColor, x, z);
+            case GRASS -> GTMod.clientProxy().mPollutionRenderer.colorGrass(oColor, x, z);
+            case LEAVES -> GTMod.clientProxy().mPollutionRenderer.colorLeaves(oColor, x, z);
+            case LIQUID -> GTMod.clientProxy().mPollutionRenderer.colorLiquid(oColor, x, z);
         };
     }
 }

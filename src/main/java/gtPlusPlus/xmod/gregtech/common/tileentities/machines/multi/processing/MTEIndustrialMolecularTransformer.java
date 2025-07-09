@@ -133,7 +133,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        if (this.mInputBusses.size() != 1 || this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
+        if (this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
             return false;
         }
         // there are 16 slot that only allow casing, so we subtract this from the grand total required
@@ -213,12 +213,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
+        return new ProcessingLogic().noRecipeCaching();
     }
 
     @Override

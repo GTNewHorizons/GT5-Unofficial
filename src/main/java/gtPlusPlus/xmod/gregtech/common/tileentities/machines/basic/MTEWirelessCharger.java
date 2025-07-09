@@ -15,6 +15,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyContainerItem;
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -43,7 +44,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     public MTEWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier,
         final int aSlotCount) {
-        super(aID, aName, aNameRegional, aTier, aSlotCount, new String[] {});
+        super(aID, aName, aNameRegional, aTier, aSlotCount, GTValues.emptyStringArray);
     }
 
     public MTEWirelessCharger(final String name, final int tier, final String[] description,
@@ -187,16 +188,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(final int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -204,11 +195,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     @Override
     public boolean isEnetInput() {
         return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
     }
 
     @Override
@@ -249,11 +235,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
     public long maxAmperesIn() {
         if (this.mode == MODE_LONG_RANGE) {
             return this.longRangeMap.size() + 1L;
@@ -270,26 +251,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyStored();
@@ -299,11 +260,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     public int maxProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -335,7 +291,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -364,11 +320,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
@@ -377,25 +328,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
@@ -438,12 +373,12 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
         if (tick % 20 == 0) {
             boolean mapped = this.equals(
-                WirelessChargerManager.getCharger(
+                GTMod.proxy.wirelessChargerManager.getCharger(
                     baseMetaTileEntity.getXCoord(),
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord()));
             if (!mapped) {
-                WirelessChargerManager.addCharger(this);
+                GTMod.proxy.wirelessChargerManager.addCharger(this);
             }
 
             for (EntityPlayer player : baseMetaTileEntity.getWorld().playerEntities) {
@@ -506,10 +441,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void onRemoval() {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         longRangeMap.clear();
         localRangeMap.clear();
-
         super.onRemoval();
     }
 
@@ -587,13 +521,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void onExplosion() {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         super.onExplosion();
     }
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        WirelessChargerManager.removeCharger(this);
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
         super.doExplosion(aExplosionPower);
     }
 

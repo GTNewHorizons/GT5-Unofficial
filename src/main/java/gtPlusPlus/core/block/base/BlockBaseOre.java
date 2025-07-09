@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -56,18 +55,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 this,
                 ItemBlockOre.class,
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GTOreDictUnificator.registerOre(
-                "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
-                ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator
+                .registerOre("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()), new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
     }
 
     public Material getMaterialEx() {
@@ -145,9 +137,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
         if (shouldSilkTouch) {
-            drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+            drops.add(new ItemStack(this, 1, metadata));
         } else {
-            switch (GTMod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.proxy.oreDropSystem) {
                 case Item -> drops.add(
                     ItemUtils
                         .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));
@@ -174,12 +166,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                                 1));
                     }
                 }
-                // Unified ore
-                case UnifiedBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                // Per Dimension ore
-                case PerDimBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                // Regular ore
-                case Block -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+                // Unified ore, Dimension ore, Regular ore
+                case UnifiedBlock, PerDimBlock, Block -> drops.add(new ItemStack(this, 1, metadata));
+
             }
         }
         return drops;

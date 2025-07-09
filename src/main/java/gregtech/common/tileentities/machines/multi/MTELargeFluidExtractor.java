@@ -30,6 +30,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -50,6 +52,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -191,10 +194,17 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(getEUMultiplier())
-            .setSpeedBonus(1.0f / getSpeedBonus());
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                setEuModifier(getEUMultiplier());
+                setSpeedBonus(1.0f / getSpeedBonus());
+                return super.process();
+            }
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -228,14 +238,24 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         if (side == facing) {
             if (active) {
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
+                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         }
         return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
@@ -301,12 +321,14 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mStructureBadCasingCount) {
-                return String.format(
-                    "%sNot enough casings: need %d, but\nhave %d.%s",
-                    EnumChatFormatting.DARK_RED,
-                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                    mCasingAmount,
-                    RESET);
+                return EnumChatFormatting.DARK_RED
+                    + StatCollector
+                        .translateToLocalFormatted(
+                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
+                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
+                            mCasingAmount)
+                        .replace("\\n", "\n")
+                    + EnumChatFormatting.RESET;
             }
 
             if (mStructureBadGlassTier) {
@@ -392,7 +414,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     public float getEUMultiplier() {
-        double heatingBonus = (mCoilLevel == null ? 0 : Math.pow(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
+        double heatingBonus = (mCoilLevel == null ? 0
+            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }

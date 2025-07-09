@@ -76,7 +76,7 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
         if (shouldSilkTouch) {
             rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         } else {
-            switch (GTMod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.proxy.oreDropSystem) {
                 case Item -> {
                     rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                 }
