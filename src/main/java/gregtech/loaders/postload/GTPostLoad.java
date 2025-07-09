@@ -59,7 +59,7 @@ public class GTPostLoad {
     public static void activateOreDictHandler() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.gregtechproxy.activateOreDictHandler();
+        GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GTMod.GT_FML_LOGGER
@@ -368,7 +368,7 @@ public class GTPostLoad {
     }
 
     public static void changeWoodenVanillaTools() {
-        if (!GTMod.gregtechproxy.mChangeWoodenVanillaTools) {
+        if (!GTMod.proxy.mChangeWoodenVanillaTools) {
             return;
         }
 

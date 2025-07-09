@@ -18,7 +18,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -112,11 +111,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "s", "X", 'X', OrePrefixes.stickLong.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "f ", " X", 'X', OrePrefixes.ingot.get(aMaterial) });
                 }
             }

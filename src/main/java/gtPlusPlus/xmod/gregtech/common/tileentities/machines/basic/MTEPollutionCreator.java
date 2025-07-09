@@ -210,7 +210,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     public int pollutionMultiplier = 1;
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
+        if (!GTMod.proxy.mPollution) {
             PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             addPollution();

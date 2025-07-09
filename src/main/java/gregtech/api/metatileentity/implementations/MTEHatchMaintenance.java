@@ -7,6 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -58,12 +60,12 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         mSolderingTool = false, mCrowbar = false, mAuto;
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 1, "For maintaining multiblocks");
         mAuto = false;
     }
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
-        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining multiblocks");
         mAuto = aAuto;
     }
 
@@ -87,13 +89,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (mAuto) {
             desc = new String[mDescriptionArray.length + 3];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "4 Ducttape, 2 Lubricant Cells";
-            desc[mDescriptionArray.length + 1] = "4 Steel Screws, 2 HV Circuits";
-            desc[mDescriptionArray.length + 2] = "For each autorepair";
+            desc[mDescriptionArray.length] = "Consumes 4 Duct Tape, 2 Lubricant Cells,";
+            desc[mDescriptionArray.length + 1] = "4 Steel Screws, and 2 HV Circuits";
+            desc[mDescriptionArray.length + 2] = "for each autorepair.";
         } else {
             desc = new String[mDescriptionArray.length + 1];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "Cannot be shared between Multiblocks!";
+            desc[mDescriptionArray.length] = "Use tools to fix issues.";
         }
         return desc;
     }
@@ -148,7 +150,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return mAuto && GTMod.gregtechproxy.mAMHInteraction;
+        return mAuto && GTMod.proxy.mAMHInteraction;
     }
 
     @Override
@@ -324,13 +326,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return mAuto && GTMod.gregtechproxy.mAMHInteraction;
+        return mAuto && GTMod.proxy.mAMHInteraction;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (mAuto && GTMod.gregtechproxy.mAMHInteraction) {
+        if (mAuto && GTMod.proxy.mAMHInteraction) {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
@@ -373,7 +375,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 12));
+                        .setPos(8, 12))
+                .widget(
+                    new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
+                        .addTooltips(
+                            Arrays.asList(
+                                GTUtility.breakLines(StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
+                        .setPos(163, 5)
+                        .setSize(7, 18));
         }
     }
 
