@@ -6,6 +6,8 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.Icon;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -35,7 +37,16 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
         IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
+
         final ICoverable tile = cover.getTile();
+        IItemHandler inventoryHandler;
+        if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+            && gtTile.getMetaTileEntity() != null
+            && tile.getSizeInventory() > 0) {
+            inventoryHandler = new InvWrapper(gtTile.getMetaTileEntity());
+        } else {
+            inventoryHandler = null;
+        }
         return Flow.column()
             .coverChildren()
 
@@ -59,23 +70,18 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                             .setDefaultNumber(-1)
                             .setNumbers(-1, tile.getSizeInventory())
                             .marginRight(2))
-                    .child(new DynamicDrawable(() -> getTargetItemDrawable(slotSyncer)).asWidget())
+                    .child(new DynamicDrawable(() -> getTargetItemDrawable(inventoryHandler, slotSyncer)).asWidget())
                     .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.item_slot")))))
             .coverChildrenWidth()
 
             .child(physicalRow(physicalSyncer));
     }
 
-    private Icon getTargetItemDrawable(IntSyncValue slotSyncer) {
+    private Icon getTargetItemDrawable(IItemHandler inv, IntSyncValue slotSyncer) {
         final ICoverable tile = cover.getTile();
-        if (slotSyncer.getIntValue() >= 0 && !tile.isDead()
-            && tile instanceof IGregTechTileEntity gtTile
-            && (gtTile.getMetaTileEntity() != null)
-            && tile.getSizeInventory() >= slotSyncer.getIntValue()) {
-            return new ItemDrawable(
-                gtTile.getMetaTileEntity()
-                    .getStackInSlot(slotSyncer.getIntValue())).asIcon()
-                        .size(16, 16);
+        if (inv != null && slotSyncer.getIntValue() >= 0 && inv.getSlots() >= slotSyncer.getIntValue()) {
+            return new ItemDrawable((inv.getStackInSlot(slotSyncer.getIntValue()))).asIcon()
+                .size(16, 16);
         } else {
             return new Icon(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX);
         }
