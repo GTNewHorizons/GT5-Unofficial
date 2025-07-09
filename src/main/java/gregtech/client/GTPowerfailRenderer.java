@@ -13,39 +13,37 @@ import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
 import com.github.bsideup.jabel.Desugar;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import it.unimi.dsi.fastutil.longs.LongList;
 
-@EventBusSubscriber(side = Side.CLIENT)
 public class GTPowerfailRenderer {
-
-    /** {packed x,y,z coords for powerfailed machines} */
-    public static LongList POWERFAILS;
-    public static boolean DO_RENDER = true;
 
     private static IIcon POWERFAIL_ICON;
 
+    /** {packed x,y,z coords for powerfailed machines} */
+    public LongList POWERFAILS;
+
     @SubscribeEvent
-    public static void onTextureDiscover(TextureStitchEvent.Pre event) {
+    public void onTextureDiscover(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 0) { // blocks
             POWERFAIL_ICON = event.map.registerIcon(Mods.GregTech.getResourcePath("icons", "powerfail"));
         }
     }
 
     @SubscribeEvent
-    public static void onWorldUnload(WorldEvent.Unload event) {
-        POWERFAILS = null;
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (event.world.isRemote) {
+            POWERFAILS = null;
+        }
     }
 
     @SubscribeEvent
-    public static void onRenderWorld(RenderWorldLastEvent event) {
+    public void onRenderWorld(RenderWorldLastEvent event) {
         if (POWERFAILS == null || POWERFAILS.isEmpty()) return;
         if (!Client.render.renderPowerfailNotifications) return;
 

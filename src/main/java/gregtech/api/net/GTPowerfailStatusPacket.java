@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import gregtech.client.GTPowerfailRenderer;
+import gregtech.GTMod;
 import gregtech.common.data.GTPowerfailTracker;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -72,7 +72,6 @@ public class GTPowerfailStatusPacket extends GTPacket {
     public void process(IBlockAccess blockAccess) {
         if (!(blockAccess instanceof World world)) return;
         if (this.worldId != world.provider.dimensionId) return;
-
-        GTPowerfailRenderer.POWERFAILS = this.powerfailedMachines;
+        GTMod.clientProxy().powerfailRenderer.POWERFAILS = this.powerfailedMachines;
     }
 }
