@@ -377,7 +377,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GRAY
                     + " * (Total Rotor Tier) Parallels. Non-Huge Turbines have lowered effectiveness.")
             .addInfo(
-                "Requires " + EnumChatFormatting.BLUE
+                "Requires Recipe Tier * " + EnumChatFormatting.BLUE
                     + "10L/s"
                     + EnumChatFormatting.GRAY
                     + " of "
