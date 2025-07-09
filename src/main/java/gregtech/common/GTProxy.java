@@ -91,6 +91,10 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import org.lwjgl.input.Keyboard;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
@@ -155,7 +159,6 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.PowerGogglesEventHandler;
-import gregtech.common.handlers.ToolModeSwitchKeybindHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
@@ -747,6 +750,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
 
+    public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
+
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
         oreDictBurnTimes.put("dustTinySodium", 44);
@@ -1102,7 +1107,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
-        ToolModeSwitchKeybindHandler.init();
+        TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
+            .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
+            .registerGlobalListener(MetaGeneratedTool::switchToolMode);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
