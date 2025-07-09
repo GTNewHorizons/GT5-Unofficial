@@ -3,8 +3,6 @@ package gregtech.common.render;
 import static gregtech.api.enums.Mods.GregTech;
 import static java.lang.Math.sin;
 
-import java.util.function.Function;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -14,21 +12,19 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 
 public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
-    private boolean initialized = false;
-
-    private static IModelCustomExt nanoforgeCoreModel;
+    private static boolean initialized;
     private static ResourceLocation coreTexture;
-    private static IModelCustomExt nanoforgeShieldModel;
     private static ResourceLocation shieldTexture;
+    private static ResourceLocation ringTexture;
+    private static IModelCustomExt nanoforgeCoreModel;
+    private static IModelCustomExt nanoforgeShieldModel;
     private static IModelCustomExt nanoforgeRingOneModel;
     private static IModelCustomExt nanoforgeRingTwoModel;
     private static IModelCustomExt nanoforgeRingThreeModel;
-    private static ResourceLocation ringTexture;
 
     private static final float WARM_UP_TIME = 25.0f;
     private static final float FULL_CHAOS_TIME = 75.0f;
@@ -37,45 +33,19 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     private static final float SINUS_DIVIDER = 50.0f;
     private static final float MAX_CHAOS_SPEED_UP = 2.0f;
     private static final float RING_ROTATION_NORMAL = 1.0f;
-    private static final Function<Float, Float> FIRST_RING_ROTATION_MAJOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> FIRST_RING_ROTATION_MINOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> SECOND_RING_ROTATION_MAJOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> SECOND_RING_ROTATION_MINOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> THIRD_RING_ROTATION_MAJOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> THIRD_RING_ROTATION_MINOR = (
-        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
-            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-
-    public NanoForgeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class, this);
-    }
 
     private void init() {
-        nanoforgeCoreModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"));
+        // spotless:off
         coreTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Core.png");
-        nanoforgeShieldModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"));
         shieldTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Shield.png");
-        nanoforgeRingOneModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
-        nanoforgeRingTwoModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"));
-        nanoforgeRingThreeModel = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"));
         ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
-
+        nanoforgeCoreModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"));
+        nanoforgeShieldModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"));
+        nanoforgeRingOneModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
+        nanoforgeRingTwoModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"));
+        nanoforgeRingThreeModel = (IModelCustomExt) AdvancedModelLoader.loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"));
         initialized = true;
+        // spotless:on
     }
 
     private void renderNanoForge(TileEntityNanoForgeRenderer tile, double x, double y, double z, float deltaT) {
@@ -137,8 +107,8 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             0f,
             0.5f + RING_ROTATION_NORMAL * chaos,
             0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, FIRST_RING_ROTATION_MAJOR.apply(timer), 0f, 0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, FIRST_RING_ROTATION_MINOR.apply(timer));
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMajor(timer), 0f, 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMinor(timer));
         nanoforgeRingOneModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -156,8 +126,8 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             0.5f + RING_ROTATION_NORMAL * chaos,
             0f,
             0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, SECOND_RING_ROTATION_MAJOR.apply(timer));
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, SECOND_RING_ROTATION_MINOR.apply(timer), 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMajor(timer));
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMinor(timer), 0f);
         nanoforgeRingTwoModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -175,8 +145,8 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             0f,
             0f,
             0.5f + RING_ROTATION_NORMAL * chaos);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, THIRD_RING_ROTATION_MAJOR.apply(timer), 0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, THIRD_RING_ROTATION_MINOR.apply(timer), 0f, 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMajor(timer), 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMinor(timer), 0f, 0f);
         nanoforgeRingThreeModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -208,6 +178,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glPopAttrib();
     }
 
+    @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!(tile instanceof TileEntityNanoForgeRenderer nanoforge)) return;
 
@@ -227,6 +198,16 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         }
 
         renderNanoForge(nanoforge, x, y, z, deltaT);
+    }
+
+    private static float applyRotationMajor(float f) {
+        return (float) (sin(f / SINUS_DIVIDER) + 1.5 * sin(f / SINUS_DIVIDER * 0.5)
+            + 0.5 * sin(f / SINUS_DIVIDER * 0.1));
+    }
+
+    private static float applyRotationMinor(float f) {
+        return (float) (sin(f / SINUS_DIVIDER) + 1.5 * sin(f / SINUS_DIVIDER * 0.2)
+            + 0.5 * sin(f / SINUS_DIVIDER * 0.1));
     }
 
 }
