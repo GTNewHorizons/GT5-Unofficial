@@ -2002,7 +2002,9 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        if (SideReference.Side.Client) BWBlockOreRenderer.register();
+        if (SideReference.Side.Client) {
+            BWBlockOreRenderer.register();
+        }
 
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedOre.class, "bw.blockoresTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedSmallOre.class, "bw.blockoresSmallTE");
