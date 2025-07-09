@@ -91,7 +91,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
-    private final int amountToDrain = 10; // constant drain amount.
+    private int amountToDrain = 1; // drain amount.
     private int mTier;
     private static FluidStack kerosene100;
     private static FluidStack kerosene10;
@@ -363,7 +363,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + "Heavy")
             .addInfo("200% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
-            .addInfo("Will not perform overclocks over the hatch tier.")
+            .addInfo("Will not perform overclocks over the hatch tier+1.")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
@@ -574,8 +574,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-
-                if (!checkFluid()) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
+                if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
@@ -597,8 +597,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
-                return super.createOverclockCalculator(recipe)
-                    .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(
+                    (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
             }
         }.setEuModifier(0.7F);
     }
@@ -653,11 +653,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return sumRotorLevels;
     }
 
-    private boolean checkFluid() // checks if 100L of fluid is found in ANY of the machines input hatches
+    private boolean checkFluid(int amount) // checks if 5 seconds worth of fluid is found in ANY of the machines input
+                                           // hatches
     {
         // checks for fluid in hatch, does not drain it.
-        if (kerosene100 == null) kerosene100 = new FluidStack(GTPPFluids.Kerosene, 100);
-        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(100) : kerosene100;
+        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amount)
+            : new FluidStack(GTPPFluids.Kerosene, amount);
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
                 return true;
@@ -715,12 +716,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         if (!super.onRunningTick(aStack)) {
             return false;
         }
+        // might need a cleanup here
         if (ticker % 21 == 0) {
-            if (kerosene10 == null) kerosene10 = new FluidStack(GTPPFluids.Kerosene, 10);
+
             FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
-                : kerosene10; // gets fluid to drain
-            for (MTEHatchInput mInputHatch : mInputHatches) { // worst case, checks all hatches fluid not found, stops
-                // machine
+                : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
+            for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
                     ticker = 1;
                     return true;
