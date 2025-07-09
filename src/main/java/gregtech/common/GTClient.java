@@ -567,6 +567,7 @@ public class GTClient extends GTProxy {
     // Used for tool sounds in the crafting grid
     @SubscribeEvent
     public void onPlayerCrafting(PlayerEvent.ItemCraftedEvent event) {
+        if (!MetaGeneratedTool.playSound) return;
         if (this.mTicksUntilNextCraftSound > 0) return;
         for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
             ItemStack stack = event.craftMatrix.getStackInSlot(i);
