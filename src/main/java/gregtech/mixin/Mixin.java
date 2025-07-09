@@ -63,11 +63,20 @@ public enum Mixin {
             "minecraft.accessors.ForgeShapelessRecipeMixin",
             "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
-            "minecraft.accessors.EntityPlayerMPMixin")
+            "minecraft.accessors.EntityPlayerMPMixin",
+            "minecraft.accessors.WeightedRandomFishableMixin",
+            "minecraft.accessors.EntityMixin",
+            "minecraft.accessors.LanguageRegistryMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
+    VanillaClientAccessors(
+        new Builder("Adds various accessors").addMixinClasses("minecraft.accessors.GuiTextFieldMixin")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.CLIENT)),
     ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
@@ -189,7 +198,18 @@ public enum Mixin {
             .setPhase(Phase.LATE)
             .setSide(Side.BOTH)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE));
+            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE)),
+    FORESTRY_ACCESSOR(new Builder("Forestry accessors")
+        .addMixinClasses(
+            "forestry.TreeDefinitionMixin",
+            "forestry.MutationMixin",
+            "forestry.AlleleEffectThrottledMixin")
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.FORESTRY))
+
+    ;
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 
