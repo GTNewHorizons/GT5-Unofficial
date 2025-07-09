@@ -212,7 +212,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     }
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
+        if (!GTMod.proxy.mPollution) {
             PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
