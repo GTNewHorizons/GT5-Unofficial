@@ -16,7 +16,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -86,11 +85,11 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.get(aMaterial) });
                 }
             }
@@ -112,7 +111,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "ShS", 'S', OrePrefixes.stick.get(aMaterial) });
                 }
         }

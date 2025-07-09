@@ -10,7 +10,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class FRItemRegistry {
 
-    @Optional.Method(modid = Mods.Names.FORESTRY)
+    @Optional.Method(modid = Mods.ModIDs.FORESTRY)
     public static void Register() {
 
         GregtechItemList.HiveFrameVoid
