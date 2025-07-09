@@ -3,6 +3,7 @@ package gregtech.common.items.behaviors;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
@@ -29,7 +30,9 @@ public class BehaviourSwitchMode extends BehaviourNone {
                 } else {
                     keyName = Keyboard.getKeyName(keyCode);
                 }
-                aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.switch_mode.tooltip", keyName));
+                aList.add(
+                    EnumChatFormatting.DARK_GRAY
+                        + StatCollector.translateToLocalFormatted("gt.behaviour.switch_mode.tooltip", keyName));
             }
         }
 
