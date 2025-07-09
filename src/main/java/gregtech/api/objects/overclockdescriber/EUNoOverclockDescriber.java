@@ -1,8 +1,8 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -40,7 +40,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     @Override
     public final void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getDuration() > 0 && recipeInfo.calculator.getConsumption() > 0) {
-            recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+            recipeInfo.drawText(getTotalPowerString(recipeInfo.calculator));
         }
         drawEnergyInfoImpl(recipeInfo);
     }
@@ -53,15 +53,18 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
         if (recipeInfo.calculator.getConsumption() <= 0) {
             return;
         }
-        recipeInfo.drawText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
+        recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
+
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
-            recipeInfo.drawText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
+            recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
+            recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
         }
     }
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()) + " EU";
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.total",
+            GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
@@ -72,24 +75,15 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     /**
-     * @return Whole EU/t usage, without tier display.
-     */
-    protected String getEUtWithoutTier(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(calculator.getConsumption()) + " EU/t";
-    }
-
-    /**
-     * @return Whole EU/t usage, with tier display.
-     */
-    protected String getEUtWithTier(OverclockCalculator calculator) {
-        return getEUtWithoutTier(calculator) + GTUtility.getTierNameWithParentheses(calculator.getConsumption());
-    }
-
-    /**
      * @return Whole EU/t usage. Also displays voltage tier if it should be shown.
      */
     protected String getEUtDisplay(OverclockCalculator calculator) {
-        return shouldShowAmperage(calculator) ? getEUtWithoutTier(calculator) : getEUtWithTier(calculator);
+        String tier_displayed = shouldShowAmperage(calculator) ? ""
+            : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.usage",
+            GTUtility.formatNumbers(calculator.getConsumption()),
+            tier_displayed);
     }
 
     /**
@@ -97,11 +91,15 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      */
     protected String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
-        return GTUtility.formatNumbers(voltage) + " EU/t" + GTUtility.getTierNameWithParentheses(voltage);
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.voltage",
+            GTUtility.formatNumbers(voltage),
+            GTUtility.getTierNameWithParentheses(voltage));
+
     }
 
     protected String getAmperageString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(amperage);
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(amperage));
     }
 
     protected long computeVoltageForEURate(long euPerTick) {

@@ -55,8 +55,8 @@ public class NodeEnergyReceiver extends ConsumerNode {
             World tWorld = mTileEntity.getWorldObj();
             GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
-            if (GregTechAPI.sMachineExplosions) if (GTMod.gregtechproxy.mPollution) Pollution
-                .addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GTMod.gregtechproxy.mPollutionOnExplosion);
+            if (GregTechAPI.sMachineExplosions) if (GTMod.proxy.mPollution)
+                Pollution.addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GTMod.proxy.mPollutionOnExplosion);
 
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
                 .setSmoking(true)

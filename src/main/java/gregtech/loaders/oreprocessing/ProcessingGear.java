@@ -18,7 +18,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -49,19 +48,19 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.get(aMaterial), 'S',
                                 OrePrefixes.stick.get(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
                             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                                    GTProxy.tBits,
+                                    GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.get(aMaterial), 'S',
                                         OrePrefixes.stick.get(aMaterial) });
                             }
@@ -86,17 +85,17 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " s", 'P', OrePrefixes.plank.get(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " f", 'P', OrePrefixes.stoneSmooth });
                         default -> {
                             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                                    GTProxy.tBits,
+                                    GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P',
                                         OrePrefixes.plate.get(aMaterial) });
                             }

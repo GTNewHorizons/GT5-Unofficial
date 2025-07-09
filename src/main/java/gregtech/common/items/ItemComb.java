@@ -59,7 +59,9 @@ import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IItemFirestoneBurning {
 
     @SideOnly(Side.CLIENT)
@@ -499,6 +501,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.ARSENIC, new Materials[] { Materials.Arsenic }, Voltage.LV);
         addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
         addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
+        addProcessGT(CombType.PYRITE, new Materials[] { Materials.Pyrite }, Voltage.LV);
 
         addCentrifugeToMaterial(
             CombType.SLAG,
@@ -1263,7 +1266,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         return itemStack.isItemEqual(getStackForType(CombType.FIRESTONE));
     }

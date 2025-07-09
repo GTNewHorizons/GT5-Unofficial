@@ -149,14 +149,12 @@ public class CraftingRecipeLoader implements Runnable {
             .removeRecipe(new ItemStack(Blocks.planks, 1, 0), null, null, new ItemStack(Blocks.planks, 1, 0));
         if (tStack != null) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(
-                    GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                    tStack),
+                GTUtility
+                    .copyAmount(GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4, tStack),
                 bits_no_remove_buffered,
                 new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
             GTModHandler.addCraftingRecipe(
-                GTUtility
-                    .copyAmount(GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, tStack),
+                GTUtility.copyAmount(GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize, tStack),
                 bits_no_remove_buffered,
                 new Object[] { "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
         }
@@ -2017,6 +2015,16 @@ public class CraftingRecipeLoader implements Runnable {
                 new Object[] { "RAR", "SBS", "RSR", 'R', OrePrefixes.stick.get(Materials.Thaumium), 'A',
                     OrePrefixes.plate.get(Materials.InfusedAir), 'S', OrePrefixes.plate.get(Materials.SteelMagnetic),
                     'B', GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 2), });
+        }
+
+        if (TwilightForest.isModLoaded()) {
+            GTModHandler.addCraftingRecipe(
+                GTModHandler.getModItem(TwilightForest.ID, "tile.TFThorns", 1, 0),
+                bits_no_remove_buffered,
+                new Object[] { "TWT", "LWL", "TWT", 'T',
+                    GTModHandler.getModItem(TwilightForest.ID, "tile.TFThornRose", 1, 0), 'L',
+                    ItemList.TF_LiveRoot.get(1), 'W',
+                    GTModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0), });
         }
     }
 }
