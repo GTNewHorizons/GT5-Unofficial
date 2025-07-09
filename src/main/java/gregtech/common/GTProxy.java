@@ -97,6 +97,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -2431,7 +2432,7 @@ public class GTProxy implements IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2444,7 +2445,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void playerMap$onPlayerLeft(PlayerLoggedOutEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2457,7 +2458,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerChangeDim(PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen
@@ -2470,7 +2471,7 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerRespawn(PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {
             // this should never happen

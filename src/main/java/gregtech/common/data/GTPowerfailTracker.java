@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,7 +27,6 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.github.bsideup.jabel.Desugar;
-import com.google.common.collect.MapMaker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -44,7 +42,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -68,9 +65,6 @@ public class GTPowerfailTracker {
     /** The powerfail state. When a world is loaded, this will never be null. */
     private static SaveData INSTANCE;
 
-    /** A fast lookup for players. */
-    private static final ConcurrentMap<UUID, EntityPlayerMP> PLAYERS_BY_ID = new MapMaker().weakValues()
-        .makeMap();
     /** Players with pending powerfail syncs. Used to debounce updates to once per tick. */
     private static final HashSet<UUID> PENDING_UPDATES = new HashSet<>();
 
@@ -297,11 +291,6 @@ public class GTPowerfailTracker {
     public static void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
 
-        PLAYERS_BY_ID.put(
-            playerMP.getGameProfile()
-                .getId(),
-            playerMP);
-
         List<Powerfail> powerfails = getPowerfails(
             event.player.getGameProfile()
                 .getId(),
@@ -322,39 +311,17 @@ public class GTPowerfailTracker {
     @SubscribeEvent
     public static void onPlayerTeleported(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
-
-        PLAYERS_BY_ID.put(
-            playerMP.getGameProfile()
-                .getId(),
-            playerMP);
-
         sendPlayerPowerfailStatus(playerMP);
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
-
-        PLAYERS_BY_ID.put(
-            playerMP.getGameProfile()
-                .getId(),
-            playerMP);
-
         sendPlayerPowerfailStatus(playerMP);
     }
 
     @SubscribeEvent
-    public static void onPlayerLeft(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (!(event.player instanceof EntityPlayerMP playerMP)) return;
-
-        PLAYERS_BY_ID.remove(
-            playerMP.getGameProfile()
-                .getId());
-    }
-
-    @SubscribeEvent
     public static void onPostTick(TickEvent.ServerTickEvent event) {
-        if (event.side != Side.SERVER) return;
         if (event.phase != TickEvent.Phase.END) return;
 
         for (UUID playerId : PENDING_UPDATES) {
@@ -368,8 +335,8 @@ public class GTPowerfailTracker {
         PENDING_UPDATES.clear();
     }
 
-    public static EntityPlayerMP getPlayer(UUID id) {
-        return PLAYERS_BY_ID.get(id);
+    private static EntityPlayerMP getPlayer(UUID id) {
+        return GTMod.proxy.getPlayerMP(id);
     }
 
     @SubscribeEvent
