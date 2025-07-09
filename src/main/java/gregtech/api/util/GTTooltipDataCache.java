@@ -50,7 +50,7 @@ public class GTTooltipDataCache {
     public TooltipData getUncachedTooltipData(String key, Object... args) {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
-        if (Math.max(GTMod.gregtechproxy.mTooltipVerbosity, GTMod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
+        if (Math.max(GTMod.proxy.mTooltipVerbosity, GTMod.proxy.mTooltipShiftVerbosity) >= 3) {
             lines.addAll(getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the
                                                                 // lines
         }
@@ -58,8 +58,8 @@ public class GTTooltipDataCache {
             lines.add(key); // Fallback in case no lines could be found at all
         }
         return new TooltipData(
-            lines.subList(0, getVerbosityIndex(GTMod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
-            lines.subList(0, getVerbosityIndex(GTMod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
+            lines.subList(0, getVerbosityIndex(GTMod.proxy.mTooltipVerbosity, normalLines, lines.size())),
+            lines.subList(0, getVerbosityIndex(GTMod.proxy.mTooltipShiftVerbosity, normalLines, lines.size())));
     }
 
     /**

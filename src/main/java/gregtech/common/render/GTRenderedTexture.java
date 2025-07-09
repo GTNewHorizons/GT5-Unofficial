@@ -81,7 +81,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -107,7 +107,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -133,7 +133,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -159,7 +159,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -185,7 +185,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -211,7 +211,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -392,7 +392,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
         if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
 
-        final EntityPlayer player = GTMod.gregtechproxy.getThePlayer();
+        final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;
 
         final World w = player.getEntityWorld();

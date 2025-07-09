@@ -195,7 +195,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return true;
     }
 
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     private boolean isUnformedRCMulti(TileEntity tileEntity) {
         return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
     }

@@ -238,8 +238,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide()
-            && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
+        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }
     }
@@ -404,7 +403,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.gregtechproxy.gt6Cable) {
+        if (GTMod.proxy.gt6Cable) {
             if (!aPlayer.isSneaking() || !GTMod.gregtechproxy.cableMultiConnectEnabled) {
                 // Regular connection.
                 if (consumeDurabilityForConnection(aPlayer)) {
@@ -593,12 +592,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.gregtechproxy.gt6Cable
+        if (GTMod.proxy.gt6Cable
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
                 aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.disconnected"));
-            } else if (!GTMod.gregtechproxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
+            } else if (!GTMod.proxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
                 if (connect(wrenchingSide) > 0)
                     aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.item.cable.connected"));
             }
@@ -655,7 +654,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 && ((IEnergySink) ic2Energy).acceptsEnergyFrom((TileEntity) baseMetaTile, oppositeSide)) return true;
 
             // IC2 Source Compat
-            if (GTMod.gregtechproxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
+            if (GTMod.proxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
                 if (((IEnergySource) ic2Energy).emitsEnergyTo((TileEntity) baseMetaTile, oppositeSide)) {
                     return true;
                 }
@@ -673,7 +672,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 Cables are enabled
-        return GTMod.gregtechproxy.gt6Cable;
+        return GTMod.proxy.gt6Cable;
     }
 
     @Override
@@ -718,12 +717,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (GTMod.gregtechproxy.gt6Cable) aNBT.setByte("mConnections", mConnections);
+        if (GTMod.proxy.gt6Cable) aNBT.setByte("mConnections", mConnections);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (GTMod.gregtechproxy.gt6Cable) {
+        if (GTMod.proxy.gt6Cable) {
             mConnections = aNBT.getByte("mConnections");
         }
     }
@@ -771,7 +770,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public boolean shouldJoinIc2Enet() {
-        if (!GTMod.gregtechproxy.ic2EnergySourceCompat) return false;
+        if (!GTMod.proxy.ic2EnergySourceCompat) return false;
 
         if (mConnections != 0) {
             final IGregTechTileEntity baseMeta = getBaseMetaTileEntity();
