@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -240,16 +241,15 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     public MTETesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
         final MTETesseractGenerator rTesseract = TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
+            .getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), aFrequency);
         if (rTesseract == null) {
             return null;
         }
-        if (!TesseractHelper.isGeneratorOwnedByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), rTesseract)) {
+        if (!TesseractHelper.isGeneratorOwnedByPlayer(GTMod.proxy.getPlayerMP(mOwner), rTesseract)) {
             return null;
         }
         if (rTesseract.mFrequency != aFrequency) {
-            TesseractHelper
-                .setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency, null);
+            TesseractHelper.setTerminalOwnershipByPlayer(GTMod.proxy.getPlayerMP(mOwner), aFrequency, null);
             return null;
         }
         if (!rTesseract.isValidTesseractGenerator(

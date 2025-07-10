@@ -3,16 +3,11 @@ package gtPlusPlus.core.util.minecraft;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
@@ -37,34 +32,6 @@ public class PlayerUtils {
             }
         } catch (final Throwable ignored) {}
         return null;
-    }
-
-    public static EntityPlayer getPlayerOnServerFromUUID(final UUID parUUID) {
-        if (parUUID == null) {
-            return null;
-        }
-        for (final EntityPlayerMP player : getOnlinePlayers()) {
-            if (player.getUniqueID()
-                .equals(parUUID)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
-    // Not Clientside
-    public static ItemStack getItemStackInPlayersHand(final World world, final String Name) {
-        return PlayerUtils.getItemStackInPlayersHand(getPlayer(Name));
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static ItemStack getItemStackInPlayersHand() {
-        return PlayerUtils.getItemStackInPlayersHand(Minecraft.getMinecraft().thePlayer);
-    }
-
-    public static ItemStack getItemStackInPlayersHand(final EntityPlayer player) {
-        if (player == null) return null;
-        return player.getHeldItem();
     }
 
     public static UUID getPlayersUUIDByName(final String aPlayerName) {

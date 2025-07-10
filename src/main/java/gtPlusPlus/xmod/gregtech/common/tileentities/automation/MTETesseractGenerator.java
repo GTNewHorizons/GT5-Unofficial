@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -116,8 +117,8 @@ public class MTETesseractGenerator extends MTEBasicTank {
 
     @Override
     public int getProgresstime() {
-        return (TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency)
-            == this) && (this.isWorking >= 20) ? 999 : 0;
+        return (TesseractHelper.getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), this.mFrequency) == this)
+            && (this.isWorking >= 20) ? 999 : 0;
     }
 
     @Override
@@ -659,15 +660,13 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 if ((getGeneratorEntity(this.mFrequency) == null)
                     || (!getGeneratorEntity(this.mFrequency).isValidTesseractGenerator(null, true))) {
                     // Utils.LOG_WARNING("storing TE I think to mFreq map?");
-                    TesseractHelper.setGeneratorOwnershipByPlayer(
-                        PlayerUtils.getPlayerOnServerFromUUID(mOwner),
-                        this.mFrequency,
-                        this);
+                    TesseractHelper
+                        .setGeneratorOwnershipByPlayer(GTMod.proxy.getPlayerMP(mOwner), this.mFrequency, this);
                 }
             } else {
                 if (getGeneratorEntity(this.mFrequency) == this) {
                     Logger.WARNING("this gen == mFreq on map - do block update");
-                    TesseractHelper.removeGenerator(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
+                    TesseractHelper.removeGenerator(GTMod.proxy.getPlayerMP(mOwner), this.mFrequency);
                     this.getBaseMetaTileEntity()
                         .issueBlockUpdate();
                 }
@@ -751,11 +750,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     private MTETesseractGenerator getGeneratorEntity() {
-        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
+        return TesseractHelper.getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), this.mFrequency);
     }
 
     private MTETesseractGenerator getGeneratorEntity(int frequency) {
-        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
+        return TesseractHelper.getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), frequency);
     }
 
     @Override
