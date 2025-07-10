@@ -79,6 +79,7 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
     @Override
     public int checkRecipe() {
         GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+            .caching(false)
             .items(getAllInputs())
             .voltage(TierEU.LV)
             .cachedRecipe(mLastRecipe)

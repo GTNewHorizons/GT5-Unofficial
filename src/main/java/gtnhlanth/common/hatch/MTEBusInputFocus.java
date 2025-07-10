@@ -3,7 +3,6 @@ package gtnhlanth.common.hatch;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,11 +27,6 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     @Override
     public int getInputSlotCount() {
         return INPUT_SLOTS;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
     }
 
     @Override

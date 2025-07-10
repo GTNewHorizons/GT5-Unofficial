@@ -27,6 +27,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.extensions.ArrayExt;
 
 /**
  * Used by machines that are locked to a single recipe, for faster recipe checking.
@@ -394,8 +395,8 @@ public class SingleRecipeCheck {
             .fluids(fInputs)
             .voltage(GTValues.V[GTUtility.getTier(eut)])
             .find();
-        int[] chances = tag.getIntArray("chances");
-        if (chances.length == 0) chances = null;
+        // need call to ArrayExt.fixChancesArray for backward compat
+        int[] chances = ArrayExt.fixChancesArray(tag.hasKey("chances") ? tag.getIntArray("chances") : null, -1);
         if (found == null || !GTUtility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)
             || !GTUtility.equals(outputs, found.mOutputs)
@@ -450,7 +451,7 @@ public class SingleRecipeCheck {
     /**
      * Returns a human-friendly string representing the recipe.
      * The caller can choose whether to include inputs and/or outputs.
-     * 
+     *
      * @param recipe           GT recipe
      * @param includeInputs    if true, include item and fluid inputs.
      * @param includeOutputs   if true, include item and fluid outputs.

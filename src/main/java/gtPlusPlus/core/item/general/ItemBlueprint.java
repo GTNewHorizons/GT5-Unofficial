@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -78,10 +77,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     public void onCreated(final ItemStack itemStack, final World world, final EntityPlayer player) {
         this.createNBT(itemStack);
     }
-
-    @Override
-    public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4,
-        final boolean par5) {}
 
     @Override
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {

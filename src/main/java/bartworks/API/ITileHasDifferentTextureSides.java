@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,7 +27,7 @@ public interface ITileHasDifferentTextureSides {
     IIcon[] texture = new IIcon[7];
 
     @SideOnly(Side.CLIENT)
-    default IIcon getTextureForSide(ForgeDirection side, int meta) {
+    default IIcon getTextureForSide(@NotNull ForgeDirection side, int meta) {
         return texture[side.ordinal()];
     }
 

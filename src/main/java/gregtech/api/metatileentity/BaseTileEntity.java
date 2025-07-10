@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GTValues.NW;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -60,11 +58,10 @@ import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
-import gregtech.api.net.GTPacketBlockEvent;
 import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -538,11 +535,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        NW.sendPacketToAllPlayersInRange(
-            worldObj,
-            new GTPacketBlockEvent(xCoord, (short) yCoord, zCoord, aID, aValue),
-            xCoord,
-            zCoord);
+        GTBlockEventTracker.enqueue(worldObj, xCoord, yCoord, zCoord, aID, aValue);
     }
 
     protected boolean crossedChunkBorder(int x, int z) {
@@ -658,7 +651,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     public String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder) {
@@ -945,7 +938,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 
     public int getGUIColorization() {
-        return GTUtil.getRGBaInt(Dyes.dyeWhite.getRGBA());
+        return Dyes.dyeWhite.toInt();
     }
 
     public ItemStack getStackForm(long aAmount) {

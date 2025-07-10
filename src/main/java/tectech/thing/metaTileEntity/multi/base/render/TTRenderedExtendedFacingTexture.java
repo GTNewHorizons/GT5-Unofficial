@@ -22,6 +22,6 @@ public class TTRenderedExtendedFacingTexture extends GTRenderedTexture {
     }
 
     public TTRenderedExtendedFacingTexture(IIconContainer aIcon) {
-        this(aIcon, Dyes._NULL.mRGBa);
+        this(aIcon, Dyes._NULL.getRGBA());
     }
 }

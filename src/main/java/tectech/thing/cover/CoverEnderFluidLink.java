@@ -33,7 +33,8 @@ public class CoverEnderFluidLink extends CoverLegacyData {
 
     private void transferFluid(IFluidHandler source, ForgeDirection coverSide, IFluidHandler target,
         ForgeDirection tSide) {
-        FluidStack fluidStack = source.drain(coverSide, CoverEnderFluidLink.L_PER_TICK, false);
+        int drainAmount = CoverEnderFluidLink.L_PER_TICK * getTickRate();
+        FluidStack fluidStack = source.drain(coverSide, drainAmount, false);
 
         if (fluidStack != null) {
             int fluidTransferred = target.fill(tSide, fluidStack, true);

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -1211,7 +1212,7 @@ public class Material {
             }
             return temp;
         }
-        return new ItemStack[] {};
+        return GTValues.emptyItemStackArray;
     }
 
     public final ArrayList<MaterialStack> getComposites() {
@@ -1231,7 +1232,7 @@ public class Material {
             }
             return temp;
         }
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     private short getComponentCount(final MaterialStack[] inputs) {

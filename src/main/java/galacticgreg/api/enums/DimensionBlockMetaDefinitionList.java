@@ -5,6 +5,8 @@ import java.util.List;
 
 import net.minecraft.init.Blocks;
 
+import org.jetbrains.annotations.NotNull;
+
 import galacticgreg.api.ModDBMDef;
 
 public enum DimensionBlockMetaDefinitionList {
@@ -49,7 +51,7 @@ public enum DimensionBlockMetaDefinitionList {
     Horus(new ModDBMDef(Blocks.obsidian)),
     Seth(new ModDBMDef(Blocks.hardened_clay));
 
-    public final List<ModDBMDef> DBMDefList;
+    public final @NotNull List<ModDBMDef> DBMDefList;
 
     DimensionBlockMetaDefinitionList(ModDBMDef... DBMDefArray) {
         DBMDefList = Arrays.asList(DBMDefArray);

@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -315,7 +316,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public String[] getDescription() {
         if (canAccessData()) return getMetaTileEntity().getDescription();
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     @Override

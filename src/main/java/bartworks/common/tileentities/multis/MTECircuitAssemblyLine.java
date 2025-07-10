@@ -161,7 +161,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Assembler, CAL")
             .addInfo("Change Mode with Screwdriver")
-            .addInfo("Does not lose efficiency when overclocked")
+            .addPerfectOCInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
             .addInfo("Imprint this machine with a Circuit Imprint,")

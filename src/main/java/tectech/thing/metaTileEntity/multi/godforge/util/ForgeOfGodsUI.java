@@ -85,7 +85,7 @@ public class ForgeOfGodsUI {
             })
             .setPos(174, 148)
             .setSize(16, 16);
-        button.addTooltip("Power Switch")
+        button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
@@ -566,7 +566,7 @@ public class ForgeOfGodsUI {
     }
 
     public static Widget getIndividualUpgradeGroup(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
-        Runnable complete, Runnable respec, Supplier<Boolean> check) {
+        Runnable complete, Runnable respec, Supplier<Boolean> check, Supplier<MilestoneFormatter> formatGetter) {
         MultiChildWidget widget = new MultiChildWidget();
         widget.setSize(upgrade.getWindowSize());
 
@@ -633,7 +633,7 @@ public class ForgeOfGodsUI {
 
         // Available shards amount
         widget.addChild(
-            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter))
+            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter, formatGetter))
                 .setTextAlignment(Alignment.Center)
                 .setScale(0.7f)
                 .setMaxWidth(90)
@@ -690,12 +690,15 @@ public class ForgeOfGodsUI {
                 EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
     }
 
-    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter) {
+    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
+        Supplier<MilestoneFormatter> formatGetter) {
         EnumChatFormatting enoughShards = EnumChatFormatting.RED;
         if (shardGetter.get() >= upgrade.getShardCost()) {
             enoughShards = EnumChatFormatting.GREEN;
         }
-        return new Text(enoughShards + Integer.toString(shardGetter.get()));
+        return new Text(
+            enoughShards + formatGetter.get()
+                .format(shardGetter.get()));
     }
 
     private static List<String> constructionStatusString(Supplier<Boolean> check) {
@@ -897,7 +900,7 @@ public class ForgeOfGodsUI {
         String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
         int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < deleno.length(); i++) {
             nameRow.addChild(
                 new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
                     .setScale(0.8f)

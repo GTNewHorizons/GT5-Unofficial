@@ -2,6 +2,7 @@ package gtnhintergalactic.recipe;
 
 import java.util.Comparator;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -66,6 +67,10 @@ public class IGRecipeMaps {
         .dontUseProgressBar()
         .addSpecialTexture(46, 6, 23, 63, IG_UITextures.PROGRESSBAR_SPACE_MINING_MODULE_ARROW)
         .useCustomFilterForNEI()
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.SpaceElevatorModuleMinerT1.get(1))
+                .setHeight(162)
+                .setMaxRecipesPerPage(2))
         .frontend(SpaceMiningFrontend::new)
         .build();
 }

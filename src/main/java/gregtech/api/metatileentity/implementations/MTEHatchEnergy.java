@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,6 +32,10 @@ public class MTEHatchEnergy extends MTEHatch {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
+    public MTEHatchEnergy(String name, int tier, int invSlotCount, String[] description, ITexture[][][] textures) {
+        super(name, tier, invSlotCount, description, textures);
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
@@ -49,11 +52,6 @@ public class MTEHatchEnergy extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
         return true;
     }
@@ -66,11 +64,6 @@ public class MTEHatchEnergy extends MTEHatch {
     @Override
     public boolean isValidSlot(int aIndex) {
         return false;
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
     }
 
     @Override

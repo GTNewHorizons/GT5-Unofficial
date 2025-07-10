@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -73,22 +75,24 @@ public class CircuitTimer extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Timer";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.timer.name");
     }
 
     @Override
     public String getDescription() {
-        return "Pulses Redstone";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.timer.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         return switch (aCircuitDataIndex) {
-            case 0 -> "Delay";
-            case 1 -> "Pulses";
-            case 2 -> "Length";
-            case 3 -> aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
-            case 4 -> "Time";
+            case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.data_description.delay");
+            case 1 -> StatCollector.translateToLocal("GT5U.gui.circuit.timer.data_description.pulses");
+            case 2 -> StatCollector.translateToLocal("GT5U.gui.circuit.data_description.length");
+            case 3 -> StatCollector.translateToLocal(
+                aCircuitData[aCircuitDataIndex] == 1 ? "GT5U.gui.circuit.data_description.rs_on"
+                    : "GT5U.gui.circuit.data_description.rs_off");
+            case 4 -> StatCollector.translateToLocal("GT5U.gui.circuit.timer.data_description.time");
             default -> "";
         };
     }

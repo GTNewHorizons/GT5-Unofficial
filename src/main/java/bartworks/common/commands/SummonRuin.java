@@ -13,34 +13,36 @@
 
 package bartworks.common.commands;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.EnumChatFormatting;
 
 import bartworks.system.worldgen.MapGenRuins;
+import gregtech.commands.GTBaseCommand;
 
-public class SummonRuin extends CommandBase {
+public class SummonRuin extends GTBaseCommand {
 
     @Override
     public String getCommandName() {
-        return "SummonRuin";
+        return "summonRuin";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "SummonRuin <x> <z>";
+        return "/summonRuin <x> <z>";
     }
 
     @Override
-    public void processCommand(ICommandSender iCommandSender, String[] args) {
+    public void processCommand(ICommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sendHelpMessage(sender);
+            return;
+        }
         try {
-            new MapGenRuins.RuinsBase().generate(
-                iCommandSender.getEntityWorld(),
-                iCommandSender.getEntityWorld().rand,
-                Integer.parseInt(args[0]),
-                256,
-                Integer.parseInt(args[1]));
+            final int x = Integer.parseInt(args[0]);
+            final int z = Integer.parseInt(args[1]);
+            new MapGenRuins.RuinsBase().generate(sender.getEntityWorld(), sender.getEntityWorld().rand, x, 256, z);
         } catch (Exception e) {
-            e.printStackTrace();
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "Something went wrong!");
         }
     }
 }

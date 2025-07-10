@@ -105,7 +105,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     /**
      * The max number of 'overclocks' allowed when the wormhole's energy is increasing.
      */
-    public static double MAX_OVERCLOCKS = 2.0;
+    public static int MAX_OVERCLOCKS = 2;
 
     /**
      * The number of seconds to record for scan EU/t measurements. Purely visual and not saved.
@@ -647,11 +647,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         long toSend = GTUtility.min(available, empty, maxSend, maxReceive, maxIO);
 
-        double overclocks = 0;
+        int overclocks = 0;
 
         if (mAllowOverclocks) {
-            overclocks = Math.log((double)toSend / (double)optimal) / Math.log(4.0);
-            overclocks = MathHelper.clamp_double(overclocks, 0, MAX_OVERCLOCKS);
+            overclocks = (int) GTUtility.log4(toSend / optimal);
+            overclocks = MathHelper.clamp_int(overclocks, 0, MAX_OVERCLOCKS);
         }
 
         long toReceive = (long) (
@@ -1130,22 +1130,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mLink == null) {
-                return "§7Missing Entangled Singularity§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.missing_entangled_singularity");
             }
 
             if (!mLink.isFormed()) {
-                return "§7Wormhole status: §cNo destination§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.no_destination");
             }
 
             if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return "§7Wormhole status: §6Decaying§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.decaying");
             }
 
             if (mLink.mWormholeEnergy > 0) {
-                return "§7Wormhole status: §bActive§f";
+                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.active");
             }
 
-            return "§7Wormhole status: Inactive§f";
+            return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.inactive");
         })
             .setTextAlignment(Alignment.CenterLeft),
 
@@ -1157,7 +1157,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 // LV power = 1 angstrom in diameter
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
 
-                return String.format("§7Wormhole diameter: §b%,d§7 Å§f", (long) (radius * 2));
+                return StatCollector
+                    .translateToLocalFormatted("GT5U.gui.text.wormhole_generator.diameter", (long) (radius * 2));
             })
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
@@ -1168,9 +1169,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 }
 
                 if (mLink.mWormholeEnergy >= 1e10) {
-                    return String.format("§7Max I/O per hatch: §b%3.3e§7 EU/t§f", mLink.mWormholeEnergy / 20);
+                    return StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.wormhole_generator.max_io.large",
+                        mLink.mWormholeEnergy / 20);
                 } else {
-                    return String.format("§7Max I/O per hatch: §b%,d§7 EU/t§f", (long) (mLink.mWormholeEnergy / 20));
+                    return StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.wormhole_generator.max_io",
+                        (long) (mLink.mWormholeEnergy / 20));
                 }
             })
                 .setTextAlignment(Alignment.CenterLeft)

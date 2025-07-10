@@ -61,6 +61,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import gregtech.api.enums.Dimensions;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.UndergroundFluidNames;
 
 public class GTUODimensionList {
@@ -69,7 +70,7 @@ public class GTUODimensionList {
     private String fCategory;
     private final BiMap<String, GTUODimension> fDimensionList;
 
-    public int[] blackList = new int[0];
+    public int[] blackList = GTValues.emptyIntArray;
 
     public GTUODimensionList() {
         fDimensionList = HashBiMap.create();

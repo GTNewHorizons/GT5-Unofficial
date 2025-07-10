@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import static gregtech.api.items.MetaGeneratedTool.getPrimaryMaterial;
+import static gregtech.api.items.MetaGeneratedTool.getToolMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +39,10 @@ import ic2.api.tile.IWrenchable;
 
 public class ToolWrench extends GTTool {
 
+    // according to https://minecraft.wiki/w/Instant_mining,
+    // the instant break won't be active if it is less than 1.0F
+    public static final float INSTANT_BREAK_THRESHOLD = 0.99F;
+
     public static final List<String> mEffectiveList = Arrays
         .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
@@ -56,26 +61,6 @@ public class ToolWrench extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 3.0F;
     }
@@ -86,38 +71,13 @@ public class ToolWrench extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
     public String getMiningSound() {
         return SoundResource.IC2_TOOLS_WRENCH.toString();
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -133,11 +93,6 @@ public class ToolWrench extends GTTool {
             || GTToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
             || BehaviourWrench.isVanillaRotatable(block)
             || GTToolHarvestHelper.isIC2Wrenchable(block);
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
     }
 
     @Override
@@ -172,9 +127,9 @@ public class ToolWrench extends GTTool {
      * holding drop from {@link IWrenchable#getWrenchDrop(EntityPlayer)}
      * </p>
      * Since no tile available during
-     * {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, byte, int, boolean, BlockEvent.HarvestDropsEvent)},
+     * {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, int, int, boolean, BlockEvent.HarvestDropsEvent)},
      * this is filled during
-     * {@link #onBreakBlock(EntityPlayer, int, int, int, Block, byte, TileEntity, BlockEvent.BreakEvent)}
+     * {@link #onBreakBlock(EntityPlayer, int, int, int, Block, int, TileEntity, BlockEvent.BreakEvent)}
      */
     private ItemStack wrenchableDrop = null;
     /**
@@ -192,6 +147,15 @@ public class ToolWrench extends GTTool {
      * </p>
      */
     private boolean LastEventFromThis = false;
+
+    @Override
+    public float getBlockStrength(ItemStack tool, Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        if (getToolMode(tool) == 2) { // Precise Mode
+            return Math.min(INSTANT_BREAK_THRESHOLD, defaultBlockStrength);
+        }
+        return super.getBlockStrength(tool, block, player, world, x, y, z, defaultBlockStrength);
+    }
 
     @Override
     public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, int metadata,
@@ -269,7 +233,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public byte getMaxMode() {
-        return 2;
+        return 3;
     }
 
     @Override

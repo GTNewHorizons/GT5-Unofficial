@@ -14,9 +14,7 @@
 package bartworks.system.material.gtenhancement;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -41,11 +39,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 
 public class BWGTMetaItems extends BWMetaGeneratedItems {
 
     private boolean hasList;
-    private final Set<Integer> hiddenThings = new HashSet<>();
+    private final IntOpenHashSet hiddenThings = new IntOpenHashSet();
 
     public BWGTMetaItems(OrePrefixes orePrefixes, List<Materials> noSubIDMaterials) {
         super(orePrefixes, null);

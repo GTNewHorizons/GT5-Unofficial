@@ -611,7 +611,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private double getDurationMultiplierFromRoughness() {
-        return Math.pow(mRoughnessMultiplier, 2);
+        return mRoughnessMultiplier * mRoughnessMultiplier;
     }
 
     private int ticker = 0;
@@ -1085,7 +1085,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("GT5U.MBTT.ConfigMenu").setPos(25, 9))
+            .widget(new TextWidget(translateToLocal("GT5U.MBTT.ConfigMenu")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))

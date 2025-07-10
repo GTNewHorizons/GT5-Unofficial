@@ -60,6 +60,6 @@ public class BlockCasingsNH extends BlockCasingsAbstract {
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ) <= 9 ? super.colorMultiplier(aWorld, aX, aY, aZ)
-            : Dyes.MACHINE_METAL.mRGBa[0] << 16 | Dyes.MACHINE_METAL.mRGBa[1] << 8 | Dyes.MACHINE_METAL.mRGBa[2];
+            : Dyes.MACHINE_METAL.toInt();
     }
 }

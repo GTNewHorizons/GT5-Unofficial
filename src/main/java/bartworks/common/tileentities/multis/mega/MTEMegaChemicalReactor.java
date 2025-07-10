@@ -73,6 +73,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             .addInfo("Or you want to replace something in this molecule ?")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addGlassEnergyLimitInfo()
+            .addPerfectOCInfo()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()

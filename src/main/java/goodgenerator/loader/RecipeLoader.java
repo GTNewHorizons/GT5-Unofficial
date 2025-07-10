@@ -104,7 +104,7 @@ public class RecipeLoader {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.PrismaticNaquadah, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
             .fluidInputs(
                 Materials.Trinium.getMolten(4 * INGOTS),
@@ -119,6 +119,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(6),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
                 ItemList.Field_Generator_MV.get(1),
                 GTUtility.getIntegratedCircuit(1))
@@ -130,7 +131,7 @@ public class RecipeLoader {
         // LNR Frame
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.PrismaticNaquadah, 8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 4),
                 GTUtility.getIntegratedCircuit(24))
             .itemOutputs(ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1))
@@ -692,7 +693,8 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
@@ -875,6 +877,23 @@ public class RecipeLoader {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemRefer.Special_Ceramics_Dust.get(2), ItemList.Shape_Mold_Casing.get(0))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
+
+        // Advanced Recipe with netherite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 1),
+                ItemList.Shape_Mold_Casing.get(0))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(32))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(formingPressRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),

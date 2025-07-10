@@ -1503,7 +1503,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
-    Machine_Modular_Solidifier,
+    Machine_Multi_Modular_Solidifier,
 
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
@@ -1747,14 +1747,6 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Fluxed_Electrum,
     Casing_Item_Pipe_Black_Plutonium,
 
-    Hyper_Cooler,
-    Extra_Casing_Basins,
-    Transcendent_Reinforcement,
-    Streamlined_Casters,
-    Power_Efficient_Subsystems,
-    Active_Time_Dilation_System,
-    Efficient_Overclocking,
-
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1765,6 +1757,10 @@ public enum ItemList implements IItemContainer {
     MobRep_UV,
     Cover_PlayerDetector,
     Machine_Multi_HeatExchanger,
+
+    MagLevPython_MV,
+    MagLevPython_HV,
+    MagLevPython_EV,
 
     Block_BronzePlate,
     Block_SteelPlate,
@@ -2627,6 +2623,10 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Prismarine_Precipitate,
+    Prismatic_Crystal,
+    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
+    Naquarite_Universal_Insulator_Foil,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,
@@ -2685,6 +2685,17 @@ public enum ItemList implements IItemContainer {
 
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
+
+    MagLevHarness,
+
+    Casing_Solidifier_Modular,
+    Efficient_Overclocking_Solidifier_Modular,
+    Power_Efficient_Subsystems_Solidifier_Modular,
+    Transcendent_Reinforcement_Solidifier_Modular,
+    Extra_Casting_Basins_Solidifier_Modular,
+    Hypercooler_Solidifier_Modular,
+    Streamlined_Casters_Solidifier_Modular,
+    Active_Time_Dilation_System_Solidifier_Modular
 
     // semicolon after the comment to reduce merge conflicts
     ;

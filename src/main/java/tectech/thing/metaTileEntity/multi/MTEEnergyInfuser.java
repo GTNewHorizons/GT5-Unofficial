@@ -319,17 +319,8 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     }
 
     @Override
-    public boolean isPowerPassButtonEnabled() {
-        return true;
-    }
-
-    @Override
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
 
-    @Override
-    public boolean isAllowedToWorkButtonEnabled() {
-        return true;
-    }
 }

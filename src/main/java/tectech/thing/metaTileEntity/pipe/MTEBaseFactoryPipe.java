@@ -13,6 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -105,7 +106,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public String[] getDescription() {
-        return new String[] {};
+        return GTValues.emptyStringArray;
     }
 
     @Override

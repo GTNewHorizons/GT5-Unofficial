@@ -519,18 +519,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Rocket Engine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

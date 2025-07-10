@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -161,10 +162,10 @@ public class VoidProtectionHelper {
      */
     private void determineParallel() {
         if (itemOutputs == null) {
-            itemOutputs = new ItemStack[0];
+            itemOutputs = GTValues.emptyItemStackArray;
         }
         if (fluidOutputs == null) {
-            fluidOutputs = new FluidStack[0];
+            fluidOutputs = GTValues.emptyFluidStackArray;
         }
 
         // Don't check IVoidable#protectsExcessItem nor #protectsExcessFluid here,

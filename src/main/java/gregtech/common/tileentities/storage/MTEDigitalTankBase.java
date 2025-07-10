@@ -435,23 +435,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     public boolean allowOverflow() {

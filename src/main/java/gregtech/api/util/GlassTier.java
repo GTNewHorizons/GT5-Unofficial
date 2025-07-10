@@ -111,9 +111,10 @@ public class GlassTier {
             int ctr = 1; // For channel index, starts at 1
             for (Pair<Block, Integer> glass : mainGlass) {
                 glassList.add(glass);
-                glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr++));
+                glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr));
                 GTStructureChannels.BOROGLASS
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
+                ctr++;
             }
             for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
                 if (entry.getKey()
@@ -125,9 +126,10 @@ public class GlassTier {
                     Pair.of(
                         entry.getKey()
                             .getLeft(),
-                        ctr++));
+                        ctr));
                 GTStructureChannels.BOROGLASS
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
+                ctr++;
             }
             glassList.add(mainGlass.get(mainGlass.size() - 1));
         }

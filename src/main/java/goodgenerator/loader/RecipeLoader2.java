@@ -950,14 +950,14 @@ public class RecipeLoader2 {
         CrackRecipeAdder.addUniversalDistillationRecipe(
             GGMaterial.ferroceneWaste.getFluidOrGas(1_000),
             new FluidStack[] { Materials.Water.getFluid(400), GGMaterial.diethylamine.getFluidOrGas(800),
-                GGMaterial.ether.getFluidOrGas(500) },
+                Materials.HydrochloricAcid.getFluid(200) },
             GTValues.NI,
             30 * SECONDS,
             TierEU.RECIPE_MV);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
             GGMaterial.ferroceneSolution.getFluidOrGas(2_000),
-            new FluidStack[] { GGMaterial.ether.getFluidOrGas(1_000) },
+            new FluidStack[] { GGMaterial.ether.getFluidOrGas(2_000) },
             GGMaterial.ferrocene.get(OrePrefixes.dust, 1),
             30 * SECONDS,
             TierEU.RECIPE_MV);

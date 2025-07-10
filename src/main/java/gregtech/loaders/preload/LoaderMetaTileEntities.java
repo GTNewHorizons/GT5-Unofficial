@@ -108,6 +108,7 @@ import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
@@ -504,12 +505,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
-
-        ItemList.Machine_Modular_Solidifier.set(
+        ItemList.Machine_Multi_Modular_Solidifier.set(
             new MTEModularSolidifier(
                 MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
-                "multimachine.modular_solidifier",
-                "Modular Shaper").getStackForm(1));
+                "multimachine.modularsolidifier",
+                "Modular Solidifier").getStackForm(1));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -1659,6 +1659,18 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.mobrep.tier.08",
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
+    }
+
+    private static void registerMagLevPylon() {
+        ItemList.MagLevPython_MV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_MV.ID, "basicmachine.maglev.tier.02", "Advanced MagLev Pylon", 2)
+                .getStackForm(1L));
+        ItemList.MagLevPython_HV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_HV.ID, "basicmachine.maglev.tier.03", "Advanced MagLev Pylon II", 3)
+                .getStackForm(1L));
+        ItemList.MagLevPython_EV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_EV.ID, "basicmachine.maglev.tier.04", "Advanced MagLev Pylon III", 4)
+                .getStackForm(1L));
     }
 
     private void registerWorldAccelerator() {
@@ -5822,7 +5834,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.formingPressRecipes,
                 2,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5838,7 +5850,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.formingPressRecipes,
                 2,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5854,7 +5866,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.formingPressRecipes,
                 4,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5870,7 +5882,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.formingPressRecipes,
                 4,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5886,7 +5898,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5902,7 +5914,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5918,7 +5930,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5934,7 +5946,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5950,7 +5962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5966,7 +5978,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5982,7 +5994,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -5998,7 +6010,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 formingPressRecipes,
                 6,
                 1,
-                false,
+                true,
                 SoundResource.IC2_MACHINES_COMPRESSOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "PRESS",
@@ -11366,6 +11378,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPump();
         registerTeleporter();
         registerMonsterRepellator();
+        registerMagLevPylon();
         registerAdvancedSeismicProspector();
         registerMicrowaveEnergyTransmitter();
         registerChestBuffer();

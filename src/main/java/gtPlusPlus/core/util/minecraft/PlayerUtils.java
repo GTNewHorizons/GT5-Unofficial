@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -26,10 +25,6 @@ public class PlayerUtils {
 
     public static void messagePlayer(final EntityPlayer P, final String S) {
         GTUtility.sendChatToPlayer(P, S);
-    }
-
-    public static void messagePlayer(final EntityPlayer P, final IChatComponent S) {
-        P.addChatComponentMessage(S);
     }
 
     public static EntityPlayer getPlayer(final String name) {
@@ -55,10 +50,6 @@ public class PlayerUtils {
             }
         }
         return null;
-    }
-
-    public static boolean isPlayerOP(final EntityPlayer player) {
-        return player.canCommandSenderUseCommand(2, "");
     }
 
     // Not Clientside

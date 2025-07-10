@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -139,7 +140,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
+            this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
             return true;
         }
         return false;
@@ -301,19 +302,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + "Requires "
-                            + EnumChatFormatting.YELLOW
-                            + numberFormat.format(nodePowerDisplay)
-                            + EnumChatFormatting.WHITE
-                            + " total "
-                            + EnumChatFormatting.AQUA
-                            + "Aqua"
-                            + EnumChatFormatting.WHITE
-                            + " and "
-                            + EnumChatFormatting.RED
-                            + "Ignis "
-                            + EnumChatFormatting.WHITE
-                            + "centivis to function.")
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "gg.gui.text.large_essentia_smeltery.requires",
+                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment((Alignment.CenterLeft)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
@@ -431,7 +423,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     private int expectedPower() {
-        return (int) (Math.pow(this.getMaxEnergyInputTier_EM(), 2) * NODE_COST_MULTIPLIER);
+        int maxEnergyInputTier_EM = this.getMaxEnergyInputTier_EM();
+        return (int) (maxEnergyInputTier_EM * maxEnergyInputTier_EM * NODE_COST_MULTIPLIER);
     }
 
     private boolean isFullPower() {

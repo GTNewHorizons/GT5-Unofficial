@@ -79,11 +79,6 @@ public class MTEWetTransformer extends MTETransformer {
     }
 
     @Override
-    public long getMinimumStoredEU() {
-        return V[mTier + 1];
-    }
-
-    @Override
     public long maxEUStore() {
         return 512L + V[mTier + 1] * 128L;
     }

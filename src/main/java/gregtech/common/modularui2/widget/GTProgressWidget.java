@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
 
@@ -39,7 +40,7 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
     public GTProgressWidget neiTransferRect(String transferRectID, Object[] transferRectArgs,
         String transferRectTooltip) {
         this.transferRectID = transferRectID;
-        this.transferRectArgs = transferRectArgs == null ? new Object[0] : transferRectArgs;
+        this.transferRectArgs = transferRectArgs == null ? GTValues.emptyObjectArray : transferRectArgs;
         if (transferRectTooltip != null) {
             tooltipBuilder(tooltip -> tooltip.add(transferRectTooltip));
         }
@@ -54,7 +55,10 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
      *                       ICraftingHandler.getRecipeHandler}.
      */
     public GTProgressWidget neiTransferRect(String transferRectID) {
-        return neiTransferRect(transferRectID, new Object[0], StatCollector.translateToLocal("nei.recipe.tooltip"));
+        return neiTransferRect(
+            transferRectID,
+            GTValues.emptyObjectArray,
+            StatCollector.translateToLocal("nei.recipe.tooltip"));
     }
 
     /**

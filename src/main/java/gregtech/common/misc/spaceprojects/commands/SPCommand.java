@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -17,13 +16,13 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gregtech.api.util.GTUtility;
+import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 /**
  * @author BlueWeabo
  */
-public class SPCommand extends CommandBase {
+public class SPCommand extends GTBaseCommand {
 
     private static final Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections
         .newSetFromMap(new WeakHashMap<>());
@@ -52,6 +51,7 @@ public class SPCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] arguments) {
         if (arguments.length < 1) {
+            sendHelpMessage(sender);
             return;
         }
         switch (arguments[0]) {
@@ -82,7 +82,7 @@ public class SPCommand extends CommandBase {
             + EnumChatFormatting.GOLD
             + " /sp accept "
             + teamLeader.getCommandSenderName();
-        GTUtility.sendChatToPlayer(teamMember, message);
+        sendChatToPlayer(teamMember, message);
     }
 
     private void processAccept(ICommandSender sender, String playerInviter) {
@@ -93,7 +93,7 @@ public class SPCommand extends CommandBase {
                 + EnumChatFormatting.RESET
                 + " has accepted the invite.";
             SpaceProjectManager.putInTeam(teamMember.getUniqueID(), teamLeader.getUniqueID());
-            GTUtility.sendChatToPlayer(teamLeader, message);
+            sendChatToPlayer(teamLeader, message);
             invite.remove(Pair.of(teamMember, teamLeader));
         }
     }
@@ -105,7 +105,7 @@ public class SPCommand extends CommandBase {
             + "/sp confirm"
             + EnumChatFormatting.RESET
             + " to confirm this. This does nothing if you are the team leader.";
-        GTUtility.sendChatToPlayer(player, message);
+        sendChatToPlayer(player, message);
         confirm.add(player);
     }
 
@@ -114,7 +114,7 @@ public class SPCommand extends CommandBase {
         if (confirm.contains(player)) {
             String message = "Successfully left the team.";
             SpaceProjectManager.putInTeam(player.getUniqueID(), player.getUniqueID());
-            GTUtility.sendChatToPlayer(player, message);
+            sendChatToPlayer(player, message);
             confirm.remove(player);
         }
     }

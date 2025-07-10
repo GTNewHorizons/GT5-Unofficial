@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -133,11 +134,6 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isElectric() {
         return false;
     }
@@ -157,7 +153,10 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Pollution: " + numberFormat.format(pollution))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
+                            + numberFormat.format(pollution))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8));
 

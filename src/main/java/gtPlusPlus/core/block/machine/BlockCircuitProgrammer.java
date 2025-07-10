@@ -5,12 +5,10 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
@@ -103,12 +101,6 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
         if (stack.hasDisplayName()) {
             ((TileEntityCircuitProgrammer) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
-    }
-
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
     }
 
     @Override

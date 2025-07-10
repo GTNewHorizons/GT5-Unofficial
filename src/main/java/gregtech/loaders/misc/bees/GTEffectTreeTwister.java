@@ -3,12 +3,12 @@ package gregtech.loaders.misc.bees;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.TwilightForest;
 
-import java.util.Arrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.IBeeGenome;
@@ -20,7 +20,7 @@ import gregtech.api.util.GTModHandler;
 
 public class GTEffectTreeTwister extends GTAlleleEffect {
 
-    private static final Integer[] ALLOWED_DIMS = { 2, // spectre
+    private static final int[] ALLOWED_DIMS = { 2, // spectre
         112, // last millenium
         60, // bedrock
         69, // pocket plane
@@ -53,8 +53,7 @@ public class GTEffectTreeTwister extends GTAlleleEffect {
             return storedData;
         }
         World world = housing.getWorld();
-        if (!Arrays.asList(ALLOWED_DIMS)
-            .contains(world.provider.dimensionId)) {
+        if (!ArrayUtils.contains(ALLOWED_DIMS, world.provider.dimensionId)) {
             return storedData;
         }
         ChunkCoordinates coords = housing.getCoordinates();
@@ -73,7 +72,7 @@ public class GTEffectTreeTwister extends GTAlleleEffect {
             world.getBlock(xCoord, yCoord, zCoord),
             1,
             world.getBlockMetadata(xCoord, yCoord, zCoord));
-        if (TF_TRANS_SAPLING != null && BARN_SAPLING != null && TF_TRANS_SAPLING.isItemEqual(sourceBlock)) {
+        if (TF_TRANS_SAPLING.isItemEqual(sourceBlock)) {
             world.setBlock(
                 xCoord,
                 yCoord,

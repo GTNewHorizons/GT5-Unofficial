@@ -566,8 +566,8 @@ public class GTModHandler {
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.MIRRORED) != 0,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
@@ -1072,7 +1072,6 @@ public class GTModHandler {
             if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1081,7 +1080,6 @@ public class GTModHandler {
             else GameRegistry.addRecipe(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1107,8 +1105,8 @@ public class GTModHandler {
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
@@ -1164,7 +1162,6 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1174,7 +1171,6 @@ public class GTModHandler {
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,

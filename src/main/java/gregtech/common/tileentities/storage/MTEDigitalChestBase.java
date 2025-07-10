@@ -294,11 +294,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex != 2;
     }
@@ -450,7 +445,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(59, 42))
             .widget(
-                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))

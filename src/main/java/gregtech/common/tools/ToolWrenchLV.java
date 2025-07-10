@@ -17,31 +17,6 @@ public class ToolWrenchLV extends ToolWrench {
     }
 
     @Override
-    public int getToolDamagePerBlockBreak() {
-        return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 1.0F;
     }
@@ -49,16 +24,6 @@ public class ToolWrenchLV extends ToolWrench {
     @Override
     public float getSpeedMultiplier() {
         return 2.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
     }
 
     @Override

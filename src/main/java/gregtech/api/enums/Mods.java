@@ -27,6 +27,7 @@ public enum Mods implements IMod {
     Avaritia(Names.AVARITIA),
     AvaritiaAddons(Names.AVARITIA_ADDONS),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
+    Backhand(Names.BACKHAND),
     Baubles(Names.BAUBLES),
     BeeBetterAtBees(Names.BEE_BETTER_AT_BEES),
     BetterAchievements(Names.BETTER_ACHIEVEMENTS),
@@ -309,6 +310,7 @@ public enum Mods implements IMod {
         public static final String AVARITIA = "Avaritia";
         public static final String AVARITIA_ADDONS = "avaritiaddons";
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2"; // "Battlegear2"
+        public static final String BACKHAND = "backhand";
         public static final String BAUBLES = "Baubles";
         public static final String BEE_BETTER_AT_BEES = "beebetteratbees";
         public static final String BETTER_ACHIEVEMENTS = "BetterAchievements";

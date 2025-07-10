@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.formatStringSafe;
@@ -631,10 +633,11 @@ public class GregtechConduits {
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
+        generatePipeRecipes(material, material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName, final long Mass,
+        final long vMulti) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -765,6 +768,48 @@ public class GregtechConduits {
                 Logger.INFO(
                     "Failed to add a recipe for " + materialName + " Huge pipes. Double plates probably do not exist.");
             }
+        }
+
+        if (material != null && material.getFluid() != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 1))
+                .fluidInputs(material.getFluidStack(1 * HALF_INGOTS))
+                .duration(1 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1))
+                .fluidInputs(material.getFluidStack(1 * INGOTS))
+                .duration(2 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1))
+                .fluidInputs(material.getFluidStack(3 * INGOTS))
+                .duration(4 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1))
+                .fluidInputs(material.getFluidStack(6 * INGOTS))
+                .duration(8 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1))
+                .fluidInputs(material.getFluidStack(12 * INGOTS))
+                .duration(16 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
         }
     }
 

@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -29,7 +30,7 @@ public class LeavesBase extends BlockLeaves {
 
     protected IIcon[][] leafTextures = new IIcon[2][];
     protected String[][] leafType = new String[][] { {}, {} };
-    protected String[] treeType = new String[] {};
+    protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
     public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {

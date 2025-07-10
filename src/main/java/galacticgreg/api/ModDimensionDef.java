@@ -7,6 +7,9 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 // import galacticgreg.GalacticGreg;
 
 /**
@@ -19,11 +22,11 @@ public class ModDimensionDef {
     private String _mInternalDimIdentifier;
     private final String _mChunkProvider;
     private Enums.AirReplaceRule _mDimAirSetting;
-    private final ArrayList<ModDBMDef> _mReplaceableBlocks;
+    private final @NotNull ArrayList<ModDBMDef> _mReplaceableBlocks;
     private Enums.DimensionType _mDimensionType;
 
-    private final List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
-    private final List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
+    private final @NotNull List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
+    private final @NotNull List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
 
     // Special Planets config settings
     private int _mGroundOreMaxY = 64;
@@ -34,8 +37,8 @@ public class ModDimensionDef {
     private GTOreTypes _mStoneType;
 
     // Asteroid stuff
-    private final List<AsteroidBlockComb> _mValidAsteroidMaterials;
-    private final List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
+    private final @NotNull List<AsteroidBlockComb> _mValidAsteroidMaterials;
+    private final @NotNull List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
 
     private final Random _mRandom = new Random(System.currentTimeMillis());
 
@@ -73,7 +76,7 @@ public class ModDimensionDef {
      *
      * @param pSpaceObjectGenerator An instance of your own object generator
      */
-    public void registerSpaceObjectGenerator(ISpaceObjectGenerator pSpaceObjectGenerator) {
+    public void registerSpaceObjectGenerator(@NotNull ISpaceObjectGenerator pSpaceObjectGenerator) {
         Enums.SpaceObjectType tType = pSpaceObjectGenerator.getType();
         switch (tType) {
             case NonOreSchematic:
@@ -93,7 +96,7 @@ public class ModDimensionDef {
     /**
      * Internal function Return a random generator for space objects
      */
-    public ISpaceObjectGenerator getRandomSOGenerator(Enums.SpaceObjectType pTargetType) {
+    public @Nullable ISpaceObjectGenerator getRandomSOGenerator(Enums.@NotNull SpaceObjectType pTargetType) {
         ISpaceObjectGenerator tGen = null;
         List<ISpaceObjectGenerator> tLst = null;
         try {
@@ -274,7 +277,7 @@ public class ModDimensionDef {
      * @param pDimensionName The human-readable. Spaces will be removed
      * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
      */
-    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
+    public ModDimensionDef(String pDimensionName, @NotNull Class<? extends IChunkProvider> pChunkProvider,
         Enums.DimensionType pDimType) {
         this(
             pDimensionName,
@@ -291,7 +294,7 @@ public class ModDimensionDef {
      * @param pChunkProvider    The chunkprovider class that shall be observed for the oregen
      * @param pBlockDefinitions The list of predefined blocks to be replaced by ores
      */
-    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
+    public ModDimensionDef(String pDimensionName, @NotNull Class<? extends IChunkProvider> pChunkProvider,
         Enums.DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
         this(
             pDimensionName,
@@ -319,7 +322,7 @@ public class ModDimensionDef {
      * @param pBlockDefinitions  The list of predefined blocks to be replaced by ores
      */
     public ModDimensionDef(String pDimensionName, String pChunkProviderName, Enums.DimensionType pDimType,
-        List<ModDBMDef> pBlockDefinitions) {
+        @Nullable List<ModDBMDef> pBlockDefinitions) {
         _mInternalDimIdentifier = STR_NOTDEFINED;
         _mDimensionName = pDimensionName;
         _mChunkProvider = pChunkProviderName;
@@ -358,7 +361,7 @@ public class ModDimensionDef {
      * @param pMeta
      * @return
      */
-    public Enums.ReplaceState getReplaceStateForBlock(Block pBlock, int pMeta) {
+    public Enums.@NotNull ReplaceState getReplaceStateForBlock(Block pBlock, int pMeta) {
         Enums.ReplaceState tFlag = Enums.ReplaceState.Unknown;
 
         for (ModDBMDef pDef : _mReplaceableBlocks) {
@@ -385,7 +388,7 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public AsteroidBlockComb getRandomAsteroidMaterial() {
+    public @Nullable AsteroidBlockComb getRandomAsteroidMaterial() {
         if (_mValidAsteroidMaterials.isEmpty()) return null;
 
         if (_mValidAsteroidMaterials.size() == 1) return _mValidAsteroidMaterials.get(0);
@@ -401,7 +404,7 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public SpecialBlockComb getRandomSpecialAsteroidBlock() {
+    public @Nullable SpecialBlockComb getRandomSpecialAsteroidBlock() {
         if (_mSpecialBlocksForAsteroids.isEmpty()) return null;
 
         if (_mSpecialBlocksForAsteroids.size() == 1) return _mSpecialBlocksForAsteroids.get(0);
@@ -415,7 +418,7 @@ public class ModDimensionDef {
      *
      * @param pMaterial
      */
-    public void addAsteroidMaterial(GTOreTypes pMaterial) {
+    public void addAsteroidMaterial(@NotNull GTOreTypes pMaterial) {
         addAsteroidMaterial(new AsteroidBlockComb(pMaterial));
     }
 

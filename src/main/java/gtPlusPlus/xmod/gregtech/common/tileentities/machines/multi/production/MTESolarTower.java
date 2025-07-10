@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -572,11 +571,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return CheckRecipeResultRegistry.GENERATING;
     }
 
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }
@@ -604,9 +598,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
     }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

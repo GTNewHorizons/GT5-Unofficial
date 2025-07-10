@@ -17,6 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -30,7 +31,7 @@ public class BlockSugarCoke extends Block {
         this.setStepSound(soundTypeStone);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockSugarCoke");
         for (int i = 0; i < textureArray.length; i++) {
-            GTPPCore.burnables.add(Pair.of(8000 * (int) Math.pow(9, i), new ItemStack(this, 1, i)));
+            GTPPCore.burnables.add(Pair.of(8000 * (int) GTUtility.powInt(9, i), new ItemStack(this, 1, i)));
         }
     }
 

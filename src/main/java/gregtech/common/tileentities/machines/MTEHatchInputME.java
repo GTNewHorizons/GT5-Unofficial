@@ -66,6 +66,7 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
@@ -117,8 +118,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private boolean expediteRecipeCheck = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
-
-    protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
@@ -232,12 +231,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public FluidStack[] getStoredFluids() {
         if (!processingRecipe) {
-            return EMPTY_FLUID_STACK;
+            return GTValues.emptyFluidStackArray;
         }
 
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
-            return EMPTY_FLUID_STACK;
+            return GTValues.emptyFluidStackArray;
         }
 
         updateAllInformationSlots();
@@ -678,6 +677,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             }
         }
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         return true;
     }
 
@@ -690,7 +693,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
-
+        tag.setByte("color", this.getColor());
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
             for (int index = 0; index < SLOT_COUNT; index++) {

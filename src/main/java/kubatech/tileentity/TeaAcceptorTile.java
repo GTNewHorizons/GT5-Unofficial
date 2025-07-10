@@ -34,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -194,12 +195,16 @@ public class TeaAcceptorTile extends TileEntity
             posCenteredHorizontally(
                 10,
                 new TextWidget(
-                    new Text("Tea Acceptor").format(EnumChatFormatting.BOLD)
+                    new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.name"))
+                        .format(EnumChatFormatting.BOLD)
                         .format(EnumChatFormatting.DARK_RED))),
             posCenteredHorizontally(30, new DynamicTextWidget(() -> {
                 if (player.getPersistentID()
-                    .equals(tileOwner)) return new Text("[Tea]").color(Color.GREEN.normal);
-                else return new Text("This is not your block").color(Color.RED.normal);
+                    .equals(tileOwner))
+                    return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.tea"))
+                        .color(Color.GREEN.normal);
+                else return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.not_owner"))
+                    .color(Color.RED.normal);
             })),
             posCenteredHorizontally(
                 40,
@@ -216,8 +221,12 @@ public class TeaAcceptorTile extends TileEntity
                                     builder)),
             posCenteredHorizontally(
                 50,
-                new DynamicTextWidget(() -> new Text("IN: " + averageInput + "/t").color(Color.BLACK.normal)))
-                    .addTooltip(new Text("Average input from the last 5 seconds").color(Color.GRAY.normal)));
+                new DynamicTextWidget(
+                    () -> new Text(
+                        StatCollector.translateToLocalFormatted("kubatech.gui.text.tea_acceptor.in", averageInput))
+                            .color(Color.BLACK.normal))).addTooltip(
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.in.tooltip"))
+                                    .color(Color.GRAY.normal)));
         return builder.build();
     }
 }

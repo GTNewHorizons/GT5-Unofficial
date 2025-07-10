@@ -62,8 +62,4 @@ public abstract class BaseHarvestableCrop extends BaseCrop {
         return 3;
     }
 
-    @Override
-    public String discoveredBy() {
-        return "Alkalus";
-    }
 }

@@ -326,7 +326,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             final byte color = itemStack.getTagCompound()
                 .getByte(COLOR_NBT_TAG);
             if (color != REMOVE_COLOR) {
-                return Dyes.getDyeFromIndex(color);
+                return Dyes.getOrDefault(color, Dyes.MACHINE_METAL);
             }
         }
 
@@ -361,7 +361,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         protected List<String> getItemTooltips(final int index) {
             return ImmutableList.of(
                 index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                    : Dyes.getDyeFromIndex((short) index).mName);
+                    : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
         }
     }
 }

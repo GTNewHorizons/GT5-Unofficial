@@ -23,7 +23,7 @@ import gtPlusPlus.core.util.Utils;
 
 public abstract class LogBase extends BlockLog {
 
-    public String[] treeType = new String[] {};
+    public String[] treeType;
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 

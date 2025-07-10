@@ -3,6 +3,8 @@ package galacticgreg.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.enums.Mods;
 
 /**
@@ -12,7 +14,7 @@ import gregtech.api.enums.Mods;
  */
 public class ModContainer {
 
-    private final List<ModDimensionDef> _mDimensionLookup;
+    private final @NotNull List<ModDimensionDef> _mDimensionLookup;
     private final Mods mod;
 
     /**
@@ -34,7 +36,7 @@ public class ModContainer {
      *
      * @return The mods name
      */
-    public String getModName() {
+    public @NotNull String getModName() {
         return mod.ID;
     }
 
@@ -43,7 +45,7 @@ public class ModContainer {
      *
      * @return The list of attached dimensions for this mod
      */
-    public List<ModDimensionDef> getDimensionList() {
+    public @NotNull List<ModDimensionDef> getDimensionList() {
         return _mDimensionLookup;
     }
 
@@ -53,7 +55,7 @@ public class ModContainer {
      * @param pDimDef The dimension definition to be added
      * @return true if it could be added, false if not
      */
-    public boolean addDimensionDef(ModDimensionDef pDimDef) {
+    public boolean addDimensionDef(@NotNull ModDimensionDef pDimDef) {
         for (ModDimensionDef mdd : _mDimensionLookup) {
             if (mdd.getChunkProviderName()
                 .equals(pDimDef.getChunkProviderName())) {

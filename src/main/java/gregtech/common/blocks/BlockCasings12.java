@@ -17,16 +17,19 @@ public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
-        register(4, ItemList.Hyper_Cooler, "Hyper Cooler");
-        register(5, ItemList.Extra_Casing_Basins, "Extra Casing Basins");
-        register(6, ItemList.Transcendent_Reinforcement, "Transcendent Reinforcement");
-        register(7, ItemList.Streamlined_Casters, "Streamlined Casters");
-        register(8, ItemList.Power_Efficient_Subsystems, "Power Efficient Subsystems");
-        register(9, ItemList.Active_Time_Dilation_System, "Active Time Dilation Systems");
+
+        register(1, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System Casing");
+        register(2, ItemList.Efficient_Overclocking_Solidifier_Modular, "Sentient Overclocking Casing");
+        register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Proto-Volt Stabilizer Casing");
+        register(4, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendental Bolted Shirabon Casing");
+        register(5, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Superdense Casting Basin Casing");
+        register(6, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Siphon Casing");
+        register(7, ItemList.Streamlined_Casters_Solidifier_Modular, "Streamlined Casting Casing");
+        register(8, ItemList.Casing_Solidifier_Modular, "Modular Solidifier Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
-        register(13, ItemList.Efficient_Overclocking, "Efficient Overclocking Module");
+
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
@@ -41,6 +44,14 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
+            case 1 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM.getIcon();
+            case 2 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EFFICIENT_OVERCLOCKING.getIcon();
+            case 3 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_POWER_EFFICIENT_SUBSYSTEMS.getIcon();
+            case 4 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_TRANSCENDENT_REINFORCEMENT.getIcon();
+            case 5 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EXTRA_CASTING_BASINS.getIcon();
+            case 6 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_HYPERCOOLER.getIcon();
+            case 7 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_STREAMLINED_CASTERS.getIcon();
+            case 8 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();

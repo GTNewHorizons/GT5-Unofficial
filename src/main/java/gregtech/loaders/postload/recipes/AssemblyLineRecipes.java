@@ -712,7 +712,7 @@ public class AssemblyLineRecipes implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 4),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Netherite, 1),
                     ItemList.Field_Generator_LuV.get(2),
                     ItemList.Circuit_Wafer_UHPIC.get(32),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 32))

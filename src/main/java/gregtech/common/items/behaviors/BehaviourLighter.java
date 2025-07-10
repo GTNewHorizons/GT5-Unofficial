@@ -71,12 +71,6 @@ public class BehaviourLighter extends BehaviourNone {
     }
 
     @Override
-    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-    @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
