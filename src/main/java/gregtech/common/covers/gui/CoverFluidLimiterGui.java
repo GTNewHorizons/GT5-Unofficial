@@ -28,7 +28,8 @@ public class CoverFluidLimiterGui extends CoverGui<CoverFluidLimiter> {
             IKey.str(StatCollector.translateToLocal("GT5U.gui.text.fluid_limiter.threshold"))
                 .color(Color.GREY.darker(1))
                 .asWidget()
-                .marginBottom(4))
+                .marginBottom(4)
+                .marginLeft(4))
             .child(
                 makeNumberField().setNumbers(0, 100)
                     .setFocusOnGuiOpen(true)
@@ -37,7 +38,8 @@ public class CoverFluidLimiterGui extends CoverGui<CoverFluidLimiter> {
                             () -> Math.round(cover.getThreshold() * 100),
                             t -> cover.setThreshold(
                                 Double.valueOf(t)
-                                    .floatValue() / 100))));
+                                    .floatValue() / 100)))
+                    .marginLeft(4));
 
     }
 }
