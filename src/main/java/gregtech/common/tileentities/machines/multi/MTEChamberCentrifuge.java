@@ -78,7 +78,6 @@ import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
@@ -787,8 +786,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         mStaticAnimations = !mStaticAnimations;
-        PlayerUtils
-            .messagePlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        GTUtility
+            .sendChatToPlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
         for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.mUsingAnimation = mStaticAnimations;
         }
