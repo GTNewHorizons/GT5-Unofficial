@@ -20,7 +20,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
 
         register(1, ItemList.Active_Time_Dilation_System_Solidifier_Modular, "Time Dilation System Casing");
         register(2, ItemList.Efficient_Overclocking_Solidifier_Modular, "Sentient Overclocking Casing");
-        register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Volt Stabilizer Casing");
+        register(3, ItemList.Power_Efficient_Subsystems_Solidifier_Modular, "Proto-Volt Stabilizer Casing");
         register(4, ItemList.Transcendent_Reinforcement_Solidifier_Modular, "Transcendental Bolted Shirabon Casing");
         register(5, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Superdense Casting Basin Casing");
         register(6, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Siphon Casing");
@@ -51,7 +51,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 5 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EXTRA_CASTING_BASINS.getIcon();
             case 6 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_HYPERCOOLER.getIcon();
             case 7 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_STREAMLINED_CASTERS.getIcon();
-            case 8 -> Textures.BlockIcons.CASING_SOLIDIFIER_ATOMIC.getIcon();
+            case 8 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();

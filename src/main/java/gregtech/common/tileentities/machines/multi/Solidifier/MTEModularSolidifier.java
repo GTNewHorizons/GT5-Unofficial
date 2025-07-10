@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -211,10 +212,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","      qqq      ","               ","               ","               ","               "," H           H "," H           H "," H           H ","               ","               ","               ","               ","      qqq      ","               "},
-            {"     HHHHH     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","HH           HH","H             H","H             H","H             H","HH           HH"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     HHHHH     "},
-            {"     AHCHA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","H             H","Cdd         ddC","H             H","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AHCHA     "},
-            {"     HHHHH     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","HH           HH","H             H","H             H","H             H","HH           HH"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     HHHHH     "},
+            {"               ","      qqq      ","               ","               ","               ","               "," q           q "," q           q "," q           q ","               ","               ","               ","               ","      qqq      ","               "},
+            {"     qHHHq     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","qH           Hq","H             H","H             H","H             H","qH           Hq"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     qHHHq     "},
+            {"     AqCqA     ","   AAA d AAA   ","  AA   d   AA  "," AA         AA "," A           A ","AA           AA","q             q","Cdd         ddC","q             q","AA           AA"," A           A "," AA         AA ","  AA   d   AA  ","   AAA d AAA   ","     AqCqA     "},
+            {"     qHHHq     ","   HCH   HCH   ","  HH       HH  "," HH         HH "," C           C ","qH           Hq","H             H","H             H","H             H","qH           Hq"," C           C "," HH         HH ","  HH       HH  ","   HCH   HCH   ","     qHHHq     "},
             {"               ","      qqq      ","               ","               ","               ","               "," q           q "," q           q "," q           q ","               ","               ","               ","               ","      qqq      ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
@@ -259,15 +260,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             buildHatchAdder(MTEModularSolidifier.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
                 .buildAndChain(
-                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 10)))) // placeholder
+                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 8)))) // placeholder
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings12, 6))
         .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 14)))
         .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
-        .addElement('f', lazy(() -> ofBlock(GodforgeCasings, 3)))
-        .addElement('g', lazy(() -> ofBlock(GodforgeCasings, 5)))
+        .addElement('f', ofBlock(GregTechAPI.sBlockCasings12, 8))
+        .addElement('g', ofBlock(GregTechAPI.sBlockCasings12,4))
         .addElement('h', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
         .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
@@ -327,7 +328,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                         .extFacing()
@@ -340,7 +341,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -353,7 +354,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)) };
         }
         return rTexture;
     }
