@@ -172,9 +172,9 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         } catch (Throwable t) {}
                         break;
                 }
-                PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
+                GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
-                    PlayerUtils.messagePlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
+                    GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
                 }
             }
         } else if (aPlayer.getUniqueID()

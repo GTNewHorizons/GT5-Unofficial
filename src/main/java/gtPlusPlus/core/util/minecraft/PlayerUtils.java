@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
 public class PlayerUtils {
@@ -16,10 +15,6 @@ public class PlayerUtils {
     public static List<EntityPlayerMP> getOnlinePlayers() {
         return MinecraftServer.getServer()
             .getConfigurationManager().playerEntityList;
-    }
-
-    public static void messagePlayer(final EntityPlayer P, final String S) {
-        GTUtility.sendChatToPlayer(P, S);
     }
 
     public static EntityPlayer getPlayer(final String name) {

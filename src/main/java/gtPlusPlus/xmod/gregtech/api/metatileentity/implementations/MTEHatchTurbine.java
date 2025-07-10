@@ -38,7 +38,6 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
 public class MTEHatchTurbine extends MTEHatch {
@@ -346,29 +345,29 @@ public class MTEHatchTurbine extends MTEHatch {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
-            PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
-            PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);
+            GTUtility.sendChatToPlayer(aPlayer, "Using Animations? " + usingAnimations());
+            GTUtility.sendChatToPlayer(aPlayer, "Has Controller? " + this.mHasController);
             if (mHasController) {
-                PlayerUtils.messagePlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
-                PlayerUtils.messagePlayer(aPlayer, "Controller Active? " + this.isControllerActive());
+                GTUtility.sendChatToPlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
+                GTUtility.sendChatToPlayer(aPlayer, "Controller Active? " + this.isControllerActive());
             }
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 "Active? " + this.getBaseMetaTileEntity()
                     .isActive());
-            PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
+            GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
                 String aSize = MTELargerTurbineBase
                     .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
-                PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
+                GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;
             if (this.mUsingAnimation) {
-                PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
+                GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture.");
             } else {
-                PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");
+                GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture.");
             }
         }
     }
