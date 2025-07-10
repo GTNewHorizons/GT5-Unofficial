@@ -16,23 +16,20 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessCharger;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class WirelessChargerManager {
 
     public static final int CHARGE_TICK = 20;
     private final Map<Long, IWirelessCharger> CHARGER_MAP = new HashMap<>();
-    private int tickCounter = 0;
 
     @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            if (!CHARGER_MAP.isEmpty() && ++tickCounter % CHARGE_TICK == 0) {
-                for (EntityPlayer player : PlayerUtils.getOnlinePlayers()) {
-                    chargePlayerItems(player);
-                }
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.side == Side.SERVER && event.phase == TickEvent.Phase.END) {
+            if (!CHARGER_MAP.isEmpty() && event.player.ticksExisted % CHARGE_TICK == 5) {
+                chargePlayerItems(event.player);
             }
         }
     }

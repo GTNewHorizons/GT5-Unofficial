@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -166,7 +167,6 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class GTProxy implements IFuelHandler {
 
@@ -682,6 +682,7 @@ public class GTProxy implements IFuelHandler {
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
     private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+    private Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public TetherManager tetherManager;
@@ -1163,7 +1164,8 @@ public class GTProxy implements IFuelHandler {
     public void onServerStarting(FMLServerStartingEvent event) {
         // spotless:off
         GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
+        PLAYERS_BY_UUID = new HashMap<>();
+        UUID_BY_NAME = new HashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
@@ -1237,6 +1239,7 @@ public class GTProxy implements IFuelHandler {
         tetherManager = null;
         wirelessChargerManager = null;
         PLAYERS_BY_UUID = null;
+        UUID_BY_NAME = null;
         // spotless:on
     }
 
@@ -2462,6 +2465,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
@@ -2475,6 +2479,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.remove(UUID);
+            UUID_BY_NAME.remove(UUID);
         }
     }
 
@@ -2488,6 +2493,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
@@ -2501,6 +2507,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.put(UUID, player);
+            UUID_BY_NAME.put(player.getCommandSenderName(), UUID);
         }
     }
 
@@ -2521,6 +2528,25 @@ public class GTProxy implements IFuelHandler {
             return PLAYERS_BY_UUID.get(uuid);
         } else {
             throw new NullPointerException("PLAYERS_BY_ID is null because the server is not running!");
+        }
+    }
+
+    /**
+     * This method allows fast lookup of player UUID from their name.
+     * It should only ever be called from the ServerThread and while the Server is running.
+     *
+     * @param playername - the name of the player as returned by getCommandSenderName()
+     */
+    public UUID getPlayersUUID(String playername) {
+        if (!FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            throw new RuntimeException("Tried to retrieve a player UUID from outside of the server thread!");
+        }
+        if (UUID_BY_NAME != null) {
+            return UUID_BY_NAME.get(playername);
+        } else {
+            throw new NullPointerException("UUID_BY_NAME is null because the server is not running!");
         }
     }
 
