@@ -128,7 +128,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
-import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -1289,7 +1288,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             sendSound(INTERRUPT_SOUND_INDEX);
         }
         if (reason == ShutDownReasonRegistry.POWER_LOSS) {
-            GTPowerfailTracker.createPowerfailEvent(igte);
+            GTMod.proxy.powerfailTracker.createPowerfailEvent(igte);
         }
     }
 

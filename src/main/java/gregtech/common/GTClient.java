@@ -80,6 +80,7 @@ import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
+import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.capes.GTCapesLoader;
 import gregtech.common.blocks.ItemMachines;
@@ -118,6 +119,7 @@ import paulscode.sound.SoundSystemException;
 public class GTClient extends GTProxy {
 
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
+    public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
@@ -321,6 +323,8 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
+        powerfailRenderer = new GTPowerfailRenderer();
+        MinecraftForge.EVENT_BUS.register(powerfailRenderer);
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
         ClientRegistry.registerKeyBinding(shakeLockKey);
         // spotless:on
