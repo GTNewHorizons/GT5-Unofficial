@@ -79,6 +79,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
+    private static final String M_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
@@ -171,7 +172,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.gregtechproxy.separatorStyle) {
+        switch (GTMod.proxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
             default -> iLines
@@ -607,6 +608,17 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * This machine is capable of Perfect Overclocks!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addPerfectOCInfo() {
+        iLines.add(EnumChatFormatting.AQUA + M_PerfectOC);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * t-tier Glass required for TecTech Laser Hatches.
      *
      * @param t Tier of glass that unlocks all energy hatches
@@ -842,7 +854,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
         boolean useFinisherConfig) {
         if (useFinisherConfig) {
-            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+            switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
                 case 1 -> sLines.add(TAB + " ");
                 case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
@@ -852,7 +864,7 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.gregtechproxy.separatorStyle) {
+            switch (GTMod.proxy.separatorStyle) {
                 case 0 -> sLines.add(TAB + " ");
                 case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines
@@ -972,7 +984,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
 
-        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+        switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> iLines.add(" ");
             case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));

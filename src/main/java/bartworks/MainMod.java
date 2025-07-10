@@ -27,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
-import bartworks.API.SideReference;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
@@ -90,7 +89,7 @@ import tectech.loader.recipe.Godforge;
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
-    public static final String MOD_ID = Mods.Names.BART_WORKS;
+    public static final String MOD_ID = Mods.ModIDs.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
@@ -108,13 +107,13 @@ public final class MainMod {
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent preinit) {
+    public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 
         if (DEBUG) {
             try {
-                DebugLog.initDebugLog(preinit);
+                DebugLog.initDebugLog(event);
             } catch (IOException e) {
                 MainMod.LOGGER.catching(e);
             }
@@ -126,23 +125,27 @@ public final class MainMod {
 
         Werkstoff.init();
         GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
-        if (SideReference.Side.Client) {
+        if (event.getSide()
+            .isClient()) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent init) {
-        if (SideReference.Side.Client && Configuration.tooltip.addGlassTierInTooltips)
+    public void init(FMLInitializationEvent event) {
+        if (event.getSide()
+            .isClient() && Configuration.tooltip.addGlassTierInTooltips) {
             MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
+        }
         ServerEventHandler serverEventHandler = new ServerEventHandler();
-        if (SideReference.Side.Server) {
+        if (event.getSide()
+            .isServer()) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
         }
         FMLCommonHandler.instance()
             .bus()
             .register(serverEventHandler);
-        BioLabLoader.run();
+        BioLabLoader.run(event);
 
         WerkstoffLoader.runInit();
 

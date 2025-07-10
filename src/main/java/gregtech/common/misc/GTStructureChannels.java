@@ -74,14 +74,14 @@ public enum GTStructureChannels implements IStructureChannels {
 
     @Override
     public void registerAsIndicator(ItemStack indicator, int channelValue) {
-        StructureLibAPI.registerChannelItem(get(), Mods.Names.GREG_TECH, channelValue, indicator);
+        StructureLibAPI.registerChannelItem(get(), Mods.ModIDs.GREG_TECH, channelValue, indicator);
     }
 
     public static void register() {
         for (GTStructureChannels value : values()) {
             StructureLibAPI.registerChannelDescription(
                 value.get(),
-                Mods.Names.GREG_TECH,
+                Mods.ModIDs.GREG_TECH,
                 "channels." + Mods.GregTech.ID + "." + value.get());
         }
     }
