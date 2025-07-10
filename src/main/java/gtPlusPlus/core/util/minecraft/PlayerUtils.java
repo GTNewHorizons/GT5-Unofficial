@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
-import gtPlusPlus.core.util.Utils;
-
 public class PlayerUtils {
 
     public static List<EntityPlayerMP> getOnlinePlayers() {
@@ -35,10 +33,6 @@ public class PlayerUtils {
             return player.getUniqueID();
         }
         return null;
-    }
-
-    public static void messageAllPlayers(String string) {
-        Utils.sendServerMessage(string);
     }
 
     public static boolean isRealPlayer(EntityLivingBase entity) {

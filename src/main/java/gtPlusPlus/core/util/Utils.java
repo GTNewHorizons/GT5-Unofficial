@@ -12,9 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -114,18 +111,6 @@ public class Utils {
         }
 
         return returnValue;
-    }
-
-    // Send a message to all players on the server
-    public static void sendServerMessage(final String translationKey) {
-        sendServerMessage(new ChatComponentText(translationKey));
-    }
-
-    // Send a message to all players on the server
-    public static void sendServerMessage(final IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
     }
 
     /**
