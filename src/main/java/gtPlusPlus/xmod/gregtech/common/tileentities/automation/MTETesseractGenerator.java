@@ -35,7 +35,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
@@ -173,7 +172,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
                     .equalsIgnoreCase(aPlayer.getDisplayName())) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -627,13 +626,13 @@ public class MTETesseractGenerator extends MTEBasicTank {
             .isServerSide()) {
             // Utils.LOG_WARNING("Ticking Generator.");
             // Set owner
-            if (PlayerUtils.getPlayersUUIDByName(
+            if (GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName())
                 != null) {
                 if (this.mOwner == null) {
                     Logger.WARNING("Setting Generators Owner. 1");
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -764,7 +763,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             && !this.getBaseMetaTileEntity()
                 .getOwnerName()
                 .isEmpty()) {
-            this.mOwner = PlayerUtils.getPlayersUUIDByName(
+            this.mOwner = GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());
             Logger.WARNING("Setting Generators Owner. 2");

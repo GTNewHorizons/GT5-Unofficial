@@ -25,7 +25,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
@@ -136,7 +135,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
                     .equalsIgnoreCase(aPlayer.getDisplayName())) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -493,12 +492,12 @@ public class MTETesseractTerminal extends MTEBasicTank {
             && (this.getBaseMetaTileEntity()
                 .isAllowedToWork())) {
             // Set owner
-            if (PlayerUtils.getPlayersUUIDByName(
+            if (GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName())
                 != null) {
                 if (this.mOwner == null) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -588,7 +587,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             && !this.getBaseMetaTileEntity()
                 .getOwnerName()
                 .isEmpty()) {
-            this.mOwner = PlayerUtils.getPlayersUUIDByName(
+            this.mOwner = GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());
         }
