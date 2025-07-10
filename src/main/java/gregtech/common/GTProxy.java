@@ -1164,6 +1164,7 @@ public class GTProxy implements IFuelHandler {
         GTLog.out.println("GTMod: FMLServerAboutToStartEvent-Phase started!");
         GTChunkAssociatedData.clearAll();
         PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
+        UUID_BY_NAME = new Object2ObjectOpenHashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
