@@ -1137,12 +1137,9 @@ public class GTProxy implements IFuelHandler {
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        GTChunkAssociatedData.clearAll();
-    }
-
-    public void onServerStarting(FMLServerStartingEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: ServerStarting-Phase started!");
+        GTLog.out.println("GTMod: firing FMLServerAboutToStartEvent !");
+        GTChunkAssociatedData.clearAll();
         PLAYERS_BY_UUID = new HashMap<>();
         UUID_BY_NAME = new HashMap<>();
         isFirstWorldTick = true;
@@ -1155,7 +1152,10 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
+    }
 
+    public void onServerStarting(FMLServerStartingEvent event) {
+        GTLog.out.println("GTMod: firing FMLServerStartingEvent !");
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
