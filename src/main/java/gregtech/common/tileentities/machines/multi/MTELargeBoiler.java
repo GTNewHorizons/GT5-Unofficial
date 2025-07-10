@@ -196,8 +196,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         // allows for 0 pollution if circuit throttle is too high
         return Math.max(
             0,
-            (int) (pollutionPerSecond
-                * (1 - GTMod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
+            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
     }
 
     @Override
