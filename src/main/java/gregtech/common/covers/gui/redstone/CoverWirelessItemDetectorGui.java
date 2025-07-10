@@ -2,21 +2,22 @@ package gregtech.common.covers.gui.redstone;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.item.ItemStack;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.Icon;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 
@@ -26,18 +27,12 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
         super(cover);
     }
 
-    // TODO: a real slot widget listener and numericTextField with "Any" as default.
-    /*
-     * this workaround is pretty bad and its quite unresponsive. To render items client side, it requires the client to
-     * open the MTE.
-     * after doing so, i just use a dynamicdrawable and supplier.
-     */
+    // TODO: numericTextField with "Any" as default.
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager) {
         IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
-
         final ICoverable tile = cover.getTile();
         IItemHandler inventoryHandler;
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
@@ -47,6 +42,12 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
         } else {
             inventoryHandler = null;
         }
+        syncManager.syncValue(
+            "display_item",
+            GenericSyncValue.forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null));
+        ItemDisplayWidget displayWidget = new ItemDisplayWidget().syncHandler("display_item")
+            .displayAmount(false);
+
         return Flow.column()
             .coverChildren()
 
@@ -68,23 +69,20 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .child(
                         makeNumberField(88).value(slotSyncer)
                             .setDefaultNumber(-1)
-                            .setNumbers(-1, tile.getSizeInventory())
+                            .setNumbers(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
-                    .child(new DynamicDrawable(() -> getTargetItemDrawable(inventoryHandler, slotSyncer)).asWidget())
+                    .child(displayWidget)
                     .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.item_slot")))))
             .coverChildrenWidth()
 
             .child(physicalRow(physicalSyncer));
     }
 
-    private Icon getTargetItemDrawable(IItemHandler inv, IntSyncValue slotSyncer) {
-        final ICoverable tile = cover.getTile();
-        if (inv != null && slotSyncer.getIntValue() >= 0 && inv.getSlots() >= slotSyncer.getIntValue()) {
-            return new ItemDrawable((inv.getStackInSlot(slotSyncer.getIntValue()))).asIcon()
-                .size(16, 16);
-        } else {
-            return new Icon(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX);
+    private ItemStack queryMTEItem(IItemHandler inv, int slot) {
+        if (inv != null && slot >= 0 && inv.getSlots() >= slot && inv.getStackInSlot(slot) != null) {
+            return inv.getStackInSlot(slot);
         }
+        return ItemList.Display_ITS_FREE.get(1);
     }
 
     @Override
