@@ -1,9 +1,12 @@
 package gregtech.api.threads;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -33,6 +36,8 @@ public class RunnableMachineUpdate implements Runnable {
         return thread;
     };
     protected static ExecutorService EXECUTOR_SERVICE;
+    private static final Semaphore SEMAPHORE = new Semaphore(Integer.MAX_VALUE);
+    private static final AtomicInteger TASK_COUNTER = new AtomicInteger(0);
 
     // This class should never be initiated outside of this class!
     protected RunnableMachineUpdate(World aWorld, int posX, int posY, int posZ) {
@@ -43,6 +48,22 @@ public class RunnableMachineUpdate implements Runnable {
         final long coords = CoordinatePacker.pack(posX, posY, posZ);
         visited.add(coords);
         tQueue.enqueue(coords);
+    }
+
+    public static void onBeforeTickLockLocked() {
+        int numTasks = TASK_COUNTER.get();
+        if (numTasks > 0) {
+            try {
+                SEMAPHORE.acquire(numTasks);
+                TASK_COUNTER.addAndGet(-numTasks);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void onAfterTickLockReleased() {
+
     }
 
     public static boolean isEnabled() {
@@ -74,7 +95,10 @@ public class RunnableMachineUpdate implements Runnable {
 
     public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
-            EXECUTOR_SERVICE.submit(new RunnableMachineUpdate(aWorld, posX, posY, posZ));
+            CompletableFuture<Void> f = CompletableFuture
+                .runAsync(new RunnableMachineUpdate(aWorld, posX, posY, posZ), EXECUTOR_SERVICE);
+            TASK_COUNTER.incrementAndGet();
+            f.thenRun(SEMAPHORE::release);
         }
     }
 
