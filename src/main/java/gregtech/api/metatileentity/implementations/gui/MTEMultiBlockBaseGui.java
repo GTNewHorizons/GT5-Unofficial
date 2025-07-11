@@ -293,16 +293,16 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
             .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
