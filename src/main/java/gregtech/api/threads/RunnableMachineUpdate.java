@@ -35,7 +35,7 @@ public class RunnableMachineUpdate implements Runnable {
         thread.setName("GT_MachineBlockUpdate");
         return thread;
     };
-    protected static ExecutorService EXECUTOR_SERVICE;
+    private static ExecutorService EXECUTOR_SERVICE;
     private static final Semaphore SEMAPHORE = new Semaphore(Integer.MAX_VALUE);
     private static final AtomicInteger TASK_COUNTER = new AtomicInteger(0);
 
@@ -95,11 +95,15 @@ public class RunnableMachineUpdate implements Runnable {
 
     public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
-            CompletableFuture<Void> f = CompletableFuture
-                .runAsync(new RunnableMachineUpdate(aWorld, posX, posY, posZ), EXECUTOR_SERVICE);
-            TASK_COUNTER.incrementAndGet();
-            f.thenRun(SEMAPHORE::release);
+            postTaskToRun(new RunnableMachineUpdate(aWorld, posX, posY, posZ));
         }
+    }
+
+    protected static void postTaskToRun(Runnable runnable){
+        CompletableFuture<Void> f = CompletableFuture
+            .runAsync(runnable, EXECUTOR_SERVICE);
+        TASK_COUNTER.incrementAndGet();
+        f.thenRun(SEMAPHORE::release);
     }
 
     public static void initExecutorService() {
