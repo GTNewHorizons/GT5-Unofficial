@@ -2336,28 +2336,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = 0; i < rList.size(); i++) if (rList.get(i) == null) rList.remove(i--);
-        return rList;
-    }
-
-    /**
-     * Note: use {@link ArrayExt#withoutTrailingNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutTrailingNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = rList.size() - 1; i >= 0 && rList.get(i) == null;) rList.remove(i--);
-        return rList;
-    }
-
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
