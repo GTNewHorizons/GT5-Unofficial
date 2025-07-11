@@ -32,12 +32,28 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirelessCharger {
 
-    private static final int MODE_LONG_RANGE = 0;
-    private static final int MODE_LOCAL = 1;
-    private static final int MODE_MIXED = 2;
+    private enum ChargeMode {
 
-    public int mode = MODE_LONG_RANGE;
-    public boolean locked = true;
+        LONG_RANGE,
+        LOCAL,
+        MIXED;
+
+        public ChargeMode next() {
+            ChargeMode[] values = ChargeMode.values();
+            return values[(ordinal() + 1) % values.length];
+        }
+
+        public static ChargeMode fromOrdinal(int ordinal) {
+            ChargeMode[] values = ChargeMode.values();
+            if (0 <= ordinal && ordinal < values.length) {
+                return values[ordinal];
+            }
+            return LONG_RANGE;
+        }
+    }
+
+    private ChargeMode mode = ChargeMode.LONG_RANGE;
+    private boolean locked = true;
 
     private final Map<String, UUID> longRangeMap = new HashMap<>();
     private final Map<String, UUID> localRangeMap = new HashMap<>();
@@ -162,16 +178,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         longRangeMap.clear();
         localRangeMap.clear();
 
-        if (this.mode >= MODE_MIXED) {
-            this.mode = MODE_LONG_RANGE;
-        } else {
-            this.mode++;
-        }
-        if (this.mode == MODE_LONG_RANGE) {
+        this.mode = this.mode.next();
+
+        if (this.mode == ChargeMode.LONG_RANGE) {
             GTUtility.sendChatToPlayer(
                 player,
                 translateChat("mode_change", translateChat("mode.long"), translateChat("mode")));
-        } else if (this.mode == MODE_LOCAL) {
+        } else if (this.mode == ChargeMode.LOCAL) {
             GTUtility.sendChatToPlayer(
                 player,
                 translateChat("mode_change", translateChat("mode.local"), translateChat("mode")));
@@ -236,9 +249,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public long maxAmperesIn() {
-        if (this.mode == MODE_LONG_RANGE) {
+        if (this.mode == ChargeMode.LONG_RANGE) {
             return this.longRangeMap.size() + 1L;
-        } else if (this.mode == MODE_LOCAL) {
+        } else if (this.mode == ChargeMode.LOCAL) {
             return this.localRangeMap.size() * 2L + 1L;
         } else {
             return this.localRangeMap.size() + this.longRangeMap.size() + 1L;
@@ -340,13 +353,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setBoolean("mLocked", this.locked);
-        aNBT.setInteger("mMode", this.mode);
+        aNBT.setInteger("mMode", this.mode.ordinal());
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         this.locked = aNBT.getBoolean("mLocked");
-        this.mode = aNBT.getInteger("mMode");
+        this.mode = ChargeMode.fromOrdinal(aNBT.getInteger("mMode"));
     }
 
     @Override
@@ -386,8 +399,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     baseMetaTileEntity.getXCoord(),
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord());
-                if (this.mode == MODE_LOCAL || this.mode == MODE_MIXED) {
-                    final double range = this.getLocalRange(this.mode == MODE_MIXED);
+                if (this.mode == ChargeMode.LOCAL || this.mode == ChargeMode.MIXED) {
+                    final double range = this.getLocalRange(this.mode == ChargeMode.MIXED);
                     if (distSq < range * range) {
                         if (this.isValidPlayer(player) && !localRangeMap.containsKey(
                             player.getGameProfile()
@@ -403,8 +416,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                                 .getName());
                     }
                 }
-                if (this.mode == MODE_LONG_RANGE || this.mode == MODE_MIXED) {
-                    final double range = getLongRange(this.mode == MODE_MIXED);
+                if (this.mode == ChargeMode.LONG_RANGE || this.mode == ChargeMode.MIXED) {
+                    final double range = getLongRange(this.mode == ChargeMode.MIXED);
                     if (distSq <= range * range) {
                         if (!longRangeMap.containsKey(
                             player.getGameProfile()
@@ -459,7 +472,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
         float x, float y, float z) {
 
-        if (this.mode == MODE_LONG_RANGE) {
+        if (this.mode == ChargeMode.LONG_RANGE) {
             GTUtility.sendChatToPlayer(
                 player,
                 translateChat("mode_info", translateChat("mode.long"), translateChat("mode")));
@@ -473,7 +486,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
             for (String name : this.longRangeMap.keySet()) {
                 GTUtility.sendChatToPlayer(player, name);
             }
-        } else if (this.mode == MODE_LOCAL) {
+        } else if (this.mode == ChargeMode.LOCAL) {
             GTUtility.sendChatToPlayer(
                 player,
                 translateChat("mode_info", translateChat("mode.local"), translateChat("mode")));
@@ -543,11 +556,11 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                 != this.getBaseMetaTileEntity()
                     .getWorld().provider.dimensionId)
             return false;
-        if (this.mode == 0) {
+        if (this.mode == ChargeMode.LONG_RANGE) {
             return longRangeMap.containsKey(
                 player.getGameProfile()
                     .getName());
-        } else if (this.mode == 1) {
+        } else if (this.mode == ChargeMode.LOCAL) {
             return localRangeMap.containsKey(
                 player.getGameProfile()
                     .getName());
