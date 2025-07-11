@@ -1664,7 +1664,7 @@ GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cyc
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
 
-gt.behaviour.switch_mode.tooltip=Shift+Rclick to change mode
+gt.behaviour.switch_mode.tooltip=Press [%s] to change mode
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -2762,6 +2762,7 @@ gt.time.second.singular=second
 gt.time.second.plural=seconds
 
 #Tool modes
+key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
 
