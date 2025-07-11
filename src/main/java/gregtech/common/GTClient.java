@@ -401,6 +401,8 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
         if ((aEvent.side.isClient()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
+            this.mTicksUntilNextCraftSound--;
+
             if (mFirstTick) {
                 mFirstTick = false;
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
