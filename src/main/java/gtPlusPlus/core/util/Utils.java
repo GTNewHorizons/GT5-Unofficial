@@ -18,12 +18,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.EnumUtils;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -44,76 +40,6 @@ public class Utils {
         return FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient();
-    }
-
-    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final long size) {
-        return getTcAspectStack(aspect.name(), (int) size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final String aspect, final long size) {
-        return getTcAspectStack(aspect, (int) size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final int size) {
-        return getTcAspectStack(aspect.name(), size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final String aspect, final int size) {
-
-        TC_AspectStack returnValue = null;
-
-        if (aspect.equalsIgnoreCase("COGNITIO")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "COGNITIO")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITIO"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITO"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-        } else if (aspect.equalsIgnoreCase("EXANIMUS")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "EXANIMUS")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXANIMUS"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXAMINIS"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-
-        } else if (aspect.equalsIgnoreCase("PRAECANTATIO")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "PRAECANTATIO")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTATIO"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTIO"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-        } else {
-            Logger.WARNING("TC Aspect found - " + aspect);
-            returnValue = new TC_AspectStack(TCAspects.valueOf(aspect), size);
-        }
-
-        return returnValue;
     }
 
     // Send a message to all players on the server
