@@ -99,9 +99,8 @@ public class RunnableMachineUpdate implements Runnable {
         }
     }
 
-    protected static void postTaskToRun(Runnable runnable){
-        CompletableFuture<Void> f = CompletableFuture
-            .runAsync(runnable, EXECUTOR_SERVICE);
+    protected static void postTaskToRun(Runnable runnable) {
+        CompletableFuture<Void> f = CompletableFuture.runAsync(runnable, EXECUTOR_SERVICE);
         TASK_COUNTER.incrementAndGet();
         f.thenRun(SEMAPHORE::release);
     }
