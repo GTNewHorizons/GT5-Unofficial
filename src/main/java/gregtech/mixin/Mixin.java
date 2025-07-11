@@ -72,12 +72,12 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
-    VanillaClientAccessors(
-        new Builder("Adds various accessors").addMixinClasses("minecraft.accessors.GuiTextFieldMixin")
-            .addTargetedMod(VANILLA)
-            .setApplyIf(() -> true)
-            .setPhase(Phase.EARLY)
-            .setSide(Side.CLIENT)),
+    VanillaClientAccessors(new Builder("Adds various accessors")
+        .addMixinClasses("minecraft.accessors.GuiTextFieldMixin", "minecraft.accessors.TessellatorMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)),
     ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
