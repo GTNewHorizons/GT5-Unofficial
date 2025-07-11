@@ -780,11 +780,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return "Unset";
     }
 
-    @Override // sorry frosty your panel will live on in my heart and maybe my new panel
-    public boolean supportsPowerPanel() {
-        return false;
-    }
-
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         mStaticAnimations = !mStaticAnimations;

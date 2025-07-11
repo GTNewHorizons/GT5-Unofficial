@@ -53,19 +53,21 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent, syncManager).child(createConfigButton(syncManager, parent))
-            .child(createOverviewButton(syncManager, parent));
+        return super.createPanelGap(parent, syncManager).child(createConfigButton(syncManager, parent));
+    }
+
+    @Override
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager // calls the panel itself.
-            .panel(
-                "statsPanel",
-                (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-                true);
+        IPanelHandler statsPanel = syncManager.panel(
+            "statsPanel",
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
+            true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 28, 0)
-            .marginTop(4)
+            .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
@@ -125,7 +127,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
             .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 6, 0)
+            .rightRel(0, 28, 0)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
