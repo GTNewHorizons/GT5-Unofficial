@@ -54,6 +54,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     private ChargeMode mode = ChargeMode.LONG_RANGE;
     private boolean locked = true;
+    // this is only used to register/unregister the charger
+    private int maxCurrentRange = -1;
 
     private final Map<String, UUID> longRangeMap = new HashMap<>();
     private final Map<String, UUID> localRangeMap = new HashMap<>();
@@ -362,11 +364,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         this.mode = ChargeMode.fromOrdinal(aNBT.getInteger("mMode"));
     }
 
-    @Override
-    public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (locked || (aTile != null && aTile.privateAccess())) {
@@ -377,28 +374,28 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public void onPostTick(final IGregTechTileEntity baseMetaTileEntity, final long tick) {
-        super.onPostTick(baseMetaTileEntity, tick);
-        if (!this.getBaseMetaTileEntity()
-            .isServerSide()) {
+    public void onPostTick(final IGregTechTileEntity mte, final long tick) {
+        super.onPostTick(mte, tick);
+        if (!mte.isServerSide()) {
             return;
         }
 
-        if (tick % 20 == 0) {
-            boolean mapped = this.equals(
-                GTMod.proxy.wirelessChargerManager.getCharger(
-                    baseMetaTileEntity.getXCoord(),
-                    baseMetaTileEntity.getYCoord(),
-                    baseMetaTileEntity.getZCoord()));
-            if (!mapped) {
-                GTMod.proxy.wirelessChargerManager.addCharger(this);
+        if (mte.isAllowedToWork()) {
+            int prevRange = this.maxCurrentRange;
+            maxCurrentRange = getMaxRange();
+            if (prevRange != maxCurrentRange) {
+                GTMod.proxy.wirelessChargerManager.addCharger(this, maxCurrentRange);
             }
+        } else {
+            if (maxCurrentRange != -1) {
+                GTMod.proxy.wirelessChargerManager.removeCharger(this);
+                maxCurrentRange = -1;
+            }
+        }
 
-            for (EntityPlayer player : baseMetaTileEntity.getWorld().playerEntities) {
-                final double distSq = player.getDistanceSq(
-                    baseMetaTileEntity.getXCoord(),
-                    baseMetaTileEntity.getYCoord(),
-                    baseMetaTileEntity.getZCoord());
+        if (tick % 20 == 0) {
+            for (EntityPlayer player : mte.getWorld().playerEntities) {
+                final double distSq = player.getDistanceSq(mte.getXCoord(), mte.getYCoord(), mte.getZCoord());
                 if (this.mode == ChargeMode.LOCAL || this.mode == ChargeMode.MIXED) {
                     final double range = this.getLocalRange(this.mode == ChargeMode.MIXED);
                     if (distSq < range * range) {
@@ -455,9 +452,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     @Override
     public void onRemoval() {
         GTMod.proxy.wirelessChargerManager.removeCharger(this);
-        longRangeMap.clear();
-        localRangeMap.clear();
         super.onRemoval();
+    }
+
+    @Override
+    public void onUnload() {
+        GTMod.proxy.wirelessChargerManager.removeCharger(this);
+        super.onUnload();
     }
 
     private int getLongRange(boolean mixed) {
@@ -466,6 +467,14 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     private int getLocalRange(boolean mixed) {
         return this.mTier * (mixed ? 10 : 20);
+    }
+
+    private int getMaxRange() {
+        return switch (mode) {
+            case LONG_RANGE -> getLongRange(false);
+            case LOCAL -> getLocalRange(false);
+            case MIXED -> getLongRange(true);
+        };
     }
 
     @Override
@@ -523,25 +532,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         }
 
         return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
-    }
-
-    @Override
-    public void onServerStart() {
-        longRangeMap.clear();
-        localRangeMap.clear();
-        super.onServerStart();
-    }
-
-    @Override
-    public void onExplosion() {
-        GTMod.proxy.wirelessChargerManager.removeCharger(this);
-        super.onExplosion();
-    }
-
-    @Override
-    public void doExplosion(long aExplosionPower) {
-        GTMod.proxy.wirelessChargerManager.removeCharger(this);
-        super.doExplosion(aExplosionPower);
     }
 
     @Override
