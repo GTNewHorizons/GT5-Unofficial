@@ -23,17 +23,6 @@ import io.netty.buffer.ByteBuf;
 
 public class PacketServerJoined extends GTPacket {
 
-    private byte config;
-
-    public PacketServerJoined() {
-        super();
-    }
-
-    public PacketServerJoined(Object obj) {
-        super();
-        this.config = 0;
-    }
-
     @Override
     public byte getPacketID() {
         return 26;
@@ -41,12 +30,11 @@ public class PacketServerJoined extends GTPacket {
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeByte(this.config);
+
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
-        this.config = byteArrayDataInput.readByte();
         return this;
     }
 
