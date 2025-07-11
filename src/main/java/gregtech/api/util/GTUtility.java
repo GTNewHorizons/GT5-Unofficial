@@ -45,7 +45,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -171,7 +170,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.pollution.Pollution;
@@ -2350,9 +2348,17 @@ public class GTUtility {
             .isEmpty();
     }
 
+    public static boolean isStringValid(String aString) {
+        return aString != null && !aString.isEmpty();
+    }
+
     public static boolean isStringInvalid(Object aString) {
         return aString == null || aString.toString()
             .isEmpty();
+    }
+
+    public static boolean isStringInvalid(String aString) {
+        return aString == null || aString.isEmpty();
     }
 
     @Deprecated
