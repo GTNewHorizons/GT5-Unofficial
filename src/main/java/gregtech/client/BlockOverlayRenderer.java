@@ -42,6 +42,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import ic2.api.tile.IWrenchable;
 
 public class BlockOverlayRenderer {
@@ -182,10 +183,14 @@ public class BlockOverlayRenderer {
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.502D, 0.0D);
-        GL11.glLineWidth(2.5F);
+        GL11.glLineWidth(Client.blockoverlay.lineWidth);
         final Tessellator tess = Tessellator.instance;
         tess.startDrawing(GL11.GL_LINES);
-        tess.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
+        int red = Client.blockoverlay.red;
+        int green = Client.blockoverlay.green;
+        int blue = Client.blockoverlay.blue;
+        int alpha = Client.blockoverlay.alpha;
+        tess.setColorRGBA(red, green, blue, alpha);
         tess.addVertex(+.50D, .0D, -.25D);
         tess.addVertex(-.50D, .0D, -.25D);
         tess.addVertex(+.50D, .0D, +.25D);

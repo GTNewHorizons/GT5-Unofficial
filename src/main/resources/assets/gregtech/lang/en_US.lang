@@ -1484,6 +1484,7 @@ GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
