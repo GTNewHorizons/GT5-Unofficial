@@ -83,13 +83,11 @@ public class MetaGTProxy {
                 "Eau chauffée", "Acqua riscaldata", "온수", "Água aquecida", "Água aquecida", "Вода с подогревом",
                 "Uppvärmt vatten", "Isıtılmış Su", "热水", "热水", };
             for (int i = 0; i < aLangs.length; i++) {
-                Logger
-                    .REFLECTION("Trying to inject new lang data for " + aLangs[i] + ", using value: " + aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "fluidHotWater", aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
         } catch (Throwable t) {
-
+            t.printStackTrace();
         }
     }
 }

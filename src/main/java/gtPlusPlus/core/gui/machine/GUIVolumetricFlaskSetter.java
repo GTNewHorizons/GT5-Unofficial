@@ -158,7 +158,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         if (mIsOpen) {
             log("Clicked.");
             this.mText.mouseClicked(x, y, btn);
-            if (!mText.didClickInTextField(x, y)) {
+            if (!mText.clickInTextField(x, y)) {
                 log("Did not click in text box, passing to super.");
                 super.mouseClicked(x, y, btn);
             }

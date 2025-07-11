@@ -20,6 +20,7 @@ public enum TargetedMod {
     EXTRATIC("ExtraTiC", null, "ExtraTiC"),
     EXTRA_UTILITIES("ExtraUtilities", null, "ExtraUtilities"),
     FASTCRAFT("FastCraft", "fastcraft.Tweaker"),
+    FORESTRY("Forestry", null, "Forestry"),
     GALACTICRAFT_CORE("GalacticraftCore", "micdoodle8.mods.galacticraft.core.asm.GCLoadingPlugin", "GalacticraftCore"),
     GT5U("GregTech5u", null, "gregtech"), // Also matches GT6.
     GT6("GregTech6", "gregtech.asm.GT_ASM", "gregapi"), // Can be used to exclude GT6 from the GT5U target.
