@@ -401,7 +401,6 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
         if ((aEvent.side.isClient()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
-            this.mTicksUntilNextCraftSound--;
 
             if (mFirstTick) {
                 mFirstTick = false;
@@ -457,6 +456,7 @@ public class GTClient extends GTProxy {
     public void onClientTickEvent(ClientTickEvent aEvent) {
         if (aEvent.phase == TickEvent.Phase.END) {
             GTMusicSystem.ClientSystem.tick();
+            this.mTicksUntilNextCraftSound--;
 
             if (changeDetected > 0) changeDetected--;
             final boolean newHideValue = shouldHeldItemHideThings();
