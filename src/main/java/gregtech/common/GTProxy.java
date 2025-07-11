@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -164,7 +165,6 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class GTProxy implements IFuelHandler {
 
@@ -1145,13 +1145,10 @@ public class GTProxy implements IFuelHandler {
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        GTChunkAssociatedData.clearAll();
-    }
-
-    public void onServerStarting(FMLServerStartingEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: ServerStarting-Phase started!");
-        PLAYERS_BY_UUID = new Object2ObjectOpenHashMap<>();
+        GTLog.out.println("GTMod: firing FMLServerAboutToStartEvent !");
+        GTChunkAssociatedData.clearAll();
+        PLAYERS_BY_UUID = new HashMap<>();
         isFirstWorldTick = true;
         GTMusicSystem.ServerSystem.reset();
         wirelessChargerManager = new WirelessChargerManager();
@@ -1162,7 +1159,10 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
+    }
 
+    public void onServerStarting(FMLServerStartingEvent event) {
+        GTLog.out.println("GTMod: firing FMLServerStartingEvent !");
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
