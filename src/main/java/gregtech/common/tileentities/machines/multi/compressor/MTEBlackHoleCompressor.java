@@ -81,7 +81,6 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
@@ -249,12 +248,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack aTool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
             rendererTileEntity = null;
             destroyRenderBlock();
         } else {
             if (blackHoleStatus != 1) createRenderBlock();
-            PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+            GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
         }
 
     }

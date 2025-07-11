@@ -21,7 +21,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEPollutionDetector extends MTETieredMachineBlock {
@@ -213,10 +212,10 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
-            PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
+            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
-            PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
-            PlayerUtils.messagePlayer(playerIn, "Emit Redstone at pollution level: " + this.mRedstoneLevel);
+            GTUtility.sendChatToPlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
+            GTUtility.sendChatToPlayer(playerIn, "Emit Redstone at pollution level: " + this.mRedstoneLevel);
         }
     }
 

@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInventory {
 
@@ -283,7 +282,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             } else {
                 aCurrentMode++;
             }
-            PlayerUtils.messagePlayer(player, "Now configuring units for type " + aCurrentMode + ".");
+            GTUtility.sendChatToPlayer(player, "Now configuring units for type " + aCurrentMode + ".");
             return true;
         } catch (Throwable t) {
             return false;

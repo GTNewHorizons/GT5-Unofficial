@@ -13,8 +13,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTETransformerHiAmp extends MTETransformer {
 
@@ -112,9 +112,9 @@ public class MTETransformerHiAmp extends MTETransformer {
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");
+            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 4A:16A in/out Ratio.");
+            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 4A:16A in/out Ratio.");
         }
     }
 }
