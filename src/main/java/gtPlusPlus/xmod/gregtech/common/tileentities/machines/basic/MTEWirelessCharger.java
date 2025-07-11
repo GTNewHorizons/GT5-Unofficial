@@ -541,11 +541,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public boolean canChargePlayerItems(EntityPlayer player) {
-        if (!this.getBaseMetaTileEntity()
-            .isAllowedToWork() || player.getEntityWorld().provider.dimensionId
-                != this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId)
-            return false;
         if (this.mode == ChargeMode.LONG_RANGE) {
             return longRangeMap.containsKey(
                 player.getGameProfile()
