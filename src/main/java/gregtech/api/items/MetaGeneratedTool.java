@@ -22,6 +22,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
@@ -169,6 +172,16 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (aNBT != null) return aNBT.getByte("Mode");
         }
         return 0;
+    }
+
+    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+        if (!keyDown) return;
+        ItemStack currentItem = player.inventory.getCurrentItem();
+        if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
+        byte maxMode = item.getToolMaxMode(currentItem);
+        if (maxMode <= 1) return;
+        byte newMode = (byte) ((MetaGeneratedTool.getToolMode(currentItem) + 1) % maxMode);
+        MetaGeneratedTool.setToolMode(currentItem, newMode);
     }
 
     /**
