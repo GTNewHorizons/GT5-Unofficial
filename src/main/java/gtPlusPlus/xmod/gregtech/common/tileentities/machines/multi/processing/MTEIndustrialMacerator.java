@@ -93,7 +93,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public String getMachineType() {
-        return "Macerator, Pulverizer";
+        return "Macerator, Pulverizer, IMS";
     }
 
     @Override

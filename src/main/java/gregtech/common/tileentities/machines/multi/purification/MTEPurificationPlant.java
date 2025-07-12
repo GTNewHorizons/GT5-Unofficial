@@ -178,7 +178,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant")
+        tt.addMachineType("Purification Plant, WPP")
             .addInfo("Main controller block for the Water Purification Plant.")
             .addInfo(
                 "Freely place " + EnumChatFormatting.YELLOW

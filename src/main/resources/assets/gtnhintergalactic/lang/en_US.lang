@@ -189,7 +189,7 @@ ig.button.projects=Projects
 
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
-gt.blockmachines.multimachine.ig.siphon.type=Pump
+gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes

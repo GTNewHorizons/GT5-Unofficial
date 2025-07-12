@@ -729,6 +729,7 @@ gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (a
 gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
