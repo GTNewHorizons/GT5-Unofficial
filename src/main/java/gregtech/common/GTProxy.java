@@ -39,8 +39,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.threads.RunnableCableUpdate;
-import gregtech.api.threads.RunnableMachineUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -138,6 +136,8 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableCableUpdate;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;

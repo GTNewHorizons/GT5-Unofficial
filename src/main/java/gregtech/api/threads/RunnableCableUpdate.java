@@ -1,5 +1,7 @@
 package gregtech.api.threads;
 
+import java.util.HashMap;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -11,22 +13,21 @@ import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 
-import java.util.HashMap;
-
 public class RunnableCableUpdate extends RunnableMachineUpdate {
 
     protected RunnableCableUpdate(World aWorld, int posX, int posY, int posZ) {
         super(aWorld, posX, posY, posZ);
     }
+
     private final static HashMap<World, RunnableCableUpdate> perWorldHandler = new HashMap<>();
+
     public static void setCableUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled) {
             RunnableCableUpdate handler = perWorldHandler.get(aWorld);
-            if(handler == null){
+            if (handler == null) {
                 handler = new RunnableCableUpdate(aWorld, posX, posY, posZ);
                 perWorldHandler.put(aWorld, handler);
-            }
-            else {
+            } else {
                 final long coords = CoordinatePacker.pack(posX, posY, posZ);
                 handler.tQueue.enqueue(coords);
                 handler.visited.add(coords);
@@ -35,8 +36,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
     }
 
     public static void endTick() {
-        for(RunnableCableUpdate handler : perWorldHandler.values())
-            handler.run();
+        for (RunnableCableUpdate handler : perWorldHandler.values()) handler.run();
         perWorldHandler.clear();
     }
 

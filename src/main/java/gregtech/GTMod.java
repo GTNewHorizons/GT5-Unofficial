@@ -68,7 +68,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
-import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;

@@ -1,10 +1,6 @@
 package gregtech.api.threads;
 
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -69,11 +65,10 @@ public class RunnableMachineUpdate implements Runnable {
     public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
             RunnableMachineUpdate handler = perWorldHandler.get(aWorld);
-            if(handler == null){
+            if (handler == null) {
                 handler = new RunnableMachineUpdate(aWorld, posX, posY, posZ);
                 perWorldHandler.put(aWorld, handler);
-            }
-            else {
+            } else {
                 final long coords = CoordinatePacker.pack(posX, posY, posZ);
                 handler.tQueue.enqueue(coords);
                 handler.visited.add(coords);
@@ -82,8 +77,7 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     public static void endTick() {
-        for(RunnableMachineUpdate handler : perWorldHandler.values())
-            handler.run();
+        for (RunnableMachineUpdate handler : perWorldHandler.values()) handler.run();
         perWorldHandler.clear();
     }
 
@@ -105,7 +99,6 @@ public class RunnableMachineUpdate implements Runnable {
                 tTileEntity = world.getTileEntity(posX, posY, posZ);
                 isMachineBlock = GregTechAPI
                     .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
-
 
                 // See if the block itself needs an update
                 if (tTileEntity instanceof IMachineBlockUpdateable)
