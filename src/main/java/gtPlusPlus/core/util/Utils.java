@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,11 +53,8 @@ public class Utils {
         if ((r > 255) || (g > 255) || (b > 255) || (r < 0) || (g < 0) || (b < 0)) {
             return 0;
         }
-        final Color c = new Color(r, g, b);
-        String temp = Integer.toHexString(c.getRGB() & 0xFFFFFF)
-            .toUpperCase();
-        temp = Utils.appenedHexNotationToString(temp);
-        return Integer.decode(temp);
+        final int rgb = ((0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
+        return rgb & 0xFFFFFF;
     }
 
     /*
