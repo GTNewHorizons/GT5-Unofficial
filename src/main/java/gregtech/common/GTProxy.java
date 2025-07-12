@@ -136,6 +136,8 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableCableUpdate;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
@@ -1921,6 +1923,8 @@ public class GTProxy implements IFuelHandler {
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
+                RunnableMachineUpdate.endTick();
+                RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
