@@ -1,5 +1,8 @@
 package gregtech.api.threads;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,6 +11,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import gregtech.api.util.GTLog;
+import it.unimi.dsi.fastutil.longs.Long2IntMap;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
+import scala.collection.mutable.HashTable;
 
 public class RunnableMachineUpdate implements Runnable {
 
@@ -39,6 +46,10 @@ public class RunnableMachineUpdate implements Runnable {
     private static final Semaphore SEMAPHORE = new Semaphore(Integer.MAX_VALUE);
     private static final AtomicInteger TASK_COUNTER = new AtomicInteger(0);
 
+    private static final HashMap<World, PerWorldData> perWorldData = new HashMap<>();
+    static int requests = 0;
+
+
     // This class should never be initiated outside of this class!
     protected RunnableMachineUpdate(World aWorld, int posX, int posY, int posZ) {
         this.world = aWorld;
@@ -46,8 +57,8 @@ public class RunnableMachineUpdate implements Runnable {
         this.initialY = posY;
         this.initialZ = posZ;
         final long coords = CoordinatePacker.pack(posX, posY, posZ);
-        visited.add(coords);
         tQueue.enqueue(coords);
+        visited.add(coords);
     }
 
     public static void onBeforeTickLockLocked() {
@@ -63,7 +74,19 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     public static void onAfterTickLockReleased() {
+        int total = 0;
+        for(PerWorldData data : perWorldData.values()){
+            for(RunnableMachineUpdate unique : data.uniqueHandlers) {
+                postTaskToRun(unique);
+                total++;
+            }
 
+            data.clear();
+        }
+        if(requests > total){
+            GTLog.out.printf("merged %d requested tasks into %d final tasks\n", requests, total);
+        }
+        requests = 0;
     }
 
     public static boolean isEnabled() {
@@ -95,7 +118,13 @@ public class RunnableMachineUpdate implements Runnable {
 
     public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
-            postTaskToRun(new RunnableMachineUpdate(aWorld, posX, posY, posZ));
+            PerWorldData data = perWorldData.get(aWorld);
+            if(data == null){
+                data = new PerWorldData(aWorld);
+                perWorldData.put(aWorld, data);
+            }
+            data.check(posX, posY, posZ);
+            requests++;
         }
     }
 
@@ -148,6 +177,8 @@ public class RunnableMachineUpdate implements Runnable {
     public void run() {
         int posX, posY, posZ;
         try {
+            int initialQueueSize = tQueue.size();
+            int checked = 0;
             while (!tQueue.isEmpty()) {
                 final long packedCoords = tQueue.dequeueLong();
                 posX = CoordinatePacker.unpackX(packedCoords);
@@ -175,13 +206,14 @@ public class RunnableMachineUpdate implements Runnable {
                     ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
 
                 // Now see if we should add the nearby blocks to the queue:
-                // 1) If we've visited less than 5 blocks, then yes
+                // 1) If we haven't visited the initial set
                 // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
-                if (visited.size() < 5
+                if (checked < initialQueueSize
                     || (tTileEntity instanceof IMachineBlockUpdateable
                         && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
                     || isMachineBlock) {
+                    checked++;
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         final long tCoords = CoordinatePacker
@@ -206,5 +238,85 @@ public class RunnableMachineUpdate implements Runnable {
                     + "}",
                 e);
         }
+    }
+
+    static class PerWorldData {
+        public PerWorldData(World world){
+            this.world = world;
+        }
+        World world;
+        ArrayList<RunnableMachineUpdate> indexToHandler = new ArrayList<>();
+        Long2IntMap handlerForLocation = new Long2IntOpenHashMap();
+        HashSet<RunnableMachineUpdate> uniqueHandlers = new HashSet<>();
+
+        public void check(int posX, int posY, int posZ){
+            final long coords = CoordinatePacker.pack(posX, posY, posZ);
+            if(handlerForLocation.containsKey(coords))
+                return; // Already covered by another check
+
+            int currentHandler = -1;
+
+            if(!indexToHandler.isEmpty()) {
+                for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                    final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
+                    final long tCoords = CoordinatePacker.pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+
+                    if (handlerForLocation.containsKey(tCoords)) {
+                        int handlerIndex = handlerForLocation.get(tCoords);
+
+                        if (handlerIndex != currentHandler) {
+                            if (currentHandler == -1) {
+                                // First adjacent handler found, just merge into it
+                                currentHandler = handlerIndex;
+                                RunnableMachineUpdate handler = indexToHandler.get(currentHandler);
+                                handler.tQueue.enqueue(coords);
+                                handler.visited.add(coords);
+                                handlerForLocation.put(coords, currentHandler);
+                            } else {
+                                // We already found an adjacent handler, and this is a different one, so merge them
+                                RunnableMachineUpdate current = indexToHandler.get(currentHandler);
+                                RunnableMachineUpdate other = indexToHandler.get(handlerIndex);
+                                if (current != other) {
+                                    if(current.tQueue.size() <= other.tQueue.size()) {
+                                        mergeHandlers(other, current, handlerIndex);
+                                    }
+                                    else{
+                                        mergeHandlers(current, other, currentHandler);
+                                        currentHandler = handlerIndex;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(currentHandler == -1){
+                // no existing handler found
+                RunnableMachineUpdate handler = new RunnableMachineUpdate(world, posX, posY, posZ);
+                int newIndex = indexToHandler.size();
+                uniqueHandlers.add(handler);
+                indexToHandler.add(handler);
+                handlerForLocation.put(coords, newIndex);
+            }
+        }
+
+        private void mergeHandlers(RunnableMachineUpdate mergedHandler, RunnableMachineUpdate remainingHandler, int indexOfMergedHandler) {
+            while (!mergedHandler.tQueue.isEmpty()){
+                long tmpCoord = mergedHandler.tQueue.dequeueLong();
+                remainingHandler.tQueue.enqueue(tmpCoord);
+                remainingHandler.visited.add(tmpCoord);
+            }
+
+            indexToHandler.set(indexOfMergedHandler, remainingHandler);
+            uniqueHandlers.remove(mergedHandler);
+        }
+
+        public void clear(){
+            indexToHandler.clear();
+            uniqueHandlers.clear();
+            handlerForLocation.clear();
+        }
+
     }
 }
