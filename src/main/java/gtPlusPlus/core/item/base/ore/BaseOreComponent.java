@@ -41,7 +41,6 @@ public class BaseOreComponent extends Item {
     public final String unlocalName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
 
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
@@ -113,18 +112,10 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
+                if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                    list.add(Utils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                } else {
                     list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
                 }
                 if (this.componentMaterial.isRadioactive) {
                     list.add(

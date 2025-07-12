@@ -188,6 +188,24 @@ public class Utils {
         return new String(chars, 0, i);
     }
 
+    public static String sanitizeStringKeepBracketsQuestion(final String input) {
+        final char[] chars = input.toCharArray();
+        int i = 0;
+        for (final char c : chars) {
+            switch (c) {
+                case ' ':
+                case '-':
+                case '_':
+                case '!':
+                case '@':
+                case '#':
+                    continue;
+            }
+            chars[i++] = c;
+        }
+        return new String(chars, 0, i);
+    }
+
     public static String addBookTitleLocalization(final String aTitle) {
         return GTLanguageManager
             .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTechAPI.sPostloadFinished);

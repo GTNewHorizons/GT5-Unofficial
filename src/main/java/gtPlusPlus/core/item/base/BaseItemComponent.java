@@ -40,19 +40,13 @@ import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
 
-    private static final Class<TextureSet> mTextureSetPreload;
-
-    static {
-        mTextureSetPreload = TextureSet.class;
-    }
-
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
     public final String translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
+    public short[] extraData;
 
     protected IIcon base;
     protected IIcon overlay;
@@ -219,18 +213,10 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
+                if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                    list.add(Utils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                } else {
                     list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
                 }
 
                 if (this.componentMaterial.isRadioactive) {
@@ -312,10 +298,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.componentMaterial == null) {
                 if (extraData != null) {
-                    if (short.class.isInstance(extraData)) {
-                        short[] abc = (short[]) extraData;
-                        return Utils.rgbtoHexValue(abc[0], abc[1], abc[2]);
-                    }
+                    return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
                 }
                 return this.componentColour;
             }
