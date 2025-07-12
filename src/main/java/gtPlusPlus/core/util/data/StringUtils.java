@@ -37,12 +37,11 @@ public class StringUtils {
         return str;
     }
 
-    public static String firstLetterCaps(String data) {
-        String firstLetter = data.substring(0, 1)
-            .toUpperCase();
-        String restLetters = data.substring(1)
-            .toLowerCase();
-        return firstLetter + restLetters;
+    public static String firstLetterCaps(String string) {
+        if (string == null) {
+            return null;
+        }
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 
     /**
@@ -99,9 +98,14 @@ public class StringUtils {
         }
     }
 
-    public static long uppercaseCount(String aString) {
-        return aString.chars()
-            .filter(Character::isUpperCase)
-            .count();
+    public static long uppercaseCount(String input) {
+        final char[] chars = input.toCharArray();
+        int count = 0;
+        for (char c : chars) {
+            if (Character.isUpperCase(c)) {
+                count++;
+            }
+        }
+        return count;
     }
 }
