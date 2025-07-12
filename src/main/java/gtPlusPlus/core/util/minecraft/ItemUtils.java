@@ -42,7 +42,7 @@ public class ItemUtils {
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            mTemp = Utils.sanitizeString(mTemp, new char[] { '-', '_' });
+            mTemp = Utils.sanitizeStringKeepDashes(mTemp);
         } else {
             mTemp = Utils.sanitizeString(mTemp);
         }
@@ -77,7 +77,7 @@ public class ItemUtils {
         try {
 
             if (oredictName.contains("-") || oredictName.contains("_")) {
-                oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+                oredictName = Utils.sanitizeStringKeepDashes(oredictName);
             } else {
                 oredictName = Utils.sanitizeString(oredictName);
             }
