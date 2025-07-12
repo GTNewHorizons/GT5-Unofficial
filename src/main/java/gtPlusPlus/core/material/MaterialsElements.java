@@ -313,7 +313,7 @@ public final class MaterialsElements {
         90,
         142,
         false,
-        StringUtils.superscript("Th"),
+        "Th",
         1);
     public final Material PROTACTINIUM = new Material(
         "Protactinium",
