@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -143,11 +142,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
                 default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
             };
 
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(background)
-                    .material(Blocks.stone)
-                    .build());
+            textures.add(TextureFactory.of(background));
 
             if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
@@ -171,7 +166,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
                     TextureFactory.builder()
                         .addIcon(foreground)
                         .glow()
-                        .material(Blocks.glowstone)
                         .build());
             }
         }
