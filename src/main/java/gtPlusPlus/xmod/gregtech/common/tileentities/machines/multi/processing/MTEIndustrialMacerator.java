@@ -109,9 +109,9 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
             .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addOutputBus("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
             .toolTipFinisher();
         return tt;
