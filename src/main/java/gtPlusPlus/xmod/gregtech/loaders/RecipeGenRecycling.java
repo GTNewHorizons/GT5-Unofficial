@@ -288,7 +288,7 @@ public class RecipeGenRecycling implements Runnable {
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+            oredictName = Utils.sanitizeStringKeepDashes(oredictName);
         } else {
             oredictName = Utils.sanitizeString(oredictName);
         }

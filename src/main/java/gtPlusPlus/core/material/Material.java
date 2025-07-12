@@ -1379,10 +1379,8 @@ public class Material {
 
         FluidStack f1 = FluidUtils.getWildcardFluidStack(n1, 1);
         FluidStack f2 = FluidUtils.getWildcardFluidStack(n2, 1);
-        FluidStack f3 = FluidUtils
-            .getWildcardFluidStack(Utils.sanitizeString(this.getUnlocalizedName(), new char[] { '-', '_' }), 1);
-        FluidStack f4 = FluidUtils
-            .getWildcardFluidStack(Utils.sanitizeString(this.getLocalizedName(), new char[] { '-', '_' }), 1);
+        FluidStack f3 = FluidUtils.getWildcardFluidStack(Utils.sanitizeStringKeepDashes(this.getUnlocalizedName()), 1);
+        FluidStack f4 = FluidUtils.getWildcardFluidStack(Utils.sanitizeStringKeepDashes(this.getLocalizedName()), 1);
 
         if (f1 != null) {
             aGTBaseFluid = f1.getFluid();
@@ -1397,10 +1395,10 @@ public class Material {
         ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getUnlocalizedName(), 1);
         ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getLocalizedName(), 1);
         ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "cell" + Utils.sanitizeString(this.getUnlocalizedName(), new char[] { '-', '_' }),
+            "cell" + Utils.sanitizeStringKeepDashes(this.getUnlocalizedName()),
             1);
         ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "cell" + Utils.sanitizeString(this.getLocalizedName(), new char[] { '-', '_' }),
+            "cell" + Utils.sanitizeStringKeepDashes(this.getLocalizedName()),
             1);
 
         Logger.MATERIALS("Generating our own fluid.");
