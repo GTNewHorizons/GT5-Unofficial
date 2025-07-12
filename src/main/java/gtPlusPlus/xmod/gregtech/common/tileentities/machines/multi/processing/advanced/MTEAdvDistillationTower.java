@@ -281,8 +281,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        // don't rotate a freaking tower, it won't work
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override
