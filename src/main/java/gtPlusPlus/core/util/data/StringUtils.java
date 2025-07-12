@@ -8,40 +8,62 @@ import gtPlusPlus.core.util.Utils;
 
 public class StringUtils {
 
-    public static String superscript(String str) {
-        str = str.replaceAll("0", CustomGlyphs.SUPERSCRIPT0);
-        str = str.replaceAll("1", CustomGlyphs.SUPERSCRIPT1);
-        str = str.replaceAll("2", CustomGlyphs.SUPERSCRIPT2);
-        str = str.replaceAll("3", CustomGlyphs.SUPERSCRIPT3);
-        str = str.replaceAll("4", CustomGlyphs.SUPERSCRIPT4);
-        str = str.replaceAll("5", CustomGlyphs.SUPERSCRIPT5);
-        str = str.replaceAll("6", CustomGlyphs.SUPERSCRIPT6);
-        str = str.replaceAll("7", CustomGlyphs.SUPERSCRIPT7);
-        str = str.replaceAll("8", CustomGlyphs.SUPERSCRIPT8);
-        str = str.replaceAll("9", CustomGlyphs.SUPERSCRIPT9);
-        return str;
+    // spotless:off
+    private static final char[] SUPER_SCRIPTS = new char[]{
+        CustomGlyphs.SUPERSCRIPT0.charAt(0),
+        CustomGlyphs.SUPERSCRIPT1.charAt(0),
+        CustomGlyphs.SUPERSCRIPT2.charAt(0),
+        CustomGlyphs.SUPERSCRIPT3.charAt(0),
+        CustomGlyphs.SUPERSCRIPT4.charAt(0),
+        CustomGlyphs.SUPERSCRIPT5.charAt(0),
+        CustomGlyphs.SUPERSCRIPT6.charAt(0),
+        CustomGlyphs.SUPERSCRIPT7.charAt(0),
+        CustomGlyphs.SUPERSCRIPT8.charAt(0),
+        CustomGlyphs.SUPERSCRIPT9.charAt(0)};
+    private static final char[] SUB_SCRIPTS = new char[]{
+        CustomGlyphs.SUBSCRIPT0.charAt(0),
+        '\u2081',
+        '\u2082',
+        '\u2083',
+        '\u2084',
+        '\u2085',
+        '\u2086',
+        '\u2087',
+        '\u2088',
+        '\u2089'
+    };
+    // spotless:on
+
+    public static String superscript(String input) {
+        final char[] chars = input.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c >= '0' && c <= '9') {
+                chars[i] = SUPER_SCRIPTS[c - '0'];
+            }
+        }
+        return new String(chars);
     }
 
-    public static String subscript(String str) {
-        str = str.replaceAll("0", CustomGlyphs.SUBSCRIPT0);
-        str = str.replaceAll("1", "\u2081");
-        str = str.replaceAll("2", "\u2082");
-        str = str.replaceAll("3", "\u2083");
-        str = str.replaceAll("4", "\u2084");
-        str = str.replaceAll("5", "\u2085");
-        str = str.replaceAll("6", "\u2086");
-        str = str.replaceAll("7", "\u2087");
-        str = str.replaceAll("8", "\u2088");
-        str = str.replaceAll("9", "\u2089");
-        str = str.replaceAll("\\?", CustomGlyphs.SUBSCRIPT_QUESTION_MARK);
-        return str;
+    public static String subscript(String input) {
+        final char[] chars = input.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c >= '0' && c <= '9') {
+                chars[i] = SUB_SCRIPTS[c - '0'];
+            } else if (c == '?') {
+                chars[i] = CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
+            }
+        }
+        return new String(chars);
     }
 
     public static String firstLetterCaps(String string) {
         if (string == null) {
             return null;
         }
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+        return string.substring(0, 1)
+            .toUpperCase() + string.substring(1);
     }
 
     /**
