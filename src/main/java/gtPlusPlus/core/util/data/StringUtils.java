@@ -52,20 +52,7 @@ public class StringUtils {
      * @return - Is this a special character?
      */
     public static boolean isSpecialCharacter(char aChar) {
-        return aChar == '"' || aChar == '.'
-            || aChar == '$'
-            || aChar == '|'
-            || aChar == '('
-            || aChar == ')'
-            || aChar == '['
-            || aChar == ']'
-            || aChar == '{'
-            || aChar == '}'
-            || aChar == '^'
-            || aChar == '?'
-            || aChar == '*'
-            || aChar == '+'
-            || aChar == '\\';
+        return "\".$|()[]{}^?*+\\".indexOf(aChar) >= 0;
     }
 
     public static boolean isEscaped(String aString) {
