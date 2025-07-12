@@ -1,5 +1,6 @@
 package gregtech.api.threads;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -25,14 +26,7 @@ public class RunnableMachineUpdate implements Runnable {
     protected final World world;
     protected final LongSet visited = new LongOpenHashSet();
     protected final LongArrayFIFOQueue tQueue = new LongArrayFIFOQueue();
-
-    // Threading
-    private static final ThreadFactory THREAD_FACTORY = r -> {
-        Thread thread = new Thread(r);
-        thread.setName("GT_MachineBlockUpdate");
-        return thread;
-    };
-    protected static ExecutorService EXECUTOR_SERVICE;
+    private final static HashMap<World, RunnableMachineUpdate> perWorldHandler = new HashMap<>();
 
     // This class should never be initiated outside of this class!
     protected RunnableMachineUpdate(World aWorld, int posX, int posY, int posZ) {
@@ -74,53 +68,31 @@ public class RunnableMachineUpdate implements Runnable {
 
     public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
-            EXECUTOR_SERVICE.submit(new RunnableMachineUpdate(aWorld, posX, posY, posZ));
-        }
-    }
-
-    public static void initExecutorService() {
-        EXECUTOR_SERVICE = Executors.newFixedThreadPool(
-            Math.max(
-                1,
-                (Runtime.getRuntime()
-                    .availableProcessors() * 2
-                    / 3)),
-            THREAD_FACTORY);
-    }
-
-    public static void shutdownExecutorService() {
-        try {
-            GTMod.GT_FML_LOGGER.info("Shutting down Machine block update executor service");
-            EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted
-            // Wait a while for existing tasks to terminate
-            if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
-                EXECUTOR_SERVICE.shutdownNow(); // Cancel currently executing tasks
-                // Wait a while for tasks to respond to being cancelled
-                if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
-                    GTMod.GT_FML_LOGGER
-                        .error("Well this didn't terminated well... RunnableMachineUpdate.shutdownExecutorService");
-                }
+            RunnableMachineUpdate handler = perWorldHandler.get(aWorld);
+            if(handler == null){
+                handler = new RunnableMachineUpdate(aWorld, posX, posY, posZ);
+                perWorldHandler.put(aWorld, handler);
             }
-        } catch (InterruptedException ie) {
-            GTMod.GT_FML_LOGGER.error("Well this interruption got interrupted...", ie);
-            // (Re-)Cancel if current thread also interrupted
-            EXECUTOR_SERVICE.shutdownNow();
-            // Preserve interrupt status
-            Thread.currentThread()
-                .interrupt();
-        } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
-            // (Re-)Cancel in case
-            EXECUTOR_SERVICE.shutdownNow();
-        } finally {
-            GTMod.GT_FML_LOGGER.info("Leaving... RunnableMachineUpdate.shutdownExecutorService");
+            else {
+                final long coords = CoordinatePacker.pack(posX, posY, posZ);
+                handler.tQueue.enqueue(coords);
+                handler.visited.add(coords);
+            }
         }
+    }
+
+    public static void endTick() {
+        for(RunnableMachineUpdate handler : perWorldHandler.values())
+            handler.run();
+        perWorldHandler.clear();
     }
 
     @Override
     public void run() {
         int posX, posY, posZ;
         try {
+            int initialQueueSize = tQueue.size();
+            int checked = 0;
             while (!tQueue.isEmpty()) {
                 final long packedCoords = tQueue.dequeueLong();
                 posX = CoordinatePacker.unpackX(packedCoords);
@@ -130,31 +102,24 @@ public class RunnableMachineUpdate implements Runnable {
                 final TileEntity tTileEntity;
                 final boolean isMachineBlock;
 
-                // This might load a chunk... which might load a TileEntity... which might get added to
-                // `loadedTileEntityList`... which might be in the process
-                // of being iterated over during `UpdateEntities()`... which might cause a
-                // ConcurrentModificationException. So, lock that shit.
-                GTMod.proxy.TICK_LOCK.lock();
-                try {
-                    tTileEntity = world.getTileEntity(posX, posY, posZ);
-                    isMachineBlock = GregTechAPI
-                        .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
-                } finally {
-                    GTMod.proxy.TICK_LOCK.unlock();
-                }
+                tTileEntity = world.getTileEntity(posX, posY, posZ);
+                isMachineBlock = GregTechAPI
+                    .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
+
 
                 // See if the block itself needs an update
                 if (tTileEntity instanceof IMachineBlockUpdateable)
                     ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
 
                 // Now see if we should add the nearby blocks to the queue:
-                // 1) If we've visited less than 5 blocks, then yes
+                // 1) If we haven't visited the initial set
                 // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
-                if (visited.size() < 5
+                if (checked < initialQueueSize
                     || (tTileEntity instanceof IMachineBlockUpdateable
                         && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
                     || isMachineBlock) {
+                    checked++;
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         final long tCoords = CoordinatePacker

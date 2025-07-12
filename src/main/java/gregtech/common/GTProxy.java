@@ -39,6 +39,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.threads.RunnableCableUpdate;
+import gregtech.api.threads.RunnableMachineUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1921,6 +1923,8 @@ public class GTProxy implements IFuelHandler {
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
+                RunnableMachineUpdate.endTick();
+                RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
         }

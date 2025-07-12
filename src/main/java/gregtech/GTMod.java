@@ -717,8 +717,6 @@ public class GTMod {
         event.registerServerCommand(new SPCommand());
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
-        // Sets a new Machine Block Update Thread everytime a world is loaded
-        RunnableMachineUpdate.initExecutorService();
     }
 
     @Mod.EventHandler
@@ -735,8 +733,6 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
-        // Interrupt IDLE Threads to close down cleanly
-        RunnableMachineUpdate.shutdownExecutorService();
     }
 
     @Mod.EventHandler
