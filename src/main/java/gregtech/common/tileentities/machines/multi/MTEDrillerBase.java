@@ -607,13 +607,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
-            && !f.isVerticallyFliped();
-    }
-
-    @Override
-    public boolean isRotationChangeAllowed() {
-        return false;
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override
