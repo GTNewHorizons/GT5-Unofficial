@@ -37,72 +37,12 @@ public class StringUtils {
         return str;
     }
 
-    public static boolean containsSuperOrSubScript(final String s) {
-        if (s.contains(StringUtils.superscript("0"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("1"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("2"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("3"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("4"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("5"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("6"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("7"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("8"))) {
-            return true;
-        } else if (s.contains(StringUtils.superscript("9"))) {
-            return true;
-        }
-        if (s.contains(StringUtils.subscript("0"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("1"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("2"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("3"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("4"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("5"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("6"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("7"))) {
-            return true;
-        } else if (s.contains(StringUtils.subscript("8"))) {
-            return true;
-        } else {
-            return s.contains(StringUtils.subscript("9"));
-        }
-    }
-
     public static String firstLetterCaps(String data) {
         String firstLetter = data.substring(0, 1)
             .toUpperCase();
         String restLetters = data.substring(1)
             .toLowerCase();
         return firstLetter + restLetters;
-    }
-
-    public static <V> String getDataStringFromArray(V[] parameterTypes) {
-        if (parameterTypes == null || parameterTypes.length == 0) {
-            return "empty/null";
-        } else {
-            StringBuilder aData = new StringBuilder();
-            for (V y : parameterTypes) {
-                if (y != null) {
-                    aData.append(", ")
-                        .append(y);
-                }
-            }
-            return aData.toString();
-        }
     }
 
     /**
