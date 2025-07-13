@@ -141,22 +141,27 @@ public class Client {
     @Config.LangKey("GT5U.gui.config.client.blockoverlay")
     public static class BlockOverlay {
 
+        @Config.Comment("The line width of the block overlay")
         @Config.DefaultFloat(2.5f)
         @Config.RangeFloat(min = 0, max = 30f)
         public float lineWidth;
 
+        @Config.Comment("The red color of the block overlay")
         @Config.DefaultInt(0)
         @Config.RangeInt(min = 0, max = 255)
         public int red;
 
+        @Config.Comment("The green color of the block overlay")
         @Config.DefaultInt(0)
         @Config.RangeInt(min = 0, max = 255)
         public int green;
 
+        @Config.Comment("The blue color of the block overlay")
         @Config.DefaultInt(0)
         @Config.RangeInt(min = 0, max = 255)
         public int blue;
 
+        @Config.Comment("The alpha for the color of the block overlay")
         @Config.DefaultInt(127)
         @Config.RangeInt(min = 0, max = 255)
         public int alpha;
