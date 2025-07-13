@@ -1,10 +1,7 @@
 package gtPlusPlus.core.util;
 
-import java.awt.Color;
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
@@ -15,15 +12,9 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -46,76 +37,6 @@ public class Utils {
             .isClient();
     }
 
-    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final long size) {
-        return getTcAspectStack(aspect.name(), (int) size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final String aspect, final long size) {
-        return getTcAspectStack(aspect, (int) size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final TCAspects aspect, final int size) {
-        return getTcAspectStack(aspect.name(), size);
-    }
-
-    public static TC_AspectStack getTcAspectStack(final String aspect, final int size) {
-
-        TC_AspectStack returnValue = null;
-
-        if (aspect.equalsIgnoreCase("COGNITIO")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "COGNITIO")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITIO"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("COGNITO"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-        } else if (aspect.equalsIgnoreCase("EXANIMUS")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "EXANIMUS")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXANIMUS"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("EXAMINIS"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-
-        } else if (aspect.equalsIgnoreCase("PRAECANTATIO")) {
-            // Adds in Compat for older GT Versions which Misspell aspects.
-            try {
-                if (EnumUtils.isValidEnum(TCAspects.class, "PRAECANTATIO")) {
-                    Logger.WARNING("TC Aspect found - " + aspect);
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTATIO"), size);
-                } else {
-                    Logger.INFO(
-                        "Fallback TC Aspect found - " + aspect
-                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-                    returnValue = new TC_AspectStack(TCAspects.valueOf("PRAECANTIO"), size);
-                }
-            } catch (final NoSuchFieldError r) {
-                Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
-            }
-        } else {
-            Logger.WARNING("TC Aspect found - " + aspect);
-            returnValue = new TC_AspectStack(TCAspects.valueOf(aspect), size);
-        }
-
-        return returnValue;
-    }
-
     // Send a message to all players on the server
     public static void sendServerMessage(final String translationKey) {
         sendServerMessage(new ChatComponentText(translationKey));
@@ -128,32 +49,12 @@ public class Utils {
             .sendChatMsg(chatComponent);
     }
 
-    /**
-     * Returns if that Liquid is IC2Steam.
-     */
-    public static boolean isIC2Steam(final FluidStack aFluid) {
-        if (aFluid == null) {
-            return false;
-        }
-        return aFluid.isFluidEqual(getIC2Steam(1));
-    }
-
-    /**
-     * Returns a Liquid Stack with given amount of IC2Steam.
-     */
-    public static FluidStack getIC2Steam(final long aAmount) {
-        return FluidRegistry.getFluidStack("ic2steam", (int) aAmount);
-    }
-
     public static int rgbtoHexValue(final int r, final int g, final int b) {
         if ((r > 255) || (g > 255) || (b > 255) || (r < 0) || (g < 0) || (b < 0)) {
             return 0;
         }
-        final Color c = new Color(r, g, b);
-        String temp = Integer.toHexString(c.getRGB() & 0xFFFFFF)
-            .toUpperCase();
-        temp = Utils.appenedHexNotationToString(temp);
-        return Integer.decode(temp);
+        final int rgb = ((0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
+        return rgb & 0xFFFFFF;
     }
 
     /*
@@ -182,7 +83,6 @@ public class Utils {
                 .substring(1)
                 .toUpperCase();
             hexColorMap.put(a, hexString);
-            Logger.WARNING(hexString);
         }
         return hexColorMap;
     }
@@ -191,10 +91,6 @@ public class Utils {
         final String hexChar = "0x";
         String result;
         if (hexAsStringOrInt.getClass() == String.class) {
-
-            if (((String) hexAsStringOrInt).length() != 6) {
-                final String temp = padWithZerosLefts((String) hexAsStringOrInt, 6);
-            }
             result = hexChar + hexAsStringOrInt;
             return result;
         } else if (hexAsStringOrInt.getClass() == Integer.class) {
@@ -219,84 +115,95 @@ public class Utils {
         return new File(".");
     }
 
-    public static String sanitizeString(final String input, final char[] dontRemove) {
-
-        // List of characters to remove
-        final HashSet<Character> toRemoveSet = new HashSet<>();
-        Collections.addAll(
-            toRemoveSet,
-            ' ',
-            '-',
-            '_',
-            '~',
-            '?',
-            '!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*',
-            '(',
-            ')',
-            '{',
-            '}',
-            '[',
-            ']');
-
-        // Remove characters from the toRemoveSet if they are in dontRemove
-        for (char e : dontRemove) {
-            toRemoveSet.remove(e);
-        }
-
-        // Construct a sanitized string
-        StringBuilder sanitized = new StringBuilder();
-        for (char c : input.toCharArray()) {
-            if (!toRemoveSet.contains(c)) {
-                sanitized.append(c);
+    public static String sanitizeStringKeepDashes(final String input) {
+        final char[] chars = input.toCharArray();
+        int i = 0;
+        for (final char c : chars) {
+            switch (c) {
+                case ' ':
+                case '~':
+                case '?':
+                case '!':
+                case '@':
+                case '#':
+                case '$':
+                case '%':
+                case '^':
+                case '&':
+                case '*':
+                case '(':
+                case ')':
+                case '{':
+                case '}':
+                case '[':
+                case ']':
+                    continue;
             }
+            chars[i++] = c;
         }
-
-        return sanitized.toString();
+        return new String(chars, 0, i);
     }
 
     public static String sanitizeString(final String input) {
-        String temp;
-        String output;
-
-        temp = input.replace(" ", "");
-        temp = temp.replace("-", "");
-        temp = temp.replace("_", "");
-        temp = temp.replace("?", "");
-        temp = temp.replace("!", "");
-        temp = temp.replace("@", "");
-        temp = temp.replace("#", "");
-        temp = temp.replace("(", "");
-        temp = temp.replace(")", "");
-        temp = temp.replace("{", "");
-        temp = temp.replace("}", "");
-        temp = temp.replace("[", "");
-        temp = temp.replace("]", "");
-        temp = temp.replace(" ", "");
-        output = temp;
-        return output;
+        final char[] chars = input.toCharArray();
+        int i = 0;
+        for (final char c : chars) {
+            switch (c) {
+                case ' ':
+                case '-':
+                case '_':
+                case '?':
+                case '!':
+                case '@':
+                case '#':
+                case '(':
+                case ')':
+                case '{':
+                case '}':
+                case '[':
+                case ']':
+                    continue;
+            }
+            chars[i++] = c;
+        }
+        return new String(chars, 0, i);
     }
 
     public static String sanitizeStringKeepBrackets(final String input) {
-        String temp;
-        String output;
+        final char[] chars = input.toCharArray();
+        int i = 0;
+        for (final char c : chars) {
+            switch (c) {
+                case ' ':
+                case '-':
+                case '_':
+                case '?':
+                case '!':
+                case '@':
+                case '#':
+                    continue;
+            }
+            chars[i++] = c;
+        }
+        return new String(chars, 0, i);
+    }
 
-        temp = input.replace(" ", "");
-        temp = temp.replace("-", "");
-        temp = temp.replace("_", "");
-        temp = temp.replace("?", "");
-        temp = temp.replace("!", "");
-        temp = temp.replace("@", "");
-        temp = temp.replace("#", "");
-        temp = temp.replace(" ", "");
-        output = temp;
-        return output;
+    public static String sanitizeStringKeepBracketsQuestion(final String input) {
+        final char[] chars = input.toCharArray();
+        int i = 0;
+        for (final char c : chars) {
+            switch (c) {
+                case ' ':
+                case '-':
+                case '_':
+                case '!':
+                case '@':
+                case '#':
+                    continue;
+            }
+            chars[i++] = c;
+        }
+        return new String(chars, 0, i);
     }
 
     public static String addBookTitleLocalization(final String aTitle) {
