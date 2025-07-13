@@ -454,6 +454,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onClientTickEvent(ClientTickEvent aEvent) {
         if (aEvent.phase == TickEvent.Phase.END) {
+            mTicksUntilNextCraftSound--;
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
