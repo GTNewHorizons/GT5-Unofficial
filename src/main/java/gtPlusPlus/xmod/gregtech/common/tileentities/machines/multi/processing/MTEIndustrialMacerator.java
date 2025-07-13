@@ -93,7 +93,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public String getMachineType() {
-        return "Macerator, Pulverizer";
+        return "Macerator, Pulverizer, IMS";
     }
 
     @Override
@@ -108,11 +108,11 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addController("Bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Bottom casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addOutputBus("One per layer except bottom layer", 2)
-            .addMufflerHatch("Any casing except bottom layer", 2)
+            .addMufflerHatch("Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
