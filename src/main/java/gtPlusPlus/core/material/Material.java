@@ -39,11 +39,9 @@ import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 public class Material {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
-    public static HashMap<String, Material> mMaterialCache = new HashMap<>();
-
+    public static final HashMap<String, Material> mMaterialCache = new HashMap<>();
     public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
-
-    public static HashMap<String, String> sChemicalFormula = new HashMap<>();
+    public static final HashMap<String, String> sChemicalFormula = new HashMap<>();
 
     private String unlocalizedName;
     private String localizedName;
