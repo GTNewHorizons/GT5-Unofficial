@@ -25,7 +25,9 @@ public enum Mixin implements IMixins {
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
     StringTranslateMixin(new MixinBuilder("Keep track of currently translating mods")
-        .addCommonMixins("minecraft.StringTranslateMixin", "minecraft.LanguageRegistryMixin")
+        .addCommonMixins(
+            "minecraft.StringTranslateMixin",
+            "minecraft.LanguageRegistryMixin")
         .setPhase(Phase.EARLY)),
     LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
         .addClientMixins("minecraft.LocaleMixin")
