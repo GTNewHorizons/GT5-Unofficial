@@ -39,16 +39,19 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         MIXED;
 
         public ChargeMode next() {
-            ChargeMode[] values = ChargeMode.values();
-            return values[(ordinal() + 1) % values.length];
+            return switch (this) {
+                case LONG_RANGE -> LOCAL;
+                case LOCAL -> MIXED;
+                case MIXED -> LONG_RANGE;
+            };
         }
 
         public static ChargeMode fromOrdinal(int ordinal) {
-            ChargeMode[] values = ChargeMode.values();
-            if (0 <= ordinal && ordinal < values.length) {
-                return values[ordinal];
-            }
-            return LONG_RANGE;
+            return switch (ordinal) {
+                case 1 -> LOCAL;
+                case 2 -> MIXED;
+                default -> LONG_RANGE;
+            };
         }
     }
 
