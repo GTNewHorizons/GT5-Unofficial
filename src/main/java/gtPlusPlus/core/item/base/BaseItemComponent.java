@@ -82,7 +82,7 @@ public class BaseItemComponent extends Item {
         // Handles .'s from fluid internal names.
         String aFormattedNameForFluids;
         if (unlocalName.contains(".")) {
-            aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName, ".");
+            aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName);
         } else {
             aFormattedNameForFluids = unlocalName;
         }

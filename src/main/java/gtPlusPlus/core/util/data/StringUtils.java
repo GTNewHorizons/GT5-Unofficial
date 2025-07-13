@@ -1,9 +1,6 @@
 package gtPlusPlus.core.util.data;
 
-import java.util.ArrayList;
-
 import gregtech.api.util.CustomGlyphs;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 public class StringUtils {
@@ -59,65 +56,24 @@ public class StringUtils {
     }
 
     public static String firstLetterCaps(String string) {
-        if (string == null) {
-            return null;
-        }
+        if (string == null) return null;
+        if (string.isEmpty()) return string;
         return string.substring(0, 1)
             .toUpperCase() + string.substring(1);
     }
 
-    /**
-     * Is this a special regex character for delimination? (.$|()[]{}^?*+\\)
-     *
-     * @param aChar - The char to test
-     * @return - Is this a special character?
-     */
-    public static boolean isSpecialCharacter(char aChar) {
-        return "\".$|()[]{}^?*+\\".indexOf(aChar) >= 0;
-    }
-
-    public static boolean isEscaped(String aString) {
-        return aString.charAt(0) == '\\';
-    }
-
-    public static String splitAndUppercase(String aInput, String aDelim) {
-
-        if (!isEscaped(aDelim)) {
-            boolean isSpecial = false;
-            for (int o = 0; o < aInput.length(); o++) {
-                if (isSpecialCharacter(aInput.charAt(o))) {
-                    isSpecial = true;
-                    break;
-                }
-            }
-            if (isSpecial) {
-                aDelim = "\\" + aDelim;
-            }
-        }
-
-        Logger.INFO("Splitting " + aInput);
-        String[] aSplit = aInput.split(aDelim);
-        Logger.INFO(aSplit.length + " parts.");
-        if (aSplit.length == 0) {
+    public static String splitAndUppercase(String aInput) {
+        String[] split = aInput.split("\\.");
+        if (split.length == 0) {
             return aInput;
-        } else {
-            ArrayList<String> aTemp = new ArrayList<>();
-            for (String s : aSplit) {
-                Logger.INFO("Found: " + s);
-                s = s.replace(".", "");
-                s = Utils.sanitizeString(s);
-                s = firstLetterCaps(s);
-                Logger.INFO("Formatted & Captilized: " + s);
-                aTemp.add(s);
-            }
-            Logger.INFO("Rebuilding");
-            StringBuilder aReturn = new StringBuilder();
-            for (String s : aTemp) {
-                aReturn.append(s);
-                Logger.INFO("Step: " + aReturn);
-            }
-            return aReturn.toString();
         }
+        StringBuilder sb = new StringBuilder();
+        for (String s : split) {
+            s = Utils.sanitizeString(s);
+            s = firstLetterCaps(s);
+            sb.append(s);
+        }
+        return sb.toString();
     }
 
     public static long uppercaseCount(String input) {
