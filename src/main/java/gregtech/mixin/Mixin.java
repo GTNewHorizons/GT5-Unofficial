@@ -24,11 +24,11 @@ public enum Mixin implements IMixins {
     WorldMixin(new MixinBuilder("Block update detection")
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
-    TranslateMixin(new MixinBuilder("Keep track of currently translating mods")
-        .addCommonMixins(
-            "minecraft.StringTranslateMixin",
-            "minecraft.LanguageRegistryMixin",
-            "minecraft.LocaleMixin")
+    StringTranslateMixin(new MixinBuilder("Keep track of currently translating mods")
+        .addCommonMixins("minecraft.StringTranslateMixin", "minecraft.LanguageRegistryMixin")
+        .setPhase(Phase.EARLY)),
+    LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
+        .addClientMixins("minecraft.LocaleMixin")
         .setPhase(Phase.EARLY)),
     CacheCraftingManagerRecipes(
         new MixinBuilder()
