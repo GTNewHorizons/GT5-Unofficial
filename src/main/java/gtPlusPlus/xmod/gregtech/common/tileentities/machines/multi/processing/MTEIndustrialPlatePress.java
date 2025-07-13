@@ -78,7 +78,7 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     @Override
     public String getMachineType() {
-        return "Bending Machine, Forming Press";
+        return "Bending Machine, Forming Press, IMP";
     }
 
     @Override

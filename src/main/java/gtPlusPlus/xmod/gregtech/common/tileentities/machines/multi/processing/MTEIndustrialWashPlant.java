@@ -102,7 +102,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @Override
     public String getMachineType() {
-        return "Ore Washer, Simple Washer, Chemical Bath";
+        return "Ore Washer, Simple Washer, Chemical Bath, OWP";
     }
 
     @Override

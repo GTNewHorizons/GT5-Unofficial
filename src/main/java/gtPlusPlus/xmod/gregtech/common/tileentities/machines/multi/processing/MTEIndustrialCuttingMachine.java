@@ -81,7 +81,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Cutting Machine, Slicing Machine";
+        return "Cutting Machine, Slicing Machine, ICF";
     }
 
     @Override
