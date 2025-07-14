@@ -53,7 +53,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
 
     @Override
     public String getMachineType() {
-        return "Extruder";
+        return "Extruder, IEM";
     }
 
     @Override
