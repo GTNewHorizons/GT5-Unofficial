@@ -354,27 +354,8 @@ public class MathUtils {
     }
 
     public static int howManyPlaces(int aValueForGen) {
-        if (aValueForGen < 0) {
-            aValueForGen = makeNegative(aValueForGen);
-        }
         String a = String.valueOf(aValueForGen);
         return a.length();
-    }
-
-    /**
-     * Inverts the value, making Positives into Negatives and vice versa.
-     *
-     * @param aPositive - An int value, either positive or negative.
-     * @return - Inverted int Value.
-     */
-    public static int makeNegative(int aPositive) {
-        if (aPositive > 0) {
-            return -aPositive;
-        } else if (aPositive < 0) {
-            return +aPositive;
-        } else {
-            return 0;
-        }
     }
 
     public static <V> V safeCast(Object aNumberType) {
