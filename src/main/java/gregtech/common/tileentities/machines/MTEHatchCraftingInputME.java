@@ -730,7 +730,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
-        for (int i = 0; i < getSizeInventory(); i++){
+        for (int i = 0; i < getSizeInventory(); i++) {
             if (internalInventory[i] == null) continue;
             mInventory[i] = internalInventory[i].pattern;
         }
