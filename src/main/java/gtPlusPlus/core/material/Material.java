@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -54,8 +55,6 @@ public class Material {
     private Fluid mPlasma;
 
     private boolean vGenerateCells;
-
-    protected Object dataVar = MathUtils.generateSingularRandomHexValue();
 
     private ArrayList<MaterialStack> vMaterialInput = new ArrayList<>();
     public long[] vSmallestRatio;
@@ -877,10 +876,9 @@ public class Material {
     }
 
     public final int getRgbAsHex() {
-
         final int returnValue = Utils.rgbtoHexValue(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
         if (returnValue == 0) {
-            return (int) this.dataVar;
+            return Dyes._NULL.toInt();
         }
         return Utils.rgbtoHexValue(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
     }

@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -22,7 +23,6 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.StringUtils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemDustUnique extends Item {
@@ -44,7 +44,7 @@ public class BaseItemDustUnique extends Item {
         this.setMaxStackSize(64);
         this.setTextureName(this.getCorrectTexture(pileSize));
         this.setCreativeTab(tabMisc);
-        this.colour = colour;
+        this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
@@ -157,9 +157,6 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        if (this.colour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
         return this.colour;
     }
 }

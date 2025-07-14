@@ -2,7 +2,6 @@ package gtPlusPlus.core.util.math;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.GTValues;
@@ -196,27 +195,6 @@ public class MathUtils {
     public static float celsiusToKelvin(final int i) {
         final double f = i + 273.15F;
         return (int) decimalRoundingToWholes(f);
-    }
-
-    /**
-     * Returns a random hex value. The returned value is between 000000-ffffff.
-     *
-     * @return hexInteger between min and max, inclusive.
-     */
-    public static int generateSingularRandomHexValue() {
-        String temp;
-        final int randomInt = randInt(1, 5);
-        final Map<Integer, String> colours = Utils.hexColourGeneratorRandom(5);
-
-        if ((colours.get(randomInt) != null) && (!colours.isEmpty())) {
-            temp = colours.get(randomInt);
-        } else {
-            temp = "0F0F0F";
-        }
-
-        Logger.WARNING("Operating with " + temp);
-        temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-        return Integer.decode(temp);
     }
 
     public static long[] simplifyNumbersToSmallestForm(final long[] inputArray) {

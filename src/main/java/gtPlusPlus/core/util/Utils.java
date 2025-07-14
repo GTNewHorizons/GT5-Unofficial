@@ -1,8 +1,6 @@
 package gtPlusPlus.core.util;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -55,55 +53,6 @@ public class Utils {
         }
         final int rgb = ((0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
         return rgb & 0xFFFFFF;
-    }
-
-    /*
-     * http://javadevnotes.com/java-left-pad-string-with-zeros-examples
-     */
-    public static String padWithZerosLefts(final String originalString, final int length) {
-        final StringBuilder sb = new StringBuilder();
-        while ((sb.length() + originalString.length()) < length) {
-            sb.append('0');
-        }
-        sb.append(originalString);
-        return sb.toString();
-    }
-
-    /*
-     * Original Code by Chandana Napagoda - https://cnapagoda.blogspot.com.au/2011/03/java-hex-color-code-generator.
-     * html
-     */
-    public static Map<Integer, String> hexColourGeneratorRandom(final int colorCount) {
-        final HashMap<Integer, String> hexColorMap = new HashMap<>();
-        for (int a = 0; a < colorCount; a++) {
-            String code = "" + (int) (Math.random() * 256);
-            code = code + code + code;
-            final int i = Integer.parseInt(code);
-            String hexString = Integer.toHexString(0x1000000 | i)
-                .substring(1)
-                .toUpperCase();
-            hexColorMap.put(a, hexString);
-        }
-        return hexColorMap;
-    }
-
-    public static String appenedHexNotationToString(final Object hexAsStringOrInt) {
-        final String hexChar = "0x";
-        String result;
-        if (hexAsStringOrInt.getClass() == String.class) {
-            result = hexChar + hexAsStringOrInt;
-            return result;
-        } else if (hexAsStringOrInt.getClass() == Integer.class) {
-            String aa = String.valueOf(hexAsStringOrInt);
-            if (aa.length() != 6) {
-                result = padWithZerosLefts(aa, 6);
-            } else {
-                result = hexChar + hexAsStringOrInt;
-            }
-            return result;
-        } else {
-            return null;
-        }
     }
 
     public static File getMcDir() {
