@@ -52,6 +52,10 @@ public enum Mixin implements IMixins {
     ItemMixinCoverFix(new MixinBuilder("Allow cover items to bypass sneak checks")
         .addCommonMixins("minecraft.ItemMixin")
         .setPhase(Phase.EARLY)),
+    SplitPhysicRenderingPipeBoundingBox(
+        new MixinBuilder("Allows pipes to have different bounding box for the rendering, physics and player pickblock")
+            .addClientMixins("minecraft.MinecraftMixin_MouseOver")
+            .setPhase(Phase.EARLY)),
     VanillaToolChanges(
         new MixinBuilder("Changes wooden tools to be a little faster")
             .addCommonMixins("minecraft.ItemToolMaterialMixin")
