@@ -2,16 +2,14 @@ package gregtech.common.misc;
 
 import static gregtech.api.enums.Mods.Baubles;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityMap4D;
+import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -23,47 +21,36 @@ import gregtech.api.interfaces.tileentity.IWirelessCharger;
 public class WirelessChargerManager {
 
     public static final int CHARGE_TICK = 20;
-    private final Map<Long, IWirelessCharger> CHARGER_MAP = new HashMap<>();
+    private final ArrayProximityMap4D<IWirelessCharger> CHARGER_MAP = new ArrayProximityMap4D<>(VolumeShape.SPHERE);
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side == Side.SERVER && event.phase == TickEvent.Phase.END) {
-            if (!CHARGER_MAP.isEmpty() && event.player.ticksExisted % CHARGE_TICK == 5) {
-                chargePlayerItems(event.player);
+            if (CHARGER_MAP.isEmpty()) return;
+            if (event.player.ticksExisted % CHARGE_TICK == 5) {
+                final EntityPlayer player = event.player;
+                CHARGER_MAP.forEachInRange(player.dimension, player.posX, player.posY, player.posZ, charger -> {
+                    if (charger.canChargePlayerItems(player)) {
+                        charger.chargePlayerItems(
+                            player,
+                            player.inventory.armorInventory,
+                            player.inventory.mainInventory,
+                            getBaublesItems(player));
+                    }
+                });
             }
         }
     }
 
-    public void addCharger(@NotNull IWirelessCharger charger) {
+    public void addCharger(@NotNull IWirelessCharger charger, int range) {
         final IGregTechTileEntity te = charger.getChargerTE();
-        CHARGER_MAP.put(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()), charger);
-    }
-
-    public IWirelessCharger getCharger(int x, int y, int z) {
-        return CHARGER_MAP.get(CoordinatePacker.pack(x, y, z));
+        CHARGER_MAP
+            .put(charger, te.getWorld().provider.dimensionId, te.getXCoord(), te.getYCoord(), te.getZCoord(), range);
     }
 
     public void removeCharger(@NotNull IWirelessCharger charger) {
         final IGregTechTileEntity te = charger.getChargerTE();
-        CHARGER_MAP.remove(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()));
-    }
-
-    private void chargePlayerItems(@NotNull EntityPlayer player) {
-        ItemStack[] baubleItems = null;
-        boolean checkedBaubles = false;
-        for (IWirelessCharger charger : CHARGER_MAP.values()) {
-            if (charger.canChargePlayerItems(player)) {
-                if (!checkedBaubles) {
-                    baubleItems = getBaublesItems(player);
-                    checkedBaubles = true;
-                }
-                charger.chargePlayerItems(
-                    player,
-                    player.inventory.armorInventory,
-                    player.inventory.mainInventory,
-                    baubleItems);
-            }
-        }
+        CHARGER_MAP.remove(te.getWorld().provider.dimensionId, te.getXCoord(), te.getYCoord(), te.getZCoord());
     }
 
     private static ItemStack[] getBaublesItems(@NotNull EntityPlayer player) {
