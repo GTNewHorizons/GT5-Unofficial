@@ -2026,5 +2026,13 @@ public class CraftingRecipeLoader implements Runnable {
                     ItemList.TF_LiveRoot.get(1), 'W',
                     GTModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0), });
         }
+
+        if (EtFuturumRequiem.isModLoaded()) {
+            GTModHandler.addCraftingRecipe(
+                ItemList.Plank_Cherry_EFR.get(2L),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
+                new Object[] { "s ", " P", 'P', GTModHandler.getModItem(EtFuturumRequiem.ID, "wood_slab", 1, 3), 's',
+                    "craftingToolSaw" });
+        }
     }
 }
