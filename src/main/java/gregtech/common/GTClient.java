@@ -94,6 +94,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.GTRendererTileEntity;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
@@ -102,6 +103,7 @@ import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
@@ -288,6 +290,7 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class,  new NanoForgeRenderer());
 
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
@@ -448,15 +451,9 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onRenderStart(TickEvent.RenderTickEvent aEvent) {
-        if (aEvent.phase == TickEvent.Phase.START) {
-            renderTickTime = aEvent.renderTickTime;
-        }
-    }
-
-    @SubscribeEvent
     public void onClientTickEvent(ClientTickEvent aEvent) {
         if (aEvent.phase == TickEvent.Phase.END) {
+            mTicksUntilNextCraftSound--;
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
@@ -465,7 +462,7 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBB();
+            heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -641,26 +638,42 @@ public class GTClient extends GTProxy {
         return false;
     }
 
-    private boolean forceFullBlockBoundingBoxes;
+    private boolean isRenderingWorld;
+    private boolean isComputingPickBlock;
+    private boolean heldItemForcesFullBlockBB;
+
+    public void setComputingPickBlock(boolean b) {
+        isComputingPickBlock = b;
+    }
+
+    @SubscribeEvent
+    public void onRenderStart(TickEvent.RenderTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            renderTickTime = event.renderTickTime;
+            isRenderingWorld = true;
+        } else if (event.phase == TickEvent.Phase.END) {
+            isRenderingWorld = false;
+        }
+    }
 
     public boolean forceFullBlockBB() {
-        return forceFullBlockBoundingBoxes;
+        return heldItemForcesFullBlockBB && (isRenderingWorld || isComputingPickBlock);
     }
 
     private static boolean shouldHeldItemForceFullBlockBB() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return false;
-        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
-        if (tCurrentItem == null) return false;
-        return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-            || CoverRegistry.isCover(tCurrentItem)
-            || (tCurrentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+        final ItemStack stack = player.getCurrentEquippedItem();
+        if (stack == null) return false;
+        return GTUtility.isStackInList(stack, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(stack)
+            || (stack.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());
     }
 
