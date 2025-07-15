@@ -1614,7 +1614,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
-    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
+    protected boolean dumpItem(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
         boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
