@@ -2815,6 +2815,14 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Casing_Chemically_Inert.get(1), GTUtility.getIntegratedCircuit(6))
+            .itemOutputs(ItemList.Casing_Polybenzimidazole.get(1))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(144 * 4))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(16)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1))
