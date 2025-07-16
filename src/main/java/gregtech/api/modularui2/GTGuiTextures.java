@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
+import kekztech.KekzCore;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
@@ -495,6 +496,18 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = fullImageGT("overlay_button/tank_void_excess");
     public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = fullImageGT("overlay_button/tank_void_all");
 
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_on");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_OFF = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_DISABLED = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_REBALANCE = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_rebalance");
     // endregion button overlay
 
     // region picture
