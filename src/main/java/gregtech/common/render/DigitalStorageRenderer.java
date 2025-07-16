@@ -36,9 +36,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GTUtilityClient;
 import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
+import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 // Backported from GTCEu
 public class DigitalStorageRenderer {
@@ -76,7 +76,7 @@ public class DigitalStorageRenderer {
         aRenderer.enableAO = false;
 
         boolean isDrawing = false;
-        if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(Tessellator.instance)) {
+        if (aRenderer.useInventoryTint && !(((TesselatorAccessor) Tessellator.instance).gt5u$isDrawing())) {
             // Draw if we're not already drawing
             isDrawing = true;
             Tessellator.instance.startDrawingQuads();
