@@ -66,6 +66,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.13:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.5-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.30:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Backhand:1.6.37:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.11:dev") { transitive = false }

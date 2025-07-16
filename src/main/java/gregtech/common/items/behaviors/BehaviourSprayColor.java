@@ -68,7 +68,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         final float hitY, final float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
 
-        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
+        if (ColoredBlockContainer.getInstance(aPlayer, aY, aZ, aX, side)
             .isValid()) {
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
@@ -189,7 +189,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+        return ColoredBlockContainer.getInstance(player, aY, aZ, aX, side)
             .setColor(getColor());
     }
 
