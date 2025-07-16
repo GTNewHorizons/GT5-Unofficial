@@ -8,7 +8,6 @@ import net.minecraftforge.client.event.MouseEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Mods;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.crossmod.backhand.Backhand;
 
@@ -44,9 +43,6 @@ public final class GTMouseEventHandler {
         final boolean isOffhand;
 
         if (isInvalid(heldItemStack)) {
-            if (!Mods.Backhand.isModLoaded()) {
-                return;
-            }
             heldItemStack = Backhand.getOffhandItem(player);
 
             if (isInvalid(heldItemStack)) {

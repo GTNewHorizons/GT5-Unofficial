@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
@@ -92,16 +91,8 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
         mainhandItemStack = itemStackIsSpraycan(player.inventory.getCurrentItem()) ? player.inventory.getCurrentItem()
             : null;
-
-        if (Mods.Backhand.isModLoaded()) {
-            if (itemStackIsSpraycan(Backhand.getOffhandItem(player))) {
-                offhandItemStack = Backhand.getOffhandItem(player);
-            } else {
-                offhandItemStack = null;
-            }
-        } else {
-            offhandItemStack = null;
-        }
+        offhandItemStack = itemStackIsSpraycan(Backhand.getOffhandItem(player)) ? Backhand.getOffhandItem(player)
+            : null;
 
         if (mainhandItemStack == null && offhandItemStack == null) {
             return Optional.empty();
