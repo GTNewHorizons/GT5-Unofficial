@@ -72,11 +72,16 @@ public enum Mixin implements IMixins {
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
     IC2_REINFORCED_GLASS_SILK(
-        new MixinBuilder("Lets Reinforced Glass be harvested by silk touch")
-            .addCommonMixins("ic2.MixinIc2ReinforcedGlass")
-            .addRequiredMod(TargetedMod.IC2)
-            .setPhase(Phase.LATE)),
-
+        new Builder("Lets Reinforced Glass be harvested by silk touch").addMixinClasses("ic2.MixinIc2ReinforcedGlass")
+            .addTargetedMod(TargetedMod.IC2)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)),
+    IC2_REMOVE_FISSION_FUELS(new Builder("Removes IC2 Fission Fuels").addMixinClasses("ic2.MixinIc2FissionFuelRemoval")
+        .addTargetedMod(TargetedMod.IC2)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)),
     // Hazmat armors
     IC2_HAZMAT(new MixinBuilder()
         .setPhase(Phase.LATE)
