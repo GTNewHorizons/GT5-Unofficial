@@ -75,6 +75,11 @@ public enum Casings implements ICasing {
     SterileFarmCasing
         (() -> ModBlocks.blockCasings2Misc, 15, gtpp(1, 15)),
 
+    IsamillGearBoxCasing
+        (() -> ModBlocks.blockCasings5Misc, 2, gtpp(2,0)),
+
+    TurbineShaft
+        (() -> ModBlocks.blockSpecialMultiCasings,0,gtpp(2,1)),
     YellowStripesBlockA
         (() -> GregTechAPI.sBlockCasings3, 0, gt(0, 2, 0)),
     YellowStripesBlockB
@@ -125,6 +130,7 @@ public enum Casings implements ICasing {
         (() -> WerkstoffLoader.BWBlockCasings, 31850,31850),
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
+
 
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),
