@@ -1558,7 +1558,7 @@ public enum ItemList implements IItemContainer {
     ECCF_parallel_block_0,
     ECCF_parallel_block_1,
     ECCF_parallel_block_2,
-   Machine_Multi_ChamberCentrifuge,
+    Machine_Multi_ChamberCentrifuge,
     Chamber_Casing,
     Chamber_Grate,
 
