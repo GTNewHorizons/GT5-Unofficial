@@ -58,7 +58,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     public String getMachineType() {
-        return "Thermal Centrifuge";
+        return "Thermal Centrifuge, LTR";
     }
 
     @Override
