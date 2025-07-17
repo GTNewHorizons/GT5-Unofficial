@@ -114,7 +114,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtil;
@@ -1653,17 +1652,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
-    public ArrayList<ItemStack> getStoredOutputs() {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-            IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
-            for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(baseMetaTileEntity.getStackInSlot(i));
-            }
-        }
-        return rList;
-    }
-
     public ArrayList<FluidStack> getStoredFluids() {
         return getStoredFluidsForColor(Optional.empty());
     }
@@ -2572,7 +2560,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public List<IOutputBus> getOutputBusses() {
-        return GTDataUtils.upcast(mOutputBusses);
+        List<IOutputBus> output = new ArrayList<>(mOutputBusses.size());
+
+        for (int i = 0, mOutputBussesSize = mOutputBusses.size(); i < mOutputBussesSize; i++) {
+            MTEHatchOutputBus outputBus = mOutputBusses.get(i);
+
+            if (outputBus.isValid()) output.add(outputBus);
+        }
+
+        return output;
     }
 
     @Override
