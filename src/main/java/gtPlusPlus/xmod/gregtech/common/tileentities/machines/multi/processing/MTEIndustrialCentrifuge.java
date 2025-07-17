@@ -45,7 +45,6 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
@@ -205,7 +204,8 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setEuModifier(0.9F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setEuModifier(0.9F)
             .setSpeedBonus(1F / 2.25F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -237,9 +237,9 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         this.mIsAnimated = !mIsAnimated;
         Logger.INFO("Is Centrifuge animated " + this.mIsAnimated);
         if (this.mIsAnimated) {
-            PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture. ");
+            GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture. ");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture. ");
+            GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture. ");
         }
     }
 

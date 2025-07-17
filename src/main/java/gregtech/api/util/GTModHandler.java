@@ -8,10 +8,12 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.enums.Mods.Gendustry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,14 +158,16 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getWater(1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(Materials.Water.getFluid(1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Water.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     public static FluidStack getWater(long aAmount) {
-        return FluidRegistry.getFluidStack("water", (int) aAmount);
+        return Materials.Water.getFluid(aAmount);
     }
 
     /**
@@ -171,8 +175,24 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = getWater(aAmount);
+        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
         return tFluid;
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Coolant, falling back to water if not available.
+     */
+    public static FluidStack getIC2Coolant(long aAmount) {
+        if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
+        else return Materials.Water.getFluid(aAmount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of Liquid DNA, falling back to Biomass if not available.
+     */
+    public static FluidStack getLiquidDNA(long aAmount) {
+        if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
+        else return Materials.Biomass.getFluid(aAmount);
     }
 
     /**
@@ -180,14 +200,16 @@ public class GTModHandler {
      */
     public static boolean isLava(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getLava(1));
+        return aFluid.isFluidEqual(Materials.Lava.getFluid(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Lava.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     public static FluidStack getLava(long aAmount) {
-        return FluidRegistry.getFluidStack("lava", (int) aAmount);
+        return Materials.Lava.getFluid(aAmount);
     }
 
     /**
@@ -195,7 +217,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getSteam(1));
+        return aFluid.isFluidEqual(Materials.Steam.getGas(1));
     }
 
     /**
@@ -214,16 +236,22 @@ public class GTModHandler {
 
     /**
      * Returns a Liquid Stack with given amount of Steam.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return FluidRegistry.getFluidStack("steam", (int) aAmount);
+        return Materials.Steam.getGas(aAmount);
     }
 
     /**
      * Returns a Liquid Stack with given amount of Milk.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getMilk(long aAmount) {
-        return FluidRegistry.getFluidStack("milk", (int) aAmount);
+        return Materials.Milk.getFluid(aAmount);
     }
 
     /**
@@ -510,7 +538,7 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
@@ -532,14 +560,14 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.MIRRORED) != 0,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
@@ -572,7 +600,7 @@ public class GTModHandler {
                     case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
 
                     case GLASS -> switch (machineTier) {
-                        case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, W);
+                        case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
                         case 4, 5, 6, 7, 8 -> "blockGlass" + VN[machineTier];
                         default            -> "blockGlass" + VN[8];
                     };
@@ -829,7 +857,7 @@ public class GTModHandler {
 
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
-        if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
+        if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
 
         // The renamed variable clarifies what's happening
@@ -905,7 +933,7 @@ public class GTModHandler {
                     }
                     case 'r' -> {
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                     }
                     case 's' -> {
                         tRecipeList.add(c);
@@ -997,7 +1025,7 @@ public class GTModHandler {
             for (char chr : shape.toString()
                 .toCharArray()) {
                 tRecipe[++x] = tItemStackMap.get(chr);
-                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == WILDCARD)
                     Items.feather.setDamage(tRecipe[x], 0);
             }
             if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipe(tRecipe) != null;
@@ -1035,7 +1063,7 @@ public class GTModHandler {
             }
         }
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
@@ -1044,7 +1072,6 @@ public class GTModHandler {
             if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1053,7 +1080,6 @@ public class GTModHandler {
             else GameRegistry.addRecipe(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1079,8 +1105,8 @@ public class GTModHandler {
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
@@ -1128,7 +1154,7 @@ public class GTModHandler {
 
         if (aResult == null || aResult.stackSize <= 0) return false;
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
@@ -1136,7 +1162,6 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1146,7 +1171,6 @@ public class GTModHandler {
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1650,9 +1674,10 @@ public class GTModHandler {
         if (isElectricItem(aStack)) {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                    aCharge,
-                    V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (!aIgnoreLimit && tTier >= 0) {
+                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
+                }
                 if (aCharge > 0) {
                     int rCharge = (int) Math.max(
                         0,
@@ -1896,7 +1921,7 @@ public class GTModHandler {
             return 1;
         }
 
-        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, W))) {
+        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, WILDCARD))) {
             return 1;
         }
 
@@ -1914,76 +1939,82 @@ public class GTModHandler {
         /**
          * Mirrors the Recipe
          */
-        public static long MIRRORED = B[0];
+        public static final long MIRRORED = B[0];
         /**
          * Buffers the Recipe for later addition. This makes things more efficient.
          */
-        public static long BUFFERED = B[1];
+        public static final long BUFFERED = B[1];
         /**
          * This is a special Tag I used for crafting Coins up and down.
          * If all the input items have the same NBT, keep it in the output item.
          */
-        public static long KEEPNBT = B[2];
+        public static final long KEEPNBT = B[2];
         /**
          * Makes the Recipe Reverse Craftable in the Disassembler.
          */
-        public static long DISMANTLEABLE = B[3];
+        public static final long DISMANTLEABLE = B[3];
         /**
          * Prevents the Recipe from accidentally getting removed by my own Handlers.
          */
-        public static long NOT_REMOVABLE = B[4];
+        public static final long NOT_REMOVABLE = B[4];
         /**
          * Reverses the Output of the Recipe for smelting and pulverising.
          */
-        public static long REVERSIBLE = B[5];
+        public static final long REVERSIBLE = B[5];
         /**
          * Removes all Recipes with the same Output Item regardless of NBT, unless another Recipe Deletion Bit is added
          * too.
          */
-        public static long DELETE_ALL_OTHER_RECIPES = B[6];
+        public static final long DELETE_ALL_OTHER_RECIPES = B[6];
         /**
          * Removes all Recipes with the same Output Item limited to the same NBT.
          */
-        public static long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
+        public static final long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
         /**
          * Removes all Recipes with the same Output Item limited to Shaped Recipes.
          */
-        public static long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
+        public static final long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
         /**
          * Removes all Recipes with the same Output Item limited to native Recipe Handlers.
          */
-        public static long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
+        public static final long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
         /**
          * Disables the check for colliding Recipes.
          */
-        public static long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
+        public static final long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
         /**
          * Only adds the Recipe if there is another Recipe having that Output
          */
-        public static long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
+        public static final long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
         /**
          * Only adds the Recipe if it has an Output
          */
-        public static long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
+        public static final long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
         /**
          * Don't remove shapeless recipes with this output
          */
-        public static long DONT_REMOVE_SHAPELESS = B[13];
+        public static final long DONT_REMOVE_SHAPELESS = B[13];
         /**
          * Keep input item's NBT if the input item is the same as output item, and try to overwrite input item's NBT
          * tags with output item's NBT tags if exists
          */
-        public static long OVERWRITE_NBT = B[14];
-
+        public static final long OVERWRITE_NBT = B[14];
         /**
          * Combination of common bits.
          * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
-        public static long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
+        public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
          * Combination of common bits.
          * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
          */
-        public static long BITSD = BITS | DISMANTLEABLE;
+        public static final long BITSD = BITS | DISMANTLEABLE;
+        /**
+         * Combination of common bits.
+         * DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL, NOT_REMOVABLE
+         */
+        public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
+            | ONLY_ADD_IF_RESULT_IS_NOT_NULL
+            | NOT_REMOVABLE;
     }
 }

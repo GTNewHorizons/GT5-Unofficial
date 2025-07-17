@@ -199,12 +199,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-
-        return side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (mEUt > 0) {
@@ -351,6 +345,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -421,7 +416,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mLastWorkingTick = mTotalRunTime;
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
-                                    GTMod.achievements.issueAchivementHatchFluid(
+                                    GTMod.achievements.issueAchievementHatchFluid(
                                         aBaseMetaTileEntity.getWorld()
                                             .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
                                         mOutputFluids[0]);
@@ -511,11 +506,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 1, 12);
     }
@@ -573,7 +563,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     .setPos(10, 8))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
             .widget(
-                new TextWidget("Hit with Soft Mallet to (re-)start the Machine if it doesn't start.")
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.hit_to_start"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
@@ -585,7 +575,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)))
             .widget(
-                new TextWidget("Running perfectly.").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.running_perfectly"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
                     .setPos(0, 170)

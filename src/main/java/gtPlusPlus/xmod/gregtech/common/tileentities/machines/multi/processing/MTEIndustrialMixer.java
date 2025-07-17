@@ -78,7 +78,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
 
     @Override
     public String getMachineType() {
-        return "Mixer";
+        return "Mixer, IMM";
     }
 
     @Override

@@ -56,7 +56,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -309,11 +308,11 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
-            PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
+            GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
             return;
         }
         mMode = mMode.next();
-        PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
+        GTUtility.sendChatToPlayer(aPlayer, "Now running in " + mMode + " Mode.");
         mLastRecipe = null;
     }
 
@@ -372,7 +371,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getMaxParallelRecipes() {
         return switch (mMode) {
-            case DistillationTower -> getTierOfTower() == 1 ? 4 : getTierOfTower() == 2 ? 12 : 0;
+            case DistillationTower -> getTierOfTower() == 1 ? 4 : 12;
             case Distillery -> getTierOfTower() * (4 * GTUtility.getTier(this.getMaxInputVoltage()));
             default -> 0;
         };
@@ -415,7 +414,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             if (aGuiStack != null) {
                 if (GTUtility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
                     this.mUpgraded = true;
-                    mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                    mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 }
             }
         }

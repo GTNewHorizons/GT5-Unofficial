@@ -19,6 +19,8 @@ public class OverclockCalculator {
     protected Supplier<Double> durationUnderOneTickSupplier;
     /** The parallel the machine has when trying to overclock */
     protected int parallel = 1;
+    /** The max amount of tiers above the machine voltage a recipe is valid */
+    protected int maxTierSkip = 1;
 
     // Modifiers
     /** Energy modifier that is applied at the start of calculating overclocks, like GT++ machines */
@@ -71,7 +73,6 @@ public class OverclockCalculator {
     // Constants
     protected static final int HEAT_DISCOUNT_THRESHOLD = 900;
     protected static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
-    protected static final double LOG4 = Math.log(4);
 
     /** Creates calculator that doesn't do OC at all. Will use recipe duration. */
     public static OverclockCalculator ofNoOverclock(@Nonnull GTRecipe recipe) {
@@ -171,6 +172,19 @@ public class OverclockCalculator {
     @Nonnull
     public OverclockCalculator setParallel(int aParallel) {
         this.parallel = aParallel;
+        return this;
+    }
+
+    /** Sets the max tiers above the machine's voltage a valid recipe can be */
+    @Nonnull
+    public OverclockCalculator setMaxTierSkips(int aMaxTierSkips) {
+        this.maxTierSkip = aMaxTierSkips;
+        return this;
+    }
+
+    @Nonnull
+    public OverclockCalculator setUnlimitedTierSkips() {
+        this.maxTierSkip = Integer.MAX_VALUE;
         return this;
     }
 
@@ -286,6 +300,11 @@ public class OverclockCalculator {
         return overclocks;
     }
 
+    public boolean getAllowedTierSkip() {
+        if (this.maxTierSkip == Integer.MAX_VALUE) return true;
+        return recipeEUt <= machineVoltage * GTUtility.powInt(4, maxTierSkip);
+    }
+
     public boolean hasDurationUnderOneTickSupplier() {
         return durationUnderOneTickSupplier != null;
     }
@@ -307,7 +326,7 @@ public class OverclockCalculator {
 
     public double calculateHeatDiscountMultiplier() {
         int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
-        return Math.pow(heatDiscountExponent, heatDiscounts);
+        return GTUtility.powInt(heatDiscountExponent, heatDiscounts);
     }
 
     protected void calculateOverclock() {
@@ -320,9 +339,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -351,18 +369,18 @@ public class OverclockCalculator {
 
             overclocks = regularOverclocks + laserOverclocks;
             calculatedConsumption = (long) Math.ceil(eutOverclock);
-            duration /= Math.pow(durationDecreasePerOC, overclocks);
+            duration /= GTUtility.powInt(durationDecreasePerOC, overclocks);
             calculatedDuration = (int) Math.max(duration, 1);
             return;
         }
 
         // Limit overclocks allowed by power tier.
-        overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
+        overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
@@ -374,9 +392,9 @@ public class OverclockCalculator {
         int regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
-        calculatedConsumption = (long) Math.ceil(recipePower * Math.pow(eutIncreasePerOC, overclocks));
-        duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
-        duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
+        calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
+        duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
+        duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
     }
 
@@ -395,9 +413,8 @@ public class OverclockCalculator {
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
 
         // Special handling for laser overclocking.
         if (laserOC) {
@@ -408,7 +425,7 @@ public class OverclockCalculator {
             while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxRegularOverclocks) {
                 eutOverclock *= 4.0;
                 regularOverclocks++;
-                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                if (duration / GTUtility.powInt(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
                     neededOverclocks = regularOverclocks;
                 }
             }
@@ -418,22 +435,22 @@ public class OverclockCalculator {
             while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
                 eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
                 laserOverclocks++;
-                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                if (duration / GTUtility.powInt(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
                     neededOverclocks = overclocks + laserOverclocks;
                 }
             }
 
             int overclocks = regularOverclocks + laserOverclocks;
-            return Math.pow(durationDecreasePerOC, Math.max(neededOverclocks - overclocks, 0));
+            return GTUtility.powInt(durationDecreasePerOC, Math.max(neededOverclocks - overclocks, 0));
         }
 
         // Limit overclocks allowed by power tier.
-        int overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
+        int overclocks = Math.min(maxOverclocks, tiersAbove);
 
         // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
@@ -444,23 +461,28 @@ public class OverclockCalculator {
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
-        int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
-        duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
-        neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
-        duration /= Math.pow(durationDecreasePerOC, neededOverclocks);
+        double originalDuration = duration;
+        int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
+        duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
+        neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
-        // To avoid rounding issues, need to round neededOverclocks down,
-        // but this can cause the multiplier to happen even if the oc still
-        // decreases duration to 1 tick with duration decrease above 2
-        if (!(duration < 2)) {
-            neededOverclocks++;
+        int heatMultiplier = (int) GTUtility
+            .powInt(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
+        int regularMultiplier = (int) GTUtility
+            .powInt(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
+
+        // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
+        // durations. It is 1 / (duration of first OC to go below 1 tick)
+        double correctionMultiplier = 1.0;
+        if (heatOverclocks >= neededHeatOverclocks) {
+            double criticalDuration = originalDuration
+                / GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        } else if (regularOverclocks >= neededOverclocks) {
+            double criticalDuration = originalDuration / GTUtility.powInt(durationDecreasePerOC, neededOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
         }
 
-        int heatMultiplier = (int) Math
-            .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
-        int regularMultiplier = (int) Math
-            .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
-
-        return heatMultiplier * regularMultiplier;
+        return Math.ceil(heatMultiplier * correctionMultiplier * regularMultiplier);
     }
 }

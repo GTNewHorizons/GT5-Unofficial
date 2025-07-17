@@ -3,7 +3,6 @@ package gtPlusPlus.core.block.machine;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,13 +18,13 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityBaseFluidCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class BlockPooCollector extends BlockContainer {
 
@@ -86,13 +85,14 @@ public class BlockPooCollector extends BlockContainer {
             TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
             if (tank != null) {
                 if (!tank.mInventory.isEmpty()) {
-                    PlayerUtils.messagePlayer(player, "Inventory contains:");
-                    PlayerUtils.messagePlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
+                    GTUtility.sendChatToPlayer(player, "Inventory contains:");
+                    GTUtility
+                        .sendChatToPlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
                 } else {
-                    PlayerUtils.messagePlayer(player, "No solids collected yet.");
+                    GTUtility.sendChatToPlayer(player, "No solids collected yet.");
                 }
                 if (tank.tank.getFluid() != null) {
-                    PlayerUtils.messagePlayer(
+                    GTUtility.sendChatToPlayer(
                         player,
                         "Tank contains " + tank.tank.getFluidAmount()
                             + "L of "
@@ -133,11 +133,6 @@ public class BlockPooCollector extends BlockContainer {
     @Override
     public int damageDropped(final int damage) {
         return damage;
-    }
-
-    @Override
-    public Item getItemDropped(final int meta, final Random rand, final int fortune) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override

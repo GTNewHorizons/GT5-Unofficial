@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -91,7 +92,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -126,7 +127,7 @@ public class RecipesGeneral {
                 Materials.Sapphire.getBlocks(32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(Materials.Silver.getMolten(32 * 144))
+            .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -316,7 +317,7 @@ public class RecipesGeneral {
         generatePipeRecipes(MaterialsAlloy.INCONEL_792);
         generatePipeRecipes(MaterialsAlloy.HASTELLOY_X);
         generatePipeRecipes(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        generatePipeRecipes(Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
+        generatePipeRecipes(null, Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
     }
 
     private static void migratedRecipes() {
@@ -335,7 +336,7 @@ public class RecipesGeneral {
                 MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
 
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
                 BITSD,

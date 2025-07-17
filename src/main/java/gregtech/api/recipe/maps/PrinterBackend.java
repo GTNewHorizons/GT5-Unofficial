@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.enums.GTValues.L;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -81,11 +81,7 @@ public class PrinterBackend extends RecipeMapBackend {
         if (items.length == 0 || items[0] == null || fluids.length == 0 || fluids[0] == null) {
             return null;
         }
-        Dyes dye = null;
-        for (Dyes tDye : Dyes.VALUES) if (tDye.isFluidDye(fluids[0])) {
-            dye = tDye;
-            break;
-        }
+        Dyes dye = Dyes.getFluidDye(fluids[0]);
         if (dye == null) return null;
 
         ItemStack batchRecolorOutput = GTModHandler.getAllRecipeOutput(
@@ -103,7 +99,7 @@ public class PrinterBackend extends RecipeMapBackend {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, items[0]))
                 .itemOutputs(batchRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
+                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
                 .duration(256)
                 .eut(2)
                 .hidden()
@@ -118,7 +114,7 @@ public class PrinterBackend extends RecipeMapBackend {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, items[0]))
                 .itemOutputs(singleRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
+                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
                 .duration(32)
                 .eut(2)
                 .hidden()
@@ -137,6 +133,6 @@ public class PrinterBackend extends RecipeMapBackend {
 
     @Override
     public boolean containsInput(Fluid fluid) {
-        return super.containsInput(fluid) || Dyes.isAnyFluidDye(fluid);
+        return super.containsInput(fluid) || Dyes.isFluidDye(fluid);
     }
 }

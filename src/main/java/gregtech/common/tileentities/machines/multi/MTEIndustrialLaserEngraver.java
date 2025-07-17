@@ -56,7 +56,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityLaser;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
@@ -191,9 +190,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
     }
 
     @Override
@@ -210,7 +209,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         } else {
             if (renderer != null) {
                 renderer.toggleRealism();
-                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatToPlayer(aPlayer, "Toggling realism!");
                 return true;
             }
         }
@@ -401,14 +400,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (mExoticEnergyHatches.isEmpty()) {
-            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-            logic.setAvailableAmperage(1L);
-        } else super.setProcessingLogicPower(logic);
     }
 
     @Override

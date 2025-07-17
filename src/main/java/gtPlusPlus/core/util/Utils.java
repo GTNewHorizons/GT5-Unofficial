@@ -12,9 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -116,18 +113,6 @@ public class Utils {
         return returnValue;
     }
 
-    // Send a message to all players on the server
-    public static void sendServerMessage(final String translationKey) {
-        sendServerMessage(new ChatComponentText(translationKey));
-    }
-
-    // Send a message to all players on the server
-    public static void sendServerMessage(final IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
-    }
-
     /**
      * Returns if that Liquid is IC2Steam.
      */
@@ -178,15 +163,11 @@ public class Utils {
             String code = "" + (int) (Math.random() * 256);
             code = code + code + code;
             final int i = Integer.parseInt(code);
-            hexColorMap.put(
-                a,
-                Integer.toHexString(0x1000000 | i)
-                    .substring(1)
-                    .toUpperCase());
-            Logger.WARNING(
-                Integer.toHexString(0x1000000 | i)
-                    .substring(1)
-                    .toUpperCase());
+            String hexString = Integer.toHexString(0x1000000 | i)
+                .substring(1)
+                .toUpperCase();
+            hexColorMap.put(a, hexString);
+            Logger.WARNING(hexString);
         }
         return hexColorMap;
     }
@@ -331,7 +312,7 @@ public class Utils {
             return GTUtility.copyAmount(1L, stack);
         }
 
-        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length <= 0) {
+        if (GTUtility.isStringInvalid(title) || GTUtility.isStringInvalid(author) || pages.length == 0) {
             return null;
         }
 

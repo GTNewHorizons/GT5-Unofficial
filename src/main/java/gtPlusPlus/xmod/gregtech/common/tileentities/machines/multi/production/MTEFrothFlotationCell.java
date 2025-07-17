@@ -69,7 +69,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public String getMachineType() {
-        return "Flotation Cell";
+        return "Flotation Cell, FCR";
     }
 
     @Override
@@ -77,8 +77,8 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Process that milled ore!")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addInfo("You can only ever process one type of material per controller")
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
             .addController("Front Center")
@@ -126,11 +126,6 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.flotationCellRecipes;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

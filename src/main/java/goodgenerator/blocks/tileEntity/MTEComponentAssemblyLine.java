@@ -220,10 +220,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addTecTechHatchInfo()
-            .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, false)
             .addController("Mid of the eighth layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
@@ -269,20 +268,20 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -306,7 +305,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                speedBonus = 1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue);
+                speedBonus = GTUtility.powInt(2, -(casingTier + 1 - recipe.mSpecialValue));
                 return super.createOverclockCalculator(recipe).setDurationModifier(speedBonus);
             }
         };
@@ -316,6 +315,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -356,13 +356,16 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

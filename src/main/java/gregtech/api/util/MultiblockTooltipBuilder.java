@@ -66,6 +66,9 @@ public class MultiblockTooltipBuilder {
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
     private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
+    private static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
+    private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
+    private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
@@ -76,6 +79,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
+    private static final String M_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
@@ -168,7 +172,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.gregtechproxy.separatorStyle) {
+        switch (GTMod.proxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
             default -> iLines
@@ -506,6 +510,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -525,6 +541,18 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addOutputBus(String info) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -580,6 +608,17 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * This machine is capable of Perfect Overclocks!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addPerfectOCInfo() {
+        iLines.add(EnumChatFormatting.AQUA + M_PerfectOC);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * t-tier Glass required for TecTech Laser Hatches.
      *
      * @param t Tier of glass that unlocks all energy hatches
@@ -618,6 +657,40 @@ public class MultiblockTooltipBuilder {
                 + GTValues.VN[t]
                 + EnumChatFormatting.GRAY
                 + StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimitTier"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addNoTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.NoTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addUnlimitedTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.UnlimitedTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes at most n tiers above the average energy hatch tier.
+     *
+     * @param n The max amount of tier skips allowed
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
         return this;
     }
 
@@ -693,6 +766,20 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Input Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamInputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steaminputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steaminputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Input Hatch: info
      *
      * @param info Location where the hatch goes
@@ -716,6 +803,20 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addOutputBus(String info, int... dots) {
         sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_outputbus);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)Output Bus (Steam): info
+     *
+     * @param info Location where the bus goes
+     * @param dots The valid locations for this part when asked to display hints
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSteamOutputBus(String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_steamoutputbus + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, TT_steamoutputbus);
         return this;
     }
 
@@ -753,7 +854,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
         boolean useFinisherConfig) {
         if (useFinisherConfig) {
-            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+            switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
                 case 1 -> sLines.add(TAB + " ");
                 case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
@@ -763,7 +864,7 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.gregtechproxy.separatorStyle) {
+            switch (GTMod.proxy.separatorStyle) {
                 case 0 -> sLines.add(TAB + " ");
                 case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines
@@ -883,7 +984,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
 
-        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+        switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> iLines.add(" ");
             case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));

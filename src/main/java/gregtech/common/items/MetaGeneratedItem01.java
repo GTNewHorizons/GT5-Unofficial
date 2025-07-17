@@ -459,6 +459,7 @@ import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -498,7 +499,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -548,12 +548,12 @@ import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
-    private final String mToolTipPurify = GTLanguageManager
-        .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -3576,7 +3576,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(this.mToolTipPurify);
+                    aList.add(translateToLocal("GT5U.tooltip.purify.1"));
                 }
             }
         }
@@ -4774,7 +4774,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null

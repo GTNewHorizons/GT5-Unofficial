@@ -51,7 +51,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -69,11 +68,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return false;
         }
         return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
     }
 
     /**
@@ -683,7 +677,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             Integer amount = 0;
             fluidname = NBTUtils.getString(container, "mFluid");
             amount = NBTUtils.getInteger(container, "mFluidAmount");
-            if (fluidname != null && amount != null && amount > 0) {
+            if (fluidname != null && amount > 0) {
                 return FluidUtils.getFluidStack(fluidname, amount);
             } else {
                 return null;
@@ -707,7 +701,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
 
-        return 2000 * (int) Math.pow(4, aMeta);
+        return 2000 * (int) GTUtility.powInt(4, aMeta);
     }
 
     public int fill(ItemStack container, FluidStack resource) {
@@ -843,7 +837,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aNewNBT.setString("mFluid", "@@@@@");
             aNewNBT.setInteger("mFluidAmount", 0);
             if (!aNewNBT.hasKey("capacityInit")) {
-                int aCapacity = 2000 * (int) Math.pow(4, aMeta);
+                int aCapacity = 2000 * (int) GTUtility.powInt(4, aMeta);
                 aNewNBT.setInteger("mCapacity", aCapacity);
                 aNewNBT.setBoolean("capacityInit", true);
             }
@@ -867,10 +861,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 int aTier = (aStack.getItemDamage() - 1000);
                 int removal = 0;
                 if (aTier != 0) {
-                    removal = 8 * (int) Math.pow(4, aTier);
+                    removal = 8 * (int) GTUtility.powInt(4, aTier);
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
-                    PlayerUtils.messagePlayer(aPlayer, "Not enough power.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Not enough power.");
                     Logger.INFO("No Power");
                     return false;
                 }
@@ -941,7 +935,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
                             Logger.INFO("Returning " + b + " - drainTankGT.");
                             if (b) {
-                                PlayerUtils.messagePlayer(
+                                GTUtility.sendChatToPlayer(
                                     aPlayer,
                                     "Drained " + mAmountInserted + "L of " + aStored.getLocalizedName() + ".");
                             } else {
@@ -1011,9 +1005,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public boolean setStoredFluidOfGTMachine(MTEBasicTank aTileEntity, FluidStack aSetFluid) {
         try {
             aTileEntity.mFluid = aSetFluid;
-            boolean b = aTileEntity.mFluid == aSetFluid;
-            Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] " + b);
-            return b;
+            Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] success.");
+            return true;
         } catch (Throwable t) {
             Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
             return false;

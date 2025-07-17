@@ -5,58 +5,53 @@
 
 package gregtech.common;
 
-import static gregtech.api.enums.GTValues.calculateMaxPlasmaTurbineEfficiency;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
-import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Function;
+import java.util.TreeSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.input.Keyboard;
 
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
-import appeng.api.util.IOrientable;
-import appeng.tile.misc.TileInterface;
-import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.Scale;
-import codechicken.lib.vec.Transformation;
-import codechicken.lib.vec.Translation;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -65,27 +60,27 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.HazardProtection;
+import gregtech.api.hazards.HazardProtectionTooltip;
+import gregtech.api.interfaces.IBlockOnWalkOver;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.client.capes.GTCapesLoader;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.pollution.Pollution;
@@ -94,80 +89,33 @@ import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
-import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.TileEntityDrone;
+import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import gregtech.common.tileentities.render.TileEntityWormhole;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.nei.NEIGTConfig;
-import ic2.api.tile.IWrenchable;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 
-// Referenced classes of package gregtech.common:
-// GTProxy
+public class GTClient extends GTProxy {
 
-public class GTClient extends GTProxy implements Runnable {
-
-    public static final String GTNH_CAPE_LIST_URL = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
-    public static final String GT_CAPE_LIST_URL = "http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt";
-    private static final List<Block> ROTATABLE_VANILLA_BLOCKS;
-
-    private static final int[][] GRID_SWITCH_TABLE = new int[][] { { 0, 5, 3, 1, 2, 4 }, { 5, 0, 1, 3, 2, 4 },
-        { 1, 3, 0, 5, 2, 4 }, { 3, 1, 5, 0, 2, 4 }, { 4, 2, 3, 1, 0, 5 }, { 2, 4, 3, 1, 5, 0 }, };
-
-    // don't ask. these "just works"
-    private static final Transformation ROTATION_MARKER_TRANSFORM_CENTER = new Scale(0.5);
-    private static final Transformation[] ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS = {
-        new Scale(0.25).with(new Translation(0, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(0.375, 0, 0))
-            .compile(),
-        new Scale(0.25).with(new Translation(0, 0, -0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, 0))
-            .compile(), };
-    private static final int[] ROTATION_MARKER_TRANSFORMS_SIDES = { -1, -1, 2, 0, 3, 1, -1, -1, 0, 2, 3, 1, 0, 2, -1,
-        -1, 3, 1, 2, 0, -1, -1, 3, 1, 1, 3, 2, 0, -1, -1, 3, 1, 2, 0, -1, -1 };
-    private static final Transformation[] ROTATION_MARKER_TRANSFORMS_CORNER = {
-        new Scale(0.25).with(new Translation(0.375, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, 0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(0.375, 0, -0.375))
-            .compile(),
-        new Scale(0.25).with(new Translation(-0.375, 0, -0.375))
-            .compile(), };
-    private static int rotationMarkerDisplayList;
-    private static boolean rotationMarkerDisplayListCompiled = false;
-
-    static {
-        ROTATABLE_VANILLA_BLOCKS = Arrays.asList(
-            Blocks.piston,
-            Blocks.sticky_piston,
-            Blocks.furnace,
-            Blocks.lit_furnace,
-            Blocks.dropper,
-            Blocks.dispenser,
-            Blocks.chest,
-            Blocks.trapped_chest,
-            Blocks.ender_chest,
-            Blocks.hopper,
-            Blocks.pumpkin,
-            Blocks.lit_pumpkin);
-    }
-
-    private final HashSet<String> mCapeList = new HashSet<>();
-    public static final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
-    private final GTCapeRenderer mCapeRenderer;
+    public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
+    public KeyBinding shakeLockKey;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -193,13 +141,10 @@ public class GTClient extends GTProxy implements Runnable {
     private boolean mAnimationDirection;
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
-    public static final int ROTATION_MARKER_RESOLUTION = 120;
     private int mReloadCount;
     private float renderTickTime;
-    public static MetaGeneratedItemRenderer metaGeneratedItemRenderer;
 
     public GTClient() {
-        mCapeRenderer = new GTCapeRenderer(mCapeList);
         mAnimationTick = 0L;
         mAnimationDirection = false;
         mPosR = Arrays.asList(
@@ -305,273 +250,9 @@ public class GTClient extends GTProxy implements Runnable {
         mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
     }
 
-    private static boolean checkedForChicken = false;
-
-    private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench,
-        boolean aIsSneaking) {
-        if (!checkedForChicken) {
-            try {
-                Class.forName("codechicken.lib.vec.Rotation");
-            } catch (ClassNotFoundException e) {
-                return;
-            }
-            checkedForChicken = true;
-        }
-
-        GL11.glPushMatrix();
-
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-
-        // pause shader
-        int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
-        GL20.glUseProgram(0);
-
-        MovingObjectPosition target = aEvent.target;
-        EntityPlayer player = aEvent.player;
-        double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
-        double camY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) aEvent.partialTicks;
-        double camZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) aEvent.partialTicks;
-        GL11.glTranslated(target.blockX - (int) camX, target.blockY - (int) camY, target.blockZ - (int) camZ);
-        GL11.glTranslated(0.5D - (camX - (int) camX), 0.5D - (camY - (int) camY), 0.5D - (camZ - (int) camZ));
-        final int tSideHit = target.sideHit;
-        Rotation.sideRotations[tSideHit].glApply();
-        // draw grid
-        GL11.glTranslated(0.0D, -0.502D, 0.0D);
-        GL11.glLineWidth(2.5F);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3d(+.50D, .0D, -.25D);
-        GL11.glVertex3d(-.50D, .0D, -.25D);
-        GL11.glVertex3d(+.50D, .0D, +.25D);
-        GL11.glVertex3d(-.50D, .0D, +.25D);
-        GL11.glVertex3d(+.25D, .0D, -.50D);
-        GL11.glVertex3d(+.25D, .0D, +.50D);
-        GL11.glVertex3d(-.25D, .0D, -.50D);
-        GL11.glVertex3d(-.25D, .0D, +.50D);
-        final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
-        final Block block = player.worldObj.getBlock(target.blockX, target.blockY, target.blockZ);
-        final int meta = player.worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-
-        // draw connection indicators
-        int tConnections = 0;
-        if (tTile instanceof ICoverable iCoverable) {
-            if (showCoverConnections) {
-                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (iCoverable.hasCoverAtSide(tSide)) tConnections |= tSide.flag;
-                }
-            } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
-                if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
-                else if (baseMetaTile.getMetaTileEntity() instanceof MTEBasicMachine basicMachine) {
-                    tConnections |= basicMachine.mMainFacing.flag;
-                }
-            } else if (tTile instanceof BaseMetaPipeEntity pipeEntity) tConnections = pipeEntity.mConnections;
-        } else if (tTile instanceof IWrenchable wrenchable) {
-            tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
-        } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
-            tConnections |= ForgeDirection.getOrientation(meta).flag;
-        } else if (tTile instanceof TileInterface tileInterface) tConnections |= tileInterface.getUp()
-            .getOpposite().flag;
-
-        if (tConnections != 0) {
-            for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                if ((tConnections & tSide.flag) != 0) {
-                    switch (GRID_SWITCH_TABLE[target.sideHit][tSide.ordinal()]) {
-                        case 0 -> {
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                        }
-                        case 1 -> {
-                            GL11.glVertex3d(-.25D, .0D, +.50D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.50D);
-                        }
-                        case 2 -> {
-                            GL11.glVertex3d(-.50D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.50D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                        }
-                        case 3 -> {
-                            GL11.glVertex3d(-.25D, .0D, -.50D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.50D);
-                        }
-                        case 4 -> {
-                            GL11.glVertex3d(+.50D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.50D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                        }
-                        case 5 -> {
-                            GL11.glVertex3d(+.50D, .0D, +.50D);
-                            GL11.glVertex3d(+.25D, .0D, +.25D);
-                            GL11.glVertex3d(+.50D, .0D, +.25D);
-                            GL11.glVertex3d(+.25D, .0D, +.50D);
-                            GL11.glVertex3d(+.50D, .0D, -.50D);
-                            GL11.glVertex3d(+.25D, .0D, -.25D);
-                            GL11.glVertex3d(+.50D, .0D, -.25D);
-                            GL11.glVertex3d(+.25D, .0D, -.50D);
-                            GL11.glVertex3d(-.50D, .0D, +.50D);
-                            GL11.glVertex3d(-.25D, .0D, +.25D);
-                            GL11.glVertex3d(-.50D, .0D, +.25D);
-                            GL11.glVertex3d(-.25D, .0D, +.50D);
-                            GL11.glVertex3d(-.50D, .0D, -.50D);
-                            GL11.glVertex3d(-.25D, .0D, -.25D);
-                            GL11.glVertex3d(-.50D, .0D, -.25D);
-                            GL11.glVertex3d(-.25D, .0D, -.50D);
-                        }
-                    }
-                }
-            }
-        }
-        GL11.glEnd();
-        // draw turning indicator
-        Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
-            try {
-                if (direction.ordinal() == tSideHit) return new Transformation[] { ROTATION_MARKER_TRANSFORM_CENTER };
-                else if (direction.getOpposite()
-                    .ordinal() == tSideHit) {
-                        return ROTATION_MARKER_TRANSFORMS_CORNER;
-                    } else {
-                        return new Transformation[] {
-                            ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
-                                + direction.ordinal()]] };
-                    }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                return new Transformation[] {};
-            }
-
-        };
-
-        if (aIsWrench && tTile instanceof IAlignmentProvider) {
-            final IAlignment tAlignment = ((IAlignmentProvider) (tTile)).getAlignment();
-            if (tAlignment != null) {
-                for (var transform : getTransform.apply(tAlignment.getDirection())) {
-                    drawExtendedRotationMarker(transform, aIsSneaking, tAlignment);
-                }
-            }
-        }
-        if (aIsWrench && tTile instanceof IOrientable orientable
-            && !(tTile instanceof TileInterface)
-            && orientable.canBeRotated()) {
-            for (var transform : getTransform.apply(aIsSneaking ? orientable.getForward() : orientable.getUp())) {
-                drawExtendedRotationMarker(transform, aIsSneaking, orientable);
-            }
-        }
-        GL20.glUseProgram(program); // resume shader
-        GL11.glPopMatrix(); // get back to player center
-    }
-
-    private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, IAlignment alignment) {
-        if (sneaking) {
-            if (alignment.isFlipChangeAllowed()) {
-                drawFlipMarker(transform);
-            }
-        } else {
-            if (alignment.isRotationChangeAllowed()) {
-                drawRotationMarker(transform);
-            }
-        }
-    }
-
-    private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, IOrientable orientable) {
-        drawRotationMarker(transform);
-    }
-
-    private static void drawRotationMarker(Transformation transform) {
-        if (!rotationMarkerDisplayListCompiled) {
-            rotationMarkerDisplayList = GLAllocation.generateDisplayLists(1);
-            compileRotationMarkerDisplayList(rotationMarkerDisplayList);
-            rotationMarkerDisplayListCompiled = true;
-        }
-        GL11.glPushMatrix();
-        transform.glApply();
-        GL11.glCallList(rotationMarkerDisplayList);
-        GL11.glPopMatrix();
-    }
-
-    private static void compileRotationMarkerDisplayList(int displayList) {
-        GL11.glNewList(displayList, GL11.GL_COMPILE);
-        GL11.glBegin(GL_LINE_LOOP);
-        for (int i = 0; i <= ROTATION_MARKER_RESOLUTION; i++) {
-            GL11.glVertex3d(
-                Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4,
-                0,
-                Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.4);
-        }
-        for (int i = ROTATION_MARKER_RESOLUTION; i >= 0; i--) {
-            GL11.glVertex3d(
-                Math.cos(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24,
-                0,
-                Math.sin(i * Math.PI * 1.75 / ROTATION_MARKER_RESOLUTION) * 0.24);
-        }
-        GL11.glVertex3d(0.141114561800, 0, 0);
-        GL11.glVertex3d(0.32, 0, -0.178885438199);
-        GL11.glVertex3d(0.498885438199, 0, 0);
-        GL11.glEnd();
-        GL11.glEndList();
-    }
-
-    private static void drawFlipMarker(Transformation transform) {
-        GL11.glPushMatrix();
-        transform.glApply();
-        final Tessellator t = Tessellator.instance;
-        // right shape
-        GL11.glLineStipple(4, (short) 0xAAAA);
-        GL11.glEnable(GL11.GL_LINE_STIPPLE);
-        t.startDrawing(GL11.GL_LINE_STRIP);
-        t.addVertex(0.1d, 0d, 0.04d);
-        t.addVertex(0.1d, 0d, 0.2d);
-        t.addVertex(0.35d, 0d, 0.35d);
-        t.addVertex(0.35d, 0d, -0.35d);
-        t.addVertex(0.1d, 0d, -0.2d);
-        t.addVertex(0.1d, 0d, -0.04d);
-        t.draw();
-        GL11.glDisable(GL11.GL_LINE_STIPPLE);
-        // left shape
-        t.startDrawing(GL11.GL_LINE_STRIP);
-        t.addVertex(-0.1d, 0d, 0.04d);
-        t.addVertex(-0.1d, 0d, 0.2d);
-        t.addVertex(-0.35d, 0d, 0.35d);
-        t.addVertex(-0.35d, 0d, -0.35d);
-        t.addVertex(-0.1d, 0d, -0.2d);
-        t.addVertex(-0.1d, 0d, -0.04d);
-        t.draw();
-        // arrow
-        t.startDrawing(GL11.GL_LINE_LOOP);
-        t.addVertex(0.15d, 0d, -0.04d);
-        t.addVertex(0.15d, 0d, -0.1d);
-        t.addVertex(0.25d, 0d, 0.d);
-        t.addVertex(0.15d, 0d, 0.1d);
-        t.addVertex(0.15d, 0d, 0.04d);
-        t.addVertex(-0.15d, 0d, 0.04d);
-        t.addVertex(-0.15d, 0d, 0.1d);
-        t.addVertex(-0.25d, 0d, 0.d);
-        t.addVertex(-0.15d, 0d, -0.1d);
-        t.addVertex(-0.15d, 0d, -0.04d);
-        t.draw();
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public boolean isServerSide() {
-        return true;
-    }
-
     @Override
     public boolean isClientSide() {
         return true;
-    }
-
-    @Override
-    public boolean isBukkitSide() {
-        return false;
     }
 
     @Override
@@ -580,81 +261,69 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     @Override
-    public int addArmor(String aPrefix) {
-        return RenderingRegistry.addNewArmourRendererPrefix(aPrefix);
-    }
-
-    @Override
-    public void onPreLoad() {
-        super.onPreLoad();
-
+    public void onPreInitialization(FMLPreInitializationEvent event) {
+        super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
-
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
-
-        new MTEAdvDebugStructureWriter.ForgeEventHandler();
-
-        final String[] arr = { "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321",
-            "Goshen_Ithilien", "manf", "Bimgo", "leagris", "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87",
-            "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan", "Deathlycraft",
-            "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85",
-            "sebastiank30", "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab",
-            "kehaan", "bpgames123", "semig0d", "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp",
-            "bsaa", "SpwnX", "tworf", "Kadah", "kanni", "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly",
-            "Nullav", "BH5432", "Sibmer", "inceee", "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb",
-            "meep310", "Seldron", "yttr1um", "hohounk", "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy",
-            "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774", "lepthymo", "bildeman", "Kremnari", "Aerosalo",
-            "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404", "Abouttabs", "Johnstaal",
-            "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
-            "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot",
-            "chainman564", "NikitaBuker", "Misha999777", "25FiveDetail", "AntiCivilBoy", "michaelbrady",
-            "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic",
-            "diamondguy2798", "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi",
-            "xavier0014", "adamros", "alexbegt" };
-        for (String tName : arr) {
-            mCapeList.add(tName.toLowerCase());
-        }
-        new Thread(this).start();
-
-        mPollutionRenderer.preLoad();
-
+        new Thread(new GTCapesLoader(), "GT Cape Loader").start();
         mPreference = new GTClientPreference();
-
         Materials.initClient();
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
+    public void onInitialization(FMLInitializationEvent event) {
+        // spotless:off
+        super.onInitialization(event);
         GTRendererBlock.register();
         GTRendererCasing.register();
-        new DroneRender();
-        new LaserRenderer();
-        new WormholeRenderer();
-        new BlackholeRenderer();
 
-        metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class,  new NanoForgeRenderer());
+
+        MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
-            metaGeneratedItemRenderer.registerItem(item);
+            metaItemRenderer.registerItem(item);
         }
         if (Forestry.isModLoaded()) {
-            metaGeneratedItemRenderer.registerItem(GTBees.combs);
+            metaItemRenderer.registerItem(GTBees.combs);
         }
-        new MetaGeneratedToolRenderer();
-        new FlaskRenderer();
-        new FluidDisplayStackRenderer();
-        new DataStickRenderer();
-        new InfiniteSprayCanRenderer();
+
+        final MetaGeneratedToolRenderer metaToolRenderer = new MetaGeneratedToolRenderer();
+        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
+            if (tItem != null) {
+                MinecraftForgeClient.registerItemRenderer(tItem, metaToolRenderer);
+            }
+        }
+
+        final FlaskRenderer flaskRenderer = new FlaskRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), flaskRenderer);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.KLEIN_BOTTLE.getItem(), flaskRenderer);
+
+        MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
+        MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
+        FMLCommonHandler.instance().bus().register(mPollutionRenderer);
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
+        MinecraftForge.EVENT_BUS.register(new MTEAdvDebugStructureWriter.EventHandler());
+        shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
+        ClientRegistry.registerKeyBinding(shakeLockKey);
+        // spotless:on
     }
 
     @Override
-    public void onPostLoad() {
-        super.onPostLoad();
+    public void onPostInitialization(FMLPostInitializationEvent event) {
+        super.onPostInitialization(event);
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
@@ -672,8 +341,8 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     @Override
-    public void onLoadComplete() {
-        super.onLoadComplete();
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        super.onLoadComplete(event);
         for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
             if (category.recipeMap.getFrontend()
                 .getNEIProperties().registerNEI) {
@@ -686,8 +355,24 @@ public class GTClient extends GTProxy implements Runnable {
         }
     }
 
+    @Override
     @SubscribeEvent
-    @SuppressWarnings("unused") // used by the event bus
+    public void applyBlockWalkOverEffects(LivingEvent.LivingUpdateEvent event) {
+        final EntityLivingBase entity = event.entityLiving;
+        // the player should handle its own movement, rest is handled by the server
+        if (entity instanceof EntityClientPlayerMP && entity.onGround) {
+            int tX = MathHelper.floor_double(entity.posX),
+                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
+                tZ = MathHelper.floor_double(entity.posZ);
+            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
+            if (tBlock instanceof IBlockOnWalkOver)
+                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
+        } else {
+            super.applyBlockWalkOverEffects(event);
+        }
+    }
+
+    @SubscribeEvent
     public void onSoundSetup(SoundSetupEvent event) {
         try {
             SoundSystemConfig.setCodec(SeekingOggCodec.EXTENSION, SeekingOggCodec.class);
@@ -696,44 +381,11 @@ public class GTClient extends GTProxy implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        GTLog.out.println("GTMod: Downloading Cape List.");
-        try (final Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
-            while (tScanner.hasNextLine()) {
-                this.mCapeList.add(
-                    tScanner.nextLine()
-                        .toLowerCase());
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
-        }
-        GTLog.out.println("GT New Horizons: Downloading Cape List.");
-        try (final Scanner tScanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
-            while (tScanner.hasNextLine()) {
-                final String tName = tScanner.nextLine()
-                    .toLowerCase();
-                if (tName.contains(":")) {
-                    if (!this.mCapeList.contains(tName.substring(0, tName.indexOf(":")))) {
-                        this.mCapeList.add(tName);
-                    }
-                } else {
-                    this.mCapeList.add(tName);
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
-        }
-    }
-
-    @Override
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;
         mReloadCount++;
         GTMusicSystem.ClientSystem.reset();
-        // For utility methods elsewhere.
-        calculateMaxPlasmaTurbineEfficiency();
     }
 
     @Override
@@ -744,11 +396,6 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public int getNEIReloadCount() {
         return mReloadCount;
-    }
-
-    @SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
     }
 
     @SubscribeEvent
@@ -791,71 +438,6 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     @SubscribeEvent
-    public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        final Block aBlock = aEvent.player.worldObj
-            .getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-        final TileEntity aTileEntity = aEvent.player.worldObj
-            .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-
-        if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWrenchList)) {
-            if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
-                || aTileEntity instanceof IWrenchable
-                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
-                || (aBlock instanceof BlockFrameBox)) drawGrid(aEvent, false, true, aEvent.player.isSneaking());
-            return;
-        }
-
-        // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
-        if (aTileEntity == null && aBlock instanceof BlockFrameBox) {
-            if (CoverRegistry.isCover(aEvent.currentItem)) {
-                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
-            }
-            return;
-        }
-
-        if (!(aTileEntity instanceof ICoverable)) return;
-
-        if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
-            && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
-            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[aEvent.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
-                drawGrid(aEvent, false, false, false);
-            }
-        }
-
-        if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
-                && aEvent.player.isSneaking()) {
-            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
-                drawGrid(aEvent, false, false, aEvent.player.isSneaking());
-            return;
-        }
-
-        if ((aEvent.currentItem == null && aEvent.player.isSneaking())
-            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCrowbarList)
-            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
-            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
-                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((ICoverable) aTileEntity).hasCoverAtSide(tSide)) {
-                        drawGrid(aEvent, true, false, true);
-                        return;
-                    }
-                }
-            return;
-        }
-
-        if (CoverRegistry.isCover(aEvent.currentItem)) {
-            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
-                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
-        }
-
-        if (GTUtility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
-            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
-                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
-        }
-    }
-
-    @SubscribeEvent
     public void receiveRenderEvent(net.minecraftforge.client.event.RenderPlayerEvent.Pre aEvent) {
         if (GTUtility.getFullInvisibility(aEvent.entityPlayer)) {
             aEvent.setCanceled(true);
@@ -863,15 +445,9 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     @SubscribeEvent
-    public void onRenderStart(cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent aEvent) {
-        if (aEvent.phase == TickEvent.Phase.START) {
-            renderTickTime = aEvent.renderTickTime;
-        }
-    }
-
-    @SubscribeEvent
-    public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
-        if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
+    public void onClientTickEvent(ClientTickEvent aEvent) {
+        if (aEvent.phase == TickEvent.Phase.END) {
+            mTicksUntilNextCraftSound--;
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
@@ -880,7 +456,7 @@ public class GTClient extends GTProxy implements Runnable {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
+            heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -952,6 +528,59 @@ public class GTClient extends GTProxy implements Runnable {
         }
     }
 
+    @SubscribeEvent
+    public void onItemTooltip(ItemTooltipEvent event) {
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            return;
+        }
+
+        // TreeSet so it's always the same order
+        TreeSet<Hazard> protections = new TreeSet<>();
+        for (Hazard hazard : Hazard.values()) {
+            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
+                protections.add(hazard);
+            }
+        }
+        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+        }
+
+        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+        }
+        for (Hazard hazard : protections) {
+            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
+        }
+    }
+
+    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
+        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
+    }
+
+    private int mTicksUntilNextCraftSound = 0;
+
+    // Used for tool sounds in the crafting grid
+    @SubscribeEvent
+    public void onPlayerCrafting(PlayerEvent.ItemCraftedEvent event) {
+        if (!MetaGeneratedTool.playSound) return;
+        if (this.mTicksUntilNextCraftSound > 0) return;
+        for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
+            ItemStack stack = event.craftMatrix.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
+                IToolStats tStats = mgt.getToolStats(stack);
+                boolean playBreak = (MetaGeneratedTool.getToolDamage(stack) + tStats.getToolDamagePerContainerCraft())
+                    >= MetaGeneratedTool.getToolMaxDamage(stack);
+                String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
+                GTUtility.doSoundAtClient(sound, 1, 1.0F);
+                this.mTicksUntilNextCraftSound = 10;
+                return;
+            }
+        }
+    }
+
     public short getSafeRGBValue(short aRBG, int aDelta) {
         int tmp = aRBG + aDelta;
         if (tmp > 255) tmp = 255;
@@ -959,19 +588,17 @@ public class GTClient extends GTProxy implements Runnable {
         return (short) tmp;
     }
 
-    @Override
     public long getAnimationTicks() {
         return mAnimationTick;
     }
 
-    @Override
     public float getPartialRenderTicks() {
         return renderTickTime;
     }
 
-    private static boolean hideThings = false;
+    private boolean hideThings = false;
 
-    public static boolean shouldHideThings() {
+    public boolean shouldHideThings() {
         return hideThings;
     }
 
@@ -984,7 +611,11 @@ public class GTClient extends GTProxy implements Runnable {
      * client change detection related work and network traffic on different ticks, until it reaches 0.
      * </p>
      */
-    public static int changeDetected = 0;
+    private int changeDetected = 0;
+
+    public int changeDetected() {
+        return changeDetected;
+    }
 
     private static boolean shouldHeldItemHideThings() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -1001,30 +632,46 @@ public class GTClient extends GTProxy implements Runnable {
         return false;
     }
 
-    private static boolean forceFullBlockBoundingBoxes;
+    private boolean isRenderingWorld;
+    private boolean isComputingPickBlock;
+    private boolean heldItemForcesFullBlockBB;
 
-    public static boolean shouldForceFullBlockBoundingBoxes() {
-        return forceFullBlockBoundingBoxes;
+    public void setComputingPickBlock(boolean b) {
+        isComputingPickBlock = b;
     }
 
-    private static boolean shouldHeldItemForceFullBlockBoundingBoxes() {
+    @SubscribeEvent
+    public void onRenderStart(TickEvent.RenderTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            renderTickTime = event.renderTickTime;
+            isRenderingWorld = true;
+        } else if (event.phase == TickEvent.Phase.END) {
+            isRenderingWorld = false;
+        }
+    }
+
+    public boolean forceFullBlockBB() {
+        return heldItemForcesFullBlockBB && (isRenderingWorld || isComputingPickBlock);
+    }
+
+    private static boolean shouldHeldItemForceFullBlockBB() {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return false;
-        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
-        if (tCurrentItem == null) return false;
-        return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-            || CoverRegistry.isCover(tCurrentItem)
-            || (tCurrentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+        final ItemStack stack = player.getCurrentEquippedItem();
+        if (stack == null) return false;
+        return GTUtility.isStackInList(stack, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(stack)
+            || (stack.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());
     }
 
-    public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
+    public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
         mPollutionRenderer.processPacket(chunk, pollution);
     }
 }

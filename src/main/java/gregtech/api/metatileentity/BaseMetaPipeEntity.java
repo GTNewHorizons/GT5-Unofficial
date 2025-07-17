@@ -420,7 +420,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -807,7 +807,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
-                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                     if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         if (mWorks) disableWorking();
                         else enableWorking();
@@ -1111,7 +1111,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 || (mMetaTileEntity.isLiquidOutput(side) && cover.letsFluidOut(null))
             // Doesn't need to be connected to get Tank Info -- otherwise things can't connect
             )) return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     @Override

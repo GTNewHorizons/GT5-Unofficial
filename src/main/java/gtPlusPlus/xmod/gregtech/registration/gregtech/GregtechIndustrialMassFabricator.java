@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_MassFab;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockMassFabricatorRecipes;
 
@@ -45,7 +46,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA2
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrap.get(1L))
+            .itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrapbox.get(1L))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -54,7 +55,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.UUMatter.getFluid(16))
+            .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(4096)
             .addTo(multiblockMassFabricatorRecipes);
@@ -62,8 +63,8 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.UUAmplifier.getFluid(16))
-            .fluidOutputs(Materials.UUMatter.getFluid(16))
+            .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
+            .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(40 * SECONDS)
             .eut(4096)
             .addTo(multiblockMassFabricatorRecipes);

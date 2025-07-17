@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -108,7 +107,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         if (Client.render.useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
@@ -128,7 +126,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
             textures.add(TextureFactory.of(icon));
         } else {
             IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
@@ -145,15 +142,10 @@ public class BlockCasings5 extends BlockCasingsAbstract
                 default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
             };
 
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(background)
-                    .material(Blocks.stone)
-                    .build());
+            textures.add(TextureFactory.of(background));
 
             if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
-                    case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                     case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_FOREGROUND;
                     case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_FOREGROUND;
                     case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_FOREGROUND;
@@ -174,7 +166,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
                     TextureFactory.builder()
                         .addIcon(foreground)
                         .glow()
-                        .material(Blocks.glowstone)
                         .build());
             }
         }
@@ -218,7 +209,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     public static int getMetaFromCoilHeat(HeatingCoilLevel level) {
         return switch (level) {
-            case LV -> 0;
             case MV -> 1;
             case HV -> 2;
             case EV -> 3;

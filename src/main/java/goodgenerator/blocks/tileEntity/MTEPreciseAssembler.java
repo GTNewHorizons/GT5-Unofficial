@@ -262,9 +262,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
                 }
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -278,7 +275,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public int getMaxParallelRecipes() {
-        return mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1));
+        return mode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
     }
 
     @Override
@@ -287,6 +284,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
+        logic.setMaxTierSkips(0);
     }
 
     public long getMachineVoltageLimit() {
@@ -346,12 +344,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("Can assemble precise components in Precise Mode.")
             .addInfo("Can work like a normal assembler in Normal Mode.")
             .addInfo("Use a screwdriver to change the mode.")
-            .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
-            .addInfo("UHV Machine Casing unlocks all recipe voltages, but Energy Hatch limits still apply.")
             .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
             .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo(
+                "Machine Casing limits the voltage tier the machine can work on, "
+                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
+                    + "UHV"
+                    + EnumChatFormatting.GRAY
+                    + "-tier Machine Casing unlocks all.")
             .addTecTechHatchInfo()
+            .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
@@ -554,13 +557,16 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -104,17 +103,12 @@ public class MTEHatchMuffler extends MTEHatch {
         return true;
     }
 
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
     @SideOnly(Side.CLIENT)
     public void pollutionParticles(World aWorld, String name) {
         boolean chk1, chk2, chk3;
         float ran1 = XSTR_INSTANCE.nextFloat(), ran2, ran3;
         chk1 = ran1 * 100 < calculatePollutionReduction(100);
-        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = XSTR_INSTANCE.nextFloat();
             ran3 = XSTR_INSTANCE.nextFloat();
             chk2 = ran2 * 100 < calculatePollutionReduction(100);

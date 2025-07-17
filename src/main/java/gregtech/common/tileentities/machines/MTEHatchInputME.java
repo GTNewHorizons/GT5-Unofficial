@@ -59,11 +59,14 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
@@ -115,8 +118,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private boolean expediteRecipeCheck = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
-
-    protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
@@ -170,6 +171,25 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
     private void refreshFluidList() {
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
@@ -211,12 +231,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public FluidStack[] getStoredFluids() {
         if (!processingRecipe) {
-            return EMPTY_FLUID_STACK;
+            return GTValues.emptyFluidStackArray;
         }
 
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
-            return EMPTY_FLUID_STACK;
+            return GTValues.emptyFluidStackArray;
         }
 
         updateAllInformationSlots();
@@ -617,6 +637,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
     }
 
     @Override
@@ -656,6 +677,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             }
         }
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
         return true;
     }
 
@@ -668,7 +693,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
-
+        tag.setByte("color", this.getColor());
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
             for (int index = 0; index < SLOT_COUNT; index++) {
@@ -1014,7 +1039,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
+        strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
     }
 }

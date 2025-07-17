@@ -12,17 +12,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class LogBase extends BlockLog {
 
-    public String[] treeType = new String[] {};
+    public String[] treeType;
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 
@@ -31,7 +32,7 @@ public abstract class LogBase extends BlockLog {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
+        OreDictionary.registerOre("logWood", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 20, 100);
     }

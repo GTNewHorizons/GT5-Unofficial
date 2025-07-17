@@ -156,9 +156,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("But at what cost?")
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
-            .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks.")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
             .addController("Mid of the third layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
@@ -226,6 +226,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -249,13 +250,16 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

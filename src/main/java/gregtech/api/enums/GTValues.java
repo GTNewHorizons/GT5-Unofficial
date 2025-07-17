@@ -11,9 +11,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -30,7 +28,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 
@@ -59,10 +56,12 @@ public class GTValues {
     /**
      * The first 32 Bits
      */
-    @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
-    public static final int[] B = new int[] { 1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8,
-        1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20,
-        1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31 };
+    public static final int[] B;
+
+    static {
+        B = new int[32];
+        for (int i = 0; i < B.length; i++) B[i] = 1 << i;
+    }
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -80,12 +79,18 @@ public class GTValues {
      * Renamed from "FLUID_MATERIAL_UNIT" to just "L"
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#INGOTS} instead.
      */
+    @Deprecated
     public static final long L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#WILDCARD} instead.
      */
+    @Deprecated
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
     /**
@@ -260,10 +265,6 @@ public class GTValues {
         { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
         { 0, 1, 2, 3, 4, 5, 6 } };
 
-    /**
-     * The Mod Object itself. That is the GTMod-Object. It's needed to open GUI's and similar.
-     */
-    public static IGTMod GT;
     /**
      * Use this Object to add Recipes. (Recipe Adder)
      */
@@ -443,8 +444,10 @@ public class GTValues {
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
-    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final FluidStack[] emptyFluidStackArray = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final String[] emptyStringArray = new String[0];
+    public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
@@ -607,30 +610,6 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
-
-    // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
-    public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
-        return (5F + (7.5F + material.mToolQuality)) / 10.0;
-    }
-
-    // Called once in GT_Client on world load, has to be called late so that Materials is populated.
-    public static void calculateMaxPlasmaTurbineEfficiency() {
-
-        ArrayList<Double> effArray = new ArrayList<>();
-
-        // Iteration seems to work but need to check turbine as all items appear null.
-        for (Materials material : Materials.values()) {
-            effArray.add(getMaxPlasmaTurbineEfficiencyFromMaterial(material));
-        }
-
-        maxPlasmaTurbineEfficiency = Collections.max(effArray);
-    }
-
-    private static double maxPlasmaTurbineEfficiency;
-
-    public static double getMaxPlasmaTurbineEfficiency() {
-        return maxPlasmaTurbineEfficiency;
-    }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

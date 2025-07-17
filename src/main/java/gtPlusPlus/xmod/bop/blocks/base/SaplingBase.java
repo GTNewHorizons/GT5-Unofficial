@@ -14,24 +14,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class SaplingBase extends BlockSapling {
 
-    protected String[] saplingTypes = new String[] {};
-    protected IIcon[] saplingTextures = new IIcon[] {};
+    protected String[] saplingTypes;
+    protected IIcon[] saplingTextures;
 
     // Sapling types - field_149882_a
     // Iicons - field_149881_b
@@ -44,7 +44,7 @@ public class SaplingBase extends BlockSapling {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling", true);
+        OreDictionary.registerOre("treeSapling", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setStepSound(Block.soundTypeGrass);
     }
@@ -116,29 +116,11 @@ public class SaplingBase extends BlockSapling {
         Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
         int i1 = 0;
         int j1 = 0;
-        boolean flag = false;
-
         Block block = Blocks.air;
-
         world.setBlock(x, y, z, block, 0, 4);
-
         if (!((WorldGenerator) object).generate(world, rand, x + i1, y, z + j1)) {
             world.setBlock(x, y, z, this, l, 4);
         }
-    }
-
-    @Override
-    public boolean func_149880_a(World world, int p_149880_2_, int p_149880_3_, int p_149880_4_, int p_149880_5_) {
-        return world.getBlock(p_149880_2_, p_149880_3_, p_149880_4_) == this
-            && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
-    }
-
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-    public int damageDropped(int meta) {
-        return MathHelper.clamp_int(meta & 7, 0, 5);
     }
 
     /**

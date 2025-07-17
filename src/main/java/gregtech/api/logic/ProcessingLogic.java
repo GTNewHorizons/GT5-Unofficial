@@ -1,6 +1,7 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.GTDualInputPattern;
@@ -47,11 +49,13 @@ public class ProcessingLogic {
     protected double speedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
+    protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected double overClockTimeReduction = 2.0;
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+    protected boolean recipeCaching = true;
 
     // Calculated results
     protected ItemStack[] outputItems;
@@ -153,7 +157,8 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -234,6 +239,20 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Sets the max amount of tier skips, which is how many voltage tiers above the input voltage
+     * a recipe is valid. For unlimited tier skips, use {@link #setUnlimitedTierSkips()}
+     */
+    public ProcessingLogic setMaxTierSkips(int tierSkips) {
+        this.maxTierSkips = tierSkips;
+        return this;
+    }
+
+    public ProcessingLogic setUnlimitedTierSkips() {
+        this.maxTierSkips = Integer.MAX_VALUE;
+        return this;
+    }
+
     public ProcessingLogic setVoidProtection(boolean protectItems, boolean protectFluids) {
         this.protectItems = protectItems;
         this.protectFluids = protectFluids;
@@ -258,6 +277,14 @@ public class ProcessingLogic {
      */
     public ProcessingLogic setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
+        return this;
+    }
+
+    /**
+     * Disable caching of matched recipes.
+     */
+    public ProcessingLogic noRecipeCaching() {
+        this.recipeCaching = false;
         return this;
     }
 
@@ -351,10 +378,10 @@ public class ProcessingLogic {
         }
 
         if (inputItems == null) {
-            inputItems = new ItemStack[0];
+            inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
+            inputFluids = GTValues.emptyFluidStackArray;
         }
 
         if (activeDualInv != null) {
@@ -486,6 +513,7 @@ public class ProcessingLogic {
             return Stream.empty();
         }
         return map.findRecipeQuery()
+            .caching(recipeCaching)
             .items(inputItems)
             .fluids(inputFluids)
             .specialSlot(specialSlotItem)
@@ -527,6 +555,7 @@ public class ProcessingLogic {
         return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setMaxTierSkips(maxTierSkips)
             .setDuration(recipe.mDuration)
             .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)

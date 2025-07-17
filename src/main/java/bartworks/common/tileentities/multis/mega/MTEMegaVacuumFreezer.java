@@ -17,7 +17,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
@@ -237,6 +236,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo("Cools hot ingots and cells")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
             .addInfo(
@@ -426,7 +426,8 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
@@ -170,7 +172,7 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> !base.mSoftHammer)
+                    .setEnabledIf(widget -> !base.mSoftMallet)
                     .marginBottom(2)
                     .widthRel(1))
             .child(
@@ -207,10 +209,10 @@ public class MTEMultiBlockBaseGui {
 
             .child(
                 new TextWidget(
-                    GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
-                        + GTUtility.trans("140", "to (re-)start the Machine")
-                        + "\n"
-                        + GTUtility.trans("141", "if it doesn't start.")).color(Color.WHITE.main)
+                    IKey.comp(
+                        IKey.lang("gt.interact.desc.mb.idle.1"),
+                        IKey.lang("gt.interact.desc.mb.idle.2"),
+                        IKey.lang("gt.interact.desc.mb.idle.3"))).color(Color.WHITE.main)
                             .setEnabledIf(
                                 widget -> base.getErrorDisplayID() == 0 && !baseMetaTileEntity.isActive()
                                     && !baseMetaTileEntity.isAllowedToWork())
@@ -389,8 +391,53 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createInputSeparationTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
-        if (!base.supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsInputSeparation,
+            base::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+    }
+
+    /**
+     * Adds a dynamic line to a RichTooltip that displays the status of a multi-block feature.
+     * <p>
+     * The tooltip behavior depends on feature support:
+     * <ul>
+     * <li>If the feature is supported: Shows a dynamic tooltip that updates based on the feature's enabled state</li>
+     * <li>If the feature is not supported: Shows a static tooltip with the current state plus a "forbidden"
+     * message</li>
+     * </ul>
+     *
+     * @param tooltip                the RichTooltip to add the line to
+     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
+     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     *
+     * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(Widget,
+     *      Supplier, Supplier, String, String) For equivalent method but made for ModularUI
+     */
+    private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
+
+        if (supportsFeature.get()) {
+            tooltip.addLine(IKey.dynamic(() -> {
+                if (isFeatureEnabled.get()) {
+                    return tooltipFeatureEnabled;
+                } else {
+                    return tooltipFeatureDisabled;
+                }
+            }));
+        } else {
+            if (isFeatureEnabled.get()) {
+                tooltip.addLine(tooltipFeatureEnabled);
+            } else {
+                tooltip.addLine(tooltipFeatureDisabled);
+            }
+
+            tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        }
     }
 
     protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
@@ -450,8 +497,12 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createBatchModeTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
-        if (!base.supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsBatchMode,
+            base::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -493,8 +544,12 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void createRecipeLockTooltip(RichTooltip t) {
-        t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
-        if (!base.supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        addDynamicTooltipOfFeatureToButton(
+            t,
+            base::supportsSingleRecipeLocking,
+            base::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -661,7 +716,7 @@ public class MTEMultiBlockBaseGui {
         syncManager
             .syncValue("screwdriver", new BooleanSyncValue(() -> base.mScrewdriver, val -> base.mScrewdriver = val));
         syncManager
-            .syncValue("softHammer", new BooleanSyncValue(() -> base.mSoftHammer, val -> base.mSoftHammer = val));
+            .syncValue("softMallet", new BooleanSyncValue(() -> base.mSoftMallet, val -> base.mSoftMallet = val));
         syncManager
             .syncValue("hardHammer", new BooleanSyncValue(() -> base.mHardHammer, val -> base.mHardHammer = val));
         syncManager.syncValue(
