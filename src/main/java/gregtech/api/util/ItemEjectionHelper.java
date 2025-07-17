@@ -17,8 +17,6 @@ import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.util.extensions.IteratorExt;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * A helper class that contains the logic for ejecting items from multiblock processing into output busses. This is used
@@ -84,23 +82,20 @@ public class ItemEjectionHelper {
         if (!active)
             throw new IllegalStateException("Cannot eject additional items after committing an ItemEjectionHelper");
 
-        Object2LongOpenHashMap<GTUtility.ItemId> outputMap = GTUtility.getItemStackHistogram(outputs);
-
-        Object2ObjectOpenHashMap<GTUtility.ItemId, ItemParallelData> outputParallels = new Object2ObjectOpenHashMap<>();
-
-        for (var e : Object2LongMaps.fastIterable(outputMap)) {
-            GTUtility.ItemId id = e.getKey();
-            int amount = GTUtility.longToInt(e.getLongValue());
-
-            outputParallels
-                .put(id, new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount));
-        }
+        List<ItemParallelData> outputParallels = new ArrayList<>(outputs.size());
 
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
             Comparator.comparingInt(output -> output.remaining.stackSize));
 
-        outputParallels.forEach((id, parallelData) -> {
-            if (parallelData.remaining.stackSize <= 0) return;
+        for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
+            GTUtility.ItemId id = e.getKey();
+            int amount = GTUtility.longToInt(e.getLongValue());
+
+            ItemParallelData parallelData = new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount);
+
+            outputParallels.add(parallelData);
+
+            if (parallelData.remaining.stackSize <= 0) continue;
 
             List<IOutputBusTransaction> filteredStandard = GTDataUtils.filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
             List<IOutputBusTransaction> filteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> t.isFilteredToItem(parallelData.id));
@@ -117,7 +112,7 @@ public class ItemEjectionHelper {
                 .peekingIterator(IteratorExt.merge(iters.toArray(GTValues.emptyIteratorArray())));
 
             pendingOutputs.add(parallelData);
-        });
+        }
 
         // This grabs the smallest stack in the priority queue and tries to fill one slot in a bus with it, until there
         // are no more items remaining or until all busses cannot accept more items.
@@ -161,7 +156,7 @@ public class ItemEjectionHelper {
             // were ejected.
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
-            for (ItemParallelData parallelData : outputParallels.values()) {
+            for (ItemParallelData parallelData : outputParallels) {
                 int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
 
                 startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
