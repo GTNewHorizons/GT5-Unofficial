@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -65,6 +66,21 @@ public class ItemEjectionHelper {
 
         unfilteredStandard = GTDataUtils.filterList(discreteTransactions, t -> !t.isFiltered());
         unfilteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> !t.isFiltered());
+    }
+
+    /**
+     * Ejects a single stack, removes the ejected items from the stack, and returns the amount of items that were
+     * removed.
+     * @param stack The stack to eject. Ejected items are subtracted from this stack.
+     * @return The number of items that were ejected.
+     */
+    public int ejectStack(ItemStack stack) {
+        List<ItemStack> list = Collections.singletonList(GTUtility.copyAmount(1, stack));
+
+        int ejected = ejectItems(list, stack.stackSize);
+
+        stack.stackSize -= ejected;
+        return ejected;
     }
 
     /**

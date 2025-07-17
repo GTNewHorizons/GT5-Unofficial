@@ -347,11 +347,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
+    public boolean addOutput(ItemStack stack) {
         cachedOutputs.add(
             AEApi.instance()
                 .storage()
-                .createItemStack(aStack));
+                .createItemStack(stack));
         markDirty();
         return true;
     }

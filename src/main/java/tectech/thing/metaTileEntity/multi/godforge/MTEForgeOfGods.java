@@ -110,6 +110,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
@@ -3108,15 +3109,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            while (gravitonShardsAvailable >= 64) {
-                addOutput(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
-                gravitonShardsAvailable -= 64;
-                gravitonShardsSpent += 64;
-            }
-            addOutput(
-                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
-            gravitonShardsSpent += gravitonShardsAvailable;
-            gravitonShardsAvailable = 0;
+            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64);
+
+            shard.stackSize = gravitonShardsAvailable;
+
+            ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+            int ejected = ejectionHelper.ejectStack(shard);
+            ejectionHelper.commit();
+
+            gravitonShardsAvailable -= ejected;
+            gravitonShardsSpent += ejected;
         }
     }
 

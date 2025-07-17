@@ -168,7 +168,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                 Item item = itemStackInBus.getItem();
                 if (itemStackInBus.stackSize != 1 || item == null) continue;
                 if (isItemStackFullyCharged(itemStackInBus) && isItemStackFullyRepaired(itemStackInBus)) {
-                    if (addOutput(itemStackInBus)) {
+                    if (addOutputAtomic(itemStackInBus)) {
                         this.depleteInput(itemStackInBus);
                     }
                 } else {
@@ -194,7 +194,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                 if (itemStackInBus.stackSize != 1 || item == null) continue;
                 if (isItemStackFullyCharged(itemStackInBus) && isItemStackFullyRepaired(itemStackInBus)) {
                     itemProcessed = true;
-                    if (addOutput(itemStackInBus)) {
+                    if (addOutputAtomic(itemStackInBus)) {
                         this.depleteInput(itemStackInBus);
                     }
                 } else {

@@ -1024,7 +1024,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
+                    if (addOutputAtomic(output) || !voidingMode.protectItem) reset();
                     else stuck = true;
                 } else {
                     if (slices[id + 1].start()) reset();
