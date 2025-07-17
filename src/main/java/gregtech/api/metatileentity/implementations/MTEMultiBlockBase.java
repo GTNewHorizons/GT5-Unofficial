@@ -38,7 +38,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -87,7 +86,6 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -98,8 +96,8 @@ import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.StructureErrorSyncer;
+import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.fluid.IFluidStore;
-import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -115,11 +113,13 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
@@ -724,11 +724,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                     if (mOutputItems != null) {
-                        for (ItemStack tStack : mOutputItems) {
-                            if (tStack != null) {
-                                addOutput(tStack);
-                            }
-                        }
+                        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), false);
+                        ejectionHelper.ejectItems(Arrays.asList(mOutputItems), 1);
+                        ejectionHelper.commit();
+
                         mOutputItems = null;
                     }
                     if (mOutputFluids != null) {
@@ -2585,38 +2584,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
-            if (!(tBus instanceof MTEHatchOutputBusME meBus)) {
-                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    final ItemStack stackInSlot = tBus.getStackInSlot(i);
-
-                    if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
-                        // getItemOutputSlots is only used to calculate free room for the purposes of parallels and
-                        // void protection. We can use a fake item stack here without creating weirdness in the output
-                        // bus' actual inventory.
-                        assert lockable.getLockedItem() != null;
-                        ItemStack fakeItemStack = lockable.getLockedItem()
-                            .copy();
-                        fakeItemStack.stackSize = 0;
-                        ret.add(fakeItemStack);
-                    } else {
-                        ret.add(stackInSlot);
-                    }
-                }
-            } else {
-                if (meBus.isLocked() && meBus.canAcceptItem()) {
-                    for (ItemStack stack : meBus.getLockedItems()) {
-                        ItemStack fakeItemStack = stack.copy();
-                        fakeItemStack.stackSize = 65;
-                        ret.add(fakeItemStack);
-                    }
-                }
-            }
-        }
-        return ret;
+    public List<IOutputBus> getOutputBusses() {
+        return GTDataUtils.upcast(mOutputBusses);
     }
 
     @Override

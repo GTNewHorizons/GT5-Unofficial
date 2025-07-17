@@ -3,10 +3,10 @@ package gregtech.api.interfaces.tileentity;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.fluid.IFluidStore;
 
 /**
@@ -45,11 +45,7 @@ public interface IVoidable {
         return supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
     }
 
-    /**
-     * @param toOutput List of items this machine is going to output.
-     * @return List of slots available for item outputs. Null element represents empty slot.
-     */
-    List<ItemStack> getItemOutputSlots(ItemStack[] toOutput);
+    List<IOutputBus> getOutputBusses();
 
     /**
      * @param toOutput List of fluids this machine is going to output.
@@ -74,9 +70,7 @@ public interface IVoidable {
     }
 
     /**
-     * @return If this machine has ability to dump item outputs to ME network.
-     *         This doesn't need to check if it can actually dump to ME,
-     *         as this might be called every tick and cause lag.
+     * Checks if this machine only contains unfiltered ME output busses, in which case we can just assume that we will never void outputs so long as they can accept items.
      */
     boolean canDumpItemToME();
 

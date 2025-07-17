@@ -241,6 +241,10 @@ public class GTUtility {
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
+    public static int longToInt(long number) {
+        return (int) Math.min(Integer.MAX_VALUE, number);
+    }
+
     public static Field getPublicField(Object aObject, String aField) {
         Field rField = null;
         try {
@@ -2011,6 +2015,19 @@ public class GTUtility {
         return fluidStack;
     }
 
+    public static Object2LongOpenHashMap<ItemId> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        Object2LongOpenHashMap<ItemId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+            histogram.addTo(ItemId.create(stack), stack.stackSize);
+        }
+
+        return histogram;
+    }
+
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
         Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
@@ -2772,6 +2789,7 @@ public class GTUtility {
         return copyAmount((int) aAmount, aStack);
     }
 
+    @Contract("_, null -> null")
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -5002,6 +5020,13 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        public boolean matches(ItemStack stack) {
+            if (item() != stack.getItem()) return false;
+            if (metaData() != Items.feather.getDamage(stack)) return false;
+
+            return Objects.equals(nbt(), stack.getTagCompound());
         }
     }
 

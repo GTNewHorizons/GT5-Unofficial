@@ -1,0 +1,45 @@
+package gregtech.api.interfaces;
+
+import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GTUtility;
+
+public interface IOutputBus {
+
+    /** Returns true when this bus can only accept specific items. */
+    boolean isFiltered();
+    /** Returns true when the given item id matches this busses filter exactly. */
+    boolean isFilteredToItem(GTUtility.ItemId id);
+    /** Returns true when this bus could accept a stack that matches the given item id, without accounting for its size. */
+    default boolean canStoreItem(GTUtility.ItemId id) {
+        return !isFiltered() || isFilteredToItem(id);
+    }
+
+    /**
+     * When true, this output bus has discrete slots with limited stack sizes. When false, this bus can accept any
+     * number of stacks so long as they match the filter (if set).
+     */
+    boolean hasDiscreteSlots();
+
+    default boolean storePartial(ItemStack stack) {
+        return storePartial(stack, false);
+    }
+
+    /**
+     * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
+     * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
+     *
+     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this bus will not be modified.
+     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
+     */
+    boolean storePartial(ItemStack stack, boolean simulate);
+
+    /**
+     * Creates a transaction from this output bus. The transaction copies this bus' state (inventory, etc) when
+     * created, and subsequent calls on the transaction modify the copy of this bus. The transaction does not modify
+     * this bus' state unless {@link IOutputBusTransaction#commit()} is called.
+     */
+    IOutputBusTransaction createTransaction();
+}
