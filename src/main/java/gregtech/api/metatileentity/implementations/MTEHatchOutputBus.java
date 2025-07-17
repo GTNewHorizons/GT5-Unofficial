@@ -174,19 +174,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         return DATA_STICK_DATA_TYPE;
     }
 
-    public boolean storePartial(ItemStack aStack) {
-        return storePartial(aStack, false);
-    }
-
-    /**
-     * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
-     * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
-     *
-     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
-     *                 inserted; stackSize will be 0 when everything was inserted).
-     * @param simulate When true this bus will not be modified.
-     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
-     */
+    @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
         if (!simulate) markDirty();
 
@@ -396,7 +384,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
             int maxStackSize = getStackSizeLimit(-1, stack);
 
-            for (int i = availableSlots.nextSetBit(0); i != -1; i = availableSlots.nextSetBit(i)) {
+            for (int i = availableSlots.nextSetBit(0); i >= 0; i = availableSlots.nextSetBit(i + 1)) {
                 if (stack.stackSize <= 0) break;
 
                 @Nullable
@@ -453,6 +441,8 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
             assert mInventory.length == inventory.length;
 
             System.arraycopy(inventory, 0, mInventory, 0, inventory.length);
+
+            MTEHatchOutputBus.this.markDirty();
 
             active = false;
         }
