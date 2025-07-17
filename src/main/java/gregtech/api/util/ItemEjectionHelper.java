@@ -20,9 +20,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * A helper class that contains the logic for ejecting items from multiblock processing into output busses. This is used
- * for item void protection calculates, but it can be used for generic item ejecting as well. This stores output bus
- * transactions and the original busses are only modified if {@link #commit()} is called, beyond which point this helper
- * is 'spent' and cannot be modified further.
+ * for item void protection calculations, but it can be used for generic item ejecting as well. This operates on output
+ * bus transactions. The original busses are only modified if {@link #commit()} is called, beyond which point this
+ * helper is 'spent' and cannot be modified further.
  */
 public class ItemEjectionHelper {
 
@@ -64,7 +64,7 @@ public class ItemEjectionHelper {
     /**
      * Ejects items into the contained output bus transactions, and calculates the number of parallels that were
      * successfully ran.
-     * 
+     *
      * @param outputs           The items to eject per parallels. Total amount of items ejected are multiplied by the
      *                          number of starting parallels. Not modified.
      * @param startingParallels The number of parallels to calculate. This param is O(1) so you can set it to any

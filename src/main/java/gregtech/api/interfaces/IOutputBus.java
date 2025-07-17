@@ -36,7 +36,7 @@ public interface IOutputBus {
      * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
      *                 inserted; stackSize will be 0 when everything was inserted).
      * @param simulate When true this bus will not be modified.
-     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
+     * @return True if the stack was fully inserted into the bus, false otherwise.
      */
     boolean storePartial(ItemStack stack, boolean simulate);
 
