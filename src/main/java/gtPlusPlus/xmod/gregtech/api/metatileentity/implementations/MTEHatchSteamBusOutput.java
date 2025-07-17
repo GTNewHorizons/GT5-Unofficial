@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IOutputBus;

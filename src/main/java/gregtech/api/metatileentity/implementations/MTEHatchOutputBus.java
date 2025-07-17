@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.widgets.PhantomItemButton;
@@ -354,7 +355,8 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     /**
      * Gets the max stack size limit for a slot and a stack.
-     * @param slot The slot, or -1 for a general 'lowest slot' query.
+     * 
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
      * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
      */
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {

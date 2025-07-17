@@ -70,7 +70,8 @@ public interface IVoidable {
     }
 
     /**
-     * Checks if this machine only contains unfiltered ME output busses, in which case we can just assume that we will never void outputs so long as they can accept items.
+     * Checks if this machine only contains unfiltered ME output busses, in which case we can just assume that we will
+     * never void outputs so long as they can accept items.
      */
     boolean canDumpItemToME();
 

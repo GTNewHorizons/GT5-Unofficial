@@ -59,7 +59,9 @@ public class GTDataUtils {
         return output;
     }
 
-    /** Upcasts a list of a concrete type into a list of interfaces since java can't do this implicitly with generics. */
+    /**
+     * Upcasts a list of a concrete type into a list of interfaces since java can't do this implicitly with generics.
+     */
     public static <I, T extends I> ArrayList<I> upcast(List<T> input) {
         ArrayList<I> output = new ArrayList<>(input.size());
 

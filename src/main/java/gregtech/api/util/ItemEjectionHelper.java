@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
+
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -63,13 +64,17 @@ public class ItemEjectionHelper {
     /**
      * Ejects items into the contained output bus transactions, and calculates the number of parallels that were
      * successfully ran.
-     * @param outputs The items to eject per parallels. Total amount of items ejected are multiplied by the number of starting parallels. Not modified.
-     * @param startingParallels The number of parallels to calculate. This param is O(1) so you can set it to any positive integer.
+     * 
+     * @param outputs           The items to eject per parallels. Total amount of items ejected are multiplied by the
+     *                          number of starting parallels. Not modified.
+     * @param startingParallels The number of parallels to calculate. This param is O(1) so you can set it to any
+     *                          positive integer.
      * @return The number of parallels that can be safely ran without voiding items.
      */
     public int ejectItems(List<ItemStack> outputs, int startingParallels) {
         if (outputs == null || outputs.isEmpty()) return 0;
-        if (!active) throw new IllegalStateException("Cannot eject additional items after committing an ItemEjectionHelper");
+        if (!active)
+            throw new IllegalStateException("Cannot eject additional items after committing an ItemEjectionHelper");
 
         Object2LongOpenHashMap<GTUtility.ItemId> outputMap = GTUtility.getItemStackHistogram(outputs);
 
@@ -79,7 +84,8 @@ public class ItemEjectionHelper {
             GTUtility.ItemId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
-            outputParallels.put(id, new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount));
+            outputParallels
+                .put(id, new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount));
         }
 
         // Try to eject stacks into ME output busses.
@@ -117,18 +123,22 @@ public class ItemEjectionHelper {
 
         // We don't have to check ME outputs by this point, because they've already been 'filled' with everything they
         // can hold
-        List<IOutputBusTransaction> unfilteredTransactions = GTDataUtils.filterList(discreteTransactions, b -> !b.isFiltered());
+        List<IOutputBusTransaction> unfilteredTransactions = GTDataUtils
+            .filterList(discreteTransactions, b -> !b.isFiltered());
 
-        PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(Comparator.comparingInt(output -> output.remaining.stackSize));
+        PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
+            Comparator.comparingInt(output -> output.remaining.stackSize));
 
         outputParallels.forEach((id, parallelData) -> {
             // If this item has no remaining stackSize, it's either some weird NC output or it's been assigned to an ME
             // output, in which case we can ignore it for the below output bin packing algorithm entirely.
             if (parallelData.remaining.stackSize <= 0) return;
 
-            List<IOutputBusTransaction> filteredBusses = GTDataUtils.filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> filteredBusses = GTDataUtils
+                .filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
 
-            parallelData.outputs = Iterators.peekingIterator(IteratorExt.merge(filteredBusses.iterator(), unfilteredTransactions.iterator()));
+            parallelData.outputs = Iterators
+                .peekingIterator(IteratorExt.merge(filteredBusses.iterator(), unfilteredTransactions.iterator()));
 
             pendingOutputs.add(parallelData);
         });

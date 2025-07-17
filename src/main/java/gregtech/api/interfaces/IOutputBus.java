@@ -8,9 +8,13 @@ public interface IOutputBus {
 
     /** Returns true when this bus can only accept specific items. */
     boolean isFiltered();
+
     /** Returns true when the given item id matches this busses filter exactly. */
     boolean isFilteredToItem(GTUtility.ItemId id);
-    /** Returns true when this bus could accept a stack that matches the given item id, without accounting for its size. */
+
+    /**
+     * Returns true when this bus could accept a stack that matches the given item id, without accounting for its size.
+     */
     default boolean canStoreItem(GTUtility.ItemId id) {
         return !isFiltered() || isFilteredToItem(id);
     }

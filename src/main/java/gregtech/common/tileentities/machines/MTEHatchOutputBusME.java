@@ -26,6 +26,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
@@ -45,8 +48,6 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -219,7 +220,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             initialStored = getCachedAmount();
             capacity = getCacheCapacity();
             // We don't want to mutate lastInputTick, so we'll keep a simulated version of it.
-            // This transaction assumes that something will be ejected into this bus, so we can just use the current tick if this bus still has space.
+            // This transaction assumes that something will be ejected into this bus, so we can just use the current
+            // tick if this bus still has space.
             tick = initialStored >= capacity ? lastInputTick : tickCounter;
         }
 
@@ -263,9 +265,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         @Override
         public void commit() {
+            // spotless:off
             Object2LongMaps.fastForEach(pendingItems, e -> {
                 itemCache.add(AEItemStack.create(e.getKey().getItemStack()).setStackSize(e.getLongValue()));
             });
+            // spotless:on
 
             MTEHatchOutputBusME.this.markDirty();
 
@@ -517,7 +521,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         for (GTUtility.ItemId stack : this.lockedItems) {
             NBTTagCompound stackTag = new NBTTagCompound();
-            stack.getItemStack().writeToNBT(stackTag);
+            stack.getItemStack()
+                .writeToNBT(stackTag);
             lockedItemsTag.appendTag(stackTag);
         }
 

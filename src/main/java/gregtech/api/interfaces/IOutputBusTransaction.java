@@ -32,7 +32,8 @@ public interface IOutputBusTransaction {
      * Fills one slot with the given item, then subtracts the amount stored from the stack's stackSize. This modifies
      * this transaction's internal state, but does not change the original bus. The time complexity of this should be as
      * close to O(1) as possible, because it's called in an O(n*m) loop.
-     * @param id The stack's item id, to avoid allocations.
+     * 
+     * @param id    The stack's item id, to avoid allocations.
      * @param stack The stack to inject into this bus.
      * @return True when items were injected into a slot, false otherwise.
      */

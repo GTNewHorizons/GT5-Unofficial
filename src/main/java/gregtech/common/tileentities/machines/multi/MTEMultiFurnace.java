@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -221,11 +222,13 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
             int remainingToSmelt = Math.min(toSmelt, item.stackSize);
 
-            int smeltable = ejectionHelper.ejectItems(Collections.singletonList(smeltedOutput.copy()), remainingToSmelt);
+            int smeltable = ejectionHelper
+                .ejectItems(Collections.singletonList(smeltedOutput.copy()), remainingToSmelt);
 
             if (smeltable == 0) continue;
 
-            ItemStack outputStack = smeltedOutputs.computeIfAbsent(GTUtility.ItemId.create(smeltedOutput), x -> GTUtility.copyAmount(0, smeltedOutput));
+            ItemStack outputStack = smeltedOutputs
+                .computeIfAbsent(GTUtility.ItemId.create(smeltedOutput), x -> GTUtility.copyAmount(0, smeltedOutput));
             outputStack.stackSize += smeltedOutput.stackSize * smeltable;
 
             item.stackSize -= smeltable;
@@ -237,7 +240,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mOutputItems = smeltedOutputs.values().toArray(new ItemStack[0]);
+        this.mOutputItems = smeltedOutputs.values()
+            .toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
