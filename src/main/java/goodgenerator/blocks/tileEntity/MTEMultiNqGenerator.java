@@ -391,7 +391,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + "consuming "
                     + EnumChatFormatting.RED
                     + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caseium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
             .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
