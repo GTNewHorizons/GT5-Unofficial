@@ -13,13 +13,6 @@ public interface IOutputBus {
     boolean isFilteredToItem(GTUtility.ItemId id);
 
     /**
-     * Returns true when this bus could accept a stack that matches the given item id, without accounting for its size.
-     */
-    default boolean canStoreItem(GTUtility.ItemId id) {
-        return !isFiltered() || isFilteredToItem(id);
-    }
-
-    /**
      * When true, this output bus has discrete slots with limited stack sizes. When false, this bus can accept any
      * number of stacks so long as they match the filter (if set).
      */

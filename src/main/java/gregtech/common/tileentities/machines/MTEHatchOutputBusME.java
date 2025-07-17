@@ -195,11 +195,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean canStoreItem(GTUtility.ItemId id) {
-        return canAcceptItem() && (lockedItems.isEmpty() || lockedItems.contains(id));
-    }
-
-    @Override
     public boolean hasDiscreteSlots() {
         return false;
     }
@@ -237,11 +232,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             // stupid it's here to make sure nothing breaks.
             // This condition should always return true unless this transaction is kept around for more than one tick.
             return initialStored + currentStored < capacity || tickCounter == tick;
-        }
-
-        @Override
-        public boolean canStoreItem(GTUtility.ItemId id) {
-            return hasAvailableSpace() && (lockedItems.isEmpty() || lockedItems.contains(id));
         }
 
         @Override
