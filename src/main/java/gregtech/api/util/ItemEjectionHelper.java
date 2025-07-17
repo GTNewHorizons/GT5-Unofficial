@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -27,7 +29,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 public class ItemEjectionHelper {
 
     private final boolean itemProtectionEnabled;
-    private final List<IOutputBusTransaction> discreteTransactions, nonDiscreteTransactions;
+    private final List<IOutputBusTransaction> discreteTransactions, nonDiscreteTransactions, unfilteredStandard, unfilteredME;
 
     private boolean active = true;
 
@@ -44,6 +46,9 @@ public class ItemEjectionHelper {
                 nonDiscreteTransactions.add(bus.createTransaction());
             }
         }
+
+        unfilteredStandard = GTDataUtils.filterList(discreteTransactions, t -> !t.isFiltered());
+        unfilteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> !t.isFiltered());
     }
 
     public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems) {
@@ -59,6 +64,9 @@ public class ItemEjectionHelper {
                 nonDiscreteTransactions.add(bus.createTransaction());
             }
         }
+
+        unfilteredStandard = GTDataUtils.filterList(discreteTransactions, t -> !t.isFiltered());
+        unfilteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> !t.isFiltered());
     }
 
     /**
@@ -88,57 +96,25 @@ public class ItemEjectionHelper {
                 .put(id, new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount));
         }
 
-        // Try to eject stacks into ME output busses.
-
-        // First pass: try filtered busses.
-        for (IOutputBusTransaction transaction : nonDiscreteTransactions) {
-            if (!transaction.isFiltered()) continue;
-
-            outputParallels.forEach((id, parallelData) -> {
-                if (parallelData.remaining.stackSize == 0) return;
-
-                if (!transaction.isFilteredToItem(id)) return;
-
-                // If this item can be stored in an ME bus, it should accept the whole stack.
-                // storePartial will decrement the stack size itself, so we won't mis-assign any items here by accident
-                // in case something changes in ME busses.
-                if (transaction.canStoreItem(id)) {
-                    transaction.storePartial(id, parallelData.remaining);
-                }
-            });
-        }
-
-        // Second pass: try unfiltered busses.
-        for (IOutputBusTransaction transaction : nonDiscreteTransactions) {
-            if (transaction.isFiltered()) continue;
-
-            outputParallels.forEach((id, parallelData) -> {
-                if (parallelData.remaining.stackSize == 0) return;
-
-                if (transaction.canStoreItem(id)) {
-                    transaction.storePartial(id, parallelData.remaining);
-                }
-            });
-        }
-
-        // We don't have to check ME outputs by this point, because they've already been 'filled' with everything they
-        // can hold
-        List<IOutputBusTransaction> unfilteredTransactions = GTDataUtils
-            .filterList(discreteTransactions, b -> !b.isFiltered());
-
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
             Comparator.comparingInt(output -> output.remaining.stackSize));
 
         outputParallels.forEach((id, parallelData) -> {
-            // If this item has no remaining stackSize, it's either some weird NC output or it's been assigned to an ME
-            // output, in which case we can ignore it for the below output bin packing algorithm entirely.
             if (parallelData.remaining.stackSize <= 0) return;
 
-            List<IOutputBusTransaction> filteredBusses = GTDataUtils
-                .filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> filteredStandard = GTDataUtils.filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> filteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+
+            List<Iterator<IOutputBusTransaction>> iters = new ArrayList<>(4);
+
+            // Busses are checked in this order
+            if (!filteredStandard.isEmpty()) iters.add(filteredStandard.iterator());
+            if (!filteredME.isEmpty()) iters.add(filteredME.iterator());
+            if (!unfilteredStandard.isEmpty()) iters.add(unfilteredStandard.iterator());
+            if (!unfilteredME.isEmpty()) iters.add(unfilteredME.iterator());
 
             parallelData.outputs = Iterators
-                .peekingIterator(IteratorExt.merge(filteredBusses.iterator(), unfilteredTransactions.iterator()));
+                .peekingIterator(IteratorExt.merge(iters.toArray(GTValues.emptyIteratorArray())));
 
             pendingOutputs.add(parallelData);
         });
