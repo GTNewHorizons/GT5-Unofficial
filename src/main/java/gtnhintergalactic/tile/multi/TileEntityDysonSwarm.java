@@ -441,7 +441,6 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
             .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4)
-            .addMaintenanceHatch("Bottom-Center: Between Control Center and Energy Receiver Modules", 3)
             .addStructureInfo("")
             .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
             .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
