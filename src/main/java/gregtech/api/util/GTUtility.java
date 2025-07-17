@@ -83,12 +83,14 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -507,6 +509,22 @@ public class GTUtility {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(String message) {
+        sendServerMessage(new ChatComponentText(message));
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(IChatComponent chatComponent) {
+        MinecraftServer.getServer()
+            .getConfigurationManager()
+            .sendChatMsg(chatComponent);
     }
 
     public static void checkAvailabilities() {
@@ -2772,6 +2790,7 @@ public class GTUtility {
         return copyAmount((int) aAmount, aStack);
     }
 
+    @Contract("_, null -> null")
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -2782,6 +2801,7 @@ public class GTUtility {
         return rStack;
     }
 
+    @Contract("_, null -> null")
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;

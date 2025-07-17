@@ -95,6 +95,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setInputSeparation(!mte.isInputSeparationEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -110,10 +111,16 @@ public class ForgeOfGodsUI {
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(mte::isInputSeparationEnabled, mte::setInputSeparation),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getInputSeparationButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsInputSeparation,
+            mte::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
         return (ButtonWidget) button;
     }
 
@@ -122,6 +129,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setBatchMode(!mte.isBatchModeEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -135,10 +143,17 @@ public class ForgeOfGodsUI {
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(mte::isBatchModeEnabled, mte::setBatchMode), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getBatchModeButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsBatchMode,
+            mte::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+
         return (ButtonWidget) button;
     }
 
@@ -147,6 +162,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setRecipeLocking(!mte.isRecipeLockingEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -160,10 +176,17 @@ public class ForgeOfGodsUI {
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(mte::isRecipeLockingEnabled, mte::setRecipeLocking), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getRecipeLockingButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsSingleRecipeLocking,
+            mte::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+
         return (ButtonWidget) button;
     }
 
