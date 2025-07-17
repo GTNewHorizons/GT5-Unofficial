@@ -643,7 +643,7 @@ public class GTValues {
     }
 
     public static <T> Iterator<T>[] emptyIteratorArray() {
-        //noinspection unchecked
+        // noinspection unchecked
         return EMPTY_ITERATOR_ARRAY;
     }
 }

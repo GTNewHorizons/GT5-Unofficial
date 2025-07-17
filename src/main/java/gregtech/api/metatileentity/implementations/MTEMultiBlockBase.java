@@ -1575,6 +1575,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     /**
      * Ejects a stack. Items are only ejected when the whole stack can be ejected into output busses.
+     * 
      * @param stack The stack to eject. Ejected items are subtracted from this stack.
      * @return True when the whole stack was ejected, false otherwise.
      */
@@ -1598,6 +1599,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     /**
      * Ejects a stack as well as it can. Items are ejected regardless of whether the whole stack can fit.
+     * 
      * @param stack The stack to eject. Ejected items are subtracted from this stack.
      */
     public void addOutputPartial(ItemStack stack) {
@@ -1610,6 +1612,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     /**
      * Adds items to this multi's output busses. Voids anything that could not fit.
+     * 
      * @param outputItems The items to eject. Not modified.
      * @return True when all items were ejected, false otherwise.
      */

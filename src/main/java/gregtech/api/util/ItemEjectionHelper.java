@@ -28,7 +28,8 @@ import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 public class ItemEjectionHelper {
 
     private final boolean itemProtectionEnabled;
-    private final List<IOutputBusTransaction> discreteTransactions, nonDiscreteTransactions, unfilteredStandard, unfilteredME;
+    private final List<IOutputBusTransaction> discreteTransactions, nonDiscreteTransactions, unfilteredStandard,
+        unfilteredME;
 
     private boolean active = true;
 
@@ -71,6 +72,7 @@ public class ItemEjectionHelper {
     /**
      * Ejects a single stack, removes the ejected items from the stack, and returns the amount of items that were
      * removed.
+     * 
      * @param stack The stack to eject. Ejected items are subtracted from this stack.
      * @return The number of items that were ejected.
      */
@@ -107,14 +109,19 @@ public class ItemEjectionHelper {
             GTUtility.ItemId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
-            ItemParallelData parallelData = new ItemParallelData(id, GTUtility.longToInt(amount * (long) startingParallels), amount);
+            ItemParallelData parallelData = new ItemParallelData(
+                id,
+                GTUtility.longToInt(amount * (long) startingParallels),
+                amount);
 
             outputParallels.add(parallelData);
 
             if (parallelData.remaining.stackSize <= 0) continue;
 
-            List<IOutputBusTransaction> filteredStandard = GTDataUtils.filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
-            List<IOutputBusTransaction> filteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> filteredStandard = GTDataUtils
+                .filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> filteredME = GTDataUtils
+                .filterList(nonDiscreteTransactions, t -> t.isFilteredToItem(parallelData.id));
 
             List<Iterator<IOutputBusTransaction>> iters = new ArrayList<>(4);
 
