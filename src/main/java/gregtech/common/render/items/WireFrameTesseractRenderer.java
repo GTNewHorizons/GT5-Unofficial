@@ -1,4 +1,4 @@
-package gregtech.api.items.item_renderers;
+package gregtech.common.render.items;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
