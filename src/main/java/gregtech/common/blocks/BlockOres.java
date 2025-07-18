@@ -23,9 +23,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class BlockOres extends BlockOresAbstract {
 
@@ -142,7 +144,8 @@ public class BlockOres extends BlockOresAbstract {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (!(player instanceof FakePlayer
+            || (Mods.Thaumcraft.isModLoaded() && player instanceof FakeThaumcraftPlayer))) {
             TileEntityOres.shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);

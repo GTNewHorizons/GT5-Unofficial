@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +29,7 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
@@ -124,7 +126,8 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (!(player instanceof FakePlayer
+            || (Mods.Thaumcraft.isModLoaded() && player instanceof FakeThaumcraftPlayer))) {
             shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);

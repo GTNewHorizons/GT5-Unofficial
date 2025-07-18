@@ -31,8 +31,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
 import bartworks.util.MathUtils;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
@@ -116,7 +118,8 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (!(player instanceof FakePlayer
+            || (Mods.Thaumcraft.isModLoaded() && player instanceof FakeThaumcraftPlayer))) {
             BWTileEntityMetaGeneratedOre.shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);
