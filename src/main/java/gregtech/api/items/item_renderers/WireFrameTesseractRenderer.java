@@ -11,11 +11,11 @@ import gregtech.common.render.GTRenderUtil;
 
 public class WireFrameTesseractRenderer implements IItemRenderer {
 
-    private final float red;
-    private final float green;
-    private final float blue;
+    private final int red;
+    private final int green;
+    private final int blue;
 
-    public WireFrameTesseractRenderer(float red, float green, float blue) {
+    public WireFrameTesseractRenderer(int red, int green, int blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -38,20 +38,26 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         GTRenderUtil.undoStandardItemTransform(type);
 
         // Transform based on context
+        final float lineWidth;
         switch (type) {
             case EQUIPPED:
                 GL11.glTranslatef(0.5f, 0.5f, 0.5f);
             case EQUIPPED_FIRST_PERSON:
                 GL11.glTranslatef(0.8f, 0.6f, 0.6f);
+            case INVENTORY:
+                lineWidth = 2.0F;
+                break;
+            default:
+                lineWidth = 4.0F;
         }
         GL11.glScalef(0.7f, 0.7f, 0.7f);
 
-        drawWireframeTesseract();
+        drawWireframeTesseract(lineWidth);
 
         GL11.glPopMatrix();
     }
 
-    public void drawWireframeTesseract() {
+    private void drawWireframeTesseract(float lineWidth) {
         final long tick = Minecraft.getSystemTime();
         final double angleA = (tick % 8000) / 8000.0 * Math.PI * 2;
         final double angleB = (tick % 6000) / 6000.0 * Math.PI * 2;
@@ -63,13 +69,11 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         final boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(2.0F);
-
-        // Determines tesseract colour
-        GL11.glColor3f(red, green, blue);
+        GL11.glLineWidth(lineWidth);
 
         Tessellator t = Tessellator.instance;
         t.startDrawing(GL11.GL_LINES);
+        t.setColorOpaque(red, green, blue);
 
         // Iterate over 16 vertices
         for (int i = 0; i < 16; i++) {
@@ -123,9 +127,8 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         t.draw();
 
         // Restore GL states
-        GL11.glLineWidth(2.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(1, 1, 1);
+        GL11.glColor3f(1F, 1F, 1F);
         if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
     }
 }
