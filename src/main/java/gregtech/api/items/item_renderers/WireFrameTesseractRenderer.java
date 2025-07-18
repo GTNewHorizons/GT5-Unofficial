@@ -32,11 +32,8 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
 
         // Transform based on context
         switch(type) {
-            case EQUIPPED: GL11.glTranslatef(0.5f, 0.5f, 0.5f); break;
-            case EQUIPPED_FIRST_PERSON: GL11.glTranslatef(0.8f, 0.6f, 0.6f); break;
-            case INVENTORY:
-            case ENTITY: GL11.glTranslatef(0f, 0f, 0f); break;
-            default: break;
+            case EQUIPPED: GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+            case EQUIPPED_FIRST_PERSON: GL11.glTranslatef(0.8f, 0.6f, 0.6f);
         }
         GL11.glScalef(0.7f, 0.7f, 0.7f);
 
