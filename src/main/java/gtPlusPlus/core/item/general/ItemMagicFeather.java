@@ -213,7 +213,8 @@ public class ItemMagicFeather extends CoreItem {
         }
     }
 
-    public class EventHandler{
+    public class EventHandler {
+
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.side != Side.SERVER || event.phase != Phase.END) {
@@ -255,7 +256,8 @@ public class ItemMagicFeather extends CoreItem {
         public void onPlayerDeath(LivingDeathEvent event) {
             if (event.entityLiving == null) return;
             EntityLivingBase aEntity = event.entityLiving;
-            if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote) return;
+            if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote)
+                return;
             ItemMagicFeather.sPlayerData.remove(aPlayer);
             ItemMagicFeather.sBeaconData.remove(aPlayer);
         }
