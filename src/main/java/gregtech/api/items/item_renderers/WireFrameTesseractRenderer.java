@@ -3,6 +3,7 @@ package gregtech.api.items.item_renderers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -59,11 +60,13 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
 
     private void drawWireframeTesseract(float lineWidth) {
         final long tick = Minecraft.getSystemTime();
-        final double angleA = (tick % 8000) / 8000.0 * Math.PI * 2;
-        final double angleB = (tick % 6000) / 6000.0 * Math.PI * 2;
+        final float angleA = (float) ((tick % 8000) / 8000D * Math.PI * 2D);
+        final float angleB = (float) ((tick % 6000) / 6000D * Math.PI * 2D);
 
-        final double cosA = Math.cos(angleA), sinA = Math.sin(angleA);
-        final double cosB = Math.cos(angleB), sinB = Math.sin(angleB);
+        final double cosA = MathHelper.cos(angleA);
+        final double sinA = MathHelper.sin(angleA);
+        final double cosB = MathHelper.cos(angleB);
+        final double sinB = MathHelper.sin(angleB);
 
         // Save GL state
         final boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
