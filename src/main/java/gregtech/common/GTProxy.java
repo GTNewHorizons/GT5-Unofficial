@@ -154,6 +154,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -1101,6 +1102,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
+        MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry

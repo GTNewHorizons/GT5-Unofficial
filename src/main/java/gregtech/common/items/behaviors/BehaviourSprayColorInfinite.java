@@ -100,7 +100,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aY, aZ, aX, side);
+        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aX, aY, aZ, side);
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
         }
@@ -126,7 +126,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             aList.add(String.join(" :: ", statuses));
         }
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.more_info"));
-        aList.add(AuthorQuerns);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.author_byline"));
         return aList;
     }
 
