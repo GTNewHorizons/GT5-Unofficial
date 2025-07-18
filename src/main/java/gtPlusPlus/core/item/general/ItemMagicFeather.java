@@ -213,7 +213,7 @@ public class ItemMagicFeather extends CoreItem {
         }
     }
 
-    public class EventHandler {
+    public static class EventHandler {
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public void onPlayerTick(TickEvent.PlayerTickEvent event) {
