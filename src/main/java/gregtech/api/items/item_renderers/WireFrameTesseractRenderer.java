@@ -1,5 +1,6 @@
 package gregtech.api.items.item_renderers;
 
+import gregtech.common.render.GTRenderUtil;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -27,6 +28,10 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
 
+        // Undo the vanilla pre-transform!
+        GTRenderUtil.undoStandardItemTransform(type);
+
+        // Now your transforms:
         switch(type) {
             case EQUIPPED: GL11.glTranslatef(0.5f, 0.5f, 0.5f); break;
             case EQUIPPED_FIRST_PERSON: GL11.glTranslatef(0.8f, 0.6f, 0.6f); break;
