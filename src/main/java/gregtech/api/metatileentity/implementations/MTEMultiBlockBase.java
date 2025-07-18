@@ -724,10 +724,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                     if (mOutputItems != null) {
-                        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), false);
-                        ejectionHelper.ejectItems(Arrays.asList(mOutputItems), 1);
-                        ejectionHelper.commit();
-
+                        addItemOutputs(mOutputItems);
                         mOutputItems = null;
                     }
                     if (mOutputFluids != null) {
