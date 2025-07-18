@@ -465,6 +465,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.items.item_renderers.WireFrameTesseractRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -1712,7 +1713,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0, 0, 0));
+        ;
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
@@ -1726,7 +1729,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Higher dimensional engineering",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0.6f, 0.8f, 1.0f));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
