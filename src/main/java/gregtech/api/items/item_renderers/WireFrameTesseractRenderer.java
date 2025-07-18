@@ -1,5 +1,6 @@
 package gregtech.api.items.item_renderers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -10,9 +11,9 @@ import gregtech.common.render.GTRenderUtil;
 
 public class WireFrameTesseractRenderer implements IItemRenderer {
 
-    float red;
-    float green;
-    float blue;
+    private final float red;
+    private final float green;
+    private final float blue;
 
     public WireFrameTesseractRenderer(float red, float green, float blue) {
         this.red = red;
@@ -51,55 +52,15 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
     }
 
     public void drawWireframeTesseract() {
-        // 16 vertices of a 4D tesseract
-        double[][] points4d = new double[16][4];
-        for (int i = 0; i < 16; i++) {
-            points4d[i][0] = (i & 1) == 0 ? -1 : 1;
-            points4d[i][1] = (i & 2) == 0 ? -1 : 1;
-            points4d[i][2] = (i & 4) == 0 ? -1 : 1;
-            points4d[i][3] = (i & 8) == 0 ? -1 : 1;
-        }
+        final long tick = Minecraft.getSystemTime();
+        final double angleA = (tick % 8000) / 8000.0 * Math.PI * 2;
+        final double angleB = (tick % 6000) / 6000.0 * Math.PI * 2;
 
-        // Animate with time
-        long tick = System.currentTimeMillis();
-        double angleA = (tick % 8000) / 8000.0 * Math.PI * 2;
-        double angleB = (tick % 6000) / 6000.0 * Math.PI * 2;
+        final double cosA = Math.cos(angleA), sinA = Math.sin(angleA);
+        final double cosB = Math.cos(angleB), sinB = Math.sin(angleB);
 
-        // 4D rotation: rotate in (XW), and (YZ) planes for effect
-        double[][] proj3d = new double[16][3];
-        for (int i = 0; i < 16; i++) {
-            double[] v = points4d[i].clone();
-
-            // Rotate XW plane
-            double x = v[0], w = v[3];
-            v[0] = x * Math.cos(angleA) - w * Math.sin(angleA);
-            v[3] = x * Math.sin(angleA) + w * Math.cos(angleA);
-
-            // Rotate YZ plane
-            double y = v[1], z = v[2];
-            v[1] = y * Math.cos(angleB) - z * Math.sin(angleB);
-            v[2] = y * Math.sin(angleB) + z * Math.cos(angleB);
-
-            // Perspective project to 3D from 4D (simple perspective)
-            double distance = 3.0;
-            double wPersp = 1 / (distance - v[3]);
-            proj3d[i][0] = v[0] * wPersp;
-            proj3d[i][1] = v[1] * wPersp;
-            proj3d[i][2] = v[2] * wPersp;
-        }
-
-        // 32 edges: connect vertices differing by one bit
-        int[][] edges = new int[32][2];
-        int e = 0;
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 4; j++) {
-                int b = i ^ (1 << j);
-                if (i < b) edges[e++] = new int[] { i, b };
-            }
-        }
-
-        // --- BRIGHT COLOR and FULLBRIGHT RENDERING ---
-        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        // Save GL state
+        final boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(2.0F);
@@ -109,10 +70,54 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
 
         Tessellator t = Tessellator.instance;
         t.startDrawing(GL11.GL_LINES);
-        for (int[] edge : edges) {
-            for (int k = 0; k < 2; k++) {
-                double[] v = proj3d[edge[k]];
-                t.addVertex(v[0], v[1], v[2]);
+
+        // Iterate over 16 vertices
+        for (int i = 0; i < 16; i++) {
+            // Original 4D coordinates from bits
+            final double x = (i & 1) == 0 ? -1 : 1;
+            final double y = (i & 2) == 0 ? -1 : 1;
+            final double z = (i & 4) == 0 ? -1 : 1;
+            final double w = (i & 8) == 0 ? -1 : 1;
+
+            // Rotate XW
+            final double xRot = x * cosA - w * sinA;
+            final double wRot = x * sinA + w * cosA;
+
+            // Rotate YZ
+            final double yRot = y * cosB - z * sinB;
+            final double zRot = y * sinB + z * cosB;
+
+            // Perspective divide
+            final double distance = 3.0;
+            final double wp = 1.0 / (distance - wRot);
+            final double px = xRot * wp;
+            final double py = yRot * wp;
+            final double pz = zRot * wp;
+
+            // Emit edges: only connect to higher-index neighbors
+            for (int j = 0; j < 4; j++) {
+                final int neighbor = i ^ (1 << j);
+                if (i < neighbor) {
+                    // Compute neighbor vertex and transformed position
+                    final double xn = (neighbor & 1) == 0 ? -1 : 1;
+                    final double yn = (neighbor & 2) == 0 ? -1 : 1;
+                    final double zn = (neighbor & 4) == 0 ? -1 : 1;
+                    final double wn = (neighbor & 8) == 0 ? -1 : 1;
+
+                    final double xRotN = xn * cosA - wn * sinA;
+                    final double wRotN = xn * sinA + wn * cosA;
+
+                    final double yRotN = yn * cosB - zn * sinB;
+                    final double zRotN = yn * sinB + zn * cosB;
+
+                    final double wpN = 1.0 / (distance - wRotN);
+                    final double pxN = xRotN * wpN;
+                    final double pyN = yRotN * wpN;
+                    final double pzN = zRotN * wpN;
+
+                    t.addVertex(px, py, pz);
+                    t.addVertex(pxN, pyN, pzN);
+                }
             }
         }
         t.draw();
