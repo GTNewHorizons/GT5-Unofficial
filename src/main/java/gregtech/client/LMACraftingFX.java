@@ -38,6 +38,8 @@ public class LMACraftingFX extends EntityFX {
     @Override
     public void renderParticle(Tessellator tessellator, float renderPartialTicks, float rX, float rY, float rZ,
         float rYZ, float rXY) {
+        // TODO why is it not using the tessellator in the args
+        // TODO why does it start by .draw and finish by .startDrawing
         Tessellator.instance.draw();
         GL11.glPushMatrix();
 
