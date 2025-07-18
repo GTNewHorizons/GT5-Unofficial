@@ -28,10 +28,9 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
 
-        // Undo the vanilla pre-transform!
         GTRenderUtil.undoStandardItemTransform(type);
 
-        // Now your transforms:
+        // Transform based on context
         switch(type) {
             case EQUIPPED: GL11.glTranslatef(0.5f, 0.5f, 0.5f); break;
             case EQUIPPED_FIRST_PERSON: GL11.glTranslatef(0.8f, 0.6f, 0.6f); break;
@@ -94,8 +93,13 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
             }
         }
 
+        // --- BRIGHT COLOR and FULLBRIGHT RENDERING ---
+        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(2.0F);
+
+        // Determines tesseract colour
         GL11.glColor3f(red, green, blue);
 
         Tessellator t = Tessellator.instance;
@@ -108,8 +112,10 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         }
         t.draw();
 
-        GL11.glLineWidth(1.0F);
+        // Restore GL states
+        GL11.glLineWidth(2.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(1,1,1);
+        GL11.glColor3f(1, 1, 1);
+        if (lighting) GL11.glEnable(GL11.GL_LIGHTING);
     }
 }

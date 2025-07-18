@@ -1715,7 +1715,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(0, 0, 0));
-        ;
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
@@ -1730,7 +1729,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
-            .setRender(new WireFrameTesseractRenderer(0.6f, 0.8f, 1.0f));
+            .setRender(new WireFrameTesseractRenderer(0.678f, 0.847f, 0.902f));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
