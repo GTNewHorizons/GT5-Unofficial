@@ -465,7 +465,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.items.item_renderers.WireFrameTesseractRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -495,6 +494,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.items.item_renderers.WireFrameTesseractRenderer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
@@ -1706,14 +1706,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
-        ItemList.Tesseract.set(
-            addItem(
-                Tesseract.ID,
-                "Raw Tesseract",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+        ItemList.Tesseract
+            .set(
+                addItem(
+                    Tesseract.ID,
+                    "Raw Tesseract",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(0, 0, 0));
         ItemList.GigaChad.set(
             addItem(
@@ -1721,14 +1722,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Giga Chad Token",
                 "You are worthy",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
-        ItemList.EnergisedTesseract.set(
-            addItem(
-                EnergisedTesseract.ID,
-                "Energised Tesseract",
-                "Higher dimensional engineering",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+        ItemList.EnergisedTesseract
+            .set(
+                addItem(
+                    EnergisedTesseract.ID,
+                    "Energised Tesseract",
+                    "Higher dimensional engineering",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(0.678f, 0.847f, 0.902f));
 
         ItemList.Electric_Piston_LV.set(

@@ -1,10 +1,12 @@
 package gregtech.api.items.item_renderers;
 
-import gregtech.common.render.GTRenderUtil;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.common.render.GTRenderUtil;
 
 public class WireFrameTesseractRenderer implements IItemRenderer {
 
@@ -19,10 +21,14 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
     }
 
     @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) { return true; }
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return true;
+    }
 
     @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) { return true; }
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return true;
+    }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
@@ -31,9 +37,11 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         GTRenderUtil.undoStandardItemTransform(type);
 
         // Transform based on context
-        switch(type) {
-            case EQUIPPED: GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-            case EQUIPPED_FIRST_PERSON: GL11.glTranslatef(0.8f, 0.6f, 0.6f);
+        switch (type) {
+            case EQUIPPED:
+                GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+            case EQUIPPED_FIRST_PERSON:
+                GL11.glTranslatef(0.8f, 0.6f, 0.6f);
         }
         GL11.glScalef(0.7f, 0.7f, 0.7f);
 
@@ -86,7 +94,7 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 4; j++) {
                 int b = i ^ (1 << j);
-                if (i < b) edges[e++] = new int[] {i, b};
+                if (i < b) edges[e++] = new int[] { i, b };
             }
         }
 
