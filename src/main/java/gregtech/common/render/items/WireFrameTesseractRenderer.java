@@ -70,7 +70,9 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
 
         // Save GL state
         final boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        if (lighting) {
+            GL11.glDisable(GL11.GL_LIGHTING);
+        }
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(lineWidth);
 
