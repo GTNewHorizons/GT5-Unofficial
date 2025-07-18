@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -49,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -212,7 +214,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
             log("Adding Steam Input Bus");
             aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput) {
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
             log("Adding Steam Output Bus");
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchInput)
@@ -323,20 +325,18 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public boolean addOutput(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return false;
-        aStack = GTUtility.copy(aStack);
+        aStack = GTUtility.copyOrNull(aStack);
+
+        final List<MTEHatchSteamBusOutput> validBusses = filterValidMTEs(mSteamOutputs);
+        if (dumpItem(validBusses, aStack, true, false)) return true;
+        if (dumpItem(validBusses, aStack, false, false)) return true;
+
         boolean outputSuccess = true;
+        final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-                if (!outputSuccess) {
-                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
-                        if (tHatch.getBaseMetaTileEntity()
-                            .addStackToSlot(i, single)) outputSuccess = true;
-                    }
-                }
-            }
-            for (MTEHatchOutput tHatch : validMTEList(mOutputHatches)) {
+            for (MTEHatchOutput tHatch : filteredHatches) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -367,6 +367,20 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                 ret.add(tBus.getStackInSlot(i));
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public List<ItemStack> getVoidOutputSlots() {
+        List<ItemStack> ret = new ArrayList<>();
+        for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
+            if (tBus instanceof MTEHatchVoidBus vBus && vBus.isLocked()) {
+                for (ItemStack lockedItem : vBus.getLockedItems()) {
+                    if (lockedItem == null) continue;
+                    ret.add(lockedItem.copy());
+                }
             }
         }
         return ret;
