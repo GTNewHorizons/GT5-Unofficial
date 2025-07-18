@@ -5148,4 +5148,10 @@ public class GTUtility {
             return text.substring(0, limit) + "...";
         }
     }
+
+    public static boolean isRealPlayer(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer p && !p.getClass()
+            .getName()
+            .contains("Fake");
+    }
 }
