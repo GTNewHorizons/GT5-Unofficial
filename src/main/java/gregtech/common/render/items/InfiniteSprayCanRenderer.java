@@ -8,16 +8,11 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.render.GTRenderUtil;
 
 public class InfiniteSprayCanRenderer implements IItemRenderer {
-
-    public InfiniteSprayCanRenderer() {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, this);
-    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {

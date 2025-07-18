@@ -28,6 +28,7 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
+import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -51,6 +53,7 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
 public class AssemblerRecipes implements Runnable {
@@ -559,7 +562,7 @@ public class AssemblerRecipes implements Runnable {
         }
 
         // If Cleanroom is enabled, add an assembler recipe
-        if (GTMod.gregtechproxy.mEnableCleanroom) {
+        if (GTMod.proxy.mEnableCleanroom) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),
@@ -3225,11 +3228,13 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                Materials.NaquadahAlloy.getPlates(8),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1))
-            .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.PrismaticNaquadah, 1),
+                Materials.NaquadahAlloy.getPlates(12),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.PrismaticNaquadah, 4))
+            .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS))
             .duration(10 * TICKS)
-            .eut(400000)
+            .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -3362,6 +3367,16 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.Hull_UMV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 4))
+            .itemOutputs(ItemRegistry.energyDistributor[12])
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 getModItem(AppliedEnergistics2.ID, "tile.BlockInterface", 8, 0),
                 getModItem(AppliedEnergistics2.ID, "tile.BlockMolecularAssembler", 8, 0),
                 ItemList.Emitter_IV.get(4L),
@@ -3370,6 +3385,42 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Plastic.getMolten(9 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.GlassQuarkContainment.get(16L),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Flerovium, 64L),
+                ItemList.Field_Generator_UMV.get(1L))
+            .itemOutputs(ItemList.NaniteShieldingGlass.get(4L))
+            .fluidInputs(MaterialsUEVplus.Universium.getMolten(16L))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.MagneticAnchorCasing.get(1L),
+                ItemRefer.Field_Restriction_Coil_T4.get(1),
+                ItemList.NaquadriaSupersolid.get(16L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.PrismaticNaquadah, 2L))
+            .itemOutputs(ItemList.FieldEnergyAbsorberCasing.get(2L))
+            .fluidInputs(MaterialsUEVplus.ExcitedDTSC.getFluid(16_000L))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
+                GTUtility.copyAmount(8, ItemRegistry.energyDistributor[12]),
+                new ItemStack(lscLapotronicEnergyUnit, 1, 5),
+                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 6L),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1L))
+            .itemOutputs(ItemList.LoadbearingDistributionCasing.get(1L))
+            .fluidInputs(Materials.CosmicNeutronium.getPlasma(1L * STACKS))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
     }
 
