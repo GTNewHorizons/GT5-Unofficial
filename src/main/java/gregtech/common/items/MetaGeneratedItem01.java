@@ -1731,7 +1731,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                     new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
-            .setRender(new WireFrameTesseractRenderer(172, 215, 230));
+            .setRender(new WireFrameTesseractRenderer(23, 129, 166));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
