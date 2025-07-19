@@ -175,26 +175,23 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     private ItemStack nextOre() {
         Pair<GTUtility.ItemId, Float>[] internalPair = this.dropMap.getInternalPair();
 
-        while (true) {
-            float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
+        float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
 
-            // Attempt to find the index of the weight
-            int index = Arrays
-                .binarySearch(internalPair, Pair.of(null, randomNumber), Comparator.comparing(Pair::getValue));
+        // Attempt to find the index of the weight
+        int index = Arrays
+            .binarySearch(internalPair, Pair.of(null, randomNumber), Comparator.comparing(Pair::getValue));
 
-            // If randomNumber is present in the array (unlikely)
-            // Fetch the next element since we want to satisfy (randomNumber < Pair::getValue)
-            if (index >= 0) {
-                if (index >= internalPair.length - 1) continue;
-                index++;
-            }
-            // If randomNumber isn't present the index is a 1 index. Shift back to 0 index
-            else {
-                index = -index - 1;
-            }
-            return internalPair[index].getKey()
-                .getItemStack();
+        // If randomNumber is present in the array (unlikely)
+        // Fetch the next element since we want to satisfy (randomNumber < Pair::getValue)
+        if (index >= 0) {
+            index++;
         }
+        // If randomNumber isn't present the index is a 1 index. Shift back to 0 index
+        else {
+            index = -index - 1;
+        }
+        return internalPair[index].getKey()
+            .getItemStack();
     }
 
     /**
