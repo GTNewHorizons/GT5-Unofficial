@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -36,7 +37,7 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         EnumSyncValue<FilterDirectionMode> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,

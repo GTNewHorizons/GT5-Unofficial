@@ -1,6 +1,7 @@
 package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -26,7 +27,7 @@ public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         EnumSyncValue<PlayerDetectionMode> modeSyncValue = new EnumSyncValue<>(
             PlayerDetectionMode.class,
             cover::getPlayerDetectionMode,

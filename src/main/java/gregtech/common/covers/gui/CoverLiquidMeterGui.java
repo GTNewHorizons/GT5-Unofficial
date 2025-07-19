@@ -1,6 +1,7 @@
 package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -18,7 +19,7 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         column.child(
             makeRowLayout().child(positionRow(Rows.makeInvertRedstoneRow(cover)))
                 .child(positionRow(makeFluidThresholdRow(cover))));
