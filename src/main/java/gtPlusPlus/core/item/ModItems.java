@@ -199,8 +199,7 @@ public final class ModItems {
 
     public static void init() {
 
-        Item magicFeather = new ItemMagicFeather();
-        GregtechItemList.MagicFeather.set(magicFeather);
+        GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable(
