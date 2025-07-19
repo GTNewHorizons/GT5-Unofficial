@@ -45,6 +45,7 @@ public class VoidMinerUtility {
 
         private float totalWeight;
         private final Map<GTUtility.ItemId, Float> internalMap;
+        private CumulativeOreDistribution cumulativeOreDistribution;
 
         private final Set<String> voidMinerBlacklistedDrops;
 
@@ -110,6 +111,25 @@ public class VoidMinerUtility {
             totalWeight += weight;
         }
 
+        /**
+         * Method used to pre-compute the cumulative sum for the VM. Stored as internalPair
+         */
+        public void createCumulativeSumPairArr() {
+            float previousWeight = 0.f;
+            float currentWeight;
+            int i = 0;
+
+            cumulativeOreDistribution = new CumulativeOreDistribution(internalMap.size());
+            for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
+
+                currentWeight = entry.getValue();
+
+                cumulativeOreDistribution.insert(entry.getKey(), previousWeight + currentWeight, i);
+                previousWeight += currentWeight;
+                i++;
+            }
+        }
+
         public float getTotalWeight() {
             return totalWeight;
         }
@@ -117,11 +137,38 @@ public class VoidMinerUtility {
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
         }
+
+        public CumulativeOreDistribution getOreDistribution() {
+            return cumulativeOreDistribution;
+        }
+    }
+
+    public static class CumulativeOreDistribution {
+
+        private final GTUtility.ItemId[] ores;
+        private final float[] oreWeights;
+
+        public CumulativeOreDistribution(int size) {
+            ores = new GTUtility.ItemId[size];
+            oreWeights = new float[size];
+        }
+
+        public void insert(GTUtility.ItemId ore, float weight, int index) {
+            ores[index] = ore;
+            oreWeights[index] = weight;
+        }
+
+        public GTUtility.ItemId[] getOres() {
+            return ores;
+        }
+
+        public float[] getOreWeights() {
+            return oreWeights;
+        }
     }
 
     public static final Map<Integer, DropMap> dropMapsByDimId = new HashMap<>();
     public static final Map<String, DropMap> dropMapsByChunkProviderName = new HashMap<>();
-    public static final Map<Integer, DropMap> extraDropsDimMap = new HashMap<>();
 
     // Adds tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic
     // Dust and Circuit Compound MK3 Dust
@@ -154,13 +201,26 @@ public class VoidMinerUtility {
                 dropMapsByChunkProviderName.put(dimDef.getChunkProviderName(), getDropMapSpace(dimDef));
             }
         }
+
+        // Pre-compute the cumulative sum Pairs
+        for (Map.Entry<Integer, DropMap> dropMap : dropMapsByDimId.entrySet()) {
+            dropMap.getValue()
+                .createCumulativeSumPairArr();
+        }
+        for (Map.Entry<String, DropMap> dropMap : dropMapsByChunkProviderName.entrySet()) {
+            dropMap.getValue()
+                .createCumulativeSumPairArr();
+        }
     }
 
     /**
      * Method to generate a DropMap that contains ores of a vanilla GT worldgen
      */
     private static DropMap getDropMapVanilla(int dimId) {
-        DropMap dropMap = new DropMap();
+        if (!dropMapsByDimId.containsKey(dimId)) {
+            dropMapsByDimId.put(dimId, new DropMap());
+        }
+        DropMap dropMap = dropMapsByDimId.get(dimId);
 
         // Ore Veins
         Predicate<WorldgenGTOreLayer> oreLayerPredicate = makeOreLayerPredicate(dimId);
@@ -217,7 +277,11 @@ public class VoidMinerUtility {
      * @param aID dim id of Ross128b or Ross128ba
      */
     private static DropMap getDropMapRoss(int aID) {
-        DropMap dropMap = new DropMap();
+        if (!dropMapsByDimId.containsKey(aID)) {
+            dropMapsByDimId.put(aID, new DropMap());
+        }
+        DropMap dropMap = dropMapsByDimId.get(aID);
+
         for (BWOreLayer oreLayer : BWOreLayer.sList) {
             if (oreLayer.mEnabled && oreLayer.isGenerationAllowed("", aID, 0)) {
                 List<ItemStack> data = oreLayer.getStacks();
@@ -262,10 +326,10 @@ public class VoidMinerUtility {
     }
 
     public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        if (!extraDropsDimMap.containsKey(dimId)) {
-            extraDropsDimMap.put(dimId, new DropMap());
+        if (!dropMapsByDimId.containsKey(dimId)) {
+            dropMapsByDimId.put(dimId, new DropMap());
         }
-        extraDropsDimMap.get(dimId)
+        dropMapsByDimId.get(dimId)
             .addDrop(block, meta, weight);
     }
 

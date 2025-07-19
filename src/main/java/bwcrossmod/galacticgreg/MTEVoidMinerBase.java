@@ -24,8 +24,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -61,7 +61,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
-    private VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
     private int multiplier = 1;
@@ -171,22 +170,23 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        float currentWeight = 0.f;
-        while (true) {
-            float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
-                .entrySet()) {
-                currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
-            }
+        VoidMinerUtility.CumulativeOreDistribution oreDistribution = this.dropMap.getOreDistribution();
+
+        float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
+
+        // Attempt to find the index of the weight
+        int index = Arrays.binarySearch(oreDistribution.getOreWeights(), randomNumber);
+
+        // If randomNumber is present in the array (unlikely)
+        // Fetch the next element since we want to satisfy (randomNumber < getOreWeights()[index])
+        if (index >= 0) {
+            index++;
         }
+        // If randomNumber isn't present the index is a 1 index. Shift back to 0 index
+        else {
+            index = -index - 1;
+        }
+        return oreDistribution.getOres()[index].getItemStack();
     }
 
     /**
@@ -233,17 +233,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     /**
-     * Handles the ores added manually with {@link VoidMinerUtility#addMaterialToDimensionList}
-     *
-     * @param id the specified dim id
-     */
-    private void handleExtraDrops(int id) {
-        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
-            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
-        }
-    }
-
-    /**
      * Gets the DropMap of the dim for the specified dim id
      *
      * @param id the dim number
@@ -269,12 +258,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      */
     private void calculateDropMap() {
         this.dropMap = new VoidMinerUtility.DropMap();
-        this.extraDropMap = new VoidMinerUtility.DropMap();
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         this.handleModDimDef(id);
-        this.handleExtraDrops(id);
-        this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
+        this.totalWeight = dropMap.getTotalWeight();
     }
 
     /**
