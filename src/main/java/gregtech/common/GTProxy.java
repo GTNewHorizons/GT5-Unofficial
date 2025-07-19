@@ -154,6 +154,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -1026,6 +1027,7 @@ public class GTProxy implements IFuelHandler {
             .bus()
             .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
+        MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchToolMode);
