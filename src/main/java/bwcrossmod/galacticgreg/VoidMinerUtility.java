@@ -17,8 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import bartworks.common.configs.Configuration;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
@@ -47,7 +45,7 @@ public class VoidMinerUtility {
 
         private float totalWeight;
         private final Map<GTUtility.ItemId, Float> internalMap;
-        private Pair<GTUtility.ItemId, Float>[] internalPair;
+        private CumulativeOreDistribution cumulativeOreDistribution;
 
         private final Set<String> voidMinerBlacklistedDrops;
 
@@ -121,12 +119,12 @@ public class VoidMinerUtility {
             float currentWeight;
             int i = 0;
 
-            internalPair = new Pair[internalMap.size()];
+            cumulativeOreDistribution = new CumulativeOreDistribution(internalMap.size());
             for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
 
                 currentWeight = entry.getValue();
 
-                internalPair[i] = Pair.of(entry.getKey(), previousWeight + currentWeight);
+                cumulativeOreDistribution.insert(entry.getKey(), previousWeight + currentWeight, i);
                 previousWeight += currentWeight;
                 i++;
             }
@@ -140,8 +138,32 @@ public class VoidMinerUtility {
             return internalMap;
         }
 
-        public Pair<GTUtility.ItemId, Float>[] getInternalPair() {
-            return internalPair;
+        public CumulativeOreDistribution getOreDistribution() {
+            return cumulativeOreDistribution;
+        }
+    }
+
+    public static class CumulativeOreDistribution {
+
+        private final GTUtility.ItemId[] ores;
+        private final float[] oreWeights;
+
+        public CumulativeOreDistribution(int size) {
+            ores = new GTUtility.ItemId[size];
+            oreWeights = new float[size];
+        }
+
+        public void insert(GTUtility.ItemId ore, float weight, int index) {
+            ores[index] = ore;
+            oreWeights[index] = weight;
+        }
+
+        public GTUtility.ItemId[] getOres() {
+            return ores;
+        }
+
+        public float[] getOreWeights() {
+            return oreWeights;
         }
     }
 

@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLO
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +37,6 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
@@ -173,16 +171,15 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        Pair<GTUtility.ItemId, Float>[] internalPair = this.dropMap.getInternalPair();
+        VoidMinerUtility.CumulativeOreDistribution oreDistribution = this.dropMap.getOreDistribution();
 
         float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
 
         // Attempt to find the index of the weight
-        int index = Arrays
-            .binarySearch(internalPair, Pair.of(null, randomNumber), Comparator.comparing(Pair::getValue));
+        int index = Arrays.binarySearch(oreDistribution.getOreWeights(), randomNumber);
 
         // If randomNumber is present in the array (unlikely)
-        // Fetch the next element since we want to satisfy (randomNumber < Pair::getValue)
+        // Fetch the next element since we want to satisfy (randomNumber < getOreWeights()[index])
         if (index >= 0) {
             index++;
         }
@@ -190,8 +187,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         else {
             index = -index - 1;
         }
-        return internalPair[index].getKey()
-            .getItemStack();
+        return oreDistribution.getOres()[index].getItemStack();
     }
 
     /**
