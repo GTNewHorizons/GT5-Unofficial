@@ -132,4 +132,21 @@ public class GTRenderUtil {
             }
         }
     }
+
+    public static void undoStandardItemTransform(IItemRenderer.ItemRenderType type) {
+        if (type == IItemRenderer.ItemRenderType.ENTITY) {
+            if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                GL11.glTranslatef(0.5F, 0.25F, -0.0421875F); // negative of pre-transform
+                // if RenderItem.renderInFrame: rotate -180 (undo the frame rotation)
+                if (RenderItem.renderInFrame) {
+                    GL11.glRotatef(-180.0F, 0.0F, 1.0F, 0.0F);
+                }
+            }
+            if (RenderItem.renderInFrame) {
+                GL11.glTranslatef(0.0F, 0.05F, 0.0F);
+                GL11.glScalef(1F / 1.025641F, 1F / 1.025641F, 1F / 1.025641F);
+            }
+        }
+        // You can add more undo logic for other types if needed (EQUIPPED, etc)
+    }
 }
