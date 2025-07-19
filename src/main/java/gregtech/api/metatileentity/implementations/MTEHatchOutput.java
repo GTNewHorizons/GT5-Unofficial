@@ -41,7 +41,7 @@ import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
 public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
 
-    private String lockedFluidName = null;
+    protected String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     public byte mMode = 0;
 
