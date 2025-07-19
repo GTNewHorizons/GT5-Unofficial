@@ -62,6 +62,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -99,7 +100,7 @@ public class MTEMultiBlockBaseGui {
         setMachineModeIcons();
         registerSyncValues(syncManager);
 
-        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(198, 181 + textBoxToInventoryGap)
+        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(getBasePanelWidth(), getBasePanelHeight())
             .padding(4);
         return panel.child(
             new Column().sizeRel(1)
@@ -109,20 +110,51 @@ public class MTEMultiBlockBaseGui {
                 .child(createInventoryRow(panel, syncManager)));
     }
 
+    protected int getBasePanelWidth() {
+        return 198;
+    }
+
+    protected int getBasePanelHeight() {
+        return 181 + textBoxToInventoryGap;
+    }
+
     private IWidget createTitleTextStyle(String title) {
+        boolean clientSide = GTMod.GT.isClientSide();
+        // workaround is slightly better, pretty meh
+        int addedHeight = 0;
+        int width = clientSide ? IKey.renderer.getMaxWidth(Collections.singletonList(title)) : 180;
+
+        if (width > getBasePanelWidth() - 10) {
+            String[] parts = title.split(" ");
+            int middlepoint = (parts.length / 2);
+            StringBuilder modifiedTitle = new StringBuilder();
+            for (int i = 0; i < parts.length; i++) {
+                parts[i] += " ";
+                if (i == middlepoint) parts[i] += "\n";
+                modifiedTitle.append(parts[i]);
+            }
+            title = modifiedTitle.toString();
+            width = getBasePanelWidth() - 10;
+            addedHeight = clientSide ? (int) (1.3 * IKey.renderer.getFontHeight()) : 20;
+
+        }
+        TextWidget titleTextWidget = IKey.str(title)
+            .asWidget()
+            .alignment(Alignment.TopLeft)
+            .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+            .marginLeft(5)
+            .marginRight(5)
+            .marginTop(5)
+            .marginBottom(1);
+
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
+            .height(18 + addedHeight)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                IKey.str(title)
-                    .asWidget()
-                    .alignment(Alignment.Center)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
+                titleTextWidget.height(8 + addedHeight)
+                    .width(width));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
