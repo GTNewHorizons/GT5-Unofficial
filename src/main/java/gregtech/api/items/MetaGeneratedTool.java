@@ -677,6 +677,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
+        if (aStack.stackSize <= 0) return false;
         Long[] tElectric = getElectricStats(aStack);
         if (tElectric == null) {
             long tNewDamage = getToolDamage(aStack) + aAmount;
