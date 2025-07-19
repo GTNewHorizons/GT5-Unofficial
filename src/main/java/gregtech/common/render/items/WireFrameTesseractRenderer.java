@@ -41,8 +41,6 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
         // Transform based on context
         final float lineWidth;
         switch (type) {
-            case EQUIPPED:
-                GL11.glTranslatef(0.5f, 0.5f, 0.5f);
             case EQUIPPED_FIRST_PERSON:
                 GL11.glTranslatef(0.8f, 0.6f, 0.6f);
             case INVENTORY:
