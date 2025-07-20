@@ -1615,6 +1615,25 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
+GT5U.gui.text.second=second
+GT5U.gui.text.second.plural=seconds
+GT5U.gui.text.minute=minute
+GT5U.gui.text.minute.plural=minutes
+GT5U.gui.text.hour=hour
+GT5U.gui.text.hour.plural=hours
+GT5U.gui.text.day=day
+GT5U.gui.text.day.plural=days
+
+GT5U.gui.text.show-powerfail-layer=Show Powerfails
+GT5U.gui.chat.powerfail=%s at %s in %s powerfailed %s time %s ago
+GT5U.gui.chat.powerfail.plural=%s at %s in %s powerfailed %s times %s ago
+GT5U.gui.chat.powerfail.waypoint=%s (%s time, %s ago)
+GT5U.gui.chat.powerfail.waypoint.plural=%s (%s times, %s ago)
+
+GT5U.gui.chat.powerfail.waypoint.tooltip=Machine: %s\nLocation: %s\nCount: %s\nLast Occurrence: %s\nPress %s to clear
+
+GT5U.gui.chat.powerfail.hint=§7Use /powerfails help for more info.
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.WorldSavedData;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.gson.Gson;
@@ -37,7 +37,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -46,11 +45,15 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPowerfailStatusPacket;
+import gregtech.api.net.GTPacket;
+import gregtech.api.net.GTPacketClearPowerfail;
+import gregtech.api.net.GTPacketOnPowerfail;
+import gregtech.api.net.GTPacketUpdatePowerfails;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.NBTPersist;
+import gregtech.common.config.Gregtech;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -61,10 +64,10 @@ public class GTPowerfailTracker {
     public static final String DATA_NAME = "gt.powerfails";
 
     /** The powerfail state. When a world is loaded, this will never be null. */
-    private SaveData INSTANCE;
+    private SaveData instance;
 
     /** Players with pending powerfail syncs. Used to debounce updates to once per tick. */
-    private final HashSet<UUID> PENDING_UPDATES = new HashSet<>();
+    private final HashSet<UUID> pendingUpdates = new HashSet<>();
 
     /** Something that can own a machine, usually a player but may also be a team. */
     interface MachineOwner {
@@ -73,13 +76,17 @@ public class GTPowerfailTracker {
 
         boolean isOnline();
 
-        void sendMessage(String message);
-
         default List<EntityPlayerMP> getPlayerEntities() {
             return getPlayers().stream()
                 .map(GTPowerfailTracker::getPlayer)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+        }
+
+        default void sendPacket(GTPacket packet) {
+            for (EntityPlayerMP player : getPlayerEntities()) {
+                GTValues.NW.sendToPlayer(packet, player);
+            }
         }
     }
 
@@ -94,15 +101,6 @@ public class GTPowerfailTracker {
         @Override
         public boolean isOnline() {
             return getPlayer(player) != null;
-        }
-
-        @Override
-        public void sendMessage(String message) {
-            EntityPlayerMP playerMP = getPlayer(player);
-
-            if (playerMP == null) return;
-
-            playerMP.addChatMessage(new ChatComponentText(message));
         }
     }
 
@@ -125,13 +123,6 @@ public class GTPowerfailTracker {
         public boolean isOnline() {
             return !getPlayers().isEmpty();
         }
-
-        @Override
-        public void sendMessage(String message) {
-            for (EntityPlayerMP player : getPlayerEntities()) {
-                player.addChatMessage(new ChatComponentText(message));
-            }
-        }
     }
 
     private static class TeamInfo {
@@ -151,11 +142,34 @@ public class GTPowerfailTracker {
         public int count;
         public Date lastOccurrence;
 
+        public Powerfail copy() {
+            Powerfail copy = new Powerfail();
+            copy.dim = dim;
+            copy.x = x;
+            copy.y = y;
+            copy.z = z;
+            copy.mteId = mteId;
+            copy.count = count;
+            copy.lastOccurrence = (Date) lastOccurrence.clone();
+            return copy;
+        }
+
+        public long getCoord() {
+            return CoordinatePacker.pack(x, y, z);
+        }
+
+        public void setCoord(long coord) {
+            x = CoordinatePacker.unpackX(coord);
+            y = CoordinatePacker.unpackY(coord);
+            z = CoordinatePacker.unpackZ(coord);
+        }
+
         public float getSecs() {
             return lastOccurrence == null ? 0 : (new Date().getTime() - lastOccurrence.getTime()) / 1000f;
         }
 
         public void update(IGregTechTileEntity igte) {
+            this.dim = igte.getWorld().provider.dimensionId;
             this.x = igte.getXCoord();
             this.y = igte.getYCoord();
             this.z = igte.getZCoord();
@@ -164,35 +178,61 @@ public class GTPowerfailTracker {
             this.lastOccurrence = new Date();
         }
 
-        @Override
-        public String toString() {
+        public @Nullable IMetaTileEntity getMTE() {
+            return GTDataUtils.getIndexSafe(GregTechAPI.METATILEENTITIES, mteId);
+        }
+
+        public String getMTEName() {
+            IMetaTileEntity imte = getMTE();
+
+            return imte == null ? "<error>" : imte.getLocalName();
+        }
+
+        public String getDurationText() {
             float secs = getSecs();
 
-            String ago;
+            int value;
+            String key;
 
             if (secs > 60f * 60f * 24f) {
-                ago = GTUtility.formatNumbers(secs / 60f / 60f / 24f) + " days";
+                value = (int) (secs / 60f / 60f / 24f);
+                key = "GT5U.gui.text.day";
             } else if (secs > 60f * 60f) {
-                ago = GTUtility.formatNumbers(secs / 60f / 60f) + " hours";
+                value = (int) (secs / 60f / 60f);
+                key = "GT5U.gui.text.hour";
             } else if (secs > 60f) {
-                ago = GTUtility.formatNumbers(secs / 60f) + " minutes";
+                value = (int) (secs / 60f);
+                key = "GT5U.gui.text.minute";
             } else {
-                ago = GTUtility.formatNumbers(secs) + " seconds";
+                value = (int) secs;
+                key = "GT5U.gui.text.second";
             }
 
-            IMetaTileEntity imte = GTDataUtils.getIndexSafe(GregTechAPI.METATILEENTITIES, mteId);
+            if (value != 1) key += ".plural";
 
-            return new GTTextBuilder().setBase(EnumChatFormatting.GRAY)
-                .addName(imte == null ? "<error>" : imte.getLocalName())
-                .addText(" at ")
-                .addCoord(x, y, z)
-                .addText(" in ")
-                .addValue(DimensionManager.getWorld(dim).provider.getDimensionName())
-                .addText(" powerfailed ")
+            return GTUtility.formatNumbers(value) + " " + GTUtility.translate(key);
+        }
+
+        public String toSummary() {
+            String key = count != 1 ? "GT5U.gui.chat.powerfail.waypoint.plural" : "GT5U.gui.chat.powerfail.waypoint";
+
+            return new GTTextBuilder(key).setBase(EnumChatFormatting.GRAY)
+                .addName(getMTEName())
                 .addNumber(count)
-                .addText(count > 1 ? " times " : " time ")
-                .addNumber(ago)
-                .addText(" ago")
+                .addValue(getDurationText())
+                .toString();
+        }
+
+        @Override
+        public String toString() {
+            String key = count != 1 ? "GT5U.gui.chat.powerfail.plural" : "GT5U.gui.chat.powerfail";
+
+            return new GTTextBuilder(key).setBase(EnumChatFormatting.GRAY)
+                .addName(getMTEName())
+                .addCoord(x, y, z)
+                .addValue(GTUtility.getDimensionName(dim))
+                .addNumber(count)
+                .addNumber(getDurationText())
                 .toString();
         }
     }
@@ -206,9 +246,11 @@ public class GTPowerfailTracker {
     }
 
     public void createPowerfailEvent(IGregTechTileEntity igte) {
+        if (!Gregtech.machines.enablePowerfailNotifications) return;
+
         MachineOwner owner = getMachineOwner(igte.getOwnerUuid());
 
-        TeamInfo teamInfo = INSTANCE.powerfailInfo.computeIfAbsent(owner, ignored -> new TeamInfo());
+        TeamInfo teamInfo = instance.powerfailInfo.computeIfAbsent(owner, ignored -> new TeamInfo());
 
         DimensionInfo dimensionInfo = teamInfo.byWorld
             .computeIfAbsent(igte.getWorld().provider.dimensionId, ignored -> new DimensionInfo());
@@ -217,38 +259,49 @@ public class GTPowerfailTracker {
 
         Powerfail powerfail = dimensionInfo.byCoord.computeIfAbsent(coord, ignored -> new Powerfail());
 
-        float secs = powerfail.getSecs();
-
         powerfail.update(igte);
 
-        if ((powerfail.count == 1 || secs > 60) && owner.isOnline()) {
-            owner.sendMessage(powerfail.toString());
+        owner.sendPacket(new GTPacketOnPowerfail(powerfail));
 
-            for (UUID playerId : owner.getPlayers()) {
-                EntityPlayerMP player = getPlayer(playerId);
+        instance.markDirty();
+    }
 
-                // if they aren't online, don't send them a hint message
-                if (player == null) continue;
+    public void removePowerfailEvents(IGregTechTileEntity igte) {
+        removePowerfailEvents(
+            igte.getOwnerUuid(),
+            igte.getWorld().provider.dimensionId,
+            igte.getXCoord(),
+            igte.getYCoord(),
+            igte.getZCoord());
+    }
 
-                if (INSTANCE.playerUsageHints.add(playerId)) {
-                    // spotless:off
-                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails help for more info.");
-                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails clear or /powerfails clear-dim to clear powerfails.");
-                    GTUtility.sendChatToPlayer(player, GRAY + "Use /powerfails show or /powerfails hide to toggle overlay rendering.");
-                    // spotless:on
-                }
-            }
+    public void removePowerfailEvents(UUID ownerId, int worldId, int x, int y, int z) {
+        MachineOwner owner = getMachineOwner(ownerId);
+
+        TeamInfo teamInfo = instance.powerfailInfo.get(owner);
+
+        if (teamInfo == null) return;
+
+        DimensionInfo dimensionInfo = teamInfo.byWorld.get(worldId);
+
+        if (dimensionInfo == null) return;
+
+        long coord = CoordinatePacker.pack(x, y, z);
+
+        Powerfail p = dimensionInfo.byCoord.remove(coord);
+
+        if (p != null) {
+            owner.sendPacket(new GTPacketClearPowerfail(p));
+
+            instance.markDirty();
         }
-
-        PENDING_UPDATES.addAll(owner.getPlayers());
-        INSTANCE.markDirty();
     }
 
     public List<Powerfail> getPowerfails(UUID player, OptionalInt inDim) {
         MachineOwner owner = getMachineOwner(player);
 
         // spotless:off
-        return GTDataUtils.ofNullableStream(INSTANCE.powerfailInfo.get(owner))
+        return GTDataUtils.ofNullableStream(instance.powerfailInfo.get(owner))
             .flatMap(team -> inDim.isPresent() ? GTDataUtils.ofNullableStream(team.byWorld.get(inDim.getAsInt())) : team.byWorld.values().stream())
             .flatMap(dim -> dim.byCoord.values().stream())
             .collect(Collectors.toList());
@@ -260,7 +313,7 @@ public class GTPowerfailTracker {
             player.getGameProfile()
                 .getId());
 
-        TeamInfo teamInfo = INSTANCE.powerfailInfo.get(owner);
+        TeamInfo teamInfo = instance.powerfailInfo.get(owner);
 
         if (teamInfo == null) return;
 
@@ -270,17 +323,14 @@ public class GTPowerfailTracker {
             teamInfo.byWorld.clear();
         }
 
-        PENDING_UPDATES.addAll(owner.getPlayers());
-        INSTANCE.markDirty();
+        pendingUpdates.addAll(owner.getPlayers());
+        instance.markDirty();
     }
 
     public void sendPlayerPowerfailStatus(EntityPlayerMP player) {
-        GTPowerfailStatusPacket packet = GTPowerfailStatusPacket.set(
-            player.dimension,
-            getPowerfails(
-                player.getGameProfile()
-                    .getId(),
-                OptionalInt.of(player.dimension)));
+        List<Powerfail> powerfails = getPowerfails(player.getGameProfile().getId(), OptionalInt.of(player.dimension));
+
+        GTPacketUpdatePowerfails packet = new GTPacketUpdatePowerfails(player.dimension, powerfails);
 
         GTValues.NW.sendToPlayer(packet, player);
     }
@@ -322,7 +372,7 @@ public class GTPowerfailTracker {
     public void onPostTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
-        for (UUID playerId : PENDING_UPDATES) {
+        for (UUID playerId : pendingUpdates) {
             EntityPlayerMP player = getPlayer(playerId);
 
             if (player == null) continue;
@@ -330,7 +380,7 @@ public class GTPowerfailTracker {
             sendPlayerPowerfailStatus(player);
         }
 
-        PENDING_UPDATES.clear();
+        pendingUpdates.clear();
     }
 
     private static EntityPlayerMP getPlayer(UUID id) {
@@ -340,12 +390,12 @@ public class GTPowerfailTracker {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
-            INSTANCE = (SaveData) event.world.mapStorage.loadData(SaveData.class, DATA_NAME);
-            if (INSTANCE == null) {
-                INSTANCE = new SaveData(DATA_NAME);
-                event.world.mapStorage.setData(DATA_NAME, INSTANCE);
+            instance = (SaveData) event.world.mapStorage.loadData(SaveData.class, DATA_NAME);
+            if (instance == null) {
+                instance = new SaveData(DATA_NAME);
+                event.world.mapStorage.setData(DATA_NAME, instance);
             }
-            INSTANCE.markDirty();
+            instance.markDirty();
         }
     }
 
@@ -403,8 +453,6 @@ public class GTPowerfailTracker {
 
         final Map<MachineOwner, TeamInfo> powerfailInfo = new HashMap<>();
 
-        final HashSet<UUID> playerUsageHints = new HashSet<>();
-
         public SaveData(String key) {
             super(key);
         }
@@ -438,20 +486,17 @@ public class GTPowerfailTracker {
         static class State {
 
             final ArrayList<TeamPair> powerfailInfo = new ArrayList<>();
-            final HashSet<UUID> playerUsageHints = new HashSet<>();
         }
 
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             powerfailInfo.clear();
-            PENDING_UPDATES.clear();
+            pendingUpdates.clear();
 
             try {
                 State state = GSON.fromJson(NBTPersist.toJsonObject(tag), State.class);
 
                 if (state != null) {
-                    playerUsageHints.addAll(state.playerUsageHints);
-
                     for (TeamPair pair : state.powerfailInfo) {
                         TeamInfo teamInfo = new TeamInfo();
                         powerfailInfo.put(pair.owner, teamInfo);
@@ -461,8 +506,7 @@ public class GTPowerfailTracker {
                             teamInfo.byWorld.put(dimState.getIntKey(), dimInfo);
 
                             for (Powerfail powerfail : dimState.getValue().powerfails) {
-                                dimInfo.byCoord
-                                    .put(CoordinatePacker.pack(powerfail.x, powerfail.y, powerfail.z), powerfail);
+                                dimInfo.byCoord.put(powerfail.getCoord(), powerfail);
                             }
                         }
                     }
@@ -479,15 +523,13 @@ public class GTPowerfailTracker {
                 .playerEntityList
                 .stream()
                 .map(p -> p.getGameProfile().getId())
-                    .forEach(PENDING_UPDATES::add);
+                    .forEach(pendingUpdates::add);
             // spotless:on
         }
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
             State state = new State();
-
-            state.playerUsageHints.addAll(playerUsageHints);
 
             powerfailInfo.forEach((machineOwner, teamInfo) -> {
                 TeamState teamState = new TeamState();

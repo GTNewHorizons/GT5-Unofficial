@@ -17,8 +17,6 @@ public class GTPowerfailCommandClient extends GTPowerfailCommand {
             return;
         }
 
-        sender.addChatMessage(new ChatComponentText("client."));
-
         if (args.length < 1) {
             sendHelpMessage(sender);
             return;

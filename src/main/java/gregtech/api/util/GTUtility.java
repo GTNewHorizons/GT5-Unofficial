@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -98,6 +99,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -121,6 +123,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
+import cofh.api.transport.IItemDuct;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -130,10 +135,6 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
-
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -182,6 +183,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
@@ -394,6 +396,17 @@ public class GTUtility {
             }
         }
         return aReplacementObject;
+    }
+
+    public static <T> T getFieldValue(Class<?> clazz, String name) {
+        try {
+            Field field = clazz.getDeclaredField(name);
+            field.setAccessible(true);
+            //noinspection unchecked
+            return (T) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String capitalizeString(String s) {
@@ -3039,6 +3052,32 @@ public class GTUtility {
             return true;
         return !GregTechAPI.sDimensionalList.contains(aDimensionID)
             && DimensionManager.isDimensionRegistered(aDimensionID);
+    }
+
+    private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
+
+    public static void loadDimensionNames() {
+        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
+
+        for (var e : dimensions.entrySet()) {
+            if (DimensionManager.isDimensionRegistered(e.getKey()));
+
+            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
+
+            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
+        }
+    }
+
+    public static String getDimensionName(int dimId) {
+        String name = DIMENSION_NAMES.get(dimId);
+
+        String key = "gtnop.world." + name;
+
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        } else {
+            return name;
+        }
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,

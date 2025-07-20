@@ -13,38 +13,36 @@ import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
 import com.github.bsideup.jabel.Desugar;
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
-import it.unimi.dsi.fastutil.longs.LongList;
+import gregtech.common.data.GTPowerfailTracker;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTPowerfailRenderer {
 
-    private static IIcon POWERFAIL_ICON;
+    public IIcon powerfailIcon;
 
-    /** {packed x,y,z coords for powerfailed machines} */
-    public LongList POWERFAILS;
+    public final Long2ObjectOpenHashMap<GTPowerfailTracker.Powerfail> powerfails = new Long2ObjectOpenHashMap<>();
 
     @SubscribeEvent
     public void onTextureDiscover(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 0) { // blocks
-            POWERFAIL_ICON = event.map.registerIcon(Mods.GregTech.getResourcePath("icons", "powerfail"));
+            powerfailIcon = event.map.registerIcon(Mods.GregTech.getResourcePath("icons", "powerfail"));
         }
     }
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         if (event.world.isRemote) {
-            POWERFAILS = null;
+            powerfails.clear();
         }
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if (POWERFAILS == null || POWERFAILS.isEmpty()) return;
+        if (powerfails.isEmpty()) return;
         if (!Client.render.renderPowerfailNotifications) return;
 
         Tessellator tessellator = Tessellator.instance;
@@ -59,40 +57,48 @@ public class GTPowerfailRenderer {
 
         tessellator.setTranslation(0, 0, 0);
 
-        for (long coord : POWERFAILS) {
-            double x = CoordinatePacker.unpackX(coord) + 0.5d;
-            double y = CoordinatePacker.unpackY(coord) + 0.5d;
-            double z = CoordinatePacker.unpackZ(coord) + 0.5d;
+        long now = System.currentTimeMillis();
 
-            double dist = GTUtility.clamp(pos.distance(x, y, z), 0, 32);
+        for (GTPowerfailTracker.Powerfail p : powerfails.values()) {
+            if (Client.render.powerfailNotificationTimeout > 0) {
+                long elapsed = now - p.lastOccurrence.getTime();
+
+                if (elapsed > Client.render.powerfailNotificationTimeout * 1000L) continue;
+            }
+
+            double x = p.x + 0.5d;
+            double y = p.y + 0.5d;
+            double z = p.z + 0.5d;
+
+            double dist = pos.distance(x, y, z);
 
             if (dist < 4 || dist > 512) continue;
 
             double size = dist * 0.25;
 
-            if (dist < 8d) {
+            if (dist < 16d) {
                 // Fade to zero when the player is less than 4 blocks away
-                size *= GTUtility.linearCurve(dist, 4d, 0d, 8d, 1d);
+                size *= GTUtility.linearCurve(dist, 8d, 0d, 16d, 1d);
             }
 
-            if (dist > 96) {
-                // Fade to 25% when the player is more than 128 blocks away
-                size *= GTUtility.linearCurve(dist, 96, 1d, 128, 0.25d);
+            if (dist > 48) {
+                // Fade to 25% when the player is more than 64 blocks away
+                size *= GTUtility.linearCurve(dist, 48d, 1d, 64d, 0.25d);
             }
 
             Plane plane = Plane.lookingAt(temp.set(x, y, z), pos);
 
             plane.get(0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, POWERFAIL_ICON.getMaxU(), POWERFAIL_ICON.getMaxV());
+            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMaxV());
 
             plane.get(0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, POWERFAIL_ICON.getMaxU(), POWERFAIL_ICON.getMinV());
+            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMinV());
 
             plane.get(-0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, POWERFAIL_ICON.getMinU(), POWERFAIL_ICON.getMinV());
+            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMinV());
 
             plane.get(-0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, POWERFAIL_ICON.getMinU(), POWERFAIL_ICON.getMaxV());
+            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMaxV());
         }
 
         GL11.glBindTexture(

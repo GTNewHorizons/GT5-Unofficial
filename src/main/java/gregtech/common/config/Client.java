@@ -30,6 +30,9 @@ public class Client {
     @Config.Comment("NEI section")
     public static final NEI nei = new NEI();
 
+    @Config.Comment("Chat message section")
+    public static final Chat chat = new Chat();
+
     public static void save() {
         ConfigurationManager.save(Client.class);
     }
@@ -184,8 +187,13 @@ public class Client {
         public boolean renderMagLevTethers;
 
         @Config.DefaultBoolean(true)
-        @Config.Name("Render powerfail notifications")
+        @Config.Name("Render Powerfail Notifications")
         public boolean renderPowerfailNotifications;
+
+        @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
+        @Config.DefaultInt(0)
+        @Config.Name("Powerfail Notification Timeout")
+        public int powerfailNotificationTimeout;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -264,5 +272,19 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.chat")
+    public static class Chat {
+
+        @Config.Comment("Displays a chat message when a powerfail occurs.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Notifications")
+        public boolean powerfailNotifications;
+
+        @Config.Comment("Prints the powerfail command help text when receiving a powerfail. The message is only printed once per game session.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Help Text")
+        public boolean printPowerfailHelpText;
     }
 }

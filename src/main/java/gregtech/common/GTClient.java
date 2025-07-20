@@ -41,10 +41,11 @@ import org.lwjgl.input.Keyboard;
 
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
-
+import com.gtnewhorizons.navigator.api.NavigatorApi;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -59,6 +60,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -107,6 +109,7 @@ import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.crossmod.navigator.PowerfailLayerManager;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
@@ -277,6 +280,15 @@ public class GTClient extends GTProxy {
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
+
+        if (Mods.Navigator.isModLoaded()) {
+            registerMapLayers();
+        }
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.NAVIGATOR)
+    private void registerMapLayers() {
+        NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
     }
 
     @Override

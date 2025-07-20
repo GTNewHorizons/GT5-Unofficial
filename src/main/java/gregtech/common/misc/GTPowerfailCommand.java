@@ -82,8 +82,6 @@ public class GTPowerfailCommand extends GTBaseCommand {
             return;
         }
 
-        sender.addChatMessage(new ChatComponentText("server."));
-
         if (args.length < 1) {
             sendHelpMessage(sender);
             return;
@@ -124,6 +122,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
                     // poor bastard :kekw:
 
                     for (GTPowerfailTracker.Powerfail powerfail : powerfails.subList(0, 25)) {
+                        // I have no idea how to localize this without a ton of work, people will just have to suck it
+                        // up :caught:
                         sendChatToPlayer(sender, "- " + powerfail.toString());
                     }
 
