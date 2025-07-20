@@ -409,38 +409,8 @@ public class Material {
             if (rgba == null) {
                 if (!vMaterialInput.isEmpty()) {
 
-                    try {
-                        Short[] mMixedRGB = new Short[3];
-                        ArrayList<Material> mMaterialSet = MaterialUtils.getCompoundMaterialsRecursively(this);
-                        for (int mnh = 0; mnh < 3; mnh++) {
-                            ArrayList<Short> aDataSet = new ArrayList<>();
-                            // if (u.getState() == MaterialState.ORE || u.getState() == MaterialState.SOLID)
-                            Set<Material> set4 = new HashSet<>(mMaterialSet);
-                            for (Material e : set4) {
-                                aDataSet.add(e.getRGB()[mnh]);
-                            }
+                    this.RGBA = getGBRColorForMat();
 
-                            short aAverage = MathUtils.getShortAverage(aDataSet);
-                            if (aAverage < 0 || aAverage > 255) {
-                                if (aAverage > 255) {
-                                    while (aAverage > 255) {
-                                        aAverage = (short) (aAverage / 2);
-                                    }
-                                }
-                                aAverage = (short) Math.max(Math.min(aAverage, 255), 0);
-                            }
-                            mMixedRGB[mnh] = aAverage;
-                        }
-
-                        if (mMixedRGB[0] != null && mMixedRGB[1] != null && mMixedRGB[2] != null) {
-                            this.RGBA = new short[] { mMixedRGB[0], mMixedRGB[1], mMixedRGB[2], 0 };
-                        } else {
-                            this.RGBA = Materials.Steel.mRGBa;
-                        }
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                        this.RGBA = Materials.Steel.mRGBa;
-                    }
                 } else {
                     // Boring Grey Material
 
@@ -569,18 +539,14 @@ public class Material {
                 this.vRadiationLevel = (byte) radiationLevel;
             } else {
                 if (!vMaterialInput.isEmpty()) {
-                    ArrayList<Byte> aDataSet = new ArrayList<>();
-                    for (MaterialStack m : this.vMaterialInput) {
-                        aDataSet.add(m.getStackMaterial().vRadiationLevel);
-                    }
-                    byte aAverage = MathUtils.getByteAverage(aDataSet);
-                    if (aAverage > 0) {
+                    final byte radiation = calculateRadiation();
+                    if (radiation > 0) {
                         Logger.MATERIALS(
                             this.getLocalizedName() + " is radioactive due to trace elements. Level: "
-                                + aAverage
+                                + radiation
                                 + ".");
                         this.isRadioactive = true;
-                        this.vRadiationLevel = aAverage;
+                        this.vRadiationLevel = radiation;
                     } else {
                         Logger.MATERIALS(this.getLocalizedName() + " is not radioactive.");
                         this.isRadioactive = false;
@@ -743,7 +709,6 @@ public class Material {
 
         int aGem = 0;
         int aShiny = 0;
-        TextureSet aSet = null;
 
         // Check Mixture Contents
         for (MaterialStack m : this.getComposites()) {
@@ -1508,71 +1473,124 @@ public class Material {
         return false;
     }
 
-    public final int calculateMeltingPoint() {
+    private short[] getGBRColorForMat() {
         try {
-            ArrayList<Integer> aDataSet = new ArrayList<>();
-            for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.add(
-                    m.getStackMaterial()
-                        .getMeltingPointC());
+            Set<Material> materialSet = new HashSet<>(MaterialUtils.getCompoundMaterialsRecursively(this));
+            final int size = materialSet.size();
+            if (size == 0) {
+                return Materials.Steel.mRGBa;
             }
-            long aAverage = MathUtils.getIntAverage(aDataSet);
-            return MathUtils.safeInt(aAverage);
-        } catch (Throwable r) {
-            r.printStackTrace();
-            return 500;
+            long redSum = 0;
+            long greenSum = 0;
+            long blueSum = 0;
+            for (Material mat : materialSet) {
+                final short[] rgb = mat.getRGB();
+                redSum += rgb[0];
+                greenSum += rgb[1];
+                blueSum += rgb[2];
+            }
+            short avgRed = getAvgColor(redSum, size);
+            short avgGreen = getAvgColor(greenSum, size);
+            short avgBlue = getAvgColor(blueSum, size);
+            if (avgRed != 0 && avgGreen != 0 && avgBlue != 0) {
+                return new short[] { avgRed, avgGreen, avgBlue, 0 };
+            } else {
+                return Materials.Steel.mRGBa;
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+            return Materials.Steel.mRGBa;
         }
     }
 
-    public final int calculateBoilingPoint() {
-        try {
-
-            ArrayList<Integer> aDataSet = new ArrayList<>();
-            for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.add(
-                    m.getStackMaterial()
-                        .getBoilingPointC());
+    private short getAvgColor(long sum, int size) {
+        long avg = sum / size;
+        if (avg < 0 || avg > 255) {
+            while (avg > 255) {
+                avg = avg / 2;
             }
-            long aAverage = MathUtils.getIntAverage(aDataSet);
-            return MathUtils.safeInt(aAverage);
-        } catch (Throwable r) {
-            r.printStackTrace();
-            return 2500;
+            avg = Math.max(avg, 0);
         }
+        return (short) avg;
     }
 
-    public final long calculateProtons() {
-        try {
-
-            ArrayList<Long> aDataSet = new ArrayList<>();
-            for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.add(
-                    m.getStackMaterial()
-                        .getProtons());
-            }
-            long aAverage = MathUtils.getLongAverage(aDataSet);
-            return MathUtils.safeInt(aAverage);
-        } catch (Throwable r) {
-            r.printStackTrace();
-            return 50;
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    private byte calculateRadiation() {
+        ArrayList<MaterialStack> list = this.vMaterialInput;
+        int size = list.size();
+        if (size == 0) {
+            return 0;
         }
+        long sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += list.get(i)
+                .getStackMaterial().vRadiationLevel;
+        }
+        return MathUtils.safeByte(sum / size);
     }
 
-    public final long calculateNeutrons() {
-        try {
-
-            ArrayList<Long> aDataSet = new ArrayList<>();
-            for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.add(
-                    m.getStackMaterial()
-                        .getNeutrons());
-            }
-            long aAverage = MathUtils.getLongAverage(aDataSet);
-            return MathUtils.safeInt(aAverage);
-        } catch (Throwable r) {
-            r.printStackTrace();
-            return 75;
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    private int calculateMeltingPoint() {
+        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        int size = list.size();
+        if (size == 0) {
+            return 0;
         }
+        long sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += list.get(i)
+                .getStackMaterial()
+                .getMeltingPointC();
+        }
+        return MathUtils.safeInt(sum / size);
+    }
+
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    private int calculateBoilingPoint() {
+        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        int size = list.size();
+        if (size == 0) {
+            return 0;
+        }
+        long sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += list.get(i)
+                .getStackMaterial()
+                .getBoilingPointC();
+        }
+        return MathUtils.safeInt(sum / size);
+    }
+
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    private long calculateProtons() {
+        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        int size = list.size();
+        if (size == 0) {
+            return 0;
+        }
+        long sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += list.get(i)
+                .getStackMaterial()
+                .getProtons();
+        }
+        return MathUtils.safeInt(sum / size);
+    }
+
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    private long calculateNeutrons() {
+        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        int size = list.size();
+        if (size == 0) {
+            return 0;
+        }
+        long sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += list.get(i)
+                .getStackMaterial()
+                .getNeutrons();
+        }
+        return MathUtils.safeInt(sum / size);
     }
 
     @Override

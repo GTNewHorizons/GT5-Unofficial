@@ -1,11 +1,9 @@
 package gtPlusPlus.core.util.math;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Random;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 
@@ -242,10 +240,6 @@ public class MathUtils {
         return (byte) clamp_long(number, Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 
-    public static short safeShort(long number) {
-        return (short) clamp_long(number, Short.MIN_VALUE, Short.MAX_VALUE);
-    }
-
     public static int safeInt(long number, int margin) {
         return (int) clamp_long(number, Integer.MIN_VALUE + margin, Integer.MAX_VALUE - margin);
     }
@@ -265,74 +259,6 @@ public class MathUtils {
         return mLargeChanceArray[randInt(0, mLargeChanceArray.length - 1)];
     }
 
-    /*
-     * Averages
-     */
-
-    public static byte getByteAverage(ArrayList<Byte> aDataSet) {
-        byte[] aNewSet = new byte[aDataSet.size()];
-        for (int u = 0; u < aDataSet.size(); u++) {
-            byte b = getSafeByte(aDataSet.get(u));
-            aNewSet[u] = b;
-        }
-        return getByteAverage(aNewSet);
-    }
-
-    public static short getShortAverage(ArrayList<Short> aDataSet) {
-        short[] aNewSet = new short[aDataSet.size()];
-        for (int u = 0; u < aDataSet.size(); u++) {
-            short b = getSafeShort(aDataSet.get(u));
-            aNewSet[u] = b;
-        }
-        return getShortAverage(aNewSet);
-    }
-
-    public static int getIntAverage(ArrayList<Integer> aDataSet) {
-        int[] aNewSet = new int[aDataSet.size()];
-        for (int u = 0; u < aDataSet.size(); u++) {
-            int b = getSafeInt(aDataSet.get(u));
-            aNewSet[u] = b;
-        }
-        return getIntAverage(aNewSet);
-    }
-
-    public static long getLongAverage(ArrayList<Long> aDataSet) {
-        long[] aNewSet = new long[aDataSet.size()];
-        for (int u = 0; u < aDataSet.size(); u++) {
-            long b = getSafeLong(aDataSet.get(u));
-            aNewSet[u] = b;
-        }
-        return getLongAverage(aNewSet);
-    }
-
-    public static byte getByteAverage(byte[] aDataSet) {
-        if (aDataSet.length == 0) {
-            return 0;
-        }
-        int divisor = aDataSet.length;
-        byte total = 0;
-        for (byte i : aDataSet) {
-            total += i;
-        }
-        return safeByte(total / divisor);
-    }
-
-    public static short getShortAverage(short[] aDataSet) {
-        if (aDataSet.length == 0) {
-            return 0;
-        }
-        int divisor = aDataSet.length;
-        Logger.WARNING("Calculating Average Short. Divisor: " + divisor);
-        short total = 0;
-        for (short i : aDataSet) {
-            Logger.WARNING("Adding " + i);
-            total += i;
-        }
-        short result = safeShort((total / divisor));
-        Logger.WARNING("Average: " + result);
-        return result;
-    }
-
     public static int getIntAverage(int[] aDataSet) {
         if (aDataSet.length == 0) {
             return 0;
@@ -345,85 +271,9 @@ public class MathUtils {
         return safeInt(total / divisor);
     }
 
-    public static long getLongAverage(long[] aDataSet) {
-        if (aDataSet.length == 0) {
-            return 0;
-        }
-        int divisor = aDataSet.length;
-        long total = 0;
-        for (long i : aDataSet) {
-            total += i;
-        }
-        return (total / divisor);
-    }
-
     public static int howManyPlaces(int aValueForGen) {
         String a = String.valueOf(aValueForGen);
         return a.length();
-    }
-
-    public static <V> V safeCast(Object aNumberType) {
-        long a1;
-        double a2;
-        a1 = Long.parseLong(aNumberType.toString());
-        a2 = Double.parseDouble(aNumberType.toString());
-
-        if ((aNumberType.getClass() == byte.class) || (aNumberType instanceof Byte)) {
-            if (a1 >= Byte.MIN_VALUE && a1 <= Byte.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Byte s1 = Byte.valueOf(s);
-                return (V) s1;
-            }
-        } else if ((aNumberType.getClass() == short.class) || (aNumberType instanceof Short)) {
-            if (a1 >= Short.MIN_VALUE && a1 <= Short.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Short s1 = Short.valueOf(s);
-                return (V) s1;
-            }
-        } else if ((aNumberType.getClass() == int.class) || (aNumberType instanceof Integer)) {
-            if (a1 >= Integer.MIN_VALUE && a1 <= Integer.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Integer s1 = Integer.valueOf(s);
-                return (V) s1;
-            }
-        } else if ((aNumberType.getClass() == long.class) || (aNumberType instanceof Long)) {
-            if (a1 >= Long.MIN_VALUE && a1 <= Long.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Long s1 = Long.valueOf(s);
-                return (V) s1;
-            }
-        } else if ((aNumberType.getClass() == float.class) || (aNumberType instanceof Float)) {
-            if (a2 >= Float.MIN_VALUE && a2 <= Float.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Float s1 = Float.valueOf(s);
-                return (V) s1;
-            }
-        } else if ((aNumberType.getClass() == double.class) || (aNumberType instanceof Double)) {
-            if (a2 >= Double.MIN_VALUE && a2 <= Double.MAX_VALUE) {
-                String s = String.valueOf(a1);
-                Double s1 = Double.valueOf(s);
-                return (V) s1;
-            }
-        }
-
-        Integer o = 0;
-        return (V) o;
-    }
-
-    public static byte getSafeByte(Byte b) {
-        return safeCast(b);
-    }
-
-    public static short getSafeShort(Short b) {
-        return safeCast(b);
-    }
-
-    public static int getSafeInt(Integer b) {
-        return safeCast(b);
-    }
-
-    public static long getSafeLong(Long b) {
-        return safeCast(b);
     }
 
     public static int safeCast_LongToInt(long l) {
