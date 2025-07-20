@@ -266,7 +266,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         // spotless:off
-        tt.addMachineType("Fluid Extractor")
+        tt.addMachineType("Fluid Extractor, LFE")
             .addInfo(String.format(
                 "%d%% faster than single block machines of the same voltage",
                 (int) Math.round((BASE_SPEED_BONUS - 1) * 100)

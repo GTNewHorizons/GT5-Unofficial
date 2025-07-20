@@ -1049,6 +1049,7 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1280,6 +1281,16 @@ GT5U.machines.hatch_output.lockfluid.empty=None
 GT5U.machines.basic_tank.liquid_amount=Liquid Amount
 GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
 GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
+GT5U.machines.animations.enabled=Animations are now enabled
+GT5U.machines.animations.disabled=Animations are now disabled
+GT5U.machines.nano_forge.t4_info_tooltip=Click for T4 info
+GT5U.machines.nano_forge.t4_info_header=Nano Forge Tier 4
+GT5U.machines.nano_forge.t4_info_text.1=Upgrading the Nano Forge to T4 by placing an eternity nanite into the controller completely transforms the structure and unlocks both a scaling speed boost and parallel for mass nanite creation.
+GT5U.machines.nano_forge.t4_info_text.2=The Nano Forge can be supplied with molten magmatter to increase its maximum parallels. At the start of a recipe cycle ALL supplied magmatter is consumed and converted to parallels via the following formula:
+GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount / (144 / 2^(4 - Recipe Tier))), 1)
+GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed.
+GT5U.machines.nano_forge.t4_info_text.5=A recipe time multiplier is also granted based on maximum parallels via the following formula:
+GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum Parallel)
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -1317,10 +1328,13 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-GT5U.gui.button.input_separation=Input Separation
+GT5U.gui.button.input_separation_on=Input Separation: ON
+GT5U.gui.button.input_separation_off=Input Separation: OFF
 GT5U.gui.button.mode_switch=Mode Switch
-GT5U.gui.button.batch_mode=Batch Mode
-GT5U.gui.button.lock_recipe=Lock Recipe
+GT5U.gui.button.batch_mode_on=Batch Mode: ON
+GT5U.gui.button.batch_mode_off=Batch Mode: OFF
+GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
+GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
@@ -1458,7 +1472,8 @@ GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
-GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.repair_tip=Click with a tool to repair.
+GT5U.gui.text.repair_info=Right-click hatch with Duct Tape\nor a filled Tool Box to repair all issues.
 GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
 GT5U.gui.text.microwave_energy_transmitter.x=Target X
 GT5U.gui.text.microwave_energy_transmitter.y=Target Y
@@ -1485,6 +1500,7 @@ GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
@@ -1665,7 +1681,7 @@ GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cyc
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
 
-gt.behaviour.switch_mode.tooltip=Shift+Rclick to change mode
+gt.behaviour.switch_mode.tooltip=Press [%s] to change mode
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -1809,7 +1825,7 @@ GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
 GT5U.nei.display.duration.seconds=Time: %s seconds
 GT5U.nei.display.duration.ticks=Time: %s ticks
-GT5U.nei.display.total=Total: %s EUs
+GT5U.nei.display.total=Total: %s EU
 GT5U.nei.display.total.steam=Total: %s L of Steam
 GT5U.nei.display.usage=Usage: %s EU/t %s
 GT5U.nei.display.usage.original=Original usage: %s EU/t %s
@@ -2763,6 +2779,7 @@ gt.time.second.singular=second
 gt.time.second.plural=seconds
 
 #Tool modes
+key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
 

@@ -16,14 +16,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -201,12 +199,7 @@ public final class ModItems {
 
     public static void init() {
 
-        Item magicFeather = new ItemMagicFeather();
-        GregtechItemList.MagicFeather.set(magicFeather);
-        MinecraftForge.EVENT_BUS.register(magicFeather);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(magicFeather);
+        GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable(

@@ -659,7 +659,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder, String title) {
-        if (GTMod.gregtechproxy.mTitleTabStyle == 2) {
+        if (GTMod.proxy.mTitleTabStyle == 2) {
             addTitleItemIconStyle(builder, title);
         } else {
             addTitleTextStyle(builder, title);
@@ -684,7 +684,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
             .setTextAlignment(Alignment.CenterLeft)
             .setMaxWidth(titleWidth);
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
+        if (GTMod.proxy.mTitleTabStyle == 1) {
             tab.setDrawable(getGUITextureSet().getTitleTabAngular())
                 .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                 .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
@@ -866,7 +866,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
             @Override
             protected void phantomScroll(int direction) {
-                if (GTMod.gregtechproxy.invertCircuitScrollDirection) {
+                if (GTMod.proxy.invertCircuitScrollDirection) {
                     phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
                 } else phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
             }

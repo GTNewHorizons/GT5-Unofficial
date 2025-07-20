@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.GTMod;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.common.config.Client;
 
 public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
@@ -95,7 +96,16 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        GL11.glRotatef((GTMod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
+        // Accessibility option, to disable spinning rendering.
+        if (Client.render.renderTransMetalFancy) {
+            GL11.glRotatef(
+                (GTMod.clientProxy()
+                    .getAnimationTicks() * 3.5f) % 360,
+                0.3f,
+                0.5f,
+                0.2f);
+        }
+
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {

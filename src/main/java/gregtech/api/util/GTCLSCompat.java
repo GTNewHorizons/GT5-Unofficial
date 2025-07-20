@@ -12,7 +12,7 @@ import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
-import gregtech.common.GTProxy;
+import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
 
 @SuppressWarnings("rawtypes, deprecation")
@@ -81,7 +81,7 @@ public class GTCLSCompat {
         }
     }
 
-    public static void stepMaterialsCLS(Collection<GTProxy.OreDictEventContainer> mEvents,
+    public static void stepMaterialsCLS(Collection<OreDictEventContainer> mEvents,
         ProgressManager.ProgressBar progressBar) {
         MinecraftDisplayer.isRegisteringGTmaterials = true;
         registerAndReportProgression(
@@ -89,7 +89,7 @@ public class GTCLSCompat {
             mEvents,
             progressBar,
             m -> m.mMaterial,
-            GTProxy::registerRecipes);
+            OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
         MinecraftDisplayer.isRegisteringGTmaterials = false;
     }

@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -22,6 +21,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
@@ -124,7 +124,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (GTUtility.isRealPlayer(player)) {
             shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);
@@ -139,7 +139,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         if (shouldSilkTouch) {
             drops.add(new ItemStack(this, 1, metadata));
         } else {
-            switch (GTMod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.proxy.oreDropSystem) {
                 case Item -> drops.add(
                     ItemUtils
                         .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));
