@@ -629,6 +629,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean supportsInputSeparation() {
+        if (mode == null) return false; // required because super calls this before mode is set
         return switch (mode) {
             case CircuitAssemblyLine -> false;
             case CircuitAssembler -> true;
