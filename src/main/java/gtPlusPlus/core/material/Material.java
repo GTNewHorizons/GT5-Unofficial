@@ -25,12 +25,12 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -378,7 +378,7 @@ public class Material {
         mComponentMap.put(unlocalizedName, new HashMap<>());
 
         try {
-            this.unlocalizedName = Utils.sanitizeString(materialName);
+            this.unlocalizedName = StringUtils.sanitizeString(materialName);
             this.localizedName = materialName;
             this.translatedName = GTLanguageManager
                 .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
@@ -698,8 +698,8 @@ public class Material {
         if (!material.vGenerateCells) {
             return;
         }
-        String aName = Utils.sanitizeString(material.unlocalizedName);
-        String aName2 = Utils.sanitizeString(material.unlocalizedName.toLowerCase());
+        String aName = StringUtils.sanitizeString(material.unlocalizedName);
+        String aName2 = StringUtils.sanitizeString(material.unlocalizedName.toLowerCase());
         String aName3 = (material.localizedName == null) ? aName : material.localizedName;
         ItemStack aTestCell1 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + aName, 1);
         ItemStack aTestCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + aName2, 1);
@@ -1119,13 +1119,13 @@ public class Material {
      */
     public final ItemStack getOre(final int stacksize) {
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "ore" + Utils.sanitizeString(this.getUnlocalizedName()),
+            "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
             stacksize);
     }
 
     public final Block getOreBlock(final int stacksize) {
         // Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for
-        // '"+"ore"+Utils.sanitizeString(this.getUnlocalizedName())+"'.");
+        // '"+"ore"+StringUtils.sanitizeString(this.getUnlocalizedName())+"'.");
         try {
             ItemStack a1 = getOre(1);
             Item a2 = a1.getItem();
@@ -1137,7 +1137,7 @@ public class Material {
             Block x = Block.getBlockFromItem(
                 ItemUtils
                     .getItemStackOfAmountFromOreDictNoBroken(
-                        "ore" + Utils.sanitizeString(this.unlocalizedName),
+                        "ore" + StringUtils.sanitizeString(this.unlocalizedName),
                         stacksize)
                     .getItem());
             if (x != null) {
@@ -1369,14 +1369,16 @@ public class Material {
 
         // Clean up Internal Fluid Generation
         final Materials n1 = MaterialUtils
-            .getMaterial(this.getLocalizedName(), Utils.sanitizeString(this.getLocalizedName()));
+            .getMaterial(this.getLocalizedName(), StringUtils.sanitizeString(this.getLocalizedName()));
         final Materials n2 = MaterialUtils
-            .getMaterial(this.getUnlocalizedName(), Utils.sanitizeString(this.getUnlocalizedName()));
+            .getMaterial(this.getUnlocalizedName(), StringUtils.sanitizeString(this.getUnlocalizedName()));
 
         FluidStack f1 = FluidUtils.getWildcardFluidStack(n1, 1);
         FluidStack f2 = FluidUtils.getWildcardFluidStack(n2, 1);
-        FluidStack f3 = FluidUtils.getWildcardFluidStack(Utils.sanitizeStringKeepDashes(this.getUnlocalizedName()), 1);
-        FluidStack f4 = FluidUtils.getWildcardFluidStack(Utils.sanitizeStringKeepDashes(this.getLocalizedName()), 1);
+        FluidStack f3 = FluidUtils
+            .getWildcardFluidStack(StringUtils.sanitizeStringKeepDashes(this.getUnlocalizedName()), 1);
+        FluidStack f4 = FluidUtils
+            .getWildcardFluidStack(StringUtils.sanitizeStringKeepDashes(this.getLocalizedName()), 1);
 
         if (f1 != null) {
             aGTBaseFluid = f1.getFluid();
@@ -1391,10 +1393,10 @@ public class Material {
         ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getUnlocalizedName(), 1);
         ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getLocalizedName(), 1);
         ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "cell" + Utils.sanitizeStringKeepDashes(this.getUnlocalizedName()),
+            "cell" + StringUtils.sanitizeStringKeepDashes(this.getUnlocalizedName()),
             1);
         ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "cell" + Utils.sanitizeStringKeepDashes(this.getLocalizedName()),
+            "cell" + StringUtils.sanitizeStringKeepDashes(this.getLocalizedName()),
             1);
 
         Logger.MATERIALS("Generating our own fluid.");

@@ -19,11 +19,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -76,7 +76,7 @@ public class BlockBaseModular extends BasicBlock {
         GameRegistry.registerBlock(
             this,
             ItemBlockGtBlock.class,
-            Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
+            StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
             GTOreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {

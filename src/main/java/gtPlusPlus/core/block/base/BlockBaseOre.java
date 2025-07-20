@@ -22,11 +22,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
@@ -38,7 +38,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
             blockType,
-            Utils.sanitizeString(material.getUnlocalizedName()),
+            StringUtils.sanitizeString(material.getUnlocalizedName()),
             net.minecraft.block.material.Material.rock,
             Math.min(Math.max(material.vTier, 1), 6));
         int aMaterialTierForMining = Math.min(Math.max(material.vTier, 1), 6);
@@ -48,15 +48,17 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         this.setLightLevel(0.0F);
         this.setHarvestLevel("pickaxe", aMaterialTierForMining);
         this.setStepSound(soundTypeStone);
-        this.setBlockName("Ore" + Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
+        this.setBlockName(
+            "Ore" + StringUtils.sanitizeString(StringUtils.sanitizeString(material.getUnlocalizedName())));
         this.setBlockTextureName("stone");
         try {
             GameRegistry.registerBlock(
                 this,
                 ItemBlockOre.class,
-                Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GTOreDictUnificator
-                .registerOre("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()), new ItemStack(this));
+                StringUtils.sanitizeString("ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName())));
+            GTOreDictUnificator.registerOre(
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
+                new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }

@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -113,9 +114,9 @@ public class BaseOreComponent extends Item {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
                 if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
                 } else {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 }
                 if (this.componentMaterial.isRadioactive) {
                     list.add(
@@ -124,7 +125,7 @@ public class BaseOreComponent extends Item {
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
                 }
             }
         }

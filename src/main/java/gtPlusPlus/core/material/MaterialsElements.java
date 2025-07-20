@@ -2,10 +2,10 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MaterialsElements {

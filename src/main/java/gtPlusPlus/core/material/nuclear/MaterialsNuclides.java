@@ -1,12 +1,12 @@
 package gtPlusPlus.core.material.nuclear;
 
 import gregtech.api.util.CustomGlyphs;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.data.StringUtils;
 
 public final class MaterialsNuclides {
 

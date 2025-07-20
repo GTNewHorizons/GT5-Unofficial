@@ -50,7 +50,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.util.data.StringUtils;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaItemX32;

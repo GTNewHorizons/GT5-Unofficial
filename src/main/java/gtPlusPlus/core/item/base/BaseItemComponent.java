@@ -27,13 +27,13 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
@@ -104,7 +104,7 @@ public class BaseItemComponent extends Item {
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
         GTOreDictUnificator.registerOre(
-            ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
+            ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
             new ItemStack(this));
         registerComponent();
 
@@ -214,9 +214,9 @@ public class BaseItemComponent extends Item {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
                 if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
                 } else {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 }
 
                 if (this.componentMaterial.isRadioactive) {
