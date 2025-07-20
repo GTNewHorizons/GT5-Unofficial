@@ -29,7 +29,7 @@ public interface ITexture {
 
     /**
      * Will initialize the {@link Tessellator} if rendering off-world (Inventory)
-     * 
+     *
      * @param aRenderer The {@link RenderBlocks} Renderer
      * @param aNormalX  The X Normal for current Quad Face
      * @param aNormalY  The Y Normal for current Quad Face
@@ -37,14 +37,15 @@ public interface ITexture {
      */
     default void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         if (aRenderer.useInventoryTint && !isOldTexture()) {
-            Tessellator.instance.startDrawingQuads();
-            Tessellator.instance.setNormal(aNormalX, aNormalY, aNormalZ);
+            final Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            tess.setNormal(aNormalX, aNormalY, aNormalZ);
         }
     }
 
     /**
      * Will run the {@link Tessellator} to draw Quads if rendering off-world (Inventory)
-     * 
+     *
      * @param aRenderer The {@link RenderBlocks} Renderer
      */
     default void draw(RenderBlocks aRenderer) {

@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -32,24 +31,15 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
-    private final Block matBlock;
-    private final int matMeta;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing, Block matBlock, int matMeta) {
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
+        boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
-        this.matBlock = matBlock;
-        this.matMeta = matMeta;
-    }
-
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing) {
-        this(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing, null, 0);
     }
 
     @Override
@@ -58,30 +48,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     @Override
-    public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.setShaderMaterialOverride(matBlock, matMeta);
-        }
-
-        super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
-    }
-
-    @Override
-    public void draw(RenderBlocks aRenderer) {
-        super.draw(aRenderer);
-
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.resetShaderMaterialOverride();
-        }
-    }
-
-    @Override
     public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -107,7 +79,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -133,7 +105,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -159,7 +131,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -185,7 +157,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -211,7 +183,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
+            if (!GTMod.proxy.mRenderGlowTextures) {
                 draw(aRenderer);
                 return;
             }
@@ -392,7 +364,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
         if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
 
-        final EntityPlayer player = GTMod.gregtechproxy.getThePlayer();
+        final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;
 
         final World w = player.getEntityWorld();

@@ -25,15 +25,14 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalHealingDevice";
@@ -315,17 +314,17 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         if (!getShowMessages(baubleStack)) return;
 
         if (hp > 0 || hunger > 0 || saturation > 0)
-            PlayerUtils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
-        if (hp > 0) PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
+        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
 
         if (hunger > 0)
-            PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
 
-        if (saturation > 0) PlayerUtils
-            .messagePlayer((EntityPlayer) arg1, "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
+        if (saturation > 0) GTUtility
+            .sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
 
-        if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
+        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
             (EntityPlayer) arg1,
             "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
                 + " seconds left.");
@@ -389,7 +388,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
-            PlayerUtils.messagePlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
+            GTUtility.sendChatToPlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
         }
         return superStack;
     }

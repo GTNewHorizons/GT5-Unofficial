@@ -22,8 +22,8 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class BaseBauble extends Item implements IBauble {
 
     /**

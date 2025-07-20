@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -41,7 +42,6 @@ public class BaseOreComponent extends Item {
     public final String unlocalName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
 
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
@@ -113,18 +113,10 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
+                if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                } else {
+                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 }
                 if (this.componentMaterial.isRadioactive) {
                     list.add(
@@ -133,7 +125,7 @@ public class BaseOreComponent extends Item {
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
                 }
             }
         }
