@@ -77,9 +77,9 @@ public class RecipeLoaderAgriculturalChem {
         processOreDict("listAllmeatraw", mMeats);
         processOreDict("listAllfishraw", mFish);
         processOreDict("listAllfruit", mFruits);
-        processOreDict("listAllVeggie", mVege);
+        processOreDict("listAllveggie", mVege);
         processOreDict("listAllnut", mNuts);
-        processOreDict("listAllSeed", mSeeds);
+        processOreDict("listAllseed", mSeeds);
         processOreDict("brickPeat", mPeat);
         processOreDict("bone", mBones);
         processOreDict("dustBone", mBoneMeal);
