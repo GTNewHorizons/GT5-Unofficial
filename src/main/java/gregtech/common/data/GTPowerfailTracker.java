@@ -400,6 +400,19 @@ public class GTPowerfailTracker {
                 event.world.mapStorage.setData(DATA_NAME, instance);
             }
             instance.markDirty();
+
+            pendingUpdates.clear();
+
+            // Now that everything is loaded, queue an update for all connected players (there should be none, but let's
+            // be safe)
+            // spotless:off
+            MinecraftServer.getServer()
+                .getConfigurationManager()
+                .playerEntityList
+                .stream()
+                .map(p -> p.getGameProfile().getId())
+                .forEach(pendingUpdates::add);
+            // spotless:on
         }
     }
 
@@ -453,7 +466,7 @@ public class GTPowerfailTracker {
         }
     }
 
-    public class SaveData extends WorldSavedData {
+    public static class SaveData extends WorldSavedData {
 
         final Map<MachineOwner, TeamInfo> powerfailInfo = new HashMap<>();
 
@@ -495,7 +508,6 @@ public class GTPowerfailTracker {
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             powerfailInfo.clear();
-            pendingUpdates.clear();
 
             try {
                 State state = GSON.fromJson(NBTPersist.toJsonObject(tag), State.class);
@@ -518,17 +530,6 @@ public class GTPowerfailTracker {
             } catch (Throwable t) {
                 GTMod.GT_FML_LOGGER.warn("Could not load powerfail data", t);
             }
-
-            // Now that everything is loaded, queue an update for all connected players (there should be none, but let's
-            // be safe)
-            // spotless:off
-            MinecraftServer.getServer()
-                .getConfigurationManager()
-                .playerEntityList
-                .stream()
-                .map(p -> p.getGameProfile().getId())
-                    .forEach(pendingUpdates::add);
-            // spotless:on
         }
 
         @Override
