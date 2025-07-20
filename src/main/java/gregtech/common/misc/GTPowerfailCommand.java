@@ -9,6 +9,7 @@ import java.util.OptionalInt;
 import java.util.UUID;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -40,6 +41,11 @@ public class GTPowerfailCommand extends GTBaseCommand {
     @Override
     public int getRequiredPermissionLevel() {
         return 0;
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return sender instanceof EntityPlayer;
     }
 
     @Override
