@@ -503,13 +503,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
         ItemList.Machine_Multi_Solidifier.set(
-            new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
+            new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Mass Solidifier")
                 .getStackForm(1));
         ItemList.Machine_Multi_Modular_Solidifier.set(
             new MTEModularSolidifier(
                 MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
                 "multimachine.modularsolidifier",
-                "Modular Solidifier").getStackForm(1));
+                "Adaptive Foundry").getStackForm(1));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
