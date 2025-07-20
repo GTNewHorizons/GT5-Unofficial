@@ -14,16 +14,16 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -66,7 +66,7 @@ public class BlockBaseModular extends BasicBlock {
         super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
         this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
         this.setBlockTextureName(GTPlusPlus.ID + ":" + blockType.getTexture());
-        this.blockColour = colour;
+        this.blockColour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.thisBlock = blockType;
         this.thisBlockMaterial = blockMaterialString;
         this.thisBlockType = blockType.name()
@@ -76,7 +76,7 @@ public class BlockBaseModular extends BasicBlock {
         GameRegistry.registerBlock(
             this,
             ItemBlockGtBlock.class,
-            Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
+            StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
             GTOreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {
@@ -213,29 +213,16 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4) {
-
-        if (this.blockColour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
-
         return this.blockColour;
     }
 
     @Override
     public int getRenderColor(final int aMeta) {
-        if (this.blockColour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
-
         return this.blockColour;
     }
 
     @Override
     public int getBlockColor() {
-        if (this.blockColour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
-
         return this.blockColour;
     }
 }
