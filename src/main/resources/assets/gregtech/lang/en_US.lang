@@ -1478,6 +1478,14 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 
+
+GT5U.gui.hoverable.runningfine=Running Fine.
+GT5U.gui.hoverable.incomplete=Structure incomplete.
+GT5U.gui.hoverable.powerloss=Lost Power.
+GT5U.gui.hoverable.norepair=Machine too damaged.
+GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.error=ERROR! REPORT ME!
+
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
