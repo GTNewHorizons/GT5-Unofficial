@@ -137,6 +137,7 @@ public class MathUtils {
     }
 
     // Smooth Rounding Function
+
     /**
      * Returns a double. The returned number is d rounded to the nearest d.01. Supports Doubles.
      *
@@ -147,6 +148,7 @@ public class MathUtils {
     }
 
     // Smooth Rounding Function (Nearest 5)
+
     /**
      * Returns a double. The returned number is d rounded to the nearest d.5. Supports Doubles.
      *
@@ -157,6 +159,7 @@ public class MathUtils {
     }
 
     // Smooth Rounding Function
+
     /**
      * Returns a integer. The returned number is d rounded to the nearest flat integer. Supports Doubles as input.
      *
@@ -167,6 +170,7 @@ public class MathUtils {
     }
 
     // Smooth Rounding Function
+
     /**
      * Returns a long. The returned number is d rounded to the nearest flat long. Supports Doubles as input.
      *
@@ -235,15 +239,15 @@ public class MathUtils {
     }
 
     public static byte safeByte(long number) {
-        return number > Byte.MAX_VALUE ? Byte.MAX_VALUE : (byte) number;
+        return (byte) clamp_long(number, Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 
     public static short safeShort(long number) {
-        return number > Short.MAX_VALUE ? Short.MAX_VALUE : (short) number;
+        return (short) clamp_long(number, Short.MIN_VALUE, Short.MAX_VALUE);
     }
 
     public static int safeInt(long number, int margin) {
-        return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
+        return (int) clamp_long(number, Integer.MIN_VALUE + margin, Integer.MAX_VALUE - margin);
     }
 
     public static int safeInt(long number) {
@@ -422,11 +426,17 @@ public class MathUtils {
         return safeCast(b);
     }
 
-    public static int safeCast_LongToInt(long o) {
-        if (o > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
+    public static int safeCast_LongToInt(long l) {
+        return (int) clamp_long(l, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    public static long clamp_long(long number, long min, long max) {
+        if (number > max) {
+            return max;
+        } else if (number < min) {
+            return min;
         } else {
-            return (int) o;
+            return number;
         }
     }
 
