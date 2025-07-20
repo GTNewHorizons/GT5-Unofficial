@@ -61,7 +61,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
@@ -261,7 +260,7 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
 
             .child(createShutdownDurationWidget())
-            .child(createShutdownReasonWidget())
+            .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
@@ -284,22 +283,19 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    private IWidget createShutdownReasonWidget() {
-        return IKey.dynamic(
-            () -> baseMetaTileEntity.getLastShutDownReason()
-                .getDisplayString())
+    private IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
+        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
+        return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed());
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
 
-    private boolean shouldShutdownReasonBeDisplayed() {
+    private boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
         return base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
-            && GTUtility.isStringValid(
-                baseMetaTileEntity.getLastShutDownReason()
-                    .getDisplayString());
+            && GTUtility.isStringValid(shutdownString);
     }
 
     private IWidget createRecipeResultWidget() {
@@ -733,8 +729,7 @@ public class MTEMultiBlockBaseGui {
 
     protected IWidget createShutdownReasonHoverable(PanelSyncManager syncManager) {
         BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandler("wasShutdown:0");
-        GenericSyncValue<ShutDownReason> shutDownReasonSyncer = (GenericSyncValue<ShutDownReason>) syncManager
-            .getSyncHandler("shutdownReason:0");
+        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager.getSyncHandler("shutdownReasonKey:0");
         return new HoverableIcon(new DynamicDrawable(() -> {
             if (wasShutdownSyncer.getBoolValue()) {
                 return getTextureForReason(shutDownReasonSyncer.getValue());
@@ -838,6 +833,18 @@ public class MTEMultiBlockBaseGui {
                 baseMetaTileEntity::getLastShutDownReason,
                 baseMetaTileEntity::setShutDownReason,
                 new ShutdownReasonAdapter()));
+        syncManager.syncValue(
+            "shutdownDisplayString",
+            new StringSyncValue(
+                () -> base.getBaseMetaTileEntity()
+                    .getLastShutDownReason()
+                    .getDisplayString()));
+        syncManager.syncValue(
+            "shutdownReasonKey",
+            new StringSyncValue(
+                () -> base.getBaseMetaTileEntity()
+                    .getLastShutDownReason()
+                    .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
             new GenericSyncValue<CheckRecipeResult>(
@@ -943,13 +950,12 @@ public class MTEMultiBlockBaseGui {
 
     // Method for registering Icons/Tooltip Text to specific ShutDownReasons. Override for custom icons/conditions.
 
-    protected UITexture getTextureForReason(ShutDownReason reason) {
-        return this.shutdownReasonTextureMap.getOrDefault(reason.getKey(), null);
+    protected UITexture getTextureForReason(String key) {
+        return this.shutdownReasonTextureMap.getOrDefault(key, null);
     }
 
-    protected String getToolTipForReason(ShutDownReason reason) {
-        return this.shutdownReasonTooltipMap.getOrDefault(
-            reason.getKey(),
-            EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
+    protected String getToolTipForReason(String key) {
+        return this.shutdownReasonTooltipMap
+            .getOrDefault(key, EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
     }
 }
