@@ -24,9 +24,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class SaplingBase extends BlockSapling {
 
@@ -41,7 +41,7 @@ public class SaplingBase extends BlockSapling {
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         this.saplingTypes = saplingTypes;
         this.saplingTextures = new IIcon[saplingTypes.length];
-        String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
+        String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized);
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         OreDictionary.registerOre("treeSapling", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
