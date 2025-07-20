@@ -409,7 +409,7 @@ public class Material {
             if (rgba == null) {
                 if (!vMaterialInput.isEmpty()) {
 
-                    this.RGBA = getGBRColorForMat();
+                    this.RGBA = getRGBColorForMat();
 
                 } else {
                     // Boring Grey Material
@@ -1473,7 +1473,7 @@ public class Material {
         return false;
     }
 
-    private short[] getGBRColorForMat() {
+    private short[] getRGBColorForMat() {
         try {
             Set<Material> materialSet = new HashSet<>(MaterialUtils.getCompoundMaterialsRecursively(this));
             final int size = materialSet.size();
