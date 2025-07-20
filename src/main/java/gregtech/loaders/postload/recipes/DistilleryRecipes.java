@@ -97,11 +97,10 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(5))
-            .fluidInputs(Materials.Water.getFluid(5))
-            .fluidOutputs(GTModHandler.getDistilledWater(5))
-            .duration(16 * TICKS)
-            .eut(10)
+            .fluidInputs(Materials.Water.getFluid(10))
+            .fluidOutputs(GTModHandler.getDistilledWater(10))
+            .duration(1 * SECONDS + 5 * TICKS)
+            .eut(8)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
