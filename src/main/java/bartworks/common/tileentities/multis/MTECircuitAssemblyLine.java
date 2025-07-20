@@ -93,6 +93,26 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
     implements ISurvivalConstructable {
 
+    private enum Mode {
+
+        CircuitAssemblyLine(0),
+        CircuitAssembler(1);
+
+        private final int index;
+
+        Mode(int index) {
+            this.index = index;
+        }
+
+        private static Mode fromIndex(int index) {
+            return switch (index) {
+                case 0 -> Mode.CircuitAssemblyLine;
+                case 1 -> Mode.CircuitAssembler;
+                default -> throw new IllegalStateException("Unexpected value: " + index);
+            };
+        }
+    }
+
     private static final int CASING_INDEX = 16;
 
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -106,7 +126,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     protected static final String RUNNING_MODE_KEY = "RunningMode";
 
     private int length;
-    private int mode;
+    private Mode mode = Mode.CircuitAssemblyLine;
     private int glassTier = -1;
     private String imprintedItemName;
     private ItemStack imprintedStack;
@@ -205,6 +225,17 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         return tt;
     }
 
+    private void switchMode() {
+        mode = switch (mode) {
+            case CircuitAssembler -> Mode.CircuitAssemblyLine;
+            case CircuitAssemblyLine -> Mode.CircuitAssembler;
+        };
+    }
+
+    private void setMode(boolean value) {
+        mode = value ? Mode.CircuitAssembler : Mode.CircuitAssemblyLine;
+    }
+
     public String getTypeForDisplay() {
 
         if (!isImprinted()) return "";
@@ -256,7 +287,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         this.type = aNBT.getCompoundTag(IMPRINT_KEY);
         this.imprintedItemName = this.type == null ? ""
             : GTLanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
-        mode = aNBT.getInteger(RUNNING_MODE_KEY);
+        mode = Mode.fromIndex(aNBT.getInteger(RUNNING_MODE_KEY));
         if (aNBT.hasKey(LENGTH_KEY)) {
             length = aNBT.getInteger(LENGTH_KEY);
         }
@@ -272,14 +303,14 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
-        aNBT.setInteger(RUNNING_MODE_KEY, mode);
+        aNBT.setInteger(RUNNING_MODE_KEY, mode.index);
         aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (mode == 0 && !isImprinted() && getBaseMetaTileEntity().isServerSide()) {
+        if (mode == Mode.CircuitAssemblyLine && !isImprinted() && getBaseMetaTileEntity().isServerSide()) {
             ItemStack heldItem = aPlayer.getHeldItem();
             if (imprintMachine(heldItem)) {
                 if (heldItem.stackSize <= 0) {
@@ -295,7 +326,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            this.mode = (this.mode + 1) % 2;
+            switchMode();
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
@@ -303,8 +334,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (this.mode == 0) return BartWorksRecipeMaps.circuitAssemblyLineRecipes;
-        return RecipeMaps.circuitAssemblerRecipes;
+        return switch (this.mode) {
+            case CircuitAssemblyLine -> BartWorksRecipeMaps.circuitAssemblyLineRecipes;
+            case CircuitAssembler -> RecipeMaps.circuitAssemblerRecipes;
+        };
     }
 
     @Nonnull
@@ -321,7 +354,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             @Nonnull
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // limit CA mode recipes to hatch tier - 1
-                if (MTECircuitAssemblyLine.this.mode == 1
+                if (mode == Mode.CircuitAssembler
                     && recipe.mEUt > MTECircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
@@ -333,18 +366,22 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        if (mode == 0) {
-            if (!isImprinted() && !this.imprintMachine(this.getControllerSlot()))
-                return SimpleCheckRecipeResult.ofFailure("no_imprint");
-            if (this.imprintedItemName == null || this.imprintedStack == null) {
-                this.imprintedStack = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
-                this.imprintedStack.setTagCompound(this.type);
-                this.imprintedItemName = GTLanguageManager.getTranslateableItemStackName(this.imprintedStack);
+        switch (mode) {
+            case CircuitAssemblyLine -> {
+                if (!isImprinted() && !this.imprintMachine(this.getControllerSlot()))
+                    return SimpleCheckRecipeResult.ofFailure("no_imprint");
+                if (this.imprintedItemName == null || this.imprintedStack == null) {
+                    this.imprintedStack = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
+                    this.imprintedStack.setTagCompound(this.type);
+                    this.imprintedItemName = GTLanguageManager.getTranslateableItemStackName(this.imprintedStack);
+                }
             }
-        } else if (length < MINIMUM_CIRCUIT_ASSEMBLER_LENGTH) {
-            return SimpleCheckRecipeResult.ofFailure("not_enough_length");
+            case CircuitAssembler -> {
+                if (length < MINIMUM_CIRCUIT_ASSEMBLER_LENGTH) {
+                    return SimpleCheckRecipeResult.ofFailure("not_enough_length");
+                }
+            }
         }
-
         return super.checkProcessing();
     }
 
@@ -356,30 +393,28 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+        return IC2_MACHINES_MAGNETIZER_LOOP;
     }
 
     @Override
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
-        if (mode == 0) {
-            ArrayList<ItemStack> rList = new ArrayList<>();
-            for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
-                tHatch.mRecipeMap = this.getRecipeMap();
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null) {
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
-                        break;
-                    }
+        if (mode == Mode.CircuitAssembler) return super.getStoredInputsForColor(color);
+
+        ArrayList<ItemStack> rList = new ArrayList<>();
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
+            tHatch.mRecipeMap = this.getRecipeMap();
+            for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                .getSizeInventory(); i++) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null) {
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
+                    break;
                 }
             }
-            return rList;
         }
-
-        return super.getStoredInputsForColor(color);
+        return rList;
     }
 
     @Override
@@ -540,7 +575,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         builder
             .widget(new FakeSyncWidget.StringSyncer(() -> this.imprintedItemName, val -> this.imprintedItemName = val));
         builder.widget(
-            new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+            new CycleButtonWidget().setToggle(() -> mode == Mode.CircuitAssembler, this::setMode)
                 .setTextureGetter(
                     state -> state == 1 ? BWUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
                         : BWUITextures.OVERLAY_BUTTON_LINE_MODE)
@@ -572,7 +607,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
-            if (mode == 0) return false;
+            if (mode == Mode.CircuitAssemblyLine) return false;
             inputSeparation = !inputSeparation;
             GTUtility.sendChatToPlayer(
                 aPlayer,
@@ -590,7 +625,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean supportsInputSeparation() {
-        return mode != 0;
+        return switch (mode) {
+            case CircuitAssemblyLine -> false;
+            case CircuitAssembler -> true;
+        };
     }
 
     @Override
@@ -600,7 +638,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean isInputSeparationEnabled() {
-        return mode == 1 && super.isInputSeparationEnabled();
+        return mode == Mode.CircuitAssembler && super.isInputSeparationEnabled();
     }
 
     @Override
@@ -624,12 +662,15 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
-        tag.setInteger(RUNNING_MODE_KEY, mode);
+        tag.setInteger(RUNNING_MODE_KEY, mode.index);
     }
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
-        return mode != 0;
+        return switch (mode) {
+            case CircuitAssemblyLine -> false;
+            case CircuitAssembler -> true;
+        };
     }
 
 }
