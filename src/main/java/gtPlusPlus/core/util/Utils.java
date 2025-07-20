@@ -7,9 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTechAPI;
@@ -33,18 +30,6 @@ public class Utils {
         return FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient();
-    }
-
-    // Send a message to all players on the server
-    public static void sendServerMessage(final String translationKey) {
-        sendServerMessage(new ChatComponentText(translationKey));
-    }
-
-    // Send a message to all players on the server
-    public static void sendServerMessage(final IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
     }
 
     public static int rgbtoHexValue(final int r, final int g, final int b) {

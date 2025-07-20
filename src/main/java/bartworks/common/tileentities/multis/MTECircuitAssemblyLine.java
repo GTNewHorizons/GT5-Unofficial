@@ -101,7 +101,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
-    protected static final String IMPRINT_KEY = "Type";
+    public static final String IMPRINT_KEY = "Type";
     protected static final String LENGTH_KEY = "Length";
     protected static final String RUNNING_MODE_KEY = "RunningMode";
 
