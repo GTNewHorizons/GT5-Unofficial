@@ -37,6 +37,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -328,7 +329,10 @@ public class GTPowerfailTracker {
     }
 
     public void sendPlayerPowerfailStatus(EntityPlayerMP player) {
-        List<Powerfail> powerfails = getPowerfails(player.getGameProfile().getId(), OptionalInt.of(player.dimension));
+        List<Powerfail> powerfails = getPowerfails(
+            player.getGameProfile()
+                .getId(),
+            OptionalInt.of(player.dimension));
 
         GTPacketUpdatePowerfails packet = new GTPacketUpdatePowerfails(player.dimension, powerfails);
 

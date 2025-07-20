@@ -8,6 +8,7 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,13 +60,16 @@ public class GTPacketClearPowerfail extends GTPacket {
         super.setINetHandler(handler);
 
         if (handler instanceof NetHandlerPlayServer server) {
-            sender = server.playerEntity.getGameProfile().getId();
+            sender = server.playerEntity.getGameProfile()
+                .getId();
         }
     }
 
     @Override
     public void process(IBlockAccess blockAccess) {
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
             clearClient();
         } else {
             clearServer();

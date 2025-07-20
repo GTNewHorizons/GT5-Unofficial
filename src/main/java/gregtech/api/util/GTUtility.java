@@ -123,9 +123,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.transport.IItemDuct;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -135,6 +132,10 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
+
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
+import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -402,7 +403,7 @@ public class GTUtility {
         try {
             Field field = clazz.getDeclaredField(name);
             field.setAccessible(true);
-            //noinspection unchecked
+            // noinspection unchecked
             return (T) field.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);

@@ -8,6 +8,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
 import gregtech.common.data.GTPowerfailTracker.Powerfail;
@@ -81,9 +82,9 @@ public class GTPacketUpdatePowerfails extends GTPacket {
         Long2ObjectOpenHashMap<Powerfail> powerfails = GTMod.clientProxy().powerfailRenderer.powerfails;
         powerfails.clear();
 
-        this.powerfails.forEach(p -> {
+        for (Powerfail p : this.powerfails) {
             powerfails.put(p.getCoord(), p);
-        });
+        }
 
         if (Mods.Navigator.isModLoaded()) {
             PowerfailLayerManager.INSTANCE.clearCurrentCache();

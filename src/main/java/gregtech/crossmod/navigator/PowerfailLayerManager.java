@@ -14,6 +14,7 @@ import com.gtnewhorizons.navigator.api.model.layers.UniversalInteractableRendere
 import com.gtnewhorizons.navigator.api.model.locations.ILocationProvider;
 import com.gtnewhorizons.navigator.api.model.waypoints.WaypointManager;
 import com.gtnewhorizons.navigator.api.xaero.waypoints.XaeroWaypointManager;
+
 import gregtech.GTMod;
 import gregtech.common.data.GTPowerfailTracker;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
@@ -71,7 +72,8 @@ public class PowerfailLayerManager extends InteractableLayerManager {
         // It isn't actually z fighting, hashed collections just have pseudorandom/arbitrary iteration order.
         Set<ILocationProvider> locs = new LinkedHashSet<>(wrappers.values());
 
-        layerRenderer.values().forEach(layer -> layer.refreshVisibleElements(locs));
+        layerRenderer.values()
+            .forEach(layer -> layer.refreshVisibleElements(locs));
     }
 
     @Override
@@ -83,7 +85,8 @@ public class PowerfailLayerManager extends InteractableLayerManager {
                 wrapper.highlighted = true;
             }
         } else {
-            String[] tokens = searchString.toLowerCase().split("\\s+");
+            String[] tokens = searchString.toLowerCase()
+                .split("\\s+");
 
             for (PowerfailLocationWrapper wrapper : wrappers.values()) {
                 wrapper.highlighted = true;

@@ -42,6 +42,7 @@ import org.lwjgl.input.Keyboard;
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizons.navigator.api.NavigatorApi;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;

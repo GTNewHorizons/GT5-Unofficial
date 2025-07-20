@@ -8,6 +8,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
 import gregtech.common.config.Client;
@@ -67,7 +68,8 @@ public class GTPacketOnPowerfail extends GTPacket {
     public void process(IBlockAccess blockAccess) {
         EntityPlayer player = GTMod.proxy.getThePlayer();
 
-        GTPowerfailTracker.Powerfail previous = GTMod.clientProxy().powerfailRenderer.powerfails.put(powerfail.getCoord(), powerfail);
+        GTPowerfailTracker.Powerfail previous = GTMod.clientProxy().powerfailRenderer.powerfails
+            .put(powerfail.getCoord(), powerfail);
 
         if (Client.chat.powerfailNotifications && (previous == null || previous.getSecs() > 60)) {
             player.addChatMessage(new ChatComponentText(powerfail.toString()));

@@ -7,6 +7,7 @@ import java.util.function.BooleanSupplier;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+
 import gregtech.api.gui.modularui.GTUITextures;
 
 public class CheckboxWidget extends ButtonWidget {
@@ -15,6 +16,7 @@ public class CheckboxWidget extends ButtonWidget {
     private final CheckboxClicked setter;
 
     public interface CheckboxClicked {
+
         void onClicked(CheckboxWidget widget, boolean checked);
     }
 
@@ -23,9 +25,7 @@ public class CheckboxWidget extends ButtonWidget {
         this.setter = setter;
 
         setPlayClickSound(true);
-        setOnClick((clickData, widget) -> {
-            setter.onClicked(this, !getter.getAsBoolean());
-        });
+        setOnClick((clickData, widget) -> setter.onClicked(this, !getter.getAsBoolean()));
     }
 
     @Override

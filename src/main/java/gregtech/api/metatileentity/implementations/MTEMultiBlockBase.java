@@ -86,6 +86,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -2969,12 +2970,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(textField));
 
-        builder.widget(new TextWidget("Powerfail Events")
-            .setPos(7, 59)
-            .setSize(85, 16));
-        builder.widget(new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
-            .setPos(92, 59)
-            .setSize(16, 16));
+        builder.widget(
+            new TextWidget("Powerfail Events").setPos(7, 59)
+                .setSize(85, 16));
+        builder.widget(
+            new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
+                .setPos(92, 59)
+                .setSize(16, 16));
 
         return builder.build();
     }
@@ -2984,8 +2986,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = checked;
-        })
-            .addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
+        }).addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(92, 41)
             .setSize(16, 16);

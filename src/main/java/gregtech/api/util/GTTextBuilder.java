@@ -43,18 +43,18 @@ public class GTTextBuilder {
     }
 
     public GTTextBuilder addCoord(int x, int y, int z) {
-        values.add("X="
-            + GOLD
-            + GTUtility.formatNumbers(x)
-            + base
-            + " Y="
-            + GOLD
-            + GTUtility.formatNumbers(y)
-            + base
-            + " Z="
-            + GOLD
-            + GTUtility.formatNumbers(z)
-            + base);
+        values.add(
+            "X=" + GOLD
+                + GTUtility.formatNumbers(x)
+                + base
+                + " Y="
+                + GOLD
+                + GTUtility.formatNumbers(y)
+                + base
+                + " Z="
+                + GOLD
+                + GTUtility.formatNumbers(z)
+                + base);
         return this;
     }
 

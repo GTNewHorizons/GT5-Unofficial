@@ -4,6 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizons.navigator.api.model.SupportedMods;
 import com.gtnewhorizons.navigator.api.model.buttons.ButtonManager;
+
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 

@@ -13,6 +13,7 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizons.navigator.api.NavigatorApi;
 import com.gtnewhorizons.navigator.api.model.steps.UniversalInteractableStep;
 import com.gtnewhorizons.navigator.api.util.DrawUtils;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketClearPowerfail;
@@ -48,14 +49,15 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
 
         DrawUtils.drawLabel(
             location.powerfail.toSummary(),
-            topX + width/2,
-            topY - FONT_HEIGHT - 5 + height*1.5,
+            topX + width / 2,
+            topY - FONT_HEIGHT - 5 + height * 1.5,
             0xFFFFFF,
             0,
             true,
             getFontScale());
 
-        DrawUtils.drawQuad(GTMod.clientProxy().powerfailRenderer.powerfailIcon, topX, topY, width, height, 0xFFFFFF, 255);
+        DrawUtils
+            .drawQuad(GTMod.clientProxy().powerfailRenderer.powerfailIcon, topX, topY, width, height, 0xFFFFFF, 255);
     }
 
     @Override
@@ -66,9 +68,12 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
             .addName(p.getMTEName())
             .addCoord(p.x, p.y, p.z)
             .addNumber(p.count)
-            .addValue(DateFormat.getDateTimeInstance().format(p.lastOccurrence))
+            .addValue(
+                DateFormat.getDateTimeInstance()
+                    .format(p.lastOccurrence))
             .addName(Keyboard.getKeyName(NavigatorApi.ACTION_KEY.getKeyCode()))
-            .toString().split("\\\\n");
+            .toString()
+            .split("\\\\n");
 
         list.addAll(GTDataUtils.mapToList(lines, s -> EnumChatFormatting.GRAY + s));
     }
@@ -88,6 +93,8 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
     }
 
     private static void playClickSound() {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(CLICK_SOUND, 1.0F));
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(PositionedSoundRecord.func_147674_a(CLICK_SOUND, 1.0F));
     }
 }

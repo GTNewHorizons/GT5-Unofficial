@@ -2,6 +2,7 @@ package gregtech.crossmod.navigator;
 
 import com.gtnewhorizons.navigator.api.model.locations.IWaypointAndLocationProvider;
 import com.gtnewhorizons.navigator.api.model.waypoints.Waypoint;
+
 import gregtech.common.data.GTPowerfailTracker;
 
 public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
@@ -15,7 +16,8 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
 
     public PowerfailLocationWrapper(GTPowerfailTracker.Powerfail powerfail) {
         this.powerfail = powerfail;
-        this.mteName = powerfail.getMTEName().toLowerCase();
+        this.mteName = powerfail.getMTEName()
+            .toLowerCase();
     }
 
     @Override
@@ -35,8 +37,7 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
 
     @Override
     public void onWaypointUpdated(Waypoint waypoint) {
-        activeAsWaypoint = waypoint.dimensionId == powerfail.dim
-            && waypoint.blockX == powerfail.x
+        activeAsWaypoint = waypoint.dimensionId == powerfail.dim && waypoint.blockX == powerfail.x
             && waypoint.blockZ == powerfail.z;
     }
 
