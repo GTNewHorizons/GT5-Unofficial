@@ -11,7 +11,7 @@ import gtPlusPlus.core.util.Utils;
 
 public class MathUtils {
 
-    static final Random rand = GTPPCore.RANDOM;
+    private static final Random rand = GTPPCore.RANDOM;
 
     /** Formats a number with group separator and at most 2 fraction digits. */
     private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
@@ -47,14 +47,14 @@ public class MathUtils {
     public static long randLong(final long min, final long max) {
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
-        return MathUtils.nextLong(rand, (max - min) + 1) + min;
+        return MathUtils.nextLong((max - min) + 1) + min;
     }
 
-    private static long nextLong(final Random rng, final long n) {
+    private static long nextLong(final long n) {
         // error checking and 2^x checking removed for simplicity.
         long bits, val;
         do {
-            bits = (rng.nextLong() << 1) >>> 1;
+            bits = (MathUtils.rand.nextLong() << 1) >>> 1;
             val = bits % n;
         } while (((bits - val) + (n - 1)) < 0L);
         return val;
@@ -72,14 +72,14 @@ public class MathUtils {
     public static double randDouble(final double min, final double max) {
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
-        return MathUtils.nextDouble(rand, (max - min) + 1) + min;
+        return MathUtils.nextDouble((max - min) + 1) + min;
     }
 
-    private static double nextDouble(final Random rng, final double n) {
+    private static double nextDouble(final double n) {
         // error checking and 2^x checking removed for simplicity.
         double bits, val;
         do {
-            bits = (rng.nextLong() << 1) >>> 1;
+            bits = (MathUtils.rand.nextLong() << 1) >>> 1;
             val = bits % n;
         } while (((bits - val) + (n - 1)) < 0L);
         return val;
@@ -97,14 +97,14 @@ public class MathUtils {
     public static float randFloat(final float min, final float max) {
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
-        return MathUtils.nextFloat(rand, (max - min) + 1) + min;
+        return MathUtils.nextFloat((max - min) + 1) + min;
     }
 
-    private static float nextFloat(final Random rng, final float n) {
+    private static float nextFloat(final float n) {
         // error checking and 2^x checking removed for simplicity.
         float bits, val;
         do {
-            bits = (rng.nextLong() << 1) >>> 1;
+            bits = (MathUtils.rand.nextLong() << 1) >>> 1;
             val = bits % n;
         } while (((bits - val) + (n - 1)) < 0L);
         return val;
@@ -210,7 +210,7 @@ public class MathUtils {
         if (outputArray.length > 0) {
             return outputArray;
         }
-        return new long[] {};
+        return GTValues.emptyLongArray;
     }
 
     private static long gcd(long a, long b) {
@@ -440,30 +440,6 @@ public class MathUtils {
      */
     public static int balance(int aInput, int aMin, int aMax) {
         return Math.max(Math.min(aInput, aMax), aMin);
-    }
-
-    /**
-     * Returns the smaller of two {@code Number}s. That is, the result the argument closer to the value of
-     * {@link Long#MIN_VALUE}. If the arguments have the same value, the result is that same value.
-     *
-     * @param a an argument.
-     * @param b another argument.
-     * @return the smaller of {@code a} and {@code b}.
-     */
-    public static Number min(Number a, Number b) {
-        return (a.longValue() <= b.longValue()) ? a : b;
-    }
-
-    /**
-     * Returns the greater of two {@code Number}s. That is, the result is the argument closer to the value of
-     * {@link Long#MAX_VALUE}. If the arguments have the same value, the result is that same value.
-     *
-     * @param a an argument.
-     * @param b another argument.
-     * @return the larger of {@code a} and {@code b}.
-     */
-    public static Number max(Number a, Number b) {
-        return (a.longValue() >= b.longValue()) ? a : b;
     }
 
     public static String formatNumbers(long aNumber) {
