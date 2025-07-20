@@ -64,6 +64,7 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -104,11 +105,14 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             this.index = index;
         }
 
-        private static Mode fromIndex(int index) {
+        private static @NotNull Mode fromIndex(int index) {
             return switch (index) {
                 case 0 -> Mode.CircuitAssemblyLine;
                 case 1 -> Mode.CircuitAssembler;
-                default -> throw new IllegalStateException("Unexpected value: " + index);
+                default -> {
+                    GTMod.GT_FML_LOGGER.error("Invalid mode for Circuit Assembly Line. Falling back to default.");
+                    yield Mode.CircuitAssemblyLine;
+                }
             };
         }
     }
@@ -327,14 +331,14 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             switchMode();
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + mode.index));
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return switch (this.mode) {
+        return switch (mode) {
             case CircuitAssemblyLine -> BartWorksRecipeMaps.circuitAssemblyLineRecipes;
             case CircuitAssembler -> RecipeMaps.circuitAssemblerRecipes;
         };
@@ -583,7 +587,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 .setPos(80, 91)
                 .setSize(16, 16)
                 .dynamicTooltip(
-                    () -> Collections.singletonList(StatCollector.translateToLocal("chat.cal.mode." + mode)))
+                    () -> Collections.singletonList(StatCollector.translateToLocal("chat.cal.mode." + mode.index)))
                 .setUpdateTooltipEveryTick(true)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
