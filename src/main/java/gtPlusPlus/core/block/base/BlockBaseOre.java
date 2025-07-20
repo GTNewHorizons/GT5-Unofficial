@@ -48,14 +48,13 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         this.setLightLevel(0.0F);
         this.setHarvestLevel("pickaxe", aMaterialTierForMining);
         this.setStepSound(soundTypeStone);
-        this.setBlockName(
-            "Ore" + StringUtils.sanitizeString(StringUtils.sanitizeString(material.getUnlocalizedName())));
+        this.setBlockName("Ore" + StringUtils.sanitizeString(material.getUnlocalizedName()));
         this.setBlockTextureName("stone");
         try {
             GameRegistry.registerBlock(
                 this,
                 ItemBlockOre.class,
-                StringUtils.sanitizeString("ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName())));
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()));
             GTOreDictUnificator.registerOre(
                 "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
                 new ItemStack(this));
