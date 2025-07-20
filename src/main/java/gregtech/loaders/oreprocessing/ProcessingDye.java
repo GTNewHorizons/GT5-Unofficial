@@ -33,8 +33,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        String dyeName = oreDictName.startsWith("dye") ? oreDictName.substring(3) : oreDictName;
-        Dyes aDye = Dyes.get(dyeName);
+        Dyes aDye = Dyes.get(oreDictName);
         if ((aDye.mIndex >= 0) && (aDye.mIndex < 16) && (GTUtility.getContainerItem(stack, true) == null)) {
             registerAlloySmelter(stack, aDye);
             registerMixer(stack, aDye);
