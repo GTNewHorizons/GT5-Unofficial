@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -64,7 +63,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gtPlusPlus.core.block.ModBlocks;
@@ -268,7 +267,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('d', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 14)))
         .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasings12, 8))
-        .addElement('g', ofBlock(GregTechAPI.sBlockCasings12,4))
+        .addElement('g', ofBlock(GregTechAPI.sBlockCasings12, 4))
         .addElement('h', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
         .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
@@ -279,7 +278,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 9)))
         .addElement('o', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
         .addElement('p', lazy(() -> ofBlock(Loaders.compactFusionCoil, 4)))
-        .addElement('q', ofBlock(GregTechAPI.sBlockCasings12,5))
+        .addElement('q', ofBlock(GregTechAPI.sBlockCasings12, 5))
         .build();
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
