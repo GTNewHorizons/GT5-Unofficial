@@ -309,7 +309,7 @@ public class RecipesGeneral {
 
     private static void addCompressionRecipe(@NotNull ItemStack raw, @NotNull ItemStack compressed) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(9, raw))
+            .itemInputs(raw)
             .itemOutputs(compressed)
             .duration(15 * SECONDS)
             .eut(2)
