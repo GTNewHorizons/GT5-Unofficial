@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.HoverableIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -46,6 +47,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
@@ -59,7 +61,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.GTMod;
@@ -83,17 +84,42 @@ public class MTEMultiBlockBaseGui {
     protected Map<String, UITexture> customIcons = new HashMap<>();
     protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
+    protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
+    protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
 
     public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
         this.baseMetaTileEntity = base.getBaseMetaTileEntity();
         initCustomIcons();
+        initShutdownMaps();
     }
 
     protected void initCustomIcons() {
         this.customIcons.put("power_switch_disabled", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
         this.customIcons.put("power_switch_on", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+    }
+
+    // unsure to swap to initCustomIcons()
+    protected void initShutdownMaps() {
+        this.shutdownReasonTextureMap
+            .put(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(), GTGuiTextures.OVERLAY_STRUCTURE_INCOMPLETE);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.POWER_LOSS.getKey(), GTGuiTextures.OVERLAY_POWER_LOSS);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_REPAIR.getKey(), GTGuiTextures.OVERLAY_TOO_DAMAGED);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.POWER_LOSS.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.powerloss"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.NO_REPAIR.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.norepair"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.NONE.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
+
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -167,11 +193,19 @@ public class MTEMultiBlockBaseGui {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .child(
-                        new SingleChildWidget<>().bottomRel(0, 10, 0)
-                            .rightRel(0, 10, 0)
-                            .size(18, 18)
-                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)));
+                    .childIf(base.supportsLogoHoverableColumn(), createTerminalCornerColumn(panel, syncManager)));
+    }
+
+    protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().coverChildren()
+            .rightRel(0, 10, 0)
+            .bottomRel(0, 10, 0)
+            .child(createShutdownReasonHoverable(syncManager))
+            .child(createMaintIssueHoverableTerminal(syncManager))
+            .child(
+                new Widget<>().size(18, 18)
+                    .marginTop(4)
+                    .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
     }
 
     protected int getTerminalRowWidth() {
@@ -258,7 +292,7 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
 
             .child(createShutdownDurationWidget())
-            .child(createShutdownReasonWidget())
+            .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
@@ -281,22 +315,19 @@ public class MTEMultiBlockBaseGui {
 
     }
 
-    private IWidget createShutdownReasonWidget() {
-        return IKey.dynamic(
-            () -> baseMetaTileEntity.getLastShutDownReason()
-                .getDisplayString())
+    private IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
+        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
+        return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed());
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
 
-    private boolean shouldShutdownReasonBeDisplayed() {
+    private boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
         return base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
-            && GTUtility.isStringValid(
-                baseMetaTileEntity.getLastShutDownReason()
-                    .getDisplayString());
+            && GTUtility.isStringValid(shutdownString);
     }
 
     private IWidget createRecipeResultWidget() {
@@ -334,9 +365,9 @@ public class MTEMultiBlockBaseGui {
             .height(textBoxToInventoryGap)
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
             .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
@@ -686,6 +717,71 @@ public class MTEMultiBlockBaseGui {
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
+    protected IWidget createMaintIssueHoverableTerminal(PanelSyncManager syncManager) {
+        IntSyncValue maintSyncer = (IntSyncValue) syncManager.getSyncHandler("maintCount:0");
+        return new DynamicDrawable(
+            () -> maintSyncer.getValue() == 0 ? GTGuiTextures.OVERLAY_NO_MAINTENANCE_ISSUES
+                : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
+                    .size(18, 18)
+                    .marginTop(4)
+                    .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
+                    .tooltipAutoUpdate(true);
+    }
+
+    protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
+        if (maintSyncer.getValue() == 0) {
+            t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
+            return;
+        }
+        if (!base.mCrowbar) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_CROWBAR.asIcon()
+                .size(16, 16))
+            .add(" ");
+        if (!base.mHardHammer) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_HARDHAMMER.asIcon()
+                .size(16, 16))
+            .add(" ");
+        if (!base.mScrewdriver) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_SCREWDRIVER.asIcon()
+                .size(16, 16))
+            .add(" ");
+        if (!base.mSoftMallet) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_SOFTHAMMER.asIcon()
+                .size(16, 16))
+            .add(" ");
+        if (!base.mSolderingTool) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_SOLDERING.asIcon()
+                .size(16, 16))
+            .add(" ");
+        if (!base.mWrench) t.add(
+            GTGuiTextures.OVERLAY_NEEDS_WRENCH.asIcon()
+                .size(16, 16))
+            .add(" ");
+    }
+
+    protected IWidget createShutdownReasonHoverable(PanelSyncManager syncManager) {
+        BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandler("wasShutdown:0");
+        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager.getSyncHandler("shutdownReasonKey:0");
+        return new HoverableIcon(new DynamicDrawable(() -> {
+            if (wasShutdownSyncer.getBoolValue()) {
+                return getTextureForReason(shutDownReasonSyncer.getValue());
+            }
+            // return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+            return null;
+        }).asIcon()).asWidget()
+            .size(18, 18)
+            .tooltipBuilder(t -> {
+
+                if (wasShutdownSyncer.getBoolValue()) {
+                    t.add(getToolTipForReason(shutDownReasonSyncer.getValue()));
+                } else {
+                    // t.add(EnumChatFormatting.GREEN +
+                    // StatCollector.translateToLocal("GT5U.gui.hoverable.runningfine"));
+                }
+            })
+            .tooltipAutoUpdate(true);
+    }
+
     private IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .height(76)
@@ -769,6 +865,18 @@ public class MTEMultiBlockBaseGui {
                 baseMetaTileEntity::getLastShutDownReason,
                 baseMetaTileEntity::setShutDownReason,
                 new ShutdownReasonAdapter()));
+        syncManager.syncValue(
+            "shutdownDisplayString",
+            new StringSyncValue(
+                () -> base.getBaseMetaTileEntity()
+                    .getLastShutDownReason()
+                    .getDisplayString()));
+        syncManager.syncValue(
+            "shutdownReasonKey",
+            new StringSyncValue(
+                () -> base.getBaseMetaTileEntity()
+                    .getLastShutDownReason()
+                    .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
             new GenericSyncValue<CheckRecipeResult>(
@@ -855,7 +963,31 @@ public class MTEMultiBlockBaseGui {
 
         syncManager.registerSlotGroup("item_inv", 1);
 
+        IntSyncValue maintSyncer = new IntSyncValue(() -> {
+            int maintIsuses = 0;
+            maintIsuses += base.mCrowbar ? 0 : 1;
+            maintIsuses += base.mHardHammer ? 0 : 1;
+            maintIsuses += base.mScrewdriver ? 0 : 1;
+            maintIsuses += base.mSoftMallet ? 0 : 1;
+            maintIsuses += base.mSolderingTool ? 0 : 1;
+            maintIsuses += base.mWrench ? 0 : 1;
+            return maintIsuses;
+        });
+
+        syncManager.syncValue("maintCount", maintSyncer);
+
     }
 
     protected void setMachineModeIcons() {}
+
+    // Method for registering Icons/Tooltip Text to specific ShutDownReasons. Override for custom icons/conditions.
+
+    protected UITexture getTextureForReason(String key) {
+        return this.shutdownReasonTextureMap.getOrDefault(key, null);
+    }
+
+    protected String getToolTipForReason(String key) {
+        return this.shutdownReasonTooltipMap
+            .getOrDefault(key, EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
+    }
 }

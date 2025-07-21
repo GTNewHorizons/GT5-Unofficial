@@ -72,4 +72,9 @@ public class ReasonOutOfFluid implements ShutDownReason {
     public boolean wasCritical() {
         return true;
     }
+
+    @Override
+    public String getKey() {
+        return getID();
+    }
 }

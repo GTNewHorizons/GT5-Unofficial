@@ -2895,6 +2895,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean supportsLogoHoverableColumn() {
+        return true;
+    }
+
     @Override
     public Pos2d getPowerPanelButtonPos() {
         return new Pos2d(174, 91);
