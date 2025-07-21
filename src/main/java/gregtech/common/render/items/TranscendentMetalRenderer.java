@@ -49,15 +49,19 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
             GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
         }
 
+        boolean flip = false;
+
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glScalef(16, 16, 32);
+            flip = true;
         }
+
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
-            icon.getMaxU(),
-            icon.getMinV(),
-            icon.getMinU(),
-            icon.getMaxV(),
+            flip ? icon.getMinU() : icon.getMaxU(),
+            flip ? icon.getMinV() : icon.getMaxV(),
+            flip ? icon.getMaxU() : icon.getMinU(),
+            flip ? icon.getMaxV() : icon.getMinV(),
             icon.getIconWidth(),
             icon.getIconHeight(),
             0.0625F);
@@ -97,15 +101,19 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
         GL11.glPushMatrix();
         applyEffect(type, null, false);
 
+        boolean flip = false;
+
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glScalef(16, 16, 32);
+            flip = true;
         }
+
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
-            overlay.getMaxU(),
-            overlay.getMinV(),
-            overlay.getMinU(),
-            overlay.getMaxV(),
+            flip ? overlay.getMinU() : overlay.getMaxU(),
+            flip ? overlay.getMinV() : overlay.getMaxV(),
+            flip ? overlay.getMaxU() : overlay.getMinU(),
+            flip ? overlay.getMaxV() : overlay.getMinV(),
             overlay.getIconWidth(),
             overlay.getIconHeight(),
             0.0625F);

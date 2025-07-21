@@ -64,15 +64,19 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
                 GL11.glColor4f(1f, 1f, 1f, 255);
 
+                boolean flip = false;
+
                 if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                     GL11.glScalef(16, 16, 32);
+                    flip = true;
                 }
+
                 ItemRenderer.renderItemIn2D(
                     Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
+                    flip ? icon.getMinU() : icon.getMaxU(),
+                    flip ? icon.getMinV() : icon.getMaxV(),
+                    flip ? icon.getMaxU() : icon.getMinU(),
+                    flip ? icon.getMaxV() : icon.getMinV(),
                     icon.getIconWidth(),
                     icon.getIconHeight(),
                     0.0625F);
