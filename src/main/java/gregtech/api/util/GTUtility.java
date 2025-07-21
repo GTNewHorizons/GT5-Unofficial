@@ -46,7 +46,6 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -174,7 +173,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.pollution.Pollution;
@@ -2260,28 +2258,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = 0; i < rList.size(); i++) if (rList.get(i) == null) rList.remove(i--);
-        return rList;
-    }
-
-    /**
-     * Note: use {@link ArrayExt#withoutTrailingNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutTrailingNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = rList.size() - 1; i >= 0 && rList.get(i) == null;) rList.remove(i--);
-        return rList;
-    }
-
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2296,9 +2272,17 @@ public class GTUtility {
             .isEmpty();
     }
 
+    public static boolean isStringValid(String aString) {
+        return aString != null && !aString.isEmpty();
+    }
+
     public static boolean isStringInvalid(Object aString) {
         return aString == null || aString.toString()
             .isEmpty();
+    }
+
+    public static boolean isStringInvalid(String aString) {
+        return aString == null || aString.isEmpty();
     }
 
     @Deprecated
@@ -5113,5 +5097,11 @@ public class GTUtility {
         } else {
             return text.substring(0, limit) + "...";
         }
+    }
+
+    public static boolean isRealPlayer(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer p && !p.getClass()
+            .getName()
+            .contains("Fake");
     }
 }

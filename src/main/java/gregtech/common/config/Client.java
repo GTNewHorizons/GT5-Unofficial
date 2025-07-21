@@ -228,6 +228,10 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Render powerfail notifications")
         public boolean renderPowerfailNotifications;
+
+        @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderTransMetalFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
