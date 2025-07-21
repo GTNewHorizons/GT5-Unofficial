@@ -2,43 +2,21 @@ package gtPlusPlus.core.item.bauble;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.asm.GTCorePlugin;
+import gregtech.mixin.interfaces.accessors.EntityAccessor;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class FireProtectionBauble extends BaseBauble {
-
-    private static final Field isImmuneToFire;
-
-    static {
-        isImmuneToFire = ReflectionUtils
-            .getField(Entity.class, !GTCorePlugin.isDevEnv() ? "func_70045_F" : "isImmuneToFire");
-    }
-
-    public static boolean fireImmune(Entity aEntity) {
-        return aEntity.isImmuneToFire();
-    }
-
-    public static boolean setEntityImmuneToFire(Entity aEntity, boolean aImmune) {
-        try {
-            return ReflectionUtils.setField(aEntity, isImmuneToFire, aImmune);
-        } catch (Throwable t) {}
-        return false;
-    }
 
     public FireProtectionBauble() {
         super(BaubleType.RING);
@@ -89,27 +67,19 @@ public class FireProtectionBauble extends BaseBauble {
     public void onEquipped(final ItemStack arg0, final EntityLivingBase aPlayer) {}
 
     @Override
-    public void onUnequipped(final ItemStack arg0, final EntityLivingBase aPlayer) {
-        if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer bPlayer) {
-                if (bPlayer.isPotionActive(Potion.fireResistance)) {
-                    bPlayer.removePotionEffect(Potion.fireResistance.id);
-                }
-                setEntityImmuneToFire(bPlayer, false);
+    public void onUnequipped(final ItemStack arg0, final EntityLivingBase entity) {
+        if (!entity.worldObj.isRemote) {
+            if (entity instanceof EntityPlayer player) {
+                ((EntityAccessor) player).gt5u$setImmuneToFire(false);
             }
         }
     }
 
     @Override
-    public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayer) {
-        if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer bPlayer) {
-                if (!fireImmune(bPlayer)) {
-                    setEntityImmuneToFire(bPlayer, true);
-                }
-                if (!bPlayer.isPotionActive(Potion.fireResistance)) {
-                    bPlayer.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 100, 4));
-                }
+    public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase entity) {
+        if (!entity.worldObj.isRemote) {
+            if (entity instanceof EntityPlayer player) {
+                ((EntityAccessor) player).gt5u$setImmuneToFire(true);
             }
         }
     }
