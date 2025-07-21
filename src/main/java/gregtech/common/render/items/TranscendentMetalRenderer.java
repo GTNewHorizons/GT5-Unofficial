@@ -122,7 +122,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
     }
 
     private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
-        if (RenderItem.renderInFrame) {
+        if (RenderItem.renderInFrame && Client.render.renderTransMetalFancy) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }

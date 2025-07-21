@@ -89,7 +89,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
     }
 
     private void applyEffect(ItemRenderType type) {
-        if (RenderItem.renderInFrame) {
+        if (RenderItem.renderInFrame && Client.render.renderTransMetalFancy) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }
