@@ -65,7 +65,7 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.YELLOW+"DEPRECATED! Will be removed in next major update",
+        return new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update",
             EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
             AuthorColen };
