@@ -3698,7 +3698,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 16),
                 CustomItemList.Machine_Multi_Transformer.get(1) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
-                MaterialsUEVplus.ExcitedDTSC.getFluid(8000), GGMaterial.shirabon.getMolten(20*INGOTS) },
+                MaterialsUEVplus.ExcitedDTSC.getFluid(8000), GGMaterial.shirabon.getMolten(20 * INGOTS) },
             CustomItemList.eM_dynamoWirelessMulti.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UMV);
