@@ -13,7 +13,6 @@ import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.KekzTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SGCraft;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
@@ -3687,6 +3686,23 @@ public class ResearchStationAssemblyLine implements Runnable {
                 recipeEuPerTick);
         }
 
+        // Wireless Dynamo Powerful
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.eM_dynamoTunnel8_UMV.get(1),
+            24_000_000,
+            3200,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { eM_dynamoTunnel5_UMV.get(1), ItemList.ZPM3.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L }, ItemList.Field_Generator_UMV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 16),
+                CustomItemList.Machine_Multi_Transformer.get(1) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(8000), GGMaterial.shirabon.getMolten(20*INGOTS) },
+            CustomItemList.eM_dynamoWirelessMulti.get(1),
+            30 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
     }
 
     public void runLateRecipes() {
@@ -3721,24 +3737,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 CustomItemList.Godforge_SingularityShieldingCasing.get(4),
                 30 * SECONDS,
                 (int) TierEU.RECIPE_UIV);
-        }
-        if (KekzTech.isModLoaded()) {
-            // Wireless Dynamo Powerful
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.eM_dynamoTunnel8_UMV.get(1),
-                24_000_000,
-                3200,
-                (int) TierEU.RECIPE_UMV,
-                64,
-                new Object[] { eM_dynamoTunnel5_UMV.get(1), new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L }, ItemList.Field_Generator_UMV.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 16),
-                    CustomItemList.Machine_Multi_Transformer.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(2000), MaterialsUEVplus.WhiteDwarfMatter.getMolten(72) },
-                CustomItemList.eM_dynamoWirelessMulti.get(1),
-                30 * SECONDS,
-                (int) TierEU.RECIPE_UMV);
         }
     }
 }
