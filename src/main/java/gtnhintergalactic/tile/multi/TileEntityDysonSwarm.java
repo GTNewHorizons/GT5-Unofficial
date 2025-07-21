@@ -529,4 +529,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public boolean showRecipeTextInGUI() {
         return false;
     }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
 }
