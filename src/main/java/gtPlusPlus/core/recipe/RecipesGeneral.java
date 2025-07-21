@@ -3,6 +3,7 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -173,6 +174,24 @@ public class RecipesGeneral {
             GregtechItemList.QuadrupleCompressedCactusCoke.get(1),
             GregtechItemList.QuintupleCompressedCactusCoke.get(1));
 
+        addHammerRecipes(
+            GregtechItemList.CactusCharcoal.get(1),
+            GregtechItemList.BlockCactusCharcoal.get(1),
+            GregtechItemList.CompressedCactusCharcoal.get(1),
+            GregtechItemList.DoubleCompressedCactusCharcoal.get(1),
+            GregtechItemList.TripleCompressedCactusCharcoal.get(1),
+            GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1),
+            GregtechItemList.QuintupleCompressedCactusCharcoal.get(1));
+
+        addHammerRecipes(
+            GregtechItemList.CactusCoke.get(1),
+            GregtechItemList.BlockCactusCoke.get(1),
+            GregtechItemList.CompressedCactusCoke.get(1),
+            GregtechItemList.DoubleCompressedCactusCoke.get(1),
+            GregtechItemList.TripleCompressedCactusCoke.get(1),
+            GregtechItemList.QuadrupleCompressedCactusCoke.get(1),
+            GregtechItemList.QuintupleCompressedCactusCoke.get(1));
+
         addCompressionRecipes(
             false,
             GregtechItemList.SugarCharcoal.get(1),
@@ -185,6 +204,24 @@ public class RecipesGeneral {
 
         addCompressionRecipes(
             false,
+            GregtechItemList.SugarCoke.get(1),
+            GregtechItemList.BlockSugarCoke.get(1),
+            GregtechItemList.CompressedSugarCoke.get(1),
+            GregtechItemList.DoubleCompressedSugarCoke.get(1),
+            GregtechItemList.TripleCompressedSugarCoke.get(1),
+            GregtechItemList.QuadrupleCompressedSugarCoke.get(1),
+            GregtechItemList.QuintupleCompressedSugarCoke.get(1));
+
+        addHammerRecipes(
+            GregtechItemList.SugarCharcoal.get(1),
+            GregtechItemList.BlockSugarCharcoal.get(1),
+            GregtechItemList.CompressedSugarCharcoal.get(1),
+            GregtechItemList.DoubleCompressedSugarCharcoal.get(1),
+            GregtechItemList.TripleCompressedSugarCharcoal.get(1),
+            GregtechItemList.QuadrupleCompressedSugarCharcoal.get(1),
+            GregtechItemList.QuintupleCompressedSugarCharcoal.get(1));
+
+        addHammerRecipes(
             GregtechItemList.SugarCoke.get(1),
             GregtechItemList.BlockSugarCoke.get(1),
             GregtechItemList.CompressedSugarCoke.get(1),
@@ -228,6 +265,28 @@ public class RecipesGeneral {
                 .eut(2)
                 .addTo(compressorRecipes);
         }
+    }
+
+    private static void addHammerRecipes(ItemStack item, ItemStack block, ItemStack one, ItemStack two, ItemStack three,
+        ItemStack four, ItemStack five) {
+
+        addHammerRecipe(item, block);
+        addHammerRecipe(block, one);
+        addHammerRecipe(one, two);
+        addHammerRecipe(two, three);
+        addHammerRecipe(three, four);
+        addHammerRecipe(four, five);
+    }
+
+    private static void addHammerRecipe(ItemStack raw, ItemStack compressed) {
+        if (raw == null || compressed == null) return;
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(compressed)
+            .itemOutputs(GTUtility.copyAmount(9, raw))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(hammerRecipes);
     }
 
     private static void addCompressedObsidian() {

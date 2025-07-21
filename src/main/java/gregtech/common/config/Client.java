@@ -21,6 +21,9 @@ public class Client {
     @Config.Comment("Preference section")
     public static final Preference preference = new Preference();
 
+    @Config.Comment("GT Tool Block Overlay section")
+    public static final BlockOverlay blockoverlay = new BlockOverlay();
+
     @Config.Comment("Render section")
     public static final Render render = new Render();
 
@@ -50,12 +53,15 @@ public class Client {
         public static class CableInsulation {
 
             @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int red;
 
             @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int green;
 
             @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int blue;
         }
 
@@ -63,12 +69,15 @@ public class Client {
         public static class MachineMetal {
 
             @Config.DefaultInt(210)
+            @Config.RangeInt(min = 0, max = 255)
             public int red;
 
             @Config.DefaultInt(220)
+            @Config.RangeInt(min = 0, max = 255)
             public int green;
 
             @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
             public int blue;
         }
     }
@@ -137,6 +146,35 @@ public class Client {
         public int maxNumSounds = 512;
     }
 
+    @Config.LangKey("GT5U.gui.config.client.blockoverlay")
+    public static class BlockOverlay {
+
+        @Config.Comment("The line width of the block overlay")
+        @Config.DefaultFloat(2.5f)
+        @Config.RangeFloat(min = 0, max = 30f)
+        public float lineWidth;
+
+        @Config.Comment("The red color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int red;
+
+        @Config.Comment("The green color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int green;
+
+        @Config.Comment("The blue color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int blue;
+
+        @Config.Comment("The alpha for the color of the block overlay")
+        @Config.DefaultInt(127)
+        @Config.RangeInt(min = 0, max = 255)
+        public int alpha;
+    }
+
     @Config.LangKey("GT5U.gui.config.client.render")
     public static class Render {
 
@@ -194,6 +232,10 @@ public class Client {
         @Config.DefaultInt(0)
         @Config.Name("Powerfail Notification Timeout")
         public int powerfailNotificationTimeout;
+
+        @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderTransMetalFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")

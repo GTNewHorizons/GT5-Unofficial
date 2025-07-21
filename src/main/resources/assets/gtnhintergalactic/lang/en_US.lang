@@ -1,7 +1,7 @@
 # English (US)
 
 
-# NOTE: 
+# NOTE:
 # Providing additional lore translations doesn't require any code changes, they are detected automatically. If you have
 # fewer variations in your lang file than the default lang file (en_US, this file), provide blank translations to avoid
 # the game falling back to the default translations. Adding more variations than provided by default is possible.
@@ -189,7 +189,7 @@ ig.button.projects=Projects
 
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
-gt.blockmachines.multimachine.ig.siphon.type=Pump
+gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
