@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -97,6 +98,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -180,6 +182,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
@@ -297,6 +300,82 @@ public class GTUtility {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
+    }
+
+    public static Object callPublicMethod(Object aObject, String aMethod, Object... aParameters) {
+        return callMethod(aObject, aMethod, false, false, true, aParameters);
+    }
+
+    public static Object callPrivateMethod(Object aObject, String aMethod, Object... aParameters) {
+        return callMethod(aObject, aMethod, true, false, true, aParameters);
+    }
+
+    public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes,
+        boolean aLogErrors, Object... aParameters) {
+        try {
+            Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
+            for (byte i = 0; i < aParameters.length; i++) {
+                if (aParameters[i] instanceof Class) {
+                    tParameterTypes[i] = (Class<?>) aParameters[i];
+                    aParameters[i] = null;
+                } else {
+                    tParameterTypes[i] = aParameters[i].getClass();
+                }
+                if (!aUseUpperCasedDataTypes) {
+                    if (tParameterTypes[i] == Boolean.class) tParameterTypes[i] = boolean.class;
+                    else if (tParameterTypes[i] == Byte.class) tParameterTypes[i] = byte.class;
+                    else if (tParameterTypes[i] == Short.class) tParameterTypes[i] = short.class;
+                    else if (tParameterTypes[i] == Integer.class) tParameterTypes[i] = int.class;
+                    else if (tParameterTypes[i] == Long.class) tParameterTypes[i] = long.class;
+                    else if (tParameterTypes[i] == Float.class) tParameterTypes[i] = float.class;
+                    else if (tParameterTypes[i] == Double.class) tParameterTypes[i] = double.class;
+                }
+            }
+
+            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
+                : aObject.getClass()
+                    .getMethod(aMethod, tParameterTypes);
+            if (aPrivate) tMethod.setAccessible(true);
+            return tMethod.invoke(aObject, aParameters);
+        } catch (Throwable e) {
+            if (aLogErrors) e.printStackTrace(GTLog.err);
+        }
+        return null;
+    }
+
+    public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
+        boolean aLogErrors, Object... aParameters) {
+        if (aConstructorIndex < 0) {
+            try {
+                for (Constructor<?> tConstructor : aClass.getConstructors()) {
+                    try {
+                        return tConstructor.newInstance(aParameters);
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GTLog.err);
+                    }
+                }
+            } catch (Throwable e) {
+                if (aLogErrors) e.printStackTrace(GTLog.err);
+            }
+        } else {
+            try {
+                return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
+            } catch (Throwable e) {
+                if (aLogErrors) e.printStackTrace(GTLog.err);
+            }
+        }
+        return aReplacementObject;
+    }
+
+    public static <T> T getFieldValue(Class<?> clazz, String name) {
+        try {
+            Field field = clazz.getDeclaredField(name);
+            field.setAccessible(true);
+            // noinspection unchecked
+            return (T) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String capitalizeString(String s) {
@@ -2946,6 +3025,32 @@ public class GTUtility {
             return true;
         return !GregTechAPI.sDimensionalList.contains(aDimensionID)
             && DimensionManager.isDimensionRegistered(aDimensionID);
+    }
+
+    private static final Int2ObjectOpenHashMap<String> DIMENSION_NAMES = new Int2ObjectOpenHashMap<>();
+
+    public static void loadDimensionNames() {
+        Hashtable<Integer, Integer> dimensions = getFieldValue(DimensionManager.class, "dimensions");
+
+        for (var e : dimensions.entrySet()) {
+            if (DimensionManager.isDimensionRegistered(e.getKey()));
+
+            WorldProvider p = DimensionManager.createProviderFor(e.getKey());
+
+            DIMENSION_NAMES.put((int) e.getKey(), p.getDimensionName());
+        }
+    }
+
+    public static String getDimensionName(int dimId) {
+        String name = DIMENSION_NAMES.get(dimId);
+
+        String key = "gtnop.world." + name;
+
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        } else {
+            return name;
+        }
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,

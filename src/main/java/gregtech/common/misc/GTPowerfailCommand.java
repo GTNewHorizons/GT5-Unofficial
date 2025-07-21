@@ -9,6 +9,7 @@ import java.util.OptionalInt;
 import java.util.UUID;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -40,6 +41,11 @@ public class GTPowerfailCommand extends GTBaseCommand {
     @Override
     public int getRequiredPermissionLevel() {
         return 0;
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return sender instanceof EntityPlayer;
     }
 
     @Override
@@ -82,8 +88,6 @@ public class GTPowerfailCommand extends GTBaseCommand {
             return;
         }
 
-        sender.addChatMessage(new ChatComponentText("server."));
-
         if (args.length < 1) {
             sendHelpMessage(sender);
             return;
@@ -124,6 +128,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
                     // poor bastard :kekw:
 
                     for (GTPowerfailTracker.Powerfail powerfail : powerfails.subList(0, 25)) {
+                        // I have no idea how to localize this without a ton of work, people will just have to suck it
+                        // up :caught:
                         sendChatToPlayer(sender, "- " + powerfail.toString());
                     }
 

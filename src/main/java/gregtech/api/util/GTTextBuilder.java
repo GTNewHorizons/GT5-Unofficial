@@ -1,39 +1,60 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+
+import java.util.ArrayList;
+
 import net.minecraft.util.EnumChatFormatting;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 
 public class GTTextBuilder {
 
-    public StringBuilder builder = new StringBuilder();
-    private EnumChatFormatting base = EnumChatFormatting.WHITE;
+    public String langKey;
+    public ArrayList<String> values = new ArrayList<>();
+    public EnumChatFormatting base = EnumChatFormatting.WHITE;
+
+    public GTTextBuilder(String langKey) {
+        this.langKey = langKey;
+    }
 
     public GTTextBuilder setBase(EnumChatFormatting base) {
         this.base = base;
         return this;
     }
 
+    public GTTextBuilder add(@Nullable Object style, @NotNull Object data) {
+        values.add((style == null ? "" : style.toString()) + data + base);
+
+        return this;
+    }
+
     public GTTextBuilder addText(String text) {
-        builder.append(text)
-            .append(base);
+        add(base, text);
         return this;
     }
 
     public GTTextBuilder addName(String name) {
-        builder.append(EnumChatFormatting.DARK_AQUA)
-            .append(name)
-            .append(base);
+        add(EnumChatFormatting.DARK_AQUA, name);
         return this;
     }
 
     public GTTextBuilder addCoord(int x, int y, int z) {
-        builder.append("X=");
-        addNumber(x);
-        builder.append(" Y=");
-        addNumber(y);
-        builder.append(" Z=");
-        addNumber(z);
+        values.add(
+            "X=" + GOLD
+                + GTUtility.formatNumbers(x)
+                + base
+                + " Y="
+                + GOLD
+                + GTUtility.formatNumbers(y)
+                + base
+                + " Z="
+                + GOLD
+                + GTUtility.formatNumbers(z)
+                + base);
         return this;
     }
 
@@ -43,49 +64,37 @@ public class GTTextBuilder {
     }
 
     public GTTextBuilder addValue(String value) {
-        builder.append(EnumChatFormatting.GREEN)
-            .append(value)
-            .append(base);
+        add(EnumChatFormatting.GREEN, value);
         return this;
     }
 
     public GTTextBuilder addNumber(int i) {
-        builder.append(EnumChatFormatting.GOLD)
-            .append(GTUtility.formatNumbers(i))
-            .append(base);
+        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(i));
         return this;
     }
 
     public GTTextBuilder addNumber(long l) {
-        builder.append(EnumChatFormatting.GOLD)
-            .append(GTUtility.formatNumbers(l))
-            .append(base);
+        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(l));
         return this;
     }
 
     public GTTextBuilder addNumber(float f) {
-        builder.append(EnumChatFormatting.GOLD)
-            .append(GTUtility.formatNumbers(f))
-            .append(base);
+        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(f));
         return this;
     }
 
     public GTTextBuilder addNumber(double d) {
-        builder.append(EnumChatFormatting.GOLD)
-            .append(GTUtility.formatNumbers(d))
-            .append(base);
+        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(d));
         return this;
     }
 
     public GTTextBuilder addNumber(String s) {
-        builder.append(EnumChatFormatting.GOLD)
-            .append(s)
-            .append(base);
+        add(EnumChatFormatting.GOLD, s);
         return this;
     }
 
     @Override
     public String toString() {
-        return builder.toString() + base;
+        return base.toString() + GTUtility.translate(langKey, values.toArray());
     }
 }
