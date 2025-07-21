@@ -1458,6 +1458,7 @@ public enum MetaTileEntityIDs {
     BETTER_JUKEBOX_HV(14303),
     BETTER_JUKEBOX_EV(14304),
     BETTER_JUKEBOX_IV(14305),
+    WIRELESS_DYNAMO_ENERGIZED(15040),
     EV4AWirelessEnergyHatch(15065),
     EV16AWirelessEnergyHatch(15066),
     EV64AWirelessEnergyHatch(15067),
