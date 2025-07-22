@@ -170,23 +170,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        VoidMinerUtility.CumulativeOreDistribution oreDistribution = this.dropMap.getOreDistribution();
-
-        float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-
-        // Attempt to find the index of the weight
-        int index = Arrays.binarySearch(oreDistribution.getOreWeights(), randomNumber);
-
-        // If randomNumber is present in the array (unlikely)
-        // Fetch the next element since we want to satisfy (randomNumber < getOreWeights()[index])
-        if (index >= 0) {
-            index++;
-        }
-        // If randomNumber isn't present the index is a 1 index. Shift back to 0 index
-        else {
-            index = -index - 1;
-        }
-        return oreDistribution.getOres()[index].getItemStack();
+        return this.dropMap.nextOre().getItemStack();
     }
 
     /**

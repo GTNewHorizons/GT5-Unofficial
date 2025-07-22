@@ -30,6 +30,7 @@ import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.VoseAliasMethod;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -43,9 +44,13 @@ public class VoidMinerUtility {
 
     public static class DropMap {
 
+        private boolean isAliasCached;
+        private VoseAliasMethod voseAliasMethod;
+
         private float totalWeight;
+        private double[] oreWeights;
+        private GTUtility.ItemId[] ores;
         private final Map<GTUtility.ItemId, Float> internalMap;
-        private CumulativeOreDistribution cumulativeOreDistribution;
 
         private final Set<String> voidMinerBlacklistedDrops;
 
@@ -112,22 +117,24 @@ public class VoidMinerUtility {
         }
 
         /**
-         * Method used to pre-compute the cumulative sum for the VM. Stored as internalPair
+         * Method used to compute the ore distribution for the VM.
          */
-        public void createCumulativeSumPairArr() {
-            float previousWeight = 0.f;
-            float currentWeight;
+        public void computeOreDistribution() {
+            if (isAliasCached) return;
+            if (internalMap.isEmpty()) return;
+
+            ores = new GTUtility.ItemId[internalMap.size()];
+            oreWeights = new double[internalMap.size()];
             int i = 0;
 
-            cumulativeOreDistribution = new CumulativeOreDistribution(internalMap.size());
             for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
-
-                currentWeight = entry.getValue();
-
-                cumulativeOreDistribution.insert(entry.getKey(), previousWeight + currentWeight, i);
-                previousWeight += currentWeight;
+                ores[i] = entry.getKey();
+                oreWeights[i] = entry.getValue() / totalWeight;
                 i++;
             }
+
+            voseAliasMethod = new VoseAliasMethod(oreWeights);
+            isAliasCached = true;
         }
 
         public float getTotalWeight() {
@@ -136,34 +143,6 @@ public class VoidMinerUtility {
 
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
-        }
-
-        public CumulativeOreDistribution getOreDistribution() {
-            return cumulativeOreDistribution;
-        }
-    }
-
-    public static class CumulativeOreDistribution {
-
-        private final GTUtility.ItemId[] ores;
-        private final float[] oreWeights;
-
-        public CumulativeOreDistribution(int size) {
-            ores = new GTUtility.ItemId[size];
-            oreWeights = new float[size];
-        }
-
-        public void insert(GTUtility.ItemId ore, float weight, int index) {
-            ores[index] = ore;
-            oreWeights[index] = weight;
-        }
-
-        public GTUtility.ItemId[] getOres() {
-            return ores;
-        }
-
-        public float[] getOreWeights() {
-            return oreWeights;
         }
     }
 
@@ -205,11 +184,11 @@ public class VoidMinerUtility {
         // Pre-compute the cumulative sum Pairs
         for (Map.Entry<Integer, DropMap> dropMap : dropMapsByDimId.entrySet()) {
             dropMap.getValue()
-                .createCumulativeSumPairArr();
+                .computeOreDistribution();
         }
         for (Map.Entry<String, DropMap> dropMap : dropMapsByChunkProviderName.entrySet()) {
             dropMap.getValue()
-                .createCumulativeSumPairArr();
+                .computeOreDistribution();
         }
     }
 
