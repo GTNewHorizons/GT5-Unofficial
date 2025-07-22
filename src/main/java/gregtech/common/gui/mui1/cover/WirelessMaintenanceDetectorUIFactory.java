@@ -18,8 +18,15 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 public class WirelessMaintenanceDetectorUIFactory
     extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessMaintenanceDetector> {
 
-    private static final String[] extraTexts = new String[] { "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
-        ">= 4 Issues", ">= 5 Issues", "Rotor < 20%", "Rotor ≈ 0%" };
+    private static final String[] extraTexts = new String[] {
+        "GT5U.gui.text.wireless_maintenance_detector.extra.no_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20",
+        "GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0" };
 
     public WirelessMaintenanceDetectorUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
@@ -48,7 +55,7 @@ public class WirelessMaintenanceDetectorUIFactory
         super.addUIWidgets(builder);
         for (int i = 0; i < 8; i++) {
             builder.widget(
-                new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal(extraTexts[i])).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
         }
         builder.widget(

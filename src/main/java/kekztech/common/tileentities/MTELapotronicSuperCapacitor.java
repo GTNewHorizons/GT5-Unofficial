@@ -14,6 +14,7 @@ import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -37,7 +38,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -126,8 +126,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
-    private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
-    private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) Math.pow(10, 12);
+    private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) GTUtility.powInt(10, 10);
+    private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) GTUtility.powInt(10, 12);
 
     private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
 
@@ -188,6 +188,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final int DURATION_AVERAGE_TICKS = 100;
     private static final int DEBUG_POWER_WINDOW_ID = 10;
     private static final int WIRELESS_WARNING_WINDOW_ID = 11;
+
+    private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
 
     // height channel for height.
     // glass channel for glass
@@ -458,10 +460,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
         ForgeDirection forgeDirectionacing, int colorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] sTexture = new ITexture[] {
-            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         if (side == forgeDirectionacing && aActive) {
-            sTexture = new ITexture[] { TextureFactory
-                .of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            sTexture = new ITexture[] {
+                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1)) };
         }
         return sTexture;
     }
@@ -813,15 +815,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             // Calculate time to full if charging
             if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
-                return StatCollector.translateToLocalFormatted(
+                return translateToLocalFormatted(
                     "kekztech.infodata.lapotronic_super_capacitor.time_to.full",
                     formatTime(timeToFull, true));
             }
-            return StatCollector.translateToLocal("kekztech.infodata.lapotronic_super_capacitor.time_to.sth");
+            return translateToLocal("kekztech.infodata.lapotronic_super_capacitor.time_to.sth");
         } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
-            return StatCollector.translateToLocalFormatted(
+            return translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.time_to.empty",
                 formatTime(timeToEmpty, false));
         }
@@ -861,117 +863,110 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
+            EnumChatFormatting.YELLOW + translateToLocal("kekztech.infodata.operational_data")
                 + EnumChatFormatting.RESET);
+        ll.add(translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.eu_stored",
-                nf.format(stored)));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_stored",
                 toStandardForm(stored)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
                 toPercentageFrom(stored, capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
                 nf.format(capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
                 toStandardForm(capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_in",
                 GTUtility.formatNumbers(inputLastTick)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_out",
                 GTUtility.formatNumbers(outputLastTick)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",
                 nf.format(energyInputValues.avgLong()),
                 secInterval));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.sec",
                 nf.format(energyOutputValues.avgLong()),
                 secInterval));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.min5",
                 nf.format(energyInputValues5m.avgLong())));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5",
                 nf.format(energyOutputValues5m.avgLong())));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1",
                 nf.format(energyInputValues1h.avgLong())));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1",
                 nf.format(energyOutputValues1h.avgLong())));
 
         ll.add(getTimeTo());
 
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.multi.maintenance_status",
                 ((super.getRepairStatus() == super.getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
+                    ? EnumChatFormatting.GREEN + translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
                         + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
+                    : EnumChatFormatting.RED + translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
                         + EnumChatFormatting.RESET)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_mode",
                 (wireless_mode
                     ? EnumChatFormatting.GREEN
-                        + StatCollector
-                            .translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled")
+                        + translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled")
                         + EnumChatFormatting.RESET
                     : EnumChatFormatting.RED
-                        + StatCollector
-                            .translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled")
+                        + translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled")
                         + EnumChatFormatting.RESET)));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[9] + GTValues.VN[9] + EnumChatFormatting.RESET,
                 getUHVCapacitorCount()));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[10] + GTValues.VN[10] + EnumChatFormatting.RESET,
                 getUEVCapacitorCount()));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[11] + GTValues.VN[11] + EnumChatFormatting.RESET,
                 getUIVCapacitorCount()));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[12] + GTValues.VN[12] + EnumChatFormatting.RESET,
                 getUMVCapacitorCount()));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + nf.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
         ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
 
@@ -1018,8 +1013,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+                    .setEnabled(widget -> !mSoftMallet))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
@@ -1041,16 +1036,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
@@ -1059,17 +1053,17 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
-            return StatCollector.translateToLocalFormatted(
+            return translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
                 time.toMinutes() % 60,
@@ -1102,33 +1096,42 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
-        screenElements.widget(
-            new TextWidget().setStringSupplier(
-                () -> "Total Capacity: " + EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE + " EU")
-                .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> isActiveCache))
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
+                            EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> capacityCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Stored: " + EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE + " EU")
+                        () -> translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.stored",
+                            EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> storedEUCache = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Used capacity: " + EnumChatFormatting.RED + usedPercentCache)
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
+                            EnumChatFormatting.RED + usedPercentCache))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getUsedPercentCache, val -> usedPercentCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Passive Loss: " + EnumChatFormatting.RED
-                            + passiveDischargeAmountCache
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
+                        () -> translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
+                            EnumChatFormatting.RED + passiveDischargeAmountCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1137,25 +1140,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     this::getPassiveDischargeAmountCache,
                     val -> passiveDischargeAmountCache = val))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> "Avg EU IN: " + EnumChatFormatting.GREEN
-                            + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
-                                : numberFormat.format(avgInCache))
-                            + EnumChatFormatting.WHITE
-                            + " last 5s")
+                new TextWidget().setStringSupplier(
+                    () -> translateToLocalFormatted(
+                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
+                        EnumChatFormatting.GREEN + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
+                            : numberFormat.format(avgInCache)) + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> "Avg EU OUT: " + EnumChatFormatting.RED
-                            + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
-                                : numberFormat.format(avgOutCache))
-                            + EnumChatFormatting.WHITE
-                            + " last 5s")
+                new TextWidget().setStringSupplier(
+                    () -> translateToLocalFormatted(
+                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
+                        EnumChatFormatting.RED + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
+                            : numberFormat.format(avgOutCache)) + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1168,10 +1167,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Total wireless EU: " + EnumChatFormatting.BLUE
-                            + wirelessStoreCache
-                            + EnumChatFormatting.WHITE
-                            + " EU")
+                        () -> translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
+                            EnumChatFormatting.BLUE + wirelessStoreCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1226,7 +1224,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     // called by the getEUCapacity() function in BaseMetaTileEntity
     @Override
     public long maxEUStore() {
-        return capacity.longValue();
+        return capacity.compareTo(LONG_MAX) > 0 ? Long.MAX_VALUE : capacity.longValue();
     }
 
     // called by the getEUStored() function in BaseMetaTileEntity
@@ -1334,7 +1332,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             })
             .setPos(80, 91)
             .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
+            .addTooltip(translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
             .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val))
@@ -1354,7 +1352,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 .setPos(98, 91)
                 .setSize(16, 16)
                 .setEnabled((widget) -> wireless_mode && canUseWireless && !balanced)
-                .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance"))
+                .addTooltip(translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
 
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -1548,6 +1546,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .takeOne(
                         s -> s != null && s.stackSize >= 0
                             && s.getItem() == LSC_PART_ITEM
+                            && s.getItemDamage() != 0 // LSC casing, not a capacitor
                             && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
                                 .getMinimalGlassTier() > glassTier,
                         true);

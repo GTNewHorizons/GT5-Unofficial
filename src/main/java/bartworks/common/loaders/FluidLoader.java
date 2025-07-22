@@ -24,16 +24,15 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.API.SideReference;
 import bartworks.client.renderer.RendererGlassBlock;
 import bartworks.client.renderer.RendererSwitchingColorFluid;
 import bartworks.common.blocks.BlockBioFluid;
 import bartworks.common.tileentities.classic.TileEntityDimIDBridge;
 import bartworks.util.BioCulture;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
@@ -41,6 +40,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 
@@ -56,7 +56,7 @@ public class FluidLoader {
     // OilProcessing chain
     public static Fluid fulvicAcid, heatedfulvicAcid, Kerogen;
 
-    public static void run() {
+    public static void run(FMLInitializationEvent event) {
         renderID = RenderingRegistry.getNextAvailableRenderId();
         ff = new Fluid("BWfakeFluid");
         GregTechAPI.sGTBlockIconload.add(
@@ -80,7 +80,7 @@ public class FluidLoader {
             BioLabFluidCells[i] = fluidCells[i].get();
         }
 
-        FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 100)
+        FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
             : Materials.Biomass.getFluid(100L);
         for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
             if (B.isBreedable()) {
@@ -115,7 +115,8 @@ public class FluidLoader {
         bioFluidBlock = new BlockBioFluid();
         GameRegistry.registerBlock(bioFluidBlock, "coloredFluidBlock");
         GameRegistry.registerTileEntity(TileEntityDimIDBridge.class, "bwTEDimIDBridge");
-        if (SideReference.Side.Client) {
+        if (event.getSide()
+            .isClient()) {
             RendererSwitchingColorFluid.register();
             RendererGlassBlock.register();
         }

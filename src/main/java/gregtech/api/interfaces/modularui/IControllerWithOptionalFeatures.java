@@ -6,12 +6,15 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -98,8 +101,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
+                ret.add(getVoidingMode().buttonTextureLegacy);
+                ret.add(getVoidingMode().buttonOverlayLegacy);
                 if (!supportsVoidProtection()) {
                     ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
@@ -226,6 +229,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsInputSeparation()) {
                 setInputSeparation(!isInputSeparationEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsInputSeparation())
@@ -254,13 +258,17 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(this::isInputSeparationEnabled, this::setInputSeparation),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getInputSeparationButtonPos())
             .setSize(16, 16);
-        if (!supportsInputSeparation()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsInputSeparation,
+            this::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+
         return (ButtonWidget) button;
     }
 
@@ -316,6 +324,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsBatchMode()) {
                 setBatchMode(!isBatchModeEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsBatchMode())
@@ -342,13 +351,17 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isBatchModeEnabled, this::setBatchMode), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getBatchModeButtonPos())
             .setSize(16, 16);
-        if (!supportsBatchMode()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsBatchMode,
+            this::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+
         return (ButtonWidget) button;
     }
 
@@ -358,6 +371,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsSingleRecipeLocking()) {
                 setRecipeLocking(!isRecipeLockingEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsSingleRecipeLocking())
@@ -386,14 +400,63 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(this::isRecipeLockingEnabled, this::setRecipeLocking),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getRecipeLockingButtonPos())
             .setSize(16, 16);
-        if (!supportsSingleRecipeLocking()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsSingleRecipeLocking,
+            this::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+
         return (ButtonWidget) button;
+    }
+
+    /**
+     * Adds a dynamic tooltip to a widget button that displays the status of a multi-block feature.
+     * <p>
+     * The tooltip behavior depends on feature support:
+     * <ul>
+     * <li>If the feature is supported: Shows a dynamic tooltip that updates based on the feature's enabled state</li>
+     * <li>If the feature is not supported: Shows a static tooltip with the current state plus a "forbidden"
+     * message</li>
+     * </ul>
+     *
+     * <p>
+     * <strong>Important:</strong> When implementing this method, ensure that any action that changes
+     * the feature's enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
+     *
+     * @param widget                 the widget button to add the tooltip to
+     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
+     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     *
+     * @see gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
+     *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
+     */
+    default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
+
+        if (supportsFeature.get()) {
+            widget.dynamicTooltip(() -> {
+                if (isFeatureEnabled.get()) {
+                    return Collections.singletonList(tooltipFeatureEnabled);
+                } else {
+                    return Collections.singletonList(tooltipFeatureDisabled);
+                }
+            });
+        } else {
+            if (isFeatureEnabled.get()) {
+                widget.addTooltip(tooltipFeatureEnabled);
+            } else {
+                widget.addTooltip(tooltipFeatureDisabled);
+            }
+
+            widget.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
+        }
     }
 
     Pos2d getStructureUpdateButtonPos();

@@ -119,7 +119,7 @@ public class AchievementHandler {
             GregtechItemList.Boiler_Advanced_MV.get(1),
             aBaseAchievementName,
             false);
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             this.registerAchievement(
                 "pollutionremoval",
                 -11,
@@ -203,23 +203,10 @@ public class AchievementHandler {
             "decay.neptunium238",
             11,
             8,
-            ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+            new ItemStack(ModItems.dustNeptunium238),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.radium226",
-            12,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustRadium226),
-            "multi.cyclo",
-            false);
-        this.registerAchievement(
-            "decay.molybdenum99",
-            13,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
-            "multi.cyclo",
-            false);
+        this.registerAchievement("decay.radium226", 12, 8, new ItemStack(ModItems.dustRadium226), "multi.cyclo", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -272,15 +259,14 @@ public class AchievementHandler {
      * @param aStack  - The Itemstack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */
-    private void handleAchivement(ItemStack aStack, EntityPlayer aPlayer) {
+    private void handleAchievement(ItemStack aStack, EntityPlayer aPlayer) {
 
         if (aPlayer != null && aStack != null) {
             /*
              * Copy this to all events because I am lazy - Alk 2019
              */
 
-            // Safe name
-            String aUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);
+            String aUnlocalName = aStack.getUnlocalizedName();
 
             boolean isValid = false;
             // Check if valid name // mod
@@ -460,7 +446,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.crafting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -469,7 +455,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.smelting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -478,7 +464,7 @@ public class AchievementHandler {
         EntityPlayer player = event.entityPlayer;
         ItemStack stack = event.item.getEntityItem();
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 }

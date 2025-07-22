@@ -17,16 +17,16 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.GrowthMediumRaw.getFluid(1000))
-            .fluidOutputs(Materials.GrowthMediumSterilized.getFluid(1000))
+            .fluidInputs(Materials.GrowthMediumRaw.getFluid(1_000))
+            .fluidOutputs(Materials.GrowthMediumSterilized.getFluid(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.BioMediumRaw.getFluid(1000))
-            .fluidOutputs(Materials.BioMediumSterilized.getFluid(1000))
+            .fluidInputs(Materials.BioMediumRaw.getFluid(1_000))
+            .fluidOutputs(Materials.BioMediumSterilized.getFluid(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(fluidHeaterRecipes);
@@ -34,7 +34,7 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Water.getFluid(6))
-            .fluidOutputs(Materials.Water.getGas(960))
+            .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(30)
             .addTo(fluidHeaterRecipes);
@@ -42,7 +42,7 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(GTModHandler.getDistilledWater(6))
-            .fluidOutputs(Materials.Water.getGas(960))
+            .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(30)
             .addTo(fluidHeaterRecipes);
@@ -66,8 +66,8 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.CalciumAcetateSolution.getFluid(1000))
-            .fluidOutputs(Materials.Acetone.getFluid(1000))
+            .fluidInputs(Materials.CalciumAcetateSolution.getFluid(1_000))
+            .fluidOutputs(Materials.Acetone.getFluid(1_000))
             .duration(4 * SECONDS)
             .eut(30)
             .addTo(fluidHeaterRecipes);
@@ -78,15 +78,15 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
 
             )
-            .fluidOutputs(Materials.Sodium.getFluid(1000))
+            .fluidOutputs(Materials.Sodium.getFluid(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Acetone.getFluid(1000))
-            .fluidOutputs(Materials.Ethenone.getGas(1000))
+            .fluidInputs(Materials.Acetone.getFluid(1_000))
+            .fluidOutputs(Materials.Ethenone.getGas(1_000))
             .duration(8 * SECONDS)
             .eut(160)
             .addTo(fluidHeaterRecipes);

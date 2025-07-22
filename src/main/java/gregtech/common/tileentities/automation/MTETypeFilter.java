@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.automation;
 
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,27 +101,27 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void cyclePrefix(boolean aRightClick) {
-        for (int i = 0; i < OrePrefixes.values().length; i++) {
-            if (this.mPrefix == OrePrefixes.values()[i]) {
-                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
+        final OrePrefixes[] ORE_VALUES = OrePrefixes.values();
+        for (int i = 0; i < ORE_VALUES.length; i++) {
+            if (this.mPrefix == ORE_VALUES[i]) {
+                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = ORE_VALUES[i]) {
                     if (aRightClick) {
                         do {
                             i--;
                             if (i < 0) {
-                                i = OrePrefixes.values().length - 1;
+                                i = ORE_VALUES.length - 1;
                             }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
                     } else {
                         do {
                             i++;
-                            if (i >= OrePrefixes.values().length) {
+                            if (i >= ORE_VALUES.length) {
                                 i = 0;
                             }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
                     }
-                    if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                        && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
-                        mPrefix = OrePrefixes.values()[i];
+                    if (!ORE_VALUES[i].mPrefixedItems.isEmpty() && ORE_VALUES[i].mPrefixInto == ORE_VALUES[i])
+                        mPrefix = ORE_VALUES[i];
                 }
             }
             this.mRotationIndex = -1;
@@ -141,7 +141,7 @@ public class MTETypeFilter extends MTESpecialFilter {
             this.mPrefix.mPrefixedItems
                 .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
-        if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
+        if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == WILDCARD) this.mInventory[9].setItemDamage(0);
     }
 
     @Override

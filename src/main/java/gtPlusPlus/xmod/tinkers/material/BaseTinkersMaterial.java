@@ -12,9 +12,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.tinkers.HandlerTinkers;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
@@ -35,7 +35,7 @@ public class BaseTinkersMaterial {
 
     public BaseTinkersMaterial(Material aMaterial) {
         mLocalName = aMaterial.getLocalizedName();
-        mUnlocalName = "material.gtpp." + Utils.sanitizeString(mLocalName);
+        mUnlocalName = "material.gtpp." + StringUtils.sanitizeString(mLocalName);
         mMaterial = aMaterial;
         mID = aNextFreeID++;
         Logger.INFO("[TiCon] Assigning ID " + mID + " to " + mLocalName + ".");

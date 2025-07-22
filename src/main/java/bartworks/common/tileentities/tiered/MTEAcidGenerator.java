@@ -31,7 +31,7 @@ import gregtech.api.render.TextureFactory;
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
     public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, new String[] {}, aTextures);
+        super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
     }
 
     public MTEAcidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

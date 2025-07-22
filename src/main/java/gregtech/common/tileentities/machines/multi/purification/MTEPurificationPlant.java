@@ -8,16 +8,17 @@ import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -178,7 +178,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant")
+        tt.addMachineType("Purification Plant, WPP")
             .addInfo("Main controller block for the Water Purification Plant.")
             .addInfo(
                 "Freely place " + EnumChatFormatting.YELLOW
@@ -294,11 +294,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -306,11 +306,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -515,7 +515,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         // Show linked purification units and their status
-        ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -524,17 +524,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             switch (status) {
                 case ONLINE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + StatCollector
-                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + StatCollector
-                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
@@ -563,10 +561,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
-        screenElements.widget(
-            new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
@@ -621,7 +621,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         // Title widget
         builder.widget(
-            new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
+            new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
+                .setTextAlignment(Alignment.Center)
                 .setPos(5, 10)
                 .setSize(windowWidth, 8));
 
@@ -641,9 +642,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Status").setLeftMargin(4)
-            .setSize(40, 16)
-            .setPos(10, 40);
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
+            translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
+                .setSize(40, 16)
+                .setPos(10, 40);
         widget.button()
             .setOnClick(
                 (clickData, w) -> {
@@ -739,7 +741,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip("Toggle debug mode.")
+                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));

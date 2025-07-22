@@ -11,7 +11,6 @@ import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -59,7 +58,7 @@ public class MetaGTProxy {
 
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
-                LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
+                LanguageRegistry.addName(new ItemStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
                 GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
@@ -84,13 +83,11 @@ public class MetaGTProxy {
                 "Eau chauffée", "Acqua riscaldata", "온수", "Água aquecida", "Água aquecida", "Вода с подогревом",
                 "Uppvärmt vatten", "Isıtılmış Su", "热水", "热水", };
             for (int i = 0; i < aLangs.length; i++) {
-                Logger
-                    .REFLECTION("Trying to inject new lang data for " + aLangs[i] + ", using value: " + aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "fluidHotWater", aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
         } catch (Throwable t) {
-
+            t.printStackTrace();
         }
     }
 }

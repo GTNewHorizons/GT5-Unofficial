@@ -447,8 +447,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         // Randomly generate ore stacks with the given chances, ores and size
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
-        int totalChance = Arrays.stream(tRecipe.mChances)
-            .sum();
+
+        int totalChance = 0;
+        if (tRecipe.mChances == null) {
+            totalChance = tRecipe.mOutputs.length * 10000;
+        } else {
+            for (int mChance : tRecipe.mChances) totalChance += mChance;
+        }
+
         try {
             for (int i = 0; i < data.maxSize * parallels; i++) {
                 int bonusStackChance = 0;
@@ -518,7 +524,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
             if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier))
                 .allMatch(
-                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0l)
+                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0L)
                         >= Math.max(input.stackSize, 1))) {
                 res |= 1 << tier;
             }
@@ -590,7 +596,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // T5: 0.578
         // The whole chance is multiplied by 2 - overdrive setting
         return Math.min(
-            (int) ((Math.pow((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
+            (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
             BONUS_STACK_MAX_CHANCE);
     }
 

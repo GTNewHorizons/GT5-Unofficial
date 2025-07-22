@@ -106,6 +106,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -520,7 +521,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                 if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
                                     int stacksize = itemStack.stackSize;
                                     if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                        ItemStack realItem = meBus.getRealInventory()[i + 16];
+                                        ItemStack realItem = meBus.getStackInSlot(i);
                                         if (realItem == null) {
                                             break;
                                         }
@@ -705,6 +706,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 destroyFirstRing();
@@ -717,6 +721,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> destroyFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         rendererTileEntity.setRenderRotation(getRotation(), getDirection());
         updateRenderer();
@@ -731,6 +737,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 buildFirstRing();
@@ -743,6 +752,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> buildFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         isRenderActive = false;
         disableWorking();
@@ -1645,7 +1656,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 () -> gravitonShardsAvailable,
                 () -> completeUpgrade(upgrade),
                 () -> respecUpgrade(upgrade),
-                () -> isUpgradeActive(upgrade)));
+                () -> isUpgradeActive(upgrade),
+                () -> formattingMode));
 
         if (upgrade.hasExtraCost()) {
             builder.widget(
@@ -2057,7 +2069,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         parent.addChild(new DynamicTextWidget(() -> {
             if (index < starColors.size()) {
                 ForgeOfGodsStarColor color = starColors.getByIndex(index);
-                return new Text(color.getName());
+                return new Text(color.getLocalizedName());
             }
             return Text.EMPTY;
         }).setDefaultColor(ForgeOfGodsUI.GOLD_ARGB)
@@ -2924,14 +2936,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private Text fuelUsage() {
-        return new Text(fuelConsumption + " L/5s");
+        return new Text(formattingMode.format(fuelConsumption) + " L/5s");
     }
 
     private Text storedFuel() {
         if (internalBattery == 0) {
-            return new Text(stellarFuelAmount + "/" + neededStartupFuel);
+            return new Text(formattingMode.format(stellarFuelAmount) + "/" + formattingMode.format(neededStartupFuel));
         }
-        return new Text(internalBattery + "/" + maxBatteryCharge);
+        return new Text(formattingMode.format(internalBattery) + "/" + formattingMode.format(maxBatteryCharge));
     }
 
     private Text storedFuelHeaderText() {
@@ -3127,7 +3139,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         sum = progress * (progress + 1) / 2;
         return new Text(
-            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": " + EnumChatFormatting.GRAY + sum);
+            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": "
+                + EnumChatFormatting.GRAY
+                + formattingMode.format(sum));
     }
 
     private Text totalMilestoneProgress(int milestoneID) {

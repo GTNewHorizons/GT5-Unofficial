@@ -9,10 +9,11 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -170,7 +171,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
-    private static final long CATALYST_BASE_COST = 144L;
+    private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
     private int correctStartIndex = -1;
     private int numCasings = 0;
@@ -195,21 +196,21 @@ public class MTEPurificationUnitBaryonicPerfection
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .addIcon(OVERLAY_FRONT_WATER_T8)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -445,7 +446,7 @@ public class MTEPurificationUnitBaryonicPerfection
             }
         }
         // Cost is exponential in function of amount of duplicate catalysts
-        return (int) (Math.pow(2, count) * CATALYST_BASE_COST);
+        return (int) (GTUtility.powInt(2, count) * CATALYST_BASE_COST);
     }
 
     // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence

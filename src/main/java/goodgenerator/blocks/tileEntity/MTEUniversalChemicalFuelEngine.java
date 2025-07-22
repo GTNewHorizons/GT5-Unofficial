@@ -288,7 +288,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
         if (!eDynamoMulti.isEmpty()) {
@@ -300,7 +300,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }
@@ -375,5 +375,10 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 }

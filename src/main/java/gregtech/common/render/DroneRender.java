@@ -11,7 +11,6 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.tileentities.render.TileEntityDrone;
@@ -22,10 +21,6 @@ public class DroneRender extends TileEntitySpecialRenderer {
     private static final ResourceLocation DroneTexture = new ResourceLocation(GregTech.ID, "textures/model/drone.png");
     private static final IModelCustom Drone = AdvancedModelLoader
         .loadModel(new ResourceLocation(GregTech.ID, "textures/model/drone.obj"));
-
-    public DroneRender() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, this);
-    }
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {

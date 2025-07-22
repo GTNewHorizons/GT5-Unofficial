@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.XSTR;
@@ -376,10 +377,10 @@ public class ParallelHelper {
             return;
         }
         if (itemInputs == null) {
-            itemInputs = new ItemStack[0];
+            itemInputs = GTValues.emptyItemStackArray;
         }
         if (fluidInputs == null) {
-            fluidInputs = new FluidStack[0];
+            fluidInputs = GTValues.emptyFluidStackArray;
         }
 
         if (!consume) {
@@ -398,6 +399,10 @@ public class ParallelHelper {
         final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
         if (availableEUt < tRecipeEUt) {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+            return;
+        }
+        if (!calculator.getAllowedTierSkip()) {
+            result = CheckRecipeResultRegistry.insufficientVoltage(tRecipeEUt);
             return;
         }
 
@@ -421,10 +426,10 @@ public class ParallelHelper {
 
         final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
             ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
-            : new ItemStack[0];
+            : GTValues.emptyItemStackArray;
         final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
             .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
-            : new FluidStack[0];
+            : GTValues.emptyFluidStackArray;
 
         SingleRecipeCheck recipeCheck = null;
         SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;

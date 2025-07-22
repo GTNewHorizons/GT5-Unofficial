@@ -37,6 +37,7 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.crop.TileEntityCrop;
 import mods.railcraft.common.blocks.machine.TileMultiBlock;
+import thaumcraft.common.tiles.TileOwned;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
@@ -146,16 +147,23 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
+        if (player.isSneaking()) return this.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
         Block target = world.getBlock(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
 
-        if (target.blockHardness < 0)
-            return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if (target.blockHardness < 0) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
-            return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking())
-            return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+            return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking()
+            || !isHarvestableOwned(tileEntity, player))
+            return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x, y, z, side);
@@ -170,7 +178,12 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
+        if (!Mods.Thaumcraft.isModLoaded() || !(tileEntity instanceof TileOwned owned)) return true;
+        return owned.owner.equals(player.getDisplayName());
     }
 
     private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
@@ -182,7 +195,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return true;
     }
 
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     private boolean isUnformedRCMulti(TileEntity tileEntity) {
         return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
     }

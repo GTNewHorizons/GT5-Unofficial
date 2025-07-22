@@ -93,7 +93,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public String getMachineType() {
-        return "Macerator, Pulverizer";
+        return "Macerator, Pulverizer, IMS";
     }
 
     @Override
@@ -108,11 +108,11 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addController("Bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Bottom casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addOutputBus("One per layer except bottom layer", 2)
-            .addMufflerHatch("Any casing except bottom layer", 2)
+            .addMufflerHatch("Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -277,7 +277,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack aGuiStack = this.getControllerSlot();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(aGuiStack, false, true)) {
                 controllerTier = 2;
-                mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 markDirty();
                 // schedule a structure check
                 mUpdated = true;
@@ -292,7 +292,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
                 controllerTier = 2;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 if (getBaseMetaTileEntity().isServerSide()) {
                     markDirty();
                     aPlayer.inventory.markDirty();
@@ -352,7 +352,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.6F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 1.6F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

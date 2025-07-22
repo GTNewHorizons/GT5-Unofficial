@@ -15,13 +15,14 @@ package bartworks.common.tileentities.multis;
 
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -39,9 +40,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
@@ -146,7 +147,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.DEHP.mode." + machineMode);
+        return translateToLocal("GT5U.DEHP.mode." + machineMode);
     }
 
     @Override
@@ -204,9 +205,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -231,9 +231,15 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 return false;
             }
         } else if (this.machineMode == 1) {
-            long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
-            if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+            long coolantConverted = 192L * this.mEfficiency / 10_000L;
+            if (this.getFluidFromHatches(
+                GTModHandler.getIC2Coolant(0)
+                    .getFluid())
+                - coolantConverted > 0) {
+                this.consumeFluid(
+                    GTModHandler.getIC2Coolant(0)
+                        .getFluid(),
+                    coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();

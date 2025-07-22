@@ -56,7 +56,7 @@ public class BeamlineRecipeLoader {
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
                 .getName(),
-            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000)
+            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1_000)
                 .getFluid());
 
         /*
@@ -149,7 +149,8 @@ public class BeamlineRecipeLoader {
                         GTValues.RA.stdBuilder()
                             .itemInputs(focusItem, wafer.get(1))
                             .itemOutputs(
-                                GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()))
+                                GTUtility
+                                    .copyAmountUnsafe((int) GTUtility.powInt(2, index + 2), mask.getProducedItem()))
                             .metadata(
                                 TARGET_CHAMBER_METADATA,
                                 TargetChamberMetadata.builder(focusItem)
@@ -157,7 +158,8 @@ public class BeamlineRecipeLoader {
                                     // 2x recipe amount increase per 2 increases in wafer tier.
                                     // This greatly incentivises the use of higher tier boule wafer recipes
                                     .amount(
-                                        (int) Math.round(mask.getBaselineAmount() * Math.pow(Math.sqrt(2), index - 1)))
+                                        (int) Math.round(
+                                            mask.getBaselineAmount() * Math.sqrt(GTUtility.powInt(2, index - 1))))
                                     .energy(mask.getMinEnergy(), mask.getMaxEnergy(), 1)
                                     .minFocus(mask.getMinFocus())
                                     .build())

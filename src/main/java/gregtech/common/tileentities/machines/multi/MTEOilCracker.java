@@ -263,7 +263,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         mMiddleInputHatches.clear();
         mInputOnSide = -1;
         mOutputOnSide = -1;
-        replaceDeprecatedCoils(aBaseMetaTileEntity);
         return checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0) && mInputOnSide != -1
             && mOutputOnSide != -1
             && mCasingAmount >= 18
@@ -274,26 +273,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEOilCracker(this.mName);
-    }
-
-    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
-        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
-        final int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        final int tY = aBaseMetaTileEntity.getYCoord();
-        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
-        for (int xPos = tX - 1; xPos <= tX + 1; xPos += (xDir != 0 ? 1 : 2))
-            for (int yPos = tY - 1; yPos <= tY + 1; yPos++)
-                for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
-                    if ((yPos == tY) && (xPos == tX || zPos == tZ)) continue;
-                    final int tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
-                    if (tUsedMeta < 12) continue;
-                    if (tUsedMeta > 14) continue;
-                    if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTechAPI.sBlockCasings1) continue;
-
-                    aBaseMetaTileEntity.getWorld()
-                        .setBlock(xPos, yPos, zPos, GregTechAPI.sBlockCasings5, tUsedMeta - 12, 3);
-                }
     }
 
     @Override

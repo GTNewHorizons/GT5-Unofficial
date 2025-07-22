@@ -39,6 +39,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
@@ -50,6 +51,7 @@ import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
@@ -65,6 +67,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     protected static final long DEFAULT_CAPACITY = 1_600;
     protected long baseCapacity = DEFAULT_CAPACITY;
+    public static final String COPIED_DATA_IDENTIFIER = "outputBusME";
 
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
@@ -311,6 +314,25 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
     public boolean isLocked() {
         return !this.lockedItems.isEmpty();
     }
@@ -472,6 +494,51 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
+        tag.setLong("baseCapacity", baseCapacity);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        baseCapacity = data.getLong("baseCapacity");
     }
 
     @Override

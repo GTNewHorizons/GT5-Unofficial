@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -82,14 +80,13 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -118,7 +115,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SUCCESSFUL = "main_successful";
-    private static final String[][] shape = new String[][] { { "AAA", "ABA", "AAA" }, { "DDD", "DGD", "DDD" },
+    private static final String[][] shape = new String[][] { { "CCC", "CBC", "CCC" }, { "DDD", "DGD", "DDD" },
         { "DDD", "DGD", "DDD" }, { "EEE", "EEE", "EEE" }, { "EFE", "FFF", "EFE" }, { "EEE", "EEE", "EEE" },
         { "D~D", "DGD", "DDD" }, { "DDD", "DGD", "DDD" }, { "CCC", "CBC", "CCC" } };
 
@@ -168,7 +165,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                             .map(s -> s.replaceAll("F", "H"))
                             .toArray(String[]::new))
                     .toArray(String[][]::new))
-            .addElement('A', ofChain(ofBlock(GregTechAPI.sBlockCasings2, 0), ofBlock(GregTechAPI.sBlockCasings3, 4)))
             .addElement(
                 'B',
                 buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
@@ -189,8 +185,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addElement('D', ofBlock(BW_BLOCKS[2], 1))
             .addElement(
                 'E',
-                StructureUtility.withChannel(
-                    "piston_block",
+                GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -199,8 +194,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                         t -> t.mBlockTier)))
             .addElement(
                 'F',
-                StructureUtility.withChannel(
-                    "piston_block",
+                GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -235,12 +229,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addMaintenanceHatch("Any Solid Steel Machine casing", 1)
+            .addInputBus("Any Solid Steel Machine casing", 1)
+            .addInputHatch("Any Solid Steel Machine casing", 1)
+            .addOutputBus("Any Solid Steel Machine casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
-            .addSubChannelUsage("piston_block", "Metal Block Tier")
+            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;
     }
@@ -256,17 +250,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                long voltage = MTEElectricImplosionCompressor.this.getAverageInputVoltage();
-                // Only allow a minimum of T-1 energy hatch
-                if (recipe.mEUt > voltage * 4) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @NotNull
-            @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 // For overclocking we'll allow all power to be used
                 return super.createOverclockCalculator(recipe)
@@ -278,7 +261,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
+        return (int) GTUtility.powInt(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {

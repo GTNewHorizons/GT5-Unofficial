@@ -197,22 +197,17 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean isPowerPassButtonEnabled() {
-        return true;
-    }
-
-    @Override
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
 
     @Override
-    public boolean isAllowedToWorkButtonEnabled() {
-        return true;
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     @Override
-    public boolean getDefaultHasMaintenanceChecks() {
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 }

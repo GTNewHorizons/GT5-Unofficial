@@ -92,7 +92,7 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
-import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
+import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -123,6 +123,7 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -142,7 +143,14 @@ public class WerkstoffLoader {
 
     public static final SubTag NOBLE_GAS = SubTag.getNewSubTag("NobleGas");
     public static final SubTag ANAEROBE_GAS = SubTag.getNewSubTag("AnaerobeGas");
+    /**
+     * Was used to add Nitrogen, Xenon and Oganesson to blast furnace smelting recipe. Now it just adds all types of
+     * gasses.
+     */
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
+    /**
+     * Was used to add noble gasses to blast furnace smelting recipe. Now it just adds all types of gasses.
+     */
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
@@ -1723,7 +1731,7 @@ public class WerkstoffLoader {
             ProgressManager.ProgressBar progressBar = ProgressManager
                 .push("Register BW Materials", Werkstoff.werkstoffHashSet.size() + 1);
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
-            Integer[] clsArr = {};
+            int[] clsArr = GTValues.emptyIntArray;
             int size = 0;
             if (BetterLoadingScreen.isModLoaded()) {
                 clsArr = CLSCompat.initCls();
@@ -1760,7 +1768,7 @@ public class WerkstoffLoader {
                 progressBar.step(werkstoff.getDefaultName());
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
-            BWCircuitsLoader.initNewCircuits();
+            BWMetaItems.init();
 
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();
@@ -1994,7 +2002,9 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        if (SideReference.Side.Client) BWBlockOreRenderer.register();
+        if (SideReference.Side.Client) {
+            BWBlockOreRenderer.register();
+        }
 
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedOre.class, "bw.blockoresTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedSmallOre.class, "bw.blockoresSmallTE");

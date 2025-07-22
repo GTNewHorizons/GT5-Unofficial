@@ -14,10 +14,9 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.FileUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 public class ThreadAspectScanner extends Thread {
@@ -37,10 +36,10 @@ public class ThreadAspectScanner extends Thread {
         }
         String nameKey;
         try {
-            nameKey = ItemUtils.getUnlocalizedItemName(aStack);
+            nameKey = aStack.getUnlocalizedName();
         } catch (NullPointerException n) {
             try {
-                nameKey = Utils.sanitizeString(
+                nameKey = StringUtils.sanitizeString(
                     aStack.getDisplayName()
                         .toLowerCase());
             } catch (NullPointerException n2) {
@@ -76,7 +75,7 @@ public class ThreadAspectScanner extends Thread {
                 String s = (String) iterator.next();
                 Block block = (Block) Block.blockRegistry.getObject(s);
                 if (block != null) {
-                    tryCacheObject(ItemUtils.getSimpleStack(block));
+                    tryCacheObject(new ItemStack(block));
                     mBlocksCounter++;
                 }
             }
@@ -94,18 +93,18 @@ public class ThreadAspectScanner extends Thread {
                         item.getSubItems(item, item.getCreativeTab(), q1);
                         if (q1 != null && !q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
-                                ItemStack check = ItemUtils.simpleMetaStack(item, e, 1);
+                                ItemStack check = new ItemStack(item, 1, e);
                                 if (check != null) {
                                     tryCacheObject(check);
                                     mItemsCounter++;
                                 }
                             }
                         } else {
-                            tryCacheObject(ItemUtils.getSimpleStack(item));
+                            tryCacheObject(new ItemStack(item));
                             mItemsCounter++;
                         }
                     } else {
-                        tryCacheObject(ItemUtils.getSimpleStack(item));
+                        tryCacheObject(new ItemStack(item));
                         mItemsCounter++;
                     }
                 }
@@ -119,7 +118,7 @@ public class ThreadAspectScanner extends Thread {
                 // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
                     ArrayList<ItemStack> group = mAllGameContent.get(key);
-                    if (group == null || group.size() <= 0) {
+                    if (group == null || group.size() == 0) {
                         continue;
                     }
                     for (ItemStack stack : group) {

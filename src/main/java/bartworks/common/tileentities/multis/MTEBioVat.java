@@ -150,7 +150,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat")
+        tt.addMachineType("Bacterial Vat, Bac Vat")
             .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
@@ -222,7 +222,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private int calcMod(double x) {
         double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
-        int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
+        int ret = MathUtils.ceilInt((-1D / y * (x - y) * (x - y) + y) / y * z);
         return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 

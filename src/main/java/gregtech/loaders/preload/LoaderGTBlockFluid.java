@@ -14,6 +14,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -58,6 +59,7 @@ import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -75,6 +77,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOres;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
@@ -85,6 +88,7 @@ import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.items.ItemMagLevHarness;
 import gregtech.common.items.ItemNeutronReflector;
 import gregtech.common.items.ItemSensorCard;
 import gregtech.common.items.ItemTierDrone;
@@ -99,16 +103,16 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
 public class LoaderGTBlockFluid implements Runnable {
 
     @Override
     public void run() {
-        Materials.Water.mFluid = (Materials.Ice.mFluid = GTModHandler.getWater(1000L)
-            .getFluid());
-        Materials.Lava.mFluid = GTModHandler.getLava(1000L)
-            .getFluid();
+        Materials.Water.mFluid = FluidRegistry.getFluid("water");
+        Materials.Ice.mFluid = FluidRegistry.getFluid("water");
+        Materials.Lava.mFluid = FluidRegistry.getFluid("lava");
 
         GTLog.out.println("GTMod: Register Books.");
 
@@ -162,8 +166,8 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
-        // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostLoad() because we need to wait for fluids to be
-        // registered.
+        // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostInitialization()
+        // because we need to wait for fluids to be registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
         // between load and post-load.
         MetaGeneratedItem98.preInit();
@@ -171,6 +175,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
+        new ItemMagLevHarness();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
@@ -547,6 +552,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings10 = new BlockCasings10();
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
+        GregTechAPI.sBlockCasings13 = new BlockCasings13();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
@@ -560,6 +566,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
+        GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -696,6 +703,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the BlackholeRender.");
         GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
+
+        GTLog.out.println("GTMod: Registering the NanoForgeRender.");
+        GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
@@ -856,7 +866,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(GTModHandler.getSteam(1000))
+            .fluidInputs(Materials.Steam.getGas(1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -1395,29 +1405,29 @@ public class LoaderGTBlockFluid implements Runnable {
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.FierySteel.getFluid(250L),
+                    Materials.FierySteel.getFluid(250),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
         }
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Milk.getFluid(1000L),
+                Materials.Milk.getFluid(1_000),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Milk.getFluid(250L),
+                Materials.Milk.getFluid(250),
                 ItemList.Bottle_Milk.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.HolyWater.getFluid(250L),
+                Materials.HolyWater.getFluid(250),
                 ItemList.Bottle_Holy_Water.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.McGuffium239.getFluid(250L),
+                Materials.McGuffium239.getFluid(250),
                 ItemList.McGuffium_239.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
@@ -1427,7 +1437,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(1000L),
+                Materials.Fuel.getFluid(1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
@@ -1454,7 +1464,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .withColorRGBA(tDye.getRGBA())
                     .withStateAndTemperature(LIQUID, 295)
                     .buildAndRegister()
-                    .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 2304)
+                    .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 16 * INGOTS)
                     .asFluid());
         }
         GTFluidFactory.builder("ice")
@@ -1475,7 +1485,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.redstone")
             .withLocalizedName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
@@ -1484,7 +1494,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.blaze")
             .withLocalizedName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
@@ -1493,7 +1503,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("wet.concrete")
             .withLocalizedName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
@@ -1502,28 +1512,28 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
                 && (!tMaterial.contains(SubTag.NO_SMELTING))) {
-                GTMod.gregtechproxy.addAutogeneratedMoltenFluid(tMaterial);
+                GTMod.proxy.addAutogeneratedMoltenFluid(tMaterial);
                 if ((tMaterial.mSmeltInto != tMaterial) && (tMaterial.mSmeltInto.mStandardMoltenFluid == null)) {
-                    GTMod.gregtechproxy.addAutogeneratedMoltenFluid(tMaterial.mSmeltInto);
+                    GTMod.proxy.addAutogeneratedMoltenFluid(tMaterial.mSmeltInto);
                 }
             }
             if (tMaterial.mElement != null || (tMaterial.mHasPlasma && !tMaterial.mIconSet.is_custom)) {
-                GTMod.gregtechproxy.addAutogeneratedPlasmaFluid(tMaterial);
+                GTMod.proxy.addAutogeneratedPlasmaFluid(tMaterial);
             }
             if (tMaterial.hasCorrespondingFluid()) {
-                GTMod.gregtechproxy.addAutoGeneratedCorrespondingFluid(tMaterial);
+                GTMod.proxy.addAutoGeneratedCorrespondingFluid(tMaterial);
             }
             if (tMaterial.hasCorrespondingGas()) {
-                GTMod.gregtechproxy.addAutoGeneratedCorrespondingGas(tMaterial);
+                GTMod.proxy.addAutoGeneratedCorrespondingGas(tMaterial);
             }
             if (tMaterial.canBeCracked()) {
-                GTMod.gregtechproxy.addAutoGeneratedHydroCrackedFluids(tMaterial);
-                GTMod.gregtechproxy.addAutoGeneratedSteamCrackedFluids(tMaterial);
+                GTMod.proxy.addAutoGeneratedHydroCrackedFluids(tMaterial);
+                GTMod.proxy.addAutoGeneratedSteamCrackedFluids(tMaterial);
             }
         }
 

@@ -19,9 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IRecipeMap;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -252,16 +250,47 @@ public class GTRecipeConstants {
 
     public static final RecipeMetadataKey<Integer> MASS = SimpleRecipeMetadataKey.create(Integer.class, "mass");
 
-    public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
-        .create(Boolean.class, "noble_gases");
-
-    public static final RecipeMetadataKey<Boolean> ANAEROBE_GASES = SimpleRecipeMetadataKey
-        .create(Boolean.class, "anaerobe_gases");
-
+    /**
+     * Whether non-gas recipe should be generated together with gas recipes.
+     */
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    /**
+     * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).
+     */
+    public static final RecipeMetadataKey<Integer> NO_GAS_CIRCUIT_CONFIG = SimpleRecipeMetadataKey
+        .create(Integer.class, "no_gas_circuit_config");
 
     public static final RecipeMetadataKey<Integer> EU_MULTIPLIER = SimpleRecipeMetadataKey
         .create(Integer.class, "eu_multiplier");
+
+    public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
+
+    /**
+     * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info.
+     * Maybe this will come in handy some day.
+     */
+    public enum DecayType {
+        Unknown,
+        /** Nucleus emits 2 protons and 2 neutrons, to form a single new nucleus. */
+        Alpha,
+        /** Nucleus splits into two smaller nuclei, often emitting several alpha particles. */
+        SpontaneousFission,
+        /** Nucleus emits a small cluster of protons/neutrons instead of individual protons or neutrons. */
+        Cluster,
+        /** Nucleus emits an alpha particle, often emitting or absorbing other particles in the process. */
+        AlphaTransfer,
+        /**
+         * Nucleus emits a positron, which typically converts a neutron into a proton, emitting a neutrino in the
+         * process.
+         */
+        BetaMinus,
+        /** A proton in the nucleus captures an electron to form a neutron, emitting a neutrino in the process. */
+        BetaPlus,
+    }
+
+    public static final RecipeMetadataKey<DecayType> DECAY_TYPE = SimpleRecipeMetadataKey
+        .create(DecayType.class, "decay-type");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
@@ -592,69 +621,57 @@ public class GTRecipeConstants {
     });
 
     /**
-     * Adds an Electric Blast Furnace recipe that might use gas.
+     * Add Electric Blast Furnace recipes that use gasses to reduce recipe time. Keep circuit config.
+     * <p>
+     * Use {@link GTRecipeConstants#COIL_HEAT} as heat level. Use {@link #ADDITIVE_AMOUNT} metadata as base gas consumed
+     * amount, and {@link #NO_GAS} metadata to generate recipe that is without gas. Recipe time will be 1.25x without
+     * gas.<br>
+     * Use {@link #NO_GAS_CIRCUIT_CONFIG} metadata as circuit config used in non-gas recipe if {@link #NO_GAS} is set to
+     * true.
      */
     public static final IRecipeMap BlastFurnaceWithGas = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();
-        int basicGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 1000);
-        double durationBase = builder.getDuration();
+        int baseGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 1000);
+        double baseDuration = builder.getDuration();
         ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-        int circuitConfig = 1;
-        if (items.size() == 1) {// Set circuit config if it is a dust -> ingot recipe.
-            ItemData data = GTOreDictUnificator.getAssociation(items.get(0));
-            if (data != null) {
-                OrePrefixes prefix = data.mPrefix;
-                if (OrePrefixes.dust.equals(prefix)) {
-                    circuitConfig = 1;
-                } else if (OrePrefixes.dustSmall.equals(prefix)) {
-                    circuitConfig = 4;
-                } else if (OrePrefixes.dustTiny.equals(prefix)) {
-                    circuitConfig = 9;
-                }
-            }
-        } else { // Set circuit config if there is an integrated circuit
-            for (int i = 0; i < items.size(); i++) {
-                if (GTUtility.isAnyIntegratedCircuit(items.get(i))) {
-                    circuitConfig = items.get(i)
-                        .getItemDamage();
-                    items.remove(i--);
-                }
-            }
-        }
 
-        if (builder.getMetadataOrDefault(NO_GAS, false)) {
-            items.add(GTUtility.getIntegratedCircuit(circuitConfig));
+        // Generate recipe with gas
+        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+            int duration = (int) Math.max(gasStat.recipeTimeMultiplier * baseDuration, 1);
             ret.addAll(
                 builder.copy()
                     .itemInputs(items.toArray(new ItemStack[0]))
-                    .fluidInputs()
-                    .duration((int) Math.max(durationBase * 1.1, 1))
-                    .addTo(RecipeMaps.blastFurnaceRecipes));
-            items.remove(items.size() - 1);
-            circuitConfig += 10;
-        }
-
-        items.add(GTUtility.getIntegratedCircuit(circuitConfig));
-        boolean nobleGases = builder.getMetadataOrDefault(NOBLE_GASES, false);
-        boolean anaerobeGases = builder.getMetadataOrDefault(ANAEROBE_GASES, false);
-        Collection<BlastFurnaceGasStat> gases = new ArrayList<>();
-
-        if (nobleGases && anaerobeGases) {
-            gases = BlastFurnaceGasStat.getNobleAndAnaerobeGases();
-        } else if (nobleGases) {
-            gases = BlastFurnaceGasStat.getNobleGases();
-        } else if (anaerobeGases) {
-            gases = BlastFurnaceGasStat.getAnaerobeGases();
-        }
-        for (BlastFurnaceGasStat gas : gases) {
-            int gasAmount = (int) (gas.recipeConsumedAmountMultiplier * basicGasAmount);
-            int duration = (int) Math.max(gas.recipeTimeMultiplier * durationBase, 1);
-            ret.addAll(
-                builder.copy()
-                    .itemInputs(items.toArray(new ItemStack[0]))
-                    .fluidInputs(GTUtility.copyAmount(gasAmount, gas.gas))
+                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
                     .duration(duration)
                     .addTo(RecipeMaps.blastFurnaceRecipes));
+        }
+
+        // Generate recipe without gas
+        if (builder.getMetadataOrDefault(NO_GAS, false)) {
+            int circuitConfig = builder.getMetadataOrDefault(NO_GAS_CIRCUIT_CONFIG, -1);
+            for (int i = 0; i < items.size(); i++) {
+                if (GTUtility.isAnyIntegratedCircuit(items.get(i))) {
+                    items.remove(i);
+                    break;
+                }
+            }
+            if (circuitConfig == -1) {
+                ret.addAll(
+                    builder.copy()
+                        .itemInputs(items.toArray(new ItemStack[0]))
+                        .fluidInputs()
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
+                        .addTo(RecipeMaps.blastFurnaceRecipes));
+            } else {
+                items.add(GTUtility.getIntegratedCircuit(circuitConfig));
+                ret.addAll(
+                    builder.copy()
+                        .itemInputs(items.toArray(new ItemStack[0]))
+                        .fluidInputs()
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
+                        .addTo(RecipeMaps.blastFurnaceRecipes));
+            }
         }
         return ret;
     });

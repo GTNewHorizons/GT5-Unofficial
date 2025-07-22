@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -74,7 +75,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             'H',
             InputHatch.withAdder(MTEHeatExchanger::addHotFluidInputToMachineList)
                 .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
-                .newAny(CASING_INDEX, 3))
+                .newAny(CASING_INDEX, 2))
         .addElement(
             'c',
             buildHatchAdder(MTEHeatExchanger.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
@@ -114,18 +115,17 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, LHE")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("Inputs are Hot Coolant or Lava")
-            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-            .addInfo("Read the wiki article to understand how it works")
-            .addInfo("Then go to the Discord to understand the wiki")
+            .addInfo("Inputs are Lava, Hot Coolant, or Hot Solar Salt")
+            .addInfo("Outputs Pahoehoe Lava, IC2 Coolant, or Cold Solar Salt")
+            .addInfo("Converts Distilled Water into Steam/SH Steam in the process")
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
+            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
             .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center", 2)
+            .addInputHatch("Hot Fluid, bottom center casing", 2)
             .addInputHatch("Distilled water, any casing", 1)
-            .addOutputHatch("Cold fluid, top center", 3)
+            .addOutputHatch("Cold Fluid, top center casing", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
             .toolTipFinisher();
         return tt;
@@ -270,7 +270,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                                                                                                      // superheated
                                                                                                      // steam
                     } else {
-                        addOutput(GTModHandler.getSteam(tGeneratedEU)); // Generate regular steam
+                        addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                     dryHeatCounter = 0;
                 } else {

@@ -46,7 +46,10 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -56,16 +59,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -205,30 +211,66 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tRecipe = null;
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
-            if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
+            boolean isDataStick = ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true);
+            boolean isDataOrb = ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true);
+            if (isDataStick || isDataOrb) {
                 switch (machineType) {
                     case scanner -> {
-                        for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
-                            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                                boolean failScanner = true;
-                                for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
-                                    if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
-                                        failScanner = false;
-                                        break;
+                        if (isDataStick) {
+                            for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                                if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                                    boolean failScanner = true;
+                                    for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
+                                        if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
+                                            failScanner = false;
+                                            break;
+                                        }
                                     }
+                                    if (failScanner) {
+                                        return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
+                                    }
+                                    this.tRecipe = assRecipe;
+                                    // Set property
+                                    computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
+                                        * GTUtility.powInt(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                    mMaxProgresstime = 20;
+                                    mEfficiencyIncrease = 10000;
+                                    eRequiredData = 1;
+                                    eAmpereFlow = 1;
+                                    mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
+                                    eHolders.get(0)
+                                        .getBaseMetaTileEntity()
+                                        .setActive(true);
+                                    return SimpleCheckRecipeResult.ofSuccess("scanning");
                                 }
-                                if (failScanner) {
-                                    return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
-                                }
-                                this.tRecipe = assRecipe;
+                            }
+                        } else {
+                            ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
+                            if ((tData != null)
+                                && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
+                                && (tData.mMaterial.mMaterial.mElement != null)
+                                && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
+                                && (tData.mMaterial.mMaterial != Materials.Magic)
+                                && (tData.mMaterial.mMaterial.getMass() > 0L)) {
+
+                                this.tRecipe = new GTRecipe.RecipeAssemblyLine(
+                                    holdItem.copy(),
+                                    (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
+                                    (int) TierEU.RECIPE_UV,
+                                    GTValues.emptyItemStackArray,
+                                    GTValues.emptyFluidStackArray,
+                                    holdItem.copy(),
+                                    1,
+                                    30); // make fake recipe
                                 // Set property
-                                computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
-                                    * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                computationRequired = computationRemaining = GTUtility
+                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from MTEScanner
+                                                                                           // class
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
+                                mEUt = (int) -TierEU.RECIPE_UV;
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
@@ -261,13 +303,19 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (!eHolders.isEmpty()) {
-            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                eHolders.get(0)
-                    .getBaseMetaTileEntity()
-                    .setActive(false);
-                eHolders.get(0).mInventory[0] = null;
+        if (!eHolders.isEmpty() && tRecipe != null) {
+            eHolders.get(0)
+                .getBaseMetaTileEntity()
+                .setActive(false);
+            if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
                 makeStick();
+                eHolders.get(0).mInventory[0] = null;
+            } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
+                ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
+                assert tData != null;
+                BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
+                eHolders.get(0).mInventory[0] = null;
             }
         }
         computationRequired = computationRemaining = 0;

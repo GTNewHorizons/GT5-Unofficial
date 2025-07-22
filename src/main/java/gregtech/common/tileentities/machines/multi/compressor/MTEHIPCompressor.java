@@ -310,12 +310,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setFloat("heat", heat);
         aNBT.setBoolean("cooling", overheated);
@@ -395,7 +389,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 }
                 return super.onRecipeStart(recipe);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int coolingTimer = 0;
@@ -413,7 +408,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         // Cupronickel is 0, so base will be 5% increase
         // Also reset cooling speed
         if (this.maxProgresstime() != 0) {
-            heatMod = (float) (5 * Math.pow(0.9, coilTier));
+            heatMod = (float) (5 * GTUtility.powInt(0.9, coilTier));
             coolingTimer = 0;
         } else {
             // If the machine isn't running, add and increment the cooling timer
