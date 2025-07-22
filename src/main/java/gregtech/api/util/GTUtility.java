@@ -28,6 +28,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -520,9 +521,10 @@ public class GTUtility {
         return "(" + GTValues.VN[getTier(voltage)] + ")";
     }
 
-    public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
-        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
-            aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
+    public static void sendChatToPlayer(EntityPlayer player, String message) {
+        if (message != null) {
+            message = processFormatStacks(message);
+            player.addChatComponentMessage(new ChatComponentText(message));
         }
     }
 
@@ -540,6 +542,99 @@ public class GTUtility {
         MinecraftServer.getServer()
             .getConfigurationManager()
             .sendChatMsg(chatComponent);
+    }
+
+    /** Uses thread analysis, works on dedicated servers. */
+    public static boolean isServer() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer();
+    }
+
+    /** Uses thread analysis, works on dedicated servers. */
+    public static boolean isClient() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
+    }
+
+    private static final char FORMAT_ESCAPE = '§';
+    public static final String FORMAT_PUSH_STACK = FORMAT_ESCAPE + "s";
+    public static final String FORMAT_POP_STACK = FORMAT_ESCAPE + "t";
+
+    /**
+     * Pre-processes a localized chat message with custom format push/pop instructions. This allows nested localizations
+     * to set their own format without clobbering whatever came before, without needing any extra context info.
+     * <p>
+     * </p>
+     * Example: {@code §a§lHello §s§eWorld§t!} is transformed into {@code §a§lHello §eWorld§a§l!}
+     */
+    public static String processFormatStacks(String message) {
+        // Short circuit if there aren't any pops, because pops mutate while pushes don't.
+        // Invalid codes are ignored by the font renderer so it won't cause problems if we ignore erroneous pushes.
+        if (!message.contains(FORMAT_POP_STACK)) return message;
+
+        StringBuilder out = new StringBuilder();
+        out.ensureCapacity(message.length() * 6 / 5);
+
+        int len = message.length();
+
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        String currentFormat = "";
+
+        int start = 0;
+
+        while (start < len) {
+            // Find the next format escape char
+            int end = message.indexOf(FORMAT_ESCAPE, start);
+
+            // If we hit the end of the string, push the rest of the input and stop
+            if (end == -1) {
+                out.append(message, start, len);
+                break;
+            }
+
+            // If there was any text from the end of the previous code to the start of this one, add it to the output
+            // buffer
+            if (end > start) {
+                out.append(message, start, end);
+            }
+
+            // If the current format escape char has a code after it, check it
+            if (end < len - 1) {
+                char code = message.charAt(end + 1);
+
+                if (code >= '0' && code <= '9' || code >= 'a' && code <= 'f') {
+                    // Colours, use as-is and erase the previous format
+                    currentFormat = "" + FORMAT_ESCAPE + code;
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code >= 'k' && code <= 'o') {
+                    // Styles, use as-is and append to the colour style (note: this may act up with repeated style
+                    // codes but it shouldn't break anything).
+                    currentFormat = currentFormat + FORMAT_ESCAPE + code;
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code == 'r') {
+                    // Reset, use as-is and clear the format
+                    currentFormat = "";
+                    out.append(FORMAT_ESCAPE)
+                        .append(code);
+                } else if (code == 's') {
+                    // Push, save the current format and don't emit to the output buffer
+                    stack.push(currentFormat);
+                } else if (code == 't') {
+                    // Pop, restore the top format and don't emit to the output buffer
+                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    out.append(currentFormat);
+                }
+
+                // Skip the format escape along with its code
+                start = end + 2;
+            }
+        }
+
+        return out.toString();
     }
 
     public static void checkAvailabilities() {

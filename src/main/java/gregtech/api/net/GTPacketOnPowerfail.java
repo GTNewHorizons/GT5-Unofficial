@@ -3,14 +3,14 @@ package gregtech.api.net;
 import java.util.Date;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.GTMod;
+import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.crossmod.navigator.PowerfailLayerManager;
@@ -72,13 +72,16 @@ public class GTPacketOnPowerfail extends GTPacket {
             .put(powerfail.getCoord(), powerfail);
 
         if (Client.chat.powerfailNotifications && (previous == null || previous.getSecs() > 60)) {
-            player.addChatMessage(new ChatComponentText(powerfail.toString()));
+            GTUtility.sendChatToPlayer(
+                player,
+                powerfail.toDescription()
+                    .toString());
 
             if (Client.chat.printPowerfailHelpText && !printedHelpMessage) {
                 printedHelpMessage = true;
                 Client.save();
 
-                player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.powerfail.hint"));
+                ChatMessage.PowerfailCommandHint.send(player);
             }
         }
 

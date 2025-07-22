@@ -1,8 +1,5 @@
 package gregtech.common.data;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +40,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -52,7 +50,7 @@ import gregtech.api.net.GTPacketOnPowerfail;
 import gregtech.api.net.GTPacketUpdatePowerfails;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTTextBuilder;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.Localized;
 import gregtech.api.util.NBTPersist;
 import gregtech.common.config.Gregtech;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -189,7 +187,7 @@ public class GTPowerfailTracker {
             return imte == null ? "<error>" : imte.getLocalName();
         }
 
-        public String getDurationText() {
+        public Localized getDurationText() {
             float secs = getSecs();
 
             int value;
@@ -211,30 +209,29 @@ public class GTPowerfailTracker {
 
             if (value != 1) key += ".plural";
 
-            return GTUtility.formatNumbers(value) + " " + GTUtility.translate(key);
+            return new Localized(key, value).setBase(GTTextBuilder.NUMERIC);
         }
 
-        public String toSummary() {
-            String key = count != 1 ? "GT5U.gui.chat.powerfail.waypoint.plural" : "GT5U.gui.chat.powerfail.waypoint";
-
-            return new GTTextBuilder(key).setBase(EnumChatFormatting.GRAY)
+        public Localized toSummary() {
+            // spotless:off
+            return new GTTextBuilder(ChatMessage.PowerfailWaypoint).setBase(EnumChatFormatting.GRAY)
                 .addName(getMTEName())
                 .addNumber(count)
-                .addValue(getDurationText())
-                .toString();
+                .addLocalized(getDurationText())
+                .toLocalized();
+            // spotless:on
         }
 
-        @Override
-        public String toString() {
-            String key = count != 1 ? "GT5U.gui.chat.powerfail.plural" : "GT5U.gui.chat.powerfail";
-
-            return new GTTextBuilder(key).setBase(EnumChatFormatting.GRAY)
+        public Localized toDescription() {
+            // spotless:off
+            return new GTTextBuilder(ChatMessage.PowerfailDescription).setBase(EnumChatFormatting.GRAY)
                 .addName(getMTEName())
                 .addCoord(x, y, z)
-                .addValue(GTUtility.getDimensionName(dim))
+                .addLocalized(new Localized(ChatMessage.Dimension, dim).setBase(GTTextBuilder.VALUE))
                 .addNumber(count)
-                .addNumber(getDurationText())
-                .toString();
+                .addLocalized(getDurationText())
+                .toLocalized();
+            // spotless:on
         }
     }
 
@@ -349,12 +346,12 @@ public class GTPowerfailTracker {
             OptionalInt.empty());
 
         if (!powerfails.isEmpty()) {
-            // spotless:off
-            GTUtility.sendChatToPlayer(event.player, GRAY + "You have " + GOLD + powerfails.size() + GRAY + " uncleared powerfail" + (powerfails.size() > 1 ? "s" : "") + ".");
-            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails list for more info.");
-            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails clear or /powerfails clear-dim to clear powerfails.");
-            GTUtility.sendChatToPlayer(event.player, GRAY + "Use /powerfails show or /powerfails hide to toggle overlay rendering.");
-            // spotless:on
+            new GTTextBuilder(ChatMessage.PowerfailGreeting).setBase(EnumChatFormatting.GRAY)
+                .addNumber(powerfails.size())
+                .toLocalized()
+                .sendChat(event.player);
+
+            ChatMessage.PowerfailCommandHint.send(event.player);
         }
 
         sendPlayerPowerfailStatus(playerMP);

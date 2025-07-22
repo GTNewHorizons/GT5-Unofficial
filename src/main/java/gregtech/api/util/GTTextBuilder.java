@@ -1,7 +1,5 @@
 package gregtech.api.util;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
-
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -9,16 +7,36 @@ import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gregtech.api.enums.ChatMessage;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.net.GTPacketChat;
 
+/**
+ * A text builder meant for use with complex localization formats. All formatting is handled by this text builder, so
+ * localization keys should just include the text. All values are converted to strings when localized. Localization is
+ * deferred as long as possible, and may be deferred to the client if {@link #toLocalized()} is used.
+ * 
+ * @see gregtech.api.enums.ChatMessage
+ * @see GTPacketChat
+ * @see Localized
+ * @see GTUtility#processFormatStacks(String)
+ */
 public class GTTextBuilder {
 
-    public String langKey;
-    public ArrayList<String> values = new ArrayList<>();
+    public static final EnumChatFormatting NAME = EnumChatFormatting.DARK_AQUA;
+    public static final EnumChatFormatting NUMERIC = EnumChatFormatting.GOLD;
+    public static final EnumChatFormatting VALUE = EnumChatFormatting.GREEN;
+
+    public Object key;
+    public ArrayList<Object> values = new ArrayList<>();
     public EnumChatFormatting base = EnumChatFormatting.WHITE;
 
     public GTTextBuilder(String langKey) {
-        this.langKey = langKey;
+        this.key = langKey;
+    }
+
+    public GTTextBuilder(ChatMessage message) {
+        this.key = message;
     }
 
     public GTTextBuilder setBase(EnumChatFormatting base) {
@@ -37,22 +55,27 @@ public class GTTextBuilder {
         return this;
     }
 
+    public GTTextBuilder addLocalized(Localized l) {
+        values.add(l);
+        return this;
+    }
+
     public GTTextBuilder addName(String name) {
-        add(EnumChatFormatting.DARK_AQUA, name);
+        add(NAME, name);
         return this;
     }
 
     public GTTextBuilder addCoord(int x, int y, int z) {
         values.add(
-            "X=" + GOLD
+            "X=" + NUMERIC
                 + GTUtility.formatNumbers(x)
                 + base
                 + " Y="
-                + GOLD
+                + NUMERIC
                 + GTUtility.formatNumbers(y)
                 + base
                 + " Z="
-                + GOLD
+                + NUMERIC
                 + GTUtility.formatNumbers(z)
                 + base);
         return this;
@@ -64,37 +87,41 @@ public class GTTextBuilder {
     }
 
     public GTTextBuilder addValue(String value) {
-        add(EnumChatFormatting.GREEN, value);
+        add(VALUE, value);
         return this;
     }
 
     public GTTextBuilder addNumber(int i) {
-        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(i));
+        add(NUMERIC, GTUtility.formatNumbers(i));
         return this;
     }
 
     public GTTextBuilder addNumber(long l) {
-        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(l));
+        add(NUMERIC, GTUtility.formatNumbers(l));
         return this;
     }
 
     public GTTextBuilder addNumber(float f) {
-        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(f));
+        add(NUMERIC, GTUtility.formatNumbers(f));
         return this;
     }
 
     public GTTextBuilder addNumber(double d) {
-        add(EnumChatFormatting.GOLD, GTUtility.formatNumbers(d));
+        add(NUMERIC, GTUtility.formatNumbers(d));
         return this;
     }
 
     public GTTextBuilder addNumber(String s) {
-        add(EnumChatFormatting.GOLD, s);
+        add(NUMERIC, s);
         return this;
+    }
+
+    public Localized toLocalized() {
+        return new Localized(key, values.toArray()).setBase(base);
     }
 
     @Override
     public String toString() {
-        return base.toString() + GTUtility.translate(langKey, values.toArray());
+        return toLocalized().toString();
     }
 }

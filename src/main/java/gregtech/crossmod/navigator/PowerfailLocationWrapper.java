@@ -22,7 +22,14 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
 
     @Override
     public Waypoint toWaypoint() {
-        return new Waypoint(powerfail.x, powerfail.y, powerfail.z, powerfail.dim, powerfail.toSummary(), 0xFF3333);
+        return new Waypoint(
+            powerfail.x,
+            powerfail.y,
+            powerfail.z,
+            powerfail.dim,
+            powerfail.toSummary()
+                .toString(),
+            0xFF3333);
     }
 
     @Override

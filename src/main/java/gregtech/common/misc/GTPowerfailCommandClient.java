@@ -4,18 +4,15 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
 
+import gregtech.api.enums.ChatMessage;
 import gregtech.common.config.Client;
 
 public class GTPowerfailCommandClient extends GTPowerfailCommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if (!(sender instanceof EntityClientPlayerMP player)) {
-            sender.addChatMessage(new ChatComponentText("This command can only be ran by a player"));
-            return;
-        }
+        EntityClientPlayerMP player = (EntityClientPlayerMP) sender;
 
         if (args.length < 1) {
             sendHelpMessage(sender);
@@ -27,13 +24,13 @@ public class GTPowerfailCommandClient extends GTPowerfailCommand {
                 Client.render.renderPowerfailNotifications = true;
                 Client.save();
 
-                sender.addChatMessage(new ChatComponentText("Enabled powerfail overlay rendering."));
+                ChatMessage.PowerfailRenderShown.send(player);
             }
             case "hide" -> {
                 Client.render.renderPowerfailNotifications = false;
                 Client.save();
 
-                sender.addChatMessage(new ChatComponentText("Disabled powerfail overlay rendering."));
+                ChatMessage.PowerfailRenderHidden.send(player);
             }
             case "help" -> {
                 sendHelpMessage(sender);
