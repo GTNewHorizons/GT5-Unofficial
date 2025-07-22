@@ -144,6 +144,10 @@ public class VoidMinerUtility {
         public Map<GTUtility.ItemId, Float> getInternalMap() {
             return internalMap;
         }
+
+        public GTUtility.ItemId nextOre() {
+            return ores[voseAliasMethod.next()];
+        }
     }
 
     public static final Map<Integer, DropMap> dropMapsByDimId = new HashMap<>();

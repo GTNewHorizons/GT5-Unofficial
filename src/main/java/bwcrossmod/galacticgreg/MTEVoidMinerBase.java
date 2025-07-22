@@ -170,7 +170,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @return the chosen ore
      */
     private ItemStack nextOre() {
-        return this.dropMap.nextOre().getItemStack();
+        return this.dropMap.nextOre()
+            .getItemStack();
     }
 
     /**
