@@ -61,6 +61,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
+    private VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
     private int multiplier = 1;
@@ -218,6 +219,18 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     /**
+     * Handles the ores added manually with {@link VoidMinerUtility#addMaterialToDimensionList}
+     *
+     * @param id the specified dim id
+     */
+    private void handleExtraDrops(int id) {
+        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
+            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
+        }
+    }
+
+
+    /**
      * Gets the DropMap of the dim for the specified dim id
      *
      * @param id the dim number
@@ -243,10 +256,12 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      */
     private void calculateDropMap() {
         this.dropMap = new VoidMinerUtility.DropMap();
+        this.extraDropMap = new VoidMinerUtility.DropMap();
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         this.handleModDimDef(id);
-        this.totalWeight = dropMap.getTotalWeight();
+        this.handleExtraDrops(id);
+        this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
     /**

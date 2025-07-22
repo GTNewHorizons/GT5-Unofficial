@@ -152,6 +152,7 @@ public class VoidMinerUtility {
 
     public static final Map<Integer, DropMap> dropMapsByDimId = new HashMap<>();
     public static final Map<String, DropMap> dropMapsByChunkProviderName = new HashMap<>();
+    public static final Map<Integer, DropMap> extraDropsDimMap = new HashMap<>();
 
     // Adds tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic
     // Dust and Circuit Compound MK3 Dust
@@ -309,10 +310,10 @@ public class VoidMinerUtility {
     }
 
     public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        if (!dropMapsByDimId.containsKey(dimId)) {
-            dropMapsByDimId.put(dimId, new DropMap());
+        if (!extraDropsDimMap.containsKey(dimId)) {
+            extraDropsDimMap.put(dimId, new DropMap());
         }
-        dropMapsByDimId.get(dimId)
+        extraDropsDimMap.get(dimId)
             .addDrop(block, meta, weight);
     }
 
