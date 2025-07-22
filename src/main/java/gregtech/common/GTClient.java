@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import gregtech.common.render.ModularSolidifierRenderer;
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -285,6 +287,7 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class,  new NanoForgeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityModularSolidifierRenderer.class, new ModularSolidifierRenderer());
 
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {

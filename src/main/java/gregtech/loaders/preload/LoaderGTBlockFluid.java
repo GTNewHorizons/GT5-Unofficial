@@ -21,6 +21,8 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.blocks.BlockModularSolidifierRenderer;
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -567,6 +569,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
         GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+        GregTechAPI.modularSolidifierRender = new BlockModularSolidifierRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -706,6 +709,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the NanoForgeRender.");
         GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
+
+        GTLog.out.println("GTMod: Registering the ModularSolidifierRender.");
+        GameRegistry.registerTileEntity(TileEntityModularSolidifierRenderer.class,"ModularSolidifierRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");

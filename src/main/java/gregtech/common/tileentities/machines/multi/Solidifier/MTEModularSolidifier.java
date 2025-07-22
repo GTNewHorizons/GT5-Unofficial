@@ -27,9 +27,15 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -73,6 +79,9 @@ import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
+
+    private boolean renderActive = false;
+    private boolean renderDisabled = false;
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -297,6 +306,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         modules[1] = SolidifierModules.getModule(aNBT.getInteger("module2OR"));
         modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
         modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
+        renderActive = aNBT.getBoolean("renderActive");
+        renderDisabled = aNBT.getBoolean("renderDisabled");
     }
 
     @Override
@@ -307,6 +318,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         aNBT.setInteger("module2OR", modules[1].ordinal());
         aNBT.setInteger("module3OR", modules[2].ordinal());
         aNBT.setInteger("module4OR", modules[3].ordinal());
+        aNBT.setBoolean("renderActive", renderActive);
+        aNBT.setBoolean("renderDisabled", renderDisabled);
     }
 
     @Override
@@ -402,6 +415,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + "7"
                     + EnumChatFormatting.GRAY
                     + " different options.")
+            .addInfo(
+                "Toggle Render with Screwdriver.")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("" + EnumChatFormatting.BOLD + EnumChatFormatting.RED + "Glorious Evolution!")
@@ -889,7 +904,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             checkSolidifierModules();
             if (tdsPresent) return;
         }
+
         modules[index] = moduleToAdd;
+        if (moduleToAdd != SolidifierModules.UNSET)
+        {
+            //update render color at pos.
+        }
     }
 
     // its not good to run the same method 5 times over per tick when displaying stats, but its fine i guess
@@ -911,6 +931,43 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public String getOCFactorString() {
         checkSolidifierModules();
         return 2 + ocFactorAdditive + " : 4";
+    }
+
+    //rendering stuff
+    private TileEntityModularSolidifierRenderer getRenderer() {
+        ChunkCoordinates renderPos = getRenderPos();
+        TileEntity tile = this.getBaseMetaTileEntity()
+            .getWorld()
+            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
+
+        if (tile instanceof TileEntityModularSolidifierRenderer modularSolidifierTile) {
+            return modularSolidifierTile;
+        }
+        return null;
+    }
+
+    private ChunkCoordinates getRenderPos() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+        //todo: update this?
+        double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX
+            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetX;
+        double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY
+            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetY;
+        double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ
+            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
+        return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        renderDisabled = !renderDisabled;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
     }
 
     public String coolingStrOrder(String val1, String val2, String val3) {
