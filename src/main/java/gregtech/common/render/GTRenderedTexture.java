@@ -17,14 +17,13 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
-import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.LightingHelper;
 
-public class GTRenderedTexture extends GTTextureBase implements ITexture, IColorModulationContainer {
+public class GTRenderedTexture extends GTTextureBase implements ITexture {
 
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
@@ -201,11 +200,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
-    }
-
-    @Override
-    public short[] getRGBA() {
-        return mRGBa;
     }
 
     @Override
