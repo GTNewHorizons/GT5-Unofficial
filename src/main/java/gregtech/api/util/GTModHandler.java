@@ -583,8 +583,12 @@ public class GTModHandler {
             aRecipe);
     }
 
-    public static boolean addMachineCraftingRecipe(ItemStack aResult, Object[] aRecipe, int machineTier) {
-        if (aRecipe == null) return true;
+    public static void addMachineCraftingRecipe(ItemStack aResult, Object[] aRecipe, int machineTier) {
+        GTModHandler.addMachineCraftingRecipe(aResult,GTModHandler.RecipeBits.BITSD, aRecipe, machineTier);
+    }
+
+    public static void addMachineCraftingRecipe(ItemStack aResult,long aBitMask, Object[] aRecipe, int machineTier) {
+        if (aRecipe == null) return;
 
         for (int i = 3; i < aRecipe.length; i++) {
             if (!(aRecipe[i] instanceof MTEBasicMachineWithRecipe.X)) continue;
@@ -891,15 +895,9 @@ public class GTModHandler {
             // spotless:on
         }
 
-        if (!GTModHandler.addCraftingRecipe(
-            aResult,
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.BUFFERED
-                | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            aRecipe)) {
+        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
             throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
         }
-        return true;
     }
 
     /**
