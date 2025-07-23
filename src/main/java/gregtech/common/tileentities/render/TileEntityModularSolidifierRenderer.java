@@ -16,6 +16,7 @@ public class TileEntityModularSolidifierRenderer extends TileEntity {
     private float [] rgbm2 = new float[3];
     private float [] rgbm3 = new float[3];
     private float [] rgbm4 = new float[3];
+    private int renderedModules = 0;
     private static final String NBT_TAG = "FOUNDRY_";
     private static final String RUNNING_NBT_TAG = NBT_TAG + "RUNNING";
     private static final String M1_RED_NBT_TAG = NBT_TAG + "M1_RED";
@@ -113,27 +114,22 @@ public class TileEntityModularSolidifierRenderer extends TileEntity {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
-    public void setColorM1(float[] rgbArray) {
-        if (!worldObj.isRemote) {
-            rgbm1 = rgbArray;
-            updateToClient();
-        }
-    }
-    public void setColorM2(float[] rgbArray) {
-        if (!worldObj.isRemote) {
-            rgbm2 = rgbArray;
-            updateToClient();
-        }
-    }
-    public void setColorM3(float[] rgbArray) {
-        if (!worldObj.isRemote) {
-            rgbm3 = rgbArray;
-            updateToClient();
-        }
-    }
-    public void setColorM4(float[] rgbArray) {
-        if (!worldObj.isRemote) {
-            rgbm4 = rgbArray;
+
+    //no elegance needed :P
+    public void setModuleColorWithIndex(float[] rgbArray, int index)
+    {
+        if(!worldObj.isRemote) {
+            switch (index) {
+                case 1: rgbm1 = rgbArray;
+                    break;
+                case 2: rgbm2 = rgbArray;
+                    break;
+                case 3: rgbm3 = rgbArray;
+                    break;
+                case 4: rgbm4 = rgbArray;
+                    break;
+
+            }
             updateToClient();
         }
     }
@@ -152,6 +148,13 @@ public class TileEntityModularSolidifierRenderer extends TileEntity {
 
     public float[] getRgbm4() {
         return rgbm4;
+    }
+    public int getRenderedModules(){
+        return renderedModules;
+    }
+    public void setRenderedModules(int moduleCount)
+    {
+        renderedModules = moduleCount;
     }
 
 }

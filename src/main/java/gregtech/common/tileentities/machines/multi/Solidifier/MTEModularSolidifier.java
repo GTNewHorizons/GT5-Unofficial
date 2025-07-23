@@ -28,14 +28,15 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -80,8 +81,7 @@ import tectech.thing.casing.TTCasingsContainer;
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
 
-    private boolean renderActive = false;
-    private boolean renderDisabled = false;
+
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -307,7 +307,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         modules[1] = SolidifierModules.getModule(aNBT.getInteger("module2OR"));
         modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
         modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
-        renderActive = aNBT.getBoolean("renderActive");
         renderDisabled = aNBT.getBoolean("renderDisabled");
     }
 
@@ -319,7 +318,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         aNBT.setInteger("module2OR", modules[1].ordinal());
         aNBT.setInteger("module3OR", modules[2].ordinal());
         aNBT.setInteger("module4OR", modules[3].ordinal());
-        aNBT.setBoolean("renderActive", renderActive);
         aNBT.setBoolean("renderDisabled", renderDisabled);
     }
 
@@ -678,6 +676,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             SolidifierModules m = modules[i];
             if (!checkPiece(m.structureID, moduleHorizontalOffsets[i], moduleVerticalOffsets[i], moduleDepthOffsets[i]))
                 return false;
+            if (renderTileEntity!=null) renderTileEntity.setModuleColorWithIndex(modules[i].rgbArr,i);
         }
         return true;
 
@@ -857,6 +856,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return RecipeMaps.fluidSolidifierRecipes;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!renderDisabled) {
+            if (renderTileEntity == null) createSolidifierRender();
+            }
+        }
+
+
     /*
      * things to consider with processing math
      * Things get added and multiplied(parallel,eu/t, speed bonus)
@@ -926,11 +934,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             checkSolidifierModules();
             if (effOCPresent) return;
         }
+        if (modules[index]==moduleToAdd) return;
 
         modules[index] = moduleToAdd;
         if (moduleToAdd != SolidifierModules.UNSET)
         {
             //update render color at pos.
+           TileEntityModularSolidifierRenderer tile = this.getRenderer();
+           if(tile != null) tile.setModuleColorWithIndex(moduleToAdd.rgbArr,index);
         }
     }
 
@@ -956,6 +967,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     //rendering stuff
+    private boolean renderDisabled = false;
+    private TileEntityModularSolidifierRenderer renderTileEntity = null;
     private TileEntityModularSolidifierRenderer getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
@@ -974,13 +987,36 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
         //todo: update this?
-        double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetX;
-        double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetY;
-        double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
+        double xOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double yOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        double zOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+    }
+
+    public boolean createSolidifierRender(){
+        IGregTechTileEntity base = this.getBaseMetaTileEntity();
+        World world = base.getWorld();
+        if (world == null || renderDisabled || !mMachine) return false;
+        ChunkCoordinates pos = this.getRenderPos();
+        //unsure if this is bad, if its in the structure, it should be fine.
+        world.setBlock(pos.posX,pos.posY,pos.posZ, Blocks.air);
+        world.setBlock(pos.posX,pos.posY,pos.posZ, GregTechAPI.modularSolidifierRender);
+        renderTileEntity = (TileEntityModularSolidifierRenderer) base.getWorld()
+            .getTileEntity(pos.posX, pos.posY, pos.posZ);
+        return true;
+    }
+
+    public void destroySolidifierRender(){
+        World world = this.getBaseMetaTileEntity().getWorld();
+        if (world == null) return;
+        ChunkCoordinates pos = this.getRenderPos();
+        world.setBlock(pos.posX, pos.posY, pos.posZ, Blocks.air);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        destroySolidifierRender();
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -990,6 +1026,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+        if(renderDisabled)
+        {
+            destroySolidifierRender();
+        }
     }
 
     public String coolingStrOrder(String val1, String val2, String val3) {
