@@ -32,7 +32,7 @@ import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.VoseAliasMethod;
+import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -47,7 +47,7 @@ public class VoidMinerUtility {
     public static class DropMap {
 
         private boolean isAliasCached;
-        private VoseAliasMethod voseAliasMethod;
+        private DiscreteDistribution discreteDistribution;
 
         private float totalWeight;
         private double[] oreWeights;
@@ -153,7 +153,7 @@ public class VoidMinerUtility {
                 i++;
             }
 
-            voseAliasMethod = new VoseAliasMethod(oreWeights);
+            discreteDistribution = new DiscreteDistribution(oreWeights);
             isAliasCached = true;
         }
 
@@ -166,7 +166,7 @@ public class VoidMinerUtility {
         }
 
         public GTUtility.ItemId nextOre() {
-            return ores[voseAliasMethod.next()];
+            return ores[discreteDistribution.next()];
         }
     }
 

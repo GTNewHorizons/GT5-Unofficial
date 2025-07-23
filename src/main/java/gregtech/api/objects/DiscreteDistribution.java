@@ -17,7 +17,7 @@ import java.util.Deque;
  * <p>
  * http://www.keithschwarz.com/darts-dice-coins/
  */
-public final class VoseAliasMethod {
+public final class DiscreteDistribution {
 
     /* The random number generator used to sample from the distribution. */
     private final XSTR random = XSTR.XSTR_INSTANCE;
@@ -27,7 +27,7 @@ public final class VoseAliasMethod {
     private final double[] probability;
 
     /**
-     * Constructs a new VoseAliasMethod to sample from a discrete distribution and
+     * Constructs a new DiscreteDistribution to sample from a discrete distribution and
      * hand back outcomes based on the probability distribution.
      * <p>
      * Given as input a list of probabilities corresponding to outcomes 0, 1,
@@ -36,7 +36,7 @@ public final class VoseAliasMethod {
      *
      * @param weights The list of probabilities.
      */
-    public VoseAliasMethod(double[] weights) {
+    public DiscreteDistribution(double[] weights) {
         /* Begin by doing basic structural checks on the inputs. */
         if (weights == null) throw new NullPointerException();
         if (weights.length == 0) throw new IllegalArgumentException("Probability vector must be nonempty.");
