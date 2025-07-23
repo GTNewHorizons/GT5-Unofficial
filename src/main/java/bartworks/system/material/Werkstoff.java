@@ -13,7 +13,6 @@
 
 package bartworks.system.material;
 
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
@@ -21,13 +20,11 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -64,15 +61,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
-
-    public static final Map<String, String> modNameOverrides = new HashMap<>() {
-
-        private static final long serialVersionUID = 6399917619058898648L;
-
-        {
-            this.put(GalaxySpace.ID, DARK_PURPLE + "GalaxySpace");
-        }
-    };
 
     private static final List<String> BWModNames = Arrays
         .asList(MainMod.NAME, BartWorksCrossmod.NAME, MaterialsInjector.NAME);
@@ -656,12 +644,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.owner;
     }
 
+    private static final String GALAXYSPACE_NAME_OVERRIDE = DARK_PURPLE + "GalaxySpace";
+
     private String getMaterialOwner() {
         String modName = Loader.instance()
             .activeModContainer()
             .getName();
-        if (modNameOverrides.get(modName) != null) {
-            return modNameOverrides.get(modName);
+        if (Mods.ModIDs.GALAXY_SPACE.equals(modName)) {
+            return GALAXYSPACE_NAME_OVERRIDE;
         }
         if (BWModNames.contains(modName)) {
             return null;
