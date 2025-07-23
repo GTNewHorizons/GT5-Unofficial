@@ -98,7 +98,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerAlloySmelter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_AlloySmelter.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -106,7 +105,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_AlloySmelter.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -114,7 +112,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_AlloySmelter.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -122,7 +119,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_AlloySmelter.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -130,7 +126,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_AlloySmelter.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -141,7 +136,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerArcFurnace() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
@@ -149,7 +143,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
@@ -157,7 +150,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
@@ -165,7 +157,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
@@ -173,7 +164,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, aTextPlate, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) },
@@ -184,7 +174,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerAssembler() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Assembler.get(1),
-            bitsd,
             new Object[] { "ACA", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -192,7 +181,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Assembler.get(1),
-            bitsd,
             new Object[] { "ACA", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -200,7 +188,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Assembler.get(1),
-            bitsd,
             new Object[] { "ACA", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -208,7 +195,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Assembler.get(1),
-            bitsd,
             new Object[] { "ACA", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -216,7 +202,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Assembler.get(1),
-            bitsd,
             new Object[] { "ACA", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -226,7 +211,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerAutoclave() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Autoclave.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', MTEBasicMachineWithRecipe.X.PLATE, 'G',
@@ -235,7 +219,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Autoclave.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', MTEBasicMachineWithRecipe.X.PLATE, 'G',
@@ -244,7 +227,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Autoclave.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', MTEBasicMachineWithRecipe.X.PLATE, 'G',
@@ -253,7 +235,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Autoclave.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', MTEBasicMachineWithRecipe.X.PLATE, 'G',
@@ -262,7 +243,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Autoclave.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', MTEBasicMachineWithRecipe.X.PLATE, 'G',
@@ -274,7 +254,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerBendingMachine() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Bender.get(1),
-            bitsd,
             new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -282,7 +261,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Bender.get(1),
-            bitsd,
             new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -290,7 +268,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Bender.get(1),
-            bitsd,
             new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -298,7 +275,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Bender.get(1),
-            bitsd,
             new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -306,7 +282,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Bender.get(1),
-            bitsd,
             new Object[] { aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -316,7 +291,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerCanner() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Canner.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -324,7 +298,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Canner.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -332,7 +305,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Canner.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -340,7 +312,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Canner.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -348,7 +319,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Canner.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "GGG", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -358,7 +328,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerCentrifuge() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Centrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", aTextWireHull, "CEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -366,7 +335,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Centrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", aTextWireHull, "CEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -374,7 +342,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Centrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", aTextWireHull, "CEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -382,7 +349,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Centrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", aTextWireHull, "CEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -390,7 +356,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Centrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", aTextWireHull, "CEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -400,7 +365,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerChemicalBath() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ChemicalBath.get(1),
-            bitsd,
             new Object[] { "VGW", "PGV", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -409,7 +373,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ChemicalBath.get(1),
-            bitsd,
             new Object[] { "VGW", "PGV", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -418,7 +381,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ChemicalBath.get(1),
-            bitsd,
             new Object[] { "VGW", "PGV", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -427,7 +389,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ChemicalBath.get(1),
-            bitsd,
             new Object[] { "VGW", "PGV", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -436,7 +397,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ChemicalBath.get(1),
-            bitsd,
             new Object[] { "VGW", "PGV", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -448,7 +408,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerChemicalReactor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ChemicalReactor.get(1),
-            bitsd,
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -457,7 +416,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ChemicalReactor.get(1),
-            bitsd,
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -466,7 +424,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ChemicalReactor.get(1),
-            bitsd,
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -475,7 +432,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ChemicalReactor.get(1),
-            bitsd,
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -484,7 +440,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ChemicalReactor.get(1),
-            bitsd,
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -495,7 +450,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerCircuitAssembler() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -504,7 +458,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -513,7 +466,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -522,7 +474,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -531,7 +482,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -540,7 +490,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -549,7 +498,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -558,7 +506,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_CircuitAssembler.get(1),
-            bitsd,
             new Object[] { "ACE", "VMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'A', MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'C',
                 MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'E',
@@ -570,7 +517,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerCompressor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Compressor.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -578,7 +524,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Compressor.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -586,7 +531,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Compressor.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -594,7 +538,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Compressor.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -602,7 +545,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Compressor.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -613,7 +555,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerCuttingMachine() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Cutter.get(1),
-            bitsd,
             new Object[] { "WCG", "VMB", "CWE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -622,7 +563,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Cutter.get(1),
-            bitsd,
             new Object[] { "WCG", "VMB", "CWE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -631,7 +571,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Cutter.get(1),
-            bitsd,
             new Object[] { "WCG", "VMB", "CWE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -640,7 +579,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Cutter.get(1),
-            bitsd,
             new Object[] { "WCG", "VMB", "CWE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -649,7 +587,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Cutter.get(1),
-            bitsd,
             new Object[] { "WCG", "VMB", "CWE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -661,7 +598,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerDistillery() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Distillery.get(1),
-            bitsd,
             new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'B', MTEBasicMachineWithRecipe.X.PIPE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -670,7 +606,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Distillery.get(1),
-            bitsd,
             new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'B', MTEBasicMachineWithRecipe.X.PIPE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -679,7 +614,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Distillery.get(1),
-            bitsd,
             new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'B', MTEBasicMachineWithRecipe.X.PIPE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -688,7 +622,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Distillery.get(1),
-            bitsd,
             new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'B', MTEBasicMachineWithRecipe.X.PIPE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -697,7 +630,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Distillery.get(1),
-            bitsd,
             new Object[] { "GBG", aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'B', MTEBasicMachineWithRecipe.X.PIPE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -709,7 +641,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerElectricFurnace() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_E_Furnace.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -717,7 +648,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_E_Furnace.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -725,7 +655,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_E_Furnace.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -733,7 +662,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_E_Furnace.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -741,7 +669,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_E_Furnace.get(1),
-            bitsd,
             new Object[] { "ECE", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -752,7 +679,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerElectrolyser() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Electrolyzer.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CWC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Gold), 'G',
@@ -761,7 +687,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Electrolyzer.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CWC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Silver), 'G',
@@ -770,7 +695,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Electrolyzer.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CWC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Electrum), 'G',
@@ -779,7 +703,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Electrolyzer.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CWC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.Platinum), 'G',
@@ -788,7 +711,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Electrolyzer.get(1),
-            bitsd,
             new Object[] { "IGI", "IMI", "CWC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.HSSG), 'G',
@@ -800,7 +722,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerElectromagneticSeparator() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ElectromagneticSeparator.get(1),
-            bitsd,
             new Object[] { "VWZ", "WMS", "CWZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
@@ -809,7 +730,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ElectromagneticSeparator.get(1),
-            bitsd,
             new Object[] { "VWZ", "WMS", "CWZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
@@ -818,7 +738,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ElectromagneticSeparator.get(1),
-            bitsd,
             new Object[] { "VWZ", "WMS", "CWZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
@@ -827,7 +746,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ElectromagneticSeparator.get(1),
-            bitsd,
             new Object[] { "VWZ", "WMS", "CWZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
@@ -836,7 +754,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ElectromagneticSeparator.get(1),
-            bitsd,
             new Object[] { "VWZ", "WMS", "CWZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'V',
                 MTEBasicMachineWithRecipe.X.CONVEYOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
@@ -848,7 +765,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerExtractor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Extractor.get(1),
-            bitsd,
             new Object[] { "GCG", "EMP", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -857,7 +773,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Extractor.get(1),
-            bitsd,
             new Object[] { "GCG", "EMP", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -866,7 +781,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Extractor.get(1),
-            bitsd,
             new Object[] { "GCG", "EMP", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -875,7 +789,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Extractor.get(1),
-            bitsd,
             new Object[] { "GCG", "EMP", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -884,7 +797,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Extractor.get(1),
-            bitsd,
             new Object[] { "GCG", "EMP", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -896,7 +808,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerExtruder() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Extruder.get(1),
-            bitsd,
             new Object[] { "CCE", "XMP", "CCE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'X',
                 MTEBasicMachineWithRecipe.X.PISTON, 'E', MTEBasicMachineWithRecipe.X.CIRCUIT, 'P',
                 MTEBasicMachineWithRecipe.X.PIPE, 'C', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -904,7 +815,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Extruder.get(1),
-            bitsd,
             new Object[] { "CCE", "XMP", "CCE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'X',
                 MTEBasicMachineWithRecipe.X.PISTON, 'E', MTEBasicMachineWithRecipe.X.CIRCUIT, 'P',
                 MTEBasicMachineWithRecipe.X.PIPE, 'C', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -912,7 +822,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Extruder.get(1),
-            bitsd,
             new Object[] { "CCE", "XMP", "CCE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'X',
                 MTEBasicMachineWithRecipe.X.PISTON, 'E', MTEBasicMachineWithRecipe.X.CIRCUIT, 'P',
                 MTEBasicMachineWithRecipe.X.PIPE, 'C', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -920,7 +829,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Extruder.get(1),
-            bitsd,
             new Object[] { "CCE", "XMP", "CCE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'X',
                 MTEBasicMachineWithRecipe.X.PISTON, 'E', MTEBasicMachineWithRecipe.X.CIRCUIT, 'P',
                 MTEBasicMachineWithRecipe.X.PIPE, 'C', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -928,7 +836,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Extruder.get(1),
-            bitsd,
             new Object[] { "CCE", "XMP", "CCE", 'M', MTEBasicMachineWithRecipe.X.HULL, 'X',
                 MTEBasicMachineWithRecipe.X.PISTON, 'E', MTEBasicMachineWithRecipe.X.CIRCUIT, 'P',
                 MTEBasicMachineWithRecipe.X.PIPE, 'C', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -939,7 +846,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFermenter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Fermenter.get(1),
-            bitsd,
             new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -947,7 +853,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Fermenter.get(1),
-            bitsd,
             new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -955,7 +860,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Fermenter.get(1),
-            bitsd,
             new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -963,7 +867,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Fermenter.get(1),
-            bitsd,
             new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -971,7 +874,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Fermenter.get(1),
-            bitsd,
             new Object[] { aTextWirePump, "GMG", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -982,7 +884,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFluidCanner() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidCanner.get(1),
-            bitsd,
             new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -990,7 +891,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidCanner.get(1),
-            bitsd,
             new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -998,7 +898,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidCanner.get(1),
-            bitsd,
             new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1006,7 +905,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidCanner.get(1),
-            bitsd,
             new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1014,7 +912,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidCanner.get(1),
-            bitsd,
             new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1025,7 +922,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFluidExtractor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidExtractor.get(1),
-            bitsd,
             new Object[] { "GEG", "TPT", "CMC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'T', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1034,7 +930,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidExtractor.get(1),
-            bitsd,
             new Object[] { "GEG", "TPT", "CMC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'T', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1043,7 +938,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidExtractor.get(1),
-            bitsd,
             new Object[] { "GEG", "TPT", "CMC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'T', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1052,7 +946,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidExtractor.get(1),
-            bitsd,
             new Object[] { "GEG", "TPT", "CMC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'T', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1061,7 +954,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidExtractor.get(1),
-            bitsd,
             new Object[] { "GEG", "TPT", "CMC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.PISTON, 'P', MTEBasicMachineWithRecipe.X.PUMP, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'T', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1073,7 +965,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFluidHeater() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidHeater.get(1),
-            bitsd,
             new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1082,7 +973,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidHeater.get(1),
-            bitsd,
             new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1091,7 +981,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidHeater.get(1),
-            bitsd,
             new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1100,7 +989,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidHeater.get(1),
-            bitsd,
             new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1109,7 +997,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidHeater.get(1),
-            bitsd,
             new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1120,7 +1007,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFluidSolidifier() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidSolidifier.get(1),
-            bitsd,
             new Object[] { "PGP", aTextWireHull, "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
@@ -1129,7 +1015,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_FluidSolidifier.get(1),
-            bitsd,
             new Object[] { "PGP", aTextWireHull, "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
@@ -1138,7 +1023,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_FluidSolidifier.get(1),
-            bitsd,
             new Object[] { "PGP", aTextWireHull, "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
@@ -1147,7 +1031,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_FluidSolidifier.get(1),
-            bitsd,
             new Object[] { "PGP", aTextWireHull, "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
@@ -1156,7 +1039,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_FluidSolidifier.get(1),
-            bitsd,
             new Object[] { "PGP", aTextWireHull, "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
@@ -1168,7 +1050,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerForgeHammer() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Hammer.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'A',
@@ -1177,7 +1058,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Hammer.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'A',
@@ -1186,7 +1066,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Hammer.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'A',
@@ -1195,7 +1074,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Hammer.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'A',
@@ -1204,7 +1082,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Hammer.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE, 'A',
@@ -1216,7 +1093,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerFormingPress() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Press.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1224,7 +1100,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Press.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1232,7 +1107,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Press.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1240,7 +1114,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Press.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1248,7 +1121,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Press.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextCableHull, aTextWirePump, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1258,7 +1130,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerLaserEngraver() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_LaserEngraver.get(1),
-            bitsd,
             new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.EMITTER, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1266,7 +1137,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_LaserEngraver.get(1),
-            bitsd,
             new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.EMITTER, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1274,7 +1144,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_LaserEngraver.get(1),
-            bitsd,
             new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.EMITTER, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1282,7 +1151,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_LaserEngraver.get(1),
-            bitsd,
             new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.EMITTER, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1290,7 +1158,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_LaserEngraver.get(1),
-            bitsd,
             new Object[] { "PEP", aTextCableHull, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.EMITTER, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1301,7 +1168,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerLathe() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Lathe.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
@@ -1310,7 +1176,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Lathe.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
@@ -1319,7 +1184,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Lathe.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
@@ -1328,7 +1192,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Lathe.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
@@ -1337,7 +1200,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Lathe.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
@@ -1349,7 +1211,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerMacerator() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Macerator.get(1),
-            bitsd,
             new Object[] { "PEG", "WWM", "CCW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1358,7 +1219,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Macerator.get(1),
-            bitsd,
             new Object[] { "PEG", "WWM", "CCW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1367,7 +1227,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Macerator.get(1),
-            bitsd,
             new Object[] { "PEG", "WWM", "CCW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1376,7 +1235,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Macerator.get(1),
-            bitsd,
             new Object[] { "PEG", "WWM", "CCW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1385,7 +1243,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Macerator.get(1),
-            bitsd,
             new Object[] { "PEG", "WWM", "CCW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1397,7 +1254,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerMatterAmplifier() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Amplifab.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4 },
@@ -1405,7 +1261,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Amplifab.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4 },
@@ -1413,7 +1268,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Amplifab.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4 },
@@ -1421,7 +1275,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Amplifab.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4 },
@@ -1429,7 +1282,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Amplifab.get(1),
-            bitsd,
             new Object[] { aTextWirePump, aTextPlateMotor, "CPC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4 },
@@ -1440,7 +1292,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerMicrowave() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Microwave.get(1),
-            bitsd,
             new Object[] { "LWC", "LMR", "LEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.EMITTER, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'L',
@@ -1449,7 +1300,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Microwave.get(1),
-            bitsd,
             new Object[] { "LWC", "LMR", "LEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.EMITTER, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'L',
@@ -1458,7 +1308,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Microwave.get(1),
-            bitsd,
             new Object[] { "LWC", "LMR", "LEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.EMITTER, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'L',
@@ -1467,7 +1316,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Microwave.get(1),
-            bitsd,
             new Object[] { "LWC", "LMR", "LEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.EMITTER, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'L',
@@ -1476,7 +1324,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Microwave.get(1),
-            bitsd,
             new Object[] { "LWC", "LMR", "LEC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.EMITTER, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'L',
@@ -1488,7 +1335,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerMixer() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Mixer.get(1),
-            bitsd,
             new Object[] { "GRG", "GEG", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.ROTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1496,7 +1342,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Mixer.get(1),
-            bitsd,
             new Object[] { "GRG", "GEG", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.ROTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1504,7 +1349,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Mixer.get(1),
-            bitsd,
             new Object[] { "GRG", "GEG", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.ROTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1512,7 +1356,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Mixer.get(1),
-            bitsd,
             new Object[] { "GRG", "GEG", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.ROTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1520,7 +1363,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Mixer.get(1),
-            bitsd,
             new Object[] { "GRG", "GEG", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'R', MTEBasicMachineWithRecipe.X.ROTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'G', MTEBasicMachineWithRecipe.X.GLASS },
@@ -1530,7 +1372,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerOreWasher() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_OreWasher.get(1),
-            bitsd,
             new Object[] { "RGR", "CEC", aTextWireHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1539,7 +1380,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_OreWasher.get(1),
-            bitsd,
             new Object[] { "RGR", "CEC", aTextWireHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1548,7 +1388,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_OreWasher.get(1),
-            bitsd,
             new Object[] { "RGR", "CEC", aTextWireHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1557,7 +1396,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_OreWasher.get(1),
-            bitsd,
             new Object[] { "RGR", "CEC", aTextWireHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1566,7 +1404,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_OreWasher.get(1),
-            bitsd,
             new Object[] { "RGR", "CEC", aTextWireHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
@@ -1578,7 +1415,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerOven() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Oven.get(1),
-            bitsd,
             new Object[] { "CEC", aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -1586,7 +1422,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Oven.get(1),
-            bitsd,
             new Object[] { "CEC", aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -1594,7 +1429,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Oven.get(1),
-            bitsd,
             new Object[] { "CEC", aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -1602,7 +1436,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Oven.get(1),
-            bitsd,
             new Object[] { "CEC", aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -1610,7 +1443,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Oven.get(1),
-            bitsd,
             new Object[] { "CEC", aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'C',
                 MTEBasicMachineWithRecipe.X.COIL_HEATING },
@@ -1621,7 +1453,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerPlasmaArcFurnace() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_PlasmaArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
@@ -1630,7 +1461,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_PlasmaArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
@@ -1639,7 +1469,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_PlasmaArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
@@ -1648,7 +1477,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_PlasmaArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
@@ -1657,7 +1485,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_PlasmaArcFurnace.get(1),
-            bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
@@ -1669,7 +1496,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerPolarizer() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Polarizer.get(1),
-            bitsd,
             new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1677,7 +1503,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Polarizer.get(1),
-            bitsd,
             new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1685,7 +1510,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Polarizer.get(1),
-            bitsd,
             new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1693,7 +1517,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Polarizer.get(1),
-            bitsd,
             new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1701,7 +1524,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Polarizer.get(1),
-            bitsd,
             new Object[] { "ZSZ", aTextWireHull, "ZSZ", 'M', MTEBasicMachineWithRecipe.X.HULL, 'S',
                 MTEBasicMachineWithRecipe.X.STICK_ELECTROMAGNETIC, 'Z', MTEBasicMachineWithRecipe.X.COIL_ELECTRIC, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1712,7 +1534,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerPrinter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1720,7 +1541,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1728,7 +1548,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1736,7 +1555,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1744,7 +1562,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1752,7 +1569,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1760,7 +1576,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1768,7 +1583,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_Printer.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -1779,7 +1593,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerRecycler() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Recycler.get(1),
-            bitsd,
             new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
@@ -1787,7 +1600,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Recycler.get(1),
-            bitsd,
             new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
@@ -1795,7 +1607,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Recycler.get(1),
-            bitsd,
             new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
@@ -1803,7 +1614,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Recycler.get(1),
-            bitsd,
             new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
@@ -1811,7 +1621,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Recycler.get(1),
-            bitsd,
             new Object[] { "GCG", aTextPlateMotor, aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
@@ -1822,7 +1631,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerSifter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Sifter.get(1),
-            bitsd,
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1830,7 +1638,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Sifter.get(1),
-            bitsd,
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1838,7 +1645,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Sifter.get(1),
-            bitsd,
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1846,7 +1652,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Sifter.get(1),
-            bitsd,
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1854,7 +1659,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Sifter.get(1),
-            bitsd,
             new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1865,7 +1669,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerSlicer() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Slicer.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1873,7 +1676,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Slicer.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1881,7 +1683,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Slicer.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1889,7 +1690,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Slicer.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1897,7 +1697,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Slicer.get(1),
-            bitsd,
             new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
@@ -1908,7 +1707,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerThermalCentrifuge() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ThermalCentrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", "OMO", "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -1916,7 +1714,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_ThermalCentrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", "OMO", "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -1924,7 +1721,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_ThermalCentrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", "OMO", "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -1932,7 +1728,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_ThermalCentrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", "OMO", "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -1940,7 +1735,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_ThermalCentrifuge.get(1),
-            bitsd,
             new Object[] { "CEC", "OMO", "WEW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE, 'O', MTEBasicMachineWithRecipe.X.COIL_HEATING_DOUBLE },
@@ -1951,7 +1745,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerUnpackager() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -1960,7 +1753,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -1969,7 +1761,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -1978,7 +1769,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -1987,7 +1777,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -1996,7 +1785,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LuV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -2005,7 +1793,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_ZPM_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -2014,7 +1801,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_UV_Unboxinator.get(1),
-            bitsd,
             new Object[] { "BCB", "VMR", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'B',
@@ -2025,7 +1811,6 @@ public class MTERecipeLoader implements Runnable {
     private static void registerWiremill() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Wiremill.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -2033,7 +1818,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_MV_Wiremill.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -2041,7 +1825,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_HV_Wiremill.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -2049,7 +1832,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_EV_Wiremill.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
@@ -2057,7 +1839,6 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_IV_Wiremill.get(1),
-            bitsd,
             new Object[] { aTextMotorWire, aTextCableHull, aTextMotorWire, 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },

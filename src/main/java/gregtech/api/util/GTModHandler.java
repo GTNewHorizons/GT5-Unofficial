@@ -583,8 +583,7 @@ public class GTModHandler {
             aRecipe);
     }
 
-    public static boolean addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe,
-        int machineTier) {
+    public static boolean addMachineCraftingRecipe(ItemStack aResult, Object[] aRecipe, int machineTier) {
         if (aRecipe == null) return true;
 
         for (int i = 3; i < aRecipe.length; i++) {
