@@ -20,9 +20,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -239,6 +237,10 @@ public class GTUtility {
         sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
     }
 
+    public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
+        return sFilledContainerToData;
+    }
+
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
     }
@@ -246,17 +248,6 @@ public class GTUtility {
     public static int safeInt(long number) {
         return number > V[V.length - 1] ? safeInt(V[V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
-    }
-
-    public static Field getPublicField(Object aObject, String aField) {
-        Field rField = null;
-        try {
-            rField = aObject.getClass()
-                .getDeclaredField(aField);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rField;
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -271,38 +262,15 @@ public class GTUtility {
         return rField;
     }
 
-    public static Field getField(Class<?> aObject, String aField) {
-        Field rField = null;
+    public static Field getField(Class<?> clazz, String fieldName) {
         try {
-            rField = aObject.getDeclaredField(aField);
-            rField.setAccessible(true);
+            final Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field;
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
-        return rField;
-    }
-
-    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
-    }
-
-    public static Method getMethod(Object aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getClass()
-                .getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
+        return null;
     }
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
