@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -116,12 +118,27 @@ public class VoidMinerUtility {
             totalWeight += weight;
         }
 
+        private void mergeDropMaps(DropMap dropMap) {
+            if (dropMap == null || dropMap.internalMap == null || dropMap.internalMap.isEmpty()) return;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.entrySet()) {
+                // We cant be sure that the extraDropMap entries are intentional duplicates of this DropMap
+                this.internalMap.merge(entry.getKey(), entry.getValue(), Float::sum);
+                totalWeight += entry.getValue();
+            }
+        }
+
         /**
          * Method used to compute the ore distribution for the VM.
+         *
+         * @param extraDropMap the extraDropMap that is related to this DropMap
          */
-        public void computeOreDistribution() {
+        public void computeOreDistribution(@Nullable DropMap extraDropMap) {
             if (isAliasCached) return;
-            if (internalMap.isEmpty()) return;
+            if (internalMap == null || internalMap.isEmpty()) return;
+
+            // Merge a related extraDropMap if it exists
+            mergeDropMaps(extraDropMap);
 
             ores = new GTUtility.ItemId[internalMap.size()];
             oreWeights = new double[internalMap.size()];
@@ -184,16 +201,6 @@ public class VoidMinerUtility {
             for (ModDimensionDef dimDef : modContainer.getDimensionList()) {
                 dropMapsByChunkProviderName.put(dimDef.getChunkProviderName(), getDropMapSpace(dimDef));
             }
-        }
-
-        // Pre-compute the cumulative sum Pairs
-        for (Map.Entry<Integer, DropMap> dropMap : dropMapsByDimId.entrySet()) {
-            dropMap.getValue()
-                .computeOreDistribution();
-        }
-        for (Map.Entry<String, DropMap> dropMap : dropMapsByChunkProviderName.entrySet()) {
-            dropMap.getValue()
-                .computeOreDistribution();
         }
     }
 
