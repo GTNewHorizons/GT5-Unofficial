@@ -103,6 +103,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private boolean uevRecipesEnabled = false;
     private boolean hypercoolerPresent = false;
     private boolean tdsPresent = false;
+    private boolean effOCPresent = false;
 
     // modified values for display and calculations
     private float ocFactorAdditive = 0.0F;
@@ -512,7 +513,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + EnumChatFormatting.GRAY
                     + " by "
                     + EnumChatFormatting.RED
-                    + "6x")
+                    + "6x"+ EnumChatFormatting.GRAY
+                    + ". Limit of "
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Per "
+                    + EnumChatFormatting.GOLD
+                    + "Solidifier")
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.RED + "Efficient Overclocking Module")
             .addStructureInfo(
@@ -521,7 +529,14 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + EnumChatFormatting.GRAY
                     + " to the "
                     + EnumChatFormatting.DARK_PURPLE
-                    + "Overclock Factor")
+                    + "Overclock Factor"+ EnumChatFormatting.GRAY
+                    + ". Limit of "
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Per "
+                    + EnumChatFormatting.GOLD
+                    + "Solidifier")
             .addStructureInfoSeparator()
             .addStructureInfo(EnumChatFormatting.DARK_AQUA + "Power Efficient Subsystems")
             .addStructureInfo(
@@ -693,6 +708,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         hypercoolerPresent = false;
         uevRecipesEnabled = false;
         tdsPresent = false;
+        effOCPresent = false;
     }
 
     public void checkSolidifierModules() {
@@ -710,6 +726,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     uevRecipesEnabled = true;
                     break;
                 case EFFICIENT_OC:
+                    effOCPresent = true;
                     ocFactorAdditive += 0.2F;
                     break;
                 case ACTIVE_TIME_DILATION_SYSTEM:
@@ -903,6 +920,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         if (moduleToAdd == SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM) {
             checkSolidifierModules();
             if (tdsPresent) return;
+        }
+        if(moduleToAdd == SolidifierModules.EFFICIENT_OC)
+        {
+            checkSolidifierModules();
+            if (effOCPresent) return;
         }
 
         modules[index] = moduleToAdd;
