@@ -28,8 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,6 +49,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -583,11 +583,12 @@ public class GTModHandler {
             aRecipe);
     }
 
-    public static void addMachineCraftingRecipe(ItemStack aResult, Object[] aRecipe, int machineTier) {
-        GTModHandler.addMachineCraftingRecipe(aResult,GTModHandler.RecipeBits.BITSD, aRecipe, machineTier);
+    public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
+        addMachineCraftingRecipe(aResult, RecipeBits.BITSD, aRecipe, machineTier);
     }
 
-    public static void addMachineCraftingRecipe(ItemStack aResult,long aBitMask, Object[] aRecipe, int machineTier) {
+    public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
+        int machineTier) {
         if (aRecipe == null) return;
 
         for (int i = 3; i < aRecipe.length; i++) {
