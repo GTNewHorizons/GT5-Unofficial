@@ -222,6 +222,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * @param id the specified dim id
      */
     private void handleExtraDrops(int id) {
+        this.extraDropMap = new VoidMinerUtility.DropMap();
+
         if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
             extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
         }
@@ -235,6 +237,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     private void handleModDimDef(int id) {
         if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
             this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
+            return;
         } else {
             String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
                 .getWorld()
@@ -243,8 +246,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
             if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
                 this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
+                return;
             }
         }
+        // If this dimension doesn't have any default DropMap add it to dropMapsByDimId
+        // It is possible that another mod added ores to this dimension via extraDropMaps
+        this.dropMap = new VoidMinerUtility.DropMap();
+        VoidMinerUtility.dropMapsByDimId.put(id, this.dropMap);
     }
 
     /**
@@ -252,8 +260,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        this.dropMap = new VoidMinerUtility.DropMap();
-        this.extraDropMap = new VoidMinerUtility.DropMap();
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         this.handleModDimDef(id);

@@ -135,7 +135,10 @@ public class VoidMinerUtility {
          */
         public void computeOreDistribution(@Nullable DropMap extraDropMap) {
             if (isAliasCached) return;
-            if (internalMap == null || internalMap.isEmpty()) return;
+            if (internalMap == null || internalMap.isEmpty()) {
+                if (extraDropMap == null || extraDropMap.internalMap == null || extraDropMap.internalMap.isEmpty())
+                    return;
+            }
 
             // Merge a related extraDropMap if it exists
             mergeDropMaps(extraDropMap);
