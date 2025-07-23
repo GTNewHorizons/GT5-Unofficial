@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
@@ -16,6 +15,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -94,8 +94,8 @@ class SingleUseToolRecipeLoader implements Runnable {
             ItemStack output = singleUseTool.tool.get(0L);
             output.stackSize = (int) outputQuantity; // This is a safe cast since it is between 128 and 256
             List<ItemStack> outputs = new ArrayList<>();
-            int maxStackSize = output.getMaxStackSize();
-            while (output.stackSize > maxStackSize) outputs.add(output.splitStack(maxStackSize));
+            // int maxStackSize = output.getMaxStackSize();
+            // while (output.stackSize > maxStackSize) outputs.add(output.splitStack(maxStackSize));
             outputs.add(output);
 
             GTValues.RA.stdBuilder()
@@ -104,7 +104,7 @@ class SingleUseToolRecipeLoader implements Runnable {
                 .itemOutputs(outputs.toArray(new ItemStack[0]))
                 .eut(TierEU.RECIPE_MV)
                 .duration(recipeDuration)
-                .addTo(GGFabRecipeMaps.toolCastRecipes);
+                .addTo(RecipeMaps.fluidSolidifierRecipes);
         }
     }
 }
