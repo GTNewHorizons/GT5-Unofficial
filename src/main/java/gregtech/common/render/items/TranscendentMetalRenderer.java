@@ -22,7 +22,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        if (type == ItemRenderType.ENTITY) {
+        if (Client.render.renderTransMetalFancy && type == ItemRenderType.ENTITY) {
             // Pretend fancy graphics is enabled
             if (!Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                 if (RenderItem.renderInFrame) {
@@ -39,6 +39,11 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
     protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
         boolean shouldModulateColor) {
 
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderRegularItem(type, itemStack, icon, shouldModulateColor);
+            return;
+        }
+
         if (!(itemStack.getItem() instanceof final IGT_ItemWithMaterialRenderer itemRenderer)) return;
 
         GL11.glPushMatrix();
@@ -51,7 +56,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
         boolean flip = false;
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
             flip = true;
         }
@@ -71,6 +76,12 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderContainedFluid(ItemRenderType type, FluidStack fluidStack, IIcon fluidIcon) {
+
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderContainedFluid(type, fluidStack, fluidIcon);
+            return;
+        }
+
         GL11.glPushMatrix();
 
         Fluid fluid = fluidStack.getFluid();
@@ -78,7 +89,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
         }
 
@@ -98,12 +109,18 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
+
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderItemOverlay(type, overlay);
+            return;
+        }
+
         GL11.glPushMatrix();
         applyEffect(type, null, false);
 
         boolean flip = false;
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
             flip = true;
         }
@@ -121,31 +138,28 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
         GL11.glPopMatrix();
     }
 
-    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
-        if (RenderItem.renderInFrame && Client.render.renderTransMetalFancy) {
+    private static void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
+        if (RenderItem.renderInFrame) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(8f, 8f, 0f);
         } else {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        // Accessibility option, to disable spinning rendering.
-        if (Client.render.renderTransMetalFancy) {
-            GL11.glRotatef(
-                (GTMod.clientProxy()
-                    .getAnimationTicks() * 3.5f) % 360,
-                0.3f,
-                0.5f,
-                0.2f);
-        }
+        GL11.glRotatef(
+            (GTMod.clientProxy()
+                .getAnimationTicks() * 3.5f) % 360,
+            0.3f,
+            0.5f,
+            0.2f);
 
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(-8f, -8f, 0f);
         } else {
             GL11.glTranslatef(-0.5f, -0.5f, 0.0f);

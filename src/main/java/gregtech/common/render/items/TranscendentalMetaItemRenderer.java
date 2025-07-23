@@ -22,10 +22,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
-
+        return Client.render.renderTransMetalFancy && type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
     @Override
@@ -89,30 +86,27 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
     }
 
     private void applyEffect(ItemRenderType type) {
-        if (RenderItem.renderInFrame && Client.render.renderTransMetalFancy) {
+        if (RenderItem.renderInFrame) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(8f, 8f, 0f);
         } else {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        // Accessibility option, to disable spinning rendering.
-        if (Client.render.renderTransMetalFancy) {
-            GL11.glRotatef(
-                (GTMod.clientProxy()
-                    .getAnimationTicks() * 3.5f) % 360,
-                0.3f,
-                0.5f,
-                0.2f);
-        }
+        GL11.glRotatef(
+            (GTMod.clientProxy()
+                .getAnimationTicks() * 3.5f) % 360,
+            0.3f,
+            0.5f,
+            0.2f);
 
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(-8f, -8f, 0f);
         } else {
             GL11.glTranslatef(-0.5f, -0.5f, 0.0f);
