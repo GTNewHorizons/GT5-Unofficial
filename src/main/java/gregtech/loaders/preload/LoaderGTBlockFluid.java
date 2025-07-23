@@ -21,8 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.common.blocks.BlockModularSolidifierRenderer;
-import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -79,6 +77,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.BlockModularSolidifierRenderer;
 import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOres;
 import gregtech.common.blocks.BlockReinforced;
@@ -105,6 +104,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
@@ -711,7 +711,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
 
         GTLog.out.println("GTMod: Registering the ModularSolidifierRender.");
-        GameRegistry.registerTileEntity(TileEntityModularSolidifierRenderer.class,"ModularSolidifierRender");
+        GameRegistry.registerTileEntity(TileEntityModularSolidifierRenderer.class, "ModularSolidifierRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
