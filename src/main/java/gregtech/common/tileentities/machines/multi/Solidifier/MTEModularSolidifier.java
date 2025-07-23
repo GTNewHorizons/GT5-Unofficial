@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -73,6 +72,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gregtech.common.tileentities.render.TileEntityModularSolidifierRenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -80,8 +80,6 @@ import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
-
-
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -414,8 +412,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + "7"
                     + EnumChatFormatting.GRAY
                     + " different options.")
-            .addInfo(
-                "Toggle Render with Screwdriver.")
+            .addInfo("Toggle Render with Screwdriver.")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("" + EnumChatFormatting.BOLD + EnumChatFormatting.RED + "Glorious Evolution!")
@@ -511,7 +508,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + EnumChatFormatting.GRAY
                     + " by "
                     + EnumChatFormatting.RED
-                    + "6x"+ EnumChatFormatting.GRAY
+                    + "6x"
+                    + EnumChatFormatting.GRAY
                     + ". Limit of "
                     + EnumChatFormatting.WHITE
                     + "1"
@@ -527,7 +525,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + EnumChatFormatting.GRAY
                     + " to the "
                     + EnumChatFormatting.DARK_PURPLE
-                    + "Overclock Factor"+ EnumChatFormatting.GRAY
+                    + "Overclock Factor"
+                    + EnumChatFormatting.GRAY
                     + ". Limit of "
                     + EnumChatFormatting.WHITE
                     + "1"
@@ -674,9 +673,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private boolean checkModules() {
         for (int i = 0; i < 2 + (mTier - 1); i++) {
             SolidifierModules m = modules[i];
-            if (!checkPiece(m.structureID, moduleHorizontalOffsets[i], moduleVerticalOffsets[i], moduleDepthOffsets[i]))
+            if (!checkPiece(
+                m.structureID,
+                moduleHorizontalOffsets[i],
+                moduleVerticalOffsets[i],
+                moduleDepthOffsets[i])) {
+                renderTileEntity.setModuleStatusWithIndex(false, i);
                 return false;
-            if (renderTileEntity!=null) renderTileEntity.setModuleColorWithIndex(modules[i].rgbArr,i);
+            }
+            if (renderTileEntity != null) renderTileEntity.setModuleColorWithIndex(modules[i].rgbArr, i);
         }
         return true;
 
@@ -861,9 +866,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!renderDisabled) {
             if (renderTileEntity == null) createSolidifierRender();
-            }
         }
-
+    }
 
     /*
      * things to consider with processing math
@@ -929,19 +933,16 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             checkSolidifierModules();
             if (tdsPresent) return;
         }
-        if(moduleToAdd == SolidifierModules.EFFICIENT_OC)
-        {
+        if (moduleToAdd == SolidifierModules.EFFICIENT_OC) {
             checkSolidifierModules();
             if (effOCPresent) return;
         }
-        if (modules[index]==moduleToAdd) return;
+        if (modules[index] == moduleToAdd) return;
 
         modules[index] = moduleToAdd;
-        if (moduleToAdd != SolidifierModules.UNSET)
-        {
-            //update render color at pos.
-           TileEntityModularSolidifierRenderer tile = this.getRenderer();
-           if(tile != null) tile.setModuleColorWithIndex(moduleToAdd.rgbArr,index);
+        if (moduleToAdd != SolidifierModules.UNSET) {
+            // update render color at pos.
+            if (renderTileEntity != null) renderTileEntity.setModuleColorWithIndex(moduleToAdd.rgbArr, index);
         }
     }
 
@@ -966,9 +967,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return 2 + ocFactorAdditive + " : 4";
     }
 
-    //rendering stuff
+    // rendering stuff
     private boolean renderDisabled = false;
     private TileEntityModularSolidifierRenderer renderTileEntity = null;
+
     private TileEntityModularSolidifierRenderer getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
@@ -986,28 +988,29 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         int x = gregTechTileEntity.getXCoord();
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
-        //todo: update this?
+        // todo: update this?
         double xOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetX;
         double yOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetY;
         double zOffset = 8 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
     }
 
-    public boolean createSolidifierRender(){
+    public boolean createSolidifierRender() {
         IGregTechTileEntity base = this.getBaseMetaTileEntity();
         World world = base.getWorld();
         if (world == null || renderDisabled || !mMachine) return false;
         ChunkCoordinates pos = this.getRenderPos();
-        //unsure if this is bad, if its in the structure, it should be fine.
-        world.setBlock(pos.posX,pos.posY,pos.posZ, Blocks.air);
-        world.setBlock(pos.posX,pos.posY,pos.posZ, GregTechAPI.modularSolidifierRender);
+        // unsure if this is bad, if its in the structure, it should be fine.
+        world.setBlock(pos.posX, pos.posY, pos.posZ, Blocks.air);
+        world.setBlock(pos.posX, pos.posY, pos.posZ, GregTechAPI.modularSolidifierRender);
         renderTileEntity = (TileEntityModularSolidifierRenderer) base.getWorld()
             .getTileEntity(pos.posX, pos.posY, pos.posZ);
         return true;
     }
 
-    public void destroySolidifierRender(){
-        World world = this.getBaseMetaTileEntity().getWorld();
+    public void destroySolidifierRender() {
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         if (world == null) return;
         ChunkCoordinates pos = this.getRenderPos();
         world.setBlock(pos.posX, pos.posY, pos.posZ, Blocks.air);
@@ -1026,8 +1029,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
-        if(renderDisabled)
-        {
+        if (renderDisabled) {
             destroySolidifierRender();
         }
     }
