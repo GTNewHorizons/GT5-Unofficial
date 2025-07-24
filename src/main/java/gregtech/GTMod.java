@@ -280,6 +280,7 @@ public class GTMod {
 
         GTLog.out.println("GTMod: Setting Configs");
         GTLog.out.println("GTMod: Hello!");
+        GTLog.out.println("GTMod: Hello!");
 
         GTPreLoad.loadConfig();
 
