@@ -52,7 +52,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public boolean mModeAlternative = false;
     public boolean mHarvestEnabled = true;
-    public boolean mHarvestFullGrowth = true;
+    public boolean harvestFullGrowth = true;
 
     public MTECropHarvestor(final int aID, final int aTier, final String aDescription) {
         super(
@@ -193,7 +193,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
             if (aCrop.canBeHarvested(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
-                ItemStack[] aHarvest = tCrop.harvest_automated(this.mHarvestFullGrowth);
+                ItemStack[] aHarvest = tCrop.harvest_automated(this.harvestFullGrowth);
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
@@ -562,7 +562,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
         aNBT.setBoolean("mHarvestEnabled", this.mHarvestEnabled);
-        aNBT.setBoolean("mHarvestFullGrowth", this.mHarvestFullGrowth);
+        aNBT.setBoolean("harvestFullGrowth", this.harvestFullGrowth);
     }
 
     @Override
@@ -572,8 +572,8 @@ public class MTECropHarvestor extends MTEBasicTank {
         if (aNBT.hasKey("mHarvestEnabled")) {
             this.mHarvestEnabled = aNBT.getBoolean("mHarvestEnabled");
         }
-        if (aNBT.hasKey("mHarvestFullGrowth")) {
-            this.mHarvestFullGrowth = aNBT.getBoolean("mHarvestFullGrowth");
+        if (aNBT.hasKey("harvestFullGrowth")) {
+            this.harvestFullGrowth = aNBT.getBoolean("harvestFullGrowth");
         }
     }
 
@@ -596,7 +596,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
-            new CycleButtonWidget().setToggle(() -> mHarvestFullGrowth, val -> mHarvestFullGrowth = val)
+            new CycleButtonWidget().setToggle(() -> harvestFullGrowth, val -> harvestFullGrowth = val)
                 .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
                 .addTooltip(0, "Enable Full Growth Harvest")
                 .addTooltip(1, "Disable Full Growth Harvest")
