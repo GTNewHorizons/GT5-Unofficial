@@ -179,14 +179,14 @@ public class LightingHelper {
      * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
      *
      * @param side     the side
-     * @param hexColor the primary color
+     * @param colorRGB the primary color in RGB format, (alpha unused)
      */
-    public void setupColor(ForgeDirection side, int hexColor) {
+    public void setupColor(ForgeDirection side, int colorRGB) {
         Tessellator tessellator = Tessellator.instance;
         float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        float red = (hexColor >> 16 & 0xff) / 255.0F;
-        float green = (hexColor >> 8 & 0xff) / 255.0F;
-        float blue = (hexColor & 0xff) / 255.0F;
+        float red = (colorRGB >> 16 & 0xFF) / 255.0F;
+        float green = (colorRGB >> 8 & 0xFF) / 255.0F;
+        float blue = (colorRGB & 0xFF) / 255.0F;
         if (hasColorOverride && !renderBlocks.hasOverrideBlockTexture()) {
             red = (colorOverride >> 16 & 0xff) / 255.0F;
             green = (colorOverride >> 8 & 0xff) / 255.0F;
