@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,6 +32,7 @@ import galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -43,9 +46,13 @@ public class VoidMinerUtility {
 
     public static class DropMap {
 
+        private boolean isAliasCached;
+        private DiscreteDistribution discreteDistribution;
+
         private float totalWeight;
+        private double[] oreWeights;
+        private GTUtility.ItemId[] ores;
         private final Map<GTUtility.ItemId, Float> internalMap;
-        private CumulativeOreDistribution cumulativeOreDistribution;
 
         private final Set<String> voidMinerBlacklistedDrops;
 
@@ -111,23 +118,43 @@ public class VoidMinerUtility {
             totalWeight += weight;
         }
 
+        private void mergeDropMaps(DropMap dropMap) {
+            if (dropMap == null || dropMap.internalMap == null || dropMap.internalMap.isEmpty()) return;
+
+            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.entrySet()) {
+                // We cant be sure that the extraDropMap entries are intentional duplicates of this DropMap
+                this.internalMap.merge(entry.getKey(), entry.getValue(), Float::sum);
+                totalWeight += entry.getValue();
+            }
+        }
+
         /**
-         * Method used to pre-compute the cumulative sum for the VM. Stored as internalPair
+         * Method used to compute the ore distribution for the VM.
+         *
+         * @param extraDropMap the extraDropMap that is related to this DropMap
          */
-        public void createCumulativeSumPairArr() {
-            float previousWeight = 0.f;
-            float currentWeight;
+        public void computeOreDistribution(@Nullable DropMap extraDropMap) {
+            if (isAliasCached) return;
+            if (internalMap == null || internalMap.isEmpty()) {
+                if (extraDropMap == null || extraDropMap.internalMap == null || extraDropMap.internalMap.isEmpty())
+                    return;
+            }
+
+            // Merge a related extraDropMap if it exists
+            mergeDropMaps(extraDropMap);
+
+            ores = new GTUtility.ItemId[internalMap.size()];
+            oreWeights = new double[internalMap.size()];
             int i = 0;
 
-            cumulativeOreDistribution = new CumulativeOreDistribution(internalMap.size());
             for (Map.Entry<GTUtility.ItemId, Float> entry : internalMap.entrySet()) {
-
-                currentWeight = entry.getValue();
-
-                cumulativeOreDistribution.insert(entry.getKey(), previousWeight + currentWeight, i);
-                previousWeight += currentWeight;
+                ores[i] = entry.getKey();
+                oreWeights[i] = entry.getValue() / totalWeight;
                 i++;
             }
+
+            discreteDistribution = new DiscreteDistribution(oreWeights);
+            isAliasCached = true;
         }
 
         public float getTotalWeight() {
@@ -138,37 +165,14 @@ public class VoidMinerUtility {
             return internalMap;
         }
 
-        public CumulativeOreDistribution getOreDistribution() {
-            return cumulativeOreDistribution;
-        }
-    }
-
-    public static class CumulativeOreDistribution {
-
-        private final GTUtility.ItemId[] ores;
-        private final float[] oreWeights;
-
-        public CumulativeOreDistribution(int size) {
-            ores = new GTUtility.ItemId[size];
-            oreWeights = new float[size];
-        }
-
-        public void insert(GTUtility.ItemId ore, float weight, int index) {
-            ores[index] = ore;
-            oreWeights[index] = weight;
-        }
-
-        public GTUtility.ItemId[] getOres() {
-            return ores;
-        }
-
-        public float[] getOreWeights() {
-            return oreWeights;
+        public GTUtility.ItemId nextOre() {
+            return ores[discreteDistribution.next()];
         }
     }
 
     public static final Map<Integer, DropMap> dropMapsByDimId = new HashMap<>();
     public static final Map<String, DropMap> dropMapsByChunkProviderName = new HashMap<>();
+    public static final Map<Integer, DropMap> extraDropsDimMap = new HashMap<>();
 
     // Adds tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic
     // Dust and Circuit Compound MK3 Dust
@@ -200,16 +204,6 @@ public class VoidMinerUtility {
             for (ModDimensionDef dimDef : modContainer.getDimensionList()) {
                 dropMapsByChunkProviderName.put(dimDef.getChunkProviderName(), getDropMapSpace(dimDef));
             }
-        }
-
-        // Pre-compute the cumulative sum Pairs
-        for (Map.Entry<Integer, DropMap> dropMap : dropMapsByDimId.entrySet()) {
-            dropMap.getValue()
-                .createCumulativeSumPairArr();
-        }
-        for (Map.Entry<String, DropMap> dropMap : dropMapsByChunkProviderName.entrySet()) {
-            dropMap.getValue()
-                .createCumulativeSumPairArr();
         }
     }
 
@@ -326,10 +320,10 @@ public class VoidMinerUtility {
     }
 
     public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        if (!dropMapsByDimId.containsKey(dimId)) {
-            dropMapsByDimId.put(dimId, new DropMap());
+        if (!extraDropsDimMap.containsKey(dimId)) {
+            extraDropsDimMap.put(dimId, new DropMap());
         }
-        dropMapsByDimId.get(dimId)
+        extraDropsDimMap.get(dimId)
             .addDrop(block, meta, weight);
     }
 
