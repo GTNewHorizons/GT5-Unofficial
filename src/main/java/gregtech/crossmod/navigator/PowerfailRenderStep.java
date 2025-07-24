@@ -48,7 +48,8 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
         if (!location.highlighted) return;
 
         DrawUtils.drawLabel(
-            location.powerfail.toSummary(),
+            location.powerfail.toSummary()
+                .toString(),
             topX + width / 2,
             topY - FONT_HEIGHT - 5 + height * 1.5,
             0xFFFFFF,

@@ -46,6 +46,7 @@ public enum GTPacketTypes {
     UPDATE_POWERFAILS(36, new GTPacketUpdatePowerfails()),
     ON_POWERFAIL(37, new GTPacketOnPowerfail()),
     CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
+    CHAT(39, new GTPacketChat()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

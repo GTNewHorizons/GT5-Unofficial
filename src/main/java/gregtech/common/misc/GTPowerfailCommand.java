@@ -11,12 +11,11 @@ import java.util.UUID;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
+import gregtech.api.enums.ChatMessage;
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.data.GTPowerfailTracker;
 
@@ -83,10 +82,7 @@ public class GTPowerfailCommand extends GTBaseCommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if (!(sender instanceof EntityPlayerMP player)) {
-            sender.addChatMessage(new ChatComponentText("This command can only be ran by a player"));
-            return;
-        }
+        EntityPlayerMP player = (EntityPlayerMP) sender;
 
         if (args.length < 1) {
             sendHelpMessage(sender);
@@ -98,16 +94,13 @@ public class GTPowerfailCommand extends GTBaseCommand {
         switch (args[0]) {
             case "clear" -> {
                 GTMod.proxy.powerfailTracker.clearPowerfails(player, OptionalInt.empty());
-                sendChatToPlayer(sender, "Cleared all of your powerfails.");
+                ChatMessage.PowerfailsCleared.send(player);
             }
             case "clear-dim" -> {
                 GTMod.proxy.powerfailTracker
                     .clearPowerfails(player, OptionalInt.of(player.worldObj.provider.dimensionId));
-                sendChatToPlayer(
-                    sender,
-                    new ChatComponentText("Cleared all of your powerfails in the current dimension.").setChatStyle(
-                        new ChatStyle().setChatHoverEvent(
-                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("hello world")))));
+
+                ChatMessage.PowerfailsClearedDim.send(player);
             }
             case "list" -> {
                 final UUID playerId = player.getGameProfile()
@@ -118,30 +111,25 @@ public class GTPowerfailCommand extends GTBaseCommand {
                 sendChatToPlayer(sender, "");
 
                 if (powerfails.isEmpty()) {
-                    sendChatToPlayer(sender, "No powerfails have occurred.");
+                    ChatMessage.PowerfailsListNone.send(player);
                     return;
                 }
 
-                sendChatToPlayer(sender, "Uncleared powerfails:");
+                ChatMessage.PowerfailsListHeader.send(player);
 
                 if (powerfails.size() > 25) {
                     // poor bastard :kekw:
 
                     for (GTPowerfailTracker.Powerfail powerfail : powerfails.subList(0, 25)) {
-                        // I have no idea how to localize this without a ton of work, people will just have to suck it
-                        // up :caught:
-                        sendChatToPlayer(sender, "- " + powerfail.toString());
+                        ChatMessage.PowerfailsListEntry.send(player, powerfail.toDescription());
                     }
 
-                    sendChatToPlayer(sender, (powerfails.size() - 25) + " additional powerfails truncated");
+                    ChatMessage.PowerfailsListTruncated.send(player, powerfails.size() - 25);
                 } else {
                     for (GTPowerfailTracker.Powerfail powerfail : powerfails) {
-                        sendChatToPlayer(sender, "- " + powerfail.toString());
+                        ChatMessage.PowerfailsListEntry.send(player, powerfail.toDescription());
                     }
                 }
-
-                sendChatToPlayer(sender, "Run /powerfails clear to remove all powerfails");
-                sendChatToPlayer(sender, "Run /powerfails clear-dim to remove all powerfails in your current world");
             }
             default -> {
                 sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
