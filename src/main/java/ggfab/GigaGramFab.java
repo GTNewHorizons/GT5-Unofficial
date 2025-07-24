@@ -74,8 +74,7 @@ public class GigaGramFab {
                     32000,
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST",
-                    null).getStackForm(1L));
+                    "TOOL_CAST").getStackForm(1L));
 
             GGItemList.ToolCast_HV.set(
                 new MTEBasicMachineWithRecipe(
@@ -90,8 +89,7 @@ public class GigaGramFab {
                     64000,
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST",
-                    null).getStackForm(1L));
+                    "TOOL_CAST").getStackForm(1L));
 
             GGItemList.ToolCast_EV.set(
                 new MTEBasicMachineWithRecipe(
@@ -106,8 +104,7 @@ public class GigaGramFab {
                     128000,
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST",
-                    null).getStackForm(1L));
+                    "TOOL_CAST").getStackForm(1L));
             long plate = OrePrefixes.plate.mMaterialAmount, ingot = OrePrefixes.ingot.mMaterialAmount,
                 screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
             GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
