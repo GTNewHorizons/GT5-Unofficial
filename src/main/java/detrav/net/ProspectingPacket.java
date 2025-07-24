@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -25,6 +24,9 @@ import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import it.unimi.dsi.fastutil.bytes.Byte2ShortOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -37,9 +39,9 @@ public class ProspectingPacket extends DetravPacket {
     public final int posZ;
     public final int size;
     public final int ptype;
-    public final HashMap<Byte, Short>[][] map;
-    public final HashMap<String, Integer> ores;
-    public final HashMap<Short, String> metaMap;
+    public final Byte2ShortOpenHashMap[][] map;
+    public final Object2IntOpenHashMap<String> ores;
+    public final Short2ObjectOpenHashMap<String> metaMap;
 
     public int level = -1;
 
@@ -50,9 +52,9 @@ public class ProspectingPacket extends DetravPacket {
         this.posZ = posZ;
         this.size = size;
         this.ptype = ptype;
-        this.map = new HashMap[(size * 2 + 1) * 16][(size * 2 + 1) * 16];
-        this.ores = new HashMap<>();
-        this.metaMap = new HashMap<>();
+        this.map = new Byte2ShortOpenHashMap[(size * 2 + 1) * 16][(size * 2 + 1) * 16];
+        this.ores = new Object2IntOpenHashMap<>();
+        this.metaMap = new Short2ObjectOpenHashMap<>();
     }
 
     private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
@@ -115,7 +117,7 @@ public class ProspectingPacket extends DetravPacket {
         for (int i = 0; i < aSize; i++) for (int j = 0; j < aSize; j++) {
             byte kSize = aData.readByte();
             if (kSize == 0) continue;
-            packet.map[i][j] = new HashMap<>();
+            packet.map[i][j] = new Byte2ShortOpenHashMap();
             for (int k = 0; k < kSize; k++) {
                 final byte y = aData.readByte();
                 if (y == 0) continue;
@@ -149,7 +151,7 @@ public class ProspectingPacket extends DetravPacket {
         int aSize = (size * 2 + 1) * 16;
         int checkOut = 0;
         for (int i = 0; i < aSize; i++) for (int j = 0; j < aSize; j++) {
-            HashMap<Byte, Short> data = map[i][j];
+            Byte2ShortOpenHashMap data = map[i][j];
             if (data == null) tOut.writeByte(0);
             else {
                 tOut.writeByte(
@@ -175,7 +177,7 @@ public class ProspectingPacket extends DetravPacket {
     public void addBlock(int x, int y, int z, short metaData) {
         int aX = x - (chunkX - size) * 16;
         int aZ = z - (chunkZ - size) * 16;
-        if (map[aX][aZ] == null) map[aX][aZ] = new HashMap<>();
+        if (map[aX][aZ] == null) map[aX][aZ] = new Byte2ShortOpenHashMap();
         map[aX][aZ].put((byte) y, metaData);
     }
 
