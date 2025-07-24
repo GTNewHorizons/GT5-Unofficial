@@ -55,8 +55,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-               null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(6)
                         .getStackForm(1L));
 
@@ -73,8 +72,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-                null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(5)
                         .getStackForm(1L));
 
@@ -92,8 +90,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-                null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(4)
                         .getStackForm(1L));
 
@@ -110,8 +107,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-                null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(3)
                         .getStackForm(1L));
 
@@ -128,8 +124,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-                null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(2)
                         .getStackForm(1L));
 
@@ -146,8 +141,7 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR",
-                null)
+                "DEHYDRATOR")
                         .setRecipeCatalystPriority(1)
                         .getStackForm(1L));
 

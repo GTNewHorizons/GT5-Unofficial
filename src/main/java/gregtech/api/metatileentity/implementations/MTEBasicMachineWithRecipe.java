@@ -213,6 +213,29 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     }
 
     /**
+     * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource.
+     * Has no recipe.
+     */
+    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
+                                     RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
+                                     SpecialEffects aSpecialEffect, String aOverlays) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            usesFluids ? getCapacityForTier(aTier) : 0,
+            aSound.resourceLocation,
+            aSpecialEffect,
+            aOverlays,
+            null);
+    }
+
+    /**
      * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
