@@ -2,6 +2,12 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
+import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLER_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLER_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_MACHINE_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_MACHINE_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.CIRCUIT_ASSEMBLER_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.CIRCUIT_ASSEMBLER_UV;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
@@ -324,14 +330,14 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             default -> {
                 int tID = this.getBaseMetaTileEntity()
                     .getMetaTileID();
-                if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { // assembler
+                if (tID >= ASSEMBLER_LV.ID && tID <= ASSEMBLER_IV.ID || tID >= CIRCUIT_ASSEMBLER_LV.ID && tID <= CIRCUIT_ASSEMBLER_UV.ID || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
                     // lv-iv;
                     // circuit
                     // asseblers
                     // lv -
                     // uv;
                     // assemblers
-                    // luv-uev
+                    // luv-umv
                     if (GTUtility.isStackValid(aStack)) for (int oreID : OreDictionary.getOreIDs(aStack)) {
                         if (OreDictionary.getOreName(oreID)
                             .startsWith("circuit")) return true;
