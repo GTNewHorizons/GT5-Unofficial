@@ -1,5 +1,10 @@
 package ggfab;
 
+import static gregtech.api.enums.MetaTileEntityIDs.AdvancedAssline;
+import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputBus;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_MV;
 import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
@@ -53,12 +58,12 @@ public class GigaGramFab {
     public void preInit(FMLPreInitializationEvent event) {
         GregTechAPI.sAfterGTPreload.add(() -> {
             GGItemList.AdvAssLine
-                .set(new MTEAdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
+                .set(new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTELinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
-                    13534,
+                    ToolCast_MV.ID,
                     "ggfab.toolcast.tier.mv",
                     "Basic Tool Casting Machine",
                     2,
@@ -74,7 +79,7 @@ public class GigaGramFab {
 
             GGItemList.ToolCast_HV.set(
                 new MTEBasicMachineWithRecipe(
-                    13535,
+                    ToolCast_HV.ID,
                     "ggfab.toolcast.tier.hv",
                     "Advanced Tool Casting Machine",
                     3,
@@ -90,7 +95,7 @@ public class GigaGramFab {
 
             GGItemList.ToolCast_EV.set(
                 new MTEBasicMachineWithRecipe(
-                    13536,
+                    ToolCast_EV.ID,
                     "ggfab.toolcast.tier.ev",
                     "Master Tool Casting Machine",
                     4,
