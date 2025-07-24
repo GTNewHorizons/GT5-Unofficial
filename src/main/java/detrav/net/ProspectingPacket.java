@@ -23,6 +23,7 @@ import detrav.utils.FluidColors;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import it.unimi.dsi.fastutil.bytes.Byte2ShortOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -57,8 +58,8 @@ public class ProspectingPacket extends DetravPacket {
         this.metaMap = new Short2ObjectOpenHashMap<>();
     }
 
-    private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
-        final short[] rgba;
+    private static void addOre(ProspectingPacket packet, short meta) {
+        final int argb;
         final String name;
         try {
             if (packet.ptype == 0 || packet.ptype == 1) {
@@ -66,23 +67,23 @@ public class ProspectingPacket extends DetravPacket {
                 if (meta < 7000 || meta > 7500) {
                     if (meta > 0) {
                         Materials tMaterial = GregTechAPI.sGeneratedMaterials[meta % 1000];
-                        rgba = tMaterial.getRGBA();
+                        argb = ColorUtil.fromRGBA(tMaterial.getRGBA());
                         name = tMaterial.getLocalizedNameForItem(
                             GTLanguageManager.getTranslation("gt.blockores." + meta + ".name"));
                     } else {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
                         String translated = GTLanguageManager.getTranslation("bw.blocktype.ore");
                         name = translated.replace("%material", werkstoff.getLocalizedName());
-                        rgba = werkstoff.getRGBA();
+                        argb = ColorUtil.fromRGBA(werkstoff.getRGBA());
                     }
                 } else {
                     gtPlusPlus.core.material.Material mat = GTppHelper.getMatFromMeta(meta);
-                    rgba = mat.getRGBA();
+                    argb = ColorUtil.fromRGBA(mat.getRGBA());
                     name = mat.getLocalizedName() + " Ore";
                 }
             } else if (packet.ptype == 2) {
                 // Fluid
-                rgba = FluidColors.getColor(meta);
+                argb = FluidColors.getColorARGB(meta);
                 name = Objects.firstNonNull(
                     FluidRegistry.getFluid(meta)
                         .getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
@@ -90,14 +91,14 @@ public class ProspectingPacket extends DetravPacket {
             } else if (packet.ptype == 3) {
                 // Pollution
                 name = StatCollector.translateToLocal("gui.detrav.scanner.pollution");
-                rgba = new short[] { 125, 123, 118, 0 };
+                argb = 0x7D7B76;
             } else {
                 return;
             }
         } catch (Exception ignored) {
             return;
         }
-        packet.ores.put(name, ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+        packet.ores.put(name, ColorUtil.toRGB(argb));
         packet.metaMap.put(meta, name);
     }
 
@@ -123,7 +124,7 @@ public class ProspectingPacket extends DetravPacket {
                 if (y == 0) continue;
                 final short meta = aData.readShort();
                 packet.map[i][j].put(y, meta);
-                if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);
+                if (packet.ptype != 2 || y == 1) addOre(packet, meta);
                 checkOut++;
             }
         }
