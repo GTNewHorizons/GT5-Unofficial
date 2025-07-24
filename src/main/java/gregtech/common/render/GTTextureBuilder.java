@@ -53,6 +53,12 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
+    public ITextureBuilder addIcon(final IIconContainer iconContainer) {
+        this.iconContainerList.add(iconContainer);
+        return this;
+    }
+
+    @Override
     public ITextureBuilder addIcon(final IIconContainer... iconContainers) {
         this.iconContainerList.addAll(Arrays.asList(iconContainers));
         return this;
@@ -61,6 +67,12 @@ public class GTTextureBuilder implements ITextureBuilder {
     @Override
     public ITextureBuilder setRGBA(final short[] rgba) {
         this.rgba = rgba;
+        return this;
+    }
+
+    @Override
+    public ITextureBuilder addLayer(final ITexture iTexture) {
+        this.textureLayers.add(iTexture);
         return this;
     }
 
