@@ -158,26 +158,6 @@ public class LightingHelper {
     /**
      * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
      *
-     * @param side the side
-     * @param rgba the primary short[] RGBA color array
-     */
-    public void setupColor(ForgeDirection side, short[] rgba) {
-        setupColor(side, getColor(rgba));
-    }
-
-    /**
-     * Gets int color from RGBA array.
-     *
-     * @param rgba the short RGBA color array
-     * @return int color
-     */
-    public static int getColor(short[] rgba) {
-        return (rgba[2] & 0xff) | (rgba[1] & 0xff) << 8 | (rgba[0] & 0xff) << 16;
-    }
-
-    /**
-     * Sets up the color using lightness, brightness, and the primary color value (usually the dye color) for the side.
-     *
      * @param side     the side
      * @param colorRGB the primary color in RGB format, (alpha unused)
      */
