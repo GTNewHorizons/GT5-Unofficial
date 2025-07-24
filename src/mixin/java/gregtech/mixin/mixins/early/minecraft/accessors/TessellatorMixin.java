@@ -17,4 +17,17 @@ public class TessellatorMixin implements TesselatorAccessor {
     public boolean gt5u$isDrawing() {
         return this.isDrawing;
     }
+
+    @Shadow
+    private int vertexCount;
+
+    @Override
+    public int gt5u$vertexCount() {
+        return this.vertexCount;
+    }
+
+    @Override
+    public boolean gt5u$hasVertices() {
+        return this.vertexCount > 0;
+    }
 }
