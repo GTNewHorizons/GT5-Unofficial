@@ -3656,7 +3656,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // ------------------------ Wireless EU dynamos ------------------------
 
-    // Wireless Dynamo Powerful
+        // Wireless Dynamo Powerful
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_dynamoTunnel8_UMV.get(1),
             24_000_000,
