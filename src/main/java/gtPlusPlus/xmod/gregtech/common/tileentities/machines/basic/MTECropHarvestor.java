@@ -65,7 +65,7 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
-                            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
     }
 
@@ -302,7 +302,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             .equals(Crops.weed)) return;
         if (hasFertilizer() && consumeFertilizer(true)
             && this.getBaseMetaTileEntity()
-            .getUniversalEnergyStored() >= getMinimumStoredEU()
+                .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyFertilizer(aCrop)) {
             consumeFertilizer(false);
@@ -450,13 +450,13 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return aStack != null && aIndex >= SLOT_OUTPUT_START && aIndex < this.getSizeInventory();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         if (aStack != null) {
             if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
                 return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
@@ -504,7 +504,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == ForgeDirection.DOWN || side == ForgeDirection.UP) {
             return this.mTextures[3][aColorIndex + 1];
         } else {
@@ -604,14 +604,14 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .setPos(87, 63)
                 .setSize(18, 18));
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2)
-                    .startFromSlot(SLOT_WEEDEX_1)
-                    .endAtSlot(SLOT_WEEDEX_2)
-                    .applyForWidget(
-                        widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
-                            .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
-                    .build()
-                    .setPos(7, 13))
+            SlotGroup.ofItemHandler(inventoryHandler, 2)
+                .startFromSlot(SLOT_WEEDEX_1)
+                .endAtSlot(SLOT_WEEDEX_2)
+                .applyForWidget(
+                    widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
+                .build()
+                .setPos(7, 13))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 2)
                     .startFromSlot(SLOT_FERT_1)
