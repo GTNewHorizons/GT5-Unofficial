@@ -915,8 +915,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.Machine_MV_Amplifab.set(
             new MTEBasicMachineWithRecipe(
@@ -931,8 +930,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.Machine_HV_Amplifab.set(
             new MTEBasicMachineWithRecipe(
@@ -947,8 +945,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.Machine_EV_Amplifab.set(
             new MTEBasicMachineWithRecipe(
@@ -963,8 +960,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.Machine_IV_Amplifab.set(
             new MTEBasicMachineWithRecipe(
@@ -979,8 +975,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorLuV.set(
             new MTEBasicMachineWithRecipe(
@@ -995,8 +990,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorZPM.set(
             new MTEBasicMachineWithRecipe(
@@ -1011,8 +1005,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorUV.set(
             new MTEBasicMachineWithRecipe(
@@ -1027,8 +1020,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorUHV.set(
             new MTEBasicMachineWithRecipe(
@@ -1043,8 +1035,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorUEV.set(
             new MTEBasicMachineWithRecipe(
@@ -1059,8 +1050,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorUIV.set(
             new MTEBasicMachineWithRecipe(
@@ -1075,8 +1065,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
 
         ItemList.AmplifabricatorUMV.set(
             new MTEBasicMachineWithRecipe(
@@ -1091,8 +1080,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1000,
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB",
-                null).getStackForm(1L));
+                "AMPLIFAB").getStackForm(1L));
     }
 
     private static void registerAlloySmelter() {
