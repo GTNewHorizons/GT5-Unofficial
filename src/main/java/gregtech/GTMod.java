@@ -279,6 +279,7 @@ public class GTMod {
         proxy.onPreInitialization(event);
 
         GTLog.out.println("GTMod: Setting Configs");
+        GTLog.out.println("GTMod: Hello!");
 
         GTPreLoad.loadConfig();
 
