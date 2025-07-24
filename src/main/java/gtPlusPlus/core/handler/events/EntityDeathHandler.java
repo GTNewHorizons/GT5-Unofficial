@@ -111,7 +111,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         if (event == null || event.entityLiving == null) {
             return;
         }
-        if (isRealPlayer(event.entityLiving)) {
+        if (GTUtility.isRealPlayer(event.entityLiving)) {
             EntityPlayer aPlayer = (EntityPlayer) event.entityLiving;
             dropMeatFromPlayer(aPlayer);
         } else {
@@ -121,12 +121,6 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
                 }
             }
         }
-    }
-
-    private static boolean isRealPlayer(EntityLivingBase entity) {
-        return entity instanceof EntityPlayer p && !p.getClass()
-            .getName()
-            .contains("Fake");
     }
 
     @Optional.Method(modid = Mods.ModIDs.MOBS_INFO)

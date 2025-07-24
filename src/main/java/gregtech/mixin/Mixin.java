@@ -47,7 +47,14 @@ public enum Mixin implements IMixins {
             "minecraft.accessors.ForgeShapelessRecipeMixin",
             "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
-            "minecraft.accessors.EntityPlayerMPMixin")
+            "minecraft.accessors.EntityPlayerMPMixin",
+            "minecraft.accessors.WeightedRandomFishableMixin",
+            "minecraft.accessors.EntityMixin",
+            "minecraft.accessors.LanguageRegistryMixin",
+            "minecraft.accessors.EntityItemMixin")
+        .addClientMixins(
+            "minecraft.accessors.GuiTextFieldMixin",
+            "minecraft.accessors.TessellatorMixin")
         .setPhase(Phase.EARLY)),
     ItemMixinCoverFix(new MixinBuilder("Allow cover items to bypass sneak checks")
         .addCommonMixins("minecraft.ItemMixin")
@@ -147,7 +154,14 @@ public enum Mixin implements IMixins {
             .addCommonMixins("galacticraftcore.MixinGalacticraftRocketPollution")
             .setPhase(Phase.LATE)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE));
+            .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)),
+    FORESTRY_ACCESSOR(new MixinBuilder()
+        .addCommonMixins(
+            "forestry.TreeDefinitionMixin",
+            "forestry.MutationMixin",
+            "forestry.AlleleEffectThrottledMixin")
+        .setPhase(Phase.LATE)
+        .addRequiredMod(TargetedMod.FORESTRY));
     // spotless:on
 
     private final MixinBuilder builder;

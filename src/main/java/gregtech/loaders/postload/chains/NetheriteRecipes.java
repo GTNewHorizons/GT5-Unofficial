@@ -378,6 +378,7 @@ public class NetheriteRecipes {
         if (Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
+                    GTUtility.getIntegratedCircuit(1),
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
