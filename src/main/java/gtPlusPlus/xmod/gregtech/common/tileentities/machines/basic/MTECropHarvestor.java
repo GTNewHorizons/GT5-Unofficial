@@ -52,6 +52,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public boolean mModeAlternative = false;
     public boolean mHarvestEnabled = true;
+    public boolean mHarvestFullGrowth = true;
 
     public MTECropHarvestor(final int aID, final int aTier, final String aDescription) {
         super(
@@ -64,7 +65,7 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures) {
+                            final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
     }
 
@@ -190,9 +191,9 @@ public class MTECropHarvestor extends MTEBasicTank {
             if (aCrop == null) continue;
             if (!this.mHarvestEnabled) continue;
 
-            if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
+            if (aCrop.canBeHarvested(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
-                ItemStack[] aHarvest = tCrop.harvest_automated(true);
+                ItemStack[] aHarvest = tCrop.harvest_automated(this.mHarvestFullGrowth);
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
@@ -301,7 +302,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             .equals(Crops.weed)) return;
         if (hasFertilizer() && consumeFertilizer(true)
             && this.getBaseMetaTileEntity()
-                .getUniversalEnergyStored() >= getMinimumStoredEU()
+            .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyFertilizer(aCrop)) {
             consumeFertilizer(false);
@@ -449,13 +450,13 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                  ItemStack aStack) {
         return aStack != null && aIndex >= SLOT_OUTPUT_START && aIndex < this.getSizeInventory();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                 ItemStack aStack) {
         if (aStack != null) {
             if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
                 return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
@@ -473,6 +474,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
             "Secondary mode can Hydrate/Fertilize/Weed-EX",
+            "You can set the mode to harvest any growth stage crop or only fully mature ones",
             "Consumes " + powerUsage() + "eu per harvest",
             "Consumes " + powerUsageSecondary() + "eu per secondary operation",
             "Can harvest 2 block levels above and below itself",
@@ -502,7 +504,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == ForgeDirection.DOWN || side == ForgeDirection.UP) {
             return this.mTextures[3][aColorIndex + 1];
         } else {
@@ -560,6 +562,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
         aNBT.setBoolean("mHarvestEnabled", this.mHarvestEnabled);
+        aNBT.setBoolean("mHarvestFullGrowth", this.mHarvestFullGrowth);
     }
 
     @Override
@@ -568,6 +571,9 @@ public class MTECropHarvestor extends MTEBasicTank {
         this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
         if (aNBT.hasKey("mHarvestEnabled")) {
             this.mHarvestEnabled = aNBT.getBoolean("mHarvestEnabled");
+        }
+        if (aNBT.hasKey("mHarvestFullGrowth")) {
+            this.mHarvestFullGrowth = aNBT.getBoolean("mHarvestFullGrowth");
         }
     }
 
@@ -590,14 +596,22 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .setPos(67, 63)
                 .setSize(18, 18));
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 2)
-                .startFromSlot(SLOT_WEEDEX_1)
-                .endAtSlot(SLOT_WEEDEX_2)
-                .applyForWidget(
-                    widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
-                        .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
-                .build()
-                .setPos(7, 13))
+            new CycleButtonWidget().setToggle(() -> mHarvestFullGrowth, val -> mHarvestFullGrowth = val)
+                .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
+                .addTooltip(0, "Enable Full Growth Harvest")
+                .addTooltip(1, "Disable Full Growth Harvest")
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .setPos(87, 63)
+                .setSize(18, 18));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 2)
+                    .startFromSlot(SLOT_WEEDEX_1)
+                    .endAtSlot(SLOT_WEEDEX_2)
+                    .applyForWidget(
+                        widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
+                            .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
+                    .build()
+                    .setPos(7, 13))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 2)
                     .startFromSlot(SLOT_FERT_1)
