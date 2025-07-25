@@ -175,31 +175,25 @@ public class GTGenericItem extends Item implements IProjectileItem {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName()
-            .contains("LuV")) {
-            HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName()
-            .contains("ZPM")) {
-                HEX_OxFFFFFF = 0xace600;
-            } else if (stack.getDisplayName()
-                .contains("UV")) {
-                    HEX_OxFFFFFF = 0xffff00;
-                } else if (stack.getDisplayName()
-                    .contains("MAX")) {
-                        HEX_OxFFFFFF = 0xff0000;
-                    } else if (stack.getDisplayName()
-                        .contains("Sodium")) {
-                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
-                        } else if (stack.getDisplayName()
-                            .contains("Cadmium")) {
-                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
-                            } else if (stack.getDisplayName()
-                                .contains("Lithium")) {
-                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-                                } else {
-                                    HEX_OxFFFFFF = 0xffffff;
-                                }
-        return HEX_OxFFFFFF;
+    public int getColorFromItemStack(final ItemStack stack, int colorRGB) {
+        final String name = stack.getDisplayName();
+        if (name.contains("LuV")) {
+            colorRGB = 0xffffcc;
+        } else if (name.contains("ZPM")) {
+            colorRGB = 0xace600;
+        } else if (name.contains("UV")) {
+            colorRGB = 0xffff00;
+        } else if (name.contains("MAX")) {
+            colorRGB = 0xff0000;
+        } else if (name.contains("Sodium")) {
+            colorRGB = Utils.rgbtoHexValue(0, 0, 150);
+        } else if (name.contains("Cadmium")) {
+            colorRGB = Utils.rgbtoHexValue(50, 50, 60);
+        } else if (name.contains("Lithium")) {
+            colorRGB = Utils.rgbtoHexValue(225, 220, 255);
+        } else {
+            colorRGB = 0xffffff;
+        }
+        return colorRGB;
     }
 }
