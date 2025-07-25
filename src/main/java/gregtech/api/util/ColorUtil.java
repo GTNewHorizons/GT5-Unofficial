@@ -95,15 +95,6 @@ public final class ColorUtil {
     }
 
     /**
-     * Returns true if the color has an alpha component.
-     *
-     * @param argb - color in argb format
-     */
-    public static boolean hasAlpha(int argb) {
-        return ((argb >> 24) & 0xFF) != 0;
-    }
-
-    /**
      * Converts an ARGB color array to an ARGB color integer.
      *
      * @param argb - the color array in ARGB format
