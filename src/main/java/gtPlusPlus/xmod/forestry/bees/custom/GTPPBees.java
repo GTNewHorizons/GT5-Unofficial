@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.ColorUtil;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.api.objects.Logger;
@@ -59,9 +60,9 @@ public class GTPPBees {
     }
 
     private void setCustomItems() {
-        dropForceGem = new BaseItemMisc("Force", new short[] { 250, 250, 20 }, 64, MiscTypes.GEM, null);
-        dropBiomassBlob = new BaseItemMisc("Biomass", new short[] { 33, 225, 24 }, 64, MiscTypes.DROP, null);
-        dropEthanolBlob = new BaseItemMisc("Ethanol", new short[] { 255, 128, 0 }, 64, MiscTypes.DROP, null);
+        dropForceGem = new BaseItemMisc("Force", ColorUtil.toRGB(250, 250, 20), 64, MiscTypes.GEM, null);
+        dropBiomassBlob = new BaseItemMisc("Biomass", ColorUtil.toRGB(33, 225, 24), 64, MiscTypes.DROP, null);
+        dropEthanolBlob = new BaseItemMisc("Ethanol", ColorUtil.toRGB(255, 128, 0), 64, MiscTypes.DROP, null);
 
         // Nikolite may not exist, so lets make it.
         dropNikoliteDust = ItemUtils
@@ -71,7 +72,7 @@ public class GTPPBees {
             new BaseItemIngotOld("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
         }
 
-        dropFluorineBlob = new BaseItemMisc("Fluorine", new short[] { 30, 230, 230 }, 64, MiscTypes.DROP, null);
+        dropFluorineBlob = new BaseItemMisc("Fluorine", ColorUtil.toRGB(30, 230, 230), 64, MiscTypes.DROP, null);
         addRecipes();
     }
 
