@@ -7,10 +7,11 @@ package gregtech.api.util;
  * if not specified in the method name, it assumes the color format
  * for the method parameter or return type is the default : ARGB integer.
  */
+@SuppressWarnings("unused")
 public final class ColorUtil {
 
     private ColorUtil() {
-        throw new UnsupportedOperationException("Instantiation of utility class");
+        throw new UnsupportedOperationException("ColorUtil is a utility class and cannot be instantiated");
     }
 
     /**
@@ -94,7 +95,16 @@ public final class ColorUtil {
     }
 
     /**
-     * Converts the ARGB color array to an ARGB color integer.
+     * Returns true if the color has an alpha component.
+     *
+     * @param argb - color in argb format
+     */
+    public static boolean hasAlpha(int argb) {
+        return ((argb >> 24) & 0xFF) != 0;
+    }
+
+    /**
+     * Converts an ARGB color array to an ARGB color integer.
      *
      * @param argb - the color array in ARGB format
      * @return color integer in ARGB format
@@ -105,7 +115,7 @@ public final class ColorUtil {
     }
 
     /**
-     * Converts the ARGB color array to an ARGB color integer.
+     * Converts an ARGB color array to an ARGB color integer.
      *
      * @param argb - the color array in ARGB format
      * @return color integer in ARGB format
@@ -116,7 +126,29 @@ public final class ColorUtil {
     }
 
     /**
-     * Packs the ARGB components into a single ARGB integer.
+     * Converts an ARGB color array to an RGB color integer (alpha component set to 0).
+     *
+     * @param argb - the color array in ARGB format
+     * @return color integer in RGB format
+     */
+    public static int fromARGBToRGB(byte[] argb) {
+        if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
+        return fromARGB(0, argb[1], argb[2], argb[3]);
+    }
+
+    /**
+     * Converts an ARGB color array to an RGB color integer (alpha component set to 0).
+     *
+     * @param argb - the color array in ARGB format
+     * @return color integer in RGB format
+     */
+    public static int fromARGBToRGB(short[] argb) {
+        if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
+        return fromARGB(0, argb[1], argb[2], argb[3]);
+    }
+
+    /**
+     * Packs ARGB components into a single ARGB color integer.
      *
      * @param a alpha component (0-255)
      * @param r red component (0-255)
@@ -129,7 +161,7 @@ public final class ColorUtil {
     }
 
     /**
-     * Converts the RGBA color array to an ARGB color integer.
+     * Converts an RGBA color array to an ARGB color integer.
      *
      * @param rgba - the color array in RGBA format
      * @return color integer in ARGB format
@@ -140,7 +172,7 @@ public final class ColorUtil {
     }
 
     /**
-     * Converts the RGBA color array to an ARGB color integer.
+     * Converts an RGBA color array to an ARGB color integer.
      *
      * @param rgba - the color array in RGBA format
      * @return color integer in ARGB format
@@ -151,7 +183,29 @@ public final class ColorUtil {
     }
 
     /**
-     * Removes the alpha component of a ARGB color integer.
+     * Converts an RGBA color array to an RGB color integer (alpha component set to 0).
+     *
+     * @param rgba - the color array in RGBA format
+     * @return color integer in RGB format
+     */
+    public static int fromRGBAToRGB(byte[] rgba) {
+        if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
+        return fromARGB(0, rgba[0], rgba[1], rgba[2]);
+    }
+
+    /**
+     * Converts an RGBA color array to an RGB color integer (alpha component set to 0).
+     *
+     * @param rgba - the color array in RGBA format
+     * @return color integer in RGB format
+     */
+    public static int fromRGBAToRGB(short[] rgba) {
+        if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
+        return fromARGB(0, rgba[0], rgba[1], rgba[2]);
+    }
+
+    /**
+     * Converts an ARGB color integer to an RGB color integer by removing the alpha component.
      *
      * @param argb - color in argb format
      * @return color in rgb format
@@ -161,7 +215,7 @@ public final class ColorUtil {
     }
 
     /**
-     * Replaces the alpha component of a ARGB color integer.
+     * Replaces the alpha component of an ARGB color integer.
      *
      * @param argb - color in argb format
      * @return color in argb format
