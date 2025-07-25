@@ -5,15 +5,17 @@ import gregtech.api.util.StringUtils;
 
 public enum PropolisType {
 
-    Arcaneshard(0x9010AD, true),
-    Dragonessence(0x911ECE, true),
-    Ectoplasma(0xDCB0E5, true),
+    // DO NOT RE-ORDER THIS ENUM, ORDER MATTERS
+
     End(0xCC00FA, true),
+    Ectoplasma(0xDCB0E5, true),
+    Arcaneshard(0x9010AD, true),
+    Stardust(0xFFFF00, true),
+    Dragonessence(0x911ECE, true),
     Enderman(0x161616, true),
-    Endium(0xA0FFFF, true),
-    Fireessence(0xD41238, true),
     Silverfish(0xEE053D, true),
-    Stardust(0xFFFF00, true);
+    Endium(0xA0FFFF, true),
+    Fireessence(0xD41238, true);
 
     public static final PropolisType[] VALUES = PropolisType.values();
 
