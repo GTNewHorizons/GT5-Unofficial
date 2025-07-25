@@ -34,8 +34,8 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture {
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] rgba, boolean glow, boolean stdOrient,
         boolean extFacing) {
-        mIconContainer = aIcon;
-        this.colorRGB = ColorUtil.fromRGBA(rgba);
+        this.mIconContainer = aIcon;
+        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
