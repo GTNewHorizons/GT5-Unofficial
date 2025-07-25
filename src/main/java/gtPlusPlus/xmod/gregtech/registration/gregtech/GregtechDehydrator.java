@@ -13,7 +13,6 @@ import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRec
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.util.GTModHandler;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -23,6 +22,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -55,9 +55,8 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(6)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(6)
+                    .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_HV.set(
             new MTEBasicMachineWithRecipe(
@@ -72,9 +71,8 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(5)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(5)
+                    .getStackForm(1L));
 
         // Chemical
         GregtechItemList.GT_Dehydrator_EV.set(
@@ -90,9 +88,8 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(4)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(4)
+                    .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_IV.set(
             new MTEBasicMachineWithRecipe(
@@ -107,9 +104,8 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(3)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(3)
+                    .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_LuV.set(
             new MTEBasicMachineWithRecipe(
@@ -124,9 +120,8 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(2)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(2)
+                    .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_ZPM.set(
             new MTEBasicMachineWithRecipe(
@@ -141,16 +136,16 @@ public class GregtechDehydrator {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "DEHYDRATOR")
-                        .setRecipeCatalystPriority(1)
-                        .getStackForm(1L));
+                "DEHYDRATOR").setRecipeCatalystPriority(1)
+                    .getStackForm(1L));
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(
             new MTEIndustrialDehydrator(Controller_Vacuum_Furnace.ID, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri")
                 .getStackForm(1L));
     }
-    private static void registerRecipes(){
+
+    private static void registerRecipes() {
         ItemStack coilT1 = new ItemStack(ModItems.itemDehydratorCoil, 1, 0);
         ItemStack coilT2 = new ItemStack(ModItems.itemDehydratorCoil, 1, 1);
         ItemStack coilT3 = new ItemStack(ModItems.itemDehydratorCoil, 1, 2);
@@ -190,25 +185,42 @@ public class GregtechDehydrator {
             .eut(TierEU.RECIPE_EV / 2)
             .addTo(assemblerRecipes);
 
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_MV.get(1),  new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
-            OrePrefixes.wireFine.get(Materials.RedAlloy), 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Copper), 'G', OrePrefixes.gearGt.get(Materials.Steel) },2);
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_MV.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
+                OrePrefixes.wireFine.get(Materials.RedAlloy), 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Copper), 'G', OrePrefixes.gearGt.get(Materials.Steel) },
+            2);
 
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_HV.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
+                OrePrefixes.wireFine.get(Materials.Electrum), 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Silver), 'G', MaterialsAlloy.POTIN.getGear(1) },
+            3);
 
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_HV.get(1),new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
-            OrePrefixes.wireFine.get(Materials.Electrum), 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Silver), 'G', MaterialsAlloy.POTIN.getGear(1) }, 3);
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_EV.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT1, 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) },
+            4);
 
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_EV.get(1), new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT1, 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) }, 4);
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_IV.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT2, 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', MaterialsAlloy.INCONEL_690.getGear(1) },
+            5);
 
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_IV.get(1), new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT2, 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', MaterialsAlloy.INCONEL_690.getGear(1) }, 5);
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_LuV.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT3, 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', MaterialsAlloy.HASTELLOY_N.getGear(1) },
+            6);
 
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_LuV.get(1), new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT3, 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', MaterialsAlloy.HASTELLOY_N.getGear(1) }, 6);
-
-        GTModHandler.addMachineCraftingRecipe(GregtechItemList.GT_Dehydrator_ZPM.get(1), new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT4, 'C', CIRCUIT, 'W',
-            OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) }, 7 );
+        GTModHandler.addMachineCraftingRecipe(
+            GregtechItemList.GT_Dehydrator_ZPM.get(1),
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT4, 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) },
+            7);
     }
 }

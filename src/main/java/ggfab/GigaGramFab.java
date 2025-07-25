@@ -57,10 +57,12 @@ public class GigaGramFab {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GregTechAPI.sAfterGTPreload.add(() -> {
-            GGItemList.AdvAssLine
-                .set(new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
+            GGItemList.AdvAssLine.set(
+                new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
+                    .getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
+                    .getStackForm(1));
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
                     ToolCast_MV.ID,
@@ -130,18 +132,27 @@ public class GigaGramFab {
                 2 * rod);
             GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
 
-            GTModHandler.addMachineCraftingRecipe(GGItemList.ToolCast_MV.get(1), new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                ItemList.Shape_Empty.get(1L) }, 2);
-            GTModHandler.addMachineCraftingRecipe(GGItemList.ToolCast_HV.get(1), new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                ItemList.Shape_Empty.get(1L) }, 3);
-            GTModHandler.addMachineCraftingRecipe(GGItemList.ToolCast_EV.get(1), new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                ItemList.Shape_Empty.get(1L) }, 4);
+            GTModHandler.addMachineCraftingRecipe(
+                GGItemList.ToolCast_MV.get(1),
+                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
+                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
+                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
+                    ItemList.Shape_Empty.get(1L) },
+                2);
+            GTModHandler.addMachineCraftingRecipe(
+                GGItemList.ToolCast_HV.get(1),
+                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
+                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
+                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
+                    ItemList.Shape_Empty.get(1L) },
+                3);
+            GTModHandler.addMachineCraftingRecipe(
+                GGItemList.ToolCast_EV.get(1),
+                new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
+                    MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
+                    MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
+                    ItemList.Shape_Empty.get(1L) },
+                4);
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());
         GregTechAPI.sBeforeGTPostload.add(new SingleUseToolRecipeLoader());

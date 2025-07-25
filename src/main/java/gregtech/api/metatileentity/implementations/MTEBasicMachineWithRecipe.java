@@ -179,8 +179,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * Has no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-                                     RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
-                                     SpecialEffects aSpecialEffect, String aOverlays) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
+        SpecialEffects aSpecialEffect, String aOverlays) {
         this(
             aID,
             aName,
@@ -202,8 +202,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * Has no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-                                     RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-                                     SpecialEffects aSpecialEffect, String aOverlays) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
+        SpecialEffects aSpecialEffect, String aOverlays) {
         this(
             aID,
             aName,
@@ -225,8 +225,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * has no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-                                     RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-                                     SpecialEffects aSpecialEffect, String aOverlays) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
+        SpecialEffects aSpecialEffect, String aOverlays) {
         this(
             aID,
             aName,
@@ -330,7 +330,9 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             default -> {
                 int tID = this.getBaseMetaTileEntity()
                     .getMetaTileID();
-                if (tID >= ASSEMBLER_LV.ID && tID <= ASSEMBLER_IV.ID || tID >= CIRCUIT_ASSEMBLER_LV.ID && tID <= CIRCUIT_ASSEMBLER_UV.ID || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
+                if (tID >= ASSEMBLER_LV.ID && tID <= ASSEMBLER_IV.ID
+                    || tID >= CIRCUIT_ASSEMBLER_LV.ID && tID <= CIRCUIT_ASSEMBLER_UV.ID
+                    || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
                     // lv-iv;
                     // circuit
                     // asseblers
