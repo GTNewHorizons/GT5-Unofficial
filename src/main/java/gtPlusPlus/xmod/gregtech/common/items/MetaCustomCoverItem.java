@@ -19,10 +19,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
@@ -197,11 +197,11 @@ public class MetaCustomCoverItem extends Item {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+    public int getColorFromItemStack(final ItemStack stack, final int colorRGB) {
         if (this.mRGB == null) {
-            return super.getColorFromItemStack(stack, HEX_OxFFFFFF);
+            return super.getColorFromItemStack(stack, colorRGB);
         }
         int aMeta = stack.getItemDamage();
-        return Utils.rgbtoHexValue(mRGB[aMeta][0], mRGB[aMeta][1], mRGB[aMeta][2]);
+        return ColorUtil.toRGB(mRGB[aMeta][0], mRGB[aMeta][1], mRGB[aMeta][2]);
     }
 }

@@ -1,6 +1,6 @@
 package gtPlusPlus.core.lib;
 
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.ColorUtil;
 
 public enum VanillaColours {
 
@@ -38,6 +38,6 @@ public enum VanillaColours {
     }
 
     public int getAsInt() {
-        return Utils.rgbtoHexValue(r, g, b);
+        return ColorUtil.toRGB(r, g, b);
     }
 }

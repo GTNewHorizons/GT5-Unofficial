@@ -43,7 +43,6 @@ import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAlloySmelter;
@@ -100,13 +99,7 @@ public class MaterialGenerator {
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
             final short[] C = matInfo.getRGBA();
-            final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
             final boolean hotIngot = matInfo.requiresBlastFurnace();
-            int materialTier = matInfo.vTier; // TODO
-
-            if ((materialTier > 10) || (materialTier <= 0)) {
-                materialTier = 2;
-            }
 
             int sRadiation = 0;
             if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
@@ -199,20 +192,7 @@ public class MaterialGenerator {
     }
 
     public static void generateDusts(final Material matInfo) {
-        final String unlocalizedName = matInfo.getUnlocalizedName();
         final String materialName = matInfo.getLocalizedName();
-        final short[] C = matInfo.getRGBA();
-        final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
-        int materialTier = matInfo.vTier; // TODO
-
-        if ((materialTier > 10) || (materialTier <= 0)) {
-            materialTier = 2;
-        }
-
-        int sRadiation = 0;
-        if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
-            sRadiation = matInfo.vRadiationLevel;
-        }
 
         if (matInfo.getState() == MaterialState.SOLID) {
             temp = new BaseItemDust(matInfo);
@@ -372,8 +352,6 @@ public class MaterialGenerator {
                 Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
                 return false;
             }
-            final short[] C = matInfo.getRGBA();
-            final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
             tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
             tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);

@@ -26,11 +26,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 /**
  * Extended by most Items, also used as a fallback Item, to prevent the accidental deletion when Errors occur.
@@ -186,11 +186,11 @@ public class GTGenericItem extends Item implements IProjectileItem {
         } else if (name.contains("MAX")) {
             colorRGB = 0xff0000;
         } else if (name.contains("Sodium")) {
-            colorRGB = Utils.rgbtoHexValue(0, 0, 150);
+            colorRGB = ColorUtil.toRGB(0, 0, 150);
         } else if (name.contains("Cadmium")) {
-            colorRGB = Utils.rgbtoHexValue(50, 50, 60);
+            colorRGB = ColorUtil.toRGB(50, 50, 60);
         } else if (name.contains("Lithium")) {
-            colorRGB = Utils.rgbtoHexValue(225, 220, 255);
+            colorRGB = ColorUtil.toRGB(225, 220, 255);
         } else {
             colorRGB = 0xffffff;
         }

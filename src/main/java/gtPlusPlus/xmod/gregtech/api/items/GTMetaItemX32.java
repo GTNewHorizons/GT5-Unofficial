@@ -15,10 +15,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 /**
@@ -217,24 +217,24 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int aMeta = stack.getItemDamage();
         final String name = stack.getDisplayName();
         if (name.contains("Sodium")) {
-            colorRGB = Utils.rgbtoHexValue(90, 90, 255);
+            colorRGB = ColorUtil.toRGB(90, 90, 255);
         } else if (name.contains("Cadmium")) {
-            colorRGB = Utils.rgbtoHexValue(150, 150, 80);
+            colorRGB = ColorUtil.toRGB(150, 150, 80);
         } else if (name.contains("Lithium")) {
-            colorRGB = Utils.rgbtoHexValue(225, 220, 255);
+            colorRGB = ColorUtil.toRGB(225, 220, 255);
         } else if (name.contains("Wrought")) {
-            colorRGB = Utils.rgbtoHexValue(200, 180, 180);
+            colorRGB = ColorUtil.toRGB(200, 180, 180);
         } else if (name.contains("Bronze")) {
-            colorRGB = Utils.rgbtoHexValue(255, 128, 0);
+            colorRGB = ColorUtil.toRGB(255, 128, 0);
         } else if (name.contains("Brass")) {
-            colorRGB = Utils.rgbtoHexValue(255, 180, 0);
+            colorRGB = ColorUtil.toRGB(255, 180, 0);
         } else if (name.contains("Invar")) {
-            colorRGB = Utils.rgbtoHexValue(180, 180, 120);
+            colorRGB = ColorUtil.toRGB(180, 180, 120);
         } else {
             if (aMeta > 50 && aMeta != 150) {
                 colorRGB = 0xffffff;
             } else if (name.contains("ULV")) {
-                colorRGB = Utils.rgbtoHexValue(200, 180, 180);
+                colorRGB = ColorUtil.toRGB(200, 180, 180);
             } else if (name.contains("LuV")) {
                 colorRGB = 0xffffcc;
             } else if (name.contains("ZPM")) {
@@ -242,10 +242,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             } else if (name.contains("UV")) {
                 colorRGB = 0xffb300;
             } else if (name.contains("MAX")) {
-                colorRGB = Utils.rgbtoHexValue(
-                    MathUtils.randInt(220, 250),
-                    MathUtils.randInt(221, 251),
-                    MathUtils.randInt(220, 250));
+                colorRGB = ColorUtil
+                    .toRGB(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
             } else {
                 colorRGB = 0xffffff;
             }

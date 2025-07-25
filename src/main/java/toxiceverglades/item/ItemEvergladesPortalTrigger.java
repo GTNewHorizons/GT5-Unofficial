@@ -15,8 +15,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
 
 public class ItemEvergladesPortalTrigger extends Item {
@@ -58,8 +58,8 @@ public class ItemEvergladesPortalTrigger extends Item {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        return Utils.rgbtoHexValue(255, 128, 0);
+    public int getColorFromItemStack(final ItemStack stack, int colorRGB) {
+        return ColorUtil.toRGB(255, 128, 0);
     }
 
     @Override

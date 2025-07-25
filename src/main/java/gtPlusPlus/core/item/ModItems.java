@@ -27,6 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.StringUtils;
@@ -79,7 +80,6 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -237,7 +237,7 @@ public final class ModItems {
             EnumRarity.common,
             EnumChatFormatting.GRAY,
             false,
-            Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
+            ColorUtil.toRGB(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
 
         // Start meta Item Generation
         ItemsFoods.load();
@@ -440,10 +440,10 @@ public final class ModItems {
 
         // Generates four elemental shards when TC is not installed.
         if (!Thaumcraft.isModLoaded()) {
-            shardAer = new BaseItemTCShard("Aer", Utils.rgbtoHexValue(225, 225, 5));
-            shardIgnis = new BaseItemTCShard("Ignis", Utils.rgbtoHexValue(255, 5, 5));
-            shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
-            shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
+            shardAer = new BaseItemTCShard("Aer", ColorUtil.toRGB(225, 225, 5));
+            shardIgnis = new BaseItemTCShard("Ignis", ColorUtil.toRGB(255, 5, 5));
+            shardTerra = new BaseItemTCShard("Terra", ColorUtil.toRGB(5, 255, 5));
+            shardAqua = new BaseItemTCShard("Aqua", ColorUtil.toRGB(5, 5, 255));
         } else {
             shardAer = getModItem(Thaumcraft.ID, "ItemShard", 1, 0).getItem();
             shardIgnis = getModItem(Thaumcraft.ID, "ItemShard", 1, 1).getItem();
@@ -465,39 +465,33 @@ public final class ModItems {
             "LithiumCarbonate",
             "Lithium Carbonate",
             "Li2CO3",
-            Utils.rgbtoHexValue(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
-        dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumPeroxide",
-            "Lithium Peroxide",
-            "Li2O2",
-            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
+            ColorUtil.toRGB(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
+        dustLithiumPeroxide = ItemUtils
+            .generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", "Li2O2", ColorUtil.toRGB(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
         dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts(
             "LithiumHydroxide",
             "Lithium Hydroxide",
             "LiOH",
-            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
+            ColorUtil.toRGB(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
         if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
             dustQuicklime = ItemUtils
-                .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
+                .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", ColorUtil.toRGB(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
-        dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts(
-            "CalciumHydroxide",
-            "Hydrated Lime",
-            "CaO2H2",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
+        dustCalciumHydroxide = ItemUtils
+            .generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", "CaO2H2", ColorUtil.toRGB(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
         dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts(
             "CalciumCarbonate",
             "Calcium Carbonate",
             "CaCO3",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+            ColorUtil.toRGB(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1) == null)
             || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)) {
             dustCalciumSulfate = ItemUtils.generateSpecialUseDusts(
                 "Gypsum",
                 "Calcium Sulfate (Gypsum)",
                 "CaSO4",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
+                ColorUtil.toRGB(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
             GTOreDictUnificator.registerOre("dustCalciumSulfate", new ItemStack(dustCalciumSulfate));
         } else {
             GTOreDictUnificator
@@ -507,21 +501,21 @@ public final class ModItems {
             "Li2CO3CaOH2",
             "Li2CO3 + CaO2H2 Compound",
             "Li2CO3CaO2H2",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+            ColorUtil.toRGB(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.SODIUM_FLUORIDE, false);
         // FLiBe Fuel Compounds
         dustLi2BeF4 = ItemUtils.generateSpecialUseDusts(
             "Li2BeF4",
             "Lithium Tetrafluoroberyllate Fuel Compound",
             "Li2BeF4",
-            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
+            ColorUtil.toRGB(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
         Material.registerComponentForMaterial(MaterialsNuclides.Li2BeF4, OrePrefixes.dust, new ItemStack(dustLi2BeF4));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",
             "Phthalic Anhydride",
             "C6H4(CO)2O",
-            Utils.rgbtoHexValue(175, 175, 175));
+            ColorUtil.toRGB(175, 175, 175));
         GregtechItemList.PhthalicAnhydrideDust.set(phthalicAnhydride[0]);
         GregtechItemList.SmallPhthalicAnhydrideDust.set(phthalicAnhydride[1]);
         GregtechItemList.TinyPhthalicAnhydrideDust.set(phthalicAnhydride[2]);
@@ -530,7 +524,7 @@ public final class ModItems {
             "LithiumHydroperoxide",
             "Lithium Hydroperoxide",
             "HLiO2",
-            Utils.rgbtoHexValue(125, 125, 125));
+            ColorUtil.toRGB(125, 125, 125));
         GregtechItemList.LithiumHydroperoxide.set(lithiumHydroperoxide[0]);
         GregtechItemList.SmallLithiumHydroperoxide.set(lithiumHydroperoxide[1]);
         GregtechItemList.TinyLithiumHydroperoxide.set(lithiumHydroperoxide[2]);
@@ -588,9 +582,9 @@ public final class ModItems {
             tabMisc).setTextureName(GTPlusPlus.ID + ":itemShard");
         GTOreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
         // Zirconium Chloride
-        dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+        dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", ColorUtil.toRGB(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
         dustCookedZrCl4 = ItemUtils
-            .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+            .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", ColorUtil.toRGB(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 
         // Zirconium Tetrafluoride
         /*
@@ -608,15 +602,15 @@ public final class ModItems {
 
         // Coolant Salt
         // NaBF4 - NaF - 621C
-        // dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0];
+        // dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", ColorUtil.toRGB(45, 45, 90))[0];
         // //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
         // Load Tree Farmer
         // https://en.wikipedia.org/wiki/UAN
         dustFertUN18 = ItemUtils
-            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", ColorUtil.toRGB(60, 155, 60))[0];
         dustFertUN32 = ItemUtils
-            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", ColorUtil.toRGB(55, 190, 55))[0];
 
         if (Forestry.isModLoaded()) {
             ItemStack temp1 = ItemList.IC2_Fertilizer.get(1);
@@ -760,16 +754,13 @@ public final class ModItems {
             "FormaldehydeCatalyst",
             "Formaldehyde Catalyst",
             "Fe16V1",
-            Utils.rgbtoHexValue(25, 5, 25));
+            ColorUtil.toRGB(25, 5, 25));
         GregtechItemList.FormaldehydeCatalystDust.set(formaldehydeCatalyst[0]);
         GregtechItemList.SmallFormaldehydeCatalystDust.set(formaldehydeCatalyst[1]);
         GregtechItemList.TinyFormaldehydeCatalystDust.set(formaldehydeCatalyst[2]);
 
-        Item[] ammoniumNitrate = ItemUtils.generateSpecialUseDusts(
-            "AmmoniumNitrate",
-            "Ammonium Nitrate",
-            "N2H4O3",
-            Utils.rgbtoHexValue(150, 75, 150));
+        Item[] ammoniumNitrate = ItemUtils
+            .generateSpecialUseDusts("AmmoniumNitrate", "Ammonium Nitrate", "N2H4O3", ColorUtil.toRGB(150, 75, 150));
         GregtechItemList.AmmoniumNitrateDust.set(ammoniumNitrate[0]);
         GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
         GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
@@ -780,7 +771,7 @@ public final class ModItems {
             "ManureByproducts",
             "Manure Byproduct",
             "(N2H4O3)N2P2Ca3CuC8",
-            Utils.rgbtoHexValue(110, 75, 25));
+            ColorUtil.toRGB(110, 75, 25));
         GregtechItemList.ManureByproductsDust.set(manureByproducts[0]);
         GregtechItemList.SmallManureByproductsDust.set(manureByproducts[1]);
         GregtechItemList.TinyManureByproductsDust.set(manureByproducts[2]);
@@ -790,13 +781,13 @@ public final class ModItems {
             "OrganicFertilizer",
             "Organic Fertilizer",
             "Ca5(PO4)3(OH)",
-            Utils.rgbtoHexValue(240, 240, 240));
+            ColorUtil.toRGB(240, 240, 240));
         GregtechItemList.OrganicFertilizerDust.set(organicFertilizer[0]);
         GregtechItemList.SmallOrganicFertilizerDust.set(organicFertilizer[1]);
         GregtechItemList.TinyOrganicFertilizerDust.set(organicFertilizer[2]);
 
         // Dirt Dust :)
-        Item[] dirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15));
+        Item[] dirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", ColorUtil.toRGB(65, 50, 15));
         GregtechItemList.DriedEarthDust.set(dirt[0]);
         GregtechItemList.SmallDriedEarthDust.set(dirt[1]);
         GregtechItemList.TinyDriedEarthDust.set(dirt[2]);
@@ -995,14 +986,14 @@ public final class ModItems {
                 "Gadolinium",
                 "Gadolinium",
                 Materials.Gadolinium.mElement.name(),
-                Utils.rgbtoHexValue(226, 172, 9));
+                ColorUtil.toRGB(226, 172, 9));
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Ytterbium",
                 "Ytterbium",
                 Materials.Ytterbium.mElement.name(),
-                Utils.rgbtoHexValue(
+                ColorUtil.toRGB(
                     Materials.Yttrium.mRGBa[0] - 60,
                     Materials.Yttrium.mRGBa[1] - 60,
                     Materials.Yttrium.mRGBa[2] - 60));
@@ -1012,14 +1003,14 @@ public final class ModItems {
                 "Samarium",
                 "Samarium",
                 Materials.Samarium.mElement.name(),
-                Utils.rgbtoHexValue(161, 168, 114));
+                ColorUtil.toRGB(161, 168, 114));
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Lanthanum",
                 "Lanthanum",
                 Materials.Lanthanum.mElement.name(),
-                Utils.rgbtoHexValue(106, 127, 163));
+                ColorUtil.toRGB(106, 127, 163));
         }
 
         // Just an unusual plate needed for some black magic.
@@ -1144,7 +1135,7 @@ public final class ModItems {
 
         // Tumbaga Mix (For Simple Crafting)
         Item[] tumbagaMix = ItemUtils
-            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
+            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", ColorUtil.toRGB(255, 150, 80));
         GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
         GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
         GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);
