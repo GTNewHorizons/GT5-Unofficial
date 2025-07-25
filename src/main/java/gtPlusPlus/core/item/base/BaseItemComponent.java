@@ -34,7 +34,6 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
@@ -98,7 +97,7 @@ public class BaseItemComponent extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
         this.setMaxStackSize(64);
-        this.componentColour = MathUtils.getRgbAsHex(RGBA);
+        this.componentColour = ColorUtil.fromRGBAToRGB(RGBA);
         this.extraData = RGBA;
 
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);

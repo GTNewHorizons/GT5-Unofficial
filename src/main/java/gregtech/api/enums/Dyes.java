@@ -177,7 +177,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     @Override
-    public short [] getRGBA() {
+    public short[] getRGBA() {
         return mRGBa;
     }
 
