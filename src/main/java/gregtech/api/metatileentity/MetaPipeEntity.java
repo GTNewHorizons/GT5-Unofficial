@@ -508,6 +508,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return dye.toInt();
+        return dye.colorRBG;
     }
 }

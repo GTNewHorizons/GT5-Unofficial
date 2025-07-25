@@ -181,15 +181,6 @@ public enum Dyes implements IColorModulationContainer {
         return mRGBa;
     }
 
-    /**
-     * Converts rgba value from `0xrrggbbaa` to `0x00rrggbb`. Required for backwards compatibility.
-     *
-     * @deprecated Use format `0xrrggbbaa` instead.
-     */
-    public int toInt() {
-        return colorRBG;
-    }
-
     public @NotNull String getLocalizedDyeName() {
         return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.mName);
     }

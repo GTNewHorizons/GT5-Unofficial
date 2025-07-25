@@ -109,7 +109,7 @@ public class GTUtilityClient {
                     tY + tDirection.offsetY,
                     aZ + tDirection.offsetZ));
             tLighting.setupLighting(tBlock, tX, tY, tZ, tDirection)
-                .setupColor(tDirection, Dyes._NULL.toInt());
+                .setupColor(tDirection, Dyes._NULL.colorRBG);
             GTRenderUtil.renderBlockIcon(
                 aRenderer,
                 tBlock,
