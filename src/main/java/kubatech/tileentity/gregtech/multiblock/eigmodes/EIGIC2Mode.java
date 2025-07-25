@@ -1,6 +1,6 @@
 package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
-import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
 import net.minecraft.util.EnumChatFormatting;

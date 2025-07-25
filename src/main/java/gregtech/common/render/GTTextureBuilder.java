@@ -1,8 +1,10 @@
 package gregtech.common.render;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,8 +19,8 @@ import gregtech.api.interfaces.ITextureBuilder;
 @SuppressWarnings({ "unused", "ClassWithTooManyFields" })
 public class GTTextureBuilder implements ITextureBuilder {
 
-    private final List<IIconContainer> iconContainerList;
-    private final List<ITexture> textureLayers;
+    private @Nullable List<IIconContainer> iconContainerList;
+    private @Nullable List<ITexture> textureLayers;
     private Block fromBlock;
     private int fromMeta;
     private ForgeDirection fromSide;
@@ -30,8 +32,6 @@ public class GTTextureBuilder implements ITextureBuilder {
     private Boolean worldCoord = null;
 
     public GTTextureBuilder() {
-        textureLayers = new ArrayList<>();
-        iconContainerList = new ArrayList<>();
         rgba = Dyes._NULL.getRGBA();
         allowAlpha = true;
         stdOrient = false;
@@ -53,8 +53,16 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
+    public ITextureBuilder addIcon(final IIconContainer iconContainer) {
+        if (iconContainerList == null) iconContainerList = new ArrayList<>(1);
+        iconContainerList.add(iconContainer);
+        return this;
+    }
+
+    @Override
     public ITextureBuilder addIcon(final IIconContainer... iconContainers) {
-        this.iconContainerList.addAll(Arrays.asList(iconContainers));
+        if (iconContainerList == null) iconContainerList = new ArrayList<>(6);
+        Collections.addAll(iconContainerList, iconContainers);
         return this;
     }
 
@@ -65,8 +73,16 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
+    public ITextureBuilder addLayer(final ITexture iTexture) {
+        if (textureLayers == null) textureLayers = new ArrayList<>(1);
+        textureLayers.add(iTexture);
+        return this;
+    }
+
+    @Override
     public ITextureBuilder addLayer(final ITexture... iTextures) {
-        this.textureLayers.addAll(Arrays.asList(iTextures));
+        if (textureLayers == null) textureLayers = new ArrayList<>();
+        Collections.addAll(textureLayers, iTextures);
         return this;
     }
 
@@ -117,7 +133,12 @@ public class GTTextureBuilder implements ITextureBuilder {
             else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
         }
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
-        if (!textureLayers.isEmpty()) return new GTMultiTextureRender(textureLayers.toArray(new ITexture[0]));
+        if (textureLayers != null && !textureLayers.isEmpty()) {
+            return new GTMultiTextureRender(textureLayers.toArray(new ITexture[0]));
+        }
+        if (iconContainerList == null) {
+            throw new IllegalStateException("Invalid sideIconContainer count");
+        }
         return switch (iconContainerList.size()) {
             case 1 -> new GTRenderedTexture(iconContainerList.get(0), rgba, glow, stdOrient, extFacing);
             case 6 -> new GTSidedTextureRender(
