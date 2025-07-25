@@ -111,7 +111,7 @@ public final class ColorUtil {
      */
     public static int fromARGB(byte[] argb) {
         if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
-        return fromARGB(argb[0], argb[1], argb[2], argb[3]);
+        return from(argb[0], argb[1], argb[2], argb[3]);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class ColorUtil {
      */
     public static int fromARGB(short[] argb) {
         if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
-        return fromARGB(argb[0], argb[1], argb[2], argb[3]);
+        return from(argb[0], argb[1], argb[2], argb[3]);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class ColorUtil {
      */
     public static int fromARGBToRGB(byte[] argb) {
         if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
-        return fromARGB(0, argb[1], argb[2], argb[3]);
+        return toRGB(argb[1], argb[2], argb[3]);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class ColorUtil {
      */
     public static int fromARGBToRGB(short[] argb) {
         if (argb.length != 4) throw new IllegalArgumentException("ARGB color array must be of length 4!");
-        return fromARGB(0, argb[1], argb[2], argb[3]);
+        return toRGB(argb[1], argb[2], argb[3]);
     }
 
     /**
@@ -156,7 +156,7 @@ public final class ColorUtil {
      * @param b blue component (0-255)
      * @return color integer in ARGB format
      */
-    public static int fromARGB(int a, int r, int g, int b) {
+    public static int from(int a, int r, int g, int b) {
         return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     }
 
@@ -168,7 +168,7 @@ public final class ColorUtil {
      */
     public static int fromRGBA(byte[] rgba) {
         if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
-        return fromARGB(rgba[3], rgba[0], rgba[1], rgba[2]);
+        return from(rgba[3], rgba[0], rgba[1], rgba[2]);
     }
 
     /**
@@ -179,7 +179,7 @@ public final class ColorUtil {
      */
     public static int fromRGBA(short[] rgba) {
         if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
-        return fromARGB(rgba[3], rgba[0], rgba[1], rgba[2]);
+        return from(rgba[3], rgba[0], rgba[1], rgba[2]);
     }
 
     /**
@@ -190,7 +190,7 @@ public final class ColorUtil {
      */
     public static int fromRGBAToRGB(byte[] rgba) {
         if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
-        return fromARGB(0, rgba[0], rgba[1], rgba[2]);
+        return toRGB(rgba[0], rgba[1], rgba[2]);
     }
 
     /**
@@ -201,7 +201,7 @@ public final class ColorUtil {
      */
     public static int fromRGBAToRGB(short[] rgba) {
         if (rgba.length != 4) throw new IllegalArgumentException("RGBA color array must be of length 4!");
-        return fromARGB(0, rgba[0], rgba[1], rgba[2]);
+        return toRGB(rgba[0], rgba[1], rgba[2]);
     }
 
     /**
@@ -212,6 +212,18 @@ public final class ColorUtil {
      */
     public static int toRGB(int argb) {
         return argb & 0x00FFFFFF;
+    }
+
+    /**
+     * Packs RGB components into a single RGB color integer (alpha component set to 0).
+     *
+     * @param r red component (0-255)
+     * @param g green component (0-255)
+     * @param b blue component (0-255)
+     * @return color integer in RGB format
+     */
+    public static int toRGB(int r, int g, int b) {
+        return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     }
 
     /**
