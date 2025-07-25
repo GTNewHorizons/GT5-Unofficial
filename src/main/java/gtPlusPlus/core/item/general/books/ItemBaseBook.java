@@ -69,9 +69,8 @@ public class ItemBaseBook extends ItemWritableBook {
                     .translateToLocalFormatted("gtpp.tooltip.book.author", NBTUtils.getString(tItem, "author")));
         } else if (bookTemplate.mAuthor != null) {
             list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.book.author",
-                    bookTemplate.mAuthor));
+                EnumChatFormatting.WHITE
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.author", bookTemplate.mAuthor));
         }
         if (NBTUtils.hasKey(tItem, "title")) {
             list.add(
@@ -79,9 +78,8 @@ public class ItemBaseBook extends ItemWritableBook {
                     .translateToLocalFormatted("gtpp.tooltip.book.pages.s", NBTUtils.getString(tItem, "pages")));
         } else if (bookTemplate.mPages != null) {
             list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.book.pages.d",
-                    bookTemplate.mPages.length));
+                EnumChatFormatting.WHITE
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.pages.d", bookTemplate.mPages.length));
         }
     }
 
