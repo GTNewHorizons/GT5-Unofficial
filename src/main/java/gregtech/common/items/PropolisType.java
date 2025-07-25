@@ -15,6 +15,8 @@ public enum PropolisType {
     Silverfish(0xEE053D, true),
     Stardust(0xFFFF00, true);
 
+    public static final PropolisType[] VALUES = PropolisType.values();
+
     private final int colorRGB;
     public boolean showInList;
 

@@ -51,7 +51,7 @@ public class ItemPropolis extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (PropolisType type : PropolisType.values()) {
+        for (PropolisType type : PropolisType.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -72,13 +72,14 @@ public class ItemPropolis extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(PropolisType.values().length - 1, stack.getItemDamage()));
-        return PropolisType.values()[meta].getColours();
+        final PropolisType[] values = PropolisType.VALUES;
+        int meta = Math.max(0, Math.min(values.length - 1, stack.getItemDamage()));
+        return values[meta].getColours();
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return PropolisType.values()[stack.getItemDamage()].getName();
+        return PropolisType.VALUES[stack.getItemDamage()].getName();
     }
 
     public void initPropolisRecipes() {
