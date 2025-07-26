@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -68,7 +69,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         final float hitY, final float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
 
-        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
+        if (ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side)
             .isValid()) {
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
@@ -152,6 +153,15 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     @Override
+    public boolean onBlockPlacedWhileWieldingOffhanded(final BlockSnapshot blockSnapshot, final ItemStack itemStack, final EntityPlayer player) {
+        if (itemStack.getItem() instanceof final MetaBaseItem item) {
+            this.onItemUseFirst(item, itemStack, player, player.worldObj, blockSnapshot.x, blockSnapshot.y, blockSnapshot.z, ForgeDirection.SOUTH, 0, 0, 0);
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
         final ForgeDirection side) {
         return ColoredBlockContainer.getInstance(player, tileEntity, side)
@@ -189,7 +199,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
             .setColor(getColor());
     }
 
