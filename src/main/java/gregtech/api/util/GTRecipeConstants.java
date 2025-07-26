@@ -217,6 +217,24 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "precise_assembler_casing_tier");
     /**
+     * Environmentally Controlled Chemical Facility parameters
+     */
+    public static final RecipeMetadataKey<Integer> ECCF_PRESSURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_PRESSURE");
+    public static final RecipeMetadataKey<Integer> ECCF_TEMPERATURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_TEMPERATURE");
+    public static final RecipeMetadataKey<Integer> ECCF_PRESSURE_DELTA = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_PRESSURE_DELTA");
+    public static final RecipeMetadataKey<Integer> ECCF_TEMPERATURE_DELTA = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_TEMPERATURE_DELTA");
+    /**
+     * Planet tier
+     */
+    public static final RecipeMetadataKey<Integer> PLANET_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "PLANET_TIER");
+    public static final RecipeMetadataKey<String> DIMENSION_NAME = SimpleRecipeMetadataKey
+        .create(String.class, "DIMENSION_NAME");
+    /**
      * CoAL casing tier.
      */
     public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
