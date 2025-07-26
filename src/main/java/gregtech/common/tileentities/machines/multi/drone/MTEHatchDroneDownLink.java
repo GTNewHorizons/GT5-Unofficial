@@ -101,6 +101,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             } else {
                 // Clear any connection that this downlink may have
                 connection = null;
+                machine = null;
             }
         }
     }
@@ -152,8 +153,10 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     /**
      * Find and establish a drone controller connection. This will search for all DC in the same dimension, then find
      * one in range.
+     *
+     * @return True if a connection was established, false if not.
      */
-    private void tryFindConnection() {
+    private boolean tryFindConnection(MTEMultiBlockBase machine) {
         if (MTEDroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
@@ -169,17 +172,20 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                         connection = new DroneConnection(machine, centre);
                         connection.centre.getConnectionList()
                             .add(connection);
-                        return;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     public void connectMultiBlockBase(MTEMultiBlockBase machine) {
         if (this.machine != machine) {
-            this.machine = machine;
-            tryFindConnection();
+            if (tryFindConnection(machine)) {
+                // Only link controller if center connection successful
+                this.machine = machine;
+            }
         }
     }
 
