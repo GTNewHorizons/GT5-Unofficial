@@ -1122,7 +1122,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
         public Slot(ItemStack config) {
             this.config = config;
-            this.prototypeStack = AEItemStack.create(config).setStackSize(0);
+            this.prototypeStack = AEItemStack.create(config)
+                .setStackSize(0);
         }
 
         /** Resets the extracted amount. */
@@ -1132,7 +1133,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         public IAEItemStack createAEStack(long amount) {
-            return prototypeStack.copy().setStackSize(amount);
+            return prototypeStack.copy()
+                .setStackSize(amount);
         }
 
         @Override
