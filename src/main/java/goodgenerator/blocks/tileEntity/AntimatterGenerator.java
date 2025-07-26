@@ -136,7 +136,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public CheckRecipeResult checkProcessing() {
-        startRecipeProcessing();
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;
@@ -164,7 +163,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             setAvgEff(0f);
         }
 
-        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
