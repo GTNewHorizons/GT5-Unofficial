@@ -99,8 +99,7 @@ public class GregtechSimpleWasher {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "SIMPLE_WASHER",
-                null).setRecipeCatalystPriority(-11)
+                "SIMPLE_WASHER").setRecipeCatalystPriority(-11)
                     .getStackForm(1L));
     }
 
@@ -118,8 +117,7 @@ public class GregtechSimpleWasher {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "SIMPLE_WASHER",
-                null).setRecipeCatalystPriority(-tier)
+                "SIMPLE_WASHER").setRecipeCatalystPriority(-tier)
                     .getStackForm(1L));
     }
 
