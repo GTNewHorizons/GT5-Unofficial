@@ -56,6 +56,7 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
@@ -785,6 +786,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
 
         final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
 
         // If this block does not have a TE, render it as a normal block.
         // Otherwise, render the TE instead.
@@ -799,7 +801,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             textureArray[4] = texture;
             textureArray[5] = texture;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
-            return true;
+            return tessAccess.gt5u$hasVertices();
         }
 
         if (aBlock instanceof IBlockWithTextures texturedBlock) {
@@ -807,7 +809,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             ITexture[][] texture = texturedBlock.getTextures(meta);
             if (texture == null) return false;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
-            return true;
+            return tessAccess.gt5u$hasVertices();
         }
 
         if (tileEntity == null) return false;
@@ -817,17 +819,17 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null
                 && metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
                 aRenderer.enableAO = false;
-                return true;
+                return tessAccess.gt5u$hasVertices();
             }
         }
         if (tileEntity instanceof IPipeRenderedTileEntity
             && renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
             aRenderer.enableAO = false;
-            return true;
+            return tessAccess.gt5u$hasVertices();
         }
         if (renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
             aRenderer.enableAO = false;
-            return true;
+            return tessAccess.gt5u$hasVertices();
         }
         return false;
     }
