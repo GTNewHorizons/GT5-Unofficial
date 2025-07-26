@@ -4,6 +4,8 @@ import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -19,7 +21,6 @@ import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -55,13 +56,15 @@ public class GigaGramFab {
                 .set(new MTEAdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
             GGItemList.LinkedInputBus.set(
                 new MTELinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
                     13534,
                     "ggfab.toolcast.tier.mv",
                     "Basic Tool Casting Machine",
                     2,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -69,17 +72,15 @@ public class GigaGramFab {
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                     "TOOL_CAST",
-                    new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                        MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                        MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                        ItemList.Shape_Empty.get(1L) }).getStackForm(1L));
+                    null).getStackForm(1L));
             GGItemList.ToolCast_HV.set(
                 new MTEBasicMachineWithRecipe(
                     13535,
                     "ggfab.toolcast.tier.hv",
                     "Advanced Tool Casting Machine",
                     3,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -87,17 +88,15 @@ public class GigaGramFab {
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                     "TOOL_CAST",
-                    new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                        MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                        MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                        ItemList.Shape_Empty.get(1L) }).getStackForm(1L));
+                    null).getStackForm(1L));
             GGItemList.ToolCast_EV.set(
                 new MTEBasicMachineWithRecipe(
                     13536,
                     "ggfab.toolcast.tier.ev",
                     "Master Tool Casting Machine",
                     4,
-                    "Cheap Crafting Tool for you!",
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
                     GGFabRecipeMaps.toolCastRecipes,
                     1,
                     4,
@@ -105,10 +104,7 @@ public class GigaGramFab {
                     SoundResource.NONE,
                     MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                     "TOOL_CAST",
-                    new Object[] { "PGP", "WMW", "CBC", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                        MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                        MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS, 'B',
-                        ItemList.Shape_Empty.get(1L) }).getStackForm(1L));
+                    null).getStackForm(1L));
             long plate = OrePrefixes.plate.mMaterialAmount, ingot = OrePrefixes.ingot.mMaterialAmount,
                 screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
             GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
