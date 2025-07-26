@@ -635,6 +635,7 @@ public enum ItemList implements IItemContainer {
     Plank_Plum,
     Plank_Maple,
     Plank_Citrus,
+    Plank_Cherry_EFR,
     Dye_Indigo,
     Dye_SquidInk,
     Dye_Bonemeal,
@@ -2681,6 +2682,13 @@ public enum ItemList implements IItemContainer {
     UHTResistantMesh,
     TaHfNanoparticles,
     NtNanoparticles,
+
+    PrecisionFieldSyncCasing,
+    MagneticAnchorCasing,
+    FieldEnergyAbsorberCasing,
+    LoadbearingDistributionCasing,
+    NaniteFramework,
+    NaniteShieldingGlass,
 
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,

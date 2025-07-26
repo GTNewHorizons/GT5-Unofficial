@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -24,14 +25,14 @@ public class BlockWitherProof extends Block {
 
     public BlockWitherProof() {
         super(Material.redstoneLight);
-        this.setBlockName(Utils.sanitizeString("blockBlackGate"));
+        this.setBlockName(StringUtils.sanitizeString("blockBlackGate"));
         this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(5000.0F);
         this.setHarvestLevel("pickaxe", 3);
         this.setStepSound(soundTypeMetal);
-        GameRegistry.registerBlock(this, Utils.sanitizeString("blockBlackGate"));
+        GameRegistry.registerBlock(this, StringUtils.sanitizeString("blockBlackGate"));
     }
 
     @Override

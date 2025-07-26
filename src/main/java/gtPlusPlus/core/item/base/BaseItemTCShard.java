@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemTCShard extends Item {
 
@@ -25,7 +25,7 @@ public class BaseItemTCShard extends Item {
     }
 
     public BaseItemTCShard(final String DisplayName, final int colour, final String[] Description) {
-        this.unlocalName = "item" + Utils.sanitizeString(DisplayName);
+        this.unlocalName = "item" + StringUtils.sanitizeString(DisplayName);
         this.displayName = DisplayName;
         this.itemColour = colour;
         this.setCreativeTab(AddToCreativeTab.tabMisc);

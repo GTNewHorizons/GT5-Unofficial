@@ -41,6 +41,7 @@ import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static tectech.thing.CustomItemList.eM_dynamoTunnel5_UMV;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1205,6 +1206,47 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.hatch_CreativeUncertainty.get(1),
             200 * 20,
             (int) TierEU.RECIPE_UIV);
+
+        // Magnetic Anchor Casing
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.MagneticFluxCasing.get(1),
+            144_000_000,
+            25_600,
+            (int) TierEU.RECIPE_MAX,
+            16,
+            new Object[] { ItemRefer.MagneticFluxCasing.get(16),
+                CustomItemList.Godforge_MagneticConfinementCasing.get(16), ItemList.Field_Generator_UMV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 8L),
+                GGMaterial.shirabon.get(OrePrefixes.plateDense, 64) },
+            new FluidStack[] { MaterialsUEVplus.Space.getMolten(1 * STACKS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16) },
+            ItemList.MagneticAnchorCasing.get(4),
+            20 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Precision Field Sync Casing
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.GravityStabilizationCasing.get(1),
+            144_000_000,
+            25_600,
+            (int) TierEU.RECIPE_MAX,
+            16,
+            new Object[] { ItemRefer.GravityStabilizationCasing.get(16), ItemRefer.Field_Restriction_Coil_T4.get(2),
+                CustomItemList.StabilisationFieldGeneratorTier0.get(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                ItemList.Field_Generator_UMV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, MaterialsUEVplus.MagMatter, 64L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                GGMaterial.shirabon.get(OrePrefixes.wireFine, 64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Flerovium, 16L), },
+            new FluidStack[] { new FluidStack(CHRONOMATIC_GLASS.getPlasma(), 1 * STACKS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
+                MaterialsUEVplus.Eternity.getMolten(1 * STACKS) },
+            ItemList.PrecisionFieldSyncCasing.get(8),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
     }
 
     private void itemPartsUHVAsslineRecipes() {
@@ -3643,6 +3685,24 @@ public class ResearchStationAssemblyLine implements Runnable {
                 recipeDurationTicks,
                 recipeEuPerTick);
         }
+
+        // Wireless Dynamo Powerful
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.eM_dynamoTunnel8_UMV.get(1),
+            24_000_000,
+            3200,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { eM_dynamoTunnel5_UMV.get(1), ItemList.ZPM3.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L }, ItemList.Field_Generator_UMV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 16),
+                CustomItemList.Machine_Multi_Transformer.get(1) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(8000), GGMaterial.shirabon.getMolten(20 * INGOTS) },
+            CustomItemList.eM_dynamoWirelessMulti.get(1),
+            30 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
     }
 
     public void runLateRecipes() {
