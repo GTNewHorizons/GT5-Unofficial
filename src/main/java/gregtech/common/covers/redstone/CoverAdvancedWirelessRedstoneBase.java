@@ -14,12 +14,16 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
@@ -30,12 +34,15 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     /**
      * If UUID is set to null, the cover frequency is public, rather than private
+     *
      **/
+    protected boolean privacy = false;
     protected UUID uuid;
 
     public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
         this.frequency = "0";
+        privacy = false;
         this.uuid = null;
     }
 
@@ -233,11 +240,25 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
         return 5;
     }
 
+    public void syncPrivacyState(boolean b, UUID uuid) {
+        privacy = b;
+        this.uuid = b ? uuid : null;
+    }
+
+    public boolean getPrivacyState() {
+        return privacy;
+    }
+
     // GUI stuff
 
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings, guiData);
     }
 
 }

@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -19,7 +20,7 @@ public class CoverOverflowValveGui extends CoverGui<CoverOverflowValve> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         column.child(
             makeRowLayout()
                 .child(

@@ -3,6 +3,7 @@ package gregtech.common.covers.gui;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -29,7 +30,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         EnumSyncValue<MaintenanceAlertCondition> thresholdSyncValue = new EnumSyncValue<>(
             MaintenanceAlertCondition.class,
             cover::getMaintenanceAlertCondition,
