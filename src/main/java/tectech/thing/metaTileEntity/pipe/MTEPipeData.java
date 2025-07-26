@@ -63,8 +63,8 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-            .of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+        return new ITexture[] { TextureFactory.of(EMpipe),
+            TextureFactory.of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL)) };
     }
 
     @Override

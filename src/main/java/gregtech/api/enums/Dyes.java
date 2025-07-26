@@ -137,7 +137,12 @@ public enum Dyes implements IColorModulationContainer {
 
     @Deprecated
     public static short @NotNull [] getModulation(int index) {
-        return getModulation(index, Dyes._NULL.getRGBA());
+        return getModulation(index, Dyes._NULL.mRGBa);
+    }
+
+    @Deprecated
+    public static short @NotNull [] getModulation(int index, @NotNull Dyes defaultModulation) {
+        return getModulation(index, defaultModulation.mRGBa);
     }
 
     @Deprecated

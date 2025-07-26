@@ -147,7 +147,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         return new ITexture[] { new GTTextureBuilder().addIcon(pipe)
             .build(),
             new GTTextureBuilder().addIcon(pipe)
-                .setRGBA(Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
+                .setRGBA(Dyes.getModulation(aColorIndex, MACHINE_METAL))
                 .build() };
     }
 
