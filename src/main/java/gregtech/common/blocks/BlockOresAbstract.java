@@ -215,6 +215,11 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
     }
 
     @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
     public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return false;
     }

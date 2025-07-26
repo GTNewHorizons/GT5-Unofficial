@@ -4,7 +4,6 @@ import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -144,7 +143,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
-            Tessellator.instance.setColorRGBA(255, 255, 255, 255);
+            lighting.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;
