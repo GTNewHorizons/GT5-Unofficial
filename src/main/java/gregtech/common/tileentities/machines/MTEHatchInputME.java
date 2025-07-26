@@ -36,6 +36,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -119,6 +121,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
     private boolean expediteRecipeCheck = false;
+    /**
+     * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
+     * operations.
+     */
+    protected boolean cachedActivity = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
     protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
@@ -163,9 +170,17 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     protected boolean isAllowedToWork() {
+        if (processingRecipe) return cachedActivity;
+
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        return igte != null && igte.isAllowedToWork();
+        if (igte == null || !igte.isAllowedToWork()) return false;
+
+        AENetworkProxy proxy = getProxy();
+
+        if (!proxy.isActive()) return false;
+
+        return true;
     }
 
     @Override
@@ -397,6 +412,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public void startRecipeProcessing() {
+        // Call isAllowedToWork before setting processingRecipe to true
+        cachedActivity = isAllowedToWork();
         processingRecipe = true;
         updateAllInformationSlots();
     }
@@ -494,7 +511,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public AENetworkProxy getProxy() {
+    public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
@@ -514,12 +531,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean isPowered() {
-        return getProxy() != null && getProxy().isPowered();
+        return getProxy().isPowered();
     }
 
     @Override
     public boolean isActive() {
-        return getProxy() != null && getProxy().isActive();
+        return getProxy().isActive();
     }
 
     private void setAutoPullFluidList(boolean pullFluidList) {
@@ -543,11 +560,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     protected void updateAllInformationSlots() {
-        AENetworkProxy proxy = getProxy();
-
-        boolean isActive = isAllowedToWork() && proxy.isActive();
-
-        if (isActive) {
+        if (isAllowedToWork()) {
             try {
                 for (int index = 0; index < SLOT_COUNT; index++) {
                     updateInformationSlot(index);
@@ -615,11 +628,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     protected Slot getMatchingSlot(FluidStack fluidStack, boolean requireExtracted) {
         if (fluidStack == null) return null;
-
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
-        }
+        if (!isAllowedToWork()) return null;
 
         for (int i = 0; i < slots.length; i++) {
             Slot slot = slots[i];
