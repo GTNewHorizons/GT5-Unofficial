@@ -22,7 +22,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        if (type == ItemRenderType.ENTITY) {
+        if (Client.render.renderTransMetalFancy && type == ItemRenderType.ENTITY) {
             // Pretend fancy graphics is enabled
             if (!Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                 if (RenderItem.renderInFrame) {
@@ -39,6 +39,11 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
     protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
         boolean shouldModulateColor) {
 
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderRegularItem(type, itemStack, icon, shouldModulateColor);
+            return;
+        }
+
         if (!(itemStack.getItem() instanceof final IGT_ItemWithMaterialRenderer itemRenderer)) return;
 
         GL11.glPushMatrix();
@@ -49,15 +54,19 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
             GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
         }
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        boolean flip = false;
+
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
+            flip = true;
         }
+
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
-            icon.getMaxU(),
-            icon.getMinV(),
-            icon.getMinU(),
-            icon.getMaxV(),
+            flip ? icon.getMinU() : icon.getMaxU(),
+            flip ? icon.getMinV() : icon.getMaxV(),
+            flip ? icon.getMaxU() : icon.getMinU(),
+            flip ? icon.getMaxV() : icon.getMinV(),
             icon.getIconWidth(),
             icon.getIconHeight(),
             0.0625F);
@@ -67,6 +76,12 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderContainedFluid(ItemRenderType type, FluidStack fluidStack, IIcon fluidIcon) {
+
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderContainedFluid(type, fluidStack, fluidIcon);
+            return;
+        }
+
         GL11.glPushMatrix();
 
         Fluid fluid = fluidStack.getFluid();
@@ -74,7 +89,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
         }
 
@@ -94,18 +109,28 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
+
+        if (!Client.render.renderTransMetalFancy) {
+            super.renderItemOverlay(type, overlay);
+            return;
+        }
+
         GL11.glPushMatrix();
         applyEffect(type, null, false);
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        boolean flip = false;
+
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glScalef(16, 16, 32);
+            flip = true;
         }
+
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
-            overlay.getMaxU(),
-            overlay.getMinV(),
-            overlay.getMinU(),
-            overlay.getMaxV(),
+            flip ? overlay.getMinU() : overlay.getMaxU(),
+            flip ? overlay.getMinV() : overlay.getMaxV(),
+            flip ? overlay.getMaxU() : overlay.getMinU(),
+            flip ? overlay.getMaxV() : overlay.getMinV(),
             overlay.getIconWidth(),
             overlay.getIconHeight(),
             0.0625F);
@@ -113,31 +138,28 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
         GL11.glPopMatrix();
     }
 
-    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
+    private static void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
         if (RenderItem.renderInFrame) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(8f, 8f, 0f);
         } else {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
 
-        // Accessibility option, to disable spinning rendering.
-        if (Client.render.renderTransMetalFancy) {
-            GL11.glRotatef(
-                (GTMod.clientProxy()
-                    .getAnimationTicks() * 3.5f) % 360,
-                0.3f,
-                0.5f,
-                0.2f);
-        }
+        GL11.glRotatef(
+            (GTMod.clientProxy()
+                .getAnimationTicks() * 3.5f) % 360,
+            0.3f,
+            0.5f,
+            0.2f);
 
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(-8f, -8f, 0f);
         } else {
             GL11.glTranslatef(-0.5f, -0.5f, 0.0f);
