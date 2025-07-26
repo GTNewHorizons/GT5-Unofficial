@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.GTMod;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.common.config.Client;
 
 public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
@@ -21,10 +22,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
-
+        return Client.render.renderTransMetalFancy && type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
     @Override
@@ -63,15 +61,19 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
                 GL11.glColor4f(1f, 1f, 1f, 255);
 
+                boolean flip = false;
+
                 if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                     GL11.glScalef(16, 16, 32);
+                    flip = true;
                 }
+
                 ItemRenderer.renderItemIn2D(
                     Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
+                    flip ? icon.getMinU() : icon.getMaxU(),
+                    flip ? icon.getMinV() : icon.getMaxV(),
+                    flip ? icon.getMaxU() : icon.getMinU(),
+                    flip ? icon.getMaxV() : icon.getMinV(),
                     icon.getIconWidth(),
                     icon.getIconHeight(),
                     0.0625F);
@@ -89,7 +91,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);
         }
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(8f, 8f, 0f);
         } else {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
@@ -101,9 +103,10 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
             0.3f,
             0.5f,
             0.2f);
+
         GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
 
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
             GL11.glTranslatef(-8f, -8f, 0f);
         } else {
             GL11.glTranslatef(-0.5f, -0.5f, 0.0f);
