@@ -112,6 +112,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
     protected boolean expediteRecipeCheck = false;
+    /**
+     * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
+     */
+    protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, 2, getDescriptionArray(autoPullAvailable));
@@ -155,6 +159,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected boolean isAllowedToWork() {
+        if (processingRecipe) return cachedActivity;
+
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (igte == null || !igte.isAllowedToWork()) return false;
@@ -628,6 +634,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public void startRecipeProcessing() {
+        // Call isAllowedToWork before setting processingRecipe to true
+        cachedActivity = isAllowedToWork();
         processingRecipe = true;
         updateAllInformationSlots();
     }
@@ -679,8 +687,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected void updateAllInformationSlots() {
-        AENetworkProxy proxy = getProxy();
-
         if (isAllowedToWork()) {
             try {
                 for (int index = 0; index < SLOT_COUNT; index++) {
@@ -717,8 +723,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
             if (toExtract <= 0) continue;
 
-            IAEItemStack request = AEItemStack.create(slot.extracted);
-            request.setStackSize(toExtract);
+            IAEItemStack request = slot.createAEStack(toExtract);
 
             IAEItemStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
 
@@ -753,8 +758,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         IMEMonitor<IAEItemStack> sg = getProxy().getStorage()
             .getItemInventory();
 
-        IAEItemStack request = AEItemStack.create(slot.config);
-        request.setStackSize(Integer.MAX_VALUE);
+        IAEItemStack request = slot.createAEStack(Integer.MAX_VALUE);
 
         IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
@@ -1101,7 +1105,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected static class Slot {
 
         /** The item to pull into this slot. */
-        public ItemStack config;
+        public final ItemStack config;
 
         /** The amount of stuff initially in the ME system when the recipe check started. */
         public int extractedAmount;
@@ -1113,14 +1117,22 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
          */
         public ItemStack extracted;
 
+        /** A cached AE stack for {@link #config}, to speed up extractions. */
+        private final IAEItemStack prototypeStack;
+
         public Slot(ItemStack config) {
             this.config = config;
+            this.prototypeStack = AEItemStack.create(config).setStackSize(0);
         }
 
         /** Resets the extracted amount. */
         public void resetExtracted() {
             extracted = null;
             extractedAmount = 0;
+        }
+
+        public IAEItemStack createAEStack(long amount) {
+            return prototypeStack.copy().setStackSize(amount);
         }
 
         @Override
