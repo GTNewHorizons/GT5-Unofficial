@@ -1017,6 +1017,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     byte Tick = (byte) (aTick % 20);
                     if (CommonValues.MULTI_CHECK_AT == Tick) {
                         checkMaintenance();
+                        connectDroneDownLink();
                     }
 
                     if (getRepairStatus() >= 3) { // S

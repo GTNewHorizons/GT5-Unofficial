@@ -1,13 +1,8 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -33,13 +27,11 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -105,20 +97,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 if (connection.centre.getBaseMetaTileEntity()
                     .isActive()) {
                     doNormalMaintain();
-                } else {
-                    // Centre offline? ...do nothing.
-                    // machine.causeMaintenanceIssue();
                 }
             } else {
-                // If the connection invalid, set it to null.
-                // Find connection every 10 second
-                if (aTick % 200 == 0) {
-                    connection = null;
-                    tryFindConnection();
-                    // Let's have some "surprise". Sorry, surprise party is over.
-                    // if (this.machine != null && this.machine.isValid()) {
-                    // machine.causeMaintenanceIssue();
-                }
+                // Clear any connection that this downlink may have
+                connection = null;
+                machine = null;
             }
         }
     }
@@ -168,9 +151,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     /**
-     * Find a drone connection. This will search for all DC in the same dimension, then find one in range.
+     * Find and establish a drone controller connection. This will search for all DC in the same dimension, then find
+     * one in range.
+     *
+     * @return True if a connection was established, false if not.
      */
-    private void tryFindConnection() {
+    private boolean tryFindConnection(MTEMultiBlockBase machine) {
         if (MTEDroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
@@ -182,71 +168,25 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                     .withinDistance(this.downlinkCoord, centre.getRange())
                     && centre.getBaseMetaTileEntity()
                         .isActive()) {
-                    MTEMultiBlockBase machine = tryFindCoreGTMultiBlock();
                     if (machine != null && machine.isValid()) {
-                        this.machine = machine;
                         connection = new DroneConnection(machine, centre);
                         connection.centre.getConnectionList()
                             .add(connection);
-                        return;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
-    // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
-    private MTEMultiBlockBase tryFindCoreGTMultiBlock() {
-        Queue<ChunkCoordinates> tQueue = new LinkedList<>();
-        Set<ChunkCoordinates> visited = new HashSet<>(80);
-        tQueue.add(
-            this.getBaseMetaTileEntity()
-                .getCoords());
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
-        while (!tQueue.isEmpty()) {
-            final ChunkCoordinates aCoords = tQueue.poll();
-            final TileEntity tTileEntity;
-            final boolean isMachineBlock;
-            tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-            Block block = world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
-            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone
-            // can work with cleanroom.
-            // Todo: loading cleanroom's config for other blocks
-            isMachineBlock = GregTechAPI
-                .isMachineBlock(block, world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ))
-                || (block == GregTechAPI.sBlockReinforced
-                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == 2);
-            // See if the block itself is MultiBlock, also the one we need.
-            if (tTileEntity instanceof IGregTechTileEntity te
-                && te.getMetaTileEntity() instanceof MTEMultiBlockBase mte)
-                if (mte.mMaintenanceHatches.contains(this)) return mte;
-
-            // Now see if we should add the nearby blocks to the queue:
-            // 1) If we've visited less than 5 blocks, then yes
-            // 2) If the tile says we should recursively update (pipes don't, machine blocks do)
-            // 3) If the block at the coordinates is marked as a machine block
-            if (visited.size() < 5
-                || (tTileEntity instanceof IMachineBlockUpdateable
-                    && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
-                || isMachineBlock) {
-                ChunkCoordinates tCoords;
-
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1)))
-                    tQueue.add(tCoords);
+    public void connectMultiBlockBase(MTEMultiBlockBase machine) {
+        if (this.machine != machine) {
+            if (tryFindConnection(machine)) {
+                // Only link controller if center connection successful
+                this.machine = machine;
             }
         }
-        return null;
     }
 
     @Override

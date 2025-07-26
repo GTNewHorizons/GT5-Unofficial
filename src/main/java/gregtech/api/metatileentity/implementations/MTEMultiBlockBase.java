@@ -144,6 +144,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -593,6 +594,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     checkMaintenance();
+                    connectDroneDownLink();
                     if (getRepairStatus() > 0) {
                         runMachine(aBaseMetaTileEntity, aTick);
                     } else if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -658,6 +660,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tHatch.mHardHammer = false;
                 tHatch.mSolderingTool = false;
                 tHatch.mCrowbar = false;
+            }
+        }
+    }
+
+    public void connectDroneDownLink() {
+        for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
+            if (tHatch instanceof MTEHatchDroneDownLink dLink) {
+                dLink.connectMultiBlockBase(this);
             }
         }
     }
