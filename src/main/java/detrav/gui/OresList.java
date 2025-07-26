@@ -2,7 +2,6 @@ package detrav.gui;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -10,10 +9,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 
 import cpw.mods.fml.client.GuiScrollingList;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 class OresList extends GuiScrollingList {
 
-    private final HashMap<String, Integer> ores;
+    private final Object2IntOpenHashMap<String> ores;
     private final List<String> keys;
     private final GuiScreen parent;
     private final BiConsumer<String, Boolean> onSelected;
@@ -22,7 +22,7 @@ class OresList extends GuiScrollingList {
     private int selected = -1;
 
     public OresList(GuiScreen parent, int width, int height, int top, int bottom, int left, int entryHeight,
-        HashMap<String, Integer> aOres, BiConsumer<String, Boolean> onSelected) {
+        Object2IntOpenHashMap<String> aOres, BiConsumer<String, Boolean> onSelected) {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;

@@ -32,14 +32,6 @@ public class Utils {
             .isClient();
     }
 
-    public static int rgbtoHexValue(final int r, final int g, final int b) {
-        if ((r > 255) || (g > 255) || (b > 255) || (r < 0) || (g < 0) || (b < 0)) {
-            return 0;
-        }
-        final int rgb = ((0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
-        return rgb & 0xFFFFFF;
-    }
-
     public static File getMcDir() {
         if (Utils.isClient()) {
             if (Minecraft.getMinecraft() != null) {

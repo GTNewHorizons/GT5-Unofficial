@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.item.base.BaseItemColourable;
-import gtPlusPlus.core.util.Utils;
 
 public class ItemHalfCompleteCasings extends BaseItemColourable {
 
@@ -42,15 +42,15 @@ public class ItemHalfCompleteCasings extends BaseItemColourable {
     }
 
     @Override
-    public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
+    public int getColorFromItemStack(ItemStack stack, int colorRGB) {
         if (this.getDamage(stack) == 0) {
-            return Utils.rgbtoHexValue(52, 52, 52);
+            return ColorUtil.toRGB(52, 52, 52);
         } else if (this.getDamage(stack) == 1) {
-            return Utils.rgbtoHexValue(80, 90, 222);
+            return ColorUtil.toRGB(80, 90, 222);
         } else if (this.getDamage(stack) == 2) {
-            return Utils.rgbtoHexValue(182, 77, 177);
+            return ColorUtil.toRGB(182, 77, 177);
         } else {
-            return Utils.rgbtoHexValue(77, 175, 182);
+            return ColorUtil.toRGB(77, 175, 182);
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import codechicken.lib.gui.GuiDraw;
@@ -18,7 +19,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
-import gtPlusPlus.core.lib.VanillaColours;
 import gtPlusPlus.nei.handlers.NeiTextureHandler;
 
 public class DecayableRecipeHandler extends TemplateRecipeHandler {
@@ -174,21 +174,21 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             }
 
             int x = 5;
-            GuiDraw.drawString(s, x, 25, VanillaColours.DYE_BLACK.getAsInt(), false);
-            GuiDraw.drawString(s0, x, 40, VanillaColours.DYE_BLACK.getAsInt(), false);
+            GuiDraw.drawString(EnumChatFormatting.BLACK + s, x, 25, 0xFFFFFFFF, false);
+            GuiDraw.drawString(EnumChatFormatting.BLACK + s0, x, 40, 0xFFFFFFFF, false);
 
-            GuiDraw.drawString(suffix, x + 16, y + 30, VanillaColours.DYE_BLACK.getAsInt(), false);
+            GuiDraw.drawString(EnumChatFormatting.BLACK + suffix, x + 16, y + 30, 0xFFFFFFFF, false);
 
             // Values
-            GuiDraw.drawString(("" + formattedTime), x, y + 30, VanillaColours.DYE_GREEN.getAsInt(), false);
+            GuiDraw.drawString(EnumChatFormatting.DARK_GREEN + ("" + formattedTime), x, y + 30, 0xFFFFFFFF, false);
 
             if (hours > 1) {
                 int aLeftoverMinutes = (cost - (hours * (20 * 60 * 60)));
                 if (aLeftoverMinutes > 0) {
                     int secs2 = aLeftoverMinutes / 20;
                     int mins2 = secs2 / 60;
-                    GuiDraw.drawString(s3, x + 16, y + 42, VanillaColours.DYE_BLACK.getAsInt(), false);
-                    GuiDraw.drawString(("" + mins2), x, y + 42, VanillaColours.DYE_GREEN.getAsInt(), false);
+                    GuiDraw.drawString(EnumChatFormatting.BLACK + s3, x + 16, y + 42, 0xFFFFFFFF, false);
+                    GuiDraw.drawString(EnumChatFormatting.DARK_GREEN + ("" + mins2), x, y + 42, 0xFFFFFFFF, false);
                 }
             }
         }

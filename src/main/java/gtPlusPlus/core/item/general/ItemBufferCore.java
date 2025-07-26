@@ -13,14 +13,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class ItemBufferCore extends BaseItemWithDamageValue {
 
-    public int coreTier = 0;
+    public int coreTier;
 
     public ItemBufferCore(final String unlocalizedName, final int i) {
         super(unlocalizedName + i);
@@ -55,19 +55,25 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
         return this.coreTier;
     }
 
+    // spotless:off
+    private static final int[] mTierColors = new int[] {
+        ColorUtil.toRGB(200, 180, 180),
+        ColorUtil.toRGB(142, 153, 161),
+        ColorUtil.toRGB(230, 121, 75),
+        ColorUtil.toRGB(215, 156, 70),
+        ColorUtil.toRGB(97, 97, 96), // EV
+        ColorUtil.toRGB(202, 202, 201),
+        ColorUtil.toRGB(247, 159, 157),
+        ColorUtil.toRGB(181, 223, 223),
+        ColorUtil.toRGB(187, 219, 185)};
+    // spotless:on
+
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-
-        int[] mTierTypes = new int[] { Utils.rgbtoHexValue(200, 180, 180), Utils.rgbtoHexValue(142, 153, 161),
-            Utils.rgbtoHexValue(230, 121, 75), Utils.rgbtoHexValue(215, 156, 70), Utils.rgbtoHexValue(97, 97, 96), // EV
-            Utils.rgbtoHexValue(202, 202, 201), Utils.rgbtoHexValue(247, 159, 157), Utils.rgbtoHexValue(181, 223, 223),
-            Utils.rgbtoHexValue(187, 219, 185), };
-
+    public int getColorFromItemStack(final ItemStack stack, int colorRGB) {
         if (this.coreTier == 10) {
-            return Utils
-                .rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
+            return ColorUtil
+                .toRGB(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
         }
-
-        return mTierTypes[this.coreTier - 1];
+        return mTierColors[this.coreTier - 1];
     }
 }

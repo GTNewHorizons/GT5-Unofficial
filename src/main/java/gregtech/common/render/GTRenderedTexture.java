@@ -17,26 +17,25 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
-import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.LightingHelper;
 
-public class GTRenderedTexture extends GTTextureBase implements ITexture, IColorModulationContainer {
+public class GTRenderedTexture extends GTTextureBase implements ITexture {
 
     protected final IIconContainer mIconContainer;
-    private final short[] mRGBa;
+    private final int colorRGB;
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
+    protected GTRenderedTexture(IIconContainer aIcon, short[] rgba, boolean glow, boolean stdOrient,
         boolean extFacing) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
-        mIconContainer = aIcon;
-        mRGBa = aRGBa;
+        this.mIconContainer = aIcon;
+        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
@@ -62,7 +61,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingXPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.EAST, mRGBa);
+            .setupColor(ForgeDirection.EAST, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -88,7 +87,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingXNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.WEST, mRGBa);
+            .setupColor(ForgeDirection.WEST, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -114,7 +113,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingYPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.UP, mRGBa);
+            .setupColor(ForgeDirection.UP, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -140,7 +139,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN, mRGBa);
+            .setupColor(ForgeDirection.DOWN, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -166,7 +165,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingZPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.SOUTH, mRGBa);
+            .setupColor(ForgeDirection.SOUTH, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -192,7 +191,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         lighting.setupLightingZNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.NORTH, mRGBa);
+            .setupColor(ForgeDirection.NORTH, colorRGB);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -201,11 +200,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
-    }
-
-    @Override
-    public short[] getRGBA() {
-        return mRGBa;
     }
 
     @Override

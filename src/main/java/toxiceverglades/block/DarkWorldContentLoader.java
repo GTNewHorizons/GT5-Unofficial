@@ -11,8 +11,8 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.core.block.base.BlockBaseFluid;
-import gtPlusPlus.core.util.Utils;
 import toxiceverglades.item.ItemBlockToxicEverglades;
 import toxiceverglades.item.ItemEvergladesPortalTrigger;
 
@@ -29,7 +29,7 @@ public class DarkWorldContentLoader {
 
     public static synchronized void initMisc() {
         // Fluids
-        SLUDGE = (BlockDarkWorldSludgeFluid) new BlockDarkWorldSludgeFluid("sludge", Utils.rgbtoHexValue(30, 130, 30))
+        SLUDGE = (BlockDarkWorldSludgeFluid) new BlockDarkWorldSludgeFluid("sludge", ColorUtil.toRGB(30, 130, 30))
             .setDensity(1800)
             .setGaseous(false)
             .setLuminosity(2)
