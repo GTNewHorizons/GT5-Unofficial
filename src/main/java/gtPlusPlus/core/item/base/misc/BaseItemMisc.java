@@ -24,10 +24,10 @@ public class BaseItemMisc extends Item {
     public final String displayName;
     public final String unlocalName;
     public final MiscTypes miscType;
-    public final int colorRBG;
+    public final int colorRGB;
 
-    public BaseItemMisc(final String displayName, final int colorRBG, final int maxStackSize, final MiscTypes miscType,
-        String[] description) {
+    public BaseItemMisc(final String displayName, final int colorRGB, final int maxStackSize, final MiscTypes miscType,
+                        String[] description) {
 
         // Set-up the Misc Generic Item
         this.displayName = displayName;
@@ -38,7 +38,7 @@ public class BaseItemMisc extends Item {
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(maxStackSize);
         // this.setTextureName(this.getCorrectTextures());
-        this.colorRBG = colorRBG;
+        this.colorRGB = colorRGB;
         if (description != null) {
             for (int i = 0; i < description.length; i++) {
                 GTLanguageManager
@@ -97,8 +97,8 @@ public class BaseItemMisc extends Item {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, final int colorRBG) {
-        return colorRBG;
+    public int getColorFromItemStack(final ItemStack stack, final int colorRGB) {
+        return colorRGB;
     }
 
     public enum MiscTypes {

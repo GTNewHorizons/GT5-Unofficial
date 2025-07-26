@@ -5,6 +5,6 @@ import gregtech.api.enums.Dyes;
 public interface IGetTitleColor {
 
     default int getTitleColor() {
-        return Dyes.dyeWhite.colorRBG;
+        return Dyes.dyeWhite.colorRGB;
     }
 }

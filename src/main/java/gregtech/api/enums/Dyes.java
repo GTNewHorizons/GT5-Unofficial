@@ -62,7 +62,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     /** RGB color value (0x00rrggbb). */
-    public final int colorRBG;
+    public final int colorRGB;
     @Deprecated
     public final short[] mRGBa;
     /** Dye index in range 0–15, or -1 for special cases. */
@@ -93,7 +93,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     Dyes(int index, int rgb, @NotNull String name, @NotNull EnumChatFormatting formatting) {
-        this.colorRBG = rgb;
+        this.colorRGB = rgb;
         final short r = (short) ((rgb >> 16) & 0xFF);
         final short g = (short) ((rgb >> 8) & 0xFF);
         final short b = (short) (rgb & 0xFF);

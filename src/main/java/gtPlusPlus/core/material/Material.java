@@ -843,7 +843,7 @@ public class Material {
     public final int getRgbAsHex() {
         final int returnValue = ColorUtil.toRGB(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
         if (returnValue == 0) {
-            return Dyes._NULL.colorRBG;
+            return Dyes._NULL.colorRGB;
         }
         return ColorUtil.toRGB(this.RGBA[0], this.RGBA[1], this.RGBA[2]);
     }
