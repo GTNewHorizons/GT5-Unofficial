@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,7 +45,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.data.IntValue;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -63,13 +63,18 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // of one structure check to finish your hotswap before it deforms.
     private boolean grace = false;
 
+    private double transferBuffer = 0d;
+    private int transferSamples = 0;
+
     private double transferredLast5Secs = 0d;
     private double transferredLast30Secs = 0d;
     private double transferredLast1Min = 0d;
 
-    private static final double TICKS_PER_5SECS_INV = 1d / (20d * 5d);
-    private static final double TICKS_PER_30SECS_INV = 1d / (20d * 30d);
-    private static final double TICKS_PER_MIN_INV = 1d / (20d * 60d);
+    /** The number of ticks between UI updates for the transfer widgets. */
+    private static final int TRANSFER_UPDATE_PERIOD = 20;
+    private static final double INV_5SECS = 1d / 5d;
+    private static final double INV_30SECS = 1d / 30d;
+    private static final double INV_60SECS = 1d / 60d;
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -153,11 +158,19 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     protected void onPostPowerPass(double eu) {
         super.onPostPowerPass(eu);
-        // called once per tick
+        // Called once per tick
 
-        transferredLast5Secs = (transferredLast5Secs * (1d - TICKS_PER_5SECS_INV)) + (eu * TICKS_PER_5SECS_INV);
-        transferredLast30Secs = (transferredLast30Secs * (1d - TICKS_PER_30SECS_INV)) + (eu * TICKS_PER_30SECS_INV);
-        transferredLast1Min = (transferredLast1Min * (1d - TICKS_PER_MIN_INV)) + (eu * TICKS_PER_MIN_INV);
+        transferBuffer += eu;
+        transferSamples++;
+
+        // Only update the samples once every second
+        if (transferSamples >= TRANSFER_UPDATE_PERIOD) {
+            transferSamples %= TRANSFER_UPDATE_PERIOD;
+
+            transferredLast5Secs = (transferredLast5Secs * (1d - INV_5SECS)) + (eu * INV_5SECS);
+            transferredLast30Secs = (transferredLast30Secs * (1d - INV_30SECS)) + (eu * INV_30SECS);
+            transferredLast1Min = (transferredLast1Min * (1d - INV_60SECS)) + (eu * INV_60SECS);
+        }
     }
 
     @Override
@@ -270,11 +283,25 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         return GTUtility.getTier(minEUt);
     }
 
+    // Same as AE
+    private static final String[] AMP_UNITS = { "", "k", "M", "G", "T", "P", "E" };
+
+    private static String formatUIAmperage(double amps) {
+        int unit = 0;
+
+        while (amps > 1000 && unit + 1 < AMP_UNITS.length) {
+            amps /= 1000d;
+            unit++;
+        }
+
+        return GTUtility.formatNumbers(amps) + AMP_UNITS[unit];
+    }
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
-        IntValue hatchTier = new IntValue();
+        MutableInt hatchTier = new MutableInt();
 
         screenElements
             .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Secs, value -> transferredLast5Secs = value));
@@ -287,24 +314,24 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLast5Secs / V[hatchTier.value]);
-            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+            String amperage = formatUIAmperage(transferredLast5Secs / V[hatchTier.getValue()]);
+            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
 
             return GTUtility.translate("GT5U.gui.text.at_past_5secs", amperage, tier);
         })
             .setSynced(false));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLast30Secs / V[hatchTier.value]);
-            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+            String amperage = formatUIAmperage(transferredLast30Secs / V[hatchTier.getValue()]);
+            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
 
             return GTUtility.translate("GT5U.gui.text.at_past_30secs", amperage, tier);
         })
             .setSynced(false));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
-            String amperage = GTUtility.formatNumbers(transferredLast1Min / V[hatchTier.value]);
-            String tier = TIER_COLORS[hatchTier.value] + VN[hatchTier.value];
+            String amperage = formatUIAmperage(transferredLast1Min / V[hatchTier.getValue()]);
+            String tier = TIER_COLORS[hatchTier.getValue()] + VN[hatchTier.getValue()];
 
             return GTUtility.translate("GT5U.gui.text.at_past_min", amperage, tier);
         })
