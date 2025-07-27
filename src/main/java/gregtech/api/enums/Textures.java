@@ -1972,12 +1972,10 @@ public class Textures {
 
             protected IIcon mIcon, mOverlay = null;
             protected final String mIconName, mOverlayName;
-            protected final ResourceLocation overlayResLoc;
 
             public CustomIcon(String aIconName) {
                 mIconName = !aIconName.contains(":") ? GregTech.getResourcePath(aIconName) : aIconName;
                 mOverlayName = mIconName + _OVERLAY;
-                overlayResLoc = getResourceLocation(mOverlayName);
                 GregTechAPI.sGTBlockIconload.add(this);
             }
 
@@ -1985,12 +1983,12 @@ public class Textures {
             public void run() {
                 mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
                 // This makes the block _OVERLAY icon totally optional
-                mOverlay = ResourceUtils.resourceExists(overlayResLoc)
-                    ? GregTechAPI.sBlockIcons.registerIcon(mOverlayName)
-                    : null;
+                if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
+                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+                }
             }
 
-            protected ResourceLocation getResourceLocation(String iconName) {
+            private ResourceLocation getResourceLocation(String iconName) {
                 final String overlayDomain, overlayPath;
                 final int i = iconName.indexOf(':');
                 if (i >= 0) {
