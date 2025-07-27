@@ -2522,7 +2522,9 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null
+            && !aEntity.isImmuneToFire()
+            && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
