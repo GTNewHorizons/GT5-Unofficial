@@ -1741,7 +1741,6 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 80, 80, 245, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 60, 60, 245, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 40, 40, 245, 0 }), };
-        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         public static ITexture[] OVERLAYS_ENERGY_OUT = {
             TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 180, 180, 180, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 220, 220, 220, 0 }),
@@ -1893,6 +1892,7 @@ public class Textures {
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
@@ -1972,12 +1972,10 @@ public class Textures {
 
             protected IIcon mIcon, mOverlay = null;
             protected final String mIconName, mOverlayName;
-            protected final ResourceLocation overlayResLoc;
 
             public CustomIcon(String aIconName) {
                 mIconName = !aIconName.contains(":") ? GregTech.getResourcePath(aIconName) : aIconName;
                 mOverlayName = mIconName + _OVERLAY;
-                overlayResLoc = getResourceLocation(mOverlayName);
                 GregTechAPI.sGTBlockIconload.add(this);
             }
 
@@ -1985,12 +1983,12 @@ public class Textures {
             public void run() {
                 mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
                 // This makes the block _OVERLAY icon totally optional
-                mOverlay = ResourceUtils.resourceExists(overlayResLoc)
-                    ? GregTechAPI.sBlockIcons.registerIcon(mOverlayName)
-                    : null;
+                if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
+                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+                }
             }
 
-            protected ResourceLocation getResourceLocation(String iconName) {
+            private ResourceLocation getResourceLocation(String iconName) {
                 final String overlayDomain, overlayPath;
                 final int i = iconName.indexOf(':');
                 if (i >= 0) {
