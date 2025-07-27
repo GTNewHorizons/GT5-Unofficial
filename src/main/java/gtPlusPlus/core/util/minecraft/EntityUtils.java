@@ -19,12 +19,6 @@ import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
-    public static void setEntityOnFire(final Entity aEntity, final int length) {
-        if (!aEntity.isImmuneToFire()) {
-            aEntity.setFire(length);
-        }
-    }
-
     public static BlockPos findBlockPosOfEntity(final Entity parEntity) {
         final int blockX = MathHelper.floor_double(parEntity.posX);
         final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY);
