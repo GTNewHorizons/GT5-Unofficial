@@ -26,7 +26,6 @@ public class GTTextureBuilder implements ITextureBuilder {
     private int fromMeta;
     private ForgeDirection fromSide;
     private int colorRGB;
-    private boolean allowAlpha;
     private boolean stdOrient;
     private boolean extFacing;
     private boolean glow;
@@ -34,7 +33,6 @@ public class GTTextureBuilder implements ITextureBuilder {
 
     public GTTextureBuilder() {
         colorRGB = Dyes._NULL.colorRGB;
-        allowAlpha = true;
         stdOrient = false;
         glow = false;
     }
@@ -94,12 +92,6 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
-    public ITextureBuilder setAllowAlpha(final boolean allowAlpha) {
-        this.allowAlpha = allowAlpha;
-        return this;
-    }
-
-    @Override
     public ITextureBuilder stdOrient() {
         this.stdOrient = true;
         return this;
@@ -155,8 +147,7 @@ public class GTTextureBuilder implements ITextureBuilder {
                 iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
                 iconContainerList.get(ForgeDirection.WEST.ordinal()),
                 iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                colorRGB,
-                allowAlpha);
+                colorRGB);
             default -> throw new IllegalStateException("Invalid sideIconContainer count");
         };
     }

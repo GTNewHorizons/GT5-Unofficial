@@ -12,14 +12,14 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture {
     private final ITexture[] mTextures;
 
     // spotless:off
-    protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, int colorRGB, boolean aAllowAlpha) {
+    protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, int colorRGB) {
         mTextures = new ITexture[] {
-            TextureFactory.of(aIcon0, colorRGB, aAllowAlpha),
-            TextureFactory.of(aIcon1, colorRGB, aAllowAlpha),
-            TextureFactory.of(aIcon2, colorRGB, aAllowAlpha),
-            TextureFactory.of(aIcon3, colorRGB, aAllowAlpha),
-            TextureFactory.of(aIcon4, colorRGB, aAllowAlpha),
-            TextureFactory.of(aIcon5, colorRGB, aAllowAlpha) };
+            TextureFactory.of(aIcon0, colorRGB),
+            TextureFactory.of(aIcon1, colorRGB),
+            TextureFactory.of(aIcon2, colorRGB),
+            TextureFactory.of(aIcon3, colorRGB),
+            TextureFactory.of(aIcon4, colorRGB),
+            TextureFactory.of(aIcon5, colorRGB) };
     }
     // spotless:on
 
