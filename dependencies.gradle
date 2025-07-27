@@ -36,7 +36,7 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.15:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.7.66-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.7.69-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.6.38:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
