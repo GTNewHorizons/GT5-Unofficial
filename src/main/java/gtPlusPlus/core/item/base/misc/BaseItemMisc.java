@@ -27,7 +27,7 @@ public class BaseItemMisc extends Item {
     public final int colorRGB;
 
     public BaseItemMisc(final String displayName, final int colorRGB, final int maxStackSize, final MiscTypes miscType,
-                        String[] description) {
+        String[] description) {
 
         // Set-up the Misc Generic Item
         this.displayName = displayName;

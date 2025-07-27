@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData {
@@ -156,8 +157,7 @@ public class BioCulture extends BioData {
     }
 
     public int getColorRGB() {
-        return BWColorUtil
-            .getColorFromRGBArray(new int[] { this.color.getRed(), this.color.getGreen(), this.color.getBlue() });
+        return ColorUtil.toRGB(this.color.getRGB());
     }
 
     public Color getColor() {
