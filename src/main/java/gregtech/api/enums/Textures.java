@@ -1741,7 +1741,6 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 80, 80, 245, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 60, 60, 245, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 40, 40, 245, 0 }), };
-        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         public static ITexture[] OVERLAYS_ENERGY_OUT = {
             TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 180, 180, 180, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_OUT, new short[] { 220, 220, 220, 0 }),
@@ -1893,6 +1892,7 @@ public class Textures {
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
