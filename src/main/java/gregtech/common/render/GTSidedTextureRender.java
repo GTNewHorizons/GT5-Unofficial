@@ -9,19 +9,17 @@ import gregtech.api.render.TextureFactory;
 
 public class GTSidedTextureRender extends GTTextureBase implements ITexture {
 
-    protected final ITexture[] mTextures;
+    private final ITexture[] mTextures;
 
     // spotless:off
-    protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2,
-        IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTSidedTextureRender");
+    protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, int colorRGB, boolean aAllowAlpha) {
         mTextures = new ITexture[] {
-            TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon1, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon3, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon5, aRGBa, aAllowAlpha) };
+            TextureFactory.of(aIcon0, colorRGB, aAllowAlpha),
+            TextureFactory.of(aIcon1, colorRGB, aAllowAlpha),
+            TextureFactory.of(aIcon2, colorRGB, aAllowAlpha),
+            TextureFactory.of(aIcon3, colorRGB, aAllowAlpha),
+            TextureFactory.of(aIcon4, colorRGB, aAllowAlpha),
+            TextureFactory.of(aIcon5, colorRGB, aAllowAlpha) };
     }
     // spotless:on
 

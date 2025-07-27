@@ -59,8 +59,16 @@ public interface ITextureBuilder {
     /**
      * @param rgba The RGBA tint for this {@link ITexture}
      * @return {@link ITextureBuilder} for chaining
+     * @deprecated use int color method instead
      */
+    @Deprecated
     ITextureBuilder setRGBA(final short[] rgba);
+
+    /**
+     * @param colorRGB The RGB tint for this {@link ITexture}
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder setRGB(final int colorRGB);
 
     /**
      * @param iTexture The {@link ITexture} layer to add

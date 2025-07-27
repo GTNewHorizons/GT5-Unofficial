@@ -21,21 +21,20 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.ColorUtil;
 import gregtech.api.util.LightingHelper;
 
 public class GTRenderedTexture extends GTTextureBase implements ITexture {
 
-    protected final IIconContainer mIconContainer;
+    private final IIconContainer mIconContainer;
     private final int colorRGB;
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] rgba, boolean glow, boolean stdOrient,
+    protected GTRenderedTexture(IIconContainer aIcon, int colorRGB, boolean glow, boolean stdOrient,
         boolean extFacing) {
         this.mIconContainer = aIcon;
-        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
+        this.colorRGB = colorRGB;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;

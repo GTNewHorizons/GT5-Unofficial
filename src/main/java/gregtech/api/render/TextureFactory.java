@@ -115,6 +115,21 @@ public final class TextureFactory {
             .build();
     }
 
+    /**
+     * Rendered {@link ITexture} factory
+     *
+     * @param iconContainer The {@link IIconContainer} to render
+     * @param colorRGB      The {@code int} RGB tint for the texture.
+     * @param allowAlpha    Determine if texture will use alpha blending (Not yet implemented)
+     * @return The instance of an {@link ITexture} implementation
+     */
+    public static ITexture of(final IIconContainer iconContainer, final int colorRGB, final boolean allowAlpha) {
+        return builder().addIcon(iconContainer)
+            .setRGB(colorRGB)
+            .setAllowAlpha(allowAlpha)
+            .build();
+    }
+
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
         return builder().addIcon(iconContainer)
             .setRGBA(rgba)
