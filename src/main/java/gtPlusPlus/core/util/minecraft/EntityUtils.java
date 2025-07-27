@@ -1,19 +1,15 @@
 package gtPlusPlus.core.util.minecraft;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import gregtech.api.hazards.HazardProtection;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
@@ -24,17 +20,11 @@ public class EntityUtils {
         return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
     }
 
-    public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world, final Entity entityHolding) {
-        if (!world.isRemote) {
-            if ((radiationLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving) && !HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
-                        if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null) {
-                            entityLiving.getActivePotionEffect(IC2Potion.radiation);
-                        }
-                        GTUtility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
-                    }
-                }
+    public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world,
+        final Entity entityHolding) {
+        if (!world.isRemote && entityHolding instanceof EntityPlayer player) {
+            if (!player.capabilities.isCreativeMode) {
+                GTUtility.applyRadioactivity(player, radiationLevel, stackSize);
             }
         }
     }
