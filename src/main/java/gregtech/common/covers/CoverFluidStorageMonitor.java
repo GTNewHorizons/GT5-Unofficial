@@ -233,10 +233,9 @@ public class CoverFluidStorageMonitor extends Cover {
             }
         };
 
-        final short[] fluidRGBA = colorToRGBA(fluid.getColor());
         final ITextureBuilder fluidTextureBuilder = TextureFactory.builder()
             .addIcon(fluidIcon)
-            .setRGBA(fluidRGBA);
+            .setRGB(fluid.getColor());
         if (fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
         return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[scale]));
     }
@@ -436,11 +435,6 @@ public class CoverFluidStorageMonitor extends Cover {
             return 0;
         }
         return (int) Math.ceil(tank.fluid.amount / (double) tank.capacity * (icons.length - 1));
-    }
-
-    protected short[] colorToRGBA(int color) {
-        return new short[] { (short) (color >> 16 & 0xFF), (short) (color >> 8 & 0xFF), (short) (color & 0xFF),
-            (short) (0xFF) };
     }
 
     protected static class Util {
