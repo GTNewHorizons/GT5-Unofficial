@@ -366,7 +366,7 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Netherite_Nanoparticles.get(1))
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -378,7 +378,7 @@ public class NetheriteRecipes {
         if (Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(1),
+                    GTUtility.getIntegratedCircuit(2),
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
