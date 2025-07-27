@@ -66,39 +66,35 @@ public final class TextureFactory {
     /**
      * All-Sided {@link ITexture} factory
      *
-     * @param bottom The {@link IIconContainer} Icon for the Bottom Side.
-     * @param top    The {@link IIconContainer} Icon for the Top Side.
-     * @param north  The {@link IIconContainer} Icon for the North Side.
-     * @param south  The {@link IIconContainer} Icon for the South Side.
-     * @param west   The {@link IIconContainer} Icon for the West Side.
-     * @param east   The {@link IIconContainer} Icon for the East Side.
-     * @param rgba   The {@code short[]} RGBA tint for all sides.
+     * @param bottom   The {@link IIconContainer} Icon for the Bottom Side.
+     * @param top      The {@link IIconContainer} Icon for the Top Side.
+     * @param north    The {@link IIconContainer} Icon for the North Side.
+     * @param south    The {@link IIconContainer} Icon for the South Side.
+     * @param west     The {@link IIconContainer} Icon for the West Side.
+     * @param east     The {@link IIconContainer} Icon for the East Side.
+     * @param colorRGB The {@code int} RGB tint for all sides.
      * @return The instance of an {@link ITexture} implementation
-     * @deprecated use int color method instead
      */
-    @Deprecated
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
-        final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
+        final IIconContainer south, final IIconContainer west, final IIconContainer east, final int colorRGB) {
         return builder().addIcon(bottom, top, north, south, west, east)
-            .setRGBA(rgba)
+            .setRGB(colorRGB)
             .build();
     }
 
     /**
      * Bottom-Top-Sides-Sided {@link ITexture} factory
      *
-     * @param bottom The {@link IIconContainer} Icon for the Bottom Side.
-     * @param top    The {@link IIconContainer} Icon for the Top Side.
-     * @param sides  The {@link IIconContainer} Icon for the North, South, West and East Sides.
-     * @param rgba   The {@code short[]} RGBA tint for all sides.
+     * @param bottom   The {@link IIconContainer} Icon for the Bottom Side.
+     * @param top      The {@link IIconContainer} Icon for the Top Side.
+     * @param sides    The {@link IIconContainer} Icon for the North, South, West and East Sides.
+     * @param colorRGB The {@code int} RGB tint for all sides.
      * @return The instance of an {@link ITexture} implementation
-     * @deprecated use int color method instead
      */
-    @Deprecated
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
-        final short[] rgba) {
+        final int colorRGB) {
         return builder().addIcon(bottom, top, sides, sides, sides, sides)
-            .setRGBA(rgba)
+            .setRGB(colorRGB)
             .build();
     }
 
@@ -126,18 +122,16 @@ public final class TextureFactory {
     /**
      * Copied-Block {@link ITexture} factory that will render a texture copied from the side of a {@link Block}.
      *
-     * @param block The {@link Block} that will provide the texture
-     * @param meta  The meta value for the Block
-     * @param side  The {@link ForgeDirection} side providing the texture
-     * @param rgba  The RGBA tint to apply
+     * @param block    The {@link Block} that will provide the texture
+     * @param meta     The meta value for the Block
+     * @param side     The {@link ForgeDirection} side providing the texture
+     * @param colorRGB The RGB tint to apply
      * @return The instance of an {@link ITexture} implementation
-     * @deprecated use int color method instead
      */
-    @Deprecated
-    public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
+    public static ITexture of(final Block block, final int meta, final ForgeDirection side, final int colorRGB) {
         return builder().setFromBlock(block, meta)
             .setFromSide(side)
-            .setRGBA(rgba)
+            .setRGB(colorRGB)
             .build();
     }
 

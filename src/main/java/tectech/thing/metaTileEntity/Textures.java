@@ -293,14 +293,14 @@ public class Textures {
                 MACHINECASINGS_BOTTOM_TT[tier],
                 MACHINECASINGS_TOP_TT[tier],
                 MACHINECASINGS_SIDE_TT[tier],
-                Dyes.MACHINE_METAL.getRGBA());
+                Dyes.MACHINE_METAL.colorRGB);
 
             for (Dyes dye : Dyes.VALUES) {
                 MACHINE_CASINGS_TT[tier][dye.mIndex + 1] = TextureFactory.of(
                     MACHINECASINGS_BOTTOM_TT[tier],
                     MACHINECASINGS_TOP_TT[tier],
                     MACHINECASINGS_SIDE_TT[tier],
-                    dye.getRGBA());
+                    dye.colorRGB);
             }
         }
 

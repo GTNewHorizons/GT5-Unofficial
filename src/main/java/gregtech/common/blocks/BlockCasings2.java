@@ -30,7 +30,7 @@ public class BlockCasings2 extends BlockCasingsAbstract {
                     .getItem()),
             0,
             ForgeDirection.UNKNOWN,
-            Dyes.MACHINE_METAL.getRGBA());
+            Dyes.MACHINE_METAL.colorRGB);
 
         register(0, ItemList.Casing_SolidSteel, "Solid Steel Machine Casing");
         register(1, ItemList.Casing_FrostProof, "Frost Proof Machine Casing");
