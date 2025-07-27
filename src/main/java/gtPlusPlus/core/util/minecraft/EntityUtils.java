@@ -2,16 +2,14 @@ package gtPlusPlus.core.util.minecraft;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import gregtech.api.hazards.HazardProtection;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import ic2.core.IC2Potion;
@@ -26,76 +24,18 @@ public class EntityUtils {
         return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
     }
 
-    public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world,
-                                                    final Entity entityHolding) {
+    public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world, final Entity entityHolding) {
         if (!world.isRemote) {
             if ((radiationLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)
-                            && !HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
+                    if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving) && !HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                         if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null) {
                             entityLiving.getActivePotionEffect(IC2Potion.radiation);
                         }
-                        applyRadioactivity(entityLiving, radiationLevel, stackSize);
+                        GTUtility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
                     }
                 }
             }
-        }
-    }
-
-    public static void applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {
-        if (aLevel > 0 && aEntity != null
-            && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
-            && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
-            && !ItemArmorHazmat.hasCompleteHazmat(aEntity)) {
-            PotionEffect tEffect;
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    Potion.moveSlowdown.id,
-                    aLevel * 140 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.moveSlowdown)) == null ? 0
-                            : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    Potion.digSlowdown.id,
-                    aLevel * 150 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.digSlowdown)) == null ? 0
-                            : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    Potion.confusion.id,
-                    aLevel * 130 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.confusion)) == null ? 0
-                            : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    Potion.weakness.id,
-                    aLevel * 150 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.weakness)) == null ? 0
-                            : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    Potion.hunger.id,
-                    aLevel * 130 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.hunger)) == null ? 0 : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
-            aEntity.addPotionEffect(
-                new PotionEffect(
-                    IC2Potion.radiation.id,
-                    aLevel * 180 * aAmountOfItems + Math.max(
-                        0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0
-                            : tEffect.getDuration())),
-                    Math.max(0, (5 * aLevel) / 7)));
         }
     }
 
