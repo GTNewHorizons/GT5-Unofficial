@@ -1355,16 +1355,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSetTier = trigger.stackSize;
-        if (ChannelDataAccessor.hasSubChannel(trigger, "enableBioUpgrade")
-            && ChannelDataAccessor.getChannelData(trigger, "enableBioUpgrade") > 0) {
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableBioUpgrade")) {
             buildPiece(bioUpgrade, trigger, false, -5, 6, 0);
         }
-        if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier2")
-            && ChannelDataAccessor.getChannelData(trigger, "enableOCTier2") > 0) {
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier2")) {
             buildPiece(ocTier2Upgrade, trigger, false, 2, 9, -11);
-        } else if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier1")
-            && ChannelDataAccessor.getChannelData(trigger, "enableOCTier1") > 0) {
-                buildPiece(ocTier1Upgrade, trigger, false, 2, 9, -11);
-            }
+        } else if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier1")) {
+            buildPiece(ocTier1Upgrade, trigger, false, 2, 9, -11);
+        }
     }
 }
