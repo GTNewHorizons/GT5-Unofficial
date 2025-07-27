@@ -12,7 +12,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import gregtech.api.hazards.HazardProtection;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import ic2.core.IC2Potion;
@@ -21,20 +20,9 @@ import ic2.core.item.armor.ItemArmorHazmat;
 public class EntityUtils {
 
     public static void setEntityOnFire(final Entity aEntity, final int length) {
-        if (!isEntityImmuneToFire(aEntity)) {
+        if (!aEntity.isImmuneToFire()) {
             aEntity.setFire(length);
         }
-    }
-
-    public static boolean isEntityImmuneToFire(Entity aEntity) {
-        return aEntity.isImmuneToFire();
-    }
-
-    public static BlockPos findBlockPosUnderEntity(final Entity parEntity) {
-        final int blockX = MathHelper.floor_double(parEntity.posX);
-        final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY) - 1;
-        final int blockZ = MathHelper.floor_double(parEntity.posZ);
-        return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
     }
 
     public static BlockPos findBlockPosOfEntity(final Entity parEntity) {
@@ -114,18 +102,6 @@ public class EntityUtils {
                         ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0
                             : tEffect.getDuration())),
                     Math.max(0, (5 * aLevel) / 7)));
-        }
-    }
-
-    public static void applyHeatDamageToEntity(final int heatLevel, final World world, final Entity entityHolding) {
-        if (!world.isRemote) {
-            if ((heatLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    if (!HazardProtection.isWearingFullHeatHazmat(entityLiving)) {
-                        GTUtility.applyHeatDamage(entityLiving, heatLevel);
-                    }
-                }
-            }
         }
     }
 
