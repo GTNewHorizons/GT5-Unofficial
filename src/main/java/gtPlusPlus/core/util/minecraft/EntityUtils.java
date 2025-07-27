@@ -3,7 +3,6 @@ package gtPlusPlus.core.util.minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -27,10 +26,6 @@ public class EntityUtils {
                 GTUtility.applyRadioactivity(player, radiationLevel, stackSize);
             }
         }
-    }
-
-    public static void doDamage(Entity entity, DamageSource dmg, int i) {
-        entity.attackEntityFrom(dmg, i);
     }
 
     /**
