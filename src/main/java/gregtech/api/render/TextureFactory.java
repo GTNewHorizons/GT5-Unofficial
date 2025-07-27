@@ -74,7 +74,9 @@ public final class TextureFactory {
      * @param east   The {@link IIconContainer} Icon for the East Side.
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
+     * @deprecated use int color method instead
      */
+    @Deprecated
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
         final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
         return builder().addIcon(bottom, top, north, south, west, east)
@@ -90,7 +92,9 @@ public final class TextureFactory {
      * @param sides  The {@link IIconContainer} Icon for the North, South, West and East Sides.
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
+     * @deprecated use int color method instead
      */
+    @Deprecated
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
         final short[] rgba) {
         return builder().addIcon(bottom, top, sides, sides, sides, sides)
@@ -98,6 +102,10 @@ public final class TextureFactory {
             .build();
     }
 
+    /**
+     * @deprecated use int color method instead
+     */
+    @Deprecated
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
         return builder().addIcon(iconContainer)
             .setRGBA(rgba)
@@ -123,7 +131,9 @@ public final class TextureFactory {
      * @param side  The {@link ForgeDirection} side providing the texture
      * @param rgba  The RGBA tint to apply
      * @return The instance of an {@link ITexture} implementation
+     * @deprecated use int color method instead
      */
+    @Deprecated
     public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
         return builder().setFromBlock(block, meta)
             .setFromSide(side)
