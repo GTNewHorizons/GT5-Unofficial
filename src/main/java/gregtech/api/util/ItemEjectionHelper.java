@@ -90,7 +90,7 @@ public class ItemEjectionHelper {
         List<ItemParallelData> outputParallels = new ArrayList<>(outputs.size());
 
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
-            Comparator.comparingInt(output -> output.remaining.stackSize));
+            Comparator.comparingInt(output -> -output.remaining.stackSize));
 
         for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
             GTUtility.ItemId id = e.getKey();
@@ -124,10 +124,10 @@ public class ItemEjectionHelper {
             pendingOutputs.add(parallelData);
         }
 
-        // This grabs the smallest stack in the priority queue and tries to fill one slot in a bus with it, until there
+        // This grabs the largest stack in the priority queue and tries to fill one slot in a bus with it, until there
         // are no more items remaining or until all busses cannot accept more items.
         while (!pendingOutputs.isEmpty()) {
-            // Grab the smallest stack
+            // Grab the largest stack
             ItemParallelData output = pendingOutputs.poll();
 
             PeekingIterator<IOutputBusTransaction> outputBusses = output.outputs;
