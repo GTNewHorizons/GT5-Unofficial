@@ -451,7 +451,7 @@ public class BlockFrameBox extends BlockContainer {
         if (material == null) return null;
         return new ITexture[] { TextureFactory.of(
             material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(-1, material.mRGBa)) };
+            Dyes.getModulation(-1, material.getColor())) };
     }
 
     @Override

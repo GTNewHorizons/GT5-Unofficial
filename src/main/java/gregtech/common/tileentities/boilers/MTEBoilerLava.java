@@ -106,7 +106,7 @@ public class MTEBoilerLava extends MTEBoiler {
         ITexture[][][] rTextures = new ITexture[6][17][];
         for (byte color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color);
+            int colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_TOP, colorModulation),
                 TextureFactory.of(OVERLAY_DRAIN), TextureFactory.of(FLUID_IN_SIGN) };

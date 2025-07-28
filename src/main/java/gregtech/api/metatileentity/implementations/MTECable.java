@@ -109,8 +109,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         int facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (!mInsulated) return new ITexture[] { TextureFactory
-            .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
+        if (!mInsulated) return new ITexture[] { TextureFactory.of(
+            mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire],
+            Dyes.getModulation(colorIndex, mMaterial.getColor())) };
         if (active) {
             float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
@@ -141,12 +142,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             if (tThickNess < 0.874F) // 0.825 x12
                 return new ITexture[] {
-                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
+                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             return new ITexture[] {
-                TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa), TextureFactory
+                TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
+                TextureFactory
                     .of(Textures.BlockIcons.INSULATION_HUGE, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
         }
         return new ITexture[] { TextureFactory

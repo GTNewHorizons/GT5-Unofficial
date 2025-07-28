@@ -135,14 +135,17 @@ public enum Dyes implements IColorModulationContainer {
         throw new IllegalArgumentException("Index passed to `transformDyeIndex` must be between 0 and 15");
     }
 
-    @Deprecated
-    public static short @NotNull [] getModulation(int index) {
-        return getModulation(index, Dyes._NULL.mRGBa);
+    public static int getModulation(int index) {
+        return getModulation(index, Dyes._NULL);
     }
 
-    @Deprecated
-    public static short @NotNull [] getModulation(int index, @NotNull Dyes defaultModulation) {
-        return getModulation(index, defaultModulation.mRGBa);
+    public static int getModulation(int index, @NotNull Dyes defaultModulation) {
+        return getModulation(index, defaultModulation.colorRGB);
+    }
+
+    public static int getModulation(int index, int defaultModulation) {
+        if (isDyeIndex(index)) return VALUES[index].colorRGB;
+        return defaultModulation;
     }
 
     @Deprecated

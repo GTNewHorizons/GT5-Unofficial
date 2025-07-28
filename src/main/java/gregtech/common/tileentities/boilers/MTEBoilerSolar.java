@@ -80,7 +80,7 @@ public class MTEBoilerSolar extends MTEBoiler {
         ITexture[][][] rTextures = new ITexture[4][17][];
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color);
+            int colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] {
                 TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
