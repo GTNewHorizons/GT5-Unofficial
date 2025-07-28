@@ -45,6 +45,12 @@ public interface ITextureBuilder {
     ITextureBuilder setFromSide(final ForgeDirection side);
 
     /**
+     * @param iconContainer The {@link IIconContainer}s to add
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder addIcon(final IIconContainer iconContainer);
+
+    /**
      * @param iconContainers The {@link IIconContainer}s to add
      * @return {@link ITextureBuilder} for chaining
      */
@@ -55,6 +61,12 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder setRGBA(final short[] rgba);
+
+    /**
+     * @param iTexture The {@link ITexture} layer to add
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder addLayer(final ITexture iTexture);
 
     /**
      * @param iTextures The {@link ITexture} layers to add
@@ -106,20 +118,4 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder glow();
-
-    /**
-     * Uses the given block/meta as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder material(Block block, int meta);
-
-    /**
-     * Uses the given block as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    default ITextureBuilder material(Block block) {
-        return material(block, 0);
-    }
 }

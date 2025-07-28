@@ -1037,6 +1037,7 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1315,10 +1316,13 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-GT5U.gui.button.input_separation=Input Separation
+GT5U.gui.button.input_separation_on=Input Separation: ON
+GT5U.gui.button.input_separation_off=Input Separation: OFF
 GT5U.gui.button.mode_switch=Mode Switch
-GT5U.gui.button.batch_mode=Batch Mode
-GT5U.gui.button.lock_recipe=Lock Recipe
+GT5U.gui.button.batch_mode_on=Batch Mode: ON
+GT5U.gui.button.batch_mode_off=Batch Mode: OFF
+GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
+GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
@@ -1487,6 +1491,7 @@ GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
@@ -1667,7 +1672,7 @@ GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cyc
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
 
-gt.behaviour.switch_mode.tooltip=Shift+Rclick to change mode
+gt.behaviour.switch_mode.tooltip=Press [%s] to change mode
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -2765,6 +2770,7 @@ gt.time.second.singular=second
 gt.time.second.plural=seconds
 
 #Tool modes
+key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
 
