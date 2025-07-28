@@ -26,7 +26,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
 import bartworks.util.NonNullWrappedHashMap;
@@ -79,7 +77,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
     private final int colorRGB;
     private final String defaultName;
-    private String toolTip;
+    private final String toolTip;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -260,53 +258,67 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
 
-        if (Werkstoff.idHashSet.contains((short) mID))
+        if (Werkstoff.idHashSet.contains((short) mID)) {
             throw new UnsupportedOperationException("ID (" + mID + ") is already in use!");
+        }
         Werkstoff.idHashSet.add((short) mID);
         if (type == null) type = Werkstoff.Types.UNDEFINED;
 
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
+        GregTechAPI.sAfterGTPreload.add(this::getLocalizedName);
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
         this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
         this.CONTENTS.addAll(Arrays.asList(contents));
-        this.toolTip = "";
         if (toolTip.isEmpty()) {
-            for (Pair<ISubTagContainer, Integer> p : contents) {
+            StringBuilder sb = new StringBuilder();
+            for (Pair<ISubTagContainer, Integer> pair : contents) {
+                final ISubTagContainer key = pair.getKey();
+                final int value = pair.getValue();
                 if (contents.length > 1) {
-                    if (p.getKey() instanceof Materials) {
-                        if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
-                            this.toolTip += "(" + getFormula((Materials) p.getKey())
-                                + ")"
-                                + BWUtil.subscriptNumber(p.getValue());
-                        else this.toolTip += getFormula((Materials) p.getKey())
-                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                    if (key instanceof Materials material) {
+                        if (material.mMaterialList.size() > 1 && value > 1) {
+                            sb.append("(")
+                                .append(getFormula(material))
+                                .append(")")
+                                .append(BWUtil.subscriptNumber(value));
+                        } else {
+                            sb.append(getFormula(material))
+                                .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                        }
                     }
-                    if (p.getKey() instanceof Werkstoff) {
-                        if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
-                            this.toolTip += "(" + getFormula((Werkstoff) p.getKey())
-                                + ")"
-                                + BWUtil.subscriptNumber(p.getValue());
-                        else this.toolTip += getFormula((Werkstoff) p.getKey())
-                            + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                    if (key instanceof Werkstoff werkstoff) {
+                        if (werkstoff.CONTENTS.size() > 1 && value > 1) {
+                            sb.append("(")
+                                .append(getFormula(werkstoff))
+                                .append(")")
+                                .append(BWUtil.subscriptNumber(value));
+                        } else {
+                            sb.append(getFormula(werkstoff))
+                                .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                        }
                     }
-                } else if (p.getKey() instanceof Materials) {
-                    this.toolTip += getFormula((Materials) p.getKey())
-                        + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
-                } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
-                    + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
+                } else if (key instanceof Materials material) {
+                    sb.append(getFormula(material))
+                        .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                } else if (key instanceof Werkstoff werkstoff) {
+                    sb.append(getFormula(werkstoff))
+                        .append(value > 1 ? BWUtil.subscriptNumber(value) : "");
+                }
             }
-        } else this.toolTip = toolTip;
+            this.toolTip = sb.toString();
+        } else {
+            this.toolTip = toolTip;
+        }
 
         // if (this.toolTip.length() > 25)
         // this.toolTip = "The formula is to long...";
 
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
+        GregTechAPI.sAfterGTPreload.add(this::getLocalizedToolTip);
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -355,14 +367,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 break;
         }
 
-        Optional<Pair<ISubTagContainer, Integer>> firstContent;
-        if (this.CONTENTS.size() == 1 && (firstContent = this.CONTENTS.stream()
-            .findFirst()).isPresent()) {
-            ISubTagContainer firstContentSubTagContainer = firstContent.get()
-                .getKey();
-            if (firstContent.get()
-                .getValue() == 1 && firstContentSubTagContainer instanceof Materials) this.getGenerationFeatures()
+        if (this.CONTENTS.size() == 1) {
+            Pair<ISubTagContainer, Integer> first = this.CONTENTS.iterator()
+                .next();
+            if (first.getValue() == 1 && first.getKey() instanceof Materials) {
+                this.getGenerationFeatures()
                     .setExtension();
+            }
         }
 
         Werkstoff.werkstoffHashSet.add(this);
