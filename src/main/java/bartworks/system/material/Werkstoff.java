@@ -52,6 +52,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import thaumcraft.api.aspects.Aspect;
@@ -76,7 +77,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
-    private byte[] rgb = new byte[3];
+    private final int colorRGB;
     private final String defaultName;
     private String toolTip;
 
@@ -271,7 +272,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
-        this.setRgb(BWColorUtil.correctCorlorArray(rgba));
+        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
         this.CONTENTS.addAll(Arrays.asList(contents));
         this.toolTip = "";
         if (toolTip.isEmpty()) {
@@ -528,10 +529,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public TextureSet getTexSet() {
         return this.texSet;
-    }
-
-    public void setRgb(short[] rgb) {
-        this.rgb = new byte[] { (byte) (rgb[0] - 128), (byte) (rgb[1] - 128), (byte) (rgb[2] - 128) };
     }
 
     @Override
