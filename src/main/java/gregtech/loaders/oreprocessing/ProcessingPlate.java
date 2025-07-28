@@ -553,7 +553,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
                     .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
-                    .setRGBA(aMaterial.mRGBa)
+                    .setRGB(aMaterial.getColor())
                     .stdOrient()
                     .build()
                 :

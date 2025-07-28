@@ -118,25 +118,25 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             if (tThickNess < 0.374F) // 0.375 x1
                 return new ITexture[] {
-                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
+                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             if (tThickNess < 0.499F) // 0.500 x2
                 return new ITexture[] {
-                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
+                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             if (tThickNess < 0.624F) // 0.625 x4
                 return new ITexture[] {
-                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
+                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
             if (tThickNess < 0.749F) // 0.750 x8
                 return new ITexture[] {
-                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
+                    TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.getColor()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION)) };
