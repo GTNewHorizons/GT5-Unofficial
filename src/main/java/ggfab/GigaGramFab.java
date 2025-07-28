@@ -1,9 +1,6 @@
 package ggfab;
 
-import static gregtech.api.enums.MetaTileEntityIDs.AdvancedAssline;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
@@ -60,7 +57,7 @@ public class GigaGramFab {
                 new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
                     .getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTELinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
 
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
