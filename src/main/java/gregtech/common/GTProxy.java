@@ -2026,12 +2026,11 @@ public class GTProxy implements IFuelHandler {
         }
 
         int tCount = 64;
-        for (int i = 0; i < 36; i++) {
-            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
+        for (ItemStack tStack : mainInventory) {
             if (tStack == null) {
                 continue;
             }
-
             if (!aEvent.player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
                 final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
@@ -2051,8 +2050,8 @@ public class GTProxy implements IFuelHandler {
             }
 
         }
-        final ItemStack[] inventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : inventory) {
+        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
+        for (final ItemStack tStack : armorInventory) {
             if (tStack == null) {
                 continue;
             }
