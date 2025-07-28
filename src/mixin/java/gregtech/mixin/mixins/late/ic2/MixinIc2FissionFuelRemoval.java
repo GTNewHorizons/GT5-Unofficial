@@ -17,13 +17,19 @@ public class MixinIc2FissionFuelRemoval {
         at = @At(
             value = "INVOKE",
             target = "Lcpw/mods/fml/common/registry/GameRegistry;registerItem(Lnet/minecraft/item/Item;Ljava/lang/String;)V"))
-    public boolean gt5u$wrapRegister(Item item, String name) {
-        return !name.equals("reactorMOXSimpledepleted") && !name.equals("reactorMOXDualdepleted")
-            && !name.equals("reactorMOXQuaddepleted")
-            && !name.equals("reactorUraniumSimpledepleted")
-            && !name.equals("reactorUraniumDualdepleted")
-            && !name.equals("reactorUraniumQuaddepleted")
-            && !name.equals("reactorLithiumCell")
-            && !name.equals("itemTritiumCell");
+    private boolean gt5u$wrapRegister(Item item, String name) {
+        switch (name) {
+            case "reactorMOXSimpledepleted":
+            case "reactorMOXDualdepleted":
+            case "reactorMOXQuaddepleted":
+            case "reactorUraniumSimpledepleted":
+            case "reactorUraniumDualdepleted":
+            case "reactorUraniumQuaddepleted":
+            case "reactorLithiumCell":
+            case "itemTritiumCell":
+                return false;
+            default:
+                return true;
+        }
     }
 }
