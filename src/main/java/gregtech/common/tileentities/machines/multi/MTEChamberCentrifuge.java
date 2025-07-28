@@ -529,23 +529,29 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+
         mCasingAmount = 0;
         mTier = 0;
+        int mMaxCasingsFound = 0;
         if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 1;
         }
+        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
         mCasingAmount = 0;
         if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 2;
         }
+        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
         mCasingAmount = 0;
         if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 3;
         }
+        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
         mCasingAmount = 0;
         if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset, depthOffset)) {
             mTier = 4;
         }
+        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
         GTDataUtils.dedupList(mExoticEnergyHatches);
         GTDataUtils.dedupList(mEnergyHatches);
         GTDataUtils.dedupList(mOutputBusses);
@@ -554,7 +560,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         GTDataUtils.dedupList(mInputBusses);
         GTDataUtils.dedupList(mMaintenanceHatches);
 
-        return mTier > 0 && mCasingAmount >= 550;
+        // if someone knows a better workaround, please let me know in review.
+        return mTier > 0 && mMaxCasingsFound >= 550;
     }
 
     @Override
