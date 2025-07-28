@@ -55,7 +55,7 @@ public class HazardProtection {
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {
         if (stack == null) return false;
-        for (Hazard hazard : Hazard.values()) {
+        for (Hazard hazard : Hazard.VALUES) {
             if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
             }
