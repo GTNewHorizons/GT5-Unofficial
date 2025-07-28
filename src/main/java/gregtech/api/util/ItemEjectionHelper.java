@@ -34,21 +34,7 @@ public class ItemEjectionHelper {
     private boolean active = true;
 
     public ItemEjectionHelper(IVoidable voidable) {
-        itemProtectionEnabled = voidable.protectsExcessItem();
-
-        discreteTransactions = new ArrayList<>();
-        nonDiscreteTransactions = new ArrayList<>();
-
-        for (IOutputBus bus : voidable.getOutputBusses()) {
-            if (bus.hasDiscreteSlots()) {
-                discreteTransactions.add(bus.createTransaction());
-            } else {
-                nonDiscreteTransactions.add(bus.createTransaction());
-            }
-        }
-
-        unfilteredStandard = GTDataUtils.filterList(discreteTransactions, t -> !t.isFiltered());
-        unfilteredME = GTDataUtils.filterList(nonDiscreteTransactions, t -> !t.isFiltered());
+        this(voidable.getOutputBusses(), voidable.protectsExcessItem());
     }
 
     public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems) {
