@@ -57,7 +57,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     public String getMachineType() {
-        return "Wiremill";
+        return "Wiremill, IWF";
     }
 
     @Override

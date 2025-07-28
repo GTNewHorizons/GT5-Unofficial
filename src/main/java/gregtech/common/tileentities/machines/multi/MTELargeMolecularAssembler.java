@@ -693,7 +693,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .setSize(16, 16));
     }
 
-    @SuppressWarnings("all")
     private static class CraftingDisplayPoint {
 
         private final World w;

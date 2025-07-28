@@ -51,9 +51,9 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import codechicken.nei.NEIClientUtils;
+import gregtech.api.util.StringUtils;
 import kubatech.api.enums.ItemList;
 import kubatech.api.tea.TeaNetwork;
-import kubatech.api.utils.StringUtils;
 import kubatech.loaders.ItemLoader;
 import kubatech.loaders.block.kubablock.KubaBlock;
 

@@ -729,6 +729,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+
+        // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
+        for (int i = 0; i < MAX_PATTERN_COUNT; i++) {
+            if (internalInventory[i] == null) continue;
+            mInventory[i] = internalInventory[i].pattern;
+        }
     }
 
     @Override

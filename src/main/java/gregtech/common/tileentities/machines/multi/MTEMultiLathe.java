@@ -189,7 +189,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Lathe")
+        tt.addMachineType("Lathe, IPL")
             .addInfo("300% faster than using single block machines of the same voltage")
             .addInfo("Gains 8 parallel per Pipe Casing Tier")
             .addInfo("Only uses 80% of the EU/t normally required.")

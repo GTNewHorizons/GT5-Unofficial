@@ -41,6 +41,7 @@ import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static tectech.thing.CustomItemList.eM_dynamoTunnel5_UMV;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -3684,6 +3685,24 @@ public class ResearchStationAssemblyLine implements Runnable {
                 recipeDurationTicks,
                 recipeEuPerTick);
         }
+
+        // Wireless Dynamo Powerful
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.eM_dynamoTunnel8_UMV.get(1),
+            24_000_000,
+            3200,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { eM_dynamoTunnel5_UMV.get(1), ItemList.ZPM3.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L }, ItemList.Field_Generator_UMV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 16),
+                CustomItemList.Machine_Multi_Transformer.get(1) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(8000), GGMaterial.shirabon.getMolten(20 * INGOTS) },
+            CustomItemList.eM_dynamoWirelessMulti.get(1),
+            30 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
     }
 
     public void runLateRecipes() {

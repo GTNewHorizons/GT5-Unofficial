@@ -106,6 +106,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -706,6 +707,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 destroyFirstRing();
@@ -718,6 +722,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> destroyFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         rendererTileEntity.setRenderRotation(getRotation(), getDirection());
         updateRenderer();
@@ -732,6 +738,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 buildFirstRing();
@@ -744,6 +753,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> buildFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         isRenderActive = false;
         disableWorking();
