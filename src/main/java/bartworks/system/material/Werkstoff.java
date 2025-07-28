@@ -547,6 +547,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return new short[] { (short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0 };
     }
 
+    public int getColor() {
+        return colorRGB;
+    }
+
     @Override
     public boolean contains(SubTag subTag) {
         if (!subTag.equals(WerkstoffLoader.NOBLE_GAS) && !subTag.equals(WerkstoffLoader.ANAEROBE_GAS)
