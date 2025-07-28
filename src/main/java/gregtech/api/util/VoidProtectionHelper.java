@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -171,14 +171,31 @@ public class VoidProtectionHelper {
         // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
         if (protectExcessItem && itemOutputs.length > 0) {
             List<GTUtility.ItemId> outputIds = GTDataUtils.mapToList(itemOutputs, GTUtility.ItemId::create);
+
             if (!machine.canDumpItemToME(outputIds)) {
+                List<ItemStack> maxItemOutputs = new ArrayList<>(itemOutputs.length);
+
+                for (int i = 0, itemOutputsLength = itemOutputs.length; i < itemOutputsLength; i++) {
+                    ItemStack stack = itemOutputs[i];
+
+                    if (stack == null || stack.stackSize == 0) continue;
+
+                    // Find the max possible output for this stack (note the .ceil)
+                    // We can't know how many items per parallel will be eventually ejected, so we just check the
+                    // worst-case scenario
+                    int stackSize = (int) (stack.stackSize
+                        * Math.ceil(chanceMultiplier * chanceGetter.apply(i) / 10000d));
+
+                    maxItemOutputs.add(GTUtility.copyAmount(stackSize, stack));
+                }
+
                 // Pass the VP helper's protectExcessItem flag to the ejection helper instead of using the machine's
                 // flag
                 ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(
                     machine.getOutputBusses(),
                     protectExcessItem);
 
-                maxParallel = ejectionHelper.ejectItems(Arrays.asList(itemOutputs), maxParallel);
+                maxParallel = ejectionHelper.ejectItems(maxItemOutputs, maxParallel);
 
                 if (maxParallel <= 0) {
                     isItemFull = true;
