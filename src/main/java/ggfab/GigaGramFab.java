@@ -1,8 +1,26 @@
 package ggfab;
 
-import static gregtech.api.enums.MetaTileEntityIDs.*;
-import static gregtech.api.enums.ToolDictNames.*;
-import static gregtech.common.items.IDMetaTool01.*;
+import static gregtech.api.enums.MetaTileEntityIDs.AdvancedAssline;
+import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputBus;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_MV;
+import static gregtech.api.enums.ToolDictNames.craftingToolCrowbar;
+import static gregtech.api.enums.ToolDictNames.craftingToolFile;
+import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
+import static gregtech.api.enums.ToolDictNames.craftingToolSaw;
+import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
+import static gregtech.api.enums.ToolDictNames.craftingToolSoftMallet;
+import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
+import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
+import static gregtech.common.items.IDMetaTool01.CROWBAR;
+import static gregtech.common.items.IDMetaTool01.FILE;
+import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
+import static gregtech.common.items.IDMetaTool01.SAW;
+import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
+import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -57,7 +75,8 @@ public class GigaGramFab {
                 new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
                     .getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
+                    .getStackForm(1));
 
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
