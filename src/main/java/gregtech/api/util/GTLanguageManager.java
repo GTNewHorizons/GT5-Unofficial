@@ -155,31 +155,12 @@ public class GTLanguageManager {
         }
     }
 
-    public static String getTranslation(String aKey) {
-        String tTrimmedKey = aKey != null ? aKey.trim() : "";
-        if (tTrimmedKey.isEmpty()) return E;
-
-        if (StatCollector.canTranslate(tTrimmedKey)) {
-            return StatCollector.translateToLocal(tTrimmedKey);
-        }
-        String anotherKeyToTry;
-        if (tTrimmedKey.endsWith(".name")) {
-            anotherKeyToTry = tTrimmedKey.substring(0, tTrimmedKey.length() - 5);
-        } else {
-            anotherKeyToTry = tTrimmedKey + ".name";
-        }
-        if (StatCollector.canTranslate(anotherKeyToTry)) {
-            return StatCollector.translateToLocal(anotherKeyToTry);
-        }
-        return tTrimmedKey;
-    }
-
     public static String getTranslation(String aKey, String aSeperator) {
         if (aKey == null) return E;
         String rTranslation = E;
         StringBuilder rTranslationSB = new StringBuilder(rTranslation);
         for (String tString : aKey.split(aSeperator)) {
-            rTranslationSB.append(getTranslation(tString));
+            rTranslationSB.append(StatCollector.translateToLocal(tString));
         }
         rTranslation = String.valueOf(rTranslationSB);
         return rTranslation;

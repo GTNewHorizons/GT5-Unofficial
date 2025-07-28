@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -36,7 +37,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                                                                                                      // also Blue =)
 
     public String getLocalisedName() {
-        return GTLanguageManager.getTranslation(this.getName());
+        return StatCollector.translateToLocal(this.getName());
     }
 
     public void setLocalisedName(String localisedName) {

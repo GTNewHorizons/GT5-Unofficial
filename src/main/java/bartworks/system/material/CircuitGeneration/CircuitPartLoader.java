@@ -98,6 +98,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import bartworks.client.renderer.BWItemRenderer;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -169,8 +170,8 @@ public class CircuitPartLoader implements Runnable {
                         true);
             String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
-            String localised = GTLanguageManager
-                .getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
+            String localised = StatCollector
+                .translateToLocal(GTLanguageManager.getTranslateableItemStackName(itemStack));
             BWMetaItems.getCircuitParts()
                 .addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
 

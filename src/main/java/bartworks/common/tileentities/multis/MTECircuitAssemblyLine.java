@@ -243,7 +243,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public String getTypeForDisplay() {
 
         if (!isImprinted()) return "";
-        return GTLanguageManager.getTranslation(
+        return StatCollector.translateToLocal(
             GTLanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
     }
 

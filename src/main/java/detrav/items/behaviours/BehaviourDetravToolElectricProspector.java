@@ -26,7 +26,6 @@ import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -89,8 +88,8 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                         && ((TileEntityOres) tTileEntity).mNatural) {
                                         tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                                         try {
-                                            String name = GTLanguageManager
-                                                .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                            String name = StatCollector.translateToLocal(
+                                                tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
                                             if (data != 1 && name.startsWith(small_ore_keyword)) continue;
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                         } catch (Exception e) {

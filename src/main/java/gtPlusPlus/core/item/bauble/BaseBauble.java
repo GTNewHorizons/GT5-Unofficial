@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.google.common.collect.HashMultimap;
@@ -17,7 +18,6 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
@@ -47,10 +47,10 @@ public class BaseBauble extends Item implements IBauble {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         String key = "gtplusplus." + getUnlocalizedName() + ".name";
-        if (key.equals(GTLanguageManager.getTranslation(key))) {
+        if (key.equals(StatCollector.translateToLocal(key))) {
             return super.getItemStackDisplayName(tItem).replaceAll(".name", "");
         }
-        return GTLanguageManager.getTranslation(key);
+        return StatCollector.translateToLocal(key);
     }
 
     @Override

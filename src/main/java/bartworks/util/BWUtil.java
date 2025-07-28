@@ -34,6 +34,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -66,7 +67,7 @@ public class BWUtil {
 
     public static String translateGTItemStack(ItemStack itemStack) {
         if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
-        String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
+        String ret = StatCollector.translateToLocal(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack))
