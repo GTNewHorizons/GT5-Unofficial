@@ -57,7 +57,8 @@ public class GigaGramFab {
                 new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
                     .getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
+                    .getStackForm(1));
 
             GGItemList.ToolCast_MV.set(
                 new MTEBasicMachineWithRecipe(
