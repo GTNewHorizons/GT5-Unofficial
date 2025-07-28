@@ -97,7 +97,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         Werkstoff.default_null_Werkstoff = new Werkstoff(
-            new short[3],
+            0,
             "_NULL",
             "Default null Werkstoff",
             Werkstoff.DEFAULT_NULL_STATS,
@@ -117,7 +117,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
      */
     public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
         this(
-            materials.mRGBa,
+            materials.getColor(),
             materials.mDefaultLocalName,
             materials.getToolTip(),
             type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
@@ -148,11 +148,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
                 .setMeltingPoint(meltingpoint),
@@ -164,11 +164,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
             type,
@@ -179,11 +179,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
                 .setMeltingPoint(meltingpoint),
@@ -196,11 +196,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
             type,
@@ -212,11 +212,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String toolTip, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
-            rgba,
+            colorRGB,
             toolTip,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type),
@@ -229,32 +229,32 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
-        this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
+        this(colorRGB, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
+    public Werkstoff(int colorRGB, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
 
@@ -271,7 +271,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
-        this.colorRGB = ColorUtil.fromRGBAToRGB(rgba);
+        this.colorRGB = colorRGB;
         this.CONTENTS.addAll(Arrays.asList(contents));
         if (toolTip.isEmpty()) {
             StringBuilder sb = new StringBuilder();
