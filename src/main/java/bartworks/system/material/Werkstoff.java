@@ -544,7 +544,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     @Override
     public short[] getRGBA() {
-        return new short[] { (short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0 };
+        return new short[] { (short) ColorUtil.getRed(this.colorRGB), (short) ColorUtil.getGreen(this.colorRGB),
+            (short) ColorUtil.getBlue(this.colorRGB), 0 };
     }
 
     public int getColor() {
