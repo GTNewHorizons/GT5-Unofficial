@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.util.GTUtility;
 
 /**
  * Machines implementing this interface can have logic to configure whether to void excess output or not.
@@ -70,10 +71,12 @@ public interface IVoidable {
     }
 
     /**
-     * Checks if this machine only contains unfiltered ME output busses, in which case we can just assume that we will
-     * never void outputs so long as they can accept items.
+     * Checks if this machine contains ME output busses that can accept the given items, in which case we can just
+     * assume that we will never void outputs.
+     * 
+     * @param outputs The outputs that will be ejected when the recipe finishes.
      */
-    boolean canDumpItemToME();
+    boolean canDumpItemToME(List<GTUtility.ItemId> outputs);
 
     /**
      * @return If this machine has ability to dump fluid outputs to ME network.

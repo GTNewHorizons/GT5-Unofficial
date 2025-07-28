@@ -2600,19 +2600,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public boolean canDumpItemToME() {
-        for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
-            if (tHatch instanceof MTEHatchOutputBusME) {
-                if (((MTEHatchOutputBusME) tHatch).isLocked()) {
-                    return false;
-                }
+    public boolean canDumpItemToME(List<GTUtility.ItemId> outputs) {
+        List<MTEHatchOutputBusME> meBusses = GTUtility.getMTEsOfType(mOutputBusses, MTEHatchOutputBusME.class);
 
-                if (((MTEHatchOutputBusME) tHatch).canAcceptItem()) {
-                    return true;
+        for (GTUtility.ItemId output : outputs) {
+            boolean handled = false;
+
+            for (MTEHatchOutputBusME busME : meBusses) {
+                // If the bus has reached its max capacity, it can't accept anything
+                if (!busME.canAcceptItem()) continue;
+
+                // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
+                // We don't care about bus ordering here because we're just checking if it's possible
+                if (!busME.isFiltered() || busME.isFilteredToItem(output)) {
+                    handled = true;
+                    break;
                 }
             }
+
+            if (!handled) return false;
         }
-        return false;
+
+        return true;
     }
 
     @Override

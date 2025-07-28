@@ -57,7 +57,9 @@ public class ItemEjectionHelper {
         discreteTransactions = new ArrayList<>();
         nonDiscreteTransactions = new ArrayList<>();
 
-        for (IOutputBus bus : busses) {
+        for (int i = 0, bussesSize = busses.size(); i < bussesSize; i++) {
+            IOutputBus bus = busses.get(i);
+
             if (bus.hasDiscreteSlots()) {
                 discreteTransactions.add(bus.createTransaction());
             } else {
@@ -72,7 +74,7 @@ public class ItemEjectionHelper {
     /**
      * Ejects a single stack, removes the ejected items from the stack, and returns the amount of items that were
      * removed.
-     * 
+     *
      * @param stack The stack to eject. Ejected items are subtracted from this stack.
      * @return The number of items that were ejected.
      */
@@ -89,10 +91,9 @@ public class ItemEjectionHelper {
      * Ejects items into the contained output bus transactions, and calculates the number of parallels that were
      * successfully ran.
      *
-     * @param outputs           The items to eject per parallels. Total amount of items ejected are multiplied by the
-     *                          number of starting parallels. Not modified.
-     * @param startingParallels The number of parallels to calculate. This param is O(1) so you can set it to any
-     *                          positive integer.
+     * @param outputs           The items to eject per parallel. Each stack is multiplied by startingParallels to
+     *                          determine the total number of items to eject. This param is not modified.
+     * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
      * @return The number of parallels that can be safely ran without voiding items.
      */
     public int ejectItems(List<ItemStack> outputs, int startingParallels) {
@@ -160,9 +161,7 @@ public class ItemEjectionHelper {
                 if (transaction.storePartial(output.id, output.remaining)) {
                     break;
                 } else {
-                    // If we couldn't insert anything into the bus, we won't ever try to put this item in again so we
-                    // can tell the transaction to ignore this item's slots from now on.
-                    transaction.completeItem(output.id);
+                    // If we couldn't insert anything into the bus, go to the next one
                     outputBusses.next();
                 }
             }

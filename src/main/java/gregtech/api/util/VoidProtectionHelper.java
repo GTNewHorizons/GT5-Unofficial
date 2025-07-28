@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,6 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
@@ -62,7 +62,7 @@ public class VoidProtectionHelper {
      */
     private double chanceMultiplier = 1;
 
-    private Function<Integer, Integer> chanceGetter = i -> 10000;
+    private Int2IntFunction chanceGetter = i -> 10000;
 
     public VoidProtectionHelper() {}
 
@@ -106,7 +106,7 @@ public class VoidProtectionHelper {
         return this;
     }
 
-    public VoidProtectionHelper setChanceGetter(Function<Integer, Integer> getter) {
+    public VoidProtectionHelper setChanceGetter(Int2IntFunction getter) {
         this.chanceGetter = getter;
         return this;
     }
@@ -169,16 +169,24 @@ public class VoidProtectionHelper {
 
         // Don't check IVoidable#protectsExcessItem nor #protectsExcessFluid here,
         // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
-        if (protectExcessItem && itemOutputs.length > 0 && !machine.canDumpItemToME()) {
-            ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(machine);
+        if (protectExcessItem && itemOutputs.length > 0) {
+            List<GTUtility.ItemId> outputIds = GTDataUtils.mapToList(itemOutputs, GTUtility.ItemId::create);
+            if (!machine.canDumpItemToME(outputIds)) {
+                // Pass the VP helper's protectExcessItem flag to the ejection helper instead of using the machine's
+                // flag
+                ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(
+                    machine.getOutputBusses(),
+                    protectExcessItem);
 
-            maxParallel = ejectionHelper.ejectItems(Arrays.asList(itemOutputs), maxParallel);
+                maxParallel = ejectionHelper.ejectItems(Arrays.asList(itemOutputs), maxParallel);
 
-            if (maxParallel <= 0) {
-                isItemFull = true;
-                return;
+                if (maxParallel <= 0) {
+                    isItemFull = true;
+                    return;
+                }
             }
         }
+
         if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
             maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
             if (maxParallel <= 0) {
