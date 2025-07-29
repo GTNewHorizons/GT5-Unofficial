@@ -91,6 +91,7 @@ import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -717,6 +718,7 @@ public class GTMod {
         event.registerServerCommand(new SPCommand());
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
+        event.registerServerCommand(new GTPowerfailCommand());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         RunnableMachineUpdate.initExecutorService();
     }
