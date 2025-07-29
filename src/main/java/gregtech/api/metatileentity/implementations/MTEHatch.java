@@ -106,10 +106,14 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (base.isServerSide()) {
-            base.issueTileUpdate();
-        } else {
-            base.issueTextureUpdate();
+        // The base.getWorld() returns null when this MTE hasn't been put in the world yet
+        // We don't need to send an update when this is the case
+        if (base.getWorld() != null) {
+            if (base.isServerSide()) {
+                base.issueTileUpdate();
+            } else {
+                base.issueTextureUpdate();
+            }
         }
     }
 
