@@ -3,7 +3,6 @@ package gregtech.api.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -12,11 +11,10 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.util.extensions.IteratorExt;
+import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 
 /**
@@ -107,21 +105,30 @@ public class ItemEjectionHelper {
 
             if (parallelData.remaining.stackSize <= 0) continue;
 
-            List<IOutputBusTransaction> filteredStandard = GTDataUtils
-                .filterList(discreteTransactions, t -> t.isFilteredToItem(parallelData.id));
-            List<IOutputBusTransaction> filteredME = GTDataUtils
-                .filterList(nonDiscreteTransactions, t -> t.isFilteredToItem(parallelData.id));
+            List<IOutputBusTransaction> transactions = new ArrayList<>(8);
 
-            List<Iterator<IOutputBusTransaction>> iters = new ArrayList<>(4);
+            // First: void busses
+            GTDataUtils.addAllFiltered(
+                discreteTransactions,
+                transactions,
+                t -> t.isFilteredToItem(parallelData.id) && t.getBus() instanceof MTEHatchVoidBus);
 
-            // Busses are checked in this order
-            if (!filteredStandard.isEmpty()) iters.add(filteredStandard.iterator());
-            if (!filteredME.isEmpty()) iters.add(filteredME.iterator());
-            if (!unfilteredStandard.isEmpty()) iters.add(unfilteredStandard.iterator());
-            if (!unfilteredME.isEmpty()) iters.add(unfilteredME.iterator());
+            // Second: filtered standard busses
+            GTDataUtils.addAllFiltered(
+                discreteTransactions,
+                transactions,
+                t -> t.isFilteredToItem(parallelData.id) && !(t.getBus() instanceof MTEHatchVoidBus));
 
-            parallelData.outputs = Iterators
-                .peekingIterator(IteratorExt.merge(iters.toArray(GTValues.emptyIteratorArray())));
+            // Third: filtered ME busses
+            GTDataUtils.addAllFiltered(nonDiscreteTransactions, transactions, t -> t.isFilteredToItem(parallelData.id));
+
+            // Fourth: unfiltered standard busses
+            transactions.addAll(unfilteredStandard);
+
+            // Fifth: unfiltered ME busses
+            transactions.addAll(unfilteredME);
+
+            parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
 
             pendingOutputs.add(parallelData);
         }

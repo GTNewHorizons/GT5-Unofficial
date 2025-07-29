@@ -59,6 +59,16 @@ public class GTDataUtils {
         return output;
     }
 
+    public static <T, S extends T> void addAllFiltered(List<S> input, List<T> output, Predicate<S> filter) {
+        for (int i = 0, inputSize = input.size(); i < inputSize; i++) {
+            S s = input.get(i);
+
+            if (filter.test(s)) {
+                output.add(s);
+            }
+        }
+    }
+
     /**
      * Upcasts a list of a concrete type into a list of interfaces since java can't do this implicitly with generics.
      */
