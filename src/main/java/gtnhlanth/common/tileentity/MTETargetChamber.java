@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,6 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -218,7 +218,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -328,13 +328,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+            .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-        ItemStack[] itemOutputArray = GTUtility.copyItemArray(tRecipe.mOutputs);
+        tRecipe.consumeInput(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
+        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         for (ItemStack stack : itemOutputArray) {
             stack.stackSize *= batchAmount;
         }
@@ -394,26 +394,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             && this.mInputBusses.size() == 1
             && this.mOutputBusses.size() == 1
             && this.mInputFocus.size() == 1;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack arg0) {
-        return 10000;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack arg0) {
-        return true;
     }
 
     @Override

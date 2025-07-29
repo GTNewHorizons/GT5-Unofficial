@@ -41,6 +41,7 @@ import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
@@ -986,6 +987,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HellishMetal;
     public static Materials Netherite;
     public static Materials ActivatedNetherite;
+    public static Materials PrismarineSolution;
+    public static Materials PrismarineContaminatedHydrogenPeroxide;
+    public static Materials PrismarineRichNitrobenzeneSolution;
+    public static Materials PrismarineContaminatedNitrobenzeSolution;
+    public static Materials PrismaticGas;
+    public static Materials PrismaticAcid;
+    public static Materials PrismaticNaquadah;
+    public static Materials PrismaticNaquadahCompositeSlurry;
+
+    // Misc GT Magic Materials
+    public static Materials ComplexityCatalyst;
+    public static Materials EntropicCatalyst;
+
+    // Aliases
+    public static Materials Steam; // Steam.getGas(..) reads better than Water.getGas(..)
 
     // spotless:on
 
@@ -2698,7 +2714,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static void init() {
         new ProcessingConfig();
-        if (!GTMod.gregtechproxy.mEnableAllMaterials) new ProcessingModSupport();
+        if (!GTMod.proxy.mEnableAllMaterials) new ProcessingModSupport();
         mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
         // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
@@ -2757,6 +2773,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2834,17 +2851,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void addHarvestLevelNerfs(Materials aMaterial) {
         /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GTMod.gregtechproxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-            && aMaterial.mMetaItemSubID < GTMod.gregtechproxy.mHarvestLevel.length
+        if (GTMod.proxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
+            && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
             && aMaterial.mMetaItemSubID >= 0) {
-            GTMod.gregtechproxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
+            GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
+        GTMod.proxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.proxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

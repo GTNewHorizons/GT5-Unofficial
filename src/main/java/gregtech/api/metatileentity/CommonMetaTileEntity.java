@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -27,13 +26,16 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -45,7 +47,6 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
 /**
@@ -116,12 +117,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onServerStart() {}
 
     @Override
-    public void onWorldSave(File saveDirectory) {}
-
-    @Override
-    public void onWorldLoad(File saveDirectory) {}
-
-    @Override
     public void onConfigLoad() {}
 
     @Override
@@ -144,7 +139,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
+        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
             /*
              * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
              * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
@@ -207,7 +203,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         }
     }
 
-    @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
@@ -359,7 +354,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * Gets the first ItemStack in the bus, reading from the top left to bottom right
-     * 
+     *
      * @return the first ItemStack in the bus
      */
     public ItemStack getFirstStack() {
@@ -457,8 +452,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) {
-            return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) {
+            return GTValues.emptyFluidTankInfo;
         }
         return new FluidTankInfo[] { getInfo() };
     }
@@ -626,7 +621,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * @inheritDoc
      */
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return null;
     }
 

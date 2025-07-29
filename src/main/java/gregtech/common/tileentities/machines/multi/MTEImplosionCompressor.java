@@ -111,11 +111,6 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic();
     }
@@ -151,23 +146,8 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        return GTMod.proxy.mPollutionImplosionCompressorPerSecond;
     }
 
     @Override
@@ -183,12 +163,15 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 }

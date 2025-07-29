@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
+import gregtech.api.enums.GTValues;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -33,7 +34,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     }
 
     protected String[] getExtendedInfoData() {
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     protected long[] getCurrentInfoData() {
@@ -131,29 +132,10 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     protected static class StructureElementAirNoHint<T> implements IStructureElement<T> {

@@ -47,6 +47,10 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
+    EIC_PISTON("piston_block", "Metal Block Tier"),
+    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
+    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
+    SUPER_CHEST("super_chest", "Super Chest Tier")
     //
     ;
 
@@ -70,14 +74,14 @@ public enum GTStructureChannels implements IStructureChannels {
 
     @Override
     public void registerAsIndicator(ItemStack indicator, int channelValue) {
-        StructureLibAPI.registerChannelItem(get(), Mods.Names.GREG_TECH, channelValue, indicator);
+        StructureLibAPI.registerChannelItem(get(), Mods.ModIDs.GREG_TECH, channelValue, indicator);
     }
 
     public static void register() {
         for (GTStructureChannels value : values()) {
             StructureLibAPI.registerChannelDescription(
                 value.get(),
-                Mods.Names.GREG_TECH,
+                Mods.ModIDs.GREG_TECH,
                 "channels." + Mods.GregTech.ID + "." + value.get());
         }
     }

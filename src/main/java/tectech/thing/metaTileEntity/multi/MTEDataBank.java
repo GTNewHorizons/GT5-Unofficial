@@ -120,7 +120,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name")) // Machine Type: Data Bank
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
+                                                                                              // Bank, DB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
                                                                                            // the Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
@@ -297,7 +298,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override

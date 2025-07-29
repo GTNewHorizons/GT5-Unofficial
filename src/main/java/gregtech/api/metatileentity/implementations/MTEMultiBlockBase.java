@@ -13,6 +13,8 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -41,7 +44,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,8 +52,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.TestOnly;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -83,6 +92,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -96,9 +106,9 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -123,7 +133,9 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputHatchWithPattern;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
@@ -141,12 +153,12 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public abstract class MTEMultiBlockBase extends MetaTileEntity
-    implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
+public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
+    IAddGregtechLogo, IGuiHolder<PosGuiData>, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
-    public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
+    public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     private int errorDisplayID;
@@ -246,11 +258,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("223", "Single recipe locking enabled. Will lock to next recipe."));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_on"));
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("220", "Single recipe locking disabled."));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_off"));
                 mSingleRecipeCheck = null;
             }
         }
@@ -258,11 +268,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -331,7 +336,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
-        aNBT.setBoolean("mSoftHammer", mSoftHammer);
+        aNBT.setBoolean("mSoftMallet", mSoftMallet);
         aNBT.setBoolean("mHardHammer", mHardHammer);
         aNBT.setBoolean("mSolderingTool", mSolderingTool);
         aNBT.setBoolean("mCrowbar", mCrowbar);
@@ -403,7 +408,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (shouldCheckMaintenance()) {
             mWrench = aNBT.getBoolean("mWrench");
             mScrewdriver = aNBT.getBoolean("mScrewdriver");
-            mSoftHammer = aNBT.getBoolean("mSoftHammer");
+            mSoftMallet = aNBT.getBoolean("mSoftMallet") || aNBT.getBoolean("mSoftHammer");
             mHardHammer = aNBT.getBoolean("mHardHammer");
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
@@ -483,10 +488,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
 
         mCoils.clear();
-        if (coilLease != null) {
-            GTCoilTracker.deactivate(coilLease);
-            coilLease = null;
-        }
+        deactivateCoilLease();
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -537,7 +539,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Note that the parameters may not be in sync due to network latency (they are synced separately). You shouldn't
      * rely on a field being in {@code context} if an error is present in {@code errors}. This method is typically only
      * called on the client, but it may be called on the server in the future. Don't use {@link I18n#format} since
-     * that's client-only (use {@link StatCollector#translateToLocal} & its variants instead).
+     * that's client-only (use {@link net.minecraft.util.StatCollector#translateToLocal} & its variants instead).
      *
      * @param errors  The errors generated by {@link #validateStructure}.
      * @param context Generic context blob generated by {@link #validateStructure}.
@@ -602,7 +604,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             setErrorDisplayID(
                 (getErrorDisplayID() & ~127) | (mWrench ? 0 : 1)
                     | (mScrewdriver ? 0 : 2)
-                    | (mSoftHammer ? 0 : 4)
+                    | (mSoftMallet ? 0 : 4)
                     | (mHardHammer ? 0 : 8)
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
@@ -613,9 +615,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             boolean isActive = mMaxProgresstime > 0;
 
-            if ((!mMachine || !isActive) && coilLease != null) {
-                GTCoilTracker.deactivate(coilLease);
-                coilLease = null;
+            if (!mMachine || !isActive) {
+                deactivateCoilLease();
             }
 
             if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
@@ -645,14 +646,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (tHatch.mAuto) tHatch.autoMaintainance();
                 if (tHatch.mWrench) mWrench = true;
                 if (tHatch.mScrewdriver) mScrewdriver = true;
-                if (tHatch.mSoftHammer) mSoftHammer = true;
+                if (tHatch.mSoftMallet) mSoftMallet = true;
                 if (tHatch.mHardHammer) mHardHammer = true;
                 if (tHatch.mSolderingTool) mSolderingTool = true;
                 if (tHatch.mCrowbar) mCrowbar = true;
 
                 tHatch.mWrench = false;
                 tHatch.mScrewdriver = false;
-                tHatch.mSoftHammer = false;
+                tHatch.mSoftMallet = false;
                 tHatch.mHardHammer = false;
                 tHatch.mSolderingTool = false;
                 tHatch.mCrowbar = false;
@@ -739,7 +740,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         0,
                         Math.min(
                             mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                     mOutputItems = null;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
@@ -772,7 +773,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean polluteEnvironment(int aPollutionLevel) {
         final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
-        if (!GTMod.gregtechproxy.mPollution) return true;
+        if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
         if (mMufflerHatches.size() == 0) {
@@ -931,9 +932,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Checks if this is a Correct Machine Part for this kind of Machine (Turbine Rotor for example)
+     * Check the ItemStack in the controller slot.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return {@code true} if the item is valid for this machine or the machine doesn't have restrictions on the
+     *         controller slot.
      */
-    public abstract boolean isCorrectMachinePart(ItemStack aStack);
+    public boolean isCorrectMachinePart(@Nullable ItemStack aStack) {
+        return true;
+    }
 
     /**
      * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
@@ -1001,9 +1008,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Unlike {@link #createProcessingLogic}, this method is called every time checking for recipes.
      */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(mExoticEnergyHatches.size() > 0 || mEnergyHatches.size() != 1);
+        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
+        logic.setAmperageOC(true);
     }
 
     protected boolean supportsCraftingMEBuffer() {
@@ -1024,7 +1032,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (var it = dualInputHatch.inventories(); it.hasNext();) {
                 IDualInputInventory slot = it.next();
 
-                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
@@ -1178,9 +1194,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public abstract boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
     /**
-     * Gets the maximum Efficiency that spare Part can get (0 - 10000)
+     * Gets the maximum efficiency of this machine with current state.
+     * <p>
+     * The ItemStack argument is supposed to be the one in the controller slot, but in some implementation, it directly
+     * gives {@code null}.
+     *
+     * @param aStack the ItemStack in the controller slot or null.
+     * @return the maximum efficiency in the range of 0 to 10,000.
      */
-    public abstract int getMaxEfficiency(ItemStack aStack);
+    @Range(from = 0, to = 10000)
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return 10000;
+    }
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
@@ -1204,14 +1229,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Gets the damage to the ItemStack, usually 0 or 1.
+     * Gets the factor value to damage the ItemStack in the controller slot.
+     * <p>
+     * This function will be called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * value is multiplied by
+     * <a href="https://www.wolframalpha.com/input?i=plot+min%28x%2F5%2C+x%5E%280.6%29%29+range+0+to+512">a formula</a>
+     * calculated with {@link #damageFactorLow} and {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()}
+     * for the details.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return the factor value to damage the ItemStack in the controller slot.
      */
-    public abstract int getDamageToComponent(ItemStack aStack);
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int getDamageToComponent(@Nullable ItemStack aStack) {
+        return 0;
+    }
 
     /**
-     * If it explodes when the Component has to be replaced.
+     * @deprecated no longer being called.
      */
-    public abstract boolean explodesOnComponentBreak(ItemStack aStack);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
 
     /**
      * @deprecated Use {@link #stopMachine(ShutDownReason)}
@@ -1251,7 +1292,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public int getRepairStatus() {
         return (mWrench ? 1 : 0) + (mScrewdriver ? 1 : 0)
-            + (mSoftHammer ? 1 : 0)
+            + (mSoftMallet ? 1 : 0)
             + (mHardHammer ? 1 : 0)
             + (mSolderingTool ? 1 : 0)
             + (mCrowbar ? 1 : 0);
@@ -1267,7 +1308,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean doRandomMaintenanceDamage() {
-        if (!isCorrectMachinePart(mInventory[1])) {
+        if (!isCorrectMachinePart(getControllerSlot())) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }
@@ -1283,12 +1324,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                if (mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-                    NBTTagCompound tNBT = mInventory[1].getTagCompound();
-                    ((MetaGeneratedTool) mInventory[1].getItem()).doDamage(
+                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
+                    metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(mInventory[1])
-                            * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(mEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -1300,7 +1341,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         switch (getBaseMetaTileEntity().getRandomNumber(6)) {
             case 0 -> mWrench = false;
             case 1 -> mScrewdriver = false;
-            case 2 -> mSoftHammer = false;
+            case 2 -> mSoftMallet = false;
             case 3 -> mHardHammer = false;
             case 4 -> mSolderingTool = false;
             case 5 -> mCrowbar = false;
@@ -1323,7 +1364,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .getWorld().provider.dimensionId
                 + ".");
 
-        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.gregtechproxy.mPollutionOnExplosion);
+        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
         // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
@@ -1456,10 +1497,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;
+
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(aEU, false)) return true;
+            long tDrain = Math.min(
+                tHatch.getBaseMetaTileEntity()
+                    .getStoredEU(),
+                aEU);
+            tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(tDrain, false);// basicly copied from ExoticEnergyInputHelper, makes machine
+                                                          // use all hatches for power
+            aEU -= tDrain;
+
+            if (aEU <= 0) return true;
         }
+
         return false;
     }
 
@@ -1570,8 +1621,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
-        boolean simulate) {
+    protected boolean dumpItem(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
                 continue;
@@ -1750,9 +1801,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (ItemStack item : dualInputHatch.getAllItems()) {
-                    rList.add(item);
-                }
+                rList.addAll(Arrays.asList(dualInputHatch.getAllItems()));
             }
         }
 
@@ -1837,7 +1886,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) tHatch.updateSlots();
     }
 
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
 
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
@@ -1858,7 +1907,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
@@ -1881,7 +1930,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.setProcessingLogic(processingLogic);
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                withPattern.setProcessingLogic(processingLogic);
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -2083,7 +2134,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         return new String[] {
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
@@ -2092,7 +2143,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
@@ -2101,33 +2152,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
                 + formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
                 + formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[GTUtility.getTier(getMaxInputVoltage())]
                 + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
@@ -2181,17 +2232,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
-        String efficiency = RESET + StatCollector
-            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+        String efficiency = RESET
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -2202,14 +2250,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (energyTier > 0) {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.use_with_amperage",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
                             GTUtility.getColoredTierNameFromTier((byte) energyTier)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.produce_with_amperage",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
@@ -2218,13 +2266,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             } else {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.use",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.produce",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
@@ -2237,20 +2285,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
             // Display locked recipe when the machine is idle
-            currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+            currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
             String[] lines = lockedRecipe.split("\n");
-            for (String line : lines) {
-                currentTip.add(line);
-            }
+            currentTip.addAll(Arrays.asList(lines));
         } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
 
             if (totalOutputs > 0) {
-                currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                currentTip.add(translateToLocal("GT5U.waila.producing"));
                 if (isLockedToRecipe) {
-                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                    currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
@@ -2267,9 +2313,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.producing.andmore",
-                            formatNumbers((totalOutputs - 3))));
+                        translateToLocalFormatted("GT5U.waila.producing.andmore", formatNumbers((totalOutputs - 3))));
                 }
             }
         }
@@ -2280,11 +2324,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 tag.getInteger("maxProgress"),
                 tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
+            currentTip
+                .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
@@ -2343,7 +2386,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-        final GTClientPreference preference = GTMod.gregtechproxy.getClientPreference(player.getUniqueID());
+        final GTClientPreference preference = GTMod.proxy.getClientPreference(player.getUniqueID());
         if (preference != null && preference.isWailaAverageNSEnabled()) {
             getBaseMetaTileEntity().startTimeStatistics();
             int tAverageTime = 0;
@@ -2364,12 +2407,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
-            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(state);
-            }
+        final int size = mMufflerHatches.size();
+        for (int i = 0; i < size; i++) {
+            final MTEHatchMuffler muffler = mMufflerHatches.get(i);
+            final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
+            if (tile == null || tile.isDead()) continue;
+            tile.setActive(state);
         }
     }
 
@@ -2379,6 +2424,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Deactivate mufflers
         setMufflers(false);
 
+        deactivateCoilLease();
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        deactivateCoilLease();
+    }
+
+    private void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
@@ -2564,8 +2620,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public List<ItemStack> getVoidOutputSlots() {
+        List<ItemStack> ret = new ArrayList<>();
+        for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
+            if (tBus instanceof MTEHatchVoidBus vBus && vBus.isLocked()) {
+                for (ItemStack lockedItem : vBus.getLockedItems()) {
+                    if (lockedItem == null) continue;
+                    ret.add(lockedItem.copy());
+                }
+            }
+        }
+        return ret;
+    }
+
+    @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return filterValidMTEs(mOutputHatches);
+        ArrayList<MTEHatchOutput> totalHatches = new ArrayList<>(filterValidMTEs(mOutputHatches));
+        totalHatches.removeIf(hatch -> hatch instanceof MTEHatchVoid && !hatch.isFluidLocked());
+        return totalHatches;
     }
 
     /**
@@ -2609,7 +2681,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean canDumpFluidToME() {
-        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+        for (IFluidStore tHatch : getFluidOutputSlots(GTValues.emptyFluidStackArray)) {
             if (tHatch instanceof MTEHatchOutputME) {
                 if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
                     return false;
@@ -2694,6 +2766,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public UITexture getMachineModeIcon(int index) {
+        if (index > machineModeIcons.size() - 1) return null;
         return machineModeIcons.get(index);
     }
 
@@ -2848,8 +2921,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         // Window header
         builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
-                .setPos(0, 2)
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.power_panel")).setPos(0, 2)
                 .setSize(120, 18));
 
         // Syncing widgets
@@ -2881,9 +2953,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setTextColor(Color.WHITE.normal)
             .dynamicTooltip(
                 () -> Collections.singletonList(
-                    alwaysMaxParallel
-                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
-                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+                    alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(70, 18)
             .setPos(12, 40)
@@ -2913,17 +2984,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.max_parallel"))
+            .addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(88, 41)
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
-
-    protected boolean shouldDisplayCheckRecipeResult() {
+    public boolean shouldDisplayCheckRecipeResult() {
         return true;
     }
 
@@ -2932,6 +3000,88 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    public String generateCurrentRecipeInfoString() {
+        StringBuffer ret = new StringBuffer(translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
+
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s / ");
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s (");
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("%)\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
+
+        LongConsumer appendRate = (amount) -> {
+            double processPerTick = (double) amount / mMaxProgresstime * 20;
+            ret.append(" (");
+            if (processPerTick > 1) {
+                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
+                ret.append("/s)");
+            } else {
+                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
+                ret.append("s/ea)");
+            }
+        };
+
+        int lines = 0;
+        int MAX_LINES = 10;
+
+        if (mOutputItems != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var item : mOutputItems) {
+                if (item == null || item.stackSize <= 0) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        if (mOutputFluids != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var fluid : mOutputFluids) {
+                if (fluid == null || fluid.amount <= 0) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append("L")
+                    .append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        return ret.toString();
+    }
 
     protected Widget generateCurrentRecipeInfoWidget() {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
@@ -3033,11 +3183,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         double perHour = perSecond * 3_600;
         double perDay = perSecond * 86_400;
 
-        final String amountText = StatCollector.translateToLocal("GT5U.gui.text.amount") + " ";
-        final String perSecondText = StatCollector.translateToLocal("GT5U.gui.text.per_second") + " ";
-        final String perMinuteText = StatCollector.translateToLocal("GT5U.gui.text.per_minute") + " ";
-        final String perHourText = StatCollector.translateToLocal("GT5U.gui.text.per_hour") + " ";
-        final String perDayText = StatCollector.translateToLocal("GT5U.gui.text.per_day") + " ";
+        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
 
         final Function<Double, Double> roundNumber = (number) -> {
             if (Math.abs(number) < 10) {
@@ -3118,7 +3268,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected String generateCurrentProgress() {
-        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        StringBuffer ret = new StringBuffer(translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(1);
@@ -3172,10 +3322,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
                 TextWidget
-                    .dynamicString(
-                        () -> EnumChatFormatting.WHITE + GTUtility.trans("400", "Running mode: ")
-                            + EnumChatFormatting.GOLD
-                            + getMachineModeName())
+                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
@@ -3196,8 +3343,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer && mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+                    .setEnabled(widget -> !mSoftMallet && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
@@ -3219,26 +3366,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.too_uncertain"))
-                .setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters"))
-                .setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
@@ -3246,18 +3390,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+
         screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
-            return StatCollector.translateToLocalFormatted(
+            return translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
                 time.toMinutes() % 60,
@@ -3310,7 +3455,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setSize(180, 12)
                     .setEnabled(
                         widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)));
+                            || (mOutputItems != null && mOutputItems.length > 0)
+                            || (mMaxProgresstime > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
                 this::generateCurrentRecipeInfoWidget);
             // Display current recipe
@@ -3367,7 +3513,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }));
     }
 
-    protected boolean showRecipeTextInGUI() {
+    public boolean showRecipeTextInGUI() {
         return true;
     }
 
@@ -3384,10 +3530,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public void fixAllIssues() {
         mWrench = true;
         mScrewdriver = true;
-        mSoftHammer = true;
+        mSoftMallet = true;
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
+    }
+
+    @Override
+    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getGui().build(guiData, syncManager, uiSettings);
+    }
+
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this);
     }
 
     public boolean getDefaultHasMaintenanceChecks() {
@@ -3396,5 +3551,66 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
+    }
+
+    public void setMaxParallelForPanel(int parallel) {
+        this.maxParallel = parallel;
+    }
+
+    @Nonnull
+    public CheckRecipeResult getCheckRecipeResult() {
+        return checkRecipeResult;
+    }
+
+    public void setCheckRecipeResult(@Nonnull CheckRecipeResult checkRecipeResult) {
+        this.checkRecipeResult = checkRecipeResult;
+    }
+
+    public int getRuntime() {
+        return mRuntime;
+    }
+
+    public int getMaxProgresstime() {
+        return mMaxProgresstime;
+    }
+
+    public long getTotalRunTime() {
+        return mTotalRunTime;
+    }
+
+    public void setTotalRunTime(long mTotalRunTime) {
+        this.mTotalRunTime = mTotalRunTime;
+    }
+
+    public long getLastWorkingTick() {
+        return mLastWorkingTick;
+    }
+
+    public void setLastWorkingTick(long mLastWorkingTick) {
+        this.mLastWorkingTick = mLastWorkingTick;
+    }
+
+    public EnumSet<StructureError> getStructureErrors() {
+        return structureErrors;
+    }
+
+    public void setStructureErrors(EnumSet<StructureError> structureErrors) {
+        this.structureErrors = structureErrors;
+    }
+
+    public int getPowerPanelMaxParallel() {
+        return powerPanelMaxParallel;
+    }
+
+    public void setPowerPanelMaxParallel(int powerPanelMaxParallel) {
+        this.powerPanelMaxParallel = powerPanelMaxParallel;
+    }
+
+    public boolean isAlwaysMaxParallel() {
+        return alwaysMaxParallel;
+    }
+
+    public void setAlwaysMaxParallel(boolean alwaysMaxParallel) {
+        this.alwaysMaxParallel = alwaysMaxParallel;
     }
 }

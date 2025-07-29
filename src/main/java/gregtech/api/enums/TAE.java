@@ -1,13 +1,12 @@
 package gregtech.api.enums;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 
 public class TAE {
 
@@ -16,8 +15,8 @@ public class TAE {
     public static int gtPPLastUsedIndex = 64;
     public static int secondaryIndex = 0;
 
-    public static HashMap<Integer, ITexture> mTAE = new HashMap<>();
-    private static final HashSet<Integer> mFreeSlots = new HashSet<>(64);
+    private static final Int2ObjectOpenHashMap<ITexture> mTAE = new Int2ObjectOpenHashMap<>();
+    private static final IntOpenHashSet mFreeSlots = new IntOpenHashSet(64);
 
     static {
         for (int i = 64; i < 128; i++) {
@@ -43,16 +42,16 @@ public class TAE {
             mFreeSlots.remove(aID);
             mTAE.put(aID, texture);
             return true;
-        } else {
-            GTPPCore.crash("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
-            return false; // Dead Code
         }
+
+        Logger.ERROR("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
+        throw new IllegalStateException();
     }
 
     public static void finalizeTAE() {
         StringBuilder aFreeSpaces = new StringBuilder();
         StringBuilder aPageAndSlotFree = new StringBuilder();
-        Integer[] aTemp = mFreeSlots.toArray(new Integer[] {});
+        int[] aTemp = mFreeSlots.toArray(new int[0]);
         for (int i = 0; i < mFreeSlots.size(); i++) {
             int j = aTemp[i];
             aFreeSpaces.append(j);
@@ -69,8 +68,8 @@ public class TAE {
             registerTexture(aFreeSlot, TextureFactory.of(ModBlocks.blockCasingsTieredGTPP, 15));
         }
         Logger.INFO("Finalising TAE.");
-        for (int aKeyTae : mTAE.keySet()) {
-            Textures.BlockIcons.setCasingTextureForId(aKeyTae, mTAE.get(aKeyTae));
+        for (Int2ObjectMap.Entry<ITexture> entry : mTAE.int2ObjectEntrySet()) {
+            Textures.BlockIcons.setCasingTextureForId(entry.getIntKey(), entry.getValue());
         }
         Logger.INFO("Finalised TAE.");
     }
@@ -83,7 +82,6 @@ public class TAE {
     }
 
     public static int GTPP_INDEX(int ID) {
-
         if (ID >= 64) {
             if (gtPPLastUsedIndex >= 128) {
                 return (128 + ID);
@@ -100,11 +98,9 @@ public class TAE {
     }
 
     public static String getPageFromIndex(int aIndex) {
-        int aPage = 0;
-        int aSlot = 0;
         int aAdjustedIndex = aIndex > 64 ? (aIndex - 64) : aIndex;
-        aPage = aAdjustedIndex / 16;
-        aSlot = aAdjustedIndex - (16 * aPage);
+        int aPage = aAdjustedIndex / 16;
+        int aSlot = aAdjustedIndex - (16 * aPage);
         return "[" + aIndex + " | " + aPage + ", " + aSlot + "]";
     }
 }

@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.XSTR;
@@ -376,10 +377,10 @@ public class ParallelHelper {
             return;
         }
         if (itemInputs == null) {
-            itemInputs = new ItemStack[0];
+            itemInputs = GTValues.emptyItemStackArray;
         }
         if (fluidInputs == null) {
-            fluidInputs = new FluidStack[0];
+            fluidInputs = GTValues.emptyFluidStackArray;
         }
 
         if (!consume) {
@@ -400,15 +401,24 @@ public class ParallelHelper {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
         }
+        if (!calculator.getAllowedTierSkip()) {
+            result = CheckRecipeResultRegistry.insufficientVoltage(tRecipeEUt);
+            return;
+        }
 
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;
         calculator.setParallel(originalMaxParallel);
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-        if (tickTimeAfterOC < 1) {
-            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-        }
 
+        // If the machine has custom supplier, use old method for giving parallels for overclocking too much, otherwise
+        // use multiplier
+        if (calculator.hasDurationUnderOneTickSupplier()) {
+            if (calculator.getDurationUnderOneTickSupplier() < 1) {
+                maxParallel = GTUtility.safeInt((long) (maxParallel / calculator.getDurationUnderOneTickSupplier()), 0);
+            }
+        } else {
+            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+        }
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
             maxParallel = GTUtility.safeInt((long) maxParallel * batchModifier, 0);
@@ -416,10 +426,10 @@ public class ParallelHelper {
 
         final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
             ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
-            : new ItemStack[0];
+            : GTValues.emptyItemStackArray;
         final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
             .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
-            : new FluidStack[0];
+            : GTValues.emptyFluidStackArray;
 
         SingleRecipeCheck recipeCheck = null;
         SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;

@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class MaterialGenerator {
         FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
-        return g != null && g.valid();
+        return g.valid();
     }
 
     public static void generate(final Material matInfo) {
@@ -108,7 +109,7 @@ public class MaterialGenerator {
             }
 
             int sRadiation = 0;
-            if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
                 sRadiation = matInfo.vRadiationLevel;
             }
 
@@ -170,8 +171,6 @@ public class MaterialGenerator {
             } else if (matInfo.getState() == MaterialState.PURE_LIQUID) {
                 FluidUtils.generateFluidNoPrefix(unlocalizedName, materialName, matInfo.getMeltingPointK(), C);
                 return true;
-            } else if (matInfo.getState() == MaterialState.ORE) {
-
             }
 
             // Add A jillion Recipes - old code
@@ -211,7 +210,7 @@ public class MaterialGenerator {
         }
 
         int sRadiation = 0;
-        if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+        if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
             sRadiation = matInfo.vRadiationLevel;
         }
 
@@ -246,7 +245,7 @@ public class MaterialGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(matInfo.getDust(1))
-                .fluidInputs(matInfo.getFluidStack(144))
+                .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
                 .eut(matInfo.vVoltageMultiplier)
                 .duration(10 * (matInfo.vVoltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
@@ -320,12 +319,6 @@ public class MaterialGenerator {
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
-            final Integer Colour = Utils.rgbtoHexValue(customRGB[0], customRGB[1], customRGB[2]);
-
-            if (Colour == null) {
-                Logger.DEBUG_MATERIALS("Invalid Material while constructing " + materialName + ".");
-                return;
-            }
 
             int sRadiation = 0;
             if (matInfo.vRadiationLevel > 0) {

@@ -73,8 +73,10 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             .addInfo("Or you want to replace something in this molecule ?")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addGlassEnergyLimitInfo()
+            .addPerfectOCInfo()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
             .beginStructureBlock(5, 5, 9, false)
             .addController("Front center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
@@ -185,7 +187,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, env, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 

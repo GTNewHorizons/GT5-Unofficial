@@ -41,6 +41,7 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -220,11 +221,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -249,7 +245,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
         for (int i = 0; i < mPipeAmount; i++) if (mFluids[i] != null)
             aNBT.setTag("mFluid" + (i == 0 ? "" : i), mFluids[i].writeToNBT(new NBTTagCompound()));
         aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             aNBT.setByte("mConnections", mConnections);
             aNBT.setByte("mDisableInput", mDisableInput);
         }
@@ -260,7 +256,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
         for (int i = 0; i < mPipeAmount; i++)
             mFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid" + (i == 0 ? "" : i)));
         mLastReceivedFrom = aNBT.getByte("mLastReceivedFrom");
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
             mDisableInput = aNBT.getByte("mDisableInput");
         }
@@ -297,7 +293,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 mLastReceivedFrom = 0;
             }
 
-            if (!GTMod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
+            if (!GTMod.proxy.gt6Pipe || mCheckConnections) checkConnections();
 
             final boolean shouldDistribute = (oLastReceivedFrom == mLastReceivedFrom);
             for (int i = 0, j = aBaseMetaTileEntity.getRandomNumber(mPipeAmount); i < mPipeAmount; i++) {
@@ -596,14 +592,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
             }
         }
-        return;
     }
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             final int mode = MetaGeneratedTool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
             MTEFluidPipe currentPipe = (MTEFluidPipe) currentPipeBase.getMetaTileEntity();
@@ -729,13 +724,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
         return false;
     }
 
-    @Optional.Method(modid = Mods.Names.TINKER_CONSTRUCT)
+    @Optional.Method(modid = Mods.ModIDs.TINKER_CONSTRUCT)
     private boolean isTConstructFaucet(TileEntity tTileEntity) {
         // Tinker Construct Faucets return a null tank info, so check the class
         return tTileEntity instanceof tconstruct.smeltery.logic.FaucetLogic;
     }
 
-    @Optional.Method(modid = Mods.Names.TRANSLOCATOR)
+    @Optional.Method(modid = Mods.ModIDs.TRANSLOCATOR)
     private boolean isTranslocator(TileEntity tTileEntity) {
         // Translocators return a TankInfo, but it's of 0 length - so check the class if we see this pattern
         return tTileEntity instanceof codechicken.translocator.TileLiquidTranslocator;
@@ -744,7 +739,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
-        return GTMod.gregtechproxy.gt6Pipe;
+        return GTMod.proxy.gt6Pipe;
     }
 
     @Override
@@ -785,7 +780,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) return GTValues.emptyFluidTankInfo;
         ArrayList<FluidTankInfo> tList = new ArrayList<>();
         for (FluidStack tFluid : mFluids) tList.add(new FluidTankInfo(tFluid, mCapacity * 20));
         return tList.toArray(new FluidTankInfo[mPipeAmount]);

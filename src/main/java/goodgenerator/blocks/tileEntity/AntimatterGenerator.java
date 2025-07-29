@@ -55,7 +55,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -133,16 +132,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public boolean supportsPowerPanel() {
         return false;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return null;
     }
 
     @Override
@@ -242,7 +231,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -260,21 +249,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public void loadNBTData(NBTTagCompound nbt) {
         wirelessEnabled = nbt.getBoolean("wirelessEnabled");
         super.loadNBTData(nbt);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -646,14 +620,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCoilBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.antimatterAnnihilationMatrix;
-            case 2:
-                return Loaders.protomatterActivationCoil;
-            default:
-                return Loaders.antimatterAnnihilationMatrix;
+        if (type == 2) {
+            return Loaders.protomatterActivationCoil;
         }
+        return Loaders.antimatterAnnihilationMatrix;
     }
 
     public int getCoilMeta(int type) {
@@ -661,14 +631,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCasingBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.magneticFluxCasing;
-            case 2:
-                return Loaders.gravityStabilizationCasing;
-            default:
-                return Loaders.magneticFluxCasing;
-        }
+        if (type == 2) return Loaders.gravityStabilizationCasing;
+        return Loaders.magneticFluxCasing;
     }
 
     public int getCasingMeta(int type) {
@@ -692,18 +656,19 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public int textureIndex(int type) {
-        switch (type) {
-            case 1:
-                return (12 << 7) + 9;
-            case 2:
-                return (12 << 7) + 10;
-            default:
-                return (12 << 7) + 9;
+        if (type == 2) {
+            return (12 << 7) + 10;
         }
+        return (12 << 7) + 9;
     }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 

@@ -618,6 +618,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up, draining")
             .addInfo("the total amount of stored runtime.")
+            .addUnlimitedTierSkips()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
@@ -717,23 +718,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.plasmaForgeRecipes;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -806,7 +792,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        };
+        }.setUnlimitedTierSkips();
     }
 
     @Nonnull
@@ -915,11 +901,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // All structure checks passed, return true.
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -1042,9 +1023,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
 
-        long numberOfOverclocks = (long) (Math.log((double) getMaxInputEu() / recipe.mEUt) / Math.log(4));
+        long numberOfOverclocks = GTUtility.log4(getMaxInputEu() / recipe.mEUt);
         long machineConsumption = recipe.mEUt * (1L << (2 * numberOfOverclocks));
-        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        double recipeDuration = recipe.mDuration / GTUtility.powInt(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) (((1L << numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
         extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
@@ -1105,7 +1086,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 21, 16, realBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1258,12 +1239,15 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 }

@@ -379,20 +379,15 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
         for (int i = -1; i >= 1 - layer; i--) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
     }
 
     @Override
@@ -616,21 +611,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
     }
 
     @Override

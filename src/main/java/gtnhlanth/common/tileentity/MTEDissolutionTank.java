@@ -92,11 +92,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return checkPiece(mName, 2, 3, 0) && mMaintenanceHatches.size() == 1;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private boolean addGlass(Block block, int meta) {
         return block == ItemRegistry.bw_glasses[0];
     }
@@ -181,11 +176,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new MTEDissolutionTank(this.mName);
     }
@@ -198,7 +188,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -254,13 +244,4 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return tt;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
 }

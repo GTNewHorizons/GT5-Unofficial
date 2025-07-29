@@ -1,6 +1,6 @@
 package tectech.thing;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -135,7 +135,7 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamoTunnel8_UXV,
     eM_dynamoTunnel9_UXV,
     eM_dynamoTunnel9001,
-
+    eM_dynamoWirelessMulti,
     eM_energyMulti4_EV,
     eM_energyMulti16_EV,
     eM_energyMulti64_EV,
@@ -514,7 +514,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

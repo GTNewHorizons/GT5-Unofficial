@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -27,7 +28,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseOreComponent extends Item {
 
@@ -42,7 +42,6 @@ public class BaseOreComponent extends Item {
     public final String unlocalName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
 
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
@@ -56,7 +55,7 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), new ItemStack(this));
     }
 
     public boolean registerComponent() {
@@ -84,7 +83,7 @@ public class BaseOreComponent extends Item {
 
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
                 "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
                     + "] Map: ["
@@ -114,18 +113,10 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
+                if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                } else {
+                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 }
                 if (this.componentMaterial.isRadioactive) {
                     list.add(
@@ -134,7 +125,7 @@ public class BaseOreComponent extends Item {
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
                 }
             }
         }
@@ -145,15 +136,11 @@ public class BaseOreComponent extends Item {
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
-            if (entityHolding instanceof EntityPlayer) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    EntityUtils.applyRadiationDamageToEntity(
-                        iStack.stackSize,
-                        this.componentMaterial.vRadiationLevel,
-                        world,
-                        entityHolding);
-                }
-            }
+            EntityUtils.applyRadiationDamageToEntity(
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 

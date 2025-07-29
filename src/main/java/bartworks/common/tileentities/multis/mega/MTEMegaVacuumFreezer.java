@@ -17,7 +17,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
@@ -237,6 +236,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo("Cools hot ingots and cells")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
             .addInfo(
@@ -347,9 +347,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         if (stackSize.stackSize == 1) {
             return this
-                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+                .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
         } else {
-            return this.survivialBuildPiece(
+            return this.survivalBuildPiece(
                 STRUCTURE_PIECE_MAIN_T2,
                 stackSize,
                 7,
@@ -426,7 +426,8 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

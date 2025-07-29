@@ -117,11 +117,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -175,7 +170,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -196,28 +191,8 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiRefinery;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override

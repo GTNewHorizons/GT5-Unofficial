@@ -46,9 +46,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeAtmosphere;
@@ -61,13 +61,14 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSuper
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTESuperBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class GregtechCustomHatches {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
         run1();
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             run2();
         }
         run3();
@@ -79,8 +80,7 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Cryotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("cryotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                TFFluids.fluidCryotheum, // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Cryotheum.ID, // ID
                 "hatch.cryotheum.input.tier.00", // unlocal name
@@ -90,8 +90,7 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Pyrotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("pyrotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                TFFluids.fluidPyrotheum, // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
@@ -132,7 +131,7 @@ public class GregtechCustomHatches {
         // Steam Hatch
         GregtechItemList.Hatch_Input_Steam.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getSteam(1)
+                Materials.Steam.getGas(1)
                     .getFluid(), // Fluid to restrict hatch to
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID

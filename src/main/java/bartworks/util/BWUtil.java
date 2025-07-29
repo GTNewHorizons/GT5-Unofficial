@@ -17,7 +17,7 @@ import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,7 +175,7 @@ public class BWUtil {
 
     @Deprecated
     public static int getMachineVoltageFromTier(int tier) {
-        return (int) (30 * Math.pow(4, tier - 1));
+        return (int) (30 * GTUtility.powInt(4, tier - 1));
     }
 
     public static byte getTier(long voltage) {
@@ -366,8 +366,8 @@ public class BWUtil {
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return createGTCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
@@ -392,8 +392,8 @@ public class BWUtil {
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
-        if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return null;
+        if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
+        if (aRecipe == null || aRecipe.length == 0) return null;
 
         boolean tThereWasARecipe = false;
 
@@ -474,7 +474,7 @@ public class BWUtil {
                         break;
                     case 'r':
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                         break;
                     case 's':
                         tRecipeList.add(c);
@@ -580,7 +580,7 @@ public class BWUtil {
                 .toCharArray()) {
                 x++;
                 tRecipe[x] = tItemStackMap.get(chr);
-                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == WILDCARD)
                     Items.feather.setDamage(tRecipe[x], 0);
             }
             tThereWasARecipe = GTModHandler.removeRecipe(tRecipe) != null;
@@ -616,14 +616,13 @@ public class BWUtil {
             }
         }
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
 
         return new GTShapedRecipe(
             GTUtility.copy(aResult),
-            aDismantleable,
             aRemovable,
             aKeepNBT,
             aEnchantmentsAdded,

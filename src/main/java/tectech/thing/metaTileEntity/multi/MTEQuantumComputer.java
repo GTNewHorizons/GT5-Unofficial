@@ -532,19 +532,19 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         int built;
-        built = survivialBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            built = survivialBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+            built = survivalBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
             if (built >= 0) return built;
         }
-        built = survivialBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
     }
 
     @Override

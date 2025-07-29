@@ -35,13 +35,14 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -295,11 +296,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -364,7 +360,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
         syncManager.registerSlotGroup("item_inv", 1);
         syncManager.syncValue("mass", new IntSyncValue(() -> mass, value -> mass = (byte) value));
@@ -374,7 +370,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         syncManager.syncValue("color2", new IntSyncValue(() -> colorForGUI[2], c -> colorForGUI[2] = (short) c));
         syncManager.syncValue("coverage", 0, new IntSyncValue(() -> coverage, value -> coverage = (byte) value));
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
             .build()
             .child(
@@ -569,7 +565,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                         .openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
                 }
             })
-                .addTooltip("Radiation Shutter")
+                .addTooltip(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(153, 5)
                 .setSize(18, 18))
@@ -586,7 +582,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         builder.setGuiTint(this.getGUIColorization());
 
         builder.widget(
-            new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get())
+            new TextWidget(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter_control"))
+                .setDefaultColor(this.COLOR_TITLE.get())
                 .setPos(10, 9))
             .widget(
                 new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME)

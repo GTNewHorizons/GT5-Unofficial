@@ -204,22 +204,8 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
                 if ((mSpecials & 32) != 0 && tTargetChargeItem != null) {
                     GTModHandler.chargeElectricItem(tTargetChargeItem, 20, Integer.MAX_VALUE, true, false);
                 }
-            } else {
-                /*
-                 * TODO: if ((mSpecials & 16) != 0 && tTargetDechargeItem != null &&
-                 * GTModHandler.canUseElectricItem(tTargetDechargeItem, 10)) { if (aPlayer.worldObj.getBlock
-                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ) == Blocks.air) aPlayer.worldObj.setBlock
-                 * ((int)aPlayer.posX, (int)aPlayer.posY+1, (int)aPlayer.posZ, GregTechAPI.sBlockList[3]);
-                 * GTModHandler.useElectricItem(tTargetDechargeItem, 10, aPlayer); }
-                 */
-                // }
             }
         }
-    }
-
-    @Override
-    public boolean getShareTag() {
-        return true;
     }
 
     @Override

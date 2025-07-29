@@ -10,9 +10,10 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GTModHandler;
 import gtnhintergalactic.GTNHIntergalactic;
 
-@Config(modid = Mods.Names.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
+@Config(modid = Mods.ModIDs.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
 public class IGConfig {
 
     public static SpaceElevator spaceElevator = new SpaceElevator();
@@ -137,7 +138,8 @@ public class IGConfig {
             if (cachedCoolantFluid == null) {
                 cachedCoolantFluid = FluidRegistry.getFluid(coolantFluid);
                 if (cachedCoolantFluid == null) {
-                    cachedCoolantFluid = FluidRegistry.getFluid("ic2coolant"); // fallback
+                    cachedCoolantFluid = GTModHandler.getIC2Coolant(0)
+                        .getFluid(); // fallback
                 }
             }
             return new FluidStack(cachedCoolantFluid, coolantConsumption);

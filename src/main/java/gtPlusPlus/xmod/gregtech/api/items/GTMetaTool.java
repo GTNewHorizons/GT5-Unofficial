@@ -43,10 +43,10 @@ import mods.railcraft.api.core.items.IToolCrowbar;
  * null);
  */
 @Optional.InterfaceList({
-    @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
-    @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
-    @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
-    @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O) })
+    @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
+    @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
+    @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
+    @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O) })
 public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagableItem, IToolCrowbar, IToolWrench {
 
     /**
@@ -85,7 +85,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                 aStack,
-                tStats.convertBlockDrops(
+                (long) tStats.convertBlockDrops(
                     aDrops,
                     aStack,
                     aPlayer,
@@ -412,11 +412,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     @Override
-    public Long[] getFluidContainerStats(final ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public Long[] getElectricStats(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
@@ -480,7 +475,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         }
         this.doDamage(aStack, tStats.getToolDamagePerContainerCraft());
         aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound) {}
         return aStack;
     }
 
@@ -586,11 +580,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     @Override
-    public boolean isFull3D() {
-        return true;
-    }
-
-    @Override
     public boolean isItemStackUsable(final ItemStack aStack) {
         final IToolStats tStats = this.getToolStatsInternal(aStack);
         if (((aStack.getItemDamage() % 2) == 1) || (tStats == null)) {
@@ -630,34 +619,25 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             } else {
                 switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                    case weapon:
+                    case weapon -> {
                         if (tStats.isWeapon()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
-                    case all:
+                    }
+                    case all -> {
                         tResult.put(tEntry.getKey(), tEntry.getValue());
-                        break;
-                    case armor:
-                    case armor_feet:
-                    case armor_head:
-                    case armor_legs:
-                    case armor_torso:
-                        break;
-                    case bow:
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, fishing_rod, breakable -> {}
+                    case bow -> {
                         if (tStats.isRangedWeapon()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
-                    case breakable:
-                        break;
-                    case fishing_rod:
-                        break;
-                    case digger:
+                    }
+                    case digger -> {
                         if (tStats.isMiningTool()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
+                    }
                 }
             }
         }
@@ -665,32 +645,4 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         return true;
     }
 
-    @Override
-    public short getChargedMetaData(final ItemStack aStack) {
-        return (short) (aStack.getItemDamage() - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public short getEmptyMetaData(final ItemStack aStack) {
-        final NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT.removeTag("ench");
-        }
-        return (short) ((aStack.getItemDamage() + 1) - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(final ItemStack aStack, final ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(final ItemStack aStack, final ItemStack aMaterial) {
-        return false;
-    }
 }
