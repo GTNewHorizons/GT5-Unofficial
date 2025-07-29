@@ -17,6 +17,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
+@Deprecated
+/*
+ * To be removed in the next major update, to be replaced with a stronger, consolidated wireless dynamo.
+ */
 public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     private UUID owner_uuid;
@@ -61,7 +65,8 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+        return new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update",
+            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
             AuthorColen };
     }
