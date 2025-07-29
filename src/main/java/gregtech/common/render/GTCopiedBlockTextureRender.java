@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.prupe.mcpatcher.ctm.CTMUtils;
@@ -45,6 +46,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
@@ -57,6 +60,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         new LightingHelper(aRenderer).setupLightingXNeg(aBlock, aX, aY, aZ)
@@ -67,6 +72,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         new LightingHelper(aRenderer).setupLightingYPos(aBlock, aX, aY, aZ)
@@ -77,6 +84,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         new LightingHelper(aRenderer).setupLightingYNeg(aBlock, aX, aY, aZ)
@@ -87,6 +96,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         new LightingHelper(aRenderer).setupLightingZPos(aBlock, aX, aY, aZ)
@@ -97,6 +108,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
 
     @Override
     public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         aRenderer.field_152631_f = true;
