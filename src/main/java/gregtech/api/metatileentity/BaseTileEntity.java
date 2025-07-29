@@ -27,8 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -167,11 +165,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public void setWorldObj(@NotNull World worldIn) {
+    public void setWorldObj(World worldIn) {
         super.setWorldObj(worldIn);
 
-        isRemote = worldIn.isRemote;
-        hasSide = true;
+        if (worldIn != null) {
+            isRemote = worldIn.isRemote;
+            hasSide = true;
+        }
     }
 
     @Override
