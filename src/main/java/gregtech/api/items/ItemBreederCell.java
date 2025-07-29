@@ -24,7 +24,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2Potion;
 
 /**
- * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!
+ * Used for {@link gregtech.api.enums.ItemList#RodLithium} and {@link gregtech.api.enums.ItemList#RodGlowstone}.
  *
  * @author glee8e
  */

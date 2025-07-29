@@ -4,7 +4,6 @@ import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +16,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -32,47 +30,20 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
-    private final Block matBlock;
-    private final int matMeta;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing, Block matBlock, int matMeta) {
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
+        boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
-        this.matBlock = matBlock;
-        this.matMeta = matMeta;
-    }
-
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing) {
-        this(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing, null, 0);
     }
 
     @Override
     public boolean isOldTexture() {
         return false;
-    }
-
-    @Override
-    public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.setShaderMaterialOverride(matBlock, matMeta);
-        }
-
-        super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
-    }
-
-    @Override
-    public void draw(RenderBlocks aRenderer) {
-        super.draw(aRenderer);
-
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.resetShaderMaterialOverride();
-        }
     }
 
     @Override
@@ -172,7 +143,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
-            Tessellator.instance.setColorRGBA(255, 255, 255, 255);
+            lighting.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;
