@@ -37,5 +37,5 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: 'Affects Balance, bug fix, chore, enhancement, MuTE, new feature, refactor'
+          labels: 'Affects Balance, bug fix, chore, enhancement, MuTE, new feature, performance, refactor'
           exit_type: failure

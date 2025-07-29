@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.RenderOverlay;
@@ -25,18 +23,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRenderUtil;
 
 public class GTUtilityClient {
-
-    private static final Field isDrawingField = ReflectionHelper
-        .findField(Tessellator.class, "isDrawing", "field_78415_z");
-
-    public static boolean isDrawing(Tessellator tess) {
-        try {
-            return isDrawingField.getBoolean(tess);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public static List<String> getTooltip(ItemStack aStack, boolean aGuiStyle) {
         try {

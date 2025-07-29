@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GTUtilityClient;
+import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 public abstract class GTTextureBase implements ITexture {
 
@@ -13,7 +13,7 @@ public abstract class GTTextureBase implements ITexture {
     @Override
     public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         final Tessellator tess = Tessellator.instance;
-        if (aRenderer.useInventoryTint && (!isOldTexture() || !GTUtilityClient.isDrawing(tess))) {
+        if (aRenderer.useInventoryTint && (!isOldTexture() || !((TesselatorAccessor) tess).gt5u$isDrawing())) {
             // Draw if we're not an old texture OR we are an old texture AND we're not already drawing
             isDrawing = true;
             tess.startDrawingQuads();
