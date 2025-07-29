@@ -16,8 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -181,7 +179,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+        tt.addMachineType("Fluid Solidifier")
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -281,26 +279,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-
-            // Override is needed so that switching recipe maps does not stop recipe locking.
-            @Override
-            protected RecipeMap<?> getCurrentRecipeMap() {
-                lastRecipeMap = currentRecipeMap;
-                return currentRecipeMap;
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) return result;
-
-                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
-                return super.process();
-            }
-
             @Override
             public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
                 if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
@@ -313,6 +291,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 setInputFluids(inputs.inputFluid);
                 Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
                     .collect(Collectors.toSet());
+                // this might be able to be safely removed. Ill keep it in. REMOVE IN NEXT MAJOR UPDATE
                 if (recipes.isEmpty())
                     recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
                 if (!recipes.isEmpty()) {
@@ -357,11 +336,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     public int getMaxParallelRecipes() {
         return (BASE_PARALLELS + (width * PARALLELS_PER_WIDTH)) * GTUtility.getTier(this.getMaxInputVoltage());
-    }
-
-    @Override
-    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
     }
 
     @Override
