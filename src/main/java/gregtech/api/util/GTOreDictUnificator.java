@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -313,7 +314,7 @@ public class GTOreDictUnificator {
                 }
             }
         }
-        ItemStack[] aStacks = {};
+        ItemStack[] aStacks = GTValues.emptyItemStackArray;
         if (obj instanceof ItemStack) aStacks = new ItemStack[] { (ItemStack) obj };
         else if (obj instanceof ItemStack[]) aStacks = (ItemStack[]) obj;
         else if (obj instanceof List) aStacks = ((List<?>) obj).toArray(new ItemStack[0]);

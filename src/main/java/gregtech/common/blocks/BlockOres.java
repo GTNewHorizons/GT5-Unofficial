@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -26,6 +25,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
 public class BlockOres extends BlockOresAbstract {
 
@@ -100,9 +100,8 @@ public class BlockOres extends BlockOresAbstract {
 
     @Override
     public boolean[] getEnabledMetas() {
-        return new boolean[] { true, true, true, GTMod.gregtechproxy.enableBlackGraniteOres,
-            GTMod.gregtechproxy.enableRedGraniteOres, GTMod.gregtechproxy.enableMarbleOres,
-            GTMod.gregtechproxy.enableBasaltOres, true };
+        return new boolean[] { true, true, true, GTMod.proxy.enableBlackGraniteOres, GTMod.proxy.enableRedGraniteOres,
+            GTMod.proxy.enableMarbleOres, GTMod.proxy.enableBasaltOres, true };
     }
 
     @Override
@@ -143,7 +142,7 @@ public class BlockOres extends BlockOresAbstract {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (GTUtility.isRealPlayer(player)) {
             TileEntityOres.shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);

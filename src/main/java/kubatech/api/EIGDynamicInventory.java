@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
@@ -51,9 +53,13 @@ public class EIGDynamicInventory<T> {
     private int usedSeedCount = 0;
     List<T> inventory;
     TInventoryGetter<T> inventoryGetter;
+    @Nullable
     TInventoryInjector inventoryInjector = null;
+    @Nullable
     TInventoryExtractor<T> inventoryExtractor = null;
+    @Nullable
     TInventoryReplacerOrMerger inventoryReplacer = null;
+    @Nullable
     Supplier<Boolean> isEnabledGetter = null;
     boolean isEnabled = true;
 
@@ -70,32 +76,32 @@ public class EIGDynamicInventory<T> {
         this.inventoryGetter = inventoryGetter;
     }
 
-    public EIGDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
         this.inventoryInjector = inventoryInjector;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
         this.inventoryExtractor = inventoryExtractor;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
         this.inventoryReplacer = inventoryReplacer;
         return this;
     }
 
-    public EIGDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
+    public @NotNull EIGDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
         this.isEnabledGetter = isEnabled;
         return this;
     }
 
-    public UITexture getItemSlot() {
+    public @NotNull UITexture getItemSlot() {
         return ModularUITextures.ITEM_SLOT;
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public Widget asWidget(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public @NotNull Widget asWidget(ModularWindow.Builder builder, @NotNull UIBuildContext buildContext) {
         ChangeableWidget container = new ChangeableWidget(() -> createWidget(buildContext.getPlayer()));
         // TODO: Only reset the widget when there are more slot stacks, otherwise just refresh them somehow
 
@@ -196,9 +202,10 @@ public class EIGDynamicInventory<T> {
         return container;
     }
 
+    @NotNull
     List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
 
-    private Widget createWidget(EntityPlayer player) {
+    private @NotNull Widget createWidget(EntityPlayer player) {
         Scrollable dynamicInventoryWidget = new Scrollable().setVerticalScroll();
 
         ArrayList<Widget> buttons = new ArrayList<>();

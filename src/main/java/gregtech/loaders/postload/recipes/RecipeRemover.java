@@ -59,13 +59,13 @@ public class RecipeRemover implements Runnable {
                 GTValues.NI);
         } catch (Throwable ignored) {}
         GTUtility.removeIC2BottleRecipe(
-            GTModHandler.getIC2Item("fuelRod", 1),
-            GTModHandler.getIC2Item("UranFuel", 1),
+            ItemList.IC2_Fuel_Rod_Empty.get(1),
+            ItemList.IC2_Uranium_Fuel.get(1),
             Recipes.cannerBottle.getRecipes(),
             GTModHandler.getIC2Item("reactorUraniumSimple", 1, 1));
         GTUtility.removeIC2BottleRecipe(
-            GTModHandler.getIC2Item("fuelRod", 1),
-            GTModHandler.getIC2Item("MOXFuel", 1),
+            ItemList.IC2_Fuel_Rod_Empty.get(1),
+            ItemList.IC2_MOX_Fuel.get(1),
             Recipes.cannerBottle.getRecipes(),
             GTModHandler.getIC2Item("reactorMOXSimple", 1, 1));
 

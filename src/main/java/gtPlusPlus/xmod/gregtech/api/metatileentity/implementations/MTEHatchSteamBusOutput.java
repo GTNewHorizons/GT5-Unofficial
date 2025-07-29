@@ -15,11 +15,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTEHatchSteamBusOutput extends MTEHatch {
+public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     public MTEHatchSteamBusOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -27,9 +27,9 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            4,
             new String[] { "Item Output for Steam Multiblocks", "Does not automatically export items",
-                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() });
+                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() },
+            4);
     }
 
     public MTEHatchSteamBusOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -38,14 +38,14 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
+        return GTMod.proxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }

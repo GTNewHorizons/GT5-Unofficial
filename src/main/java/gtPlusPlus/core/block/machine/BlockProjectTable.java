@@ -20,14 +20,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.item.tool.ItemToolWrench;
 
-@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O)
+@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O)
 public class BlockProjectTable extends BlockContainer implements ITileTooltip {
 
     @SideOnly(Side.CLIENT)
@@ -78,31 +76,13 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-        final int side, final float lx, final float ly, final float lz) {
-
-        ItemStack heldItem = null;
-        if (world.isRemote) {
-            heldItem = PlayerUtils.getItemStackInPlayersHand();
-        }
-
-        boolean holdingWrench = false;
-
-        if (heldItem != null) {
-            holdingWrench = isWrench(heldItem);
-        }
-
-        if (world.isRemote) {
-            return true;
-        }
-
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly,
+        float lz) {
+        if (world.isRemote) return true;
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityProjectTable) {
-            if (!holdingWrench) {
-                player.openGui(GTplusplus.instance, 0, world, x, y, z);
-                return true;
-            }
-            Logger.INFO("Holding a Wrench, doing wrench things instead.");
+            player.openGui(GTplusplus.instance, 0, world, x, y, z);
+            return true;
         }
         return false;
     }

@@ -10,15 +10,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEPollutionCreator extends MTETieredMachineBlock {
@@ -129,7 +130,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             pollutionMultiplier++;
         }
-        PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
+        GTUtility.sendChatToPlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
@@ -209,13 +210,13 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     public int pollutionMultiplier = 1;
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
-            PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
+        if (!GTMod.proxy.mPollution) {
+            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             addPollution();
-            PlayerUtils
-                .messagePlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
-            // PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+"
+            GTUtility
+                .sendChatToPlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
+            // GTUtility.sendChatToPlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+"
             // pollution.");
         }
     }
@@ -262,7 +263,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override

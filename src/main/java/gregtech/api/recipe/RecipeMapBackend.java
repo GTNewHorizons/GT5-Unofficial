@@ -17,7 +17,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.init.Items;
@@ -26,6 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import com.google.common.collect.LinkedHashMultimap;
@@ -352,9 +353,9 @@ public class RecipeMapBackend {
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
      */
-    Stream<GTRecipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GTRecipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes,
-        boolean forCollisionCheck) {
+    Stream<GTRecipe> matchRecipeStream(@Nullable ItemStack @NotNull [] rawItems,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
+        boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
         if (doesOverwriteFindRecipe()) {
             return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
@@ -433,16 +434,18 @@ public class RecipeMapBackend {
             .flatMap(Function.identity());
     }
 
-    protected void cache(ItemStack[] items, FluidStack[] fluids, GTRecipe recipe) {
+    protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
+        @NotNull GTRecipe recipe) {
         cacheMap.putAndMoveToFirst(hash(items, fluids), recipe);
         while (cacheMap.size() > 1024) cacheMap.removeLast();
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
-    protected int hash(ItemStack[] items, FluidStack[] fluids) {
+    protected int hash(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids) {
         int hash = 0;
         for (int i = 0; i < items.length; i++) {
             ItemStack stack = items[i];
+            if (stack == null) continue;
             Item item = stack.getItem();
             assert item != null;
             hash += item.hashCode();
@@ -450,6 +453,7 @@ public class RecipeMapBackend {
         }
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];
+            if (stack == null) continue;
             Fluid fluid = stack.getFluid();
             hash += fluid.hashCode();
         }
@@ -463,8 +467,8 @@ public class RecipeMapBackend {
      * <p>
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
-    protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+    protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
         if (recipe.mEnabled && !recipe.mFakeRecipe
             && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
             return !properties.specialSlotSensitive

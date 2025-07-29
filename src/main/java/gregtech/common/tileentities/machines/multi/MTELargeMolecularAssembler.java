@@ -91,7 +91,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
-    private static final String MACHINE_TYPE = "Molecular Assembler";
+    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
     private static final int CASING_INDEX = 48;
@@ -382,7 +382,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (dataTitle == null || dataTitle.isEmpty()) {
             dataTitle = DATA_ORB_TITLE;
             BehaviourDataOrb.setDataName(dataOrb, dataTitle);
-            BehaviourDataOrb.setNBTInventory(dataOrb, new ItemStack[0]);
+            BehaviourDataOrb.setNBTInventory(dataOrb, GTValues.emptyItemStackArray);
         }
         if (!dataTitle.equals(DATA_ORB_TITLE)) {
             cachedDataOrb = null;
@@ -689,7 +689,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .setSize(16, 16));
     }
 
-    @SuppressWarnings("all")
     private static class CraftingDisplayPoint {
 
         private final World w;

@@ -9,6 +9,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
@@ -421,7 +422,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> distilleryRecipes = RecipeMapBuilder.of("gt.recipe.distillery")
         .maxIO(1, 1, 1, 1)
-        .minInputs(1, 1)
+        .minInputs(0, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (!isFluid) {
                 return null;
@@ -1159,6 +1160,9 @@ public final class RecipeMaps {
                 isSpecial) -> !isFluid && !isOutput && index == 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
+        .neiRecipeComparator(
+            Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(NANO_FORGE_TIER, 1))
+                .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipes = RecipeMapBuilder.of("gt.recipe.pcbfactory")
         .maxIO(6, 9, 3, 0)

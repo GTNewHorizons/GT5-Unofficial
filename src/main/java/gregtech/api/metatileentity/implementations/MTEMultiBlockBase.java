@@ -92,6 +92,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -772,7 +773,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean polluteEnvironment(int aPollutionLevel) {
         final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
-        if (!GTMod.gregtechproxy.mPollution) return true;
+        if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
         if (mMufflerHatches.size() == 0) {
@@ -1363,7 +1364,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     .getWorld().provider.dimensionId
                 + ".");
 
-        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.gregtechproxy.mPollutionOnExplosion);
+        Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
         // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
@@ -1620,8 +1621,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
-    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
-        boolean simulate) {
+    protected boolean dumpItem(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
                 continue;
@@ -2323,7 +2324,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tag.getInteger("maxProgress"),
                 tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+        if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
@@ -2385,7 +2386,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         }
 
-        final GTClientPreference preference = GTMod.gregtechproxy.getClientPreference(player.getUniqueID());
+        final GTClientPreference preference = GTMod.proxy.getClientPreference(player.getUniqueID());
         if (preference != null && preference.isWailaAverageNSEnabled()) {
             getBaseMetaTileEntity().startTimeStatistics();
             int tAverageTime = 0;
@@ -2619,8 +2620,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
+    public List<ItemStack> getVoidOutputSlots() {
+        List<ItemStack> ret = new ArrayList<>();
+        for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
+            if (tBus instanceof MTEHatchVoidBus vBus && vBus.isLocked()) {
+                for (ItemStack lockedItem : vBus.getLockedItems()) {
+                    if (lockedItem == null) continue;
+                    ret.add(lockedItem.copy());
+                }
+            }
+        }
+        return ret;
+    }
+
+    @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return filterValidMTEs(mOutputHatches);
+        ArrayList<MTEHatchOutput> totalHatches = new ArrayList<>(filterValidMTEs(mOutputHatches));
+        totalHatches.removeIf(hatch -> hatch instanceof MTEHatchVoid && !hatch.isFluidLocked());
+        return totalHatches;
     }
 
     /**
@@ -2664,7 +2681,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean canDumpFluidToME() {
-        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+        for (IFluidStore tHatch : getFluidOutputSlots(GTValues.emptyFluidStackArray)) {
             if (tHatch instanceof MTEHatchOutputME) {
                 if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
                     return false;
