@@ -116,7 +116,8 @@ public class GTDataUtils {
 
         return out;
     }
-public static int countNonNulls(Object[] array) {
+
+    public static int countNonNulls(Object[] array) {
         int l = array.length;
         int count = 0;
 
