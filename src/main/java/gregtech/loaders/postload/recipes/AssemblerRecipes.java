@@ -3065,158 +3065,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(20)
             .addTo(assemblerRecipes);
 
-        // fuel rod assembler recipes
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.ThoriumCell_1.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.ThoriumCell_2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.ThoriumCell_1.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.ThoriumCell_4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.ThoriumCell_2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.ThoriumCell_4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Uraniumcell_1.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.Uraniumcell_2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Uraniumcell_1.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.Uraniumcell_4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Uraniumcell_2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.Uraniumcell_4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Moxcell_1.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.Moxcell_2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Moxcell_1.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.Moxcell_4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Moxcell_2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.Moxcell_4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.NaquadahCell_1.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.NaquadahCell_2.get(1))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.NaquadahCell_1.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.NaquadahCell_4.get(1))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.NaquadahCell_2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.NaquadahCell_4.get(1))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.MNqCell_1.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.MNqCell_2.get(1))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.MNqCell_1.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.MNqCell_4.get(1))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.MNqCell_2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.MNqCell_4.get(1))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8),
@@ -3992,6 +3840,20 @@ public class AssemblerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
         }
+
+        if (!ExtraUtilities.isModLoaded()) {
+            return;
+        }
+
+        // Void bus
+        {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hatch_Output_Bus_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemOutputs(ItemList.Hatch_Void_Bus.get(1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+        }
     }
 
     /**
@@ -4580,6 +4442,20 @@ public class AssemblerRecipes implements Runnable {
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
+                .addTo(assemblerRecipes);
+        }
+
+        if (!ExtraUtilities.isModLoaded()) {
+            return;
+        }
+
+        // Void hatch
+        {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemOutputs(ItemList.Hatch_Void.get(1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
     }
