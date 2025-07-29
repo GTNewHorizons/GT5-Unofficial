@@ -176,6 +176,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean isServerSide() {
+        if (worldObj != null) return !worldObj.isRemote;
+
         if (!hasSide) {
             isRemote = FMLCommonHandler.instance()
                 .getEffectiveSide()
@@ -188,6 +190,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final boolean isClientSide() {
+        if (worldObj != null) return worldObj.isRemote;
+
         if (!hasSide) {
             isRemote = FMLCommonHandler.instance()
                 .getEffectiveSide()
