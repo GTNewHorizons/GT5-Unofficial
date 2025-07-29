@@ -18,7 +18,7 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
             .removeColor();
     }
 }
