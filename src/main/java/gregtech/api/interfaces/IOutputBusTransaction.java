@@ -8,6 +8,8 @@ import gregtech.api.util.GTUtility;
  * A simulated output bus, used for fallibly ejecting items in one go.
  * This is used for void protection calculations, but it can also be used for general item ejection.
  * You probably want to use {@link gregtech.api.util.ItemEjectionHelper} instead of this.
+ * Transactions should never be kept around for longer than a tick. It is assumed that the bus will not change over this
+ * object's lifetime.
  */
 public interface IOutputBusTransaction {
 

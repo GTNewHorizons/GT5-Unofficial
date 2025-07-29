@@ -448,32 +448,32 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         if (productAmount > 0 && remainingIOQuota > 0) {
             int toEject = Math.min(productAmount, remainingIOQuota);
 
-            int ejected = ejectionHelper.ejectStack(GTUtility.copyAmount(toEject, product));
+            int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, product));
 
             if (ejected > 0) {
                 storedProduct -= ejected;
                 remainingIOQuota -= ejected;
                 lEUt -= EU_PER_IO * ejected;
 
-                outputs.add(GTUtility.copyAmount(ejected, product));
+                outputs.add(GTUtility.copyAmountUnsafe(ejected, product));
             }
         }
 
-        // eject any isotope dusts if we're in export mode and haven't already exported something
+        // eject any isotope dusts if we're in export mode
         if (machineMode == MODE_EXPORT && remainingIOQuota > 0 && isotope != null) {
             int isotopeAmount = MathHelper.floor_double(storedIsotope + EPSILON);
 
             if (isotopeAmount > 0) {
                 int toEject = Math.min(isotopeAmount, remainingIOQuota);
 
-                int ejected = ejectionHelper.ejectStack(GTUtility.copyAmount(toEject, isotope));
+                int ejected = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(toEject, isotope));
 
                 if (ejected > 0) {
                     storedIsotope -= ejected;
                     remainingIOQuota -= ejected;
                     lEUt -= EU_PER_IO * ejected;
 
-                    outputs.add(GTUtility.copyAmount(ejected, isotope));
+                    outputs.add(GTUtility.copyAmountUnsafe(ejected, isotope));
                 }
             }
         }

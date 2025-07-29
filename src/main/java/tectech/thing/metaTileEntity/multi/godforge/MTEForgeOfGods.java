@@ -3120,11 +3120,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64);
+            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
 
             shard.stackSize = gravitonShardsAvailable;
 
-            ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+            // VP is disabled on gorges for some reason, force it on here
+            ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
             int ejected = ejectionHelper.ejectStack(shard);
             ejectionHelper.commit();
 

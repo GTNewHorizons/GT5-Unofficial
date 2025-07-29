@@ -24,6 +24,8 @@ import it.unimi.dsi.fastutil.objects.Object2LongMaps;
  * for item void protection calculations, but it can be used for generic item ejecting as well. This operates on output
  * bus transactions. The original busses are only modified if {@link #commit()} is called, beyond which point this
  * helper is 'spent' and cannot be modified further.
+ * Ejection helpers should never be kept around for longer than a tick. It is assumed that the busses will not change
+ * over this object's lifetime.
  */
 public class ItemEjectionHelper {
 
@@ -65,7 +67,7 @@ public class ItemEjectionHelper {
      * @return The number of items that were ejected.
      */
     public int ejectStack(ItemStack stack) {
-        List<ItemStack> list = Collections.singletonList(GTUtility.copyAmount(1, stack));
+        List<ItemStack> list = Collections.singletonList(GTUtility.copyAmountUnsafe(1, stack));
 
         int ejected = ejectItems(list, stack.stackSize);
 
