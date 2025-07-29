@@ -3859,7 +3859,7 @@ public class GTUtility {
 
     /**
      * Filters a list of MTEs into a list of a subclass
-     * 
+     *
      * @param mtes     The original list of MTEs
      * @param mteClass The MTE subclass to filter
      * @return The filtered list of valid MTEs
@@ -3867,10 +3867,12 @@ public class GTUtility {
      * @param <MTEImpl>  The MTE implementation class/subclass
      */
     public static <MTESuper extends MetaTileEntity, MTEImpl extends MTESuper> List<MTEImpl> getMTEsOfType(
-        Collection<MTESuper> mtes, Class<MTEImpl> mteClass) {
+        List<MTESuper> mtes, Class<MTEImpl> mteClass) {
         List<MTEImpl> out = new ArrayList<>(mtes.size());
 
-        for (MTESuper mte : mtes) {
+        for (int i = 0, mtesSize = mtes.size(); i < mtesSize; i++) {
+            MTESuper mte = mtes.get(i);
+
             if (mte != null && mte.isValid()) {
                 if (mteClass.isInstance(mte)) {
                     out.add(mteClass.cast(mte));
