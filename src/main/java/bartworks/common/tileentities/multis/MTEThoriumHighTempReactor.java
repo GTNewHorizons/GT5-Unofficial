@@ -156,7 +156,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override
