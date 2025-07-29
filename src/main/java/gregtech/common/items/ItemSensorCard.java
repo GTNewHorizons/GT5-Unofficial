@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.GTValues.E;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.util.GTLanguageManager;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
@@ -96,7 +96,20 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
-                line.textLeft = GTLanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
+                String result;
+                String aKey = aCard.getString("mString" + i);
+                if (aKey == null) {
+                    result = E;
+                } else {
+                    String rTranslation = E;
+                    StringBuilder rTranslationSB = new StringBuilder(rTranslation);
+                    for (String tString : aKey.split("\\\\")) {
+                        rTranslationSB.append(translateToLocal(tString));
+                    }
+                    rTranslation = String.valueOf(rTranslationSB);
+                    result = rTranslation;
+                }
+                line.textLeft = result;
                 rList.add(line);
             }
         }

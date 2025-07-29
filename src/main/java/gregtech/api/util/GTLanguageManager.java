@@ -155,17 +155,6 @@ public class GTLanguageManager {
         }
     }
 
-    public static String getTranslation(String aKey, String aSeperator) {
-        if (aKey == null) return E;
-        String rTranslation = E;
-        StringBuilder rTranslationSB = new StringBuilder(rTranslation);
-        for (String tString : aKey.split(aSeperator)) {
-            rTranslationSB.append(StatCollector.translateToLocal(tString));
-        }
-        rTranslation = String.valueOf(rTranslationSB);
-        return rTranslation;
-    }
-
     @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
