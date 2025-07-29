@@ -1107,6 +1107,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Output_Bus_UV,
     Hatch_Output_Bus_MAX,
 
+    Hatch_Void,
+    Hatch_Void_Bus,
+
     Hatch_Muffler_LV,
     Hatch_Muffler_MV,
     Hatch_Muffler_HV,
