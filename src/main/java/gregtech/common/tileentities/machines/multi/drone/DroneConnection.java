@@ -71,17 +71,6 @@ public class DroneConnection {
         return machine;
     }
 
-    public boolean reCheckConnection() {
-        if (machine == null) this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
-        if (centre == null) this.centre = (MTEDroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
-        if (machine != null && centre != null
-            && !centre.getConnectionList()
-                .contains(this))
-            centre.getConnectionList()
-                .add(this);
-        return isValid();
-    }
-
     public String getCustomName(boolean localized) {
         if (localized) return GTLanguageManager.getTranslation("gt.blockmachines." + unlocalizedName + ".name");
         return customName;
