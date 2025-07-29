@@ -27,6 +27,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -43,6 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -164,23 +167,35 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public void setWorldObj(World worldIn) {
+    public void setWorldObj(@NotNull World worldIn) {
         super.setWorldObj(worldIn);
 
-        if (worldIn != null) {
-            isRemote = worldIn.isRemote;
-            hasSide = true;
-        }
+        isRemote = worldIn.isRemote;
+        hasSide = true;
     }
 
     @Override
     public final boolean isServerSide() {
-        return hasSide && !isRemote;
+        if (!hasSide) {
+            isRemote = FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient();
+            hasSide = true;
+        }
+
+        return !isRemote;
     }
 
     @Override
     public final boolean isClientSide() {
-        return hasSide && isRemote;
+        if (!hasSide) {
+            isRemote = FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient();
+            hasSide = true;
+        }
+
+        return isRemote;
     }
 
     @Override
