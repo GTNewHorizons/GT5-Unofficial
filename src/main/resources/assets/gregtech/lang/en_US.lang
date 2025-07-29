@@ -863,13 +863,6 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
-GT5U.ECCF.pressure=Current pressure
-GT5U.ECCF.temperature=Current temperature
-GT5U.ECCF.pressure_threshold=Pressure threshold
-GT5U.ECCF.temperature_threshold=Temperature threshold
-GT5U.ECCF.pressure_required=Pressure required
-GT5U.ECCF.temperature_required=Temperature required
-
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None
@@ -1044,9 +1037,8 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
-gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.eccf=Environmentally Controlled Chemical Facility
-
+gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
