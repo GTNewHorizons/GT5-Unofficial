@@ -13,7 +13,7 @@ import gregtech.api.interfaces.ITexture;
  * I should have done this much earlier...
  * </p>
  */
-public class GTMultiTextureRender extends GTTextureBase implements ITexture {
+public class GTMultiTextureRender extends GTTextureBase {
 
     protected final ITexture[] mTextures;
 
