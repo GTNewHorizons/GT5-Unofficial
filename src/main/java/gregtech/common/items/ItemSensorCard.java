@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GTValues.E;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
@@ -96,24 +96,20 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
-                String result;
                 String aKey = aCard.getString("mString" + i);
-                if (aKey == null) {
-                    result = E;
-                } else {
-                    String rTranslation = E;
-                    StringBuilder rTranslationSB = new StringBuilder(rTranslation);
-                    for (String tString : aKey.split("\\\\")) {
-                        rTranslationSB.append(translateToLocal(tString));
-                    }
-                    rTranslation = String.valueOf(rTranslationSB);
-                    result = rTranslation;
-                }
-                line.textLeft = result;
+                line.textLeft = aKey == null ? "" : splitStringData(aKey);
                 rList.add(line);
             }
         }
         return rList;
+    }
+
+    private String splitStringData(String aKey) {
+        StringBuilder result = new StringBuilder();
+        for (String part : aKey.split("\\\\")) {
+            result.append(StatCollector.translateToLocal(part));
+        }
+        return result.toString();
     }
 
     @Override
