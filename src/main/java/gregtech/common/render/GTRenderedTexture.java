@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -60,11 +61,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.EAST, mRGBa);
+        lighting.setupLightingXPos(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.EAST, mRGBa);
+            renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.EAST, 0xffffff);
             renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
@@ -86,11 +90,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.WEST, mRGBa);
+        lighting.setupLightingXNeg(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.WEST, mRGBa);
+            renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.WEST, 0xffffff);
             renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
@@ -112,11 +119,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.UP, mRGBa);
+        lighting.setupLightingYPos(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.UP, mRGBa);
+            renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.UP, 0xffffff);
             renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
@@ -138,11 +148,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN, mRGBa);
+        lighting.setupLightingYNeg(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.DOWN, mRGBa);
+            renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
@@ -164,11 +177,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.SOUTH, mRGBa);
+        lighting.setupLightingZPos(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.SOUTH, mRGBa);
+            renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.SOUTH, 0xffffff);
             renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
@@ -190,11 +206,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.NORTH, mRGBa);
+        lighting.setupLightingZNeg(aBlock, aX, aY, aZ);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        if (worldRenderPass == -1 || worldRenderPass == 0) {
+            lighting.setupColor(ForgeDirection.NORTH, mRGBa);
+            renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
+        }
+        if (mIconContainer.getOverlayIcon() != null && (worldRenderPass == -1 || worldRenderPass == 1)) {
             lighting.setupColor(ForgeDirection.NORTH, 0xffffff);
             renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
