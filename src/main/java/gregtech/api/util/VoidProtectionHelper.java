@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -161,10 +162,10 @@ public class VoidProtectionHelper {
      */
     private void determineParallel() {
         if (itemOutputs == null) {
-            itemOutputs = new ItemStack[0];
+            itemOutputs = GTValues.emptyItemStackArray;
         }
         if (fluidOutputs == null) {
-            fluidOutputs = new FluidStack[0];
+            fluidOutputs = GTValues.emptyFluidStackArray;
         }
 
         // Don't check IVoidable#protectsExcessItem nor #protectsExcessFluid here,
@@ -280,6 +281,7 @@ public class VoidProtectionHelper {
      */
     private int calculateMaxItemParallels() {
         List<ItemStack> busStacks = machine.getItemOutputSlots(itemOutputs);
+        List<ItemStack> voidStacks = machine.getVoidOutputSlots();
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
@@ -356,6 +358,15 @@ public class VoidProtectionHelper {
                 tParallel.partial = (tParallel.partial + tStackSize) % tCraftSize;
                 aParallelQueue.add(tParallel);
                 --tSlotsFree;
+            }
+
+            // Ensure that the head of the queue, if voidable, will have maximum batch size
+            for (ItemStack vBusStack : voidStacks) {
+                if (aParallelQueue.element().stack.isItemEqual(vBusStack)) {
+                    ParallelStackInfo<ItemStack> tParallel = aParallelQueue.poll();
+                    tParallel.batch = Integer.MAX_VALUE;
+                    aParallelQueue.add(tParallel);
+                }
             }
 
             return aParallelQueue.element().batch;

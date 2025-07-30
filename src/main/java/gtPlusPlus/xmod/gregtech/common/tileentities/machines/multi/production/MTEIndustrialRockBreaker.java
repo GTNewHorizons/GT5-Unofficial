@@ -87,7 +87,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Bottom Center")
+            .addController("Bottom Front")
             .addCasingInfoMin(casingBaseName, 9, false)
             .addCasingInfoExactly(casingMiddleName, 16, false)
             .addInputBus(anyBaseCasing, 1)
@@ -130,7 +130,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -223,11 +223,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int getMaxParallelRecipes() {
         return 8 * GTUtility.getTier(this.getMaxInputVoltage());
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

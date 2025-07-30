@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,9 +50,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -81,6 +77,8 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -94,8 +92,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
     IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
 
-    private static final Field ENTITY_ITEM_HEALTH_FIELD = ReflectionHelper
-        .findField(EntityItem.class, "health", "field_70291_e");
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     public long mLastSoundTick = 0;
@@ -109,7 +105,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
+    private boolean mActive = false;
+    private boolean mWorkUpdate = false;
+    private boolean mWorks = true;
     private boolean oRedstone = false;
     private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldTextureData = 0,
         oldUpdateData = 0;
@@ -145,7 +143,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             nbt.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
             nbt.setBoolean("mLockUpgrade", mLockUpgrade);
             nbt.setBoolean("mMuffler", mMuffler);
-            nbt.setBoolean("mSteamConverter", mSteamConverter);
             nbt.setBoolean("mActive", mActive);
             nbt.setBoolean("mWorks", !mWorks);
             nbt.setBoolean("mInputDisabled", mInputDisabled);
@@ -194,7 +191,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             }
             mLockUpgrade = aNBT.getBoolean("mLockUpgrade");
             mMuffler = aNBT.getBoolean("mMuffler");
-            mSteamConverter = aNBT.getBoolean("mSteamConverter");
             mActive = aNBT.getBoolean("mActive");
             mWorks = !aNBT.getBoolean("mWorks");
             mInputDisabled = aNBT.getBoolean("mInputDisabled");
@@ -318,11 +314,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mNeedsUpdate) {
-                    if (GTMod.gregtechproxy.mUseBlockUpdateHandler) {
+                    if (GTMod.proxy.mUseBlockUpdateHandler) {
                         BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
                     } else {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     }
+                    mMetaTileEntity.onTextureUpdate();
                     mNeedsUpdate = false;
                 }
             }
@@ -763,10 +760,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mMetaTileEntity.mSoundRequests = 0;
         }
         if (aLogLevel > 0) {
-            if (getSteamCapacity() > 0 && hasSteamEngineUpgrade()) tList.add(
-                GTUtility.formatNumbers(getStoredSteam()) + " of "
-                    + GTUtility.formatNumbers(getSteamCapacity())
-                    + " Steam");
             tList.add(
                 "Machine is " + (mActive ? EnumChatFormatting.GREEN + "active" + EnumChatFormatting.RESET
                     : EnumChatFormatting.RED + "inactive" + EnumChatFormatting.RESET));
@@ -784,7 +777,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -1291,7 +1284,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mReleaseEnergy = false;
             // Normal Explosion Code
             mMetaTileEntity.onExplosion();
-            if (GTMod.gregtechproxy.mExplosionItemDrop) {
+            if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (this.isValidSlot(i))) {
@@ -1300,7 +1293,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                 }
             }
-            Pollution.addPollution((TileEntity) this, GTMod.gregtechproxy.mPollutionOnExplosion);
+            Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }
@@ -1324,9 +1317,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
-        try {
-            ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
-        } catch (Exception ignored) {}
+        ((EntityItemAccessor) tItemEntity).gt5$setHealth(99999999);
         this.worldObj.spawnEntityInWorld(tItemEntity);
         tItem.stackSize = 0;
     }
@@ -1337,7 +1328,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final NBTTagCompound tNBT = new NBTTagCompound();
         if (mMuffler) tNBT.setBoolean("mMuffler", true);
         if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
-        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", true);
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 
@@ -1351,7 +1341,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public int getUpgradeCount() {
-        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
+        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + mOtherUpgrades;
     }
 
     @Override
@@ -1426,7 +1416,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return true;
                     }
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (mWorks) disableWorking();
                             else enableWorking();
@@ -1655,27 +1645,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean isSteamEngineUpgradable() {
-        return isUpgradable() && !hasSteamEngineUpgrade() && getSteamCapacity() > 0;
-    }
-
-    @Override
-    public boolean addSteamEngineUpgrade() {
-        if (isSteamEngineUpgradable()) {
-            issueBlockUpdate();
-            mSteamConverter = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean hasSteamEngineUpgrade() {
-        if (canAccessData() && mMetaTileEntity.isSteampowered()) return true;
-        return mSteamConverter;
-    }
-
-    @Override
     public boolean hasMufflerUpgrade() {
         return mMuffler;
     }
@@ -1871,7 +1840,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
             || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
             return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     public double getOutputEnergyUnitsPerTick() {
@@ -1923,6 +1892,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public boolean isAddedToEnergyNet() {
         return false;
+    }
+
+    @Override
+    public boolean isSteampowered() {
+        return getSteamCapacity() > 0;
     }
 
     public int demandsEnergy() {
@@ -2155,18 +2129,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mMetaTileEntity != null) mMetaTileEntity.gridChanged();
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
-    }
-
     void onChunkUnloadAE() {
         final AENetworkProxy gp = getProxy();
         if (gp != null) gp.onChunkUnload();
@@ -2233,5 +2195,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void setCustomName(String name) {
         if (getMetaTileEntity() instanceof ICustomNameObject customNameObject) customNameObject.setCustomName(name);
+    }
+
+    @Override
+    protected int getCoverTabHeightOffset() {
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
     }
 }

@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
+import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
@@ -137,8 +138,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter, DEFC")
-            .addInfo("Machine can be overclocked by using casings above the recipe tier:")
-            .addInfo("Recipe time is divided by number of tiers above the recipe")
+            .addInfo("Gains One perfect overclock per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
@@ -201,11 +201,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return DEFCRecipes.fusionCraftingRecipes;
     }
@@ -217,29 +212,24 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                return recipe.mSpecialValue <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
+
+                return recipetier <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientMachineTier(recipetier);
             }
 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
                 return super.createOverclockCalculator(recipe)
-                    .setDurationModifier(1.0 / (mTierCasing - recipe.mSpecialValue + 1));
+                    .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
+                    .setRecipeHeat(0)
+                    .setHeatOC(true)
+                    .setHeatDiscount(false);
             }
+
         };
-    }
-
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -249,7 +239,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 9, 0, elementBudget, env, true, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 9, 0, elementBudget, env, true, true);
     }
 
     @Override

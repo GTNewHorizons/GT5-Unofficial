@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
@@ -57,7 +56,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityLaser;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
@@ -142,11 +140,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialLaserEngraver(this.mName);
     }
@@ -197,9 +190,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
     }
 
     @Override
@@ -216,7 +209,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         } else {
             if (renderer != null) {
                 renderer.toggleRealism();
-                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatToPlayer(aPlayer, "Toggling realism!");
                 return true;
             }
         }
@@ -260,7 +253,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorFourIsTheNumber);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -272,7 +265,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -385,21 +378,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public int getRecipeCatalystPriority() {
         return -10;
     }
@@ -422,14 +400,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (mExoticEnergyHatches.isEmpty()) {
-            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-            logic.setAvailableAmperage(1L);
-        } else super.setProcessingLogicPower(logic);
     }
 
     @Override

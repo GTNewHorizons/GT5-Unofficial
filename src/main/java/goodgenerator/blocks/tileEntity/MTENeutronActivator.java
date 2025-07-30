@@ -115,8 +115,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
-                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
+                    .setDuration((int) Math.ceil(recipe.mDuration * GTUtility.powInt(0.9f, height - 4)))
+                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * GTUtility.powInt(0.9f, height - 4));
             }
 
             @NotNull
@@ -144,6 +144,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         // we have infinite power
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -157,11 +158,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -348,7 +344,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                            * Math.pow(0.95, height - 4),
+                            * GTUtility.powInt(0.95, height - 4),
                         10);
                 }
             }
@@ -409,7 +405,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             if (tHatch.getBaseMetaTileEntity()
                 .isActive()) {
                 currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                    * Math.pow(0.95, height - 4);
+                    * GTUtility.powInt(0.95, height - 4);
                 anyWorking = true;
             }
         }
@@ -459,14 +455,14 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
 
-        int built = survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int heights = stackSize.stackSize + 3;
         for (int i = 1; i <= heights; i++) {
-            built = survivialBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
     }
 
     protected void onCasingFound() {

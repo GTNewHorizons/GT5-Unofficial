@@ -1,12 +1,12 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -34,9 +34,9 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
-        mDescriptionArray = aDescription == null ? new String[0] : new String[] { aDescription };
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
@@ -44,10 +44,10 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 15));
-        mDescriptionArray = aDescription == null ? new String[0] : aDescription;
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
 
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
@@ -55,7 +55,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
-        mDescriptionArray = aDescription == null ? new String[0] : aDescription;
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
         mTextures = aTextures;
     }
 

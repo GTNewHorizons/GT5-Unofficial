@@ -16,6 +16,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -250,7 +251,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !isSteampowered()) return GTValues.emptyFluidTankInfo;
         if (isDrainableStackSeparate()) {
             return new FluidTankInfo[] { new FluidTankInfo(getFillableStack(), getCapacity()),
                 new FluidTankInfo(getDrainableStack(), getCapacity()) };

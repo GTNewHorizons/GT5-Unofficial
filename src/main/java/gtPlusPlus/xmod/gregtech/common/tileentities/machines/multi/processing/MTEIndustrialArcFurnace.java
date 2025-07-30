@@ -47,7 +47,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -170,7 +169,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         int maxTier = getTierFromHint(stackSize);
         int built;
         for (int tier = 1; tier <= maxTier; tier++) {
-            built = survivialBuildPiece(
+            built = survivalBuildPiece(
                 STRUCTURE_PIECE_FRONT + tier,
                 stackSize,
                 tier,
@@ -183,7 +182,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             if (built >= 0) return built;
         }
 
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_REST + maxTier,
             stackSize,
             maxTier,
@@ -264,18 +263,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public Block getCasingBlock() {
@@ -295,7 +284,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         if (this.mSize > 5) {
             this.mPlasmaMode = !mPlasmaMode;
             if (mPlasmaMode) {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     "[" + EnumChatFormatting.RED
                         + "MODE"
@@ -305,7 +294,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                         + "Plasma"
                         + EnumChatFormatting.RESET);
             } else {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     aPlayer,
                     "[" + EnumChatFormatting.RED
                         + "MODE"
@@ -316,7 +305,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                         + EnumChatFormatting.RESET);
             }
         } else {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 "[" + EnumChatFormatting.RED
                     + "MODE"

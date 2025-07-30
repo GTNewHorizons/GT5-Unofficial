@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
@@ -146,8 +147,8 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
         EnumChatFormatting color1 = this instanceof ItemDepletedCell ? color2 = EnumChatFormatting.DARK_GRAY
             : EnumChatFormatting.WHITE;
         aList.add(
-            color1 + String.format(
-                transItem("001", "Durability: %s/%s"),
+            color1 + translateToLocalFormatted(
+                "gt.item.desc.durability",
                 color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
                 formatNumbers(this.maxDmg)));
     }

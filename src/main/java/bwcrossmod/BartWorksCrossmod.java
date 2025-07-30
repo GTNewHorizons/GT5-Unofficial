@@ -18,13 +18,18 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import java.io.StringReader;
 
 import net.minecraft.util.StringTranslate;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import bartworks.common.configs.Configuration;
+import bartworks.system.oregen.BWWorldGenRoss128b;
+import bartworks.system.oregen.BWWorldGenRoss128ba;
 import bwcrossmod.GTpp.loader.RadioHatchCompat;
-import bwcrossmod.galacticraft.GalacticraftProxy;
+import bwcrossmod.galacticraft.atmosphere.BWAtmosphereManager;
+import bwcrossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import bwcrossmod.tectech.TecTechResearchLoader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -58,32 +63,33 @@ public class BartWorksCrossmod {
     public static BartWorksCrossmod instance;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent preinit) {
+    public void preInit(FMLPreInitializationEvent event) {
         if (GalacticraftCore.isModLoaded()) {
-            GalacticraftProxy.preInit(preinit);
+            BWWorldGenRoss128b.initOres();
+            BWWorldGenRoss128ba.init_Ores();
+            MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
         }
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent init) {
+    public void init(FMLInitializationEvent event) {
         if (GalacticraftCore.isModLoaded()) {
-            GalacticraftProxy.init(init);
+            if (Configuration.crossModInteractions.Ross128Enabled) {
+                Ross128SolarSystem.init();
+            }
         }
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent init) {
-        if (GalacticraftCore.isModLoaded()) {
-            GalacticraftProxy.postInit(init);
-        }
         RadioHatchCompat.run();
         TecTechResearchLoader.runResearches();
     }
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
-        for (Object s : RadioHatchCompat.TranslateSet) {
-            StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
+        for (String s : RadioHatchCompat.TranslateSet) {
+            StringTranslate.inject(new ReaderInputStream(new StringReader(s)));
         }
     }
 }

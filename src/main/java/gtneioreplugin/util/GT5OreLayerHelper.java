@@ -1,7 +1,6 @@
 package gtneioreplugin.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +31,11 @@ public class GT5OreLayerHelper {
         }
     }
 
-    private static final int DIMENSION_COUNT = 33;
-    public static final Integer[] weightPerWorld = new Integer[DIMENSION_COUNT];
-    public static final Integer[] DimIDs = new Integer[DIMENSION_COUNT];
     public static final HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
     public static final HashMap<OreLayerWrapper, Map<String, Boolean>> bufferedDims = new HashMap<>();
     public static final HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
     public static void init() {
-        Arrays.fill(weightPerWorld, 0);
-        Arrays.fill(DimIDs, 0);
         for (OreMixes mix : OreMixes.values())
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {

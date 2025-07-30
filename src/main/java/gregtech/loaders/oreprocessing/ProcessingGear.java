@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -17,7 +18,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -37,7 +37,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(576L))
+                            .fluidInputs(aMaterial.getMolten(4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(fluidSolidifierRecipes);
@@ -48,19 +48,19 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.get(aMaterial), 'S',
                                 OrePrefixes.stick.get(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
                             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                                    GTProxy.tBits,
+                                    GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.get(aMaterial), 'S',
                                         OrePrefixes.stick.get(aMaterial) });
                             }
@@ -74,7 +74,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, aStack))
-                            .fluidInputs(aMaterial.getMolten(144L))
+                            .fluidInputs(aMaterial.getMolten(1 * INGOTS))
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(fluidSolidifierRecipes);
@@ -85,17 +85,17 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " s", 'P', OrePrefixes.plank.get(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                            GTProxy.tBits,
+                            GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " f", 'P', OrePrefixes.stoneSmooth });
                         default -> {
                             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                                    GTProxy.tBits,
+                                    GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P',
                                         OrePrefixes.plate.get(aMaterial) });
                             }

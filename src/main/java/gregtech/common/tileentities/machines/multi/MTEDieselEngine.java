@@ -328,7 +328,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond;
+        return GTMod.proxy.mPollutionLargeCombustionEnginePerSecond;
     }
 
     @Override
@@ -397,8 +397,8 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -409,6 +409,6 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 1, elementBudget, env, false, true);
     }
 }

@@ -91,7 +91,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
-    private static final String MACHINE_TYPE = "Molecular Assembler";
+    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
     private static final int CASING_INDEX = 48;
@@ -183,17 +183,12 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkRecipe(ItemStack aStack) {
         return withAeJobs(($, aeJobs) -> {
             mMaxProgresstime = 20;
             long craftingProgressTime = 20;
             long craftingEUt = EU_PER_TICK_CRAFTING;
-            mEUt = -EU_PER_TICK_BASIC;
+            lEUt = -EU_PER_TICK_BASIC;
             // Tier EU_PER_TICK_CRAFTING == 2
             int extraTier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()) - 2);
             // The first two Overclocks reduce the Finish time to 0.5s and 0.25s
@@ -272,21 +267,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("proxy")) {
             getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -402,7 +382,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (dataTitle == null || dataTitle.isEmpty()) {
             dataTitle = DATA_ORB_TITLE;
             BehaviourDataOrb.setDataName(dataOrb, dataTitle);
-            BehaviourDataOrb.setNBTInventory(dataOrb, new ItemStack[0]);
+            BehaviourDataOrb.setNBTInventory(dataOrb, GTValues.emptyItemStackArray);
         }
         if (!dataTitle.equals(DATA_ORB_TITLE)) {
             cachedDataOrb = null;
@@ -709,7 +689,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .setSize(16, 16));
     }
 
-    @SuppressWarnings("all")
     private static class CraftingDisplayPoint {
 
         private final World w;

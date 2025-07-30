@@ -85,7 +85,7 @@ public class ForgeOfGodsUI {
             })
             .setPos(174, 148)
             .setSize(16, 16);
-        button.addTooltip("Power Switch")
+        button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
@@ -95,6 +95,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setInputSeparation(!mte.isInputSeparationEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -110,10 +111,16 @@ public class ForgeOfGodsUI {
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(mte::isInputSeparationEnabled, mte::setInputSeparation),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getInputSeparationButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsInputSeparation,
+            mte::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
         return (ButtonWidget) button;
     }
 
@@ -122,6 +129,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setBatchMode(!mte.isBatchModeEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -135,10 +143,17 @@ public class ForgeOfGodsUI {
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(mte::isBatchModeEnabled, mte::setBatchMode), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getBatchModeButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsBatchMode,
+            mte::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+
         return (ButtonWidget) button;
     }
 
@@ -147,6 +162,7 @@ public class ForgeOfGodsUI {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
             mte.setRecipeLocking(!mte.isRecipeLockingEnabled());
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -160,10 +176,17 @@ public class ForgeOfGodsUI {
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(mte::isRecipeLockingEnabled, mte::setRecipeLocking), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(mte.getRecipeLockingButtonPos())
             .setSize(16, 16);
+
+        mte.addDynamicTooltipOfFeatureToButton(
+            button,
+            mte::supportsSingleRecipeLocking,
+            mte::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+
         return (ButtonWidget) button;
     }
 
@@ -566,7 +589,7 @@ public class ForgeOfGodsUI {
     }
 
     public static Widget getIndividualUpgradeGroup(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
-        Runnable complete, Runnable respec, Supplier<Boolean> check) {
+        Runnable complete, Runnable respec, Supplier<Boolean> check, Supplier<MilestoneFormatter> formatGetter) {
         MultiChildWidget widget = new MultiChildWidget();
         widget.setSize(upgrade.getWindowSize());
 
@@ -633,7 +656,7 @@ public class ForgeOfGodsUI {
 
         // Available shards amount
         widget.addChild(
-            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter))
+            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter, formatGetter))
                 .setTextAlignment(Alignment.Center)
                 .setScale(0.7f)
                 .setMaxWidth(90)
@@ -690,12 +713,15 @@ public class ForgeOfGodsUI {
                 EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
     }
 
-    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter) {
+    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
+        Supplier<MilestoneFormatter> formatGetter) {
         EnumChatFormatting enoughShards = EnumChatFormatting.RED;
         if (shardGetter.get() >= upgrade.getShardCost()) {
             enoughShards = EnumChatFormatting.GREEN;
         }
-        return new Text(enoughShards + Integer.toString(shardGetter.get()));
+        return new Text(
+            enoughShards + formatGetter.get()
+                .format(shardGetter.get()));
     }
 
     private static List<String> constructionStatusString(Supplier<Boolean> check) {
@@ -897,7 +923,7 @@ public class ForgeOfGodsUI {
         String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
         int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < deleno.length(); i++) {
             nameRow.addChild(
                 new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
                     .setScale(0.8f)

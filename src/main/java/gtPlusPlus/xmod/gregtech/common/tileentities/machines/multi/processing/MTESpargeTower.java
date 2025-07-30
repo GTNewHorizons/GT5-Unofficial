@@ -40,13 +40,13 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -289,21 +289,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     protected void addFluidOutputs(FluidStack[] outputFluids) {
         for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
             FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
@@ -330,25 +315,16 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         mHeight = 0;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tTotalHeight = 8; // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
-            built = survivialBuildPiece(
-                STRUCTURE_PIECE_LAYER_HINT,
-                stackSize,
-                1,
-                i,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             1,
@@ -366,20 +342,16 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aLayerIndex = 0;
-        PlayerUtils
-            .messagePlayer(aPlayer, "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
         for (List<MTEHatchOutput> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
             for (MTEHatchOutput hatch : layer) {
                 if (hatch.mFluid != null) {
-                    PlayerUtils.messagePlayer(
+                    GTUtility.sendChatToPlayer(
                         aPlayer,
                         "Clearing " + hatch.mFluid.amount
                             + "L of "

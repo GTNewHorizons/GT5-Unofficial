@@ -19,14 +19,15 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class ItemGenericChemBase extends Item {
 
     protected final IIcon[] base;
 
-    private final int aMetaSize = 35;
+    private final int aMetaSize = 36;
 
     /*
      * 0 - Red Metal Catalyst //FeCu
@@ -62,6 +63,7 @@ public class ItemGenericChemBase extends Item {
      * 30 - Flawless Water Catalyst (for advanced waterline skip)
      * 33 - Algagenic Growth Promoter Catalyst (for seaweed skip)
      * 34 - Hellish Force Catalyst (for Netherite skip)
+     * 35 - Crystal Colorization Catalyst (for Prismatic Acid)
      */
 
     public ItemGenericChemBase() {
@@ -76,7 +78,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        if (ItemUtils.isMillingBall(stack)) {
+        if (MTEIsaMill.isMillingBall(stack)) {
             return 16;
         }
         return super.getItemStackLimit(stack);
@@ -116,13 +118,8 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < aMetaSize; i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem, 1, i));
         }
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
     }
 
     @Override
@@ -133,11 +130,6 @@ public class ItemGenericChemBase extends Item {
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override
@@ -180,14 +172,14 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createMillingBallNBT(aStack);
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createCatalystNBT(aStack);
@@ -207,14 +199,14 @@ public class ItemGenericChemBase extends Item {
         int aDamageSegment = 0;
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.milling_ball.tumble"));
             aMaxDamage = getMillingBallMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getMillingBallDamage(aStack);
             aHasSpecialTooltips = true;
         }
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
@@ -240,10 +232,10 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             int aDam = getMillingBallDamage(aStack);
             return aDam > 0;
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             int aDam = getCatalystDamage(aStack);
             return aDam > 0;
         }

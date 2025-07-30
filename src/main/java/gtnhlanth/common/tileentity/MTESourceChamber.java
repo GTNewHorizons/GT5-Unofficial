@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -123,7 +122,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -174,6 +173,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
         GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
+            .caching(false)
             .items(tItems)
             .voltage(tVoltageActual)
             .find();
@@ -182,7 +182,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
+        if (!tRecipe.isRecipeInputEqual(true, GTValues.emptyFluidStackArray, tItems)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 
@@ -346,11 +346,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
 
@@ -359,21 +354,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             && this.mOutputBusses.size() == 1
             && this.mOutputBeamline.size() == 1
             && this.mEnergyHatches.size() == 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

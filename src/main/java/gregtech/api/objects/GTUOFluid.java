@@ -8,6 +8,8 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import gregtech.api.util.GTUtility;
+
 public class GTUOFluid {
 
     public String Registry = "null";
@@ -64,6 +66,6 @@ public class GTUOFluid {
                                                                                   // more rare.
         double smin = Math.pow(MinAmount * 100.d * DIVIDER, 0.2d);
         double samount = Math.max(smin, aRandom.nextInt(smax) + aRandom.nextDouble());
-        return (int) (Math.pow(samount, 5) / 100); // reverses the computation above
+        return (int) (GTUtility.powInt(samount, 5) / 100); // reverses the computation above
     }
 }

@@ -16,18 +16,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -75,7 +73,7 @@ public class MaterialUtils {
             int radioactivity = 0;
             if (material.isRadioactive()) {
                 ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = aDustStack != null ? GTUtility.getRadioactivityLevel(aDustStack) : 0;
+                radioactivity = GTUtility.getRadioactivityLevel(aDustStack);
                 if (radioactivity == 0) {
                     long aProtons = material.getProtons();
                     radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
@@ -102,12 +100,12 @@ public class MaterialUtils {
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mChemicalFormula));
             final Element element = material.mElement;
 
             // Weird Blacklist of Bad Chemical Strings
             if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar) {
-                chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
+                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mElement.name()));
             }
 
             // Determine default state
@@ -277,7 +275,7 @@ public class MaterialUtils {
                     + "' & fallback '"
                     + aFallbackMaterialName
                     + "', returning _NULL.");
-            GTPPCore.crash();
+            throw new IllegalStateException();
         }
         return g;
     }
@@ -356,15 +354,15 @@ public class MaterialUtils {
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
-        aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));
+        aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
     }
 
     public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
         Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, !generateMixerRecipes);
         if (aDusts.length > 0) {
-            aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dust, new ItemStack(aDusts[0]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, new ItemStack(aDusts[1]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, new ItemStack(aDusts[2]));
         }
     }
 

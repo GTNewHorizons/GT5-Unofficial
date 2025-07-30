@@ -13,13 +13,9 @@
 
 package bartworks.common.tileentities.tiered;
 
-import static gregtech.api.enums.Mods.Gendustry;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.items.ItemLabModule;
@@ -44,6 +40,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
@@ -142,10 +139,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
     @Override
     public int checkRecipe(boolean skipOC) {
-
         int rTier = 3;
-        FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
-            : Materials.Biomass.getFluid(1000L);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule) {
@@ -168,7 +162,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 3], Materials.Ethanol.getCells(1))
                         && this.mFluid != null
-                        && this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
+                        && this.mFluid.isFluidEqual(GTModHandler.getDistilledWater(1_000))
                         && this.mFluid.amount >= 1000) {
 
                         NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound()
@@ -218,7 +212,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 2], FluidLoader.BioLabFluidCells[3])
                         && this.mFluid != null
-                        && this.mFluid.isFluidEqual(dnaFluid)
+                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
                         && this.mFluid.amount >= 1000) {
                         NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound();
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
@@ -279,7 +273,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 3])
                         && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 3], inp2)
                         && this.mFluid != null
-                        && this.mFluid.isFluidEqual(dnaFluid)
+                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
                         && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2]));
@@ -318,7 +312,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 2], FluidLoader.BioLabFluidCells[2])
                         && this.mFluid != null
-                        && this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
+                        && this.mFluid.isFluidEqual(GTModHandler.getDistilledWater(1_000))
                         && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromNBTTag(this.mInventory[this.getInputSlot() + 1].getTagCompound());
@@ -363,7 +357,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             ItemList.Tool_DataOrb.get(1L),
                             true)
                         && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(this.mInventory[this.getInputSlot() + 3]))
-                        && this.mFluid.isFluidEqual(dnaFluid)
+                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
                         && this.mFluid.amount >= 8000) {
 
                         BioData cultureDNABioData = BioData

@@ -55,8 +55,8 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
             aTier,
             new String[] { "Requires liquid Fuel",
                 "Causes "
-                    + (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond
-                        * GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[aTier])
+                    + (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+                        * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[aTier])
                     + " Pollution per second" });
         this.efficiency = efficiency;
     }
@@ -80,11 +80,6 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.dieselFuels;
-    }
-
-    @Override
-    public int getCapacity() {
-        return 16000;
     }
 
     @Override
@@ -247,7 +242,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond
-            * GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
+        return (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+            * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
     }
 }

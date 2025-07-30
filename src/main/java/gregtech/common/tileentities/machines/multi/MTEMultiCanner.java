@@ -1,13 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,9 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,7 +46,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.common.tileentities.machines.multi.gui.MTEMultiCannerGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -85,11 +87,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     public IStructureDefinition<MTEMultiCanner> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -154,7 +151,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .addOutputHatch("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -166,7 +163,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -230,9 +227,8 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -243,7 +239,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
+        return translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
     }
 
     @Override
@@ -259,25 +255,10 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + tag.getInteger("mode"))
+                + translateToLocal("GT5U.MULTI_CANNER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -301,8 +282,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+    protected @NotNull MTEMultiCannerGui getGui() {
+        return new MTEMultiCannerGui(this);
     }
 }
