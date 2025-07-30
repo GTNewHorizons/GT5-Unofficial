@@ -30,5 +30,4 @@ repositories {
             artifact()
         }
     }
-    mavenLocal()
 }
