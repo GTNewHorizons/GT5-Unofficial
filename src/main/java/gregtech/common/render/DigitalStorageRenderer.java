@@ -70,10 +70,11 @@ public class DigitalStorageRenderer {
         aRenderer.enableAO = false;
 
         boolean isDrawing = false;
-        if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(Tessellator.instance)) {
+        final Tessellator tess = Tessellator.instance;
+        if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(tess)) {
             // Draw if we're not already drawing
             isDrawing = true;
-            Tessellator.instance.startDrawingQuads();
+            tess.startDrawingQuads();
             displayFacing = WEST;
         }
 
@@ -123,7 +124,7 @@ public class DigitalStorageRenderer {
             // Draw if we initiated the drawing
             isDrawing = false;
 
-            Tessellator.instance.draw();
+            tess.draw();
             frontFacing = EAST;
         }
 
