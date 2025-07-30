@@ -299,7 +299,7 @@ public class Textures {
                 Dyes.MACHINE_METAL.getRGBA());
 
             for (Dyes dye : Dyes.VALUES) {
-                MACHINE_CASINGS[tier][dye.mIndex + 1] = TextureFactory.of(
+                MACHINE_CASINGS_TT[tier][dye.mIndex + 1] = TextureFactory.of(
                     MACHINECASINGS_BOTTOM_TT[tier],
                     MACHINECASINGS_TOP_TT[tier],
                     MACHINECASINGS_SIDE_TT[tier],

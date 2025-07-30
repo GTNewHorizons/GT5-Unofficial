@@ -137,8 +137,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         }
 
         dataStick.stackTagCompound = getCopiedData(aPlayer);
-        dataStick.setStackDisplayName("Output Bus Configuration");
+        setDataStickName(dataStick);
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.saved"));
+    }
+
+    protected void setDataStickName(ItemStack dataStick) {
+        dataStick.setStackDisplayName("Output Bus Configuration");
     }
 
     @Override

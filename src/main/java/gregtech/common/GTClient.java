@@ -543,7 +543,7 @@ public class GTClient extends GTProxy {
 
         // TreeSet so it's always the same order
         TreeSet<Hazard> protections = new TreeSet<>();
-        for (Hazard hazard : Hazard.values()) {
+        for (Hazard hazard : Hazard.VALUES) {
             if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
                 protections.add(hazard);
             }

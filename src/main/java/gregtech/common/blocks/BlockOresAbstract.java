@@ -214,6 +214,21 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
         return GTRendererBlock.mRenderID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
     @Override
     public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return false;
