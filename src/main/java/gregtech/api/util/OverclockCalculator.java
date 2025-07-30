@@ -360,17 +360,28 @@ public class OverclockCalculator {
                 regularOverclocks++;
             }
 
-            // Keep increasing power until it hits the machine's limit.
+            // Calculate per-slice duration
+            double durationPerSlice = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
+                : duration;
+
+            // Increase laser overclocks until 1 tick per slice or power limit
             int laserOverclocks = 0;
-            while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
-                eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
+            while (true) {
+                double multiplier = 4.0 + 0.3 * (laserOverclocks + 1);
+                double potentialEU = eutOverclock * multiplier;
+                double estimatedDuration = duration
+                    / Math.pow(durationDecreasePerOC, regularOverclocks + laserOverclocks + 1);
+
+                if (potentialEU >= machinePower) break;
+                if (estimatedDuration <= duration / durationPerSlice) break;
+
+                eutOverclock = potentialEU;
                 laserOverclocks++;
             }
 
             overclocks = regularOverclocks + laserOverclocks;
             calculatedConsumption = (long) Math.ceil(eutOverclock);
-            duration /= GTUtility.powInt(durationDecreasePerOC, overclocks);
-            calculatedDuration = (int) Math.max(duration, 1);
+            calculatedDuration = (int) Math.max(duration / GTUtility.powInt(durationDecreasePerOC, overclocks), 1);
             return;
         }
 
