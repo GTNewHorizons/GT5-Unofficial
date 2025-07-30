@@ -3679,6 +3679,11 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
+    public static String scientificFormat(long aNumber, int decimalPlaces) {
+        return String.format("%." + decimalPlaces + "e", (double) aNumber)
+            .replace("+", "");
+    }
+
     /**
      * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
      * Since it suppresses errors, it should be used only when inputs are unreliable,
