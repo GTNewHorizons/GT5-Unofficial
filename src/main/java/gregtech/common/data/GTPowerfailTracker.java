@@ -108,14 +108,7 @@ public class GTPowerfailTracker {
 
         @Override
         public Set<UUID> getPlayers() {
-            HashSet<UUID> inTeam = new HashSet<>();
-
-            for (var e : SpaceProjectManager.spaceTeams.entrySet()) {
-                if (e.getValue()
-                    .equals(leader)) inTeam.add(e.getKey());
-            }
-
-            return inTeam;
+            return SpaceProjectManager.getTeamMembers(leader);
         }
 
         @Override
