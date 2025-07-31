@@ -4,19 +4,33 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
+import gregtech.api.util.LightingHelper;
+
 public interface ITexture {
 
-    void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
-    void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
-    void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
-    void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
-    void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
-    void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    @SuppressWarnings("MethodWithTooManyParameters")
+    void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass);
 
     boolean isValidTexture();
 
