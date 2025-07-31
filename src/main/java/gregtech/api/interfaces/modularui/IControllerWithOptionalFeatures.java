@@ -3,7 +3,6 @@ package gregtech.api.interfaces.modularui;
 import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_POWER_PANEL;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.common.config.Client.preference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +29,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.common.config.Gregtech;
 
 /**
  * Machines implementing this interface can have logic and GUI buttons
@@ -316,7 +316,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     void setBatchMode(boolean enabled);
 
     default boolean getDefaultBatchMode() {
-        return preference.batchModeInitialValue;
+        return Gregtech.general.batchModeInitialValue;
     }
 
     Pos2d getBatchModeButtonPos();
