@@ -424,7 +424,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> distilleryRecipes = RecipeMapBuilder.of("gt.recipe.distillery")
         .maxIO(1, 1, 1, 1)
-        .minInputs(1, 1)
+        .minInputs(0, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (!isFluid) {
                 return null;
