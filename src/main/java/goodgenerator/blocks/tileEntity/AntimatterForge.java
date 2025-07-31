@@ -902,7 +902,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
         int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        return new int[]{x + xOffset, y + yOffset, z + zOffset};
+        return new int[] { x + xOffset, y + yOffset, z + zOffset };
     }
 
     public TileAntimatter getAntimatterRender() {
@@ -910,7 +910,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (pos == null) {
             return null;
         }
-        World world = this.getBaseMetaTileEntity().getWorld();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         return (TileAntimatter) world.getTileEntity(pos[0], pos[1], pos[2]);
     }
 
@@ -919,7 +920,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (pos == null) {
             return;
         }
-        World world = this.getBaseMetaTileEntity().getWorld();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
     }
 
@@ -928,7 +930,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (pos == null) {
             return;
         }
-        World world = this.getBaseMetaTileEntity().getWorld();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
         world.setBlock(pos[0], pos[1], pos[2], Loaders.antimatterRenderBlock);
     }
