@@ -4,11 +4,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -802,14 +799,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     protected long antimatterChangeCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected static DecimalFormat standardFormat;
-
-    static {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
-    }
-
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
@@ -831,7 +820,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                             + EnumChatFormatting.RED
-                            + standardFormat.format(passiveCostCache)
+                            + GTUtility.scientificFormat(passiveCostCache, "0.00E0")
                             + EnumChatFormatting.WHITE
                             + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)
@@ -842,7 +831,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                             + EnumChatFormatting.LIGHT_PURPLE
-                            + standardFormat.format(activeCostCache)
+                            + GTUtility.scientificFormat(activeCostCache, "0.00E0")
                             + EnumChatFormatting.WHITE
                             + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)
