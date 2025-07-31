@@ -309,7 +309,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
-            .addInfo("A cycle lasts 1 tick")
+            .addInfo("A cycle lasts 1 second")
             .addInfo(
                 "Imbalance between " + EnumChatFormatting.AQUA
                     + "Antimatter"
