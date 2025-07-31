@@ -151,6 +151,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     };
 
+    // Cached coordinates and world references
+    private int xCord, yCord, zCord;
+    private World cachedWorld;
+    private IGregTechTileEntity cachedBaseMetaTileEntity;
+
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -449,6 +454,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     }
 
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        cachedBaseMetaTileEntity = aBaseMetaTileEntity;
+        cachedWorld = aBaseMetaTileEntity.getWorld();
+        xCord = aBaseMetaTileEntity.getXCoord();
+        yCord = aBaseMetaTileEntity.getYCoord();
+        zCord = aBaseMetaTileEntity.getZCoord();
+    }
+
     private long calculateContainedAntimatter() {
         long antimatterStored = 0;
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
@@ -648,11 +662,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public int getChunkX() {
-        return getBaseMetaTileEntity().getXCoord() >> 4;
+        return xCord >> 4;
     }
 
     public int getChunkZ() {
-        return getBaseMetaTileEntity().getZCoord() >> 4;
+        return zCord >> 4;
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
@@ -700,7 +714,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
             return amOutputHatches.add(tAntimatter);
         }
-
         return false;
     }
 
@@ -890,60 +903,34 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     private int @Nullable [] getTargetCoordinates() {
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return null;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return null;
-
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
+        if (cachedBaseMetaTileEntity == null || cachedWorld == null) return null;
 
         int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
         int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
         int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        return new int[] { x + xOffset, y + yOffset, z + zOffset };
+        return new int[] { xCord + xOffset, yCord + yOffset, zCord + zOffset };
     }
 
     public @Nullable TileAntimatter getAntimatterRender() {
         int[] pos = getTargetCoordinates();
         if (pos == null) return null;
 
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return null;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return null;
-
-        return (TileAntimatter) world.getTileEntity(pos[0], pos[1], pos[2]);
+        return (TileAntimatter) cachedWorld.getTileEntity(pos[0], pos[1], pos[2]);
     }
 
     public void destroyAntimatterRender() {
         int[] pos = getTargetCoordinates();
         if (pos == null) return;
 
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return;
-
-        world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
+        cachedWorld.setBlock(pos[0], pos[1], pos[2], Blocks.air);
     }
 
     public void createAntimatterRender() {
         int[] pos = getTargetCoordinates();
         if (pos == null) return;
 
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return;
-
-        world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
-        world.setBlock(pos[0], pos[1], pos[2], Loaders.antimatterRenderBlock);
+        cachedWorld.setBlock(pos[0], pos[1], pos[2], Blocks.air);
+        cachedWorld.setBlock(pos[0], pos[1], pos[2], Loaders.antimatterRenderBlock);
     }
 }
