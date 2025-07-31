@@ -7,7 +7,9 @@ import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -19,6 +21,8 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.LightingHelper;
+import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 /**
  * This renderer is almost the same as vanilla simple block renderer, with the exception that it can render overlays
@@ -41,6 +45,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
+        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
 
         setupBlockTexturesOnly(aBlock, aMeta, true);
 
@@ -50,12 +55,12 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBoundsForItemRender();
         aRenderer.setRenderBoundsFromBlock(aBlock);
         // spotless:off
-        renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, textureArray[SIDE_EAST], true);
+        renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_DOWN], true, -1);
+        renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_UP], true, -1);
+        renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_NORTH], true, -1);
+        renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_SOUTH], true, -1);
+        renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_WEST], true, -1);
+        renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textureArray[SIDE_EAST], true, -1);
         // spotless:on
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -88,17 +93,21 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled();
         aRenderer.useInventoryTint = false;
 
+        final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
+        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
+        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+
         int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        ITexture[] overlayed = RenderOverlay.get(aWorld, aX, aY, aZ);
-        if (overlayed == null) {
+        ITexture[] overlaid = RenderOverlay.get(aWorld, aX, aY, aZ);
+        if (overlaid == null) {
             setupBlockTexturesOnly(aBlock, tMeta, false);
         } else {
             ForgeDirection[] validDirections = VALID_DIRECTIONS;
             for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {
                 ForgeDirection tFace = validDirections[i];
                 textureArray[i][0] = TextureFactory.of(aBlock, tMeta, tFace);
-                textureArray[i][1] = overlayed[i];
+                textureArray[i][1] = overlaid[i];
             }
         }
 
@@ -106,15 +115,15 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         // spotless:off
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_DOWN], true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_UP], true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_NORTH], true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_SOUTH], true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_WEST], true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, textureArray[SIDE_EAST], true);
+        renderNegativeYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_DOWN], true, worldRenderPass);
+        renderPositiveYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_UP], true, worldRenderPass);
+        renderNegativeZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_NORTH], true, worldRenderPass);
+        renderPositiveZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_SOUTH], true, worldRenderPass);
+        renderNegativeXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_WEST], true, worldRenderPass);
+        renderPositiveXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textureArray[SIDE_EAST], true, worldRenderPass);
         // spotless:on
 
-        return true;
+        return tessAccess.gt5u$hasVertices();
     }
 
     @Override
