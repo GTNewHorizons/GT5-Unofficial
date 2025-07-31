@@ -59,6 +59,16 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
     }
 
     @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
         // Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
