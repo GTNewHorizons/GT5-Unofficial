@@ -590,7 +590,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         currentTip.add(
             StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                 + EnumChatFormatting.BLUE
-                + standardFormat.format(energyProducedCache)
+                + GTUtility.scientificFormat(energyProducedCache)
                 + EnumChatFormatting.WHITE
                 + " EU");
         currentTip.add(
