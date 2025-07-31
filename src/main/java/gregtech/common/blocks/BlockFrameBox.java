@@ -164,7 +164,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getRenderBlockPass() {
-        return 1;
+        return 0;
     }
 
     @Override
