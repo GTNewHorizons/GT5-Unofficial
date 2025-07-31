@@ -9,11 +9,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -342,7 +339,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
             .addInfo(
                 "Cannot produce more than " + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(Long.MAX_VALUE, "0.00E0")
+                    + GTUtility.scientificFormat(Long.MAX_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU per cycle")
             .addSeparator()
@@ -376,7 +373,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " base value: "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE, "0E0")
+                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU/L")
             .addInfo(
@@ -541,14 +538,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected static DecimalFormat standardFormat;
-
-    static {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
-    }
-
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
@@ -559,7 +548,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                             + EnumChatFormatting.BLUE
-                            + standardFormat.format(energyProducedCache)
+                            + GTUtility.scientificFormat(energyProducedCache)
                             + EnumChatFormatting.WHITE
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)

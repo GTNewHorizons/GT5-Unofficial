@@ -20,6 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -78,8 +81,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private static final int ACTIVATION_ID = 3;
 
     private static final int BASE_CONSUMPTION = 10_000_000;
-    private static final int passiveBaseMult = 1000;
-    private static final int activeBaseMult = 10000;
+    private static final int passiveBaseMult = 1_000;
+    private static final int activeBaseMult = 10_000;
 
     private static final float passiveBaseExp = 1.5f;
     private static final float activeBaseExp = 1.5f;
@@ -742,22 +745,22 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + " EU",
             StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(this.guiAntimatterAmount)
+                + GTUtility.formatNumbers(getAntimatterAmount())
                 + EnumChatFormatting.RESET
                 + " L",
             StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(this.guiPassiveEnergy)
+                + GTUtility.formatNumbers(getPassiveConsumption())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(this.guiActiveEnergy)
+                + GTUtility.formatNumbers(getActiveConsumption())
                 + EnumChatFormatting.RESET
-                + " EU/s",
+                + " EU/t",
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(this.guiAntimatterChange)
+                + GTUtility.formatNumbers(getAntimatterChange())
                 + EnumChatFormatting.RESET
                 + " L" };
     }
@@ -771,7 +774,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     private long getActiveConsumption() {
-        return this.guiActiveEnergy;
+        return this.guiActiveEnergy / 20;
     }
 
     private long getAntimatterChange() {
@@ -805,7 +808,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                             + EnumChatFormatting.RED
-                            + GTUtility.scientificFormat(passiveCostCache, "0.00E0")
+                            + GTUtility.scientificFormat(passiveCostCache)
                             + EnumChatFormatting.WHITE
                             + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)
@@ -816,9 +819,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                             + EnumChatFormatting.LIGHT_PURPLE
-                            + GTUtility.scientificFormat(activeCostCache, "0.00E0")
+                            + GTUtility.scientificFormat(activeCostCache)
                             + EnumChatFormatting.WHITE
-                            + " EU")
+                            + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
@@ -876,73 +879,64 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         render.setRotationFields(getDirection(), getRotation());
     }
 
-    public TileAntimatter getAntimatterRender() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-        World world = gregTechTileEntity.getWorld();
-
-        if (world == null) {
-            return null;
-        }
-
+    private int getTargetX(@NotNull IGregTechTileEntity gregTechTileEntity) {
         int x = gregTechTileEntity.getXCoord();
+        int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        return x + xOffset;
+    }
+
+    private int getTargetY(@NotNull IGregTechTileEntity gregTechTileEntity) {
         int y = gregTechTileEntity.getYCoord();
+        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        return y + yOffset;
+    }
+
+    private int getTargetZ(@NotNull IGregTechTileEntity gregTechTileEntity) {
         int z = gregTechTileEntity.getZCoord();
+        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        return z + zOffset;
+    }
 
-        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+    public @Nullable TileAntimatter getAntimatterRender() {
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return null;
 
-        int wX = (int) (x + xOffset);
-        int wY = (int) (y + yOffset);
-        int wZ = (int) (z + zOffset);
+        World world = gregTechTileEntity.getWorld();
+        if (world == null) return null;
 
-        return (TileAntimatter) world.getTileEntity(wX, wY, wZ);
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
+
+        return (TileAntimatter) world.getTileEntity(x, y, z);
     }
 
     public void destroyAntimatterRender() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return;
+
         World world = gregTechTileEntity.getWorld();
+        if (world == null) return;
 
-        if (world == null) {
-            return;
-        }
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
 
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
-        int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-
-        int xTarget = x + xOffset;
-        int yTarget = y + yOffset;
-        int zTarget = z + zOffset;
-
-        world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
+        world.setBlock(x, y, z, Blocks.air);
     }
 
     public void createAntimatterRender() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return;
+
         World world = gregTechTileEntity.getWorld();
+        if (world == null) return;
 
-        if (world == null) {
-            return;
-        }
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
 
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
-        int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-
-        int wX = x + xOffset;
-        int wY = y + yOffset;
-        int wZ = z + zOffset;
-
-        world.setBlock(wX, wY, wZ, Blocks.air);
-        world.setBlock(wX, wY, wZ, Loaders.antimatterRenderBlock);
+        world.setBlock(x, y, z, Blocks.air);
+        world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
     }
 }
