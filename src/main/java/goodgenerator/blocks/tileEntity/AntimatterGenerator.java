@@ -351,7 +351,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "A"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + "*("
+                    + " * ("
                     + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
