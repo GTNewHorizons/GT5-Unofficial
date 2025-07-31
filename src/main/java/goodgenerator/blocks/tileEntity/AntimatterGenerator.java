@@ -337,7 +337,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
             .addInfo(
                 "Cannot produce more than " + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(Long.MAX_VALUE, "0.00E0")
+                    + GTUtility.scientificFormat(Long.MAX_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU per cycle")
             .addSeparator()
@@ -371,7 +371,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " base value: "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE, "0E0")
+                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU/L")
             .addInfo(
@@ -546,7 +546,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                             + EnumChatFormatting.BLUE
-                            + GTUtility.scientificFormat(energyProducedCache, "0.00E0")
+                            + GTUtility.scientificFormat(energyProducedCache)
                             + EnumChatFormatting.WHITE
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)

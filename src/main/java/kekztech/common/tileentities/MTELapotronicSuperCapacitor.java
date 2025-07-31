@@ -827,12 +827,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getCapacityCache() {
-        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(capacity, "0.00E0")
+        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(capacity)
             : numberFormat.format(capacity);
     }
 
     private String getStoredCache() {
-        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(stored, "0.00E0")
+        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(stored)
             : numberFormat.format(stored);
     }
 
@@ -841,7 +841,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getWirelessStoredCache() {
-        return GTUtility.scientificFormat(WirelessNetworkManager.getUserEU(global_energy_user_uuid), "0.00E0");
+        return GTUtility.scientificFormat(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
     }
 
     private boolean isActiveCache() {
@@ -849,7 +849,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getPassiveDischargeAmountCache() {
-        return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount, "0.00E0")
+        return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount)
             : numberFormat.format(passiveDischargeAmount);
     }
 
@@ -1134,7 +1134,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         () -> translateToLocalFormatted(
                             "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
                             EnumChatFormatting.GREEN
-                                + (avgInCache > 100_000_000_000L ? GTUtility.scientificFormat(avgInCache, "0.00E0")
+                                + (avgInCache > 100_000_000_000L ? GTUtility.scientificFormat(avgInCache)
                                     : numberFormat.format(avgInCache))
                                 + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1147,7 +1147,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         () -> translateToLocalFormatted(
                             "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
                             EnumChatFormatting.RED
-                                + (avgOutCache > 100_000_000_000L ? GTUtility.scientificFormat(avgOutCache, "0.00E0")
+                                + (avgOutCache > 100_000_000_000L ? GTUtility.scientificFormat(avgOutCache)
                                     : numberFormat.format(avgOutCache))
                                 + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
