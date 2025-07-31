@@ -264,7 +264,7 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Marble, 1L))
-            .fluidInputs(GTModHandler.getDistilledWater(100L))
+            .fluidInputs(GTModHandler.getDistilledWater(500L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
