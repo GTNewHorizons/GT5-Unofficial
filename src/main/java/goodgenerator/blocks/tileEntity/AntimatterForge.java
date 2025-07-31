@@ -62,6 +62,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import org.jetbrains.annotations.Nullable;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -887,12 +888,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         render.setRotationFields(getDirection(), getRotation());
     }
 
-    private int[] getTargetCoordinates() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+    private int @Nullable [] getTargetCoordinates() {
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return null;
+
         World world = gregTechTileEntity.getWorld();
-        if (world == null) {
-            return null;
-        }
+        if (world == null) return null;
 
         int x = gregTechTileEntity.getXCoord();
         int y = gregTechTileEntity.getYCoord();
@@ -905,33 +906,42 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return new int[] { x + xOffset, y + yOffset, z + zOffset };
     }
 
-    public TileAntimatter getAntimatterRender() {
+    public @Nullable TileAntimatter getAntimatterRender() {
         int[] pos = getTargetCoordinates();
-        if (pos == null) {
-            return null;
-        }
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
+        if (pos == null) return null;
+
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return null;
+
+        World world = gregTechTileEntity.getWorld();
+        if (world == null) return null;
+
         return (TileAntimatter) world.getTileEntity(pos[0], pos[1], pos[2]);
     }
 
     public void destroyAntimatterRender() {
         int[] pos = getTargetCoordinates();
-        if (pos == null) {
-            return;
-        }
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
+        if (pos == null) return;
+
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return;
+
+        World world = gregTechTileEntity.getWorld();
+        if (world == null) return;
+
         world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
     }
 
     public void createAntimatterRender() {
         int[] pos = getTargetCoordinates();
-        if (pos == null) {
-            return;
-        }
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
+        if (pos == null) return;
+
+        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
+        if (gregTechTileEntity == null) return;
+
+        World world = gregTechTileEntity.getWorld();
+        if (world == null) return;
+
         world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
         world.setBlock(pos[0], pos[1], pos[2], Loaders.antimatterRenderBlock);
     }
