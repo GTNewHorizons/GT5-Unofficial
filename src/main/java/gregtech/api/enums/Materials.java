@@ -32,6 +32,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -1062,7 +1063,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         overrideChemicalFormulas();
     }
 
-    public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
+    public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
+    public final short[] mMoltenRGBa = new short[] { 255, 255, 255, 0 };
+    private int colorARGB = 0xFFFFFF;
     public TextureSet mIconSet;
     public GeneratedMaterialRenderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
@@ -1281,6 +1284,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mRGBa[1] = mMoltenRGBa[1] = (short) aG;
         mRGBa[2] = mMoltenRGBa[2] = (short) aB;
         mRGBa[3] = mMoltenRGBa[3] = (short) aA;
+        colorARGB = ColorUtil.fromRGBA(mRGBa);
         mTypes = aTypes;
         if (mColor != null) add(SubTag.HAS_COLOR);
         if (mTransparent) add(SubTag.TRANSPARENT);
@@ -3236,6 +3240,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Override
     public short[] getRGBA() {
         return mRGBa;
+    }
+
+    /** Return a color integer in ARGB format. */
+    public int getColor() {
+        return colorARGB;
     }
 
     @Override

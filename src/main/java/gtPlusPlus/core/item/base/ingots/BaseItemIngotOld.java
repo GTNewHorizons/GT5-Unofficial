@@ -26,7 +26,7 @@ public class BaseItemIngotOld extends Item {
         this.unlocalName = unlocalizedName;
         this.setMaxStackSize(64);
         this.setTextureName(GTPlusPlus.ID + ":" + "itemIngot");
-        this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
+        this.colour = colour == 0 ? Dyes._NULL.colorRGB : colour;
         this.materialName = materialName;
         this.sRadiation = sRadioactivity;
         GameRegistry.registerItem(this, unlocalizedName);

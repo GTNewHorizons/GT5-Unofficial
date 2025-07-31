@@ -1,7 +1,6 @@
 package detrav.gui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -12,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import detrav.gui.textures.DetravMapTexture;
 import gregtech.api.util.GTUtility;
+import it.unimi.dsi.fastutil.bytes.Byte2ShortOpenHashMap;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -92,7 +92,7 @@ public class DetravScannerGUI extends GuiScreen {
             drawTexturedModalRect(aX + currentWidth + 100, i, 171, 5, 5, Math.min(128, aY + currentHeight - i)); // right
 
         if (map.packet.ptype == 2) {
-            HashMap<Byte, Short>[][] fluidInfo = map.packet.map;
+            Byte2ShortOpenHashMap[][] fluidInfo = map.packet.map;
             int tX = x - aX;
             int tY = y - aY;
             if (tX >= 0 && tY >= 0 && tX < fluidInfo.length && tY < fluidInfo[0].length) {

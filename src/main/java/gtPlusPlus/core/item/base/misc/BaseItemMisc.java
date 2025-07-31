@@ -6,12 +6,10 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -20,16 +18,15 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemMisc extends Item {
 
     public final String displayName;
     public final String unlocalName;
     public final MiscTypes miscType;
-    public final Object componentColour;
+    public final int colorRGB;
 
-    public BaseItemMisc(final String displayName, final short[] RGB, final int maxStackSize, final MiscTypes miscType,
+    public BaseItemMisc(final String displayName, final int colorRGB, final int maxStackSize, final MiscTypes miscType,
         String[] description) {
 
         // Set-up the Misc Generic Item
@@ -41,11 +38,7 @@ public class BaseItemMisc extends Item {
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(maxStackSize);
         // this.setTextureName(this.getCorrectTextures());
-        if (RGB != null) {
-            this.componentColour = Utils.rgbtoHexValue(RGB[0], RGB[1], RGB[2]);
-        } else {
-            this.componentColour = null;
-        }
+        this.colorRGB = colorRGB;
         if (description != null) {
             for (int i = 0; i < description.length; i++) {
                 GTLanguageManager
@@ -104,19 +97,8 @@ public class BaseItemMisc extends Item {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        // Returns default colour if a custom one is not set.
-        if (this.componentColour == null) {
-            return 16777215;
-        } else {
-            return (int) this.componentColour;
-        }
-    }
-
-    @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        // Nothing Fancy here yet.
+    public int getColorFromItemStack(final ItemStack stack, final int colorRGB) {
+        return colorRGB;
     }
 
     public enum MiscTypes {

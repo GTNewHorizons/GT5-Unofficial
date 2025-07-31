@@ -1,6 +1,7 @@
 package gtPlusPlus.core.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
@@ -8,7 +9,6 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
-import gtPlusPlus.core.util.Utils;
 
 public class InternalEntityRegistry {
 
@@ -40,16 +40,13 @@ public class InternalEntityRegistry {
         ItemCustomSpawnEgg.registerEntityForSpawnEgg(
             0,
             "constructStaballoy",
-            Utils.rgbtoHexValue(20, 200, 20),
-            Utils.rgbtoHexValue(20, 20, 20));
+            ColorUtil.toRGB(20, 200, 20),
+            ColorUtil.toRGB(20, 20, 20));
 
         EntityRegistry
             .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 3, true);
-        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
-            1,
-            "sickBlaze",
-            Utils.rgbtoHexValue(40, 180, 40),
-            Utils.rgbtoHexValue(75, 75, 75));
+        ItemCustomSpawnEgg
+            .registerEntityForSpawnEgg(1, "sickBlaze", ColorUtil.toRGB(40, 180, 40), ColorUtil.toRGB(75, 75, 75));
 
         EntityRegistry.registerModEntity(
             EntityLightningAttack.class,

@@ -18,9 +18,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemTickable extends CoreItem {
 
@@ -97,7 +97,7 @@ public class BaseItemTickable extends CoreItem {
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 1 && this.twoRenderPasses) {
-            return Utils.rgbtoHexValue(255, 255, 255);
+            return ColorUtil.toRGB(255, 255, 255);
         }
         return this.itemColour;
     }

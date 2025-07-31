@@ -23,10 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.GTLanguageManager;
 
-public class BioCulture extends BioData implements IColorModulationContainer {
+public class BioCulture extends BioData {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
     public static final BioCulture NULLCULTURE = BioCulture
@@ -157,8 +157,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public int getColorRGB() {
-        return BWColorUtil
-            .getColorFromRGBArray(new int[] { this.color.getRed(), this.color.getGreen(), this.color.getBlue() });
+        return ColorUtil.toRGB(this.color.getRGB());
     }
 
     public Color getColor() {
@@ -237,17 +236,5 @@ public class BioCulture extends BioData implements IColorModulationContainer {
             0,
             17,
             31);
-    }
-
-    @Override
-    public short[] getRGBA() {
-        return new short[] { (short) this.getColor()
-            .getRed(),
-            (short) this.getColor()
-                .getGreen(),
-            (short) this.getColor()
-                .getBlue(),
-            (short) this.getColor()
-                .getAlpha() };
     }
 }

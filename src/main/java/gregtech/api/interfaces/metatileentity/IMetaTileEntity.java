@@ -393,7 +393,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return Dyes.MACHINE_METAL.toInt();
+            return Dyes.MACHINE_METAL.colorRGB;
         }
     }
 

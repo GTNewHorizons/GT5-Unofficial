@@ -14,11 +14,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.ColorUtil;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.Particle.ElementaryGroup;
-import gtPlusPlus.core.util.Utils;
 
 public class StandardBaseParticles extends BaseItemParticle {
 
@@ -47,24 +47,24 @@ public class StandardBaseParticles extends BaseItemParticle {
                 int aColour = 0;
                 if (o.mParticleName.equalsIgnoreCase(s)) {
                     if (o.mParticleType == ElementaryGroup.BARYON) {
-                        aColour = Utils.rgbtoHexValue(174, 226, 156);
+                        aColour = ColorUtil.toRGB(174, 226, 156);
                         aColourMap.put(key++, aColour);
                     } else if (o.mParticleType == ElementaryGroup.BOSON) {
                         if (o == Particle.HIGGS_BOSON) {
-                            aColour = Utils.rgbtoHexValue(226, 196, 104);
+                            aColour = ColorUtil.toRGB(226, 196, 104);
                             aColourMap.put(key++, aColour);
                         } else {
-                            aColour = Utils.rgbtoHexValue(226, 52, 66);
+                            aColour = ColorUtil.toRGB(226, 52, 66);
                             aColourMap.put(key++, aColour);
                         }
                     } else if (o.mParticleType == ElementaryGroup.LEPTON) {
-                        aColour = Utils.rgbtoHexValue(126, 226, 95);
+                        aColour = ColorUtil.toRGB(126, 226, 95);
                         aColourMap.put(key++, aColour);
                     } else if (o.mParticleType == ElementaryGroup.MESON) {
-                        aColour = Utils.rgbtoHexValue(90, 154, 226);
+                        aColour = ColorUtil.toRGB(90, 154, 226);
                         aColourMap.put(key++, aColour);
                     } else {
-                        aColour = Utils.rgbtoHexValue(188, 61, 226);
+                        aColour = ColorUtil.toRGB(188, 61, 226);
                         aColourMap.put(key++, aColour);
                     }
                 }
@@ -100,9 +100,9 @@ public class StandardBaseParticles extends BaseItemParticle {
     }
 
     @Override
-    public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        // return Utils.rgbtoHexValue(200, 200, 200);
-        return super.getColorFromParentClass(stack, HEX_OxFFFFFF);
+    public int getColorFromItemStack(final ItemStack stack, final int colorRGB) {
+        // return ColorUtil.toRGB(200, 200, 200);
+        return super.getColorFromParentClass(stack, colorRGB);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

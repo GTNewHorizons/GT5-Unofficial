@@ -66,7 +66,7 @@ public class BlockBaseModular extends BasicBlock {
         super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
         this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
         this.setBlockTextureName(GTPlusPlus.ID + ":" + blockType.getTexture());
-        this.blockColour = colour == 0 ? Dyes._NULL.toInt() : colour;
+        this.blockColour = colour == 0 ? Dyes._NULL.colorRGB : colour;
         this.thisBlock = blockType;
         this.thisBlockMaterial = blockMaterialString;
         this.thisBlockType = blockType.name()

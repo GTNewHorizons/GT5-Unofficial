@@ -18,10 +18,10 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.ColorUtil;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
 import toxiceverglades.world.TeleporterDimensionMod;
 
@@ -353,12 +353,12 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
 
     @Override
     public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4) {
-        return Utils.rgbtoHexValue(0, 255, 0);
+        return ColorUtil.toRGB(0, 255, 0);
     }
 
     @Override
     public int getRenderColor(final int aMeta) {
-        return Utils.rgbtoHexValue(0, 255, 0);
+        return ColorUtil.toRGB(0, 255, 0);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class ItemCustomComb extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list) {
-        for (CustomCombs type : CustomCombs.values()) {
+        for (CustomCombs type : CustomCombs.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -81,18 +81,14 @@ public class ItemCustomComb extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        final CustomCombs[] COMB_VALUES = CustomCombs.values();
+        final CustomCombs[] COMB_VALUES = CustomCombs.VALUES;
         int meta = Math.max(0, Math.min(COMB_VALUES.length - 1, stack.getItemDamage()));
-        int colour = COMB_VALUES[meta].getColours()[0];
-        if (pass >= 1) {
-            colour = COMB_VALUES[meta].getColours()[1];
-        }
-        return colour;
+        return COMB_VALUES[meta].getColorForPass(pass);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return CustomCombs.values()[stack.getItemDamage()].getName();
+        return CustomCombs.VALUES[stack.getItemDamage()].getName();
     }
 
     public void initCombsRecipes() {

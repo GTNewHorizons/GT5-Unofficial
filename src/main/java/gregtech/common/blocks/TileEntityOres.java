@@ -477,7 +477,7 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
                 .addIcon(
                     aMaterial.mIconSet.mTextures[this.mMetaData / 16000 == 0 ? OrePrefixes.ore.mTextureIndex
                         : OrePrefixes.oreSmall.mTextureIndex])
-                .setRGBA(aMaterial.mRGBa)
+                .setRGB(aMaterial.getColor())
                 .stdOrient()
                 .build();
             return new ITexture[] { ((BlockOresAbstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)],
