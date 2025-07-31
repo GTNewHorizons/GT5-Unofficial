@@ -63,6 +63,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
@@ -70,6 +71,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
@@ -9143,6 +9145,35 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_Input_Bus_Debug.set(
             new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
                 .getStackForm(1l));
+
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_1.ID,
+            "hatch.input-bus.tier.00",
+            "Compressed Input Bus (UV)",
+            8,
+            16,
+            16);
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_2.ID,
+            "hatch.input-bus.tier.01",
+            "Compressed Input Bus (UHV)",
+            9,
+            16,
+            64);
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_3.ID,
+            "hatch.input-bus.tier.02",
+            "Compressed Input Bus (UEV)",
+            10,
+            16,
+            256);
+        new MTEHatchInputBusCompressed(
+            HATCH_INPUT_BUS_COMPRESSED_4.ID,
+            "hatch.input-bus.tier.03",
+            "Compressed Input Bus (UIV)",
+            11,
+            16,
+            1024);
     }
 
     private static void registerOutputBus() {
@@ -9170,6 +9201,35 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_Output_Bus_MAX.set(
             new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
                 .getStackForm(1L));
+
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
+            "hatch.output-bus.tier.00",
+            "Compressed Output Bus (UV)",
+            8,
+            16,
+            16);
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
+            "hatch.output-bus.tier.01",
+            "Compressed Output Bus (UHV)",
+            9,
+            16,
+            64);
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
+            "hatch.output-bus.tier.02",
+            "Compressed Output Bus (UEV)",
+            10,
+            16,
+            256);
+        new MTEHatchOutputBusCompressed(
+            HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
+            "hatch.output-bus.tier.03",
+            "Compressed Output Bus (UIV)",
+            11,
+            16,
+            1024);
     }
 
     private static void registerMufflerHatch() {
