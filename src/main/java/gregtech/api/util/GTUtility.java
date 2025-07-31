@@ -3686,6 +3686,13 @@ public class GTUtility {
         return format.format(aNumber);
     }
 
+    public static String scientificFormat(BigInteger aNumber, String pattern) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat(pattern, dfs);
+        return format.format(aNumber);
+    }
+
     /**
      * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
      * Since it suppresses errors, it should be used only when inputs are unreliable,
