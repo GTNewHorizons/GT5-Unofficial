@@ -3679,9 +3679,11 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
-    public static String scientificFormat(long aNumber, int decimalPlaces) {
-        return String.format("%." + decimalPlaces + "e", (double) aNumber)
-            .replace("+", "");
+    public static String scientificFormat(long aNumber, String pattern) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat(pattern, dfs);
+        return format.format(aNumber);
     }
 
     /**
