@@ -355,7 +355,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + ")^("
+                    + " ^ "
                     + EnumChatFormatting.GOLD
                     + EnumChatFormatting.BOLD
                     + EnumChatFormatting.UNDERLINE
@@ -372,7 +372,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GREEN
                     + "ntimatter energy"
                     + EnumChatFormatting.GRAY
-                    + " base value : "
+                    + " base value: "
                     + EnumChatFormatting.GREEN
                     + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE, "0E0")
                     + EnumChatFormatting.GRAY
