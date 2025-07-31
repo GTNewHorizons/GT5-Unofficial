@@ -223,7 +223,7 @@ gt.blockmachines.multimachine.ig.elevator.desc3=Motor tier limits module tier an
 gt.blockmachines.multimachine.ig.elevator.desc4=Each module has their own space for IO, except energy
 gt.blockmachines.multimachine.ig.elevator.desc5=Energy is supplied to this controller and gets distributed
 gt.blockmachines.multimachine.ig.elevator.desc6=Starting from MK-III Motors the structure can be expanded to fit §a24 §7modules
-gt.blockmachines.multimachine.ig.elevator.desc7=Max module amount is §a6§7/§a12§7/§a15§7/§a18§7/§a24§7 for §aMK-I§7/§aMK-II§7/§aMK-III§7/§aMK-IV§7/§aMK-V§7 motors correspondingly
+gt.blockmachines.multimachine.ig.elevator.desc7=Max module amount is §a6§7/§912§7/§d15§7/§618§7/§c24§7 for §aMK-I§7/§9MK-II§7/§dMK-III§7/§6MK-IV§7/§cMK-V§7 motors correspondingly
 gt.blockmachines.multimachine.ig.elevator.desc8=Disabling this controller also pauses all modules
 gt.blockmachines.multimachine.ig.elevator.lore0=10:Elevates to space
 gt.blockmachines.multimachine.ig.elevator.lore1=10:What's your favorite thing about space? Mine is space.
@@ -240,11 +240,11 @@ gt.blockmachines.multimachine.ig.elevator.gui.config=Configuration:
 # Module Base
 gt.blockmachines.module.name=Space Elevator Module
 gt.blockmachines.multimachine.project.ig.desc2=Doesn't use an energy hatch, instead receives energy from the Space Elevator
-gt.blockmachines.multimachine.project.ig.motorT1=Needs at least Motor §aMK-I§7 to work
-gt.blockmachines.multimachine.project.ig.motorT2=Needs at least Motor §aMK-II§7 to work
-gt.blockmachines.multimachine.project.ig.motorT3=Needs at least Motor §aMK-III§7 to work
-gt.blockmachines.multimachine.project.ig.motorT4=Needs at least Motor §aMK-IV§7 to work
-gt.blockmachines.multimachine.project.ig.motorT5=Needs at least Motor §aMK-V§7 to work
+gt.blockmachines.multimachine.project.ig.motorT1=Needs at least §aMotor MK-I§7 to work
+gt.blockmachines.multimachine.project.ig.motorT2=Needs at least §9Motor MK-II§7 to work
+gt.blockmachines.multimachine.project.ig.motorT3=Needs at least §dMotor MK-III§7 to work
+gt.blockmachines.multimachine.project.ig.motorT4=Needs at least §6Motor MK-IV§7 to work
+gt.blockmachines.multimachine.project.ig.motorT5=Needs at least §cMotor MK-V§7 to work
 
 # Module Assembler
 gt.blockmachines.multimachine.project.ig.assembler.t1.name=Space Assembler Module MK-I

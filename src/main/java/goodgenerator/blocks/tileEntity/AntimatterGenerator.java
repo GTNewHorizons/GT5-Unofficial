@@ -355,14 +355,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + ")^"
+                    + ")^("
                     + EnumChatFormatting.GOLD
                     + EnumChatFormatting.BOLD
                     + EnumChatFormatting.UNDERLINE
                     + "E"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " EU/Cycle")
+                    + " EU/Cycle)")
             .addInfo(
                 "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
