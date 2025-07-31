@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -878,61 +879,64 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         render.setRotationFields(getDirection(), getRotation());
     }
 
-    private int @Nullable [] getTargetCoordinates() {
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return null;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return null;
-
+    private int getTargetX(@NotNull IGregTechTileEntity gregTechTileEntity) {
         int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
         int xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        return x + xOffset;
+    }
 
-        return new int[] { x + xOffset, y + yOffset, z + zOffset };
+    private int getTargetY(@NotNull IGregTechTileEntity gregTechTileEntity) {
+        int y = gregTechTileEntity.getYCoord();
+        int yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        return y + yOffset;
+    }
+
+    private int getTargetZ(@NotNull IGregTechTileEntity gregTechTileEntity) {
+        int z = gregTechTileEntity.getZCoord();
+        int zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        return z + zOffset;
     }
 
     public @Nullable TileAntimatter getAntimatterRender() {
-        int[] pos = getTargetCoordinates();
-        if (pos == null) return null;
-
         IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
         if (gregTechTileEntity == null) return null;
 
         World world = gregTechTileEntity.getWorld();
         if (world == null) return null;
 
-        return (TileAntimatter) world.getTileEntity(pos[0], pos[1], pos[2]);
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
+
+        return (TileAntimatter) world.getTileEntity(x, y, z);
     }
 
     public void destroyAntimatterRender() {
-        int[] pos = getTargetCoordinates();
-        if (pos == null) return;
-
         IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
         if (gregTechTileEntity == null) return;
 
         World world = gregTechTileEntity.getWorld();
         if (world == null) return;
 
-        world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
+
+        world.setBlock(x, y, z, Blocks.air);
     }
 
     public void createAntimatterRender() {
-        int[] pos = getTargetCoordinates();
-        if (pos == null) return;
-
         IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
         if (gregTechTileEntity == null) return;
 
         World world = gregTechTileEntity.getWorld();
         if (world == null) return;
 
-        world.setBlock(pos[0], pos[1], pos[2], Blocks.air);
-        world.setBlock(pos[0], pos[1], pos[2], Loaders.antimatterRenderBlock);
+        final int x = getTargetX(gregTechTileEntity);
+        final int y = getTargetY(gregTechTileEntity);
+        final int z = getTargetZ(gregTechTileEntity);
+
+        world.setBlock(x, y, z, Blocks.air);
+        world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
     }
 }
