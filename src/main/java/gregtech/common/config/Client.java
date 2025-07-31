@@ -109,10 +109,6 @@ public class Client {
     @Config.LangKey("GT5U.gui.config.client.preference")
     public static class Preference {
 
-        @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
-        @Config.DefaultBoolean(true)
-        public boolean batchModeInitialValue;
-
         @Config.Comment("if true, input filter will initially be on when input buses are placed in the world.")
         @Config.DefaultBoolean(false)
         public boolean inputBusInitialFilter;
