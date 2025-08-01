@@ -250,10 +250,9 @@ public class MaterialsInit1 {
         Materials.Vanadium = loadVanadium();
         Materials.Ytterbium = loadYtterbium();
         Materials.Yttrium = loadYttrium();
+        Materials.Zinc = loadZinc();
 
         // spotless:off
-        Materials.Zinc                    = new Materials(  36, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2  |8   |32             , 250, 240, 240,   0,   "Zinc"                    ,   "Zinc"                          ,    0,       0,        692,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.Zn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
-
         Materials.Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Filtered Water (Grade 1)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
         Materials.Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Ozonated Water (Grade 2)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
         Materials.Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Flocculated Water (Grade 3)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
@@ -2711,6 +2710,25 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadZinc() {
+        return new MaterialBuilder().setName("Zinc")
+            .setDefaultLocalName("Zinc")
+            .setElement(Element.Zn)
+            .setMetaItemSubID(36)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfaf0f0)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(692)
+            .setOreValue(2)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
             .constructMaterial();
     }
 
