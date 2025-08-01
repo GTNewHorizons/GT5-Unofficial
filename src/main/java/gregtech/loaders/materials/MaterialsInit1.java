@@ -485,8 +485,25 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
             .constructMaterial();
 
+        Materials.Copper = new MaterialBuilder().setName("Copper")
+            .setDefaultLocalName("Copper")
+            .setElement(Element.Cu)
+            .setMetaItemSubID(35)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeOrange)
+            .setRGB(0xff6400)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addGearItems()
+            .setMeltingPoint(1357)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Copper                  = new Materials(  35, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1|2  |8   |32   |128      , 255, 100,   0,   0,   "Copper"                  ,   "Copper"                        ,    0,       0,       1357,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , Element.Cu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1)));
         Materials.Deuterium               = new Materials(   2, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255,   0, 240,   "Deuterium"               ,   "Deuterium"                     ,    0,       0,         14,    0, false,  true,  10,   1,   1, Dyes.dyeYellow      , Element.D         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3)));
         Materials.Dysprosium              = new Materials(  73, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 105, 209,  80,   0,   "Dysprosium"              ,   "Dysprosium"                    ,    0,       0,       1680, 1680,  true, false,   4,   1,   1, Dyes._NULL          , Element.Dy        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
         Materials.Empty                   = new Materials(   0, TextureSet.SET_NONE              ,   1.0F,      0,  2, 256/*Only when needed*/   , 255, 255, 255, 255,   "Empty"                   ,   "Empty"                         ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Element._NULL     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
