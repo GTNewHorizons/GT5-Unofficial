@@ -225,9 +225,9 @@ public class MaterialsInit1 {
         Materials.Plutonium241 = loadPlutonium241();
         Materials.Potassium = loadPotassium();
         Materials.Praseodymium = loadPraseodymium();
+        Materials.Promethium = loadPromethium();
 
         // spotless:off
-        Materials.Promethium              = new Materials(  68, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  36, 181,  53,   0,   "Promethium"              ,   "Promethium"                    ,    0,       0,       1315, 1315,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Radon                   = new Materials(  93, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255,   0, 255, 240,   "Radon"                   ,   "Radon"                         ,    0,       0,        202,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , Element.Rn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AER, 1), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Rubidium                = new Materials(  43, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 240,  30,  30,   0,   "Rubidium"                ,   "Rubidium"                      ,    0,       0,        312,    0, false, false,   4,   1,   1, Dyes.dyeRed         , Element.Rb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.Samarium                = new Materials(  69, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 204,   0,   "Samarium"                ,   "Samarium"                      ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , Element.Sm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
@@ -2395,6 +2395,27 @@ public class MaterialsInit1 {
             .addPlasma()
             .setMeltingPoint(1208)
             .setBlastFurnaceTemp(1208)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadPromethium() {
+        return new MaterialBuilder().setName("Promethium")
+            .setDefaultLocalName("Promethium")
+            .setElement(Element.Pm)
+            .setMetaItemSubID(68)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes._NULL)
+            .setRGB(0x24b535)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1315)
+            .setBlastFurnaceTemp(1315)
             .setBlastFurnaceRequired(true)
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
