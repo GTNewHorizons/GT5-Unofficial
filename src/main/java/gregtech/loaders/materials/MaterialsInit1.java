@@ -206,9 +206,9 @@ public class MaterialsInit1 {
         Materials.Lead = loadLead();
         Materials.Lithium = loadLithium();
         Materials.Lutetium = loadLutetium();
+        Materials.Magic = loadMagic();
 
         // spotless:off
-        Materials.Magic                   = new Materials(-128, TextureSet.SET_SHINY             ,   8.0F,   5120,  5, 1|2|4|8|16|32|64|128      , 100,   0, 200,   0,   "Magic"                   ,   "Magic"                         ,    5,      32,       5000,    0, false, false,   7,   1,   1, Dyes.dyePurple      , Element.Ma        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4)));
         Materials.Magnesium               = new Materials(  18, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 200, 200,   0,   "Magnesium"               ,   "Magnesium"                     ,    0,       0,        923,    0, false, false,   3,   1,   1, Dyes.dyePink        , Element.Mg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
         Materials.Manganese               = new Materials(  31, TextureSet.SET_DULL              ,   7.0F,    512,  2, 1|2  |8   |32|64          , 250, 250, 250,   0,   "Manganese"               ,   "Manganese"                     ,    0,       0,       1519,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , Element.Mn        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
         Materials.Mercury                 = new Materials(  87, TextureSet.SET_SHINY             ,   1.0F,      0,  0,         16|32             , 255, 220, 220,   0,   "Mercury"                 ,   "Mercury"                       ,    5,      32,        234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Hg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)));
@@ -1984,6 +1984,33 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadMagic() {
+        return new MaterialBuilder().setName("Magic")
+            .setDefaultLocalName("Magic")
+            .setElement(Element.Ma)
+            .setMetaItemSubID(-128)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setRGB(0x6400c8)
+            .setToolSpeed(0.0f)
+            .setDurability(5120)
+            .setToolQuality(5)
+            .addDustItems()
+            .addMetalItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(5000)
+            .setOreValue(7)
+            .setFuelType(5)
+            .setFuelPower(32)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4))
             .constructMaterial();
     }
 }
