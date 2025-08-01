@@ -902,7 +902,6 @@ public class MaterialsInit1 {
         // spotless:on
     }
 
-
     private static void loadElements() {
         Materials.Aluminium = loadAluminium();
         Materials.Americium = loadAmericium();
@@ -1384,7 +1383,7 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .setARGB(0xffffffff)
             .setTypes(256) // Only when needed
-            .setMeltingPoint(-1)
+            .setMeltingPoint(0) // Original value of -1 causes tests to fail but there is no reason for it to be -1
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
             .constructMaterial();
     }
@@ -2742,39 +2741,113 @@ public class MaterialsInit1 {
     }
 
     private static Materials loadPotassiumNitrade() {
-        return new MaterialBuilder(590, TextureSet.SET_DULL, "Potassium Nitrate").setName("PotassiumNitrate").addDustItems().setRGB(129, 34, 141).setColor(Dyes.dyePurple).setMaterialList(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
+        return new MaterialBuilder(590, TextureSet.SET_DULL, "Potassium Nitrate").setName("PotassiumNitrate")
+            .addDustItems()
+            .setRGB(129, 34, 141)
+            .setColor(Dyes.dyePurple)
+            .setMaterialList(
+                new MaterialStack(Potassium, 1),
+                new MaterialStack(Nitrogen, 1),
+                new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadChromiumTrioxide() {
-        return new MaterialBuilder(591, TextureSet.SET_DULL, "Chromium Trioxide").setName("Chromiumtrioxide").addDustItems().setRGB(255, 228, 225).setColor(Dyes.dyePink).setMaterialList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 3)).addElectrolyzerRecipe().constructMaterial();
+        return new MaterialBuilder(591, TextureSet.SET_DULL, "Chromium Trioxide").setName("Chromiumtrioxide")
+            .addDustItems()
+            .setRGB(255, 228, 225)
+            .setColor(Dyes.dyePink)
+            .setMaterialList(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 3))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadNitrochlorobenzene() {
-        return new MaterialBuilder(592, TextureSet.SET_FLUID, "2-Nitrochlorobenzene").addCell().addFluid().setRGB(143, 181, 26).setColor(Dyes.dyeLime).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
+        return new MaterialBuilder(592, TextureSet.SET_FLUID, "2-Nitrochlorobenzene").addCell()
+            .addFluid()
+            .setRGB(143, 181, 26)
+            .setColor(Dyes.dyeLime)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 4),
+                new MaterialStack(Chlorine, 1),
+                new MaterialStack(Nitrogen, 1),
+                new MaterialStack(Oxygen, 2))
+            .constructMaterial();
     }
 
     private static Materials loadDimethylbenzene() {
-        return new MaterialBuilder(593, TextureSet.SET_FLUID, "1,2-Dimethylbenzene").setName("Dimethylbenzene").addCell().addFluid().setRGB(102, 156, 64).setColor(Dyes.dyeLime).setMeltingPoint(248).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)).addElectrolyzerRecipe().constructMaterial();
+        return new MaterialBuilder(593, TextureSet.SET_FLUID, "1,2-Dimethylbenzene").setName("Dimethylbenzene")
+            .addCell()
+            .addFluid()
+            .setRGB(102, 156, 64)
+            .setColor(Dyes.dyeLime)
+            .setMeltingPoint(248)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumdichromate() {
-        return new MaterialBuilder(594, TextureSet.SET_DULL, "Potassium Dichromate").setName("PotassiumDichromate").addDustItems().setRGB(255, 8, 127).setColor(Dyes.dyePink).setMaterialList(new MaterialStack(Potassium, 2), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 7)).addElectrolyzerRecipe().constructMaterial();
+        return new MaterialBuilder(594, TextureSet.SET_DULL, "Potassium Dichromate").setName("PotassiumDichromate")
+            .addDustItems()
+            .setRGB(255, 8, 127)
+            .setColor(Dyes.dyePink)
+            .setMaterialList(
+                new MaterialStack(Potassium, 2),
+                new MaterialStack(Chrome, 2),
+                new MaterialStack(Oxygen, 7))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadPhthalicAcid() {
-        return new MaterialBuilder(595, TextureSet.SET_FLUID, "Phthalic Acid").setName("phtalicacid").addCell().addFluid().setRGB(54, 133, 71).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4)).constructMaterial();
+        return new MaterialBuilder(595, TextureSet.SET_FLUID, "Phthalic Acid").setName("phtalicacid")
+            .addCell()
+            .addFluid()
+            .setRGB(54, 133, 71)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4))
+            .constructMaterial();
     }
 
     private static Materials loadDichlorobenzidine() {
-        return new MaterialBuilder(596, TextureSet.SET_FLUID, "3,3-Dichlorobenzidine").addCell().addFluid().setRGB(161, 222, 166).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 10), new MaterialStack(Nitrogen, 2), new MaterialStack(Chlorine, 2)).constructMaterial();
+        return new MaterialBuilder(596, TextureSet.SET_FLUID, "3,3-Dichlorobenzidine").addCell()
+            .addFluid()
+            .setRGB(161, 222, 166)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(
+                new MaterialStack(Carbon, 12),
+                new MaterialStack(Hydrogen, 10),
+                new MaterialStack(Nitrogen, 2),
+                new MaterialStack(Chlorine, 2))
+            .constructMaterial();
     }
 
     private static Materials loadDiaminobenzidin() {
-        return new MaterialBuilder(597, TextureSet.SET_FLUID, "3,3-Diaminobenzidine").addCell().addFluid().setRGB(51, 125, 89).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 14), new MaterialStack(Nitrogen, 4)).constructMaterial();
+        return new MaterialBuilder(597, TextureSet.SET_FLUID, "3,3-Diaminobenzidine").addCell()
+            .addFluid()
+            .setRGB(51, 125, 89)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(
+                new MaterialStack(Carbon, 12),
+                new MaterialStack(Hydrogen, 14),
+                new MaterialStack(Nitrogen, 4))
+            .constructMaterial();
     }
 
     private static Materials loadDiphenylisophthalate() {
-        return new MaterialBuilder(598, TextureSet.SET_FLUID, "Diphenyl Isophthalate").setName("DiphenylIsophtalate").addCell().addFluid().setRGB(36, 110, 87).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 20), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 4)).constructMaterial();
+        return new MaterialBuilder(598, TextureSet.SET_FLUID, "Diphenyl Isophthalate").setName("DiphenylIsophtalate")
+            .addCell()
+            .addFluid()
+            .setRGB(36, 110, 87)
+            .setColor(Dyes.dyeOrange)
+            .setMaterialList(
+                new MaterialStack(Carbon, 20),
+                new MaterialStack(Hydrogen, 14),
+                new MaterialStack(Oxygen, 4))
+            .constructMaterial();
     }
 
     private static Materials loadMtbeMixture() {
