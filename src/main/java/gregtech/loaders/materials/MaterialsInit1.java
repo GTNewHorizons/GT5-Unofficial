@@ -185,9 +185,9 @@ public class MaterialsInit1 {
         Materials.HeeEndium = loadHeeEndium();
         Materials.Teslatite = loadTeslatite();
         Materials.Fluix = loadFluix();
+        Materials.DarkThaumium = loadDarkThaumium();
 
         // spotless:off;
-        Materials.DarkThaumium            = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "DarkThaumium"            ,   "Dark Thaumium"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Alfium                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Alfium"                  ,   "Alfium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Mutation                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Mutation"                ,   "Mutation"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Aquamarine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Aquamarine"              ,   "Aquamarine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -3118,6 +3118,19 @@ public class MaterialsInit1 {
             .setRGB(0xffffff)
             .addDustItems()
             .addGemItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadDarkThaumium() {
+        return new MaterialBuilder().setName("DarkThaumium")
+            .setDefaultLocalName("Dark Thaumium")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
+            .addMetalItems()
             .setOreValue(3)
             .constructMaterial();
     }
