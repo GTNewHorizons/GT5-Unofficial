@@ -60,13 +60,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
      * Amun-Ra: Needs it because the Planks metadatas are completely different from
      * the Slab metadatas. In this case we match each block subtype individually.
      *
-     * Et Futurum Requiem: Slab recipes are handled in NewHorizonsCoreMod instead
-     * of here. This one is likely to be fixed soon(tm).
+     * Et Futurum Requiem: ETF's Slab recipes _are_ OreDict recipes, meaning they
+     * receive the same priority as Forge's standard ShapedOreRecipe, and thus may
+     * be skipped. We specify them manually here to avoid this.
      */
     private static final String[] SPECIAL_PLANKS = new String[] { "witchery:witchwood",
         "GalacticraftAmunRa:tile.wood1:2", "GalacticraftAmunRa:tile.wood1:3", "etfuturum:wood_planks" };
     private static final String[] SPECIAL_SLABS = new String[] { "witchery:witchwoodslab",
-        "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", null };
+        "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
 
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
 
