@@ -223,9 +223,9 @@ public class MaterialsInit1 {
         Materials.Platinum = loadPlatinum();
         Materials.Plutonium = loadPlutonium();
         Materials.Plutonium241 = loadPlutonium241();
+        Materials.Potassium = loadPotassium();
 
         // spotless:off
-        Materials.Potassium               = new Materials(  25, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2       |32             , 154, 172, 223,   0,   "Potassium"               ,   "Potassium"                     ,    0,       0,        336,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.K         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1)));
         Materials.Praseodymium            = new Materials(  66, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 117, 214, 129,   0,   "Praseodymium"            ,   "Praseodymium"                  ,    0,       0,       1208, 1208,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Promethium              = new Materials(  68, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  36, 181,  53,   0,   "Promethium"              ,   "Promethium"                    ,    0,       0,       1315, 1315,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Radon                   = new Materials(  93, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255,   0, 255, 240,   "Radon"                   ,   "Radon"                         ,    0,       0,        202,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , Element.Rn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AER, 1), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
@@ -2360,6 +2360,24 @@ public class MaterialsInit1 {
             .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassium() {
+        return new MaterialBuilder().setName("Potassium")
+            .setDefaultLocalName("Potassium")
+            .setElement(Element.K)
+            .setMetaItemSubID(25)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0x9aacdf)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .setMeltingPoint(336)
+            .setOreValue(2)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .constructMaterial();
     }
 
