@@ -234,7 +234,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
             .setARGB(0xf000ff00)
-            .setTransparent(true)
             .addCell()
             .addPlasma()
             .setMeltingPoint(83)
