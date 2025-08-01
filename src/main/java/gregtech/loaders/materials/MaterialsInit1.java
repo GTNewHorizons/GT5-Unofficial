@@ -168,89 +168,8 @@ import gregtech.api.objects.MaterialStack;
 public class MaterialsInit1 {
 
     public static void load() {
-        Materials.Aluminium = loadAluminium();
-        Materials.Americium = loadAmericium();
-        Materials.Antimony = loadAntimony();
-        Materials.Argon = loadArgon();
-        Materials.Arsenic = loadArsenic();
-        Materials.Barium = loadBarium();
-        Materials.Beryllium = loadBeryllium();
-        Materials.Bismuth = loadBismuth();
-        Materials.Boron = loadBoron();
-        Materials.Caesium = loadCaesium();
-        Materials.Calcium = loadCalcium();
-        Materials.Carbon = loadCarbon();
-        Materials.Cadmium = loadCadmium();
-        Materials.Cerium = loadCerium();
-        Materials.Chlorine = loadChlorine();
-        Materials.Chrome = loadChrome();
-        Materials.Cobalt = loadCobalt();
-        Materials.Copper = loadCopper();
-        Materials.Deuterium = loadDeuterium();
-        Materials.Dysprosium = loadDysprosium();
-        Materials.Empty = loadEmpty(); // Not a real element
-        Materials.Erbium = loadErbium();
-        Materials.Europium = loadEuropium();
-        Materials.Fluorine = loadFluorine();
-        Materials.Gadolinium = loadGadolinium();
-        Materials.Gallium = loadGallium();
-        Materials.Gold = loadGold();
-        Materials.Holmium = loadHolmium();
-        Materials.Hydrogen = loadHydrogen();
-        Materials.Helium = loadHelium();
-        Materials.Helium_3 = loadHelium3();
-        Materials.Indium = loadIndium();
-        Materials.Iridium = loadIridium();
-        Materials.Iron = loadIron();
-        Materials.Lanthanum = loadLanthanum();
-        Materials.Lead = loadLead();
-        Materials.Lithium = loadLithium();
-        Materials.Lutetium = loadLutetium();
-        Materials.Magic = loadMagic(); // Not a real element
-        Materials.Magnesium = loadMagnesium();
-        Materials.Manganese = loadManganese();
-        Materials.Mercury = loadMercury();
-        Materials.Molybdenum = loadMolybdenum();
-        Materials.Neodymium = loadNeodymium();
-        Materials.Neutronium = loadNeutronium();
-        Materials.Nickel = loadNickel();
-        Materials.Niobium = loadNiobium();
-        Materials.Nitrogen = loadNitrogen();
-        Materials.Osmium = loadOsmium();
-        Materials.Oxygen = loadOxygen();
-        Materials.Palladium = loadPalladium();
-        Materials.Phosphorus = loadPhosphorus();
-        Materials.Platinum = loadPlatinum();
-        Materials.Plutonium = loadPlutonium();
-        Materials.Plutonium241 = loadPlutonium241();
-        Materials.Potassium = loadPotassium();
-        Materials.Praseodymium = loadPraseodymium();
-        Materials.Promethium = loadPromethium();
-        Materials.Radon = loadRadon();
-        Materials.Rubidium = loadRubidium();
-        Materials.Samarium = loadSamarium();
-        Materials.Scandium = loadScandium();
-        Materials.Silicon = loadSilicon();
-        Materials.Silver = loadSilver();
-        Materials.Sodium = loadSodium();
-        Materials.Strontium = loadStrontium();
-        Materials.Sulfur = loadSulfur();
-        Materials.Tantalum = loadTantalum();
-        Materials.Tellurium = loadTellurium();
-        Materials.Terbium = loadTerbium();
-        Materials.Thorium = loadThorium();
-        Materials.Thulium = loadThulium();
-        Materials.Tin = loadTin();
-        Materials.Titanium = loadTitanium();
-        Materials.Tritanium = loadTritanium(); // Not a real element
-        Materials.Tritium = loadTritium();
-        Materials.Tungsten = loadTungsten();
-        Materials.Uranium = loadUranium();
-        Materials.Uranium235 = loadUranium235();
-        Materials.Vanadium = loadVanadium();
-        Materials.Ytterbium = loadYtterbium();
-        Materials.Yttrium = loadYttrium();
-        Materials.Zinc = loadZinc();
+        loadElements();
+        loadIsotopes();
 
         // spotless:off
         Materials.Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Filtered Water (Grade 1)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
@@ -983,6 +902,87 @@ public class MaterialsInit1 {
         // spotless:on
     }
 
+    private static void loadElements() {
+        Materials.Aluminium = loadAluminium();
+        Materials.Americium = loadAmericium();
+        Materials.Antimony = loadAntimony();
+        Materials.Argon = loadArgon();
+        Materials.Arsenic = loadArsenic();
+        Materials.Barium = loadBarium();
+        Materials.Beryllium = loadBeryllium();
+        Materials.Bismuth = loadBismuth();
+        Materials.Boron = loadBoron();
+        Materials.Caesium = loadCaesium();
+        Materials.Calcium = loadCalcium();
+        Materials.Carbon = loadCarbon();
+        Materials.Cadmium = loadCadmium();
+        Materials.Cerium = loadCerium();
+        Materials.Chlorine = loadChlorine();
+        Materials.Chrome = loadChrome();
+        Materials.Cobalt = loadCobalt();
+        Materials.Copper = loadCopper();
+        Materials.Dysprosium = loadDysprosium();
+        Materials.Empty = loadEmpty(); // Not a real element
+        Materials.Erbium = loadErbium();
+        Materials.Europium = loadEuropium();
+        Materials.Fluorine = loadFluorine();
+        Materials.Gadolinium = loadGadolinium();
+        Materials.Gallium = loadGallium();
+        Materials.Gold = loadGold();
+        Materials.Holmium = loadHolmium();
+        Materials.Hydrogen = loadHydrogen();
+        Materials.Helium = loadHelium();
+        Materials.Indium = loadIndium();
+        Materials.Iridium = loadIridium();
+        Materials.Iron = loadIron();
+        Materials.Lanthanum = loadLanthanum();
+        Materials.Lead = loadLead();
+        Materials.Lithium = loadLithium();
+        Materials.Lutetium = loadLutetium();
+        Materials.Magic = loadMagic(); // Not a real element
+        Materials.Magnesium = loadMagnesium();
+        Materials.Manganese = loadManganese();
+        Materials.Mercury = loadMercury();
+        Materials.Molybdenum = loadMolybdenum();
+        Materials.Neodymium = loadNeodymium();
+        Materials.Neutronium = loadNeutronium();
+        Materials.Nickel = loadNickel();
+        Materials.Niobium = loadNiobium();
+        Materials.Nitrogen = loadNitrogen();
+        Materials.Osmium = loadOsmium();
+        Materials.Oxygen = loadOxygen();
+        Materials.Palladium = loadPalladium();
+        Materials.Phosphorus = loadPhosphorus();
+        Materials.Platinum = loadPlatinum();
+        Materials.Plutonium = loadPlutonium();
+        Materials.Potassium = loadPotassium();
+        Materials.Praseodymium = loadPraseodymium();
+        Materials.Promethium = loadPromethium();
+        Materials.Radon = loadRadon();
+        Materials.Rubidium = loadRubidium();
+        Materials.Samarium = loadSamarium();
+        Materials.Scandium = loadScandium();
+        Materials.Silicon = loadSilicon();
+        Materials.Silver = loadSilver();
+        Materials.Sodium = loadSodium();
+        Materials.Strontium = loadStrontium();
+        Materials.Sulfur = loadSulfur();
+        Materials.Tantalum = loadTantalum();
+        Materials.Tellurium = loadTellurium();
+        Materials.Terbium = loadTerbium();
+        Materials.Thorium = loadThorium();
+        Materials.Thulium = loadThulium();
+        Materials.Tin = loadTin();
+        Materials.Titanium = loadTitanium();
+        Materials.Tritanium = loadTritanium(); // Not a real element
+        Materials.Tungsten = loadTungsten();
+        Materials.Uranium = loadUranium();
+        Materials.Vanadium = loadVanadium();
+        Materials.Ytterbium = loadYtterbium();
+        Materials.Yttrium = loadYttrium();
+        Materials.Zinc = loadZinc();
+    }
+
     private static Materials loadAluminium() {
         return new MaterialBuilder().setName("Aluminium")
             .setDefaultLocalName("Aluminium")
@@ -1354,22 +1354,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadDeuterium() {
-        return new MaterialBuilder().setName("Deuterium")
-            .setDefaultLocalName("Deuterium")
-            .setElement(Element.D)
-            .setMetaItemSubID(2)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0xf0ffff00)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(14)
-            .setOreValue(10)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3))
-            .constructMaterial();
-    }
-
     private static Materials loadDysprosium() {
         return new MaterialBuilder().setName("Dysprosium")
             .setDefaultLocalName("Dysprosium")
@@ -1581,22 +1565,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1)
             .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
-            .constructMaterial();
-    }
-
-    private static Materials loadHelium3() {
-        return new MaterialBuilder().setName("Helium_3")
-            .setDefaultLocalName("Helium-3")
-            .setElement(Element.He_3)
-            .setMetaItemSubID(5)
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0xf0ffff00)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(1)
-            .setOreValue(10)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 3))
             .constructMaterial();
     }
 
@@ -2116,29 +2084,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadPlutonium241() {
-        return new MaterialBuilder().setName("Plutonium241")
-            .setDefaultLocalName("Plutonium 241")
-            .setElement(Element.Pu_241)
-            .setMetaItemSubID(101)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeLime)
-            .setRGB(0xfa4646)
-            .setToolSpeed(0.0f)
-            .setDurability(512)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addPlasma()
-            .addToolHeadItems()
-            .setMeltingPoint(912)
-            .setOreValue(6)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
-            .constructMaterial();
-    }
-
     private static Materials loadPotassium() {
         return new MaterialBuilder().setName("Potassium")
             .setDefaultLocalName("Potassium")
@@ -2560,22 +2505,6 @@ public class MaterialsInit1 {
             .constructMaterial();
     }
 
-    private static Materials loadTritium() {
-        return new MaterialBuilder().setName("Tritium")
-            .setDefaultLocalName("Tritium")
-            .setElement(Element.T)
-            .setMetaItemSubID(3)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeRed)
-            .setARGB(0xf0ff0000)
-            .addCell()
-            .addPlasma()
-            .setMeltingPoint(14)
-            .setOreValue(10)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4))
-            .constructMaterial();
-    }
-
     private static Materials loadTungsten() {
         return new MaterialBuilder().setName("Tungsten")
             .setDefaultLocalName("Tungsten")
@@ -2624,29 +2553,6 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
-            .constructMaterial();
-    }
-
-    private static Materials loadUranium235() {
-        return new MaterialBuilder().setName("Uranium235")
-            .setDefaultLocalName("Uranium 235")
-            .setElement(Element.U_235)
-            .setMetaItemSubID(97)
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeGreen)
-            .setRGB(0x46fa46)
-            .setToolSpeed(0.0f)
-            .setDurability(512)
-            .setToolQuality(3)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addPlasma()
-            .addToolHeadItems()
-            .setMeltingPoint(1405)
-            .setOreValue(4)
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
-            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
             .constructMaterial();
     }
 
@@ -2729,6 +2635,108 @@ public class MaterialsInit1 {
             .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
+            .constructMaterial();
+    }
+
+    private static void loadIsotopes() {
+        Materials.Deuterium = loadDeuterium();
+        Materials.Helium_3 = loadHelium3();
+        Materials.Plutonium241 = loadPlutonium241();
+        Materials.Tritium = loadTritium();
+        Materials.Uranium235 = loadUranium235();
+    }
+
+    private static Materials loadDeuterium() {
+        return new MaterialBuilder().setName("Deuterium")
+            .setDefaultLocalName("Deuterium")
+            .setElement(Element.D)
+            .setMetaItemSubID(2)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xf0ffff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(14)
+            .setOreValue(10)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadHelium3() {
+        return new MaterialBuilder().setName("Helium_3")
+            .setDefaultLocalName("Helium-3")
+            .setElement(Element.He_3)
+            .setMetaItemSubID(5)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xf0ffff00)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(1)
+            .setOreValue(10)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadPlutonium241() {
+        return new MaterialBuilder().setName("Plutonium241")
+            .setDefaultLocalName("Plutonium 241")
+            .setElement(Element.Pu_241)
+            .setMetaItemSubID(101)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xfa4646)
+            .setToolSpeed(0.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(912)
+            .setOreValue(6)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadTritium() {
+        return new MaterialBuilder().setName("Tritium")
+            .setDefaultLocalName("Tritium")
+            .setElement(Element.T)
+            .setMetaItemSubID(3)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0xf0ff0000)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(14)
+            .setOreValue(10)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4))
+            .constructMaterial();
+    }
+
+    private static Materials loadUranium235() {
+        return new MaterialBuilder().setName("Uranium235")
+            .setDefaultLocalName("Uranium 235")
+            .setElement(Element.U_235)
+            .setMetaItemSubID(97)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x46fa46)
+            .setToolSpeed(0.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1405)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
             .constructMaterial();
     }
 
