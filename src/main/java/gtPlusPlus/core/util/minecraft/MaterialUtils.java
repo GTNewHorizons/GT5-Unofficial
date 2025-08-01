@@ -16,6 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -25,8 +26,6 @@ import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -101,12 +100,12 @@ public class MaterialUtils {
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mChemicalFormula));
             final Element element = material.mElement;
 
             // Weird Blacklist of Bad Chemical Strings
             if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar) {
-                chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
+                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mElement.name()));
             }
 
             // Determine default state

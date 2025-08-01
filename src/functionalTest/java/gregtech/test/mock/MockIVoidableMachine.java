@@ -34,6 +34,11 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
+    public List<ItemStack> getVoidOutputSlots() {
+        return null;
+    }
+
+    @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
         return null;
     }
