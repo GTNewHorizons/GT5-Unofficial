@@ -226,9 +226,9 @@ public class MaterialsInit1 {
         Materials.Potassium = loadPotassium();
         Materials.Praseodymium = loadPraseodymium();
         Materials.Promethium = loadPromethium();
+        Materials.Radon                   = loadRadon();
 
         // spotless:off
-        Materials.Radon                   = new Materials(  93, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255,   0, 255, 240,   "Radon"                   ,   "Radon"                         ,    0,       0,        202,    0, false,  true,   5,   1,   1, Dyes.dyePurple      , Element.Rn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AER, 1), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Rubidium                = new Materials(  43, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 240,  30,  30,   0,   "Rubidium"                ,   "Rubidium"                      ,    0,       0,        312,    0, false, false,   4,   1,   1, Dyes.dyeRed         , Element.Rb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.Samarium                = new Materials(  69, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 204,   0,   "Samarium"                ,   "Samarium"                      ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , Element.Sm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
         Materials.Scandium                = new Materials(  27, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 204, 204, 204,   0,   "Scandium"                ,   "Scandium"                      ,    0,       0,       1814, 1814,  true, false,   2,   1,   1, Dyes.dyeYellow      , Element.Sc        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
@@ -2249,6 +2249,23 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadRadon() {
+        return new MaterialBuilder().setName("Radon")
+            .setDefaultLocalName("Radon")
+            .setElement(Element.Rn)
+            .setMetaItemSubID(93)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0xf0ff00ff)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(202)
+            .setOreValue(5)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
     }
