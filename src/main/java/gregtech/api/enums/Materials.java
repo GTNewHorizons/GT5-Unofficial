@@ -70,9 +70,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     // Spotless breaks the table below into many, many lines
     // spotless:off
     public static Materials _NULL = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Collections.singletonList(new TC_AspectStack(TCAspects.VACUOS, 1)));
-    /**
-     * Direct Elements
-     */
+
+    // Elements
     public static Materials Aluminium;
     public static Materials Americium;
     public static Materials Antimony;
@@ -91,7 +90,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Chrome;
     public static Materials Cobalt;
     public static Materials Copper;
-    public static Materials Deuterium;
     public static Materials Dysprosium;
     public static Materials Empty;
     public static Materials Erbium;
@@ -103,7 +101,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Holmium;
     public static Materials Hydrogen;
     public static Materials Helium;
-    public static Materials Helium_3;
     public static Materials Indium;
     public static Materials Iridium;
     public static Materials Iron;
@@ -127,7 +124,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Phosphorus;
     public static Materials Platinum;
     public static Materials Plutonium;
-    public static Materials Plutonium241;
     public static Materials Potassium;
     public static Materials Praseodymium;
     public static Materials Promethium;
@@ -148,14 +144,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Tin;
     public static Materials Titanium;
     public static Materials Tritanium;
-    public static Materials Tritium;
     public static Materials Tungsten;
     public static Materials Uranium;
-    public static Materials Uranium235;
     public static Materials Vanadium;
     public static Materials Ytterbium;
     public static Materials Yttrium;
     public static Materials Zinc;
+
+    // Isotopes
+    public static Materials Deuterium;
+    public static Materials Helium_3;
+    public static Materials Plutonium241;
+    public static Materials Tritium;
+    public static Materials Uranium235;
+
+    // Water Line
     public static Materials Grade1PurifiedWater;
     public static Materials Grade2PurifiedWater;
     public static Materials Grade3PurifiedWater;
@@ -166,13 +169,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade8PurifiedWater;
     public static Materials FlocculationWasteLiquid;
 
-    //GT++ materials
-
+    // GT++
     public static Materials Flerovium;
 
-    /**
-     * The "Random Material" ones.
-     */
+    // Random
     public static Materials Organic;
     public static Materials AnyCopper;
     public static Materials AnyBronze;
@@ -186,7 +186,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Cobblestone;
     public static Materials BrickNether;
 
-    /**
+    /*
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
      * But I do see potential uses in some of these Materials.
      */
