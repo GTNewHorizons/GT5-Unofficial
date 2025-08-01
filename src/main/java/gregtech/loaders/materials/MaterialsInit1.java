@@ -316,8 +316,20 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
             .constructMaterial();
 
+        Materials.Boron = new MaterialBuilder().setName("Boron")
+            .setDefaultLocalName("Boron")
+            .setElement(Element.B)
+            .setMetaItemSubID(9)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xd2fad2)
+            .addDustItems()
+            .addPlasma()
+            .setMeltingPoint(2349)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Caesium                 = new Materials(  62, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 196, 222,   0,   "Caesium"                 ,   "Caesium"                       ,    0,       0,        301,    0, false, false,   4,   1,   1, Dyes._NULL          , Element.Cs        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Calcium                 = new Materials(  26, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1         |32             , 255, 245, 245,   0,   "Calcium"                 ,   "Calcium"                       ,    0,       0,       1115, 1115,  true, false,   4,   1,   1, Dyes.dyePink        , Element.Ca        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SANO, 1), new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
         Materials.Carbon                  = new Materials(  10, TextureSet.SET_DULL              ,   1.0F,     64,  2, 1|2    |16|32|64|128      ,  20,  20,  20,   0,   "Carbon"                  ,   "Carbon"                        ,    0,       0,       3800,    0, false, false,   2,   1,   1, Dyes.dyeBlack       , Element.C         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
