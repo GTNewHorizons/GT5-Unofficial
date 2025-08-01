@@ -723,7 +723,7 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 3))
             .constructMaterial();
 
-        Materials.Indium                  = new MaterialBuilder().setName("Indium")
+        Materials.Indium = new MaterialBuilder().setName("Indium")
             .setDefaultLocalName("Indium")
             .setElement(Element.In)
             .setMetaItemSubID(56)
