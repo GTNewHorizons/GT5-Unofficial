@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
         Materials.Crystal = loadCrystal();
+        Materials.Quartz = loadQuartz();
 
         // spotless:off
-        Materials.Quartz                             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  2,                                          false,   "Quartz"                  ,   "Quartz"                        );
         Materials.Metal                              = new Materials(  -1, TextureSet.SET_METALLIC          ,   1.0F,      0,  2,                                          false,   "Metal"                   ,   "Metal"                         );
         Materials.Unknown                            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  2,                                          false,   "Unknown"                 ,   "Unknown"                       );
         Materials.Cobblestone                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
@@ -2951,6 +2951,14 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Crystal")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadQuartz() {
+        return new MaterialBuilder().setName("Quartz")
+            .setDefaultLocalName("Quartz")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_QUARTZ)
             .constructMaterial();
     }
 
