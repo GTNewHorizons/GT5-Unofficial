@@ -273,8 +273,28 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 3))
             .constructMaterial();
 
+        Materials.Beryllium = new MaterialBuilder().setName("Beryllium")
+            .setDefaultLocalName("Beryllium")
+            .setElement(Element.Be)
+            .setMetaItemSubID(8)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x64b464)
+            .setToolSpeed(0.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1560)
+            .setOreValue(6)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Beryllium               = new Materials(   8, TextureSet.SET_METALLIC          ,  14.0F,     64,  2, 1|2  |8   |32|64          , 100, 180, 100,   0,   "Beryllium"               ,   "Beryllium"                     ,    0,       0,       1560,    0, false, false,   6,   1,   1, Dyes.dyeGreen       , Element.Be        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
         Materials.Bismuth                 = new Materials(  90, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2  |8   |32|64|128      , 100, 160, 160,   0,   "Bismuth"                 ,   "Bismuth"                       ,    0,       0,        544,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Bi        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Caesium                 = new Materials(  62, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 196, 222,   0,   "Caesium"                 ,   "Caesium"                       ,    0,       0,        301,    0, false, false,   4,   1,   1, Dyes._NULL          , Element.Cs        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
