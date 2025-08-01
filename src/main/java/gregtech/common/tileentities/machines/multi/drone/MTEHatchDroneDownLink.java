@@ -178,6 +178,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void onRemoval() {
+        if (center == null) return;
         center.getConnectionList()
             .removeAll(connections);
     }
