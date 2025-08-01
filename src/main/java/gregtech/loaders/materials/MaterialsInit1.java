@@ -2899,7 +2899,6 @@ public class MaterialsInit1 {
     private static Materials loadAnyBronze() {
         return new MaterialBuilder().setName("AnyBronze")
             .setDefaultLocalName("AnyBronze")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2907,7 +2906,6 @@ public class MaterialsInit1 {
     private static Materials loadAnyIron() {
         return new MaterialBuilder().setName("AnyIron")
             .setDefaultLocalName("AnyIron")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2915,7 +2913,6 @@ public class MaterialsInit1 {
     private static Materials loadAnyRubber() {
         return new MaterialBuilder().setName("AnyRubber")
             .setDefaultLocalName("AnyRubber")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2923,7 +2920,6 @@ public class MaterialsInit1 {
     private static Materials loadAnySyntheticRubber() {
         return new MaterialBuilder().setName("AnySyntheticRubber")
             .setDefaultLocalName("AnySyntheticRubber")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2931,7 +2927,6 @@ public class MaterialsInit1 {
     private static Materials loadCrystal() {
         return new MaterialBuilder().setName("Crystal")
             .setDefaultLocalName("Crystal")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
     }
@@ -2939,7 +2934,6 @@ public class MaterialsInit1 {
     private static Materials loadQuartz() {
         return new MaterialBuilder().setName("Quartz")
             .setDefaultLocalName("Quartz")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_QUARTZ)
             .constructMaterial();
     }
@@ -2947,7 +2941,6 @@ public class MaterialsInit1 {
     private static Materials loadMetal() {
         return new MaterialBuilder().setName("Metal")
             .setDefaultLocalName("Metal")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_METALLIC)
             .constructMaterial();
     }
@@ -2955,7 +2948,6 @@ public class MaterialsInit1 {
     private static Materials loadUnknown() {
         return new MaterialBuilder().setName("Unknown")
             .setDefaultLocalName("Unknown")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -2963,7 +2955,6 @@ public class MaterialsInit1 {
     private static Materials loadCobblestone() {
         return new MaterialBuilder().setName("Cobblestone")
             .setDefaultLocalName("Cobblestone")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -2971,7 +2962,6 @@ public class MaterialsInit1 {
     private static Materials loadBrickNether() {
         return new MaterialBuilder().setName("BrickNether")
             .setDefaultLocalName("BrickNether")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
@@ -3003,7 +2993,6 @@ public class MaterialsInit1 {
     private static Materials loadSerpentine() {
         return new MaterialBuilder().setName("Serpentine")
             .setDefaultLocalName("Serpentine")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3017,7 +3006,6 @@ public class MaterialsInit1 {
     private static Materials loadFlux() {
         return new MaterialBuilder().setName("Flux")
             .setDefaultLocalName("Flux")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3029,7 +3017,6 @@ public class MaterialsInit1 {
     private static Materials loadOsmiumTetroxide() {
         return new MaterialBuilder().setName("OsmiumTetroxide")
             .setDefaultLocalName("Osmium Tetroxide")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3041,7 +3028,6 @@ public class MaterialsInit1 {
     private static Materials loadRubberTreeSap() {
         return new MaterialBuilder().setName("RubberTreeSap")
             .setDefaultLocalName("Rubber Tree Sap")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3052,7 +3038,6 @@ public class MaterialsInit1 {
     private static Materials loadPhasedIron() {
         return new MaterialBuilder().setName("PhasedIron")
             .setDefaultLocalName("Phased Iron")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3068,7 +3053,6 @@ public class MaterialsInit1 {
     private static Materials loadPhasedGold() {
         return new MaterialBuilder().setName("PhasedGold")
             .setDefaultLocalName("Phased Gold")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3102,7 +3086,6 @@ public class MaterialsInit1 {
     private static Materials loadTeslatite() {
         return new MaterialBuilder().setName("Teslatite")
             .setDefaultLocalName("Teslatite")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0x3cb4c8)
@@ -3114,7 +3097,6 @@ public class MaterialsInit1 {
     private static Materials loadFluix() {
         return new MaterialBuilder().setName("Fluix")
             .setDefaultLocalName("Fluix")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3127,7 +3109,6 @@ public class MaterialsInit1 {
     private static Materials loadDarkThaumium() {
         return new MaterialBuilder().setName("DarkThaumium")
             .setDefaultLocalName("Dark Thaumium")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3140,7 +3121,6 @@ public class MaterialsInit1 {
     private static Materials loadAlfium() {
         return new MaterialBuilder().setName("Alfium")
             .setDefaultLocalName("Alfium")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3152,7 +3132,6 @@ public class MaterialsInit1 {
     private static Materials loadMutation() {
         return new MaterialBuilder().setName("Mutation")
             .setDefaultLocalName("Mutation")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3164,7 +3143,6 @@ public class MaterialsInit1 {
     private static Materials loadAquamarine() {
         return new MaterialBuilder().setName("Aquamarine")
             .setDefaultLocalName("Aquamarine")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3177,7 +3155,6 @@ public class MaterialsInit1 {
     private static Materials loadEnder() {
         return new MaterialBuilder().setName("Ender")
             .setDefaultLocalName("Ender")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3189,7 +3166,6 @@ public class MaterialsInit1 {
     private static Materials loadSodiumPeroxide() {
         return new MaterialBuilder().setName("SodiumPeroxide")
             .setDefaultLocalName("Sodium Peroxide")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3201,7 +3177,6 @@ public class MaterialsInit1 {
     private static Materials loadIridiumSodiumOxide() {
         return new MaterialBuilder().setName("IridiumSodiumOxide")
             .setDefaultLocalName("Iridium Sodium Oxide")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
@@ -3277,7 +3252,6 @@ public class MaterialsInit1 {
     private static Materials loadPurpleAlloy() {
         return new MaterialBuilder().setName("PurpleAlloy")
             .setDefaultLocalName("Purple Alloy")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0x64b4ff)
@@ -3288,7 +3262,6 @@ public class MaterialsInit1 {
     private static Materials loadInfusedTeslatite() {
         return new MaterialBuilder().setName("InfusedTeslatite")
             .setDefaultLocalName("Infused Teslatite")
-            .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0x64b4ff)
