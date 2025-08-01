@@ -193,8 +193,24 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1))
             .constructMaterial();
 
+        Materials.Americium = new MaterialBuilder().setName("Americium")
+            .setDefaultLocalName("Americium")
+            .setElement(Element.Am)
+            .setMetaItemSubID(103)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xc8c8c8)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1449)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Americium               = new Materials( 103, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1|2  |8   |32             , 200, 200, 200,   0,   "Americium"               ,   "Americium"                     ,    0,       0,       1449,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Am        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Antimony                = new Materials(  58, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 220, 240,   0,   "Antimony"                ,   "Antimony"                      ,    0,       0,        903,    0, false, false,   2,   1,   1, Dyes.dyeLightGray   , Element.Sb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
         Materials.Argon                   = new Materials(  24, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 255,   0, 240,   "Argon"                   ,   "Argon"                         ,    0,       0,         83,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , Element.Ar        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
         Materials.Arsenic                 = new Materials(  39, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8|16|32             , 255, 255, 255,   0,   "Arsenic"                 ,   "Arsenic"                       ,    0,       0,       1090,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , Element.As        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3)));
