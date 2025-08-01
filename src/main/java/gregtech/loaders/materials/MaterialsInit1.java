@@ -1200,17 +1200,9 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
-        Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
-            .setRGB(0x8b93a9)
-            .addFluid()
-            .addCell()
-            .constructMaterial();
+        Materials.ComplexityCatalyst = loadComplexityCatalyst();
 
-        Materials.EntropicCatalyst = new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst")
-            .setRGB(0xa99da5)
-            .addFluid()
-            .addCell()
-            .constructMaterial();
+        Materials.EntropicCatalyst = loadEntropicCatalyst();
 
         // spotless:on
     }
@@ -2094,6 +2086,22 @@ public class MaterialsInit1 {
             .setMeltingPoint(2896)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadEntropicCatalyst() {
+        return new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst")
+            .setRGB(0xa99da5)
+            .addFluid()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadComplexityCatalyst() {
+        return new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
+            .setRGB(0x8b93a9)
+            .addFluid()
+            .addCell()
             .constructMaterial();
     }
 }
