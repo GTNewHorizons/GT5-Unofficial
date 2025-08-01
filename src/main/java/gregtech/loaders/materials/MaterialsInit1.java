@@ -246,9 +246,9 @@ public class MaterialsInit1 {
         Materials.Tritium = loadTritium();
         Materials.Tungsten = loadTungsten();
         Materials.Uranium = loadUranium();
+        Materials.Uranium235 = loadUranium235();
 
         // spotless:off
-        Materials.Uranium235              = new Materials(  97, TextureSet.SET_SHINY             ,   6.0F,    512,  3, 1|2  |8   |32|64          ,  70, 250,  70,   0,   "Uranium235"              ,   "Uranium 235"                   ,    0,       0,       1405,    0, false, false,   4,   1,   1, Dyes.dyeGreen       , Element.U_235     , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 2)));
         Materials.Vanadium                = new Materials(  29, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  50,  50,  50,   0,   "Vanadium"                ,   "Vanadium"                      ,    0,       0,       2183, 2183,  true, false,   2,   1,   1, Dyes.dyeBlack       , Element.V         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Ytterbium               = new Materials(  77, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  44, 199,  80,   0,   "Ytterbium"               ,   "Ytterbium"                     ,    0,       0,       1097, 1097,  true, false,   4,   1,   1, Dyes._NULL          , Element.Yb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Yttrium                 = new Materials(  45, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 250, 220,   0,   "Yttrium"                 ,   "Yttrium"                       ,    0,       0,       1799, 1799,  true, false,   4,   1,   1, Dyes._NULL          , Element.Y         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
@@ -2625,6 +2625,29 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadUranium235() {
+        return new MaterialBuilder().setName("Uranium235")
+            .setDefaultLocalName("Uranium 235")
+            .setElement(Element.U_235)
+            .setMetaItemSubID(97)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x46fa46)
+            .setToolSpeed(0.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1405)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
             .constructMaterial();
     }
 
