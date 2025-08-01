@@ -314,9 +314,18 @@ public enum Mods implements IMod {
         return resourceDomain;
     }
 
+    public String getResourcePath(String path) {
+        return this.getResourceLocation(path)
+            .toString();
+    }
+
     public String getResourcePath(String... path) {
         return this.getResourceLocation(path)
             .toString();
+    }
+
+    public ResourceLocation getResourceLocation(String path) {
+        return new ResourceLocation(this.resourceDomain, path);
     }
 
     public ResourceLocation getResourceLocation(String... path) {

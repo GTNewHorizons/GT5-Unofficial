@@ -177,6 +177,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.IC2Potion;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
@@ -2522,7 +2523,9 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null
+            && !aEntity.isImmuneToFire()
+            && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
@@ -2552,7 +2555,7 @@ public class GTUtility {
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
             && !HazardProtection.isWearingFullRadioHazmat(aEntity)) {
-            PotionEffect tEffect = null;
+            PotionEffect tEffect;
             aEntity.addPotionEffect(
                 new PotionEffect(
                     Potion.moveSlowdown.id,
@@ -2594,10 +2597,10 @@ public class GTUtility {
                     Math.max(0, (5 * aLevel) / 7)));
             aEntity.addPotionEffect(
                 new PotionEffect(
-                    24 /* IC2 Radiation */,
+                    IC2Potion.radiation.id,
                     aLevel * 180 * aAmountOfItems + Math.max(
                         0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0
+                        ((tEffect = aEntity.getActivePotionEffect(IC2Potion.radiation)) == null ? 0
                             : tEffect.getDuration())),
                     Math.max(0, (5 * aLevel) / 7)));
             return true;
@@ -3674,6 +3677,20 @@ public class GTUtility {
 
     public static String formatNumbers(double aNumber) {
         return getDecimalFormat().format(aNumber);
+    }
+
+    public static String scientificFormat(long aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
+    public static String scientificFormat(BigInteger aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
     }
 
     /**

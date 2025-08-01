@@ -43,8 +43,7 @@ public class GregtechLFTR {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "REACTOR_PROCESSING_UNIT",
-                null).getStackForm(1L));
+                "REACTOR_PROCESSING_UNIT").getStackForm(1L));
         GregtechItemList.ReactorProcessingUnit_ZPM.set(
             new MTEBasicMachineWithRecipe(
                 ReactorProcessingUnit_ZPM.ID,
@@ -58,8 +57,7 @@ public class GregtechLFTR {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "REACTOR_PROCESSING_UNIT",
-                null).getStackForm(1L));
+                "REACTOR_PROCESSING_UNIT").getStackForm(1L));
         // Cold Traps
         GregtechItemList.ColdTrap_IV.set(
             new MTEBasicMachineWithRecipe(
@@ -74,8 +72,7 @@ public class GregtechLFTR {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "COLD_TRAP",
-                null).getStackForm(1L));
+                "COLD_TRAP").getStackForm(1L));
         GregtechItemList.ColdTrap_ZPM.set(
             new MTEBasicMachineWithRecipe(
                 ColdTrap_ZPM.ID,
@@ -89,8 +86,7 @@ public class GregtechLFTR {
                 true,
                 SoundResource.NONE,
                 SpecialEffects.NONE,
-                "COLD_TRAP",
-                null).getStackForm(1L));
+                "COLD_TRAP").getStackForm(1L));
         // Sparge Tower
         GregtechItemList.Controller_Sparge_Tower.set(
             new MTESpargeTower(Controller_Sparge_Tower.ID, "sparge.controller.single", "Sparge Tower Controller")

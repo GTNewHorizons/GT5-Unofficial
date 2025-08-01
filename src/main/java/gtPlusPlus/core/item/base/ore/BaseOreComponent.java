@@ -136,15 +136,11 @@ public class BaseOreComponent extends Item {
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
-            if (entityHolding instanceof EntityPlayer) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    EntityUtils.applyRadiationDamageToEntity(
-                        iStack.stackSize,
-                        this.componentMaterial.vRadiationLevel,
-                        world,
-                        entityHolding);
-                }
-            }
+            EntityUtils.applyRadiationDamageToEntity(
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 

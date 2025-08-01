@@ -6,10 +6,13 @@ package gregtech.api.hazards;
  * relevant checks in GregTech
  */
 public enum Hazard {
+
     BIOLOGICAL,
     FROST,
     HEAT,
     RADIOLOGICAL,
     ELECTRICAL,
     GAS;
+
+    public static final Hazard[] VALUES = Hazard.values();
 }
