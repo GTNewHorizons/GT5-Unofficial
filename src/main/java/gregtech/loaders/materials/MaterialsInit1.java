@@ -935,9 +935,9 @@ public class MaterialsInit1 {
 
         Materials.EnrichedHolmium       = new Materials(582, TextureSet.SET_METALLIC    ,   1.0F,      0,  2, 2                ,  18, 100, 255,   0,   "EnrichedHolmium"    ,   "Enriched Holmium"        ,    -1,      -1,      0, 3000,  true,  false,200,   1,   1, Dyes.dyePurple);
 
-        Materials.TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
-        Materials.TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 4), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
-        Materials.TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+        Materials.TengamPurified = loadTengamPurified();
+        Materials.TengamAttuned  = loadTengamAttuned();
+        Materials.TengamRaw      = loadTengamRaw();
 
         Materials.ActivatedCarbon = loadActivatedCarbon();
         Materials.PreActivatedCarbon = loadPreActivatedCarbon();
@@ -2198,6 +2198,18 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
+    }
+
+    private static Materials loadTengamPurified() {
+        return new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadTengamAttuned() {
+        return new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 4), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned").setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadTengamRaw() {
+        return new MaterialBuilder(110, TextureSet.SET_ROUGH, "Raw Tengam").addOreItems().setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw").setRGB(160, 191, 96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     }
 
     private static Materials loadActivatedCarbon() {
