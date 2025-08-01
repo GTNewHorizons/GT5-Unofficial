@@ -177,9 +177,9 @@ public class MaterialsInit1 {
         Materials.AnyCopper = loadAnyCopper();
         Materials.AnyBronze = loadAnyBronze();
         Materials.AnyIron = loadAnyIron();
+        Materials.AnyRubber = loadAnyRubber();
 
         // spotless:off
-        Materials.AnyRubber                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyRubber"               ,   "AnyRubber"                     );
         Materials.AnySyntheticRubber                 = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnySyntheticRubber"      ,   "AnySyntheticRubber"            );
         Materials.Crystal                            = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "Crystal"                 ,   "Crystal"                       );
         Materials.Quartz                             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  2,                                          false,   "Quartz"                  ,   "Quartz"                        );
@@ -2925,6 +2925,14 @@ public class MaterialsInit1 {
     private static Materials loadAnyIron() {
         return new MaterialBuilder().setName("AnyIron")
             .setDefaultLocalName("AnyIron")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyRubber() {
+        return new MaterialBuilder().setName("AnyRubber")
+            .setDefaultLocalName("AnyRubber")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
