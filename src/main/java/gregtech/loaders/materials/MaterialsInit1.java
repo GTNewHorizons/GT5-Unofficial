@@ -385,8 +385,24 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
             .constructMaterial();
 
+        Materials.Cadmium = new MaterialBuilder().setName("Cadmium")
+            .setDefaultLocalName("Cadmium")
+            .setElement(Element.Cd)
+            .setMetaItemSubID(55)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x32323c)
+            .addDustItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(594)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Cadmium                 = new Materials(  55, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1    |8   |32             ,  50,  50,  60,   0,   "Cadmium"                 ,   "Cadmium"                       ,    0,       0,        594,    0, false, false,   3,   1,   1, Dyes.dyeGray        , Element.Cd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)));
         Materials.Cerium                  = new Materials(  65, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 123, 212, 144,   0,   "Cerium"                  ,   "Cerium"                        ,    0,       0,       1068, 1068,  true, false,   4,   1,   1, Dyes._NULL          , Element.Ce        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Chlorine                = new Materials(  23, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255, 255,   0,   "Chlorine"                ,   "Chlorine"                      ,    0,       0,        171,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Cl        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.PANNUS, 1)));
         Materials.Chrome                  = new Materials(  30, TextureSet.SET_SHINY             ,  11.0F,    256,  3, 1|2  |8   |32|64|128      , 255, 230, 230,   0,   "Chrome"                  ,   "Chrome"                        ,    0,       0,       2180, 1700,  true, false,   5,   1,   1, Dyes.dyePink        , Element.Cr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)));
