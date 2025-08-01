@@ -104,7 +104,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-
             // validate that all connections to the center and the machines are still valid every 4s
             if (aTick % 80 == 0) {
                 validateConnections();
@@ -123,7 +122,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void validateConnections() {
-
         if (center != null && (!center.isValid() || !center.getBaseMetaTileEntity()
             .isActive())) {
             center.getConnectionList()
@@ -218,7 +216,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void addConnection(MTEMultiBlockBase machine) {
-
         if (center == null || findConnection(machine) != null) {
             return;
         }
