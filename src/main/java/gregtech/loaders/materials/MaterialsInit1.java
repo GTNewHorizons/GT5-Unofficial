@@ -294,8 +294,29 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
             .constructMaterial();
 
+        Materials.Bismuth = new MaterialBuilder().setName("Bismuth")
+            .setDefaultLocalName("Bismuth")
+            .setElement(Element.Bi)
+            .setMetaItemSubID(90)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeCyan)
+            .setRGB(0x64a0a0)
+            .setToolSpeed(0.0f)
+            .setDurability(64)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(544)
+            .setOreValue(2)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Bismuth                 = new Materials(  90, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2  |8   |32|64|128      , 100, 160, 160,   0,   "Bismuth"                 ,   "Bismuth"                       ,    0,       0,        544,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Bi        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Caesium                 = new Materials(  62, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 196, 222,   0,   "Caesium"                 ,   "Caesium"                       ,    0,       0,        301,    0, false, false,   4,   1,   1, Dyes._NULL          , Element.Cs        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Calcium                 = new Materials(  26, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1         |32             , 255, 245, 245,   0,   "Calcium"                 ,   "Calcium"                       ,    0,       0,       1115, 1115,  true, false,   4,   1,   1, Dyes.dyePink        , Element.Ca        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.SANO, 1), new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1)));
