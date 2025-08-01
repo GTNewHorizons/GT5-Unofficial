@@ -179,9 +179,9 @@ public class MaterialsInit1 {
         Materials.Serpentine = loadSerpentine();
         Materials.Flux = loadFlux();
         Materials.OsmiumTetroxide = loadOsmiumTetroxide();
+        Materials.RubberTreeSap = loadRubberTreeSap();
 
         // spotless:off;
-        Materials.RubberTreeSap           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "RubberTreeSap"           ,   "Rubber Tree Sap"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.PhasedIron              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedIron"              ,   "Phased Iron"                   ,    0,       0,       3300, 3300, true, false,   3,   1,   1, Dyes._NULL          );
         Materials.PhasedGold              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedGold"              ,   "Phased Gold"                   ,    0,       0,         -1, 1800, true, false,   3,   1,   1, Dyes._NULL          );
         Materials.HeeEndium               = new Materials( 770, TextureSet.SET_DULL              ,  16.0F,   1024,  4, 1|2  |8      |64|128      , 165, 220, 250,   0,   "HeeEndium"               ,   "Endium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   );
@@ -3032,6 +3032,17 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
             .addDustItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubberTreeSap() {
+        return new MaterialBuilder().setName("RubberTreeSap")
+            .setDefaultLocalName("Rubber Tree Sap")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
             .setOreValue(3)
             .constructMaterial();
     }
