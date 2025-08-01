@@ -29,6 +29,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.common.config.Gregtech;
 
 /**
  * Machines implementing this interface can have logic and GUI buttons
@@ -315,7 +316,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     void setBatchMode(boolean enabled);
 
     default boolean getDefaultBatchMode() {
-        return false;
+        return Gregtech.general.batchModeInitialValue;
     }
 
     Pos2d getBatchModeButtonPos();
