@@ -189,9 +189,9 @@ public class MaterialsInit1 {
         Materials.Alfium = loadAlfium();
         Materials.Mutation = loadMutation();
         Materials.Aquamarine = loadAquamarine();
+        Materials.Ender = loadEnder();
 
         // spotless:off;
-        Materials.Ender                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ender"                   ,   "Ender"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.SodiumPeroxide          = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "SodiumPeroxide"          ,   "Sodium Peroxide"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.IridiumSodiumOxide      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "IridiumSodiumOxide"      ,   "Iridium Sodium Oxide"          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.PlatinumGroupSludge     = new Materials( 241, TextureSet.SET_POWDER            ,   1.0F,      0,  2, 1                         ,   0,  30,   0,   0,   "PlatinumGroupSludge"     ,   "Platinum Group Sludge"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -3168,6 +3168,18 @@ public class MaterialsInit1 {
             .setRGB(0xffffff)
             .addDustItems()
             .addGemItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnder() {
+        return new MaterialBuilder().setName("Ender")
+            .setDefaultLocalName("Ender")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
             .setOreValue(3)
             .constructMaterial();
     }
