@@ -231,9 +231,9 @@ public class MaterialsInit1 {
         Materials.Samarium = loadSamarium();
         Materials.Scandium = loadScandium();
         Materials.Silicon = loadSilicon();
+        Materials.Silver = loadSilver();
 
         // spotless:off
-        Materials.Silver                  = new Materials(  54, TextureSet.SET_SHINY             ,  10.0F,     64,  2, 1|2  |8   |32|64|128      , 220, 220, 255,   0,   "Silver"                  ,   "Silver"                        ,    0,       0,       1234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Ag        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
         Materials.Sodium                  = new Materials(  17, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1      |16|32             ,   0,   0, 150,   0,   "Sodium"                  ,   "Sodium"                        ,    0,       0,        370,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , Element.Na        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.LUX, 1)));
         Materials.Strontium               = new Materials(  44, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32   |128      , 200, 200, 200,   0,   "Strontium"               ,   "Strontium"                     ,    0,       0,       1050,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Element.Sr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 1)));
         Materials.Sulfur                  = new Materials(  22, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8   |32             , 200, 200,   0,   0,   "Sulfur"                  ,   "Sulfur"                        ,    0,       0,        388,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , Element.S         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)));
@@ -2349,6 +2349,30 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadSilver() {
+        return new MaterialBuilder().setName("Silver")
+            .setDefaultLocalName("Silver")
+            .setElement(Element.Ag)
+            .setMetaItemSubID(54)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLightGray)
+            .setRGB(0xdcdcff)
+            .setToolSpeed(0.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1234)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
             .constructMaterial();
     }
 
