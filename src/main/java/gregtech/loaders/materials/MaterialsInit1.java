@@ -204,9 +204,9 @@ public class MaterialsInit1 {
         Materials.Iron = loadIron();
         Materials.Lanthanum = loadLanthanum();
         Materials.Lead = loadLead();
+        Materials.Lithium = loadLithium();
 
         // spotless:off
-        Materials.Lithium                 = new Materials(   6, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 225, 220, 255,   0,   "Lithium"                 ,   "Lithium"                       ,    0,       0,        454,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , Element.Li        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Lutetium                = new Materials(  78, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 188,  62, 199,   0,   "Lutetium"                ,   "Lutetium"                      ,    0,       0,       1925, 1925,  true, false,   4,   1,   1, Dyes._NULL          , Element.Lu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Magic                   = new Materials(-128, TextureSet.SET_SHINY             ,   8.0F,   5120,  5, 1|2|4|8|16|32|64|128      , 100,   0, 200,   0,   "Magic"                   ,   "Magic"                         ,    5,      32,       5000,    0, false, false,   7,   1,   1, Dyes.dyePurple      , Element.Ma        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4)));
         Materials.Magnesium               = new Materials(  18, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 200, 200,   0,   "Magnesium"               ,   "Magnesium"                     ,    0,       0,        923,    0, false, false,   3,   1,   1, Dyes.dyePink        , Element.Mg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
@@ -1944,6 +1944,25 @@ public class MaterialsInit1 {
             .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadLithium() {
+        return new MaterialBuilder().setName("Lithium")
+            .setDefaultLocalName("Lithium")
+            .setElement(Element.Li)
+            .setMetaItemSubID(6)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xe1dcff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(454)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
             .constructMaterial();
     }
 }
