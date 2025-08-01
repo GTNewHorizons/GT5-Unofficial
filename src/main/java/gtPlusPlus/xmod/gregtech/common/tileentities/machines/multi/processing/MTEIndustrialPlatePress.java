@@ -75,7 +75,7 @@ public class MTEIndustrialPlatePress extends SimpleCuboidMultiblockBase {
         setCasingTextureIndex(50);
         setCasingBlock(ModBlocks.blockCasingsMisc, 4);
 
-        setValidHatches(InputBus, OutputBus, Energy, Maintenance, Muffler);
+        setValidHatches(InputBus, OutputBus, InputHatch, Energy, Maintenance, Muffler);
     }
 
     @Override
