@@ -808,7 +808,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                             + EnumChatFormatting.RED
-                            + GTUtility.scientificFormat(passiveCostCache, "0.00E0")
+                            + GTUtility.scientificFormat(passiveCostCache)
                             + EnumChatFormatting.WHITE
                             + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)
@@ -819,7 +819,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                             + EnumChatFormatting.LIGHT_PURPLE
-                            + GTUtility.scientificFormat(activeCostCache, "0.00E0")
+                            + GTUtility.scientificFormat(activeCostCache)
                             + EnumChatFormatting.WHITE
                             + " EU/t")
                     .setTextAlignment(Alignment.CenterLeft)

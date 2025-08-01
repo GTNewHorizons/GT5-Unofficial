@@ -3679,10 +3679,17 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
-    public static String scientificFormat(long aNumber, String pattern) {
+    public static String scientificFormat(long aNumber) {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
         dfs.setExponentSeparator("e");
-        DecimalFormat format = new DecimalFormat(pattern, dfs);
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
+    public static String scientificFormat(BigInteger aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
         return format.format(aNumber);
     }
 
