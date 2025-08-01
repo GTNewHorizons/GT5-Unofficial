@@ -517,8 +517,25 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3))
             .constructMaterial();
 
+        Materials.Dysprosium = new MaterialBuilder().setName("Dysprosium")
+            .setDefaultLocalName("Dysprosium")
+            .setElement(Element.Dy)
+            .setMetaItemSubID(73)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes._NULL)
+            .setRGB(0x69d150)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1680)
+            .setBlastFurnaceTemp(1680)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Dysprosium              = new Materials(  73, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 105, 209,  80,   0,   "Dysprosium"              ,   "Dysprosium"                    ,    0,       0,       1680, 1680,  true, false,   4,   1,   1, Dyes._NULL          , Element.Dy        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
         Materials.Empty                   = new Materials(   0, TextureSet.SET_NONE              ,   1.0F,      0,  2, 256/*Only when needed*/   , 255, 255, 255, 255,   "Empty"                   ,   "Empty"                         ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Element._NULL     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
         Materials.Erbium                  = new Materials(  75, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 152,  81,   0,   "Erbium"                  ,   "Erbium"                        ,    0,       0,       1802, 1802,  true, false,   4,   1,   1, Dyes._NULL          , Element.Er        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Europium                = new Materials(  70, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 246, 181, 255,   0,   "Europium"                ,   "Europium"                      ,    0,       0,       1099, 1099,  true, false,   4,   1,   1, Dyes._NULL          , Element.Eu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
