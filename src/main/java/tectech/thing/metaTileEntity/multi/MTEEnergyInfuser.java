@@ -66,7 +66,8 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
         .addElement(
             'C',
-            buildHatchAdder(MTEEnergyInfuser.class).atLeast(Maintenance, Energy, InputBus, OutputBus)
+            buildHatchAdder(MTEEnergyInfuser.class)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, InputBus, OutputBus)
                 .casingIndex(BlockGTCasingsTT.textureOffset) // High Power Casing
                 .dot(1)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0)) // High Power Casing
@@ -159,8 +160,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM("main", 1, 2, 0) && mInputBusses.size() > 0
             && mOutputBusses.size() > 0
-            && mMaintenanceHatches.size() == 1
-            && mEnergyHatches.size() >= 1;
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
