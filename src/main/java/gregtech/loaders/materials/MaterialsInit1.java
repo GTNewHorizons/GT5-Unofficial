@@ -226,7 +226,7 @@ public class MaterialsInit1 {
         Materials.Potassium = loadPotassium();
         Materials.Praseodymium = loadPraseodymium();
         Materials.Promethium = loadPromethium();
-        Materials.Radon                   = loadRadon();
+        Materials.Radon = loadRadon();
 
         // spotless:off
         Materials.Rubidium                = new Materials(  43, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 240,  30,  30,   0,   "Rubidium"                ,   "Rubidium"                      ,    0,       0,        312,    0, false, false,   4,   1,   1, Dyes.dyeRed         , Element.Rb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
