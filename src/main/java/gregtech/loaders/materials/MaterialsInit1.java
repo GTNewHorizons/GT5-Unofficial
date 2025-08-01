@@ -1125,83 +1125,16 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .constructMaterial();
 
-        Materials.PrismarineSolution = new MaterialBuilder( 135, TextureSet.SET_METALLIC, "Prismarine Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(85, 154, 138)
-            .setName("prismarinesolution")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismarineContaminatedHydrogenPeroxide = new MaterialBuilder( 136, TextureSet.SET_METALLIC, "Prismarine-Contaminated Hydrogen Peroxide")
-            .addFluid()
-            .addCell()
-            .setRGB(68, 95, 89)
-            .setName("prismarinecontaminatedhydrogenperoxide")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismarineRichNitrobenzeneSolution = new MaterialBuilder( 137, TextureSet.SET_METALLIC, "Prismarine-Rich Nitrobenzene Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(93, 118, 63)
-            .setName("prismarinerichnitrobenzenesolution")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismarineContaminatedNitrobenzeSolution = new MaterialBuilder( 138, TextureSet.SET_METALLIC, "Prismarine-Contaminated Nitrobenzene Solution")
-            .addFluid()
-            .addCell()
-            .setRGB(47, 51, 30)
-            .setName("prismarinecontaminatednitrobenzenesolution")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticGas = new MaterialBuilder( 161, TextureSet.SET_METALLIC, "Prismatic Gas")
-            .addFluid()
-            .addCell()
-            .setRGB(118, 186, 189)
-            .setName("prismaticgas")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticAcid = new MaterialBuilder(162,  new TextureSet("prismaticacid", true), "Prismatic Acid")
-            .addFluid()
-            .addCell()
-            .setRGBA(255, 255, 255, 0)
-            .setTransparent(true)
-            .setName("prismaticacid")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
-
-        Materials.PrismaticNaquadah = new MaterialBuilder(
-            163,
-            TextureSet.SET_METALLIC,
-            "Prismatic Naquadah").setName("prismaticnaquadah")
-            .setTypes(1 | 2)
-            .setRGBA(55, 55, 55, 0)
-            .setTransparent(false)
-            .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
-
-        Materials.PrismaticNaquadahCompositeSlurry = new MaterialBuilder(164,  TextureSet.SET_FLUID, "Prismatic Naquadah Composite Slurry")
-            .addFluid()
-            .addCell()
-            .setRGBA(75, 75, 75, 0)
-            .setTransparent(true)
-            .setName("prismaticnaquadahcompositeslurry")
-            .setColor(Dyes._NULL)
-            .constructMaterial()
-            .setHasCorrespondingFluid(true);
+        Materials.PrismarineSolution = loadPrismarineSolution();
+        Materials.PrismarineContaminatedHydrogenPeroxide = loadPrismarinecontaminatedhydrogenperoxide();
+        Materials.PrismarineRichNitrobenzeneSolution = loadPrismarinerichnitrobenzenesolution();
+        Materials.PrismarineContaminatedNitrobenzeSolution = loadPrismarinecontaminatednitrobenzenesolution();
+        Materials.PrismaticGas = loadPrismaticGas();
+        Materials.PrismaticAcid = loadPrismaticAcid();
+        Materials.PrismaticNaquadah = loadPrismaticNaquadah();
+        Materials.PrismaticNaquadahCompositeSlurry = loadPrismaticNaquadahCompositeSlurry();
 
         Materials.ComplexityCatalyst = loadComplexityCatalyst();
-
         Materials.EntropicCatalyst = loadEntropicCatalyst();
 
         // spotless:on
@@ -2204,6 +2137,97 @@ public class MaterialsInit1 {
             .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
             .constructMaterial();
+    }
+
+    private static Materials loadPrismarineSolution() {
+        return new MaterialBuilder(135, TextureSet.SET_METALLIC, "Prismarine Solution")
+            .addFluid()
+            .addCell()
+            .setRGB(85, 154, 138)
+            .setName("prismarinesolution")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinecontaminatedhydrogenperoxide() {
+        return new MaterialBuilder(136, TextureSet.SET_METALLIC, "Prismarine-Contaminated Hydrogen Peroxide")
+            .addFluid()
+            .addCell()
+            .setRGB(68, 95, 89)
+            .setName("prismarinecontaminatedhydrogenperoxide")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinerichnitrobenzenesolution() {
+        return new MaterialBuilder(137, TextureSet.SET_METALLIC, "Prismarine-Rich Nitrobenzene Solution")
+            .addFluid()
+            .addCell()
+            .setRGB(93, 118, 63)
+            .setName("prismarinerichnitrobenzenesolution")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismarinecontaminatednitrobenzenesolution() {
+        return new MaterialBuilder(138, TextureSet.SET_METALLIC, "Prismarine-Contaminated Nitrobenzene Solution")
+            .addFluid()
+            .addCell()
+            .setRGB(47, 51, 30)
+            .setName("prismarinecontaminatednitrobenzenesolution")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticGas() {
+        return new MaterialBuilder(161, TextureSet.SET_METALLIC, "Prismatic Gas")
+            .addFluid()
+            .addCell()
+            .setRGB(118, 186, 189)
+            .setName("prismaticgas")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticAcid() {
+        return new MaterialBuilder(162, new TextureSet("prismaticacid", true), "Prismatic Acid")
+            .addFluid()
+            .addCell()
+            .setRGBA(255, 255, 255, 0)
+            .setTransparent(true)
+            .setName("prismaticacid")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadPrismaticNaquadah() {
+        return new MaterialBuilder(
+            163,
+            TextureSet.SET_METALLIC,
+            "Prismatic Naquadah").setName("prismaticnaquadah")
+            .setTypes(1 | 2)
+            .setRGBA(55, 55, 55, 0)
+            .setTransparent(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static Materials loadPrismaticNaquadahCompositeSlurry() {
+        return new MaterialBuilder(164, TextureSet.SET_FLUID, "Prismatic Naquadah Composite Slurry")
+            .addFluid()
+            .addCell()
+            .setRGBA(75, 75, 75, 0)
+            .setTransparent(true)
+            .setName("prismaticnaquadahcompositeslurry")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
     }
 
     private static Materials loadEntropicCatalyst() {
