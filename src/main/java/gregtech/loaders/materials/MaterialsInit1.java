@@ -222,9 +222,9 @@ public class MaterialsInit1 {
         Materials.Phosphorus = loadPhosphorus();
         Materials.Platinum = loadPlatinum();
         Materials.Plutonium = loadPlutonium();
+        Materials.Plutonium241 = loadPlutonium241();
 
         // spotless:off
-        Materials.Plutonium241            = new Materials( 101, TextureSet.SET_SHINY             ,   6.0F,    512,  3, 1|2  |8   |32|64          , 250,  70,  70,   0,   "Plutonium241"            ,   "Plutonium 241"                 ,    0,       0,        912,    0, false, false,   6,   1,   1, Dyes.dyeLime        , Element.Pu_241    , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 3)));
         Materials.Potassium               = new Materials(  25, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2       |32             , 154, 172, 223,   0,   "Potassium"               ,   "Potassium"                     ,    0,       0,        336,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.K         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1)));
         Materials.Praseodymium            = new Materials(  66, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 117, 214, 129,   0,   "Praseodymium"            ,   "Praseodymium"                  ,    0,       0,       1208, 1208,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Promethium              = new Materials(  68, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  36, 181,  53,   0,   "Promethium"              ,   "Promethium"                    ,    0,       0,       1315, 1315,  true, false,   4,   1,   1, Dyes._NULL          , Element.Pm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
@@ -2337,6 +2337,29 @@ public class MaterialsInit1 {
             .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadPlutonium241() {
+        return new MaterialBuilder().setName("Plutonium241")
+            .setDefaultLocalName("Plutonium 241")
+            .setElement(Element.Pu_241)
+            .setMetaItemSubID(101)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .setRGB(0xfa4646)
+            .setToolSpeed(0.0f)
+            .setDurability(512)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(912)
+            .setOreValue(6)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
             .constructMaterial();
     }
 
