@@ -7,6 +7,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.LightingHelper;
 
 public class GTSidedTextureRender extends GTTextureBase implements ITexture, IColorModulationContainer {
 
@@ -34,33 +35,39 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[5].renderXPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[5].renderXPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[4].renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[4].renderXNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[1].renderYPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[1].renderYPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[0].renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[0].renderYNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[3].renderZPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[3].renderZPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        mTextures[2].renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int worldRenderPass) {
+        mTextures[2].renderZNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
     }
 
     @Override
