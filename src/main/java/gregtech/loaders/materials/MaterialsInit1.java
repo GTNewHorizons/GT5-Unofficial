@@ -227,9 +227,9 @@ public class MaterialsInit1 {
         Materials.Praseodymium = loadPraseodymium();
         Materials.Promethium = loadPromethium();
         Materials.Radon = loadRadon();
+        Materials.Rubidium = loadRubidium();
 
         // spotless:off
-        Materials.Rubidium                = new Materials(  43, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 240,  30,  30,   0,   "Rubidium"                ,   "Rubidium"                      ,    0,       0,        312,    0, false, false,   4,   1,   1, Dyes.dyeRed         , Element.Rb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.Samarium                = new Materials(  69, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 204,   0,   "Samarium"                ,   "Samarium"                      ,    0,       0,       1345, 1345,  true, false,   4,   1,   1, Dyes.dyeWhite       , Element.Sm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1), new TCAspects.TC_AspectStack(TCAspects.MAGNETO,10)));
         Materials.Scandium                = new Materials(  27, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 204, 204, 204,   0,   "Scandium"                ,   "Scandium"                      ,    0,       0,       1814, 1814,  true, false,   2,   1,   1, Dyes.dyeYellow      , Element.Sc        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Silicon                 = new Materials(  20, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  60,  60,  80,   0,   "Silicon"                 ,   "Raw Silicon"                   ,    0,       0,       2273, 2273,  true, false,   1,   1,   1, Dyes.dyeBlack       , Element.Si        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1)));
@@ -2267,6 +2267,25 @@ public class MaterialsInit1 {
             .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadRubidium() {
+        return new MaterialBuilder().setName("Rubidium")
+            .setDefaultLocalName("Rubidium")
+            .setElement(Element.Rb)
+            .setMetaItemSubID(43)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xf01e1e)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(312)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
     }
 
