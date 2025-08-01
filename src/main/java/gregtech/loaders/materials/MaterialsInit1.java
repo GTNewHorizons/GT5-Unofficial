@@ -173,9 +173,9 @@ public class MaterialsInit1 {
         loadWaterLine();
 
         Materials.Flerovium = loadFlerovium();
+        Materials.Organic = loadOrganic();
 
         // spotless:off
-        Materials.Organic                            = new Materials(  -1, TextureSet.SET_LEAF              ,   1.0F,      0,  1,                                          false,   "Organic"                 ,   "Organic"                       );
         Materials.AnyCopper                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyCopper"               ,   "AnyCopper"                     );
         Materials.AnyBronze                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyBronze"               ,   "AnyBronze"                     );
         Materials.AnyIron                            = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyIron"                 ,   "AnyIron"                       );
@@ -2895,6 +2895,14 @@ public class MaterialsInit1 {
             .addGearItems()
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadOrganic() {
+        return new MaterialBuilder().setName("Organic")
+            .setDefaultLocalName("Organic")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_LEAF)
             .constructMaterial();
     }
 
