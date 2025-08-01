@@ -188,7 +188,7 @@ public class MaterialsInit1 {
         Materials.Copper = loadCopper();
         Materials.Deuterium = loadDeuterium();
         Materials.Dysprosium = loadDysprosium();
-        Materials.Empty = loadEmpty();
+        Materials.Empty = loadEmpty(); // Not a real element
         Materials.Erbium = loadErbium();
         Materials.Europium = loadEuropium();
         Materials.Fluorine = loadFluorine();
@@ -206,7 +206,7 @@ public class MaterialsInit1 {
         Materials.Lead = loadLead();
         Materials.Lithium = loadLithium();
         Materials.Lutetium = loadLutetium();
-        Materials.Magic = loadMagic();
+        Materials.Magic = loadMagic(); // Not a real element
         Materials.Magnesium = loadMagnesium();
         Materials.Manganese = loadManganese();
         Materials.Mercury = loadMercury();
