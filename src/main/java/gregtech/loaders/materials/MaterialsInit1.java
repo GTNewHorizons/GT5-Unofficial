@@ -182,9 +182,9 @@ public class MaterialsInit1 {
         Materials.Crystal = loadCrystal();
         Materials.Quartz = loadQuartz();
         Materials.Metal = loadMetal();
+        Materials.Unknown = loadUnknown();
 
         // spotless:off
-        Materials.Unknown                            = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  2,                                          false,   "Unknown"                 ,   "Unknown"                       );
         Materials.Cobblestone                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
         Materials.BrickNether                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
 
@@ -2967,6 +2967,14 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Metal")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_METALLIC)
+            .constructMaterial();
+    }
+
+    private static Materials loadUnknown() {
+        return new MaterialBuilder().setName("Unknown")
+            .setDefaultLocalName("Unknown")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
 
