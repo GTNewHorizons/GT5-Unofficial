@@ -247,9 +247,9 @@ public class MaterialsInit1 {
         Materials.Tungsten = loadTungsten();
         Materials.Uranium = loadUranium();
         Materials.Uranium235 = loadUranium235();
+        Materials.Vanadium = loadVanadium();
 
         // spotless:off
-        Materials.Vanadium                = new Materials(  29, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  50,  50,  50,   0,   "Vanadium"                ,   "Vanadium"                      ,    0,       0,       2183, 2183,  true, false,   2,   1,   1, Dyes.dyeBlack       , Element.V         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Ytterbium               = new Materials(  77, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  44, 199,  80,   0,   "Ytterbium"               ,   "Ytterbium"                     ,    0,       0,       1097, 1097,  true, false,   4,   1,   1, Dyes._NULL          , Element.Yb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Yttrium                 = new Materials(  45, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 250, 220,   0,   "Yttrium"                 ,   "Yttrium"                       ,    0,       0,       1799, 1799,  true, false,   4,   1,   1, Dyes._NULL          , Element.Y         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Zinc                    = new Materials(  36, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2  |8   |32             , 250, 240, 240,   0,   "Zinc"                    ,   "Zinc"                          ,    0,       0,        692,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.Zn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.SANO, 1)));
@@ -2648,6 +2648,27 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadVanadium() {
+        return new MaterialBuilder().setName("Vanadium")
+            .setDefaultLocalName("Vanadium")
+            .setElement(Element.V)
+            .setMetaItemSubID(29)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x323232)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2183)
+            .setBlastFurnaceTemp(2183)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(2)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
     }
 
