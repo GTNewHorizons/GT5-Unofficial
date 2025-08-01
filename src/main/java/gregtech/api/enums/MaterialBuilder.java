@@ -10,20 +10,21 @@ public class MaterialBuilder {
 
     public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
 
-    private final int metaItemSubID;
-    private final TextureSet iconSet;
+    private int metaItemSubID;
+    private TextureSet iconSet;
     private float toolSpeed = 1.0f;
     private int durability = 0;
     private int toolQuality = 0;
     private int types = 0;
     private int r = 255, g = 255, b = 255, a = 0;
     private String name;
-    private final String defaultLocalName;
+    private String defaultLocalName;
     private int fuelType = 0;
     private int fuelPower = 0;
     private int meltingPoint = 0;
     private int blastFurnaceTemp = 0;
     private boolean blastFurnaceRequired = false;
+    private boolean autoGenerateBlastFurnaceRecipes = true;
     private boolean transparent = false;
     private int oreValue = 1;
     private int densityMultiplier = 1;
@@ -37,6 +38,9 @@ public class MaterialBuilder {
     private boolean canBeCracked = false;
     private int liquidTemperature = 300;
     private int gasTemperature = 300;
+    private Element element;
+
+    public MaterialBuilder() {}
 
     public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
         this.metaItemSubID = metaItemSubID;
@@ -65,6 +69,7 @@ public class MaterialBuilder {
             meltingPoint,
             blastFurnaceTemp,
             blastFurnaceRequired,
+            autoGenerateBlastFurnaceRecipes,
             transparent,
             oreValue,
             densityMultiplier,
@@ -72,9 +77,25 @@ public class MaterialBuilder {
             color,
             extraData,
             materialList,
+            element,
             aspects).setHasCorrespondingFluid(hasCorrespondingFluid)
                 .setHasCorrespondingGas(hasCorrespondingGas)
                 .setCanBeCracked(canBeCracked);
+    }
+
+    public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
+        this.metaItemSubID = metaItemSubID;
+        return this;
+    }
+
+    public MaterialBuilder setIconSet(TextureSet iconSet) {
+        this.iconSet = iconSet;
+        return this;
+    }
+
+    public MaterialBuilder setDefaultLocalName(String defaultLocalName) {
+        this.defaultLocalName = defaultLocalName;
+        return this;
     }
 
     public MaterialBuilder setName(String name) {
@@ -209,6 +230,11 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setAutoGenerateBlastFurnaceRecipes(boolean autoGenerateBlastFurnaceRecipes) {
+        this.autoGenerateBlastFurnaceRecipes = autoGenerateBlastFurnaceRecipes;
+        return this;
+    }
+
     public MaterialBuilder setOreValue(int oreValue) {
         this.oreValue = oreValue;
         return this;
@@ -251,6 +277,16 @@ public class MaterialBuilder {
 
     public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
         this.aspects = aspects;
+        return this;
+    }
+
+    public MaterialBuilder setElement(Element element) {
+        this.element = element;
+        return this;
+    }
+
+    public MaterialBuilder addAspect(TCAspects.TC_AspectStack aspect) {
+        this.aspects.add(aspect);
         return this;
     }
 
