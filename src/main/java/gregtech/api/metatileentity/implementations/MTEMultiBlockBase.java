@@ -2757,6 +2757,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     public void setMachineMode(int index) {
         machineMode = index;
+        // The machine is likely using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
     }
 
     @Override
