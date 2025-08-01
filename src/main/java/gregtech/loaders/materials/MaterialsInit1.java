@@ -638,8 +638,29 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
             .constructMaterial();
 
+        Materials.Gold = new MaterialBuilder().setName("Gold")
+            .setDefaultLocalName("Gold")
+            .setElement(Element.Au)
+            .setMetaItemSubID(86)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffff1e)
+            .setToolSpeed(0.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1337)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Gold                    = new Materials(  86, TextureSet.SET_SHINY             ,  12.0F,     64,  2, 1|2  |8   |32|64|128      , 255, 255,  30,   0,   "Gold"                    ,   "Gold"                          ,    0,       0,       1337,    0, false, false,   4,   1,   1, Dyes.dyeYellow      , Element.Au        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2)));
         Materials.Holmium                 = new Materials(  74, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  22,   8, 166,   0,   "Holmium"                 ,   "Holmium"                       ,    0,       0,       1734, 1734,  true, false,   4,   1,   1, Dyes._NULL          , Element.Ho        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Hydrogen                = new Materials(   1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0,   0, 255, 240,   "Hydrogen"                ,   "Hydrogen"                      ,    1,      20,         14,    0, false,  true,   2,   1,   1, Dyes.dyeBlue        , Element.H         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1)));
         Materials.Helium                  = new Materials(   4, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255,   0, 240,   "Helium"                  ,   "Helium"                        ,    0,       0,          1,    0, false,  true,   5,   1,   1, Dyes.dyeYellow      , Element.He        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
