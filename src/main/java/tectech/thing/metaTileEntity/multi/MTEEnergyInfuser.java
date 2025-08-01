@@ -109,8 +109,8 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
             euDiff = Math.min(euDiff, getEUVar());
-            long remove = (long) Math.ceil(
-                ElectricItem.manager.charge(stack, euDiff, item.getTier(stack), true, false));
+            long remove = (long) Math
+                .ceil(ElectricItem.manager.charge(stack, euDiff, item.getTier(stack), true, false));
             setEUVar(getEUVar() - remove);
             if (getEUVar() < 0) {
                 setEUVar(0);
