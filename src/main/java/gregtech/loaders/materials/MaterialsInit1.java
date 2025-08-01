@@ -202,9 +202,9 @@ public class MaterialsInit1 {
         Materials.Indium = loadIndium();
         Materials.Iridium = loadIridium();
         Materials.Iron = loadIron();
+        Materials.Lanthanum = loadLanthanum();
 
         // spotless:off
-        Materials.Lanthanum               = new Materials(  64, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 138, 138, 138,   0,   "Lanthanum"               ,   "Lanthanum"                     ,    0,       0,       1193, 1193,  true, false,   4,   1,   1, Dyes._NULL          , Element.La        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Lead                    = new Materials(  89, TextureSet.SET_DULL              ,   8.0F,     64,  1, 1|2  |8   |32|64|128      , 140, 100, 140,   0,   "Lead"                    ,   "Lead"                          ,    0,       0,        600,    0, false, false,   3,   1,   1, Dyes.dyePurple      , Element.Pb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Lithium                 = new Materials(   6, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8   |32             , 225, 220, 255,   0,   "Lithium"                 ,   "Lithium"                       ,    0,       0,        454,    0, false, false,   4,   1,   1, Dyes.dyeLightBlue   , Element.Li        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Lutetium                = new Materials(  78, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 188,  62, 199,   0,   "Lutetium"                ,   "Lutetium"                      ,    0,       0,       1925, 1925,  true, false,   4,   1,   1, Dyes._NULL          , Element.Lu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
@@ -1899,6 +1899,27 @@ public class MaterialsInit1 {
             .setMeltingPoint(1811)
             .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadLanthanum() {
+        return new MaterialBuilder().setName("Lanthanum")
+            .setDefaultLocalName("Lanthanum")
+            .setElement(Element.La)
+            .setMetaItemSubID(64)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes._NULL)
+            .setRGB(0x8a8a8a)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1193)
+            .setBlastFurnaceTemp(1193)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
     }
 }
