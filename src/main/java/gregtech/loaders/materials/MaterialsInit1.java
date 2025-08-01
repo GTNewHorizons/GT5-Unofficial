@@ -180,9 +180,9 @@ public class MaterialsInit1 {
         Materials.Flux = loadFlux();
         Materials.OsmiumTetroxide = loadOsmiumTetroxide();
         Materials.RubberTreeSap = loadRubberTreeSap();
+        Materials.PhasedIron = loadPhasedIron();
 
         // spotless:off;
-        Materials.PhasedIron              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedIron"              ,   "Phased Iron"                   ,    0,       0,       3300, 3300, true, false,   3,   1,   1, Dyes._NULL          );
         Materials.PhasedGold              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedGold"              ,   "Phased Gold"                   ,    0,       0,         -1, 1800, true, false,   3,   1,   1, Dyes._NULL          );
         Materials.HeeEndium               = new Materials( 770, TextureSet.SET_DULL              ,  16.0F,   1024,  4, 1|2  |8      |64|128      , 165, 220, 250,   0,   "HeeEndium"               ,   "Endium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   );
         Materials.Teslatite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         ,  60, 180, 200,   0,   "Teslatite"               ,   "Teslatite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -3043,6 +3043,22 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
             .setRGB(0xffffff)
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhasedIron() {
+        return new MaterialBuilder().setName("PhasedIron")
+            .setDefaultLocalName("Phased Iron")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
+            .addMetalItems()
+            .setMeltingPoint(3300)
+            .setBlastFurnaceTemp(3300)
+            .setBlastFurnaceRequired(true)
             .setOreValue(3)
             .constructMaterial();
     }
