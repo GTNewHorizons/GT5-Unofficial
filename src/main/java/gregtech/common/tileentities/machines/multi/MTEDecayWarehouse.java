@@ -496,6 +496,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             if (isotope == null) {
                 for (ItemStack input : inputs) {
                     GTRecipe recipe = getRecipeMap().findRecipeQuery()
+                        .caching(false)
                         .items(input)
                         .find();
 
@@ -560,6 +561,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         pendingInputs.addAll(GTUtility.loadItemList(aNBT.getTagList("pendingInputs", Constants.NBT.TAG_COMPOUND)));
 
         GTRecipe recipe = getRecipeMap().findRecipeQuery()
+            .caching(false)
             .items(isotope)
             .find();
 

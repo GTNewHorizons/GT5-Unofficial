@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.items.GGMaterial;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -154,7 +153,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
-            .itemOutputs(new ItemStack(GregTechAPI.sBlockCasings3, 1, 12))
+            .itemOutputs(ItemList.Casing_RadiationProof.get(1))
             .fluidInputs(Materials.Concrete.getMolten(9 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -162,10 +161,11 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(GregTechAPI.sBlockCasings3, 1, 12),
+                ItemList.Casing_RadiationProof.get(1),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 6),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24))
-            .itemOutputs(new ItemStack(GregTechAPI.sBlockCasings8, 1, 5))
+            .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
             .fluidInputs(Materials.Lead.getMolten(6 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

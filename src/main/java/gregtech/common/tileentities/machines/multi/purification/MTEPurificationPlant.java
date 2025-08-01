@@ -178,7 +178,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant")
+        tt.addMachineType("Purification Plant, WPP")
             .addInfo("Main controller block for the Water Purification Plant.")
             .addInfo(
                 "Freely place " + EnumChatFormatting.YELLOW
@@ -561,10 +561,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
-        screenElements.widget(
-            new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
@@ -739,7 +741,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip("Toggle debug mode.")
+                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));

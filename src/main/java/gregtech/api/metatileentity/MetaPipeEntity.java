@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GTValues.GT;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,9 +27,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
 /**
@@ -83,13 +79,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        if (aAddInfo && GT.isClientSide()) {
+        if (aAddInfo && GTMod.GT.isClientSide()) {
             addInfo(aID);
         }
     }
 
     protected final void addInfo(int aID) {
-        if (!GT.isClientSide()) return;
+        if (!GTMod.GT.isClientSide()) return;
 
         ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, aID);
         Objects.requireNonNull(tStack.getItem())
@@ -108,7 +104,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public float getThickness() {
         // If we are holding a soldering iron, minimize the rendered thickness of the pipe.
-        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) return 0.0625F;
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .shouldHideThings()) return 0.0625F;
         return getCollisionThickness();
     }
 
@@ -407,8 +404,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return (GTMod.instance.isClientSide() && GTClient.shouldForceFullBlockBoundingBoxes())
-            || getCollisionThickness() == 1;
+        return (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .forceFullBlockBB()) || getCollisionThickness() == 1;
     }
 
     /**
@@ -508,9 +505,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
             if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return GTUtil.getRGBInt(dye.getRGBA());
+        return dye.toInt();
     }
 }

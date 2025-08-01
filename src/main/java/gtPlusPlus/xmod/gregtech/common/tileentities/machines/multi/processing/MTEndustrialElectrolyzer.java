@@ -106,7 +106,8 @@ public class MTEndustrialElectrolyzer extends SimpleCuboidMultiblockBase {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.8F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 2.8F)
             .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

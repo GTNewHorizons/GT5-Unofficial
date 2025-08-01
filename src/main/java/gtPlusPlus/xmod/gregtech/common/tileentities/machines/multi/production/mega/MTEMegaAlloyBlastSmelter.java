@@ -243,7 +243,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             energyDiscount = 1;
             return;
         }
-        energyDiscount = Math.pow(0.95, tierDifference);
+        energyDiscount = GTUtility.powInt(0.95, tierDifference);
     }
 
     @Override

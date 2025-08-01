@@ -261,7 +261,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         int pollutionPerSecond = 0;
         for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             // applying scaling factor
-            pollutionPerSecond += (int) Math.pow(SCALING_FACTOR, min(tTier, tHatch.mTier));
+            pollutionPerSecond += (int) GTUtility.powInt(SCALING_FACTOR, min(tTier, tHatch.mTier));
         }
         // apply the boost
         if (isRateBoosted) {
@@ -597,7 +597,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 // negative EU triggers special EU consumption behavior. however it does not produce power.
                 EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.max_energy_income_tie",
+                "GT5U.infodata.max_energy_income_tier",
                 EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(

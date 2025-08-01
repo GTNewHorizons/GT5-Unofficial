@@ -44,7 +44,7 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 @cpw.mods.fml.common.Optional.Interface(
     iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-    modid = Mods.Names.I_C2_NUCLEAR_CONTROL)
+    modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL)
 public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");

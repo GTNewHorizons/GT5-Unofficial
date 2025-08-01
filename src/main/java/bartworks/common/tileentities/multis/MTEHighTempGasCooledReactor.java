@@ -143,7 +143,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor")
+        tt.addMachineType("Breeder Reactor, HTGR")
             .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
@@ -273,8 +273,8 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         if (this.HeliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED || this.fuelsupply < mincapacity)
             return CheckRecipeResultRegistry.NO_RECIPE;
 
-        double eff = Math.min(Math.pow((double) this.fuelsupply / (double) mincapacity, 2D), 100D) / 100D
-            - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+        double ratio = (double) this.fuelsupply / (double) mincapacity;
+        double eff = Math.min(ratio * ratio, 100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 

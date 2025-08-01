@@ -60,7 +60,7 @@ public class MTEIndustrialWireMill extends SimpleCuboidMultiblockBase {
 
     @Override
     public String getMachineType() {
-        return "Wiremill";
+        return "Wiremill, IWF";
     }
 
     @Override

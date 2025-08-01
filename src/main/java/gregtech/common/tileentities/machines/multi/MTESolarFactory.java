@@ -54,6 +54,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -362,7 +363,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     // 2^(casingTier + 3)
     protected int getMaxParallel() {
         if (mTier <= 1) return 1;
-        return (int) Math.pow(2, 1 + (casingTier + 2));
+        return (int) GTUtility.powInt(2, 1 + (casingTier + 2));
     }
 
     @Override

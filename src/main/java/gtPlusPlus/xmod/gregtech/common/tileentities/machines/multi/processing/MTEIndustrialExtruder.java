@@ -56,7 +56,7 @@ public class MTEIndustrialExtruder extends SimpleCuboidMultiblockBase {
 
     @Override
     public String getMachineType() {
-        return "Extruder";
+        return "Extruder, IEM";
     }
 
     @Override

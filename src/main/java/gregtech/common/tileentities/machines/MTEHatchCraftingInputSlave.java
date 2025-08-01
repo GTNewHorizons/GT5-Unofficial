@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
@@ -168,7 +169,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public ItemStack[] getSharedItems() {
-        return getMaster() != null ? getMaster().getSharedItems() : new ItemStack[0];
+        return getMaster() != null ? getMaster().getSharedItems() : GTValues.emptyItemStackArray;
     }
 
     @Override

@@ -36,7 +36,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.SimpleCuboidMultiblockBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEAmazonPackagerGui;
@@ -134,7 +133,8 @@ public class MTEAmazonPackager extends SimpleCuboidMultiblockBase {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 6F)
             .setEuModifier(0.75F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -194,8 +194,8 @@ public class MTEAmazonPackager extends SimpleCuboidMultiblockBase {
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        PlayerUtils
-            .messagePlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override

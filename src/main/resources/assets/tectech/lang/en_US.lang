@@ -729,6 +729,7 @@ gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (a
 gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
@@ -1080,7 +1081,7 @@ fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does
 fog.text.tooltip.processingvoltage=Base processing voltage for recipes
 fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
 fog.text.tooltip.applysimulationchanges=Simulate new values
-fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual processing voltage follows this formula:
+fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual voltage follows this formula:
 fog.text.tooltip.voltageadjustment.1=Voltage = Min(Selected Voltage, 2^63 / Max Parallel)
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1132,7 +1133,7 @@ gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
 gt.blockmachines.multimachine.FOG.modulestatus=Status:
 gt.blockmachines.multimachine.FOG.modulestatus.true=Connected
 gt.blockmachines.multimachine.FOG.modulestatus.false=Disconnected
-gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.voltageinfo=Voltage Per Parallel
 gt.blockmachines.multimachine.FOG.totalprogress=Total Progress
 gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
 gt.blockmachines.multimachine.FOG.progress=Next Milestone at
@@ -1942,6 +1943,11 @@ tt.godforge.casings.7.Tooltip.1=Gravity Central
 tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+tt.godforge.star_color.preset.default=Default
+tt.godforge.star_color.preset.rainbow=Rainbow
+tt.godforge.star_color.preset.clouds_pick=Cloud's Pick
+tt.godforge.star_color.preset.mayas_pick=Maya's Pick
+
 
 tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
 tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
@@ -1968,8 +1974,8 @@ tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %
 tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
 tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
 tt.infodata.eoh.time_dilation.grade.none=Time Dilation Field Grade: None
-tt.infodata.eoh.stabilisation_grade=Stabilisation Field Grade: %s (%s)
-tt.infodata.eoh.stabilisation_grade.none=Stabilisation Field Grade: None
+tt.infodata.eoh.stabilisation.grade=Stabilisation Field Grade: %s (%s)
+tt.infodata.eoh.stabilisation.grade.none=Stabilisation Field Grade: None
 tt.infodata.eoh.internal_storage=Internal Storage
 tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
 tt.infodata.eoh.other_stats=Other Stats
@@ -1999,3 +2005,33 @@ tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
 ## Base factory pipe
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
+
+# Gui
+tt.gui.tooltip.power_pass=Power Pass
+tt.gui.tooltip.safe_void=Safe Void
+tt.gui.tooltip.power_switch=Power Switch
+
+tt.gui.tooltip.plasma_module.debug_window=Debug Window
+tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
+tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
+tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
+
+tt.gui.text.debug.eut=EUT:
+tt.gui.text.debug.amp=AMP:
+tt.gui.text.debug.sum=SUM: %s
+tt.gui.text.debug.tier=TIER: %s
+
+tt.gui.text.debug_pollutor.pollution=Pollution
+
+tt.gui.text.debug_structure_writer.structure_size=Structure size
+tt.gui.text.debug_structure_writer.my_position=My position
+tt.gui.text.debug_structure_writer.changing_scan_size=(Changing scan size)
+tt.gui.text.debug_structure_writer.moving_origin=(Moving origin)
+
+tt.gui.text.hatch.uncertainty.status.ok=Status: OK
+tt.gui.text.hatch.uncertainty.status.ng=Status: NG
+
+tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
+tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s
+tt.gui.tooltip.full_led_desc.value=Value: %s
+tt.gui.tooltip.full_led_desc.unused=Unused

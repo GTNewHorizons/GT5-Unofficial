@@ -32,6 +32,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 
 public class MTESteamTurbine extends MTEBasicGenerator {
 
@@ -70,7 +71,8 @@ public class MTESteamTurbine extends MTEBasicGenerator {
         desc[mDescriptionArray.length] = "Fuel Efficiency: " + (600 / getEfficiency()) + "%";
         desc[mDescriptionArray.length + 1] = String.format(
             "Consumes up to %sL of Steam per second",
-            (int) (4000 * (8 * Math.pow(4, mTier) + Math.pow(2, Math.max(mTier - 1, 0))) / (600 / getEfficiency())));
+            (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
+                / (600 / getEfficiency())));
         return desc;
     }
 

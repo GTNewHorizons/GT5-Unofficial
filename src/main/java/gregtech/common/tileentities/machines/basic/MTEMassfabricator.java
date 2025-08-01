@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
@@ -216,13 +217,22 @@ public class MTEMassfabricator extends MTEBasicMachine {
         @Override
         protected String getVoltageString(OverclockCalculator calculator) {
             // standard amperage calculation doesn't work here
-            return decorateWithOverclockLabel(GTUtility.formatNumbers(V[mTier]) + " EU/t", calculator)
-                + GTUtility.getTierNameWithParentheses(V[mTier]);
+            long voltage = V[mTier];
+            String voltageString = StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.voltage",
+                GTUtility.formatNumbers(voltage),
+                GTUtility.getTierNameWithParentheses(voltage));
+
+            if (wasOverclocked(calculator)) {
+                voltageString += StatCollector.translateToLocal("GT5U.nei.display.overclock");
+            }
+            return voltageString;
         }
 
         @Override
         protected String getAmperageString(OverclockCalculator calculator) {
             int amperage = this.amperage;
+            String amperageValue;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {
                 amperage >>= 1;
@@ -231,10 +241,11 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 }
             }
             if (amperage > 0) {
-                return GTUtility.formatNumbers(amperage);
+                amperageValue = GTUtility.formatNumbers(amperage);
             } else {
-                return "1/" + denominator;
+                amperageValue = "1/" + denominator;
             }
+            return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", amperageValue);
         }
     }
 }

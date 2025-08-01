@@ -18,18 +18,18 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public abstract class LogBase extends BlockLog {
 
-    public String[] treeType = new String[] {};
+    public String[] treeType;
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 
     public LogBase(String blockNameLocalized, String blockNameUnlocalized, String[] treeTypes) {
         this.treeType = treeTypes;
-        String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";
+        String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         OreDictionary.registerOre("logWood", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));

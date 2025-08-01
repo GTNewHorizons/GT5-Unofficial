@@ -12,13 +12,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.GTClient;
 import gregtech.common.render.GTTextureBuilder;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
@@ -63,9 +63,10 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override
@@ -146,7 +147,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         return new ITexture[] { new GTTextureBuilder().addIcon(pipe)
             .build(),
             new GTTextureBuilder().addIcon(pipe)
-                .setRGBA(Dyes.getModulation((byte) aColorIndex, MACHINE_METAL.getRGBA()))
+                .setRGBA(Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
                 .build() };
     }
 

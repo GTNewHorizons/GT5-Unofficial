@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.util.Utils;
 
@@ -36,8 +37,8 @@ public class IonParticles extends BaseItemParticle {
         int key = 0;
         for (String s : ions) {
             // Map names to Meta
-            NameToMetaMap.put(Utils.sanitizeString(s.toLowerCase()), key);
-            MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
+            NameToMetaMap.put(StringUtils.sanitizeString(s.toLowerCase()), key);
+            MetaToNameMap.put(key, StringUtils.sanitizeString(s.toLowerCase()));
             Materials m = Materials.get(s);
             int aColour = 0;
             aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);

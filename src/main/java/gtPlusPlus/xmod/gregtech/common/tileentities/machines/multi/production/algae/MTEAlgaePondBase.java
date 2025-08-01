@@ -411,7 +411,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     private static int compostForTier(int aTier) {
-        return aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1;
+        return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
     private static GTRecipe generateBaseRecipe(int aTier, boolean isUsingCompost) {
@@ -427,7 +427,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             // Boost Tier by one if using compost, so it gets a speed boost
             aTier++;
         } else {
-            aInputs = new ItemStack[] {};
+            aInputs = GTValues.emptyItemStackArray;
         }
 
         ItemStack[] aOutputs = getOutputsForTier(aTier);
@@ -436,7 +436,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInputs,
             aOutputs,
             null,
-            new int[] {},
+            GTValues.emptyIntArray,
             new FluidStack[] { GTValues.NF },
             new FluidStack[] { GTValues.NF },
             getRecipeDuration(aTier),

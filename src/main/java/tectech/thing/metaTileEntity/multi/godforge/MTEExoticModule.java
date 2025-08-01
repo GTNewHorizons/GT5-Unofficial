@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -92,8 +93,8 @@ public class MTEExoticModule extends MTEBaseModule {
     private boolean recipeInProgress = false;
     private boolean recipeRegenerated = false;
     private boolean magmatterMode = false;
-    private FluidStack[] randomizedFluidInput = new FluidStack[] {};
-    private ItemStack[] randomizedItemInput = new ItemStack[] {};
+    private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
+    private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
     private BigInteger powerForRecipe = BigInteger.ZERO;
     private static final int NUMBER_OF_INPUTS = 7;

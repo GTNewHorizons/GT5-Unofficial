@@ -14,8 +14,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.ResourceUtils;
 
 public class Textures {
+
+    public static final String _OVERLAY = "_OVERLAY";
+    public static final String ICONSETS = "iconsets";
 
     public enum BlockIcons implements IIconContainer, Runnable {
 
@@ -608,9 +612,11 @@ public class Textures {
         OVERLAY_INPUT_HATCH_2x2,
         FLUID_OUT_SIGN,
         FLUID_IN_SIGN,
+        FLUID_VOID_SIGN,
         FLUID_STEAM_IN_SIGN,
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
+        ITEM_VOID_SIGN,
         OVERLAY_MUFFLER,
 
         OVERLAY_PIPE_COLOR_BLACK,
@@ -812,6 +818,8 @@ public class Textures {
         OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW,
         OVERLAY_FRONT_STEAM_EXTRACTOR,
         OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI,
+        OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE,
         OVERLAY_FRONT_DISASSEMBLER,
         OVERLAY_FRONT_DISASSEMBLER_GLOW,
         OVERLAY_FRONT_DISASSEMBLER_ACTIVE,
@@ -980,6 +988,9 @@ public class Textures {
         OVERLAY_TELEPORTER_ACTIVE_GLOW,
         OVERLAY_TELEPORTER_SIDES,
         OVERLAY_TELEPORTER_SIDES_GLOW,
+        OVERLAY_MAGLEV,
+        OVERLAY_MAGLEV_ACTIVE,
+        OVERLAY_MAGLEV_ACTIVE_GLOW,
         FUSIONI_1,
         FUSIONI_2,
         FUSIONI_3,
@@ -1566,7 +1577,14 @@ public class Textures {
         RADIATION_ABSORBENT_CASING,
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
-        OVERLAY_NANITE_HATCH_GLOW
+        OVERLAY_NANITE_HATCH_GLOW,
+
+        NANO_FORGE_CASING_1,
+        NANO_FORGE_CASING_2,
+        NANO_FORGE_CASING_3,
+        NANO_FORGE_CASING_4,
+        NANITE_CORE,
+        NANITE_SHIELDING_FRAME,
 
         // semicolon after the comment to reduce merge conflicts
         ;
@@ -1856,7 +1874,10 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
 
-        public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
+        private static final int TIERS = 15;
+        private static final int CASING_COLORS = Dyes.VALUES.length + 1; // MACHINE_METAL followed by Dyes.VALUES
+        public static ITexture[][] MACHINE_CASINGS = new ITexture[TIERS][CASING_COLORS];
+
         // spotless:off
         /**
          * by Default pages are null
@@ -1873,15 +1894,26 @@ public class Textures {
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
-            for (byte i = 0; i < MACHINE_CASINGS.length; i++)
-                for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) MACHINE_CASINGS[i][j] = TextureFactory.of(
-                    MACHINECASINGS_BOTTOM[i],
-                    MACHINECASINGS_TOP[i],
-                    MACHINECASINGS_SIDE[i],
-                    Dyes.getModulation(j - 1, Dyes.MACHINE_METAL.mRGBa));
+            for (byte tier = 0; tier < TIERS; tier++) {
+                MACHINE_CASINGS[tier][0] = TextureFactory.of(
+                    MACHINECASINGS_BOTTOM[tier],
+                    MACHINECASINGS_TOP[tier],
+                    MACHINECASINGS_SIDE[tier],
+                    Dyes.MACHINE_METAL.getRGBA());
+
+                for (Dyes dye : Dyes.VALUES) {
+                    MACHINE_CASINGS[tier][dye.mIndex + 1] = TextureFactory.of(
+                        MACHINECASINGS_BOTTOM[tier],
+                        MACHINECASINGS_TOP[tier],
+                        MACHINECASINGS_SIDE[tier],
+                        dye.getRGBA());
+                }
+            }
+
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GTUtility.addTexturePage((byte) 1);
@@ -1935,22 +1967,40 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
+            mIcon = GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
 
-            protected IIcon mIcon;
-            protected String mIconName;
+            protected IIcon mIcon, mOverlay = null;
+            protected final String mIconName, mOverlayName;
 
             public CustomIcon(String aIconName) {
                 mIconName = !aIconName.contains(":") ? GregTech.getResourcePath(aIconName) : aIconName;
+                mOverlayName = mIconName + _OVERLAY;
                 GregTechAPI.sGTBlockIconload.add(this);
             }
 
             @Override
             public void run() {
                 mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
+                // This makes the block _OVERLAY icon totally optional
+                if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
+                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+                }
+            }
+
+            private ResourceLocation getResourceLocation(String iconName) {
+                final String overlayDomain, overlayPath;
+                final int i = iconName.indexOf(':');
+                if (i >= 0) {
+                    overlayDomain = i > 1 ? iconName.substring(0, i) : "minecraft";
+                    overlayPath = TEXTURES_BLOCKS + iconName.substring(i + 1) + ".png";
+                } else {
+                    overlayDomain = "minecraft";
+                    overlayPath = TEXTURES_BLOCKS + iconName + ".png";
+                }
+                return new ResourceLocation(overlayDomain, overlayPath);
             }
 
             @Override
@@ -1960,7 +2010,7 @@ public class Textures {
 
             @Override
             public IIcon getOverlayIcon() {
-                return null;
+                return mOverlay;
             }
 
             @Override
@@ -2062,8 +2112,8 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
-            mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this + "_OVERLAY"));
+            mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()));
+            mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this + _OVERLAY));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -2094,7 +2144,7 @@ public class Textures {
             @Override
             public void run() {
                 mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName));
-                mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + "_OVERLAY"));
+                mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + _OVERLAY));
             }
         }
     }

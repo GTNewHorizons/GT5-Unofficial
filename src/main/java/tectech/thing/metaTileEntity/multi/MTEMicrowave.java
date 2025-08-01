@@ -42,7 +42,6 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.Reference;
 import tectech.loader.MainLoader;
-import tectech.recipe.TTRecipeAdder;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -204,7 +203,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
 
-        mOutputItems = itemsToOutput.toArray(TTRecipeAdder.nullItem);
+        mOutputItems = itemsToOutput.toArray(new ItemStack[0]);
 
         if (remainingTime.get() <= 0) {
             mte.getWorld()

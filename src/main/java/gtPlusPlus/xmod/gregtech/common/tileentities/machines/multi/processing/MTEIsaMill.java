@@ -25,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -57,7 +56,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
@@ -88,7 +86,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Grind ores.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")
@@ -96,7 +94,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
             .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
             .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
-            .addOtherStructurePart("Milling Ball Hatch", "Any Casing")
+            .addOtherStructurePart("Ball Housing", "Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -256,19 +254,17 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (!aEntities.isEmpty()) {
             for (EntityLivingBase aFoundEntity : aEntities) {
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (!PlayerUtils.isCreative(aPlayer) && PlayerUtils.canTakeDamage(aPlayer)) {
+                    if (!aPlayer.capabilities.isCreativeMode && !aPlayer.capabilities.disableDamage) {
                         if (aFoundEntity.getHealth() > 0) {
-                            EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
+                            aFoundEntity.attackEntityFrom(mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                                 generateParticles(aFoundEntity);
                             }
                         }
                     }
                 } else if (aFoundEntity.getHealth() > 0) {
-                    EntityUtils.doDamage(
-                        aFoundEntity,
-                        mIsaMillDamageSource,
-                        Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+                    aFoundEntity
+                        .attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                         generateParticles(aFoundEntity);
                     }

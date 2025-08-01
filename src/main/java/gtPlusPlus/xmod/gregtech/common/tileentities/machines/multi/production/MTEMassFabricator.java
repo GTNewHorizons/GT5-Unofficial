@@ -59,7 +59,6 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -106,9 +105,9 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +0% | EU Usage: 80%")
             .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addInfo("Produces UU-A, UU-M & Scrap")
             .addInfo("Change mode with screwdriver")
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
@@ -315,13 +314,13 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         int aMode = this.mMode + 1;
         if (aMode > 1) {
             this.mMode = MODE_UU;
-            PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
+            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
         } else if (aMode == 1) {
             this.mMode = MODE_SCRAP;
-            PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
+            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
         } else {
             this.mMode = MODE_SCRAP;
-            PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
+            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
         }
         mLastRecipe = null;
     }

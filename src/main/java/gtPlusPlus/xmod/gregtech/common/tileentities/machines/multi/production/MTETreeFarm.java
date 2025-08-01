@@ -42,7 +42,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -310,10 +309,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             @Nonnull
             public CheckRecipeResult process() {
                 if (inputItems == null) {
-                    inputItems = new ItemStack[0];
+                    inputItems = GTValues.emptyItemStackArray;
                 }
                 if (inputFluids == null) {
-                    inputFluids = new FluidStack[0];
+                    inputFluids = GTValues.emptyFluidStackArray;
                 }
 
                 ItemStack sapling = findSapling();

@@ -12,10 +12,10 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
 public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISidedInventory {
@@ -399,7 +399,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
 
         if (player.isSneaking()) {
-            PlayerUtils.messagePlayer(player, "Value: " + this.getCustomValue());
+            GTUtility.sendChatToPlayer(player, "Value: " + this.getCustomValue());
         }
 
         try {
@@ -408,7 +408,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             } else {
                 aCurrentMode++;
             }
-            PlayerUtils.messagePlayer(player, "Slot " + aCurrentMode + " is now default.");
+            GTUtility.sendChatToPlayer(player, "Slot " + aCurrentMode + " is now default.");
             return true;
         } catch (Throwable t) {
             return false;

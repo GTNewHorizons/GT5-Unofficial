@@ -98,11 +98,11 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         GregtechItemList.RubberPolymerCatalyst.get(1), GregtechItemList.AdhesionPromoterCatalyst.get(1),
         GregtechItemList.TitaTungstenIndiumCatalyst.get(1), GregtechItemList.RadioactivityCatalyst.get(1),
         GregtechItemList.RareEarthGroupCatalyst.get(1), GregtechItemList.SimpleNaquadahCatalyst.get(1),
-        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.AdvancedNaquadahCatalyst.get(1),
-        GregtechItemList.RawIntelligenceCatalyst.get(1), GregtechItemList.UltimatePlasticCatalyst.get(1),
-        GregtechItemList.BiologicalIntelligenceCatalyst.get(1), GregtechItemList.TemporalHarmonyCatalyst.get(1),
-        GregtechItemList.ParticleAccelerationCatalyst.get(1), GregtechItemList.SynchrotronCapableCatalyst.get(1),
-        GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
+        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.CrystalColorizationCatalyst.get(1),
+        GregtechItemList.AdvancedNaquadahCatalyst.get(1), GregtechItemList.RawIntelligenceCatalyst.get(1),
+        GregtechItemList.UltimatePlasticCatalyst.get(1), GregtechItemList.BiologicalIntelligenceCatalyst.get(1),
+        GregtechItemList.TemporalHarmonyCatalyst.get(1), GregtechItemList.ParticleAccelerationCatalyst.get(1),
+        GregtechItemList.SynchrotronCapableCatalyst.get(1), GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
 
     private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
 

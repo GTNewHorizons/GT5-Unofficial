@@ -447,8 +447,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         // Randomly generate ore stacks with the given chances, ores and size
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
-        int totalChance = Arrays.stream(tRecipe.mChances)
-            .sum();
+
+        int totalChance = 0;
+        if (tRecipe.mChances == null) {
+            totalChance = tRecipe.mOutputs.length * 10000;
+        } else {
+            for (int mChance : tRecipe.mChances) totalChance += mChance;
+        }
+
         try {
             for (int i = 0; i < data.maxSize * parallels; i++) {
                 int bonusStackChance = 0;
@@ -590,7 +596,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // T5: 0.578
         // The whole chance is multiplied by 2 - overdrive setting
         return Math.min(
-            (int) ((Math.pow((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
+            (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
             BONUS_STACK_MAX_CHANCE);
     }
 
@@ -1086,6 +1092,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -1184,6 +1191,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -1282,6 +1290,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))

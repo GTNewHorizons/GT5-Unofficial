@@ -211,15 +211,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("TritiumCell", 1))
-            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
-            .outputChances(10000)
-            .fluidOutputs(Materials.Tritium.getGas(32))
-            .duration(16 * TICKS)
-            .eut(64)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartzite, 1L))
             .fluidOutputs(Materials.Glass.getMolten(1 * HALF_INGOTS))
             .duration(30 * SECONDS)
@@ -560,6 +551,13 @@ public class FluidExtractorRecipes implements Runnable {
             .fluidOutputs(Materials.Tin.getMolten(1 * NUGGETS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 4))
+            .fluidOutputs(Materials.Aluminium.getMolten(1 * NUGGETS))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
 
         if (Forestry.isModLoaded()) {

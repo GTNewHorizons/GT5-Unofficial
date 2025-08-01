@@ -27,7 +27,7 @@ public enum GTPacketTypes {
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
     // Free ID 18
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
-    TOOL_SWITCH_MODE(20, new GTPacketToolSwitchMode()),
+    // Free ID 20
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
@@ -42,6 +42,7 @@ public enum GTPacketTypes {
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     LINK_GOGGLES(34, new GTPacketLinkPowerGoggles()),
+    TETHER(35, new GTPacketTether()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

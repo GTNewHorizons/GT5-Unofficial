@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,9 +50,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -81,6 +77,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -95,8 +92,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
     IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
 
-    private static final Field ENTITY_ITEM_HEALTH_FIELD = ReflectionHelper
-        .findField(EntityItem.class, "health", "field_70291_e");
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     public long mLastSoundTick = 0;
@@ -319,7 +314,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mNeedsUpdate) {
-                    if (GTMod.gregtechproxy.mUseBlockUpdateHandler) {
+                    if (GTMod.proxy.mUseBlockUpdateHandler) {
                         BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
                     } else {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -782,7 +777,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -1289,7 +1284,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mReleaseEnergy = false;
             // Normal Explosion Code
             mMetaTileEntity.onExplosion();
-            if (GTMod.gregtechproxy.mExplosionItemDrop) {
+            if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (this.isValidSlot(i))) {
@@ -1298,7 +1293,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                 }
             }
-            Pollution.addPollution((TileEntity) this, GTMod.gregtechproxy.mPollutionOnExplosion);
+            Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }
@@ -1322,9 +1317,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.0500000007450581D);
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
-        try {
-            ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
-        } catch (Exception ignored) {}
+        ((EntityItemAccessor) tItemEntity).gt5$setHealth(99999999);
         this.worldObj.spawnEntityInWorld(tItemEntity);
         tItem.stackSize = 0;
     }
@@ -1847,7 +1840,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
             || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
             return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     public double getOutputEnergyUnitsPerTick() {
@@ -2134,18 +2127,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void gridChanged() {
         if (mMetaTileEntity != null) mMetaTileEntity.gridChanged();
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
-    }
-
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        final AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
     }
 
     void onChunkUnloadAE() {

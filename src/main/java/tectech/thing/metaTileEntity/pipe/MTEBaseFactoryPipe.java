@@ -12,7 +12,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -20,7 +22,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.PipeActivity;
 
@@ -105,7 +106,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public String[] getDescription() {
-        return new String[] {};
+        return GTValues.emptyStringArray;
     }
 
     @Override
@@ -162,7 +163,8 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
                 }
             }
         } else {
-            if (GTClient.changeDetected == 4) {
+            if (GTMod.clientProxy()
+                .changeDetected() == 4) {
                 base.issueTextureUpdate();
             }
         }

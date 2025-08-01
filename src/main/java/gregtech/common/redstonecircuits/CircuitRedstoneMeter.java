@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -60,21 +62,21 @@ public class CircuitRedstoneMeter extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Redstone Meter";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.name");
     }
 
     @Override
     public String getDescription() {
-        return "Checks Boundaries";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         return switch (aCircuitDataIndex) {
-            case 0 -> "Lower";
-            case 1 -> "Upper";
-            case 2 -> "Invert:";
-            case 3 -> "RS Out:";
+            case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.data_description.lower");
+            case 1 -> StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.data_description.upper");
+            case 2 -> StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.data_description.invert");
+            case 3 -> StatCollector.translateToLocal("GT5U.gui.circuit.redstone_meter.data_description.rs_out");
             default -> "";
         };
     }
@@ -82,7 +84,9 @@ public class CircuitRedstoneMeter extends CircuitryBehavior {
     @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         if (aCircuitDataIndex == 2) {
-            return aCircuitData[2] == 0 ? "OFF" : "ON";
+            return StatCollector.translateToLocal(
+                aCircuitData[2] == 0 ? "GT5U.gui.circuit.generic.data_display.off"
+                    : "GT5U.gui.circuit.generic.data_display.on");
         }
         return null;
     }

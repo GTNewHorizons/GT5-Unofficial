@@ -15,8 +15,12 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -182,8 +186,8 @@ public class MTEIndustrialChisel extends SimpleCuboidMultiblockBase {
                     new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
                     null,
                     new int[] { 10000 },
-                    new FluidStack[] {},
-                    new FluidStack[] {},
+                    GTValues.emptyFluidStackArray,
+                    GTValues.emptyFluidStackArray,
                     20,
                     16,
                     0);
@@ -237,7 +241,8 @@ public class MTEIndustrialChisel extends SimpleCuboidMultiblockBase {
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 return GTStreamUtil.ofNullable(getRecipe());
             }
-        }.setSpeedBonus(1F / 3F)
+        }.noRecipeCaching()
+            .setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
