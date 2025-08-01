@@ -455,12 +455,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTechAPI.sDroneRender);
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        if (world.getBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset))
+            .equals(Blocks.air)) {
+            world.setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTechAPI.sDroneRender);
+        }
     }
 
     private void destroyRenderBlock() {
@@ -472,9 +472,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        if (world.getBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset))
+            .equals(GregTechAPI.sDroneRender)) {
+            world.setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        }
     }
 
     @Override
