@@ -59,6 +59,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.client.gui.KTUITextures;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
@@ -579,6 +581,30 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
+                + EnumChatFormatting.BLUE
+                + GTUtility.scientificFormat(energyProducedCache)
+                + EnumChatFormatting.WHITE
+                + " EU");
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
+                + EnumChatFormatting.RED
+                + numberFormat.format(Math.ceil(efficiencyCache * 100))
+                + EnumChatFormatting.WHITE
+                + " %");
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.RED
+                + numberFormat.format(Math.ceil(avgEffCache * 100))
+                + EnumChatFormatting.WHITE
+                + " % ⟩₁₀");
     }
 
     @Override
