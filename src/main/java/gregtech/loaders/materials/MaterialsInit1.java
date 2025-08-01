@@ -178,9 +178,9 @@ public class MaterialsInit1 {
 
         Materials.Serpentine = loadSerpentine();
         Materials.Flux = loadFlux();
+        Materials.OsmiumTetroxide = loadOsmiumTetroxide();
 
         // spotless:off;
-        Materials.OsmiumTetroxide         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "OsmiumTetroxide"         ,   "Osmium Tetroxide"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.RubberTreeSap           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "RubberTreeSap"           ,   "Rubber Tree Sap"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.PhasedIron              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedIron"              ,   "Phased Iron"                   ,    0,       0,       3300, 3300, true, false,   3,   1,   1, Dyes._NULL          );
         Materials.PhasedGold              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedGold"              ,   "Phased Gold"                   ,    0,       0,         -1, 1800, true, false,   3,   1,   1, Dyes._NULL          );
@@ -3015,6 +3015,18 @@ public class MaterialsInit1 {
     private static Materials loadFlux() {
         return new MaterialBuilder().setName("Flux")
             .setDefaultLocalName("Flux")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadOsmiumTetroxide() {
+        return new MaterialBuilder().setName("OsmiumTetroxide")
+            .setDefaultLocalName("Osmium Tetroxide")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes._NULL)
