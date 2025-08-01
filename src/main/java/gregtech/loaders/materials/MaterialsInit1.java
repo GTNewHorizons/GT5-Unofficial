@@ -566,8 +566,26 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
 
+        Materials.Europium = new MaterialBuilder().setName("Europium")
+            .setDefaultLocalName("Europium")
+            .setElement(Element.Eu)
+            .setMetaItemSubID(70)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes._NULL)
+            .setRGB(0xf6b5ff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1099)
+            .setBlastFurnaceTemp(1099)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Europium                = new Materials(  70, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 246, 181, 255,   0,   "Europium"                ,   "Europium"                      ,    0,       0,       1099, 1099,  true, false,   4,   1,   1, Dyes._NULL          , Element.Eu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Fluorine                = new Materials(  14, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255, 255, 127,   "Fluorine"                ,   "Fluorine"                      ,    0,       0,         53,    0, false,  true,   2,   1,   1, Dyes.dyeGreen       , Element.F         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2)));
         Materials.Gadolinium              = new Materials(  71, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  59, 186,  28,   0,   "Gadolinium"              ,   "Gadolinium"                    ,    0,       0,       1585, 1585,  true, false,   4,   1,   1, Dyes._NULL          , Element.Gd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Gallium                 = new Materials(  37, TextureSet.SET_SHINY             ,   1.0F,     64,  2, 1|2  |8   |32             , 220, 220, 255,   0,   "Gallium"                 ,   "Gallium"                       ,    0,       0,        302,    0, false, false,   5,   1,   1, Dyes.dyeLightGray   , Element.Ga        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
