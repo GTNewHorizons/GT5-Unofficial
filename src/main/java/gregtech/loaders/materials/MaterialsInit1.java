@@ -436,7 +436,7 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PANNUS, 1))
             .constructMaterial();
 
-        Materials.Chrome                  = new MaterialBuilder().setName("Chrome")
+        Materials.Chrome = new MaterialBuilder().setName("Chrome")
             .setDefaultLocalName("Chrome")
             .setElement(Element.Cr)
             .setMetaItemSubID(30)
