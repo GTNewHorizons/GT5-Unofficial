@@ -230,9 +230,9 @@ public class MaterialsInit1 {
         Materials.Rubidium = loadRubidium();
         Materials.Samarium = loadSamarium();
         Materials.Scandium = loadScandium();
+        Materials.Silicon = loadSilicon();
 
         // spotless:off
-        Materials.Silicon                 = new Materials(  20, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             ,  60,  60,  80,   0,   "Silicon"                 ,   "Raw Silicon"                   ,    0,       0,       2273, 2273,  true, false,   1,   1,   1, Dyes.dyeBlack       , Element.Si        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1)));
         Materials.Silver                  = new Materials(  54, TextureSet.SET_SHINY             ,  10.0F,     64,  2, 1|2  |8   |32|64|128      , 220, 220, 255,   0,   "Silver"                  ,   "Silver"                        ,    0,       0,       1234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Ag        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
         Materials.Sodium                  = new Materials(  17, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1      |16|32             ,   0,   0, 150,   0,   "Sodium"                  ,   "Sodium"                        ,    0,       0,        370,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , Element.Na        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.LUX, 1)));
         Materials.Strontium               = new Materials(  44, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32   |128      , 200, 200, 200,   0,   "Strontium"               ,   "Strontium"                     ,    0,       0,       1050,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Element.Sr        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 1)));
@@ -2329,6 +2329,26 @@ public class MaterialsInit1 {
             .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadSilicon() {
+        return new MaterialBuilder().setName("Silicon")
+            .setDefaultLocalName("Raw Silicon")
+            .setElement(Element.Si)
+            .setMetaItemSubID(20)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyeBlack)
+            .setRGB(0x3c3c50)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(2273)
+            .setBlastFurnaceTemp(2273)
+            .setBlastFurnaceRequired(true)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1))
             .constructMaterial();
     }
 
