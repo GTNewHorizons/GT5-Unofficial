@@ -227,8 +227,22 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial();
 
+        Materials.Argon = new MaterialBuilder().setName("Argon")
+            .setDefaultLocalName("Argon")
+            .setElement(Element.Ar)
+            .setMetaItemSubID(24)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0xf000ff00)
+            .setTransparent(true)
+            .addCell()
+            .addPlasma()
+            .setMeltingPoint(83)
+            .setOreValue(5)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Argon                   = new Materials(  24, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 255,   0, 240,   "Argon"                   ,   "Argon"                         ,    0,       0,         83,    0, false,  true,   5,   1,   1, Dyes.dyeGreen       , Element.Ar        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
         Materials.Arsenic                 = new Materials(  39, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|2  |8|16|32             , 255, 255, 255,   0,   "Arsenic"                 ,   "Arsenic"                       ,    0,       0,       1090,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , Element.As        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3)));
         Materials.Barium                  = new Materials(  63, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 255,   0,   "Barium"                  ,   "Barium"                        ,    0,       0,       1000,    0, false, false,   1,   1,   1, Dyes._NULL          , Element.Ba        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 3)));
         Materials.Beryllium               = new Materials(   8, TextureSet.SET_METALLIC          ,  14.0F,     64,  2, 1|2  |8   |32|64          , 100, 180, 100,   0,   "Beryllium"               ,   "Beryllium"                     ,    0,       0,       1560,    0, false, false,   6,   1,   1, Dyes.dyeGreen       , Element.Be        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)));
