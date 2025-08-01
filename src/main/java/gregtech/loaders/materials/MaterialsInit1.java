@@ -237,9 +237,9 @@ public class MaterialsInit1 {
         Materials.Sulfur = loadSulfur();
         Materials.Tantalum = loadTantalum();
         Materials.Tellurium = loadTellurium();
+        Materials.Terbium = loadTerbium();
 
         // spotless:off
-        Materials.Terbium                 = new Materials(  72, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 255,   0,   "Terbium"                 ,   "Terbium"                       ,    0,       0,       1629, 1629,  true, false,   4,   1,   1, Dyes._NULL          , Element.Tb        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Thorium                 = new Materials(  96, TextureSet.SET_SHINY             ,   6.0F,    512,  2, 1|2  |8   |32|64          ,   0,  30,   0,   0,   "Thorium"                 ,   "Thorium"                       ,    0,       0,       2115,    0, false, false,   4,   1,   1, Dyes.dyeBlack       , Element.Th        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Thulium                 = new Materials(  76, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  89, 107, 194,   0,   "Thulium"                 ,   "Thulium"                       ,    0,       0,       1818, 1818,  true, false,   4,   1,   1, Dyes._NULL          , Element.Tm        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Tin                     = new Materials(  57, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1|2  |8   |32   |128      , 220, 220, 220,   0,   "Tin"                     ,   "Tin"                           ,    0,       0,        505,  505, false, false,   3,   1,   1, Dyes.dyeWhite       , Element.Sn        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
@@ -2415,6 +2415,27 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(722)
+            .setOreValue(4)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadTerbium() {
+        return new MaterialBuilder().setName("Terbium")
+            .setDefaultLocalName("Terbium")
+            .setElement(Element.Tb)
+            .setMetaItemSubID(72)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .setMeltingPoint(1629)
+            .setBlastFurnaceTemp(1629)
+            .setBlastFurnaceRequired(true)
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
