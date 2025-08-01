@@ -184,10 +184,9 @@ public class MaterialsInit1 {
         Materials.Metal = loadMetal();
         Materials.Unknown = loadUnknown();
         Materials.Cobblestone = loadCobblestone();
+        Materials.BrickNether = loadBrickNether();
 
         // spotless:off
-        Materials.BrickNether                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
-
         Materials.Serpentine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Serpentine"              ,   "Serpentine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Flux                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Flux"                    ,   "Flux"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.OsmiumTetroxide         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "OsmiumTetroxide"         ,   "Osmium Tetroxide"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -2981,6 +2980,14 @@ public class MaterialsInit1 {
     private static Materials loadCobblestone() {
         return new MaterialBuilder().setName("Cobblestone")
             .setDefaultLocalName("Cobblestone")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadBrickNether() {
+        return new MaterialBuilder().setName("BrickNether")
+            .setDefaultLocalName("BrickNether")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
