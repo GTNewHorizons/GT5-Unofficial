@@ -175,9 +175,9 @@ public class MaterialsInit1 {
         Materials.Flerovium = loadFlerovium();
         Materials.Organic = loadOrganic();
         Materials.AnyCopper = loadAnyCopper();
+        Materials.AnyBronze = loadAnyBronze();
 
         // spotless:off
-        Materials.AnyBronze                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyBronze"               ,   "AnyBronze"                     );
         Materials.AnyIron                            = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyIron"                 ,   "AnyIron"                       );
         Materials.AnyRubber                          = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnyRubber"               ,   "AnyRubber"                     );
         Materials.AnySyntheticRubber                 = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  3,                                          false,   "AnySyntheticRubber"      ,   "AnySyntheticRubber"            );
@@ -2909,6 +2909,14 @@ public class MaterialsInit1 {
     private static Materials loadAnyCopper() {
         return new MaterialBuilder().setName("AnyCopper")
             .setDefaultLocalName("AnyCopper")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_SHINY)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyBronze() {
+        return new MaterialBuilder().setName("AnyBronze")
+            .setDefaultLocalName("AnyBronze")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
