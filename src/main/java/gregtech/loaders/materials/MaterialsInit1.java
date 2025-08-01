@@ -182,9 +182,9 @@ public class MaterialsInit1 {
         Materials.RubberTreeSap = loadRubberTreeSap();
         Materials.PhasedIron = loadPhasedIron();
         Materials.PhasedGold = loadPhasedGold();
+        Materials.HeeEndium = loadHeeEndium();
 
         // spotless:off;
-        Materials.HeeEndium               = new Materials( 770, TextureSet.SET_DULL              ,  16.0F,   1024,  4, 1|2  |8      |64|128      , 165, 220, 250,   0,   "HeeEndium"               ,   "Endium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   );
         Materials.Teslatite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         ,  60, 180, 200,   0,   "Teslatite"               ,   "Teslatite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Fluix                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Fluix"                   ,   "Fluix"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.DarkThaumium            = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "DarkThaumium"            ,   "Dark Thaumium"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -3074,6 +3074,25 @@ public class MaterialsInit1 {
             .addMetalItems()
             .setBlastFurnaceTemp(1800)
             .setBlastFurnaceRequired(true)
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadHeeEndium() {
+        return new MaterialBuilder().setName("HeeEndium")
+            .setDefaultLocalName("Endium")
+            .setMetaItemSubID(770)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setRGB(0xa5dcfa)
+            .setToolSpeed(0.0f)
+            .setDurability(1024)
+            .setToolQuality(4)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
             .setOreValue(3)
             .constructMaterial();
     }
