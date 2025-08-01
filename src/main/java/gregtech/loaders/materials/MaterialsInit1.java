@@ -208,9 +208,9 @@ public class MaterialsInit1 {
         Materials.Lutetium = loadLutetium();
         Materials.Magic = loadMagic();
         Materials.Magnesium = loadMagnesium();
+        Materials.Manganese = loadManganese();
 
         // spotless:off
-        Materials.Manganese               = new Materials(  31, TextureSet.SET_DULL              ,   7.0F,    512,  2, 1|2  |8   |32|64          , 250, 250, 250,   0,   "Manganese"               ,   "Manganese"                     ,    0,       0,       1519,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , Element.Mn        , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3)));
         Materials.Mercury                 = new Materials(  87, TextureSet.SET_SHINY             ,   1.0F,      0,  0,         16|32             , 255, 220, 220,   0,   "Mercury"                 ,   "Mercury"                       ,    5,      32,        234,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Element.Hg        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 1), new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)));
         Materials.Molybdenum              = new Materials(  48, TextureSet.SET_SHINY             ,   7.0F,    512,  2, 1|2  |8   |32|64          , 180, 180, 220,   0,   "Molybdenum"              ,   "Molybdenum"                    ,    0,       0,       2896,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , Element.Mo        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1)));
         Materials.Neodymium               = new Materials(  67, TextureSet.SET_METALLIC          ,   7.0F,    512,  2, 1|2  |8   |32|64|128      , 100, 100, 100,   0,   "Neodymium"               ,   "Neodymium"                     ,    0,       0,       1297, 1297,  true, false,   4,   1,   1, Dyes._NULL          , Element.Nd        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2)));
@@ -2030,6 +2030,28 @@ public class MaterialsInit1 {
             .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadManganese() {
+        return new MaterialBuilder().setName("Manganese")
+            .setDefaultLocalName("Manganese")
+            .setElement(Element.Mn)
+            .setMetaItemSubID(31)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setRGB(0xfafafa)
+            .setToolSpeed(0.0f)
+            .setDurability(512)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .setMeltingPoint(1519)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
     }
 }
