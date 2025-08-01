@@ -2741,43 +2741,123 @@ public class MaterialsInit1 {
     }
 
     private static Materials loadMtbeMixture() {
-        return new MaterialBuilder(983, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butene)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 12), new MaterialStack(Oxygen, 1)).constructMaterial();
+        return new MaterialBuilder(983, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butene)").addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 5),
+                new MaterialStack(Hydrogen, 12),
+                new MaterialStack(Oxygen, 1))
+            .constructMaterial();
     }
 
     private static Materials loadMtbeMixtureAlt() {
-        return new MaterialBuilder(425, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butane)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
+        return new MaterialBuilder(425, TextureSet.SET_FLUID, "MTBE Reaction Mixture (Butane)").addCell()
+            .addGas()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 5),
+                new MaterialStack(Hydrogen, 14),
+                new MaterialStack(Oxygen, 1))
+            .constructMaterial();
     }
 
     private static Materials loadNitrousOxide() {
-        return new MaterialBuilder(993, TextureSet.SET_FLUID, "Nitrous Oxide").addCell().addGas().setRGB(125, 200, 255).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
+        return new MaterialBuilder(993, TextureSet.SET_FLUID, "Nitrous Oxide").addCell()
+            .addGas()
+            .setRGB(125, 200, 255)
+            .setColor(Dyes.dyeBlue)
+            .setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1))
+            .addElectrolyzerRecipe()
+            .constructMaterial();
     }
 
     private static Materials loadEthylTertButylEther() {
-        return new MaterialBuilder(994, TextureSet.SET_FLUID, "Anti-Knock Agent").setName("EthylTertButylEther").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
+        return new MaterialBuilder(994, TextureSet.SET_FLUID, "Anti-Knock Agent").setName("EthylTertButylEther")
+            .addCell()
+            .addFluid()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMaterialList(
+                new MaterialStack(Carbon, 6),
+                new MaterialStack(Hydrogen, 14),
+                new MaterialStack(Oxygen, 1))
+            .constructMaterial();
     }
 
     private static Materials loadOctane() {
-        return new MaterialBuilder(995, TextureSet.SET_FLUID, "Octane").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.DIESEL).setFuelPower(80).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18)).constructMaterial();
+        return new MaterialBuilder(995, TextureSet.SET_FLUID, "Octane").addCell()
+            .addFluid()
+            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(80)
+            .setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18))
+            .constructMaterial();
     }
 
     private static Materials loadRawGasoline() {
-        return new MaterialBuilder(996, TextureSet.SET_FLUID, "Raw Gasoline").addCell().addFluid().setRGB(255, 100, 0).setColor(Dyes.dyeOrange).constructMaterial();
+        return new MaterialBuilder(996, TextureSet.SET_FLUID, "Raw Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 100, 0)
+            .setColor(Dyes.dyeOrange)
+            .constructMaterial();
     }
 
     private static Materials loadGasoline() {
-        return new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell().addFluid().setRGB(255, 165, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(576).constructMaterial();
+        return new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 165, 0)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(576)
+            .constructMaterial();
     }
 
     private static Materials loadHighOctaneGasoline() {
-        return new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell().addFluid().setRGB(255, 165, 0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(2500).constructMaterial();
+        return new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell()
+            .addFluid()
+            .setRGB(255, 165, 0)
+            .setColor(Dyes.dyeOrange)
+            .setFuelType(MaterialBuilder.DIESEL)
+            .setFuelPower(2500)
+            .constructMaterial();
     }
 
     private static Materials loadBedrockium() {
-        return new MaterialBuilder(395, new TextureSet("bedrockium", true), "Bedrockium").addOreItems().addDustItems().addPlasma().addMetalItems().setDurability(327680).setToolSpeed(8f).setToolQuality(9).setName("Bedrockium").setBlastFurnaceRequired(true).setBlastFurnaceTemp(9900).setMeltingPoint(9900).setMaterialList(new MaterialStack(Materials.SiliconDioxide, 26244), new MaterialStack(Materials.Diamond, 9)).setColor(Dyes.dyeBlack).setOreValue(4).setDensityDivider(1).setDensityMultiplier(1).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_EV).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
+        return new MaterialBuilder(395, new TextureSet("bedrockium", true), "Bedrockium").addOreItems()
+            .addDustItems()
+            .addPlasma()
+            .addMetalItems()
+            .setDurability(327680)
+            .setToolSpeed(8f)
+            .setToolQuality(9)
+            .setName("Bedrockium")
+            .setBlastFurnaceRequired(true)
+            .setBlastFurnaceTemp(9900)
+            .setMeltingPoint(9900)
+            .setMaterialList(
+                new MaterialStack(Materials.SiliconDioxide, 26244),
+                new MaterialStack(Materials.Diamond, 9))
+            .setColor(Dyes.dyeBlack)
+            .setOreValue(4)
+            .setDensityDivider(1)
+            .setDensityMultiplier(1)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV)
+            .disableAutoGeneratedBlastFurnaceRecipes()
+            .disableAutoGeneratedVacuumFreezerRecipe()
+            .setHasCorrespondingPlasma(true);
     }
 
     private static Materials loadSuperCoolant() {
-        return new MaterialBuilder(140, TextureSet.SET_DULL, "Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
+        return new MaterialBuilder(140, TextureSet.SET_DULL, "Super Coolant").setRGB(2, 91, 111)
+            .addCell()
+            .addFluid()
+            .constructMaterial()
+            .setLiquidTemperature(1);
     }
 
     private static Materials loadEnrichedHolmium() {
