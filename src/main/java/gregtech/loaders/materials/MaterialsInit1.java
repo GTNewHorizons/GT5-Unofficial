@@ -176,8 +176,9 @@ public class MaterialsInit1 {
 
         loadRandom();
 
-        // spotless:off
-        Materials.Serpentine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Serpentine"              ,   "Serpentine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
+        Materials.Serpentine = loadSerpentine();
+
+        // spotless:off;
         Materials.Flux                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Flux"                    ,   "Flux"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.OsmiumTetroxide         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "OsmiumTetroxide"         ,   "Osmium Tetroxide"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.RubberTreeSap           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "RubberTreeSap"           ,   "Rubber Tree Sap"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -2995,6 +2996,21 @@ public class MaterialsInit1 {
             .setDefaultLocalName("BrickNether")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadSerpentine() {
+        return new MaterialBuilder().setName("Serpentine")
+            .setDefaultLocalName("Serpentine")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .setMeltingPoint(-1)
+            .setOreValue(3)
             .constructMaterial();
     }
 
