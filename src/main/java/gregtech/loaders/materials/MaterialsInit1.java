@@ -932,7 +932,7 @@ public class MaterialsInit1 {
         Materials.SuperconductorUIV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 229,  88, 177,   0,   "SuperconductorUIV"  ,   "Superconductor UIV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 60)));
         Materials.SuperconductorUMV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 181,  38, 205,   0,   "SuperconductorUMV"  ,   "Superconductor UMV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 66)));
 
-        Materials.SuperCoolant = new MaterialBuilder( 140, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
+        Materials.SuperCoolant = loadSuperCoolant();
 
         Materials.EnrichedHolmium       = loadEnrichedHolmium();
 
@@ -2375,6 +2375,10 @@ public class MaterialsInit1 {
             .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
             .constructMaterial();
+    }
+
+    private static Materials loadSuperCoolant() {
+        return new MaterialBuilder(140, TextureSet.SET_DULL, "Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
     }
 
     private static Materials loadEnrichedHolmium() {
