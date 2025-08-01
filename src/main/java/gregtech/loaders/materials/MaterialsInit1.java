@@ -535,8 +535,19 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
 
+        Materials.Empty = new MaterialBuilder().setName("Empty")
+            .setDefaultLocalName("Empty")
+            .setElement(Element._NULL)
+            .setMetaItemSubID(0)
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setARGB(0xffffffff)
+            .setTypes(256) // Only when needed
+            .setMeltingPoint(-1)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
+            .constructMaterial();
+
         // spotless:off
-        Materials.Empty                   = new Materials(   0, TextureSet.SET_NONE              ,   1.0F,      0,  2, 256/*Only when needed*/   , 255, 255, 255, 255,   "Empty"                   ,   "Empty"                         ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes._NULL          , Element._NULL     , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
         Materials.Erbium                  = new Materials(  75, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 152,  81,   0,   "Erbium"                  ,   "Erbium"                        ,    0,       0,       1802, 1802,  true, false,   4,   1,   1, Dyes._NULL          , Element.Er        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Europium                = new Materials(  70, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             , 246, 181, 255,   0,   "Europium"                ,   "Europium"                      ,    0,       0,       1099, 1099,  true, false,   4,   1,   1, Dyes._NULL          , Element.Eu        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2), new TCAspects.TC_AspectStack(TCAspects.RADIO, 1)));
         Materials.Fluorine                = new Materials(  14, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 255, 255, 255, 127,   "Fluorine"                ,   "Fluorine"                      ,    0,       0,         53,    0, false,  true,   2,   1,   1, Dyes.dyeGreen       , Element.F         , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2)));
