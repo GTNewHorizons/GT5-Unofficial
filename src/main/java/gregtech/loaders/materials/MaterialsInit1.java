@@ -164,6 +164,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
+import org.jetbrains.annotations.NotNull;
 
 public class MaterialsInit1 {
 
@@ -933,7 +934,7 @@ public class MaterialsInit1 {
 
         Materials.SuperCoolant = new MaterialBuilder( 140, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addCell().addFluid().constructMaterial().setLiquidTemperature(1);
 
-        Materials.EnrichedHolmium       = new Materials(582, TextureSet.SET_METALLIC    ,   1.0F,      0,  2, 2                ,  18, 100, 255,   0,   "EnrichedHolmium"    ,   "Enriched Holmium"        ,    -1,      -1,      0, 3000,  true,  false,200,   1,   1, Dyes.dyePurple);
+        Materials.EnrichedHolmium       = loadEnrichedHolmium();
 
         Materials.TengamPurified = loadTengamPurified();
         Materials.TengamAttuned  = loadTengamAttuned();
@@ -2197,6 +2198,29 @@ public class MaterialsInit1 {
             .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadEnrichedHolmium() {
+        return new MaterialBuilder()
+            .setName("EnrichedHolmium")
+            .setDefaultLocalName("Enriched Holmium")
+            .setMetaItemSubID(582)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setToolSpeed(1.0f)
+            .setDurability(0)
+            .setToolQuality(2)
+            .setTypes(2)
+            .setARGB(0, 18, 100, 255)
+            .setFuelType(-1)
+            .setFuelPower(-1)
+            .setMeltingPoint(0)
+            .setBlastFurnaceTemp(3000)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(200)
+            .setDensityDivider(1)
+            .setDensityMultiplier(1)
+            .setColor(Dyes.dyePurple)
             .constructMaterial();
     }
 
