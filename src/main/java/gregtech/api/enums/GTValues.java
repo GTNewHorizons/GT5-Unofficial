@@ -440,6 +440,7 @@ public class GTValues {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final long[] emptyLongArray = new long[0];
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];

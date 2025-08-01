@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.util.LightingHelper;
 
 /**
  * <p>
@@ -27,39 +28,45 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderXPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderXNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderYPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderYNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderZPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
+        int renderWorldPass) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture())
+            tTexture.renderZNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, renderWorldPass);
     }
 
     @Override

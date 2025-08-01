@@ -28,8 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +50,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import org.jetbrains.annotations.Nullable;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -59,7 +59,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Tier;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
@@ -584,265 +583,322 @@ public class GTModHandler {
             aRecipe);
     }
 
-    public static boolean addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe,
+    public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
+        addMachineCraftingRecipe(aResult, RecipeBits.BITSD, aRecipe, machineTier);
+    }
+
+    public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
         int machineTier) {
-        if (aRecipe != null) {
-            for (int i = 3; i < aRecipe.length; i++) {
-                if (!(aRecipe[i] instanceof MTEBasicMachineWithRecipe.X)) continue;
+        if (aRecipe == null) return;
 
-                // spotless:off
-                aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
-                    case CIRCUIT            -> Tier.ELECTRIC[machineTier].mManagingObject;
-                    case BETTER_CIRCUIT     -> Tier.ELECTRIC[machineTier].mBetterManagingObject;
-                    case HULL               -> Tier.ELECTRIC[machineTier].mHullObject;
-                    case WIRE               -> Tier.ELECTRIC[machineTier].mConductingObject;
-                    case WIRE4              -> Tier.ELECTRIC[machineTier].mLargerConductingObject;
-                    case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+        for (int i = 3; i < aRecipe.length; i++) {
+            if (!(aRecipe[i] instanceof MTEBasicMachineWithRecipe.X)) continue;
 
-                    case GLASS -> switch (machineTier) {
-                        case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
-                        case 4, 5, 6, 7, 8 -> "blockGlass" + VN[machineTier];
-                        default            -> "blockGlass" + VN[8];
-                    };
-
-                    case PLATE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
-                        case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
-                        case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
-                        case 4    -> OrePrefixes.plate.get(Materials.Titanium);
-                        case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.plate.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.plate.get(Materials.HSSE);
-                        default   -> OrePrefixes.plate.get(Materials.Neutronium);
-                    };
-
-                    case PIPE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
-                        case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
-                        case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
-                        case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
-                        case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                        case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                        case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                        default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
-                    };
-
-                    case COIL_HEATING -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
-                        case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
-                        case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
-                        case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
-                        case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
-                        case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
-                        case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                    };
-
-                    case COIL_HEATING_DOUBLE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
-                        case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
-                        case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
-                        case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
-                        case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
-                        case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                        default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
-                    };
-
-                    case STICK_MAGNETIC -> switch (machineTier) {
-                        case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
-                        case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
-                        case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                        case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
-                        default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
-                    };
-
-                    case STICK_ELECTROMAGNETIC -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
-                        case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
-                        case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
-                        default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
-                    };
-
-                    case COIL_ELECTRIC -> switch (machineTier) {
-                        case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
-                        case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
-                        case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
-                        case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
-                        case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
-                        case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
-                        default -> OrePrefixes.wireGt16.get(Materials.Osmium);
-                    };
-
-                    case ROBOT_ARM -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Robot_Arm_LV;
-                        case 2    -> ItemList.Robot_Arm_MV;
-                        case 3    -> ItemList.Robot_Arm_HV;
-                        case 4    -> ItemList.Robot_Arm_EV;
-                        case 5    -> ItemList.Robot_Arm_IV;
-                        case 6    -> ItemList.Robot_Arm_LuV;
-                        case 7    -> ItemList.Robot_Arm_ZPM;
-                        case 8    -> ItemList.Robot_Arm_UV;
-                        case 9    -> ItemList.Robot_Arm_UHV;
-                        case 10   -> ItemList.Robot_Arm_UEV;
-                        case 11   -> ItemList.Robot_Arm_UIV;
-                        case 12   -> ItemList.Robot_Arm_UMV;
-                        case 13   -> ItemList.Robot_Arm_UXV;
-                        default   ->  ItemList.Robot_Arm_MAX;
-                    };
-
-                    case PUMP -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Pump_LV;
-                        case 2    -> ItemList.Electric_Pump_MV;
-                        case 3    -> ItemList.Electric_Pump_HV;
-                        case 4    -> ItemList.Electric_Pump_EV;
-                        case 5    -> ItemList.Electric_Pump_IV;
-                        case 6    -> ItemList.Electric_Pump_LuV;
-                        case 7    -> ItemList.Electric_Pump_ZPM;
-                        case 8    -> ItemList.Electric_Pump_UV;
-                        case 9    -> ItemList.Electric_Pump_UHV;
-                        case 10   -> ItemList.Electric_Pump_UEV;
-                        case 11   -> ItemList.Electric_Pump_UIV;
-                        case 12   -> ItemList.Electric_Pump_UMV;
-                        case 13   -> ItemList.Electric_Pump_UXV;
-                        default   -> ItemList.Electric_Pump_MAX;
-                    };
-
-                    case MOTOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Motor_LV;
-                        case 2    -> ItemList.Electric_Motor_MV;
-                        case 3    -> ItemList.Electric_Motor_HV;
-                        case 4    -> ItemList.Electric_Motor_EV;
-                        case 5    -> ItemList.Electric_Motor_IV;
-                        case 6    -> ItemList.Electric_Motor_LuV;
-                        case 7    -> ItemList.Electric_Motor_ZPM;
-                        case 8    -> ItemList.Electric_Motor_UV;
-                        case 9    -> ItemList.Electric_Motor_UHV;
-                        case 10   -> ItemList.Electric_Motor_UEV;
-                        case 11   -> ItemList.Electric_Motor_UIV;
-                        case 12   -> ItemList.Electric_Motor_UMV;
-                        case 13   -> ItemList.Electric_Motor_UXV;
-                        default   -> ItemList.Electric_Motor_MAX;
-                    };
-
-                    case PISTON -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Piston_LV;
-                        case 2    -> ItemList.Electric_Piston_MV;
-                        case 3    -> ItemList.Electric_Piston_HV;
-                        case 4    -> ItemList.Electric_Piston_EV;
-                        case 5    -> ItemList.Electric_Piston_IV;
-                        case 6    -> ItemList.Electric_Piston_LuV;
-                        case 7    -> ItemList.Electric_Piston_ZPM;
-                        case 8    -> ItemList.Electric_Piston_UV;
-                        case 9    -> ItemList.Electric_Piston_UHV;
-                        case 10   -> ItemList.Electric_Piston_UEV;
-                        case 11   -> ItemList.Electric_Piston_UIV;
-                        case 12   -> ItemList.Electric_Piston_UMV;
-                        case 13   -> ItemList.Electric_Piston_UXV;
-                        default   -> ItemList.Electric_Piston_MAX;
-                    };
-
-                    case CONVEYOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Conveyor_Module_LV;
-                        case 2    -> ItemList.Conveyor_Module_MV;
-                        case 3    -> ItemList.Conveyor_Module_HV;
-                        case 4    -> ItemList.Conveyor_Module_EV;
-                        case 5    -> ItemList.Conveyor_Module_IV;
-                        case 6    -> ItemList.Conveyor_Module_LuV;
-                        case 7    -> ItemList.Conveyor_Module_ZPM;
-                        case 8    -> ItemList.Conveyor_Module_UV;
-                        case 9    -> ItemList.Conveyor_Module_UHV;
-                        case 10   -> ItemList.Conveyor_Module_UEV;
-                        case 11   -> ItemList.Conveyor_Module_UIV;
-                        case 12   -> ItemList.Conveyor_Module_UMV;
-                        case 13   -> ItemList.Conveyor_Module_UXV;
-                        default   -> ItemList.Conveyor_Module_MAX;
-                    };
-
-                    case EMITTER -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Emitter_LV;
-                        case 2    -> ItemList.Emitter_MV;
-                        case 3    -> ItemList.Emitter_HV;
-                        case 4    -> ItemList.Emitter_EV;
-                        case 5    -> ItemList.Emitter_IV;
-                        case 6    -> ItemList.Emitter_LuV;
-                        case 7    -> ItemList.Emitter_ZPM;
-                        case 8    -> ItemList.Emitter_UV;
-                        case 9    -> ItemList.Emitter_UHV;
-                        case 10   -> ItemList.Emitter_UEV;
-                        case 11   -> ItemList.Emitter_UIV;
-                        case 12   -> ItemList.Emitter_UMV;
-                        case 13   -> ItemList.Emitter_UXV;
-                        default   -> ItemList.Emitter_MAX;
-                    };
-
-                    case SENSOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Sensor_LV;
-                        case 2    -> ItemList.Sensor_MV;
-                        case 3    -> ItemList.Sensor_HV;
-                        case 4    -> ItemList.Sensor_EV;
-                        case 5    -> ItemList.Sensor_IV;
-                        case 6    -> ItemList.Sensor_LuV;
-                        case 7    -> ItemList.Sensor_ZPM;
-                        case 8    -> ItemList.Sensor_UV;
-                        case 9    -> ItemList.Sensor_UHV;
-                        case 10   -> ItemList.Sensor_UEV;
-                        case 11   -> ItemList.Sensor_UIV;
-                        case 12   -> ItemList.Sensor_UMV;
-                        case 13   -> ItemList.Sensor_UXV;
-                        default   -> ItemList.Sensor_MAX;
-                    };
-
-                    case FIELD_GENERATOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Field_Generator_LV;
-                        case 2    -> ItemList.Field_Generator_MV;
-                        case 3    -> ItemList.Field_Generator_HV;
-                        case 4    -> ItemList.Field_Generator_EV;
-                        case 5    -> ItemList.Field_Generator_IV;
-                        case 6    -> ItemList.Field_Generator_LuV;
-                        case 7    -> ItemList.Field_Generator_ZPM;
-                        case 8    -> ItemList.Field_Generator_UV;
-                        case 9    -> ItemList.Field_Generator_UHV;
-                        case 10   -> ItemList.Field_Generator_UEV;
-                        case 11   -> ItemList.Field_Generator_UIV;
-                        case 12   -> ItemList.Field_Generator_UMV;
-                        case 13   -> ItemList.Field_Generator_UXV;
-                        default   -> ItemList.Field_Generator_MAX;
-                    };
-
-                    case ROTOR -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
-                        case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
-                        case 3    -> OrePrefixes.rotor.get(Materials.Steel);
-                        case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
-                        case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.rotor.get(ExternalMaterials.getRhodiumPlatedPalladium());
-                        case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
-                        default   -> OrePrefixes.rotor.get(Materials.Osmium);
-                    };
-
-                    default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
+            // spotless:off
+            aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
+                case CIRCUIT -> switch (machineTier) {
+                    case  0 -> OrePrefixes.circuit.get(Materials.ULV);
+                    case  1 -> OrePrefixes.circuit.get(Materials.LV);
+                    case  2 -> OrePrefixes.circuit.get(Materials.MV);
+                    case  3 -> OrePrefixes.circuit.get(Materials.HV);
+                    case  4 -> OrePrefixes.circuit.get(Materials.EV);
+                    case  5 -> OrePrefixes.circuit.get(Materials.IV);
+                    case  6 -> OrePrefixes.circuit.get(Materials.LuV);
+                    case  7 -> OrePrefixes.circuit.get(Materials.ZPM);
+                    case  8 -> OrePrefixes.circuit.get(Materials.UV);
+                    default -> OrePrefixes.circuit.get(Materials.UHV);
                 };
-                // spotless:on
-            }
 
-            if (!GTModHandler.addCraftingRecipe(
-                aResult,
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.BUFFERED
-                    | GTModHandler.RecipeBits.NOT_REMOVABLE
-                    | GTModHandler.RecipeBits.REVERSIBLE,
-                aRecipe)) {
-                throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
-            }
+                case BETTER_CIRCUIT -> switch (machineTier) {
+                    case  0 -> OrePrefixes.circuit.get(Materials.LV);
+                    case  1 -> OrePrefixes.circuit.get(Materials.MV);
+                    case  2 -> OrePrefixes.circuit.get(Materials.HV);
+                    case  3 -> OrePrefixes.circuit.get(Materials.EV);
+                    case  4 -> OrePrefixes.circuit.get(Materials.IV);
+                    case  5 -> OrePrefixes.circuit.get(Materials.LuV);
+                    case  6 -> OrePrefixes.circuit.get(Materials.ZPM);
+                    case  7 -> OrePrefixes.circuit.get(Materials.UV);
+                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                };
+
+                case HULL -> switch (machineTier) {
+                    case  0 -> ItemList.Hull_ULV;
+                    case  1 -> ItemList.Hull_LV;
+                    case  2 -> ItemList.Hull_MV;
+                    case  3 -> ItemList.Hull_HV;
+                    case  4 -> ItemList.Hull_EV;
+                    case  5 -> ItemList.Hull_IV;
+                    case  6 -> ItemList.Hull_LuV;
+                    case  7 -> ItemList.Hull_ZPM;
+                    case  8 -> ItemList.Hull_UV;
+                    default -> ItemList.Hull_MAX;
+                };
+
+                case WIRE -> switch (machineTier) {
+                    case  0 -> OrePrefixes.cableGt01.get(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt01.get(Materials.Tin);
+                    case  2 -> OrePrefixes.cableGt01.get(Materials.AnyCopper);
+                    case  3 -> OrePrefixes.cableGt01.get(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt01.get(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt01.get(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt01.get(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt01.get(Materials.Naquadah);
+                    case  8 -> OrePrefixes.cableGt04.get(Materials.NaquadahAlloy);
+                    default -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                };
+
+                case WIRE4 -> switch (machineTier) {
+                    case  0 -> OrePrefixes.cableGt04.get(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt04.get(Materials.Tin);
+                    case  2 -> OrePrefixes.cableGt04.get(Materials.AnyCopper);
+                    case  3 -> OrePrefixes.cableGt04.get(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt04.get(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt04.get(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt04.get(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt04.get(Materials.Naquadah);
+                    case  8 -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                    default -> OrePrefixes.wireGt04.get(Materials.SuperconductorUHV);
+                };
+
+                case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+
+                case GLASS -> switch (machineTier) {
+                    case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
+                    case 4, 5, 6, 7, 8 -> "blockGlass" + VN[machineTier];
+                    default            -> "blockGlass" + VN[8];
+                };
+
+                case PLATE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
+                    case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
+                    case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.plate.get(Materials.Titanium);
+                    case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.plate.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.plate.get(Materials.HSSE);
+                    default   -> OrePrefixes.plate.get(Materials.Neutronium);
+                };
+
+                case PIPE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
+                    case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
+                    case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
+                    case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                    case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                    case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                    default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                };
+
+                case COIL_HEATING -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                    case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                };
+
+                case COIL_HEATING_DOUBLE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                    case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
+                };
+
+                case STICK_MAGNETIC -> switch (machineTier) {
+                    case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
+                    case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
+                    case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                    case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                    default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
+                };
+
+                case STICK_ELECTROMAGNETIC -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
+                    case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
+                    case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
+                    default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
+                };
+
+                case COIL_ELECTRIC -> switch (machineTier) {
+                    case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
+                    case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
+                    case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                    case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                    case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                    case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                    case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                    case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
+                    default -> OrePrefixes.wireGt16.get(Materials.Osmium);
+                };
+
+                case ROBOT_ARM -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Robot_Arm_LV;
+                    case 2    -> ItemList.Robot_Arm_MV;
+                    case 3    -> ItemList.Robot_Arm_HV;
+                    case 4    -> ItemList.Robot_Arm_EV;
+                    case 5    -> ItemList.Robot_Arm_IV;
+                    case 6    -> ItemList.Robot_Arm_LuV;
+                    case 7    -> ItemList.Robot_Arm_ZPM;
+                    case 8    -> ItemList.Robot_Arm_UV;
+                    case 9    -> ItemList.Robot_Arm_UHV;
+                    case 10   -> ItemList.Robot_Arm_UEV;
+                    case 11   -> ItemList.Robot_Arm_UIV;
+                    case 12   -> ItemList.Robot_Arm_UMV;
+                    case 13   -> ItemList.Robot_Arm_UXV;
+                    default   ->  ItemList.Robot_Arm_MAX;
+                };
+
+                case PUMP -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Pump_LV;
+                    case 2    -> ItemList.Electric_Pump_MV;
+                    case 3    -> ItemList.Electric_Pump_HV;
+                    case 4    -> ItemList.Electric_Pump_EV;
+                    case 5    -> ItemList.Electric_Pump_IV;
+                    case 6    -> ItemList.Electric_Pump_LuV;
+                    case 7    -> ItemList.Electric_Pump_ZPM;
+                    case 8    -> ItemList.Electric_Pump_UV;
+                    case 9    -> ItemList.Electric_Pump_UHV;
+                    case 10   -> ItemList.Electric_Pump_UEV;
+                    case 11   -> ItemList.Electric_Pump_UIV;
+                    case 12   -> ItemList.Electric_Pump_UMV;
+                    case 13   -> ItemList.Electric_Pump_UXV;
+                    default   -> ItemList.Electric_Pump_MAX;
+                };
+
+                case MOTOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Motor_LV;
+                    case 2    -> ItemList.Electric_Motor_MV;
+                    case 3    -> ItemList.Electric_Motor_HV;
+                    case 4    -> ItemList.Electric_Motor_EV;
+                    case 5    -> ItemList.Electric_Motor_IV;
+                    case 6    -> ItemList.Electric_Motor_LuV;
+                    case 7    -> ItemList.Electric_Motor_ZPM;
+                    case 8    -> ItemList.Electric_Motor_UV;
+                    case 9    -> ItemList.Electric_Motor_UHV;
+                    case 10   -> ItemList.Electric_Motor_UEV;
+                    case 11   -> ItemList.Electric_Motor_UIV;
+                    case 12   -> ItemList.Electric_Motor_UMV;
+                    case 13   -> ItemList.Electric_Motor_UXV;
+                    default   -> ItemList.Electric_Motor_MAX;
+                };
+
+                case PISTON -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Piston_LV;
+                    case 2    -> ItemList.Electric_Piston_MV;
+                    case 3    -> ItemList.Electric_Piston_HV;
+                    case 4    -> ItemList.Electric_Piston_EV;
+                    case 5    -> ItemList.Electric_Piston_IV;
+                    case 6    -> ItemList.Electric_Piston_LuV;
+                    case 7    -> ItemList.Electric_Piston_ZPM;
+                    case 8    -> ItemList.Electric_Piston_UV;
+                    case 9    -> ItemList.Electric_Piston_UHV;
+                    case 10   -> ItemList.Electric_Piston_UEV;
+                    case 11   -> ItemList.Electric_Piston_UIV;
+                    case 12   -> ItemList.Electric_Piston_UMV;
+                    case 13   -> ItemList.Electric_Piston_UXV;
+                    default   -> ItemList.Electric_Piston_MAX;
+                };
+
+                case CONVEYOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Conveyor_Module_LV;
+                    case 2    -> ItemList.Conveyor_Module_MV;
+                    case 3    -> ItemList.Conveyor_Module_HV;
+                    case 4    -> ItemList.Conveyor_Module_EV;
+                    case 5    -> ItemList.Conveyor_Module_IV;
+                    case 6    -> ItemList.Conveyor_Module_LuV;
+                    case 7    -> ItemList.Conveyor_Module_ZPM;
+                    case 8    -> ItemList.Conveyor_Module_UV;
+                    case 9    -> ItemList.Conveyor_Module_UHV;
+                    case 10   -> ItemList.Conveyor_Module_UEV;
+                    case 11   -> ItemList.Conveyor_Module_UIV;
+                    case 12   -> ItemList.Conveyor_Module_UMV;
+                    case 13   -> ItemList.Conveyor_Module_UXV;
+                    default   -> ItemList.Conveyor_Module_MAX;
+                };
+
+                case EMITTER -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Emitter_LV;
+                    case 2    -> ItemList.Emitter_MV;
+                    case 3    -> ItemList.Emitter_HV;
+                    case 4    -> ItemList.Emitter_EV;
+                    case 5    -> ItemList.Emitter_IV;
+                    case 6    -> ItemList.Emitter_LuV;
+                    case 7    -> ItemList.Emitter_ZPM;
+                    case 8    -> ItemList.Emitter_UV;
+                    case 9    -> ItemList.Emitter_UHV;
+                    case 10   -> ItemList.Emitter_UEV;
+                    case 11   -> ItemList.Emitter_UIV;
+                    case 12   -> ItemList.Emitter_UMV;
+                    case 13   -> ItemList.Emitter_UXV;
+                    default   -> ItemList.Emitter_MAX;
+                };
+
+                case SENSOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Sensor_LV;
+                    case 2    -> ItemList.Sensor_MV;
+                    case 3    -> ItemList.Sensor_HV;
+                    case 4    -> ItemList.Sensor_EV;
+                    case 5    -> ItemList.Sensor_IV;
+                    case 6    -> ItemList.Sensor_LuV;
+                    case 7    -> ItemList.Sensor_ZPM;
+                    case 8    -> ItemList.Sensor_UV;
+                    case 9    -> ItemList.Sensor_UHV;
+                    case 10   -> ItemList.Sensor_UEV;
+                    case 11   -> ItemList.Sensor_UIV;
+                    case 12   -> ItemList.Sensor_UMV;
+                    case 13   -> ItemList.Sensor_UXV;
+                    default   -> ItemList.Sensor_MAX;
+                };
+
+                case FIELD_GENERATOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Field_Generator_LV;
+                    case 2    -> ItemList.Field_Generator_MV;
+                    case 3    -> ItemList.Field_Generator_HV;
+                    case 4    -> ItemList.Field_Generator_EV;
+                    case 5    -> ItemList.Field_Generator_IV;
+                    case 6    -> ItemList.Field_Generator_LuV;
+                    case 7    -> ItemList.Field_Generator_ZPM;
+                    case 8    -> ItemList.Field_Generator_UV;
+                    case 9    -> ItemList.Field_Generator_UHV;
+                    case 10   -> ItemList.Field_Generator_UEV;
+                    case 11   -> ItemList.Field_Generator_UIV;
+                    case 12   -> ItemList.Field_Generator_UMV;
+                    case 13   -> ItemList.Field_Generator_UXV;
+                    default   -> ItemList.Field_Generator_MAX;
+                };
+
+                case ROTOR -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
+                    case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
+                    case 3    -> OrePrefixes.rotor.get(Materials.Steel);
+                    case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
+                    case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.rotor.get(ExternalMaterials.getRhodiumPlatedPalladium());
+                    case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
+                    default   -> OrePrefixes.rotor.get(Materials.Osmium);
+                };
+
+                default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
+            };
+            // spotless:on
         }
-        return true;
+
+        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
+            throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
+        }
     }
 
     /**
@@ -1433,21 +1489,31 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, aRecipe);
-    }
-
-    public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
         return getRecipeOutput(false, false, aRecipe);
     }
 
+    /**
+     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
+     * If available, will choose a recipe that wasn't auto generated during OreDictionary
+     * registration. The OreDict recipe is still chosen if it is the only one that exists.
+     *
+     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab,
+     * but also have another that results in Minecraft's default Oak Slab. This second recipe
+     * is generated automatically when the plank is registered as 'plankWood' in the OreDict.
+     * This method will select the former, regardless of the order they appear on the list.
+     */
+    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
+        return getRecipeOutput(false, true, aRecipe);
+    }
+
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, true, aRecipe);
+        return getRecipeOutput(aUncopiedStack, false, aRecipe);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe)
             .noneMatch(Objects::nonNull)) return null;
 
@@ -1461,25 +1527,43 @@ public class GTModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        boolean found = false;
+
+        boolean tOreDictRecipeFound = false;
+        ItemStack tOreDictOutput = null;
 
         for (IRecipe iRecipe : tList) {
-            found = false;
-            if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
-
             if (iRecipe.matches(aCrafting, DW)) {
                 ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
+
+                if (aPreferNonOreDict && iRecipe instanceof ShapedOreRecipe) {
+                    if (!tOreDictRecipeFound) {
+                        tOreDictOutput = tOutput;
+                        tOreDictRecipeFound = true;
+                    }
+                    continue;
+                }
+
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    if (aUncopiedStack) return tOutput;
-                    return GTUtility.copyOrNull(tOutput);
                 }
+
+                if (aUncopiedStack) return tOutput;
+                return GTUtility.copyOrNull(tOutput);
             }
         }
-        return null;
+
+        if (!tOreDictRecipeFound) return null;
+
+        if (tOreDictOutput == null || tOreDictOutput.stackSize <= 0) {
+            // Seriously, who would ever do that shit?
+            if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+                "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+        }
+
+        if (aUncopiedStack) return tOreDictOutput;
+        return GTUtility.copyOrNull(tOreDictOutput);
     }
 
     private static List<IRecipe> bufferedRecipes = null;

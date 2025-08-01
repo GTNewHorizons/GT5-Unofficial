@@ -454,13 +454,19 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void onRemoval() {
-        GTMod.proxy.wirelessChargerManager.removeCharger(this);
+        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        if (mte.isServerSide()) {
+            GTMod.proxy.wirelessChargerManager.removeCharger(this);
+        }
         super.onRemoval();
     }
 
     @Override
     public void onUnload() {
-        GTMod.proxy.wirelessChargerManager.removeCharger(this);
+        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        if (mte.isServerSide()) {
+            GTMod.proxy.wirelessChargerManager.removeCharger(this);
+        }
         super.onUnload();
     }
 

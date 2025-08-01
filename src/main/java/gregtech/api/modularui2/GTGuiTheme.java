@@ -55,14 +55,17 @@ public class GTGuiTheme {
     }
 
     public static void registerThemes() {
-        MinecraftForge.EVENT_BUS.register(GTGuiTheme.class);
+        MinecraftForge.EVENT_BUS.register(new GTGuiTheme.EventHandler());
         GTGuiThemes.init();
         THEMES.forEach(GTGuiTheme::register);
     }
 
-    @SubscribeEvent
-    public static void onReloadThemes(ReloadThemeEvent.Pre event) {
-        THEMES.forEach(GTGuiTheme::buildJson);
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public void onReloadThemes(ReloadThemeEvent.Pre event) {
+            THEMES.forEach(GTGuiTheme::buildJson);
+        }
     }
 
     public static Builder builder(String themeId) {
