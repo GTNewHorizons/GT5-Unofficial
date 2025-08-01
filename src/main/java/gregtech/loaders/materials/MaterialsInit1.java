@@ -172,9 +172,9 @@ public class MaterialsInit1 {
         loadIsotopes();
 
         Materials.Grade1PurifiedWater = loadGrade1PurifiedWater();
+        Materials.Grade2PurifiedWater = loadGrade2PurifiedWater();
 
         // spotless:off
-        Materials.Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Ozonated Water (Grade 2)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
         Materials.Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Flocculated Water (Grade 3)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
         Materials.Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   135,   126, 255, 0,   "Grade4PurifiedWater"                ,   "pH Neutralized Water (Grade 4)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
         Materials.Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   152,   144, 255, 0,   "Grade5PurifiedWater"                ,   "Extreme-Temperature Treated Water (Grade 5)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))).setHasCorrespondingFluid(true);
@@ -3414,6 +3414,21 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003f4cfd)
+            .addCell()
+            .setMeltingPoint(273)
+            .setOreValue(2)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+    }
+
+    private static Materials loadGrade2PurifiedWater() {
+        return new MaterialBuilder().setName("Grade2PurifiedWater")
+            .setDefaultLocalName("Ozonated Water (Grade 2)")
+            .setMetaItemSubID(555)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x005d5dfe)
             .addCell()
             .setMeltingPoint(273)
             .setOreValue(2)
