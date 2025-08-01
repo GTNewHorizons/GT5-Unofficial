@@ -183,9 +183,9 @@ public class MaterialsInit1 {
         Materials.Quartz = loadQuartz();
         Materials.Metal = loadMetal();
         Materials.Unknown = loadUnknown();
+        Materials.Cobblestone = loadCobblestone();
 
         // spotless:off
-        Materials.Cobblestone                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
         Materials.BrickNether                        = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
 
         Materials.Serpentine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Serpentine"              ,   "Serpentine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -2973,6 +2973,14 @@ public class MaterialsInit1 {
     private static Materials loadUnknown() {
         return new MaterialBuilder().setName("Unknown")
             .setDefaultLocalName("Unknown")
+            .setMetaItemSubID(-1)
+            .setIconSet(TextureSet.SET_DULL)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobblestone() {
+        return new MaterialBuilder().setName("Cobblestone")
+            .setDefaultLocalName("Cobblestone")
             .setMetaItemSubID(-1)
             .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
