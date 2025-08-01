@@ -447,36 +447,28 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void createRenderBlock() {
         if (!useRender) return;
-        int x = getBaseMetaTileEntity().getXCoord();
-        int y = getBaseMetaTileEntity().getYCoord();
-        int z = getBaseMetaTileEntity().getZCoord();
-
-        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
         World world = this.getBaseMetaTileEntity()
             .getWorld();
-        if (world.getBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset))
+        if (world.getBlock(x, y, z)
             .equals(Blocks.air)) {
-            world.setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTechAPI.sDroneRender);
+            world.setBlock(x, y, z, GregTechAPI.sDroneRender);
         }
     }
 
     private void destroyRenderBlock() {
-        int x = getBaseMetaTileEntity().getXCoord();
-        int y = getBaseMetaTileEntity().getYCoord();
-        int z = getBaseMetaTileEntity().getZCoord();
-
-        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
         World world = this.getBaseMetaTileEntity()
             .getWorld();
-        if (world.getBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset))
+        if (world.getBlock(x, y, z)
             .equals(GregTechAPI.sDroneRender)) {
-            world.setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+            world.setBlock(x, y, z, Blocks.air);
         }
     }
 
