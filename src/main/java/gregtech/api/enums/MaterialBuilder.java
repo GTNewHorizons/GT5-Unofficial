@@ -158,11 +158,25 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** @deprecated Use {@link MaterialBuilder#setARGB(int, int, int, int)} instead. */
+    @Deprecated
     public MaterialBuilder setRGBA(int r, int g, int b, int a) {
+        return setARGB(a, r, g, b);
+    }
+
+    public MaterialBuilder setARGB(int a, int r, int g, int b) {
+        this.a = a;
         this.r = r;
         this.g = g;
         this.b = b;
-        this.a = a;
+        return this;
+    }
+
+    public MaterialBuilder setARGB(int argb) {
+        this.a = (argb >> 24) & 0xFF;
+        this.r = (argb >> 16) & 0xFF;
+        this.g = (argb >> 8) & 0xFF;
+        this.b = b & 0xFF;
         return this;
     }
 
