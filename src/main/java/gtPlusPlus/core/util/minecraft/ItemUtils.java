@@ -29,11 +29,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
@@ -42,9 +42,9 @@ public class ItemUtils {
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            mTemp = Utils.sanitizeString(mTemp, new char[] { '-', '_' });
+            mTemp = StringUtils.sanitizeStringKeepDashes(mTemp);
         } else {
-            mTemp = Utils.sanitizeString(mTemp);
+            mTemp = StringUtils.sanitizeString(mTemp);
         }
 
         if (oredictName.contains("rod")) {
@@ -77,9 +77,9 @@ public class ItemUtils {
         try {
 
             if (oredictName.contains("-") || oredictName.contains("_")) {
-                oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+                oredictName = StringUtils.sanitizeStringKeepDashes(oredictName);
             } else {
-                oredictName = Utils.sanitizeString(oredictName);
+                oredictName = StringUtils.sanitizeString(oredictName);
             }
 
             // Adds a check to grab dusts using GT methodology if possible.
@@ -221,7 +221,7 @@ public class ItemUtils {
     public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
         final boolean disableExtraRecipes) {
         final String materialName = material.getUnlocalizedName();
-        final String unlocalizedName = Utils.sanitizeString(materialName);
+        final String unlocalizedName = StringUtils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
         final String aChemForm = material.vChemicalFormula;
         final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
@@ -372,7 +372,7 @@ public class ItemUtils {
 
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
 
-        String mName = Utils.sanitizeString(mMat.getLocalizedName());
+        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
 
         String mItemName = mPrefix.name() + mName;
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
