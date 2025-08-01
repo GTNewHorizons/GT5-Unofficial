@@ -1365,7 +1365,6 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .setARGB(0xffffffff)
             .setTypes(256) // Only when needed
-            .setMeltingPoint(0) // Original value of -1 causes tests to fail but there is no reason for it to be -1
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
             .constructMaterial();
     }
@@ -3009,7 +3008,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .setMeltingPoint(-1)
             .setOreValue(3)
             .constructMaterial();
     }

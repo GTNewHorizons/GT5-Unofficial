@@ -1473,7 +1473,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 for (TCAspects.TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
+        if (mMeltingPoint < 0) mMeltingPoint = 0;
 
         tAmountOfComponents *= aDensityMultiplier;
         tAmountOfComponents /= aDensityDivider;
