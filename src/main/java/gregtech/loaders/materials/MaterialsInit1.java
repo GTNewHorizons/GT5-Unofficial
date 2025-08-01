@@ -173,18 +173,8 @@ public class MaterialsInit1 {
         loadWaterLine();
 
         Materials.Flerovium = loadFlerovium();
-        Materials.Organic = loadOrganic();
-        Materials.AnyCopper = loadAnyCopper();
-        Materials.AnyBronze = loadAnyBronze();
-        Materials.AnyIron = loadAnyIron();
-        Materials.AnyRubber = loadAnyRubber();
-        Materials.AnySyntheticRubber = loadAnySyntheticRubber();
-        Materials.Crystal = loadCrystal();
-        Materials.Quartz = loadQuartz();
-        Materials.Metal = loadMetal();
-        Materials.Unknown = loadUnknown();
-        Materials.Cobblestone = loadCobblestone();
-        Materials.BrickNether = loadBrickNether();
+
+        loadRandom();
 
         // spotless:off
         Materials.Serpentine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Serpentine"              ,   "Serpentine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -2895,6 +2885,21 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
             .constructMaterial();
+    }
+
+    private static void loadRandom() {
+        Materials.Organic = loadOrganic();
+        Materials.AnyCopper = loadAnyCopper();
+        Materials.AnyBronze = loadAnyBronze();
+        Materials.AnyIron = loadAnyIron();
+        Materials.AnyRubber = loadAnyRubber();
+        Materials.AnySyntheticRubber = loadAnySyntheticRubber();
+        Materials.Crystal = loadCrystal();
+        Materials.Quartz = loadQuartz();
+        Materials.Metal = loadMetal();
+        Materials.Unknown = loadUnknown();
+        Materials.Cobblestone = loadCobblestone();
+        Materials.BrickNether = loadBrickNether();
     }
 
     private static Materials loadOrganic() {
