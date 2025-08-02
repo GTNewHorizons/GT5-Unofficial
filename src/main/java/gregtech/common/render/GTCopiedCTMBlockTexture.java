@@ -7,8 +7,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.SBRContext;
 import gregtech.api.util.GTRenderingWorld;
-import gregtech.api.util.LightingHelper;
 
 class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockContainer {
 
@@ -39,79 +39,83 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), aX, aY, aZ, aRenderer);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        aRenderer.field_152631_f = true;
-        startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        lightingHelper.setupLightingXPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.EAST, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
-        aRenderer.field_152631_f = false;
+    public void renderXPos(SBRContext ctx) {
+        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        ctx.renderer.field_152631_f = true;
+        startDrawingQuads(ctx.renderer, 1.0f, 0.0f, 0.0f);
+        ctx.reset()
+            .setupLightingXPos()
+            .setupColor(ForgeDirection.EAST, mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceXPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
+        ctx.renderer.field_152631_f = false;
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingXNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.WEST, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+    public void renderXNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, -1.0f, 0.0f, 0.0f);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        ctx.reset()
+            .setupLightingXNeg()
+            .setupColor(ForgeDirection.WEST, mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceXNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingYPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.UP, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+    public void renderYPos(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 1.0f, 0.0f);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        ctx.reset()
+            .setupLightingYPos()
+            .setupColor(ForgeDirection.UP, mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceYPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+    public void renderYNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, -1.0f, 0.0f);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        ctx.reset()
+            .setupLightingYNeg()
+            .setupColor(ForgeDirection.DOWN, mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceYNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingZPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.SOUTH, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+    public void renderZPos(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, 1.0f);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        ctx.reset()
+            .setupLightingZPos()
+            .setupColor(
+                ForgeDirection.SOUTH,
+                mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceZPos(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
-        if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
-        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aX, aY, aZ, aRenderer);
-        aRenderer.field_152631_f = true;
-        lightingHelper.setupLightingZNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.NORTH, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
-        aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
-        aRenderer.field_152631_f = false;
+    public void renderZNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, -1.0f);
+        if (ctx.worldRenderPass != -1 && !mBlock.canRenderInPass(ctx.worldRenderPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx.x, ctx.y, ctx.z, ctx.renderer);
+        ctx.renderer.field_152631_f = true;
+        ctx.reset()
+            .setupLightingZNeg()
+            .setupColor(
+                ForgeDirection.NORTH,
+                mBlock.colorMultiplier(getBlockAccess(ctx.renderer), ctx.x, ctx.y, ctx.z));
+        ctx.renderer.renderFaceZNeg(ctx.block, ctx.x, ctx.y, ctx.z, aIcon);
+        draw(ctx.renderer);
+        ctx.renderer.field_152631_f = false;
     }
 
     @Override
