@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -112,7 +113,7 @@ public class ItemGenericToken extends CoreItem {
     public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
         super.addInformation(stack, aPlayer, list, bool);
         for (int i = 0;; i++) {
-            String tooltip = GTLanguageManager.getTranslation(
+            String tooltip = StatCollector.translateToLocal(
                 "gtplusplus." + this
                     .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i);
             if (!("gtplusplus." + this
@@ -125,7 +126,7 @@ public class ItemGenericToken extends CoreItem {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String ret = GTLanguageManager.getTranslation(
+        String ret = StatCollector.translateToLocal(
             "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
         EnumChatFormatting format = mCustomNameColours.get(tItem.getItemDamage());
         if (format != null) {

@@ -10,6 +10,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -74,7 +75,7 @@ public class BaseItemColourable extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
-            this.descColour + GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip"));
+            this.descColour + StatCollector.translateToLocal("gtplusplus." + this.getUnlocalizedName() + ".tooltip"));
         // super.addInformation(stack, aPlayer, list, bool);
     }
 
@@ -92,8 +93,8 @@ public class BaseItemColourable extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         if (!("gtplusplus." + this.getUnlocalizedName() + ".name")
-            .equals(GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".name"))) {
-            return GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".name");
+            .equals(StatCollector.translateToLocal("gtplusplus." + this.getUnlocalizedName() + ".name"))) {
+            return StatCollector.translateToLocal("gtplusplus." + this.getUnlocalizedName() + ".name");
         } else return super.getItemStackDisplayName(tItem);
     }
 }

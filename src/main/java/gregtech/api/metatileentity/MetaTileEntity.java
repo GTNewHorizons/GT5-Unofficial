@@ -40,7 +40,6 @@ import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
@@ -187,7 +186,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public String getLocalName() {
-        return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
     }
 
     @Override
