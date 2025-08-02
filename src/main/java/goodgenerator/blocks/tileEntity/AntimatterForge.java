@@ -470,7 +470,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public CheckRecipeResult checkProcessing() {
-        startRecipeProcessing();
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
@@ -526,7 +525,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!drainEnergyInput(energyCost)) {
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            endRecipeProcessing();
             setProtoRender(false);
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
         }
@@ -552,7 +550,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid(Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialsUEVplus.Protomatter.getFluid(1L)));
-            endRecipeProcessing();
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
@@ -567,7 +564,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
 
-        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
