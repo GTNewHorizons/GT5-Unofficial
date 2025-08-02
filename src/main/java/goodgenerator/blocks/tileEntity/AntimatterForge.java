@@ -14,7 +14,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -562,7 +564,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         this.guiAntimatterChange = ratioLosses + antimatterChange;
         this.guiAntimatterAmount = calculateContainedAntimatter();
 
-        if (canRender) {
+        if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
             setProtoRender(true);
         }
@@ -860,17 +862,31 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("canRender", this.canRender);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("canRender")) {
+            this.canRender = aNBT.getBoolean("canRender");
+        }
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        canRender = !canRender;
-        if (!canRender) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+        this.canRender = !this.canRender;
+        if (!this.canRender) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));
             destroyAntimatterRender();
-        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+        } else aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.enableRender"));
     }
 
     public void updateAntimatterSize(float antimatterAmount) {
-        if (antimatterAmount <= 0 || !canRender) {
+        if (antimatterAmount <= 0 || !this.canRender) {
             destroyAntimatterRender();
             return;
         }
@@ -887,8 +903,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void setProtoRender(boolean flag) {
+        if (!this.canRender) return;
         TileAntimatter render = getAntimatterRender();
-        if (render == null || !canRender) return;
+        if (render == null) return;
         render.setProtomatterRender(flag);
         if (!flag) return;
         render.setRotationFields(getDirection(), getRotation());
