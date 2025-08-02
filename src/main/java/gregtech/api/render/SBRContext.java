@@ -46,7 +46,7 @@ public class SBRContext {
     public static final int MAX_BRIGHTNESS = 0xf000f0;
     public static final float NO_Z_FIGHT_OFFSET = 1.0F / 1024.0F;
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public RenderBlocks renderer;
+    public final RenderBlocks renderer;
     /**
      * Brightness for side.
      */
@@ -85,6 +85,8 @@ public class SBRContext {
         if (this.renderer.useInventoryTint) {
             // Block will be rendered in an inventory, so it needs its lightness maxed
             setLightnessOverride(1.0F);
+        } else {
+            clearLightnessOverride();
         }
     }
 
@@ -131,14 +133,14 @@ public class SBRContext {
      * @return the mixed brightness
      */
     public static int getAverageBrightness(int brightnessA, int brightnessB) {
-        int sectionA1 = brightnessA >> 16 & 0xff;
-        int sectionA2 = brightnessA & 255;
+        final int sectionA1 = brightnessA >> 16 & 0xff;
+        final int sectionA2 = brightnessA & 255;
 
-        int sectionB1 = brightnessB >> 16 & 0xff;
-        int sectionB2 = brightnessB & 255;
+        final int sectionB1 = brightnessB >> 16 & 0xff;
+        final int sectionB2 = brightnessB & 255;
 
-        int difference1 = (int) ((sectionA1 + sectionB1) / 2.0F);
-        int difference2 = (int) ((sectionA2 + sectionB2) / 2.0F);
+        final int difference1 = (int) ((sectionA1 + sectionB1) / 2.0F);
+        final int difference2 = (int) ((sectionA2 + sectionB2) / 2.0F);
 
         return difference1 << 16 | difference2;
     }
@@ -150,32 +152,56 @@ public class SBRContext {
      * @return a float array with rgb values
      */
     public static float[] getRGB(short[] color) {
-        float red = color[0] / 255.0F;
-        float green = color[1] / 255.0F;
-        float blue = color[2] / 255.0F;
+        final float red = color[0] / 255.0F;
+        final float green = color[1] / 255.0F;
+        final float blue = color[2] / 255.0F;
 
         return new float[] { red, green, blue };
     }
 
     /**
-     * Clears brightness override.
+     * Resets override flags to their default values.
+     * <p>
+     * This ensures deterministic rendering by clearing any leftover state
+     * from previous use of this context instance.
+     *
+     * @return this {@link SBRContext} instance for chaining
      */
-    public void clearBrightnessOverride() {
+    public SBRContext reset() {
         hasBrightnessOverride = false;
+        hasColorOverride = false;
+        hasLightnessOverride = false;
+        return this;
+    }
+
+    /**
+     * Clears brightness override.
+     * 
+     * @return the {@link SBRContext}
+     */
+    public SBRContext clearBrightnessOverride() {
+        hasBrightnessOverride = false;
+        return this;
     }
 
     /**
      * Clears color override.
+     * 
+     * @return the {@link SBRContext}
      */
-    public void clearColorOverride() {
+    public SBRContext clearColorOverride() {
         hasColorOverride = false;
+        return this;
     }
 
     /**
      * Clears lightness override.
+     * 
+     * @return the {@link SBRContext}
      */
-    public void clearLightnessOverride() {
+    public SBRContext clearLightnessOverride() {
         hasLightnessOverride = false;
+        return this;
     }
 
     /**
@@ -273,13 +299,10 @@ public class SBRContext {
      * @param hexColor the primary color
      */
     public void setupColor(ForgeDirection side, int hexColor) {
-        Tessellator tessellator = Tessellator.instance;
-        float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
-        float[] rgb = getRGB(hexColor);
-
-        if (hasColorOverride && !renderer.hasOverrideBlockTexture()) {
-            rgb = getRGB(colorOverride);
-        }
+        final Tessellator tessellator = Tessellator.instance;
+        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
+        final float[] rgb = hasColorOverride && !renderer.hasOverrideBlockTexture() ? getRGB(colorOverride)
+            : getRGB(hexColor);
 
         applyAnaglyph(rgb);
 
@@ -329,9 +352,9 @@ public class SBRContext {
      * @return a float array with rgb values
      */
     public static float[] getRGB(int color) {
-        float red = (color >> 16 & 0xff) / 255.0F;
-        float green = (color >> 8 & 0xff) / 255.0F;
-        float blue = (color & 0xff) / 255.0F;
+        final float red = (color >> 16 & 0xff) / 255.0F;
+        final float green = (color >> 8 & 0xff) / 255.0F;
+        final float blue = (color & 0xff) / 255.0F;
 
         return new float[] { red, green, blue };
     }
@@ -360,7 +383,7 @@ public class SBRContext {
      * @return the mixed red, green, blue float values
      */
     public static float getMixedAo(float ao1, float ao2, double ratio) {
-        float diff = (float) (Math.abs(ao1 - ao2) * (1.0F - ratio));
+        final float diff = (float) (Math.abs(ao1 - ao2) * (1.0F - ratio));
 
         return ao1 > ao2 ? ao1 - diff : ao1 + diff;
     }
@@ -401,13 +424,13 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int xOffset = renderer.renderMinX > 0.0F + NO_Z_FIGHT_OFFSET ? x : x - 1;
+            final int xOffset = renderer.renderMinX > 0.0F + NO_Z_FIGHT_OFFSET ? x : x - 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y, z);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y, z);
             brightness = mixedBrightness;
 
-            float ratio = (float) (1.0F - renderer.renderMinX);
-            float aoLightValue = renderer.blockAccess.getBlock(x - 1, y, z)
+            final float ratio = (float) (1.0F - renderer.renderMinX);
+            final float aoLightValue = renderer.blockAccess.getBlock(x - 1, y, z)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXYNN = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y - 1, z);
@@ -467,37 +490,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 ratio);
 
-            int brightnessMixedXYZNPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
                 renderer.aoBrightnessXZNN,
                 renderer.aoBrightnessXYZNPN,
                 renderer.aoBrightnessXYNP,
                 mixedBrightness);
-            int brightnessMixedXYZNNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZNNN,
                 renderer.aoBrightnessXYNN,
                 renderer.aoBrightnessXZNN,
                 mixedBrightness);
-            int brightnessMixedXYZNNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
                 renderer.aoBrightnessXYNN,
                 renderer.aoBrightnessXYZNNP,
                 renderer.aoBrightnessXZNP,
                 mixedBrightness);
-            int brightnessMixedXYZNPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXZNP,
                 renderer.aoBrightnessXYNP,
                 renderer.aoBrightnessXYZNPP,
                 mixedBrightness);
 
-            float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + aoLightValue
+            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + aoLightValue
                 + renderer.aoLightValueScratchXYZNPN
                 + renderer.aoLightValueScratchXYNP) / 4.0F;
-            float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXYNN
+            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXYNN
                 + renderer.aoLightValueScratchXZNN
                 + aoLightValue) / 4.0F;
-            float aoMixedXYZNNP = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNP
+            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNP
                 + aoLightValue
                 + renderer.aoLightValueScratchXZNP) / 4.0F;
-            float aoMixedXYZNPP = (aoLightValue + renderer.aoLightValueScratchXZNP
+            final float aoMixedXYZNPP = (aoLightValue + renderer.aoLightValueScratchXZNP
                 + renderer.aoLightValueScratchXYNP
                 + renderer.aoLightValueScratchXYZNPP) / 4.0F;
 
@@ -575,12 +598,12 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int xOffset = renderer.renderMaxX < 1.0F - NO_Z_FIGHT_OFFSET ? x : x + 1;
+            final int xOffset = renderer.renderMaxX < 1.0F - NO_Z_FIGHT_OFFSET ? x : x + 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y, z);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y, z);
             brightness = mixedBrightness;
 
-            float aoLightValue = renderer.blockAccess.getBlock(x + 1, y, z)
+            final float aoLightValue = renderer.blockAccess.getBlock(x + 1, y, z)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXYPN = block.getMixedBrightnessForBlock(renderer.blockAccess, xOffset, y - 1, z);
@@ -640,37 +663,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 renderer.renderMaxX);
 
-            int brightnessMixedXYZPPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXZPP,
                 renderer.aoBrightnessXYPP,
                 renderer.aoBrightnessXYZPPP,
                 mixedBrightness);
-            int brightnessMixedXYZPNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
                 renderer.aoBrightnessXYPN,
                 renderer.aoBrightnessXYZPNP,
                 renderer.aoBrightnessXZPP,
                 mixedBrightness);
-            int brightnessMixedXYZPNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZPNN,
                 renderer.aoBrightnessXYPN,
                 renderer.aoBrightnessXZPN,
                 mixedBrightness);
-            int brightnessMixedXYZPPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
                 renderer.aoBrightnessXZPN,
                 renderer.aoBrightnessXYZPPN,
                 renderer.aoBrightnessXYPP,
                 mixedBrightness);
 
-            float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchXZPP
+            final float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchXZPP
                 + renderer.aoLightValueScratchXYPP
                 + renderer.aoLightValueScratchXYZPPP) / 4.0F;
-            float aoMixedXYZPNP = (renderer.aoLightValueScratchXYPN + renderer.aoLightValueScratchXYZPNP
+            final float aoMixedXYZPNP = (renderer.aoLightValueScratchXYPN + renderer.aoLightValueScratchXYZPNP
                 + aoLightValue
                 + renderer.aoLightValueScratchXZPP) / 4.0F;
-            float aoMixedXYZPNN = (renderer.aoLightValueScratchXYZPNN + renderer.aoLightValueScratchXYPN
+            final float aoMixedXYZPNN = (renderer.aoLightValueScratchXYZPNN + renderer.aoLightValueScratchXYPN
                 + renderer.aoLightValueScratchXZPN
                 + aoLightValue) / 4.0F;
-            float aoMixedXYZPPN = (renderer.aoLightValueScratchXZPN + aoLightValue
+            final float aoMixedXYZPPN = (renderer.aoLightValueScratchXZPN + aoLightValue
                 + renderer.aoLightValueScratchXYZPPN
                 + renderer.aoLightValueScratchXYPP) / 4.0F;
 
@@ -748,13 +771,13 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int yOffset = renderer.renderMinY > 0.0F + NO_Z_FIGHT_OFFSET ? y : y - 1;
+            final int yOffset = renderer.renderMinY > 0.0F + NO_Z_FIGHT_OFFSET ? y : y - 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, yOffset, z);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, yOffset, z);
             brightness = mixedBrightness;
 
-            float ratio = (float) (1.0F - renderer.renderMinY);
-            float aoLightValue = renderer.blockAccess.getBlock(x, y - 1, z)
+            final float ratio = (float) (1.0F - renderer.renderMinY);
+            final float aoLightValue = renderer.blockAccess.getBlock(x, y - 1, z)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXYNN = block.getMixedBrightnessForBlock(renderer.blockAccess, x - 1, yOffset, z);
@@ -814,37 +837,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 ratio);
 
-            int brightnessMixedXYZPNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
                 renderer.aoBrightnessYZNP,
                 renderer.aoBrightnessXYZPNP,
                 renderer.aoBrightnessXYPN,
                 mixedBrightness);
-            int brightnessMixedXYZPNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
                 renderer.aoBrightnessYZNN,
                 renderer.aoBrightnessXYPN,
                 renderer.aoBrightnessXYZPNN,
                 mixedBrightness);
-            int brightnessMixedXYZNNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
                 renderer.aoBrightnessXYNN,
                 renderer.aoBrightnessXYZNNN,
                 renderer.aoBrightnessYZNN,
                 mixedBrightness);
-            int brightnessMixedXYZNNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZNNP,
                 renderer.aoBrightnessXYNN,
                 renderer.aoBrightnessYZNP,
                 mixedBrightness);
 
-            float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
+            final float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
                 + renderer.aoLightValueScratchXYZPNP
                 + renderer.aoLightValueScratchXYPN) / 4.0F;
-            float aoMixedXYZPNN = (aoLightValue + renderer.aoLightValueScratchYZNN
+            final float aoMixedXYZPNN = (aoLightValue + renderer.aoLightValueScratchYZNN
                 + renderer.aoLightValueScratchXYPN
                 + renderer.aoLightValueScratchXYZPNN) / 4.0F;
-            float aoMixedXYZNNN = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNN
+            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYNN + renderer.aoLightValueScratchXYZNNN
                 + aoLightValue
                 + renderer.aoLightValueScratchYZNN) / 4.0F;
-            float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXYNN
+            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXYNN
                 + renderer.aoLightValueScratchYZNP
                 + aoLightValue) / 4.0F;
 
@@ -922,12 +945,12 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int yOffset = renderer.renderMaxY < 1.0F - NO_Z_FIGHT_OFFSET ? y : y + 1;
+            final int yOffset = renderer.renderMaxY < 1.0F - NO_Z_FIGHT_OFFSET ? y : y + 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, yOffset, z);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, yOffset, z);
             brightness = mixedBrightness;
 
-            float aoLightValue = renderer.blockAccess.getBlock(x, y + 1, z)
+            final float aoLightValue = renderer.blockAccess.getBlock(x, y + 1, z)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXYNP = block.getMixedBrightnessForBlock(renderer.blockAccess, x - 1, yOffset, z);
@@ -987,37 +1010,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 renderer.renderMaxY);
 
-            int brightnessMixedXYZPPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
                 renderer.aoBrightnessYZPP,
                 renderer.aoBrightnessXYZPPP,
                 renderer.aoBrightnessXYPP,
                 mixedBrightness);
-            int brightnessMixedXYZPPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
                 renderer.aoBrightnessYZPN,
                 renderer.aoBrightnessXYPP,
                 renderer.aoBrightnessXYZPPN,
                 mixedBrightness);
-            int brightnessMixedXYZNPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
                 renderer.aoBrightnessXYNP,
                 renderer.aoBrightnessXYZNPN,
                 renderer.aoBrightnessYZPN,
                 mixedBrightness);
-            int brightnessMixedXYZNPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZNPP,
                 renderer.aoBrightnessXYNP,
                 renderer.aoBrightnessYZPP,
                 mixedBrightness);
 
-            float aoMixedXYZPPP = (renderer.aoLightValueScratchYZPP + aoLightValue
+            final float aoMixedXYZPPP = (renderer.aoLightValueScratchYZPP + aoLightValue
                 + renderer.aoLightValueScratchXYZPPP
                 + renderer.aoLightValueScratchXYPP) / 4.0F;
-            float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
+            final float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
                 + renderer.aoLightValueScratchXYPP
                 + renderer.aoLightValueScratchXYZPPN) / 4.0F;
-            float aoMixedXYZNPN = (renderer.aoLightValueScratchXYNP + renderer.aoLightValueScratchXYZNPN
+            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXYNP + renderer.aoLightValueScratchXYZNPN
                 + aoLightValue
                 + renderer.aoLightValueScratchYZPN) / 4.0F;
-            float aoMixedXYZNPP = (renderer.aoLightValueScratchXYZNPP + renderer.aoLightValueScratchXYNP
+            final float aoMixedXYZNPP = (renderer.aoLightValueScratchXYZNPP + renderer.aoLightValueScratchXYNP
                 + renderer.aoLightValueScratchYZPP
                 + aoLightValue) / 4.0F;
 
@@ -1095,13 +1118,13 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int zOffset = renderer.renderMinZ > 0.0F + NO_Z_FIGHT_OFFSET ? z : z - 1;
+            final int zOffset = renderer.renderMinZ > 0.0F + NO_Z_FIGHT_OFFSET ? z : z - 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, zOffset);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, zOffset);
             brightness = mixedBrightness;
 
-            float ratio = (float) (1.0F - renderer.renderMinZ);
-            float aoLightValue = renderer.blockAccess.getBlock(x, y, z - 1)
+            final float ratio = (float) (1.0F - renderer.renderMinZ);
+            final float aoLightValue = renderer.blockAccess.getBlock(x, y, z - 1)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXZNN = block.getMixedBrightnessForBlock(renderer.blockAccess, x - 1, y, zOffset);
@@ -1161,37 +1184,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 ratio);
 
-            int brightnessMixedXYZPPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPN = renderer.getAoBrightness(
                 renderer.aoBrightnessYZPN,
                 renderer.aoBrightnessXZPN,
                 renderer.aoBrightnessXYZPPN,
                 mixedBrightness);
-            int brightnessMixedXYZPNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNN = renderer.getAoBrightness(
                 renderer.aoBrightnessYZNN,
                 renderer.aoBrightnessXYZPNN,
                 renderer.aoBrightnessXZPN,
                 mixedBrightness);
-            int brightnessMixedXYZNNN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNN = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZNNN,
                 renderer.aoBrightnessXZNN,
                 renderer.aoBrightnessYZNN,
                 mixedBrightness);
-            int brightnessMixedXYZNPN = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPN = renderer.getAoBrightness(
                 renderer.aoBrightnessXZNN,
                 renderer.aoBrightnessXYZNPN,
                 renderer.aoBrightnessYZPN,
                 mixedBrightness);
 
-            float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
+            final float aoMixedXYZPPN = (aoLightValue + renderer.aoLightValueScratchYZPN
                 + renderer.aoLightValueScratchXZPN
                 + renderer.aoLightValueScratchXYZPPN) / 4.0F;
-            float aoMixedXYZPNN = (renderer.aoLightValueScratchYZNN + aoLightValue
+            final float aoMixedXYZPNN = (renderer.aoLightValueScratchYZNN + aoLightValue
                 + renderer.aoLightValueScratchXYZPNN
                 + renderer.aoLightValueScratchXZPN) / 4.0F;
-            float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXZNN
+            final float aoMixedXYZNNN = (renderer.aoLightValueScratchXYZNNN + renderer.aoLightValueScratchXZNN
                 + renderer.aoLightValueScratchYZNN
                 + aoLightValue) / 4.0F;
-            float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + renderer.aoLightValueScratchXYZNPN
+            final float aoMixedXYZNPN = (renderer.aoLightValueScratchXZNN + renderer.aoLightValueScratchXYZNPN
                 + aoLightValue
                 + renderer.aoLightValueScratchYZPN) / 4.0F;
 
@@ -1269,12 +1292,12 @@ public class SBRContext {
 
         if (renderer.enableAO) {
 
-            int zOffset = renderer.renderMaxZ < 1.0F - NO_Z_FIGHT_OFFSET ? z : z + 1;
+            final int zOffset = renderer.renderMaxZ < 1.0F - NO_Z_FIGHT_OFFSET ? z : z + 1;
 
-            int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, zOffset);
+            final int mixedBrightness = block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, zOffset);
             brightness = mixedBrightness;
 
-            float aoLightValue = renderer.blockAccess.getBlock(x, y, z + 1)
+            final float aoLightValue = renderer.blockAccess.getBlock(x, y, z + 1)
                 .getAmbientOcclusionLightValue();
 
             renderer.aoBrightnessXZNP = block.getMixedBrightnessForBlock(renderer.blockAccess, x - 1, y, zOffset);
@@ -1334,37 +1357,37 @@ public class SBRContext {
                     .getAmbientOcclusionLightValue(),
                 renderer.renderMaxZ);
 
-            int brightnessMixedXYZNPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXZNP,
                 renderer.aoBrightnessXYZNPP,
                 renderer.aoBrightnessYZPP,
                 mixedBrightness);
-            int brightnessMixedXYZNNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZNNP = renderer.getAoBrightness(
                 renderer.aoBrightnessXYZNNP,
                 renderer.aoBrightnessXZNP,
                 renderer.aoBrightnessYZNP,
                 mixedBrightness);
-            int brightnessMixedXYZPNP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPNP = renderer.getAoBrightness(
                 renderer.aoBrightnessYZNP,
                 renderer.aoBrightnessXYZPNP,
                 renderer.aoBrightnessXZPP,
                 mixedBrightness);
-            int brightnessMixedXYZPPP = renderer.getAoBrightness(
+            final int brightnessMixedXYZPPP = renderer.getAoBrightness(
                 renderer.aoBrightnessYZPP,
                 renderer.aoBrightnessXZPP,
                 renderer.aoBrightnessXYZPPP,
                 mixedBrightness);
 
-            float aoMixedXYZNPP = (renderer.aoLightValueScratchXZNP + renderer.aoLightValueScratchXYZNPP
+            final float aoMixedXYZNPP = (renderer.aoLightValueScratchXZNP + renderer.aoLightValueScratchXYZNPP
                 + aoLightValue
                 + renderer.aoLightValueScratchYZPP) / 4.0F;
-            float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXZNP
+            final float aoMixedXYZNNP = (renderer.aoLightValueScratchXYZNNP + renderer.aoLightValueScratchXZNP
                 + renderer.aoLightValueScratchYZNP
                 + aoLightValue) / 4.0F;
-            float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
+            final float aoMixedXYZPNP = (renderer.aoLightValueScratchYZNP + aoLightValue
                 + renderer.aoLightValueScratchXYZPNP
                 + renderer.aoLightValueScratchXZPP) / 4.0F;
-            float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchYZPP
+            final float aoMixedXYZPPP = (aoLightValue + renderer.aoLightValueScratchYZPP
                 + renderer.aoLightValueScratchXZPP
                 + renderer.aoLightValueScratchXYZPPP) / 4.0F;
 
