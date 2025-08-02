@@ -367,7 +367,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
+        return IAlignmentLimits.UPRIGHT;
     }
 
     @Override

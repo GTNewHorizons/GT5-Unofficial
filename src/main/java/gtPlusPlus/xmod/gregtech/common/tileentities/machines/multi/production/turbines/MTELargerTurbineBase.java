@@ -748,7 +748,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.UP;
+        return IAlignmentLimits.FACING_UP;
     }
 
     /**
