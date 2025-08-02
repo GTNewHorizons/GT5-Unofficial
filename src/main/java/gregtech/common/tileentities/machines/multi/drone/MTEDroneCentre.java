@@ -446,8 +446,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private void createRenderBlock() {
         if (!useRender) return;
         int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
         World world = this.getBaseMetaTileEntity()
             .getWorld();
@@ -458,8 +458,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void destroyRenderBlock() {
         int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
         World world = this.getBaseMetaTileEntity()
             .getWorld();
