@@ -275,8 +275,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     endRecipeProcessing();
                 }
             }
-            // Clean invalid connections every 4 seconds
-            if (aTick % 80 == 0) connectionList.removeIf(v -> !v.isValid());
         }
         if (mMaxProgresstime > 0 && mMaxProgresstime - mProgresstime == 1) destroyRenderBlock();
         super.onPostTick(aBaseMetaTileEntity, aTick);
