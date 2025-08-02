@@ -451,8 +451,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
         World world = this.getBaseMetaTileEntity()
             .getWorld();
-        if (world.getBlock(x, y, z)
-            .equals(Blocks.air)) {
+        if (world.isAirBlock(x, y, z)) {
             world.setBlock(x, y, z, GregTechAPI.sDroneRender);
         }
     }
