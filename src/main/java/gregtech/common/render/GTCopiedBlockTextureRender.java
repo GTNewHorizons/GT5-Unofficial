@@ -50,7 +50,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        lightingHelper.setupLightingXPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingXPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.EAST, 0xffffff);
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -63,7 +64,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
-        lightingHelper.setupLightingXNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingXNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.WEST, 0xffffff);
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -75,7 +77,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
-        lightingHelper.setupLightingYPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingYPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.UP, 0xffffff);
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -87,7 +90,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
-        lightingHelper.setupLightingYNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingYNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.DOWN, 0xffffff);
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -99,7 +103,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
-        lightingHelper.setupLightingZPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingZPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -112,7 +117,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aRenderer.blockAccess, aX, aY, aZ);
         aRenderer.field_152631_f = true;
-        lightingHelper.setupLightingZNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingZNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.NORTH, 0xffffff);
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
