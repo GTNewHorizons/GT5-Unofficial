@@ -50,6 +50,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
+import gregtech.api.recipe.maps.ECCFFrontend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -61,6 +62,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
+import gregtech.api.recipe.maps.PlanetConditionsFrontend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
@@ -849,6 +851,25 @@ public final class RecipeMaps {
         .maxIO(6, 6, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(LargeNEIFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> ECCFRecipes = RecipeMapBuilder.of("gt.recipe.eccf")
+        .maxIO(8, 8, 8, 8)
+        .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
+        .logoPos(80, 63)
+        .logoSize(16, 16)
+        .progressBarSize(16, 16)
+        .progressBarPos(80, 36)
+        .frontend(ECCFFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> planetConditions = RecipeMapBuilder.of("gt.recipe.category.planets")
+        .maxIO(41, 0, 0, 0)
+        .dontUseProgressBar()
+        .logoSize(0, 0)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(Materials.Lava.getCells(1))
+                .setMaxRecipesPerPage(4)
+                .setHeight(5 * 18))
+        .frontend(PlanetConditionsFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
         .of("gt.recipe.distillationtower")
