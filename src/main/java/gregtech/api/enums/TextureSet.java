@@ -103,7 +103,18 @@ public class TextureSet {
         SET_BEDROCKIUM = new TextureSet("bedrockium", true), SET_ICHORIUM = new TextureSet("ichorium", true),
         SET_COSMIC_NEUTRONIUM = new TextureSet("cosmicneutronium", true),
         SET_SBM = new TextureSet("stablebaryonicmatter", true), SET_NETHERITE = new TextureSet("netherite", true),
-        SET_PRISMATIC_ACID = new TextureSet("prismaticacid", true);
+        SET_PRISMATIC_ACID = new TextureSet("prismaticacid", true), SET_SPACETIME = new TextureSet("spacetime", true),
+        SET_MHDCSM = new TextureSet("MagnetohydrodynamicallyConstrainedStarMatter", true),
+        SET_WHITE_DWARF_MATTER = new TextureSet("WhiteDwarfMatter", true),
+        SET_UNIVERSIUM = new TextureSet("universium", true), SET_ETERNITY = new TextureSet("eternity", true),
+        SET_MAGMATTER = new TextureSet("magmatter", true), SET_GRAVITON_SHARD = new TextureSet("GravitonShard", true),
+        SET_DSSF = new TextureSet("dimensionallyshiftedsuperfluid", true),
+        SET_PROTOHALKONITE_BASE = new TextureSet("protohalkonitebase", true),
+        SET_HOT_PROTOHALKONITE = new TextureSet("hotprotohalkonite", true),
+        SET_PROTOHALKONITE = new TextureSet("protohalkonite", true),
+        SET_HOT_EXOHALKONITE = new TextureSet("hotexohalkonite", true),
+        SET_EXOHALKONITE = new TextureSet("exohalkonite", true),
+        SET_SG_CRYSTAL_SLURRY = new TextureSet("sgcrystalfluid", true);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
