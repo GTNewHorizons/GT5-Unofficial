@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -146,7 +147,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         private int getHint(ItemStack stack) {
-            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 0, Field.VALUES.length);
+            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 1, Field.VALUES.length);
         }
 
         @Override
@@ -166,12 +167,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
+            boolean isPreview = !(env.getActor() instanceof EntityPlayerMP);
             ItemStack result = env.getSource()
                 .takeOne(
                     s -> s != null && s.stackSize >= 0
                         && s.getItem() == TFFT_FIELD_ITEM
                         && s.getItemDamage() != CASING_META
-                        && s.getItemDamage() <= fieldTier,
+                        && (isPreview ? s.getItemDamage() == fieldTier : s.getItemDamage() <= fieldTier),
                     true);
             if (result == null) return PlaceResult.REJECT;
 
