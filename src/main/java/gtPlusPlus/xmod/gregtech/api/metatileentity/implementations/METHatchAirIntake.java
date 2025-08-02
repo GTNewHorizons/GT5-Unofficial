@@ -30,10 +30,11 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[3];
-        aTooltip[0] = "DO NOT OBSTRUCT THE INPUT!";
+        String[] aTooltip = new String[4];
+        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
         aTooltip[1] = "Draws in Air from the surrounding environment";
         aTooltip[2] = "Creates " + getAmountOfFluidToGenerate() + "L of Air every " + getMaxTickTime() + " ticks";
+        aTooltip[3] = "§7Added by: §2Alkalus §7- §c[GT++]";
         return aTooltip;
     }
 
@@ -52,12 +53,12 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 1000;
+        return 5000;
     }
 
     @Override
     public int getMaxTickTime() {
-        return 4;
+        return 20;
     }
 
     @Override

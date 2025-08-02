@@ -22,7 +22,7 @@ public class MTEHatchAirIntakeExtreme extends METHatchAirIntake {
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 8000;
+        return 40000;
     }
 
     @Override
