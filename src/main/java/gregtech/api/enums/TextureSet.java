@@ -99,7 +99,11 @@ public class TextureSet {
         SET_MANASTEEL = new TextureSet("Manasteel", false), SET_LIVINGROCK = new TextureSet("Livingrock", true),
         SET_GAIA_SPIRIT = new TextureSet("GaiaSpirit", true), SET_LIVINGWOOD = new TextureSet("Livingwood", true),
         SET_DREAMWOOD = new TextureSet("Dreamwood", true), SET_MANA_DIAMOND = new TextureSet("ManaDiamond", true),
-        SET_DRAGONSTONE = new TextureSet("Dragonstone", true);
+        SET_DRAGONSTONE = new TextureSet("Dragonstone", true), SET_INFINITY = new TextureSet("infinity", true),
+        SET_BEDROCKIUM = new TextureSet("bedrockium", true), SET_ICHORIUM = new TextureSet("ichorium", true),
+        SET_COSMIC_NEUTRONIUM = new TextureSet("cosmicneutronium", true),
+        SET_SBM = new TextureSet("stablebaryonicmatter", true), SET_NETHERITE = new TextureSet("netherite", true),
+        SET_PRISMATIC_ACID = new TextureSet("prismaticacid", true);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
