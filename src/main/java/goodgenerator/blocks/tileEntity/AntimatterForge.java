@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -106,7 +107,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
-    private final boolean canRender = false;
+    private boolean canRender = true;
 
     private final List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -168,6 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         tt.addMachineType("Antimatter Forge, SSASS")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
+            .addInfo("Use screwdriver to disable rendering")
             .addInfo(
                 "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
                     + " + ("
@@ -560,8 +562,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         this.guiAntimatterChange = ratioLosses + antimatterChange;
         this.guiAntimatterAmount = calculateContainedAntimatter();
 
-        updateAntimatterSize(this.guiAntimatterAmount);
-        setProtoRender(true);
+        if (canRender) {
+            updateAntimatterSize(this.guiAntimatterAmount);
+            setProtoRender(true);
+        }
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
@@ -855,8 +859,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         destroyAntimatterRender();
     }
 
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        canRender = !canRender;
+        if (!canRender) {
+            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            destroyAntimatterRender();
+        } else GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+    }
+
     public void updateAntimatterSize(float antimatterAmount) {
-        if (antimatterAmount <= 0) {
+        if (antimatterAmount <= 0 || !canRender) {
             destroyAntimatterRender();
             return;
         }
@@ -865,6 +879,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (render == null) {
             createAntimatterRender();
             render = getAntimatterRender();
+            if (render == null) return;
         }
 
         float size = (float) Math.pow(antimatterAmount, 0.17);
@@ -873,7 +888,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     public void setProtoRender(boolean flag) {
         TileAntimatter render = getAntimatterRender();
-        if (render == null) return;
+        if (render == null || !canRender) return;
         render.setProtomatterRender(flag);
         if (!flag) return;
         render.setRotationFields(getDirection(), getRotation());
@@ -908,7 +923,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        return (TileAntimatter) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TileAntimatter antimatterRender) return antimatterRender;
+        return null;
     }
 
     public void destroyAntimatterRender() {
@@ -922,7 +938,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        world.setBlock(x, y, z, Blocks.air);
+        if (world.getBlock(x, y, z)
+            .equals(Loaders.antimatterRenderBlock)) {
+            world.setBlock(x, y, z, Blocks.air);
+        }
     }
 
     public void createAntimatterRender() {
@@ -936,7 +955,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        world.setBlock(x, y, z, Blocks.air);
-        world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
+        if (world.isAirBlock(x, y, z)) {
+            world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
+        }
     }
 }
