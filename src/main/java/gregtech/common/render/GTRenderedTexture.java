@@ -50,6 +50,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     public void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
         int worldRenderPass) {
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
+        lightingHelper.reset();
         final boolean enableAO = aRenderer.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
