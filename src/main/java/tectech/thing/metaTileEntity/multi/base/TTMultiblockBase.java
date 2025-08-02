@@ -1109,11 +1109,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected void addClassicOutputs_EM() {
         if (mOutputItems != null) {
-            for (ItemStack tStack : mOutputItems) {
-                if (tStack != null) {
-                    addOutput(tStack);
-                }
-            }
+            addItemOutputs(mOutputItems);
         }
         mOutputItems = null;
 

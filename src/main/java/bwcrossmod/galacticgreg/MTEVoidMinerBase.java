@@ -291,7 +291,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .noneMatch(is -> GTUtility.areStacksEqual(is, output))
             || !this.mBlacklist && inputOres.stream()
                 .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
-            this.addOutput(output);
+            this.addOutputPartial(output);
         this.updateSlots();
     }
 
