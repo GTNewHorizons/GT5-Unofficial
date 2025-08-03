@@ -17,12 +17,11 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.LightingHelper;
 
-public class GTRenderedTexture extends GTTextureBase implements ITexture {
+public class GTRenderedTexture extends GTTextureBase {
 
     private final IIconContainer mIconContainer;
     private final int colorRGB;
