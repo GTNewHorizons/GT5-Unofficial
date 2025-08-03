@@ -172,8 +172,10 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                         this.depleteInput(itemStackInBus);
                     }
                 } else {
+                    if (getEUVar() <= 0) {
+                        return SimpleCheckRecipeResult.ofFailure("insufficient_power_no_val");
+                    }
                     mEfficiencyIncrease = 10000;
-                    mMaxProgresstime = 20;
                     return SimpleCheckRecipeResult.ofSuccess("charging");
                 }
             }

@@ -79,7 +79,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -101,7 +101,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     /**
      * Don't use this for recipe input check, otherwise you'll get duplicated fluids
      */
-    public ArrayList<METHatchAirIntake> mAirIntakes = new ArrayList<>();
+    public ArrayList<MTEHatchAirIntake> mAirIntakes = new ArrayList<>();
 
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
@@ -580,7 +580,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         } else if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
             log("Found MTEHatchOutputBattery");
             aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof METHatchAirIntake) {
+        } else if (aMetaTileEntity instanceof MTEHatchAirIntake) {
             aDidAdd = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex)
                 && addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
         }
@@ -666,7 +666,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public boolean addAirIntakeToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof METHatchAirIntake) {
+        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -1553,7 +1553,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public enum GTPPHatchElement implements IHatchElement<GTPPMultiBlockBase<?>> {
 
-        AirIntake(GTPPMultiBlockBase::addAirIntakeToMachineList, METHatchAirIntake.class) {
+        AirIntake(GTPPMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {

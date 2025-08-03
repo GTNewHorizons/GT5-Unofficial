@@ -1260,6 +1260,8 @@ public enum MetaTileEntityIDs {
     OUTPUT_HATCH_UMV(12105),
     OUTPUT_HATCH_UXV(12106),
     OUTPUT_HATCH_MAX(12108),
+    VOID_HATCH(12109),
+    VOID_BUS(12110),
     cropGeneExtractorLV(12501),
     cropGeneExtractorMV(12502),
     cropGeneExtractorHV(12503),
