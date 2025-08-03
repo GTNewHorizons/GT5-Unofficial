@@ -119,12 +119,12 @@ public final class GTCommand extends GTBaseCommand {
 
         if (args.length == 2 && GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
             // 1st username of wireless network commands
-            return getAllUsernames();
+            return getListOfStringsMatchingLastWord(args, getAllUsernames());
         }
 
         if (args.length == 3 && args[0].equals("global_energy_join")) {
             // 2nd username of join command
-            return getAllUsernames();
+            return getListOfStringsMatchingLastWord(args, getAllUsernames());
         }
 
         return Collections.emptyList();

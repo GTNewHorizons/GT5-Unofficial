@@ -1,6 +1,5 @@
 package gregtech.commands;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -71,9 +70,8 @@ public abstract class GTBaseCommand extends CommandBase {
         return false;
     }
 
-    protected static @Unmodifiable List<String> getAllUsernames() {
-        return Arrays.asList(
-            MinecraftServer.getServer()
-                .getAllUsernames());
+    protected static @Unmodifiable String[] getAllUsernames() {
+        return MinecraftServer.getServer()
+            .getAllUsernames();
     }
 }
