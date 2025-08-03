@@ -640,7 +640,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRContext ctx = new SBRContext(aWorld, aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity

@@ -2,15 +2,12 @@ package gregtech.api.util;
 
 import java.util.List;
 
-import gregtech.api.render.SBRContext;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,6 +17,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.RenderOverlay;
+import gregtech.api.render.SBRContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRenderUtil;
 
@@ -78,7 +76,8 @@ public class GTUtilityClient {
 
     }
 
-    public static void renderTurbineOverlay(SBRContext ctx, ExtendedFacing tExtendedFacing, Block tBlockOverride, IIconContainer[] tTextures) {
+    public static void renderTurbineOverlay(SBRContext ctx, ExtendedFacing tExtendedFacing, Block tBlockOverride,
+        IIconContainer[] tTextures) {
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
         final ForgeDirection tDirection = tExtendedFacing.getDirection();
@@ -95,7 +94,8 @@ public class GTUtilityClient {
             int tZ = tXYZOffset[2] + ctx.z;
             Block tBlock;
             if (tBlockOverride == null) {
-                tBlock = ctx.world.getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
+                tBlock = ctx.world
+                    .getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
             } else {
                 tBlock = tBlockOverride;
             }

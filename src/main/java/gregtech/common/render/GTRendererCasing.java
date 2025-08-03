@@ -93,7 +93,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRContext ctx = new SBRContext(aWorld, aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         int tMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 

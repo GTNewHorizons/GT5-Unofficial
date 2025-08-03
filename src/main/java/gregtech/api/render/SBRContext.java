@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -62,67 +63,61 @@ public class SBRContext {
     private int brightnessOverride;
     private boolean hasColorOverride;
     private int colorOverride = 0xffffff;
-    public IBlockAccess world = null;
-    public int x = 0;
-    public int y = 0;
-    public int z = 0;
-    public int worldRenderPass = -1;
-    public Block block;
-    public int meta;
-    public int modelId;
-
-    /**
-     * Constructs a new {@link SBRContext} used to render a single Block
-     *
-     * @param block    the {@link Block} to render
-     * @param modelId  the Model ID for the {@link Block} rendering
-     * @param renderer the {@link RenderBlocks} renderer to use
-     */
-    public SBRContext(Block block, int modelId, RenderBlocks renderer) {
-        this.renderer = renderer;
-        this.block = block;
-        this.modelId = modelId;
-        if (this.renderer.useInventoryTint) {
-            // Block will be rendered in an inventory, so it needs its lightness maxed
-            setLightnessOverride(1.0F);
-        } else {
-            clearLightnessOverride();
-        }
-    }
+    public final int x;
+    public final int y;
+    public final int z;
+    public final int worldRenderPass;
+    public final IBlockAccess world;
+    public final Block block;
+    public final int meta;
+    public final int modelId;
 
     /**
      * Constructs a new {@link SBRContext} used to render a single {@link Block} inside an inventory
      *
      * @param block    the {@link Block} to render
-     * @param meta     the meta value of the {@link Block}
+     * @param meta     the meta value of the {@link Block}'s {@link Item} meta value
      * @param modelId  the Model ID for the block
      * @param renderer the {@link RenderBlocks} renderer to use
      */
     public SBRContext(Block block, int meta, int modelId, RenderBlocks renderer) {
-        this(block, modelId, renderer);
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+        this.block = block;
         this.meta = meta;
+        this.modelId = modelId;
+        this.renderer = renderer;
+        this.world = renderer.blockAccess;
+        this.worldRenderPass = -1;
+        // Context is an inventory, so it needs its lightness maxed
+        setLightnessOverride(1.0F);
     }
 
     /**
-     * Constructs a new {@link SBRContext} used to render a single {@link Block} in world for the
+     * Constructs a new {@link SBRContext} used to render a single {@link Block} in blockAccess for the
      * current render pass at the given coordinates
      *
-     * @param world    the {@link IBlockAccess} world this rendering will occur
-     * @param x        the x coordinate
-     * @param y        the y coordinate
-     * @param z        the z coordinate
-     * @param block    the {@link Block} to render
-     * @param modelId  the Model ID for the block
-     * @param renderer the {@link RenderBlocks} renderer to use
+     * @param x            the x coordinate
+     * @param y            the y coordinate
+     * @param z            the z coordinate
+     * @param block        the {@link Block} to render
+     * @param modelId      the Model ID for the block
+     * @param renderBlocks the {@link RenderBlocks} renderer to use
      */
     @SuppressWarnings("ConstructorWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    public SBRContext(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        this(block, modelId, renderer);
-        this.world = world;
+    public SBRContext(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.block = block;
+        this.meta = -1;
+        this.modelId = modelId;
+        this.renderer = renderBlocks;
+        this.world = renderBlocks.blockAccess;
         this.worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        // Context is a World, so it has its own lightness
+        clearLightnessOverride();
     }
 
     /**

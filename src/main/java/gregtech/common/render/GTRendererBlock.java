@@ -604,7 +604,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             && aBlock instanceof BlockMachines
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
             && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-                renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer, ctx);
+                renderNormalInventoryMetaTileEntity(ctx);
             } else if (aBlock instanceof BlockFrameBox) {
                 ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
                 aBlock.setBlockBoundsForItemRender();
@@ -640,17 +640,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer,
-        SBRContext ctx) {
-        if ((aMeta <= 0) || (aMeta >= GregTechAPI.METATILEENTITIES.length)) {
+    private static void renderNormalInventoryMetaTileEntity(SBRContext ctx) {
+        if ((ctx.meta <= 0) || (ctx.meta >= GregTechAPI.METATILEENTITIES.length)) {
             return;
         }
-        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aMeta];
+        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[ctx.meta];
         if (tMetaTileEntity == null) {
             return;
         }
         ctx.block.setBlockBoundsForItemRender();
-        aRenderer.setRenderBoundsFromBlock(ctx.block);
+        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
 
         final IGregTechTileEntity iGregTechTileEntity = tMetaTileEntity.getBaseMetaTileEntity();
         // spotless:off
@@ -661,7 +660,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             final float pipeMax = blockMax - pipeMin;
 
             ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-            aRenderer.setRenderBoundsFromBlock(ctx.block);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             renderNegativeYFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
             renderPositiveYFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
             renderNegativeZFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
@@ -784,7 +783,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        final SBRContext ctx = new SBRContext(aWorld, aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
 
