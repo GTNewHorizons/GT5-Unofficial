@@ -1,5 +1,6 @@
 package gregtech.commands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+
+import org.jetbrains.annotations.Unmodifiable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -66,5 +69,11 @@ public abstract class GTBaseCommand extends CommandBase {
                 .func_152596_g(player.getGameProfile());
         }
         return false;
+    }
+
+    protected static @Unmodifiable List<String> getAllUsernames() {
+        return Arrays.asList(
+            MinecraftServer.getServer()
+                .getAllUsernames());
     }
 }

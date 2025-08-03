@@ -7,9 +7,10 @@ import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -30,6 +31,9 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;
 
 public final class GTCommand extends GTBaseCommand {
+
+    private static final List<String> GLOBAL_ENERGY_COMMANDS = Arrays
+        .asList("global_energy_set", "global_energy_add", "global_energy_join", "global_energy_display");
 
     public GTCommand() {
         super("gt");
@@ -80,11 +84,10 @@ public final class GTCommand extends GTBaseCommand {
     // spotless:on
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] ss) {
-        List<String> l = new ArrayList<>();
-        String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream
-            .of(
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if (args.length == 0 || args.length == 1) {
+            return getListOfStringsMatchingLastWord(
+                args,
                 "toggle",
                 "chunks",
                 "pollution",
@@ -92,42 +95,39 @@ public final class GTCommand extends GTBaseCommand {
                 "global_energy_set",
                 "global_energy_join",
                 "global_energy_display",
-                "dump_music_durations")
-            .anyMatch(s -> s.startsWith(test)))) {
-            Stream
-                .of(
-                    "toggle",
-                    "chunks",
-                    "pollution",
-                    "global_energy_add",
-                    "global_energy_set",
-                    "global_energy_join",
-                    "global_energy_display",
-                    "dump_music_durations")
-                .filter(s -> test.isEmpty() || s.startsWith(test))
-                .forEach(l::add);
-        } else if (test.equals("toggle")) {
-            String test1 = ss[1].trim();
-            Stream
-                .of(
-                    "D1",
-                    "D2",
-                    "debugCleanroom",
-                    "debugDriller",
-                    "debugBlockPump",
-                    "debugBlockMiner",
-                    "debugWorldGen",
-                    "debugEntityCramming",
-                    "debugOrevein",
-                    "debugSmallOres",
-                    "debugStones",
-                    "debugChunkloaders",
-                    "debugMulti",
-                    "debugWorldData")
-                .filter(s -> test1.isEmpty() || s.startsWith(test1))
-                .forEach(l::add);
+                "dump_music_durations");
         }
-        return l;
+
+        if (args.length == 2 && args[0].equals("toggle")) {
+            return getListOfStringsMatchingLastWord(
+                args,
+                "D1",
+                "D2",
+                "debugCleanroom",
+                "debugDriller",
+                "debugBlockPump",
+                "debugBlockMiner",
+                "debugWorldGen",
+                "debugEntityCramming",
+                "debugOrevein",
+                "debugSmallOres",
+                "debugStones",
+                "debugChunkloaders",
+                "debugMulti",
+                "debugWorldData");
+        }
+
+        if (args.length == 2 && GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
+            // 1st username of wireless network commands
+            return getAllUsernames();
+        }
+
+        if (args.length == 3 && args[0].equals("global_energy_join")) {
+            // 2nd username of join command
+            return getAllUsernames();
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
