@@ -144,6 +144,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -1953,7 +1954,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) return mOutputBusses.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergy hatch) return mEnergyHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchDynamo hatch) return mDynamoHatches.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) return mMaintenanceHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+
+            return mMaintenanceHatches.add(hatch);
+        }
         if (aMetaTileEntity instanceof MTEHatchMuffler hatch) return mMufflerHatches.add(hatch);
         return false;
     }
@@ -1965,6 +1973,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+
             return mMaintenanceHatches.add(hatch);
         }
         return false;

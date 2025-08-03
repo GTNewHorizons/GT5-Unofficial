@@ -1489,21 +1489,31 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, aRecipe);
-    }
-
-    public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
         return getRecipeOutput(false, false, aRecipe);
     }
 
+    /**
+     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
+     * If available, will choose a recipe that wasn't auto generated during OreDictionary
+     * registration. The OreDict recipe is still chosen if it is the only one that exists.
+     *
+     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab,
+     * but also have another that results in Minecraft's default Oak Slab. This second recipe
+     * is generated automatically when the plank is registered as 'plankWood' in the OreDict.
+     * This method will select the former, regardless of the order they appear on the list.
+     */
+    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
+        return getRecipeOutput(false, true, aRecipe);
+    }
+
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, true, aRecipe);
+        return getRecipeOutput(aUncopiedStack, false, aRecipe);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe)
             .noneMatch(Objects::nonNull)) return null;
 
@@ -1517,25 +1527,43 @@ public class GTModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        boolean found = false;
+
+        boolean tOreDictRecipeFound = false;
+        ItemStack tOreDictOutput = null;
 
         for (IRecipe iRecipe : tList) {
-            found = false;
-            if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
-
             if (iRecipe.matches(aCrafting, DW)) {
                 ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
+
+                if (aPreferNonOreDict && iRecipe instanceof ShapedOreRecipe) {
+                    if (!tOreDictRecipeFound) {
+                        tOreDictOutput = tOutput;
+                        tOreDictRecipeFound = true;
+                    }
+                    continue;
+                }
+
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    if (aUncopiedStack) return tOutput;
-                    return GTUtility.copyOrNull(tOutput);
                 }
+
+                if (aUncopiedStack) return tOutput;
+                return GTUtility.copyOrNull(tOutput);
             }
         }
-        return null;
+
+        if (!tOreDictRecipeFound) return null;
+
+        if (tOreDictOutput == null || tOreDictOutput.stackSize <= 0) {
+            // Seriously, who would ever do that shit?
+            if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+                "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+        }
+
+        if (aUncopiedStack) return tOreDictOutput;
+        return GTUtility.copyOrNull(tOreDictOutput);
     }
 
     private static List<IRecipe> bufferedRecipes = null;

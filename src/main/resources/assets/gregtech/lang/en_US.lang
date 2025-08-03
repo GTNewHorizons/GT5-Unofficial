@@ -1279,6 +1279,8 @@ GT5U.machines.nano_forge.t4_info_text.3=Maximum Parallel = Max((Magmatter Amount
 GT5U.machines.nano_forge.t4_info_text.4=To actually apply the parallels to the recipe, a copy of the output nanite has to be supplied in an input bus and will be consumed.
 GT5U.machines.nano_forge.t4_info_text.5=A recipe time multiplier is also granted based on maximum parallels via the following formula:
 GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum Parallel)
+GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
+GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
