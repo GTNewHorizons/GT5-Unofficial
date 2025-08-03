@@ -374,10 +374,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
-       for (int i = 1; i <= layer; i++) {
-        buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
-    }
-        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer -1);
+        for (int i = 1; i <= layer; i++) {
+            buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
+        }
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer - 1);
     }
 
     @Override
@@ -391,7 +391,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer -1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer - 1, elementBudget, env, false, true);
     }
 
     @Override
