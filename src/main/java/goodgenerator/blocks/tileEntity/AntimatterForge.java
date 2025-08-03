@@ -722,7 +722,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
                 + " "
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
