@@ -372,10 +372,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
-        for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
-        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
+       for (int i = 1; i <= layer; i++) {
+        buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
+    }
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer -1);
     }
 
     @Override
@@ -384,12 +386,12 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT
-            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
-        for (int i = -1; i >= 1 - layer; i--) {
-            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
+        for (int i = 1; i <= layer; i++) {
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer -1, elementBudget, env, false, true);
     }
 
     @Override
