@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
-public class MTEHatchAirIntakeAtmosphere extends METHatchAirIntake {
+public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
 
     public MTEHatchAirIntakeAtmosphere(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
