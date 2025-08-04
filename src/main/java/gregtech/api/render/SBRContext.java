@@ -11,6 +11,7 @@
 package gregtech.api.render;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -127,7 +128,7 @@ public class SBRContext {
      * Populates tha Ambient Occlusion Light Values cache
      */
     private void initAoLightValues() {
-        if (!renderer.enableAO) return;
+        if (Minecraft.getMinecraft().gameSettings.ambientOcclusion == 0) return;
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
