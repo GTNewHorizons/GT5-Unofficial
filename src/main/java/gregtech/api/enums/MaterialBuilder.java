@@ -300,6 +300,11 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder addMaterial(MaterialStack material) {
+        this.materialList.add(material);
+        return this;
+    }
+
     public MaterialBuilder setAspects(List<TCAspects.TC_AspectStack> aspects) {
         this.aspects = aspects;
         return this;

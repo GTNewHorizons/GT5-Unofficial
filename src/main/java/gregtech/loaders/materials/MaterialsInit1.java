@@ -3286,6 +3286,12 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .setFuelType(5)
             .setFuelPower(3)
+            .addElectrolyzerRecipe()
+            .addMaterial(new MaterialStack(Carbon, 10))
+            .addMaterial(new MaterialStack(Hydrogen, 10))
+            .addMaterial(new MaterialStack(Oxygen, 16))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
     }
 
@@ -3506,6 +3512,8 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
     }
 
@@ -3521,6 +3529,9 @@ public class MaterialsInit1 {
             .setToolQuality(1)
             .addOreItems()
             .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
             .constructMaterial();
     }
 
