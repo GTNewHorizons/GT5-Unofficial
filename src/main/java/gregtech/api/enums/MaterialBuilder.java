@@ -180,7 +180,7 @@ public class MaterialBuilder {
         this.a = (argb >>> 24) & 0xFF;
         this.r = (argb >>> 16) & 0xFF;
         this.g = (argb >>> 8) & 0xFF;
-        this.b = b & 0xFF;
+        this.b = argb & 0xFF;
         return this;
     }
 
@@ -196,7 +196,7 @@ public class MaterialBuilder {
         this.transparent = false;
         this.r = (rgb >>> 16) & 0xFF;
         this.g = (rgb >>> 8) & 0xFF;
-        this.b = b & 0xFF;
+        this.b = rgb & 0xFF;
         return this;
     }
 
