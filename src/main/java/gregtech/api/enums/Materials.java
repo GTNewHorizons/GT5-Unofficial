@@ -1424,7 +1424,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aAspects);
         this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
         this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
-        this.mElement = aElement;
+        if (aElement != null) {
+            mElement = aElement;
+            mElement.mLinkedMaterials.add(this);
+            if (mElement == Element._NULL) {
+                mChemicalFormula = "Empty";
+            } else {
+                mChemicalFormula = aElement.toString();
+                mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+            }
+        }
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
