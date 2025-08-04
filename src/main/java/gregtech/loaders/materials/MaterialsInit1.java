@@ -171,9 +171,7 @@ public class MaterialsInit1 {
         loadElements();
         loadIsotopes();
         loadWaterLine();
-
-        Materials.Flerovium = loadFlerovium();
-
+        loadGTPP();
         loadRandom();
         loadDontCare();
 
@@ -2820,6 +2818,10 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
+    }
+
+    private static void loadGTPP() {
+        Materials.Flerovium = loadFlerovium();
     }
 
     private static Materials loadFlerovium() {
