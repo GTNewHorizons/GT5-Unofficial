@@ -182,9 +182,9 @@ public class MaterialsInit1 {
         Materials.Adluorite = loadAdluorite();
         Materials.Agate = loadAgate();
         Materials.Alduorite = loadAlduorite();
+        Materials.Amber = loadAmber();
 
         // spotless:off;
-        Materials.Amber                   = new Materials( 514, TextureSet.SET_RUBY              ,   4.0F,    128,  2, 1  |4|8      |64          , 255, 128,   0, 127,   "Amber"                   ,   "Amber"                         ,    5,       3,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeOrange      ,1,  Arrays.asList(new MaterialStack(Carbon, 10), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 16)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.Ammonium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ammonium"                ,   "Ammonium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Amordrine               = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  2, 1|2  |8      |64          , 255, 255, 255,   0,   "Amordrine"               ,   "Amordrine"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Andesite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Andesite"                ,   "Andesite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3350,6 +3350,25 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setTurbineMultipliers(6, 1, 1);
+    }
+
+    private static Materials loadAmber() {
+        return new MaterialBuilder().setName("Amber")
+            .setDefaultLocalName("Amber")
+            .setMetaItemSubID(514)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x7fff8000)
+            .setToolSpeed(0.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setFuelType(5)
+            .setFuelPower(3)
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
