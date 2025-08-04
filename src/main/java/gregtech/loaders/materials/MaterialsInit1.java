@@ -193,9 +193,9 @@ public class MaterialsInit1 {
         Materials.Blizz = loadBlizz();
         Materials.Blueschist = loadBlueschist();
         Materials.Bluestone = loadBluestone();
+        Materials.Bloodstone = loadBloodstone();
 
         // spotless:off;
-        Materials.Bloodstone              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Bloodstone"              ,   "Bloodstone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
         Materials.Blutonium               = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8                   ,   0,   0, 255,   0,   "Blutonium"               ,   "Blutonium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
         Materials.Carmot                  = new Materials( 962, TextureSet.SET_METALLIC          ,  16.0F,    128,  1, 1|2  |8      |64          , 217, 205, 140,   0,   "Carmot"                  ,   "Carmot"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Celenegil               = new Materials( 964, TextureSet.SET_METALLIC          ,  10.0F,   4096,  2, 1|2  |8      |64          , 148, 204,  72,   0,   "Celenegil"               ,   "Celenegil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3434,6 +3434,15 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBlue)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadBloodstone() {
+        return new MaterialBuilder().setName("Bloodstone")
+            .setDefaultLocalName("Bloodstone")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
