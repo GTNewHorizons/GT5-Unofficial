@@ -194,9 +194,9 @@ public class MaterialsInit1 {
         Materials.Blueschist = loadBlueschist();
         Materials.Bluestone = loadBluestone();
         Materials.Bloodstone = loadBloodstone();
+        Materials.Blutonium = loadBlutonium();
 
         // spotless:off;
-        Materials.Blutonium               = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8                   ,   0,   0, 255,   0,   "Blutonium"               ,   "Blutonium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
         Materials.Carmot                  = new Materials( 962, TextureSet.SET_METALLIC          ,  16.0F,    128,  1, 1|2  |8      |64          , 217, 205, 140,   0,   "Carmot"                  ,   "Carmot"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Celenegil               = new Materials( 964, TextureSet.SET_METALLIC          ,  10.0F,   4096,  2, 1|2  |8      |64          , 148, 204,  72,   0,   "Celenegil"               ,   "Celenegil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.CertusQuartz            = new Materials( 516, TextureSet.SET_QUARTZ            ,   5.0F,     32,  1, 1  |4|8      |64          , 210, 210, 230,   0,   "CertusQuartz"            ,   "Certus Quartz"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
@@ -3442,6 +3442,19 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Bloodstone")
             .setColor(Dyes.dyeRed)
             .addDustItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlutonium() {
+        return new MaterialBuilder().setName("Blutonium")
+            .setDefaultLocalName("Blutonium")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeBlue)
+            .setRGB(0x0000ff)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
             .setOreValue(3)
             .constructMaterial();
     }
