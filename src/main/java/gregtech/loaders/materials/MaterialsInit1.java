@@ -195,9 +195,9 @@ public class MaterialsInit1 {
         Materials.Bluestone = loadBluestone();
         Materials.Bloodstone = loadBloodstone();
         Materials.Blutonium = loadBlutonium();
+        Materials.Carmot = loadCarmot();
 
         // spotless:off;
-        Materials.Carmot                  = new Materials( 962, TextureSet.SET_METALLIC          ,  16.0F,    128,  1, 1|2  |8      |64          , 217, 205, 140,   0,   "Carmot"                  ,   "Carmot"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Celenegil               = new Materials( 964, TextureSet.SET_METALLIC          ,  10.0F,   4096,  2, 1|2  |8      |64          , 148, 204,  72,   0,   "Celenegil"               ,   "Celenegil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.CertusQuartz            = new Materials( 516, TextureSet.SET_QUARTZ            ,   5.0F,     32,  1, 1  |4|8      |64          , 210, 210, 230,   0,   "CertusQuartz"            ,   "Certus Quartz"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)));
         Materials.CertusQuartzCharged     = new Materials( 517, TextureSet.SET_QUARTZ            ,   5.0F,     32,  1,       8                   , 221, 221, 236,   0,   "ChargedCertusQuartz"     ,   "Charged Certus Quartz"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
@@ -3456,6 +3456,22 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCarmot() {
+        return new MaterialBuilder().setName("Carmot")
+            .setDefaultLocalName("Carmot")
+            .setMetaItemSubID(962)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xd9cd8c)
+            .setToolSpeed(16.0f)
+            .setDurability(128)
+            .setToolQuality(1)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
             .constructMaterial();
     }
 
