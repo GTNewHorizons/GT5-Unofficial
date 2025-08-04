@@ -11,7 +11,7 @@ public class MaterialBuilder {
     public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
 
     private int metaItemSubID = -1;
-    private TextureSet iconSet;
+    private TextureSet iconSet = TextureSet.SET_NONE;
     private float toolSpeed = 1.0f;
     private int durability = 0;
     private int toolQuality = 0;
