@@ -192,9 +192,9 @@ public class MaterialsInit1 {
         Materials.Black = loadBlack();
         Materials.Blizz = loadBlizz();
         Materials.Blueschist = loadBlueschist();
+        Materials.Bluestone = loadBluestone();
 
         // spotless:off;
-        Materials.Bluestone               = new Materials( 813, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Bluestone"               ,   "Bluestone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        );
         Materials.Bloodstone              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Bloodstone"              ,   "Bloodstone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
         Materials.Blutonium               = new Materials(  -1, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8                   ,   0,   0, 255,   0,   "Blutonium"               ,   "Blutonium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        );
         Materials.Carmot                  = new Materials( 962, TextureSet.SET_METALLIC          ,  16.0F,    128,  1, 1|2  |8      |64          , 217, 205, 140,   0,   "Carmot"                  ,   "Carmot"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3424,6 +3424,16 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeLightBlue)
             .addDustItems()
             .setOreValue(0)
+            .constructMaterial();
+    }
+
+    private static Materials loadBluestone() {
+        return new MaterialBuilder().setName("Bluestone")
+            .setDefaultLocalName("Bluestone")
+            .setMetaItemSubID(813)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBlue)
+            .addDustItems()
             .constructMaterial();
     }
 
