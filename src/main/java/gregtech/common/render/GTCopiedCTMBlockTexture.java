@@ -45,7 +45,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        lightingHelper.setupLightingXPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingXPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.EAST, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -58,7 +59,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingXNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingXNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.WEST, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -70,7 +72,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingYPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingYPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.UP, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -82,7 +85,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingYNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingYNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.DOWN, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -94,7 +98,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aX, aY, aZ, aRenderer);
-        lightingHelper.setupLightingZPos(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingZPos(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.SOUTH, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
@@ -107,7 +112,8 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
         if (worldRenderPass != -1 && !mBlock.canRenderInPass(worldRenderPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
-        lightingHelper.setupLightingZNeg(aBlock, aX, aY, aZ)
+        lightingHelper.reset()
+            .setupLightingZNeg(aBlock, aX, aY, aZ)
             .setupColor(ForgeDirection.NORTH, mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
