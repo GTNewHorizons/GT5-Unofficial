@@ -107,14 +107,12 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
-            double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            long remove = (long) Math.ceil(
-                ElectricItem.manager.charge(
-                    stack,
-                    Math.min(euDiff, getAverageInputVoltage() * getMaxInputAmps()),
-                    item.getTier(stack),
-                    true,
-                    false));
+            final double missingItemCharge = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
+            final double availablePower = getAverageInputVoltage() * getMaxInputAmps();
+            final double availableEnergy = getEUVar();
+            final double charge = Math.min(Math.min(missingItemCharge, availablePower), availableEnergy);
+            long remove = (long) Math
+                .ceil(ElectricItem.manager.charge(stack, charge, item.getTier(stack), true, false));
             setEUVar(getEUVar() - remove);
             if (getEUVar() < 0) {
                 setEUVar(0);
@@ -276,12 +274,65 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         return SoundResource.TECTECH_MACHINES_FX_WHOOUM;
     }
 
+    private boolean isElectricItem(Item item) {
+        // Null means false as well
+        return (item instanceof IElectricItem) || (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem);
+    }
+
+    private boolean canChargeSomething(MTEHatchInputBus inputBus) {
+        for (ItemStack stack : inputBus.mInventory) {
+            if (stack == null || stack.stackSize != 1 || isItemStackFullyCharged(stack)) continue;
+            if (isElectricItem(stack.getItem())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ItemStack findFirstStackedChargeable(MTEHatchInputBus inputBus) {
+        for (ItemStack stack : inputBus.mInventory) {
+            if (stack == null || stack.stackSize <= 1) continue; // Only want stacked items
+            // Fully charged items can't stack, no need to check for that
+            if (isElectricItem(stack.getItem())) {
+                return stack;
+            }
+        }
+        return null;
+    }
+
+    private int findFirstFreeSlot(MTEHatchInputBus inputBus) {
+        for (int i = 0; i < inputBus.mInventory.length; i++) {
+            ItemStack stack = inputBus.mInventory[i];
+            if (stack == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void tryUnstackChargeable(MTEHatchInputBus inputBus) {
+        // Only unstack if we otherwise can't work
+        if (canChargeSomething(inputBus)) return;
+
+        ItemStack stackOriginal = findFirstStackedChargeable(inputBus);
+        int freeSlot = findFirstFreeSlot(inputBus);
+        if (stackOriginal == null || freeSlot == -1) {
+            return; // Nothing to do
+        }
+
+        ItemStack stackCopy = stackOriginal.copy();
+        inputBus.mInventory[freeSlot] = stackCopy;
+        stackOriginal.stackSize--;
+        stackCopy.stackSize = 1;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!this.isAllowedToWork()) return;
         for (MTEHatchInputBus inputBus : mInputBusses) {
             if (inputBus instanceof MTEHatchInputBusME) continue;
+            tryUnstackChargeable(inputBus);
             for (ItemStack stack : inputBus.mInventory) {
                 if (stack == null || stack.stackSize != 1 || isItemStackFullyCharged(stack)) continue;
 

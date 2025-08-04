@@ -4,14 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.SBRContext;
 
 public interface IRenderedBlock {
 
@@ -103,75 +102,14 @@ public interface IRenderedBlock {
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
-            final LightingHelper lightingHelper = new LightingHelper(aRenderer);
-            final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+            final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            GTRendererBlock.renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
-            GTRendererBlock.renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
-            GTRendererBlock.renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
-            GTRendererBlock.renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
-            GTRendererBlock.renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
-            GTRendererBlock.renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                mErrorTexture,
-                false,
-                worldRenderPass);
+            GTRendererBlock.renderNegativeYFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveYFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderNegativeZFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveZFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderNegativeXFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveXFacing(ctx, mErrorTexture, false);
             return true;
         }
     }
