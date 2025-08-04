@@ -1333,7 +1333,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Empty")
             .setElement(Element._NULL)
             .setMetaItemSubID(0)
-            .setIconSet(TextureSet.SET_NONE)
             .setARGB(0xffffffff)
             .setTypes(256) // Only when needed
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
@@ -2969,7 +2968,6 @@ public class MaterialsInit1 {
     private static Materials loadSerpentine() {
         return new MaterialBuilder().setName("Serpentine")
             .setDefaultLocalName("Serpentine")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addMetalItems()
             .addOreItems()
@@ -2980,7 +2978,6 @@ public class MaterialsInit1 {
     private static Materials loadFlux() {
         return new MaterialBuilder().setName("Flux")
             .setDefaultLocalName("Flux")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -2989,7 +2986,6 @@ public class MaterialsInit1 {
     private static Materials loadOsmiumTetroxide() {
         return new MaterialBuilder().setName("OsmiumTetroxide")
             .setDefaultLocalName("Osmium Tetroxide")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -2998,7 +2994,6 @@ public class MaterialsInit1 {
     private static Materials loadRubberTreeSap() {
         return new MaterialBuilder().setName("RubberTreeSap")
             .setDefaultLocalName("Rubber Tree Sap")
-            .setIconSet(TextureSet.SET_NONE)
             .setOreValue(3)
             .constructMaterial();
     }
@@ -3006,7 +3001,6 @@ public class MaterialsInit1 {
     private static Materials loadPhasedIron() {
         return new MaterialBuilder().setName("PhasedIron")
             .setDefaultLocalName("Phased Iron")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addMetalItems()
             .setMeltingPoint(3300)
@@ -3019,7 +3013,6 @@ public class MaterialsInit1 {
     private static Materials loadPhasedGold() {
         return new MaterialBuilder().setName("PhasedGold")
             .setDefaultLocalName("Phased Gold")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addMetalItems()
             .setBlastFurnaceTemp(1800)
@@ -3050,7 +3043,6 @@ public class MaterialsInit1 {
     private static Materials loadTeslatite() {
         return new MaterialBuilder().setName("Teslatite")
             .setDefaultLocalName("Teslatite")
-            .setIconSet(TextureSet.SET_NONE)
             .setRGB(0x3cb4c8)
             .addDustItems()
             .setOreValue(3)
@@ -3060,7 +3052,6 @@ public class MaterialsInit1 {
     private static Materials loadFluix() {
         return new MaterialBuilder().setName("Fluix")
             .setDefaultLocalName("Fluix")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addGemItems()
             .setOreValue(3)
@@ -3070,7 +3061,6 @@ public class MaterialsInit1 {
     private static Materials loadDarkThaumium() {
         return new MaterialBuilder().setName("DarkThaumium")
             .setDefaultLocalName("Dark Thaumium")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addMetalItems()
             .setOreValue(3)
@@ -3080,7 +3070,6 @@ public class MaterialsInit1 {
     private static Materials loadAlfium() {
         return new MaterialBuilder().setName("Alfium")
             .setDefaultLocalName("Alfium")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3089,7 +3078,6 @@ public class MaterialsInit1 {
     private static Materials loadMutation() {
         return new MaterialBuilder().setName("Mutation")
             .setDefaultLocalName("Mutation")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3098,7 +3086,6 @@ public class MaterialsInit1 {
     private static Materials loadAquamarine() {
         return new MaterialBuilder().setName("Aquamarine")
             .setDefaultLocalName("Aquamarine")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addGemItems()
             .setOreValue(3)
@@ -3108,7 +3095,6 @@ public class MaterialsInit1 {
     private static Materials loadEnder() {
         return new MaterialBuilder().setName("Ender")
             .setDefaultLocalName("Ender")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3117,7 +3103,6 @@ public class MaterialsInit1 {
     private static Materials loadSodiumPeroxide() {
         return new MaterialBuilder().setName("SodiumPeroxide")
             .setDefaultLocalName("Sodium Peroxide")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3126,7 +3111,6 @@ public class MaterialsInit1 {
     private static Materials loadIridiumSodiumOxide() {
         return new MaterialBuilder().setName("IridiumSodiumOxide")
             .setDefaultLocalName("Iridium Sodium Oxide")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3198,7 +3182,6 @@ public class MaterialsInit1 {
     private static Materials loadPurpleAlloy() {
         return new MaterialBuilder().setName("PurpleAlloy")
             .setDefaultLocalName("Purple Alloy")
-            .setIconSet(TextureSet.SET_NONE)
             .setRGB(0x64b4ff)
             .setOreValue(3)
             .constructMaterial();
@@ -3207,7 +3190,6 @@ public class MaterialsInit1 {
     private static Materials loadInfusedTeslatite() {
         return new MaterialBuilder().setName("InfusedTeslatite")
             .setDefaultLocalName("Infused Teslatite")
-            .setIconSet(TextureSet.SET_NONE)
             .setRGB(0x64b4ff)
             .setOreValue(3)
             .constructMaterial();
@@ -3238,7 +3220,6 @@ public class MaterialsInit1 {
     private static Materials loadAdamite() {
         return new MaterialBuilder().setName("Adamite")
             .setDefaultLocalName("Adamite")
-            .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes.dyeLightGray)
             .addDustItems()
             .addOreItems()
@@ -3248,7 +3229,6 @@ public class MaterialsInit1 {
     private static Materials loadAdluorite() {
         return new MaterialBuilder().setName("Adluorite")
             .setDefaultLocalName("Adluorite")
-            .setIconSet(TextureSet.SET_NONE)
             .setColor(Dyes.dyeLightBlue)
             .addDustItems()
             .addMetalItems()
@@ -3261,7 +3241,6 @@ public class MaterialsInit1 {
     private static Materials loadAgate() {
         return new MaterialBuilder().setName("Agate")
             .setDefaultLocalName("Agate")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
@@ -3311,7 +3290,6 @@ public class MaterialsInit1 {
     private static Materials loadAmmonium() {
         return new MaterialBuilder().setName("Ammonium")
             .setDefaultLocalName("Ammonium")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .constructMaterial();
     }
@@ -3319,7 +3297,6 @@ public class MaterialsInit1 {
     private static Materials loadAmordrine() {
         return new MaterialBuilder().setName("Amordrine")
             .setDefaultLocalName("Amordrine")
-            .setIconSet(TextureSet.SET_NONE)
             .setToolSpeed(0.0f)
             .setDurability(64)
             .setToolQuality(2)
@@ -3333,7 +3310,6 @@ public class MaterialsInit1 {
     private static Materials loadAndesite() {
         return new MaterialBuilder().setName("Andesite")
             .setDefaultLocalName("Andesite")
-            .setIconSet(TextureSet.SET_NONE)
             .addDustItems()
             .addOreItems()
             .constructMaterial();
