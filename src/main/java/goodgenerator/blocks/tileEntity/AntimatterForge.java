@@ -11,9 +11,12 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -106,7 +109,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
-    private final boolean canRender = false;
+    private boolean canRender = true;
 
     private final List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -168,6 +171,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         tt.addMachineType("Antimatter Forge, SSASS")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
+            .addInfo("Use screwdriver to disable rendering")
             .addInfo(
                 "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
                     + " + ("
@@ -560,8 +564,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         this.guiAntimatterChange = ratioLosses + antimatterChange;
         this.guiAntimatterAmount = calculateContainedAntimatter();
 
-        updateAntimatterSize(this.guiAntimatterAmount);
-        setProtoRender(true);
+        if (this.canRender) {
+            updateAntimatterSize(this.guiAntimatterAmount);
+            setProtoRender(true);
+        }
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
@@ -722,7 +728,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
                 + " "
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -855,8 +861,32 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         destroyAntimatterRender();
     }
 
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("canRender", this.canRender);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("canRender")) {
+            this.canRender = aNBT.getBoolean("canRender");
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        this.canRender = !this.canRender;
+        if (!this.canRender) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));
+            destroyAntimatterRender();
+        } else aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.enableRender"));
+    }
+
     public void updateAntimatterSize(float antimatterAmount) {
-        if (antimatterAmount <= 0) {
+        if (antimatterAmount <= 0 || !this.canRender) {
             destroyAntimatterRender();
             return;
         }
@@ -865,6 +895,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (render == null) {
             createAntimatterRender();
             render = getAntimatterRender();
+            if (render == null) return;
         }
 
         float size = (float) Math.pow(antimatterAmount, 0.17);
@@ -872,6 +903,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void setProtoRender(boolean flag) {
+        if (!this.canRender) return;
         TileAntimatter render = getAntimatterRender();
         if (render == null) return;
         render.setProtomatterRender(flag);
@@ -908,7 +940,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        return (TileAntimatter) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TileAntimatter antimatterRender) return antimatterRender;
+        return null;
     }
 
     public void destroyAntimatterRender() {
@@ -922,7 +955,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        world.setBlock(x, y, z, Blocks.air);
+        if (world.getBlock(x, y, z)
+            .equals(Loaders.antimatterRenderBlock)) {
+            world.setBlock(x, y, z, Blocks.air);
+        }
     }
 
     public void createAntimatterRender() {
@@ -936,7 +972,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        world.setBlock(x, y, z, Blocks.air);
-        world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
+        if (world.isAirBlock(x, y, z)) {
+            world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
+        }
     }
 }
