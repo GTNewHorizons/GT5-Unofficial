@@ -183,9 +183,9 @@ public class MaterialsInit1 {
         Materials.Agate = loadAgate();
         Materials.Alduorite = loadAlduorite();
         Materials.Amber = loadAmber();
+        Materials.Ammonium = loadAmmonium();
 
         // spotless:off;
-        Materials.Ammonium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ammonium"                ,   "Ammonium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Amordrine               = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  2, 1|2  |8      |64          , 255, 255, 255,   0,   "Amordrine"               ,   "Amordrine"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Andesite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Andesite"                ,   "Andesite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Angmallen               = new Materials( 958, TextureSet.SET_METALLIC          ,  10.0F,    128,  2, 1|2  |8      |64          , 215, 225, 138,   0,   "Angmallen"               ,   "Angmallen"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3368,6 +3368,16 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .setFuelType(5)
             .setFuelPower(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadAmmonium() {
+        return new MaterialBuilder().setName("Ammonium")
+            .setDefaultLocalName("Ammonium")
+            .setIconSet(TextureSet.SET_NONE)
+            .setColor(Dyes._NULL)
+            .setRGB(0xffffff)
+            .addDustItems()
             .constructMaterial();
     }
 
