@@ -465,7 +465,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[iX][1][1];
             brightness = mixedBrightness;
 
-            final float ratio = (float) (1.0F - renderer.renderMinX);
+            final double ratio = 1.0D - renderer.renderMinX;
             final float aoLightValue = AOLV[0][1][1];
 
             renderer.aoBrightnessXYNN = MBFB[iX][0][1];
@@ -598,6 +598,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[iX][1][1];
             brightness = mixedBrightness;
 
+            final double ratio = renderer.renderMaxX;
             final float aoLightValue = AOLV[2][1][1];
 
             renderer.aoBrightnessXYPN = MBFB[iX][0][1];
@@ -608,14 +609,14 @@ public class SBRContext {
             renderer.aoBrightnessXYZPNP = MBFB[iX][0][2];
             renderer.aoBrightnessXYZPPN = MBFB[iX][2][0];
             renderer.aoBrightnessXYZPPP = MBFB[iX][2][2];
-            renderer.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[1][0][1], renderer.renderMaxX);
-            renderer.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[1][1][0], renderer.renderMaxX);
-            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[1][1][2], renderer.renderMaxX);
-            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[1][2][1], renderer.renderMaxX);
-            renderer.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[1][0][0], renderer.renderMaxX);
-            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[1][0][2], renderer.renderMaxX);
-            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[1][2][0], renderer.renderMaxX);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[1][2][2], renderer.renderMaxX);
+            renderer.aoLightValueScratchXYPN = getMixedAo(AOLV[2][0][1], AOLV[1][0][1], ratio);
+            renderer.aoLightValueScratchXZPN = getMixedAo(AOLV[2][1][0], AOLV[1][1][0], ratio);
+            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[1][1][2], ratio);
+            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[1][2][1], ratio);
+            renderer.aoLightValueScratchXYZPNN = getMixedAo(AOLV[2][0][0], AOLV[1][0][0], ratio);
+            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[1][0][2], ratio);
+            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[1][2][0], ratio);
+            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[1][2][2], ratio);
 
             final int brightnessMixedXYZPPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXZPP,
@@ -730,7 +731,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
 
-            final float ratio = (float) (1.0F - renderer.renderMinY);
+            final double ratio = 1.0D - renderer.renderMinY;
             final float aoLightValue = AOLV[1][0][1];
 
             renderer.aoBrightnessXYNN = MBFB[0][iY][1];
@@ -863,6 +864,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[1][iY][1];
             brightness = mixedBrightness;
 
+            final double ratio = renderer.renderMaxY;
             final float aoLightValue = AOLV[1][2][1];
 
             renderer.aoBrightnessXYNP = MBFB[0][iY][1];
@@ -873,14 +875,14 @@ public class SBRContext {
             renderer.aoBrightnessXYZPPN = MBFB[2][iY][0];
             renderer.aoBrightnessXYZNPP = MBFB[0][iY][2];
             renderer.aoBrightnessXYZPPP = MBFB[2][iY][2];
-            renderer.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[0][1][1], renderer.renderMaxY);
-            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[2][1][1], renderer.renderMaxY);
-            renderer.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][1][0], renderer.renderMaxY);
-            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][1][2], renderer.renderMaxY);
-            renderer.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][1][0], renderer.renderMaxY);
-            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][1][0], renderer.renderMaxY);
-            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][1][2], renderer.renderMaxY);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][1][2], renderer.renderMaxY);
+            renderer.aoLightValueScratchXYNP = getMixedAo(AOLV[0][2][1], AOLV[0][1][1], ratio);
+            renderer.aoLightValueScratchXYPP = getMixedAo(AOLV[2][2][1], AOLV[2][1][1], ratio);
+            renderer.aoLightValueScratchYZPN = getMixedAo(AOLV[1][2][0], AOLV[1][1][0], ratio);
+            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][1][2], ratio);
+            renderer.aoLightValueScratchXYZNPN = getMixedAo(AOLV[0][2][0], AOLV[0][1][0], ratio);
+            renderer.aoLightValueScratchXYZPPN = getMixedAo(AOLV[2][2][0], AOLV[2][1][0], ratio);
+            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][1][2], ratio);
+            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][1][2], ratio);
 
             final int brightnessMixedXYZPPP = renderer.getAoBrightness(
                 renderer.aoBrightnessYZPP,
@@ -995,7 +997,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
 
-            final float ratio = (float) (1.0F - renderer.renderMinZ);
+            final double ratio = 1.0D - renderer.renderMinZ;
             final float aoLightValue = AOLV[1][1][0];
 
             renderer.aoBrightnessXZNN = MBFB[0][1][iZ];
@@ -1128,6 +1130,7 @@ public class SBRContext {
             final int mixedBrightness = MBFB[1][1][iZ];
             brightness = mixedBrightness;
 
+            final double ratio = renderer.renderMaxZ;
             final float aoLightValue = AOLV[1][1][2];
 
             renderer.aoBrightnessXZNP = MBFB[0][1][iZ];
@@ -1138,14 +1141,14 @@ public class SBRContext {
             renderer.aoBrightnessXYZNPP = MBFB[0][2][iZ];
             renderer.aoBrightnessXYZPNP = MBFB[2][0][iZ];
             renderer.aoBrightnessXYZPPP = MBFB[2][2][iZ];
-            renderer.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[0][1][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[2][1][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][0][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][2][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][0][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][2][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][0][1], renderer.renderMaxZ);
-            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][2][1], renderer.renderMaxZ);
+            renderer.aoLightValueScratchXZNP = getMixedAo(AOLV[0][1][2], AOLV[0][1][1], ratio);
+            renderer.aoLightValueScratchXZPP = getMixedAo(AOLV[2][1][2], AOLV[2][1][1], ratio);
+            renderer.aoLightValueScratchYZNP = getMixedAo(AOLV[1][0][2], AOLV[1][0][1], ratio);
+            renderer.aoLightValueScratchYZPP = getMixedAo(AOLV[1][2][2], AOLV[1][2][1], ratio);
+            renderer.aoLightValueScratchXYZNNP = getMixedAo(AOLV[0][0][2], AOLV[0][0][1], ratio);
+            renderer.aoLightValueScratchXYZNPP = getMixedAo(AOLV[0][2][2], AOLV[0][2][1], ratio);
+            renderer.aoLightValueScratchXYZPNP = getMixedAo(AOLV[2][0][2], AOLV[2][0][1], ratio);
+            renderer.aoLightValueScratchXYZPPP = getMixedAo(AOLV[2][2][2], AOLV[2][2][1], ratio);
 
             final int brightnessMixedXYZNPP = renderer.getAoBrightness(
                 renderer.aoBrightnessXZNP,
