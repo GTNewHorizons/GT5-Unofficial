@@ -186,9 +186,9 @@ public class MaterialsInit1 {
         Materials.Andesite = loadAndesite();
         Materials.Angmallen = loadAngmallen();
         Materials.Ardite = loadArdite();
+        Materials.Aredrite = loadAredrite();
 
         // spotless:off;
-        Materials.Aredrite                = new Materials(  -1, TextureSet.SET_NONE              ,   6.0F,     64,  2, 1|2  |8      |64          , 255,   0,   0,   0,   "Aredrite"                ,   "Aredrite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
         Materials.Atlarus                 = new Materials( 965, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 255, 255, 255,   0,   "Atlarus"                 ,   "Atlarus"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Bitumen                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Bitumen"                 ,   "Bitumen"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Black                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         ,   0,   0,   0,   0,   "Black"                   ,   "Black"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
@@ -3355,6 +3355,21 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setHasCorrespondingPlasma(true);
+    }
+
+    private static Materials loadAredrite() {
+        return new MaterialBuilder().setName("Aredrite")
+            .setDefaultLocalName("Aredrite")
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xff0000)
+            .setToolSpeed(0.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
