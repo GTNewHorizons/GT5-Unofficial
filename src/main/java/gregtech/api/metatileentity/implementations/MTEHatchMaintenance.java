@@ -173,7 +173,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
-                } else if (ItemList.Duct_Tape.isStackEqual(tStack)) {
+                } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
                     mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
                     getBaseMetaTileEntity().setActive(false);
                     if (--tStack.stackSize == 0) {
