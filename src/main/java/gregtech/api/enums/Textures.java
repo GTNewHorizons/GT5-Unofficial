@@ -612,9 +612,11 @@ public class Textures {
         OVERLAY_INPUT_HATCH_2x2,
         FLUID_OUT_SIGN,
         FLUID_IN_SIGN,
+        FLUID_VOID_SIGN,
         FLUID_STEAM_IN_SIGN,
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
+        ITEM_VOID_SIGN,
         OVERLAY_MUFFLER,
 
         OVERLAY_PIPE_COLOR_BLACK,
@@ -2015,6 +2017,18 @@ public class Textures {
             @Override
             public ResourceLocation getTextureFile() {
                 return TextureMap.locationBlocksTexture;
+            }
+        }
+
+        public static class CustomAlphaIcon extends CustomIcon {
+
+            public CustomAlphaIcon(String aIconName) {
+                super(aIconName);
+            }
+
+            @Override
+            public int getRenderIconPass() {
+                return 1;
             }
         }
     }

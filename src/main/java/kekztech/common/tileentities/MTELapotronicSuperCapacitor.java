@@ -18,8 +18,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -830,12 +827,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getCapacityCache() {
-        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
+        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(capacity)
             : numberFormat.format(capacity);
     }
 
     private String getStoredCache() {
-        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(stored)
+        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? GTUtility.scientificFormat(stored)
             : numberFormat.format(stored);
     }
 
@@ -844,7 +841,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getWirelessStoredCache() {
-        return standardFormat.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
+        return GTUtility.scientificFormat(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
     }
 
     private boolean isActiveCache() {
@@ -852,7 +849,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getPassiveDischargeAmountCache() {
-        return passiveDischargeAmount > 100_000_000_000L ? standardFormat.format(passiveDischargeAmount)
+        return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount)
             : numberFormat.format(passiveDischargeAmount);
     }
 
@@ -972,14 +969,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
-    }
-
-    protected static DecimalFormat standardFormat;
-
-    static {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
     }
 
     protected String capacityCache = "";
@@ -1140,21 +1129,27 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     this::getPassiveDischargeAmountCache,
                     val -> passiveDischargeAmountCache = val))
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocalFormatted(
-                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
-                        EnumChatFormatting.GREEN + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
-                            : numberFormat.format(avgInCache)) + EnumChatFormatting.WHITE))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
+                            EnumChatFormatting.GREEN
+                                + (avgInCache > 100_000_000_000L ? GTUtility.scientificFormat(avgInCache)
+                                    : numberFormat.format(avgInCache))
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocalFormatted(
-                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
-                        EnumChatFormatting.RED + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
-                            : numberFormat.format(avgOutCache)) + EnumChatFormatting.WHITE))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
+                            EnumChatFormatting.RED
+                                + (avgOutCache > 100_000_000_000L ? GTUtility.scientificFormat(avgOutCache)
+                                    : numberFormat.format(avgOutCache))
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))

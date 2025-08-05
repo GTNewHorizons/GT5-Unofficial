@@ -52,6 +52,11 @@ public interface IVoidable {
     List<ItemStack> getItemOutputSlots(ItemStack[] toOutput);
 
     /**
+     * @return List of items that can be voided.
+     */
+    List<ItemStack> getVoidOutputSlots();
+
+    /**
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
