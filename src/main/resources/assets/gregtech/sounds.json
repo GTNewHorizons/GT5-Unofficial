@@ -381,5 +381,23 @@
         "stream": false
       }
     ]
+  },
+  "maintenance.Toolbox": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "Toolbox",
+        "stream": false
+      }
+    ]
+  },
+  "maintenance.DuctTape": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "DuctTape",
+        "stream": false
+      }
+    ]
   }
 }
