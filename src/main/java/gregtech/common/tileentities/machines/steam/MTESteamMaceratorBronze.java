@@ -80,6 +80,7 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public int checkRecipe() {
         GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+            .caching(false)
             .items(getAllInputs())
             .voltage(TierEU.LV)
             .cachedRecipe(mLastRecipe)

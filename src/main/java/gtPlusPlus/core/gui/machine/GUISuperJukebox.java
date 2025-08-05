@@ -44,9 +44,9 @@ public class GUISuperJukebox extends GUIBaseTileEntity {
 
         if (a && b) {
             this.fontRendererObj.drawString("[X]  [X]", 72, 74, 4210752);
-        } else if (a && !b) {
+        } else if (a) {
             this.fontRendererObj.drawString("[X]  [ ]", 72, 74, 4210752);
-        } else if (!a && b) {
+        } else if (b) {
             this.fontRendererObj.drawString("[ ]  [X]", 72, 74, 4210752);
         } else {
             this.fontRendererObj.drawString("[ ]  [ ]", 72, 74, 4210752);

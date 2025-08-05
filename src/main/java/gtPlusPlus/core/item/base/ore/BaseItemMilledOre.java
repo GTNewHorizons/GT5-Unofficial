@@ -64,11 +64,43 @@ public class BaseItemMilledOre extends BaseOreComponent {
             .addTo(millingRecipes);
     }
 
+    public BaseItemMilledOre(final Material material, int materialEU, ItemStack custom) {
+        super(material, BaseOreComponent.ComponentTypes.MILLED);
+
+        // if ItemStack supplied as custom, will generate recipe with that itemstack as input
+
+        ItemStack millingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
+        ItemStack millingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(10), custom, millingBall_Alumina)
+            .itemOutputs(material.getMilled(32))
+            .duration(1 * MINUTES)
+            .eut(materialEU)
+            .addTo(millingRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(11), custom, millingBall_Soapstone)
+            .itemOutputs(material.getMilled(16))
+            .duration(1 * MINUTES)
+            .eut(materialEU)
+            .addTo(millingRecipes);
+
+    }
+
     public static Item generate(Materials aMat, int aMaterialEU) {
         return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU);
     }
 
+    public static Item generate(Materials aMat, int aMaterialEU, ItemStack custom) {
+        return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU, custom);
+    }
+
     public static Item generate(Material aMat, int aMaterialEU) {
         return new BaseItemMilledOre(aMat, aMaterialEU);
+    }
+
+    public static Item generate(Material aMat, int aMaterialEU, ItemStack custom) {
+        return new BaseItemMilledOre(aMat, aMaterialEU, custom);
     }
 }

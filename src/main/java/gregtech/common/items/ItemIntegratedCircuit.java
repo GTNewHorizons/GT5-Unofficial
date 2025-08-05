@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static ggfab.GGItemList.One_Use_craftingToolScrewdriver;
+import static ggfab.GGItemList.SingleUseScrewdriver;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -358,7 +358,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 if (id == screwdriverOreId) {
                     if (doDamage) {
                         if (potentialStack.getItem()
-                            .equals(One_Use_craftingToolScrewdriver.getItem())) {
+                            .equals(SingleUseScrewdriver.getItem())) {
                             potentialStack.stackSize -= 1;
                         } else {
                             potentialStack = potentialStack.getItem()

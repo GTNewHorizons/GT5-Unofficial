@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -9,9 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTRenderingWorld;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -60,8 +57,8 @@ public class BlockCasings4 extends BlockCasingsAbstract {
         register(14, ItemList.Casing_MiningOsmiridium, "Mining Osmiridium Casing");
         register(15, ItemList.Casing_Firebricks, "Firebricks");
 
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 6, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 8, true);
     }
 
     @Override
@@ -97,114 +94,13 @@ public class BlockCasings4 extends BlockCasingsAbstract {
         };
     }
 
-    @Deprecated
-    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
-        return switch (meta) {
-            case 9 -> active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
-                    : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
-            case 10 -> active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
-                : hasTurbine ? Textures.BlockIcons.TURBINE1[iconIndex].getIcon()
-                    : Textures.BlockIcons.TURBINE_EMPTY1[iconIndex].getIcon();
-            case 11 -> active ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
-                : hasTurbine ? Textures.BlockIcons.TURBINE2[iconIndex].getIcon()
-                    : Textures.BlockIcons.TURBINE_EMPTY2[iconIndex].getIcon();
-            case 12 -> active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
-                : hasTurbine ? Textures.BlockIcons.TURBINE3[iconIndex].getIcon()
-                    : Textures.BlockIcons.TURBINE_EMPTY3[iconIndex].getIcon();
-            default -> throw new IllegalStateException("Unexpected value: " + meta);
-        };
-    }
-
-    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
-        if (tTile.getMetaTileEntity() instanceof MTELargeTurbine turbine && tTile.getFrontFacing()
-            .ordinal() == ordinalSide) {
-            if (turbine.isNewStyleRendering()) return 0;
-            if (tTile.isActive()) return 1;
-            return turbine.hasTurbine() ? 2 : 3;
-        }
-        return 0;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         aWorld = GTRenderingWorld.getInstance(aWorld);
         int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        if (tMeta != 6 && tMeta != 8 && tMeta != 9 && tMeta != 10 && tMeta != 11 && tMeta != 12
-            || !mConnectedMachineTextures) {
+        if (tMeta != 6 && tMeta != 8 || !mConnectedMachineTextures) {
             return getIcon(ordinalSide, tMeta);
-        }
-        // noinspection ConstantValue // tMeta < 13 should stay because mConnectedMachineTextures can be changed
-        if (tMeta > 8 && tMeta < 13) {
-            int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
-            switch (ordinalSide / 2) {
-                case 0 -> {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0) continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(
-                                aWorld,
-                                xCoord + j,
-                                yCoord,
-                                zCoord + i,
-                                ordinalSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1, tState == 2);
-                            }
-                        }
-                    }
-                }
-                case 1 -> {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0) continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(
-                                aWorld,
-                                xCoord + j,
-                                yCoord + i,
-                                zCoord,
-                                ordinalSide)) != 0) {
-                                return getTurbineCasing(
-                                    tMeta,
-                                    4 + i * 3 - j * tInvertLeftRightMod,
-                                    tState == 1,
-                                    tState == 2);
-                            }
-                        }
-                    }
-                }
-                case 2 -> {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0) continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(
-                                aWorld,
-                                xCoord,
-                                yCoord + i,
-                                zCoord + j,
-                                ordinalSide)) != 0) {
-                                return getTurbineCasing(
-                                    tMeta,
-                                    4 + i * 3 + j * tInvertLeftRightMod,
-                                    tState == 1,
-                                    tState == 2);
-                            }
-                        }
-                    }
-                }
-            }
-            return switch (tMeta) {
-                case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
-                case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
-                case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
-                case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
-                default -> throw new IllegalStateException("Unexpected value: " + tMeta);
-            };
         }
         int tStartIndex = tMeta == 6 ? 1 : 13;
         int tIndexIntoMapping = 0;

@@ -4,14 +4,13 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.enums.GTValues.GT;
-import static gregtech.api.enums.GTValues.L;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -21,9 +20,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -46,7 +43,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -84,12 +80,14 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -116,6 +114,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -171,7 +170,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.pollution.Pollution;
@@ -179,6 +177,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.IC2Potion;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
@@ -232,6 +231,10 @@ public class GTUtility {
         sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
     }
 
+    public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
+        return sFilledContainerToData;
+    }
+
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
     }
@@ -239,17 +242,6 @@ public class GTUtility {
     public static int safeInt(long number) {
         return number > V[V.length - 1] ? safeInt(V[V.length - 1], 1)
             : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
-    }
-
-    public static Field getPublicField(Object aObject, String aField) {
-        Field rField = null;
-        try {
-            rField = aObject.getClass()
-                .getDeclaredField(aField);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rField;
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -264,38 +256,15 @@ public class GTUtility {
         return rField;
     }
 
-    public static Field getField(Class<?> aObject, String aField) {
-        Field rField = null;
+    public static Field getField(Class<?> clazz, String fieldName) {
         try {
-            rField = aObject.getDeclaredField(aField);
-            rField.setAccessible(true);
+            final Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field;
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
-        return rField;
-    }
-
-    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
-    }
-
-    public static Method getMethod(Object aObject, String aMethod, Class<?>... aParameterTypes) {
-        Method rMethod = null;
-        try {
-            rMethod = aObject.getClass()
-                .getMethod(aMethod, aParameterTypes);
-            rMethod.setAccessible(true);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rMethod;
+        return null;
     }
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
@@ -328,71 +297,6 @@ public class GTUtility {
         return null;
     }
 
-    public static Object callPublicMethod(Object aObject, String aMethod, Object... aParameters) {
-        return callMethod(aObject, aMethod, false, false, true, aParameters);
-    }
-
-    public static Object callPrivateMethod(Object aObject, String aMethod, Object... aParameters) {
-        return callMethod(aObject, aMethod, true, false, true, aParameters);
-    }
-
-    public static Object callMethod(Object aObject, String aMethod, boolean aPrivate, boolean aUseUpperCasedDataTypes,
-        boolean aLogErrors, Object... aParameters) {
-        try {
-            Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
-            for (byte i = 0; i < aParameters.length; i++) {
-                if (aParameters[i] instanceof Class) {
-                    tParameterTypes[i] = (Class<?>) aParameters[i];
-                    aParameters[i] = null;
-                } else {
-                    tParameterTypes[i] = aParameters[i].getClass();
-                }
-                if (!aUseUpperCasedDataTypes) {
-                    if (tParameterTypes[i] == Boolean.class) tParameterTypes[i] = boolean.class;
-                    else if (tParameterTypes[i] == Byte.class) tParameterTypes[i] = byte.class;
-                    else if (tParameterTypes[i] == Short.class) tParameterTypes[i] = short.class;
-                    else if (tParameterTypes[i] == Integer.class) tParameterTypes[i] = int.class;
-                    else if (tParameterTypes[i] == Long.class) tParameterTypes[i] = long.class;
-                    else if (tParameterTypes[i] == Float.class) tParameterTypes[i] = float.class;
-                    else if (tParameterTypes[i] == Double.class) tParameterTypes[i] = double.class;
-                }
-            }
-
-            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
-                : aObject.getClass()
-                    .getMethod(aMethod, tParameterTypes);
-            if (aPrivate) tMethod.setAccessible(true);
-            return tMethod.invoke(aObject, aParameters);
-        } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
-        }
-        return null;
-    }
-
-    public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
-        boolean aLogErrors, Object... aParameters) {
-        if (aConstructorIndex < 0) {
-            try {
-                for (Constructor<?> tConstructor : aClass.getConstructors()) {
-                    try {
-                        return tConstructor.newInstance(aParameters);
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
-                    }
-                }
-            } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
-            }
-        } else {
-            try {
-                return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
-            } catch (Throwable e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
-            }
-        }
-        return aReplacementObject;
-    }
-
     public static String capitalizeString(String s) {
         if (s != null && !s.isEmpty()) {
             return s.substring(0, 1)
@@ -411,24 +315,15 @@ public class GTUtility {
                     .lastIndexOf(".") + 1);
     }
 
-    public static boolean getFullInvisibility(EntityPlayer aPlayer) {
-        try {
-            if (aPlayer.isInvisible()) {
-                for (int i = 0; i < 4; i++) {
-                    if (aPlayer.inventory.armorInventory[i] != null) {
-                        if (aPlayer.inventory.armorInventory[i].getItem() instanceof ItemEnergyArmor) {
-                            if ((((ItemEnergyArmor) aPlayer.inventory.armorInventory[i].getItem()).mSpecials & 512)
-                                != 0) {
-                                if (GTModHandler.canUseElectricItem(aPlayer.inventory.armorInventory[i], 10000)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+    public static boolean getFullInvisibility(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        for (ItemStack stack : player.inventory.armorInventory) {
+            if (stack == null || !(stack.getItem() instanceof ItemEnergyArmor)) continue;
+            if ((((ItemEnergyArmor) stack.getItem()).mSpecials & 512) != 0) {
+                if (GTModHandler.canUseElectricItem(stack, 10000)) {
+                    return true;
                 }
             }
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
         }
         return false;
     }
@@ -509,21 +404,29 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        byte tier = getTier(voltage);
-        if (tier < 0) {
-            return "";
-        } else if (tier == 0) {
-            return " (" + GTValues.VN[1] + ")";
-        } else if (tier >= GTValues.VN.length - 1) {
-            return " (MAX+)";
-        }
-        return " (" + GTValues.VN[tier] + ")";
+        return "(" + GTValues.VN[getTier(voltage)] + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(String message) {
+        sendServerMessage(new ChatComponentText(message));
+    }
+
+    /**
+     * Send a message to all players on the server
+     */
+    public static void sendServerMessage(IChatComponent chatComponent) {
+        MinecraftServer.getServer()
+            .getConfigurationManager()
+            .sendChatMsg(chatComponent);
     }
 
     public static void checkAvailabilities() {
@@ -594,8 +497,7 @@ public class GTUtility {
         ForgeDirection fromSide, ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter,
         byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce,
         boolean dropItem) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMaxMoveAtOnce <= 0
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -801,8 +703,7 @@ public class GTUtility {
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, int aMaxStackTransfer,
         boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce
@@ -1232,8 +1133,7 @@ public class GTUtility {
     private static byte moveOneItemStack(IInventory fromInventory, Object toObject, ForgeDirection fromSide,
         ForgeDirection putSide, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize,
         byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, boolean aDoCheckChests) {
-        if (fromInventory == null || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (fromInventory == null || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -1424,8 +1324,7 @@ public class GTUtility {
     public static byte moveOneItemStackIntoSlot(Object fromTileEntity, Object toTileEntity, ForgeDirection fromSide,
         int putSlot, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize,
         byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (!(fromTileEntity instanceof IInventory fromInv) || aMaxTargetStackSize <= 0
-            || aMinTargetStackSize <= 0
+        if (!(fromTileEntity instanceof IInventory fromInv) || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
             || aMinMoveAtOnce > aMaxMoveAtOnce) return 0;
@@ -1730,8 +1629,8 @@ public class GTUtility {
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))
                 && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                    || Items.feather.getDamage(aStack1) == W
-                    || Items.feather.getDamage(aStack2) == W);
+                    || Items.feather.getDamage(aStack1) == WILDCARD
+                    || Items.feather.getDamage(aStack2) == WILDCARD);
         }
         return false;
     }
@@ -1755,8 +1654,8 @@ public class GTUtility {
         return aStack1 != null && aStack2 != null
             && aStack1.getItem() == aStack2.getItem()
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                || Items.feather.getDamage(aStack1) == W
-                || Items.feather.getDamage(aStack2) == W)
+                || Items.feather.getDamage(aStack1) == WILDCARD
+                || Items.feather.getDamage(aStack2) == WILDCARD)
             && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))));
@@ -2187,16 +2086,16 @@ public class GTUtility {
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength) {
         if (aSoundName == null) return false;
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(SoundResource sound, int aTimeUntilNextSound, float aSoundStrength) {
-        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound,
         float aSoundStrength) {
-        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GTMod.GT.getThePlayer());
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
@@ -2267,10 +2166,10 @@ public class GTUtility {
         float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
         if (!FMLCommonHandler.instance()
             .getEffectiveSide()
-            .isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote) return false;
+            .isClient() || GTMod.GT.getThePlayer() == null || !GTMod.GT.getThePlayer().worldObj.isRemote) return false;
         if (GregTechAPI.sMultiThreadedSounds) new Thread(
             new RunnableSound(
-                GT.getThePlayer().worldObj,
+                GTMod.GT.getThePlayer().worldObj,
                 aX,
                 aY,
                 aZ,
@@ -2280,7 +2179,7 @@ public class GTUtility {
                 aSoundModulation),
             "Sound Effect").start();
         else new RunnableSound(
-            GT.getThePlayer().worldObj,
+            GTMod.GT.getThePlayer().worldObj,
             aX,
             aY,
             aZ,
@@ -2324,7 +2223,7 @@ public class GTUtility {
 
     public static int stackToWildcard(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (W << 16);
+        return Item.getIdFromItem(aStack.getItem()) | (WILDCARD << 16);
     }
 
     public static ItemStack intToStack(int aStack) {
@@ -2332,14 +2231,6 @@ public class GTUtility {
         Item tItem = Item.getItemById(tID);
         if (tItem != null) return new ItemStack(tItem, 1, tMeta);
         return null;
-    }
-
-    public static Integer[] stacksToIntegerArray(ItemStack... aStacks) {
-        Integer[] rArray = new Integer[aStacks.length];
-        for (int i = 0; i < rArray.length; i++) {
-            rArray[i] = stackToInt(aStacks[i]);
-        }
-        return rArray;
     }
 
     public static int[] stacksToIntArray(ItemStack... aStacks) {
@@ -2365,28 +2256,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = 0; i < rList.size(); i++) if (rList.get(i) == null) rList.remove(i--);
-        return rList;
-    }
-
-    /**
-     * Note: use {@link ArrayExt#withoutTrailingNulls(Object[], IntFunction)} if you want an array as a result.
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> getArrayListWithoutTrailingNulls(T... aArray) {
-        if (aArray == null) return new ArrayList<>();
-        ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
-        for (int i = rList.size() - 1; i >= 0 && rList.get(i) == null;) rList.remove(i--);
-        return rList;
-    }
-
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2401,9 +2270,17 @@ public class GTUtility {
             .isEmpty();
     }
 
+    public static boolean isStringValid(String aString) {
+        return aString != null && !aString.isEmpty();
+    }
+
     public static boolean isStringInvalid(Object aString) {
         return aString == null || aString.toString()
             .isEmpty();
+    }
+
+    public static boolean isStringInvalid(String aString) {
+        return aString == null || aString.isEmpty();
     }
 
     @Deprecated
@@ -2646,7 +2523,9 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null
+            && !aEntity.isImmuneToFire()
+            && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
@@ -2676,7 +2555,7 @@ public class GTUtility {
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
             && !HazardProtection.isWearingFullRadioHazmat(aEntity)) {
-            PotionEffect tEffect = null;
+            PotionEffect tEffect;
             aEntity.addPotionEffect(
                 new PotionEffect(
                     Potion.moveSlowdown.id,
@@ -2718,10 +2597,10 @@ public class GTUtility {
                     Math.max(0, (5 * aLevel) / 7)));
             aEntity.addPotionEffect(
                 new PotionEffect(
-                    24 /* IC2 Radiation */,
+                    IC2Potion.radiation.id,
                     aLevel * 180 * aAmountOfItems + Math.max(
                         0,
-                        ((tEffect = aEntity.getActivePotionEffect(Potion.potionTypes[24])) == null ? 0
+                        ((tEffect = aEntity.getActivePotionEffect(IC2Potion.radiation)) == null ? 0
                             : tEffect.getDuration())),
                     Math.max(0, (5 * aLevel) / 7)));
             return true;
@@ -2772,8 +2651,8 @@ public class GTUtility {
         return null;
     }
 
-    @Nullable
-    public static ItemStack copyOrNull(@Nullable ItemStack stack) {
+    @Contract("null -> null")
+    public static ItemStack copyOrNull(ItemStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -2801,6 +2680,7 @@ public class GTUtility {
         return copyAmount((int) aAmount, aStack);
     }
 
+    @Contract("_, null -> null")
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -2811,6 +2691,7 @@ public class GTUtility {
         return rStack;
     }
 
+    @Contract("_, null -> null")
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -2906,6 +2787,35 @@ public class GTUtility {
         return t;
     }
 
+    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+        NBTTagList list = new NBTTagList();
+
+        if (stacks != null) {
+            for (ItemStack stack : stacks) {
+                if (isStackInvalid(stack)) continue;
+
+                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
+    }
+
     /**
      * Loads an FluidStack properly.
      */
@@ -2944,7 +2854,7 @@ public class GTUtility {
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
-        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W));
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
     /**
@@ -3014,7 +2924,7 @@ public class GTUtility {
      * Translates a Material Amount into an Amount of Fluid in Fluid Material Units.
      */
     public static long translateMaterialToFluidAmount(long aMaterialAmount, boolean aRoundUp) {
-        return translateMaterialToAmount(aMaterialAmount, L, aRoundUp);
+        return translateMaterialToAmount(aMaterialAmount, 1 * INGOTS, aRoundUp);
     }
 
     /**
@@ -3661,19 +3571,11 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use {@link StatCollector}
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
-    }
-
-    /**
-     * @deprecated Use standard translation with {@link StatCollector}.
-     */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**
@@ -3775,6 +3677,20 @@ public class GTUtility {
 
     public static String formatNumbers(double aNumber) {
         return getDecimalFormat().format(aNumber);
+    }
+
+    public static String scientificFormat(long aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
+    public static String scientificFormat(BigInteger aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
     }
 
     /**
@@ -4265,7 +4181,20 @@ public class GTUtility {
         char[] chars = Long.toString(no)
             .toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            chars[i] += 8272;
+            chars[i] = switch (chars[i]) {
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                case '1' -> '\u2081';
+                case '2' -> '\u2082';
+                case '3' -> '\u2083';
+                case '4' -> '\u2084';
+                case '5' -> '\u2085';
+                case '6' -> '\u2086';
+                case '7' -> '\u2087';
+                case '8' -> '\u2088';
+                case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
+                default -> chars[i];
+            };
         }
         return new String(chars);
     }
@@ -4466,15 +4395,15 @@ public class GTUtility {
     }
 
     public static long clamp(long val, long lo, long hi) {
-        return val < lo ? lo : val > hi ? hi : val;
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static int clamp(int val, int lo, int hi) {
-        return MathHelper.clamp_int(val, lo, hi);
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static float clamp(float val, float lo, float hi) {
-        return val < lo ? lo : val > hi ? hi : val;
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static int min(int first, int... rest) {
@@ -4515,7 +4444,7 @@ public class GTUtility {
 
     /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
     public static int ceilDiv2(int lhs, int rhs) {
-        int sign = signum(lhs) * signum(rhs);
+        int sign = Integer.signum(lhs) * Integer.signum(rhs);
 
         if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
@@ -4532,24 +4461,150 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    @Deprecated
     public static int signum(int x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Integer.signum(x);
     }
 
+    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    @Deprecated
     public static long signum(long x) {
-        return x < 0 ? -1 : x > 0 ? 1 : 0;
+        return Long.signum(x);
     }
 
     public static Vector3i signum(Vector3i v) {
-        v.x = signum(v.x);
-        v.y = signum(v.y);
-        v.z = signum(v.z);
+        v.x = Integer.signum(v.x);
+        v.y = Integer.signum(v.y);
+        v.z = Integer.signum(v.z);
 
         return v;
     }
 
     public static int mod(int value, int divisor) {
         return ((value % divisor) + divisor) % divisor;
+    }
+
+    /**
+     * Computes base raised to the power of an integer exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
+     */
+    public static double powInt(double base, int exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative integer exponent.
+     */
+    private static double powBySquaring(double base, int exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes base raised to the power of a long exponent.
+     * Typically faster than {@link java.lang.Math#pow(double, double)} when {@code exp} is a long.
+     */
+    public static double powInt(double base, long exp) {
+        if (exp > 0) return powBySquaring(base, exp);
+        if (exp < 0) return 1.0 / powBySquaring(base, -exp);
+        return 1.0;
+    }
+
+    /**
+     * Computes base raised to non-negative long exponent.
+     */
+    private static double powBySquaring(double base, long exp) {
+        if (base == 2) return 1 << exp;
+        if (base == 4) return 1 << 2 * exp;
+        double result = 1.0;
+        while (exp > 0) {
+            if ((exp & 1) == 1) result *= base;
+            base *= base;
+            exp >>= 1;
+        }
+        return result;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log2ceil(int a) {
+        if (a <= 1) return 0;
+        return 32 - Integer.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4(int a) {
+        if (a <= 1) return 0;
+        return 31 - Integer.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive integer.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static int log4ceil(int a) {
+        if (a <= 1) return 0;
+        return 33 - Integer.numberOfLeadingZeros(a - 1) >> 1;
+    }
+
+    /**
+     * Computes the floor of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a);
+    }
+
+    /**
+     * Computes the ceiling of log base 2 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log2ceil(long a) {
+        if (a <= 1) return 0;
+        return 64 - Long.numberOfLeadingZeros(a - 1);
+    }
+
+    /**
+     * Computes the floor of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4(long a) {
+        if (a <= 1) return 0;
+        return 63 - Long.numberOfLeadingZeros(a) >> 1;
+    }
+
+    /**
+     * Computes the ceil of log base 4 for a positive long.
+     * Uses bitwise operations for fast calculation.
+     */
+    public static long log4ceil(long a) {
+        if (a <= 1) return 0;
+        return 65 - Long.numberOfLeadingZeros(a - 1) >> 1;
     }
 
     /**
@@ -4791,7 +4846,7 @@ public class GTUtility {
          * This method stores metadata as wildcard and NBT as null.
          */
         public static ItemId createAsWildcard(ItemStack itemStack) {
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, null, null);
         }
 
         public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
@@ -4799,7 +4854,7 @@ public class GTUtility {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, nbt, null);
         }
 
         /**
@@ -4898,7 +4953,7 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
@@ -4968,5 +5023,39 @@ public class GTUtility {
 
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+    }
+
+    public static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / GTUtility.powInt(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    public static String truncateText(String text, int limit) {
+        if (limit < 0) limit = 1;
+        if (text == null) {
+            return null;
+        }
+        if (text.length() <= limit) {
+            return text;
+        } else {
+            return text.substring(0, limit) + "...";
+        }
+    }
+
+    public static boolean isRealPlayer(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer p && !p.getClass()
+            .getName()
+            .contains("Fake");
     }
 }

@@ -45,15 +45,15 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         // For Sake of god of balance!
 
         // Dense ore
-        if (GTMod.gregtechproxy.mRichOreYieldMultiplier) {
+        if (GTMod.proxy.mRichOreYieldMultiplier) {
             tIsRich = (aPrefix == OrePrefixes.oreRich) || (aPrefix == OrePrefixes.oreDense);
         }
         // NetherOre
-        if (GTMod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+        if (GTMod.proxy.mNetherOreYieldMultiplier && !tIsRich) {
             tIsRich = (aPrefix == OrePrefixes.oreNetherrack) || (aPrefix == OrePrefixes.oreNether);
         }
         // EndOre
-        if (GTMod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+        if (GTMod.proxy.mEndOreYieldMultiplier && !tIsRich) {
             tIsRich = (aPrefix == OrePrefixes.oreEndstone) || (aPrefix == OrePrefixes.oreEnd);
         }
 
@@ -111,7 +111,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
                 tMaterial,
-                GTUtility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
+                GTUtility.copyAmount((long) aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
                 (long) aMaterial.mOreMultiplier * aMultiplier);
         }
 

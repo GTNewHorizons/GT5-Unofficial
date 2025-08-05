@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,7 +25,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 
@@ -78,13 +79,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUStore() {
-        return TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
+        return (long) TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
     }
 
     @Override
@@ -139,7 +135,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
                     .equalsIgnoreCase(aPlayer.getDisplayName())) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -175,9 +171,9 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         } catch (Throwable t) {}
                         break;
                 }
-                PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
+                GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
-                    PlayerUtils.messagePlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
+                    GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
                 }
             }
         } else if (aPlayer.getUniqueID()
@@ -244,16 +240,15 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     public MTETesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
         final MTETesseractGenerator rTesseract = TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
+            .getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), aFrequency);
         if (rTesseract == null) {
             return null;
         }
-        if (!TesseractHelper.isGeneratorOwnedByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), rTesseract)) {
+        if (!TesseractHelper.isGeneratorOwnedByPlayer(GTMod.proxy.getPlayerMP(mOwner), rTesseract)) {
             return null;
         }
         if (rTesseract.mFrequency != aFrequency) {
-            TesseractHelper
-                .setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency, null);
+            TesseractHelper.setTerminalOwnershipByPlayer(GTMod.proxy.getPlayerMP(mOwner), aFrequency, null);
             return null;
         }
         if (!rTesseract.isValidTesseractGenerator(
@@ -345,7 +340,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new int[0];
+            return GTValues.emptyIntArray;
         }
         return tTileEntity.getAccessibleSlotsFromSide(ordinalSide);
     }
@@ -455,13 +450,13 @@ public class MTETesseractTerminal extends MTEBasicTank {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
-            return new FluidTankInfo[0];
+            return GTValues.emptyFluidTankInfo;
         }
         return tTileEntity.getTankInfo(aSide);
     }
 
     @Override
-    public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
+    public int fill(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {
@@ -497,12 +492,12 @@ public class MTETesseractTerminal extends MTEBasicTank {
             && (this.getBaseMetaTileEntity()
                 .isAllowedToWork())) {
             // Set owner
-            if (PlayerUtils.getPlayersUUIDByName(
+            if (GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName())
                 != null) {
                 if (this.mOwner == null) {
-                    this.mOwner = PlayerUtils.getPlayersUUIDByName(
+                    this.mOwner = GTMod.proxy.getPlayersUUID(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
                 }
@@ -592,7 +587,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             && !this.getBaseMetaTileEntity()
                 .getOwnerName()
                 .isEmpty()) {
-            this.mOwner = PlayerUtils.getPlayersUUIDByName(
+            this.mOwner = GTMod.proxy.getPlayersUUID(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());
         }

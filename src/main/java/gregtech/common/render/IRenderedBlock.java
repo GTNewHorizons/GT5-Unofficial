@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.SBRContext;
 
 public interface IRenderedBlock {
 
@@ -101,13 +102,14 @@ public interface IRenderedBlock {
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
+            final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            GTRendererBlock.renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
-            GTRendererBlock.renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, mErrorTexture, false);
+            GTRendererBlock.renderNegativeYFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveYFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderNegativeZFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveZFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderNegativeXFacing(ctx, mErrorTexture, false);
+            GTRendererBlock.renderPositiveXFacing(ctx, mErrorTexture, false);
             return true;
         }
     }

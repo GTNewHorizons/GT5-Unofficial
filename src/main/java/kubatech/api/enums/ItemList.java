@@ -1,13 +1,16 @@
 package kubatech.api.enums;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
@@ -74,11 +77,11 @@ public enum ItemList implements IItemContainer {
 
     ;
 
-    private ItemStack mStack;
+    private @Nullable ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
     @Override
-    public IItemContainer set(Item aItem) {
+    public @NotNull IItemContainer set(@Nullable Item aItem) {
         mHasNotBeenSet = false;
         if (aItem == null) return this;
         ItemStack aStack = new ItemStack(aItem, 1, 0);
@@ -87,20 +90,20 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public IItemContainer set(ItemStack aStack) {
+    public @NotNull IItemContainer set(@NotNull ItemStack aStack) {
         mHasNotBeenSet = false;
         mStack = GTUtility.copyAmount(1, aStack);
         return this;
     }
 
     @Override
-    public IItemContainer hidden() {
+    public @NotNull IItemContainer hidden() {
         codechicken.nei.api.API.hideItem(get(1L));
         return this;
     }
 
     @Override
-    public Item getItem() {
+    public @Nullable Item getItem() {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return null;
@@ -143,7 +146,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -163,7 +166,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
+    public @Nullable ItemStack getWithName(long aAmount, @NotNull String aDisplayName, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
         if (GTUtility.isStackInvalid(rStack)) return NI;
 
@@ -191,7 +194,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
+    public @Nullable ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
         if (GTUtility.isStackInvalid(rStack)) return null;
         GTModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
@@ -207,7 +210,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public IItemContainer registerOre(Object... aOreNames) {
+    public @NotNull IItemContainer registerOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
@@ -215,7 +218,7 @@ public enum ItemList implements IItemContainer {
     }
 
     @Override
-    public IItemContainer registerWildcardAsOre(Object... aOreNames) {
+    public @NotNull IItemContainer registerWildcardAsOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));

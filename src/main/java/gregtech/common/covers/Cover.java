@@ -17,12 +17,19 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverPlacer;
@@ -31,12 +38,18 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.modularui2.CoverGuiData;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
-public class Cover {
+public class Cover implements IGuiHolder<CoverGuiData> {
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
@@ -256,8 +269,63 @@ public class Cover {
         return "";
     }
 
-    // region UI stuff
+    // region GUI
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(CoverGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, getUITheme());
+    }
+
+    /**
+     * Specifies theme of this GUI. You don't need to touch this unless you really want to go fancy.
+     */
+    protected GTGuiTheme getUITheme() {
+        return GTGuiThemes.COVER;
+    }
+
+    /**
+     * In order to migrate from MUI1 to MUI2 smoothly, we support both of them for the time being. Since we have
+     * functionality to open cover window on top of machine GUI, we need to make cover GUI capable of operating on both
+     * ways. So don't forget to also implement {@link #createWindow}.
+     *
+     * @param guiData     information about the creation context, ignored for covers since we've already used it to
+     *                    locate the right cover instance
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
+     */
+    @Override
+    public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings);
+    }
+
+    /**
+     * Use this method to get a panel representing this cover that you can open from another MUI2 UI.
+     *
+     * @param panelName   the unique name of this panel in the context of your UI.
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
+     */
+    public final ModularPanel buildPopUpUI(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings);
+    }
+
+    /**
+     * Override this method to provide a different GUI implementation for your cover in MUI2.
+     *
+     * @return The variant of CoverGui that can build a GUI for this cover
+     */
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverGui<>(this);
+    }
+
+    // endregion
+
+    // region Legacy MUI1 GUI
+
+    /**
+     * You also need to implement {@link #buildUI} if you want to implement cover GUI.
+     */
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new CoverUIFactory<>(buildContext).createWindow();
     }
@@ -368,7 +436,12 @@ public class Cover {
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
+            if (GTGuis.GLOBAL_SWITCH_MUI2) {
+                gregtech.api.modularui2.CoverUIFactory.INSTANCE
+                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide);
+            } else {
+                GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
+            }
             return true;
         }
         return false;
@@ -395,8 +468,22 @@ public class Cover {
         setTickRateAddition(tickRateAddition - (getTickRate() % stepAmount));
     }
 
-    protected final void setTickRateAddition(int newValue) {
-        tickRateAddition = Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, newValue));
+    public final void setTickRateAddition(int newValue) {
+        tickRateAddition = clamp(newValue);
+    }
+
+    private static int clamp(int input) {
+        return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
+    }
+
+    /**
+     * @return If {@link #tickRateAddition} cannot go any higher
+     */
+    public boolean isTickRateAdditionMax() {
+        // Mimic adjustTickRateMultiplier logic
+        int simulatedTickRateAddition = clamp(tickRateAddition + 20);
+        return tickRateAddition
+            == clamp(simulatedTickRateAddition - ((getMinimumTickRate() + simulatedTickRateAddition) % 20));
     }
 
     /**

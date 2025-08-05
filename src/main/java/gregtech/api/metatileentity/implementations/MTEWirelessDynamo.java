@@ -9,8 +9,6 @@ import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -19,6 +17,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
+@Deprecated
+/*
+ * To be removed in the next major update, to be replaced with a stronger, consolidated wireless dynamo.
+ */
 public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     private UUID owner_uuid;
@@ -42,16 +44,6 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetOutput() {
         return false;
     }
@@ -62,18 +54,8 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 2 * V[mTier];
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return V[mTier];
     }
 
     @Override
@@ -83,7 +65,8 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+        return new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update",
+            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
             AuthorColen };
     }
@@ -101,18 +84,6 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEWirelessDynamo(mName, mTier, new String[] { "" }, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

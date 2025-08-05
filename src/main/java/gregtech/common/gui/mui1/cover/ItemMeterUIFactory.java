@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.text.FieldPosition;
 
 import net.minecraft.item.ItemStack;
@@ -61,9 +63,6 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
         setMaxSlot();
         setMaxThreshold();
 
@@ -74,8 +73,8 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverItemMeter::isInverted,
                         CoverItemMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
                             .setPos(0, 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
@@ -101,7 +100,11 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                 new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                     .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
             .widget(
-                new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY))
             .widget(

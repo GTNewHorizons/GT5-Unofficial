@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
@@ -209,7 +208,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int aMeta : mReverseEntityMap.values()) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, aMeta, 1));
+            aList.add(new ItemStack(aItem, 1, aMeta));
         }
     }
 

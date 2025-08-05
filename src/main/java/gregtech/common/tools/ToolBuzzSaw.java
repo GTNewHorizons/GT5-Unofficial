@@ -30,11 +30,6 @@ public class ToolBuzzSaw extends ToolSaw {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
     }

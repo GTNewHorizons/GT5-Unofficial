@@ -88,16 +88,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -158,16 +148,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
         return mCharge ? mInventory.length : 0;
     }
@@ -185,11 +165,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override

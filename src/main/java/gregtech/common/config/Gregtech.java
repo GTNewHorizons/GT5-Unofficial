@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
@@ -132,6 +132,10 @@ public class Gregtech {
 
     @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static class General {
+
+        @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
+        @Config.DefaultBoolean(true)
+        public boolean batchModeInitialValue;
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
@@ -529,6 +533,10 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean useMachineMetal;
+
+        @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
+        @Config.DefaultBoolean(true)
+        public boolean allowCribDropItems;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

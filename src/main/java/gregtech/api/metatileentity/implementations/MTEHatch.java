@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.crafting.ICraftingIconProvider;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,14 +20,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         LASER
     }
 
-    /**
-     * Uses new texture changing methods to avoid limitations of byte as texture index...
-     */
-    @Deprecated
-    public byte mMachineBlock = 0;
-
-    private byte mTexturePage = 0;
-    private byte actualTexture = 0;
+    private int texturePage = 0;
+    private int textureIndex = 0;
 
     private ItemStack ae2CraftingIcon;
 
@@ -62,31 +55,23 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        // just to be sure, from my testing the 8th bit cannot be set clientside
-        int texturePointer = (byte) (actualTexture & 0x7F);
-        // Shift seven since one page is 128 textures!
-        int textureIndex = texturePointer | (mTexturePage << 7);
+
         try {
-            if (side != aFacing) {
-                if (textureIndex > 0) {
-                    return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
-                } else {
-                    return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
-                }
+            ITexture background;
+
+            if (texturePage > 0 || textureIndex > 0) {
+                background = Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
             } else {
-                if (textureIndex > 0) {
-                    if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    } else {
-                        return getTexturesInactive(
-                            Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    }
+                background = Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
+            }
+
+            if (side != aFacing) {
+                return new ITexture[] { background };
+            } else {
+                if (aActive) {
+                    return getTexturesActive(background);
                 } else {
-                    if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
-                    } else {
-                        return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
-                    }
+                    return getTexturesInactive(background);
                 }
             }
         } catch (NullPointerException npe) {
@@ -97,20 +82,17 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mMachineBlock", actualTexture);
-        aNBT.setByte("mTexturePage", mTexturePage);
+        aNBT.setInteger("texturePage", texturePage);
+        aNBT.setInteger("textureIndex", textureIndex);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        actualTexture = aNBT.getByte("mMachineBlock");
-        mTexturePage = aNBT.getByte("mTexturePage");
+        texturePage = aNBT.getInteger("texturePage");
+        textureIndex = aNBT.getInteger("textureIndex");
 
-        if (mTexturePage != 0 && GTValues.GT.isServerSide()) actualTexture |= 0x80; // <- lets just hope no one needs
-                                                                                    // the correct value for that on
-                                                                                    // server
-        mMachineBlock = actualTexture;
+        updateTexture(texturePage << 7 | textureIndex);
     }
 
     /**
@@ -119,8 +101,32 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      * @param id (page<<7)+index of the texture
      */
     public final void updateTexture(int id) {
-        onValueUpdate((byte) id);
-        onTexturePageUpdate((byte) (id >> 7));
+        texturePage = id >> 7;
+        textureIndex = id & 127;
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+
+        if (base.isServerSide()) {
+            base.issueTileUpdate();
+        } else {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setInteger("texturePage", texturePage);
+        data.setInteger("textureIndex", textureIndex);
+
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        texturePage = data.getInteger("texturePage");
+        textureIndex = data.getInteger("textureIndex");
     }
 
     /**
@@ -146,13 +152,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         return mTier;
     }
 
-    @Override
-    public final void onValueUpdate(byte aValue) {
-        actualTexture = (byte) (aValue & 0x7F);
-        mMachineBlock = actualTexture;
-        mTexturePage = 0;
-    }
-
     /**
      * Get the maximum amount of amperes to work with, which excludes the additional amps in for loss
      *
@@ -169,33 +168,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      */
     public ConnectionType getConnectionType() {
         return ConnectionType.CABLE;
-    }
-
-    @Override
-    public final byte getUpdateData() {
-        return (byte) (actualTexture & 0x7F);
-    }
-
-    public final void onTexturePageUpdate(byte aValue) {
-        mTexturePage = (byte) (aValue & 0x7F);
-        if (mTexturePage != 0 && getBaseMetaTileEntity().isServerSide()) { // just to be sure
-            mMachineBlock |= 0x80; // <- lets just hope no one needs the correct value for that on server
-            actualTexture = mMachineBlock;
-        }
-        // set last bit to allow working of the page reset-er to 0 in rare case when texture id is the same but page
-        // changes to 0
-    }
-
-    public final byte getTexturePage() {
-        return (byte) (mTexturePage & 0x7F);
-    }
-
-    public final byte getmTexturePage() {
-        return mTexturePage;
-    }
-
-    public final byte getActualTexture() {
-        return actualTexture;
     }
 
     @Override
@@ -217,22 +189,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     public boolean canTankBeEmptied() {
         return false;
     }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) { // in that method since it is usually
-                                                                                 // not overriden, especially for
-                                                                                 // hatches.
-        if (actualTexture != mMachineBlock) { // revert to page 0 on edition of the field - old code way
-            actualTexture = (byte) (mMachineBlock & 0x7F);
-            mMachineBlock = actualTexture; // clear last bit in mMachineBlock since now we are at page 0 after the
-                                           // direct field
-            // change
-            mTexturePage = 0; // assuming old code only supports page 0
-        }
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-    }
-
-    // To change to other page -> use the setter method -> updateTexture
 
     public int getCircuitSlot() {
         return -1;

@@ -258,4 +258,21 @@ public class GTCoilTracker {
             tracker.deactivateImpl(lease);
         }
     }
+
+    /**
+     * Checks whether a specific coil in a specific world is active or not.
+     * 
+     * @return True when active, false otherwise.
+     */
+    public static boolean isCoilActive(World world, int x, int y, int z) {
+        GTCoilTracker tracker = TRACKERS.get(world);
+
+        if (tracker == null) return false;
+
+        long coord = CoordinatePacker.pack(x, y, z);
+
+        int refs = tracker.activeBlocks.get(coord);
+
+        return refs > 0;
+    }
 }

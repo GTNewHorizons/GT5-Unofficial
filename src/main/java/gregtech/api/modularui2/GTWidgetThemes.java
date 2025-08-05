@@ -34,6 +34,7 @@ public final class GTWidgetThemes {
 
     public static final String BACKGROUND_POPUP = "backgroundPopup";
     public static final String BACKGROUND_TITLE = "backgroundTitle";
+    public static final String BACKGROUND_TERMINAL = "backgroundTerminal";
 
     public static final String OVERLAY_ITEM_SLOT_DUST = "overlayItemSlotDust";
     public static final String OVERLAY_ITEM_SLOT_INGOT = "overlayItemSlotIngot";
@@ -83,6 +84,10 @@ public final class GTWidgetThemes {
             PROGRESSBAR_FUEL,
             new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
             ProgressbarWidgetTheme::new);
+        themeApi.registerWidgetTheme(
+            BACKGROUND_TERMINAL,
+            new WidgetTheme(GTGuiTextures.BACKGROUND_TEXT_FIELD, null, Color.WHITE.main, 0xFAFAFA, false),
+            WidgetTheme::new);
 
         registerThemedButton(BUTTON_COVER_TAB_ENABLED);
         registerThemedButton(BUTTON_COVER_TAB_DISABLED);

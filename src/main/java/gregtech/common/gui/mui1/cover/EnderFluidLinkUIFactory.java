@@ -1,5 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.cover.CoverEnderFluidLink.PUBLIC_PRIVATE_MASK;
 import static tectech.thing.cover.CoverEnderFluidLink.toggleBit;
 
@@ -16,7 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -80,34 +80,34 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                             PUBLIC_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                .addTooltip(GTUtility.trans("326", "Public"))
+                                .addTooltip(translateToLocal("gt.interact.desc.public"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             PRIVATE_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                                .addTooltip(GTUtility.trans("327", "Private"))
+                                .addTooltip(translateToLocal("gt.interact.desc.private"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             IMPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                .addTooltip(GTUtility.trans("007", "Import"))
+                                .addTooltip(translateToLocal("gt.interact.desc.import"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
                         .addToggleButton(
                             EXPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                .addTooltip(GTUtility.trans("006", "Export"))
+                                .addTooltip(translateToLocal("gt.interact.desc.export"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
             .widget(
-                new TextWidget(GTUtility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
             .widget(
-                new TextWidget(GTUtility.trans("329", "Public/Private")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
             .widget(
-                new TextWidget(GTUtility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
     }
 
@@ -123,9 +123,9 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
         return switch (id) {
             case PUBLIC_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
             case PRIVATE_BUTTON_ID -> !CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-            case IMPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
-            case EXPORT_BUTTON_ID -> !CoverEnderFluidLink
+            case IMPORT_BUTTON_ID -> !CoverEnderFluidLink
                 .testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
+            case EXPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
             default -> false;
         };
     }

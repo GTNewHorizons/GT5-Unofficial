@@ -28,11 +28,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 
 import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
@@ -116,7 +116,7 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
             return;
         }
 
-        if (!(player instanceof FakePlayer)) {
+        if (GTUtility.isRealPlayer(player)) {
             BWTileEntityMetaGeneratedOre.shouldFortune = true;
         }
         super.harvestBlock(worldIn, player, x, y, z, meta);

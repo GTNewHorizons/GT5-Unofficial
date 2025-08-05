@@ -49,6 +49,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -123,11 +124,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public IStructureDefinition<MTEThoriumHighTempReactor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -135,7 +131,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("High Temperature Reactor")
+        tt.addMachineType("High Temperature Reactor, THTR")
             .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles)")
@@ -231,9 +227,8 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     private double getEfficiency() {
-        return Math.min(
-            Math.pow((this.fuelSupply - minCapacityToStart) / ((maxCapacity - minCapacityToStart) / 10D), 2D) + 1,
-            100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+        double base = (this.fuelSupply - minCapacityToStart) / ((maxCapacity - minCapacityToStart) / 10D);
+        return Math.min(base * base + 1, 100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
     }
 
     @Override
@@ -292,7 +287,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
-            if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+            if (tLiquid != null && tLiquid.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);
                 takecoolant -= drained.amount;
                 drainedamount += drained.amount;
@@ -305,21 +300,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.updateSlots();
 
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override

@@ -19,6 +19,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverFluidRegulatorGui;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.modes.MachineProcessingCondition;
+import gregtech.common.covers.modes.TransferMode;
 import gregtech.common.gui.mui1.cover.FluidRegulatorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -54,6 +58,19 @@ public class CoverFluidRegulator extends Cover {
         return this;
     }
 
+    public TransferMode getIOMode() {
+        return speed >= 0 ? TransferMode.EXPORT : TransferMode.IMPORT;
+    }
+
+    public void setIOMode(TransferMode mode) {
+        if (switch (mode) {
+            case EXPORT -> speed < 0;
+            case IMPORT -> speed >= 0;
+        }) {
+            speed = -speed;
+        }
+    }
+
     public int getSpeed() {
         return speed;
     }
@@ -61,6 +78,22 @@ public class CoverFluidRegulator extends Cover {
     public CoverFluidRegulator setSpeed(int speed) {
         this.speed = speed;
         return this;
+    }
+
+    public MachineProcessingCondition getMachineProcessingCondition() {
+        return switch (condition) {
+            case Always -> MachineProcessingCondition.ALWAYS;
+            case Conditional -> MachineProcessingCondition.CONDITIONAL;
+            case Inverted -> MachineProcessingCondition.INVERTED;
+        };
+    }
+
+    public void setMachineProcessingCondition(MachineProcessingCondition mode) {
+        condition = switch (mode) {
+            case ALWAYS -> Conditional.Always;
+            case CONDITIONAL -> Conditional.Conditional;
+            case INVERTED -> Conditional.Inverted;
+        };
     }
 
     public Conditional getCondition() {
@@ -136,7 +169,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     private String getScredriverClickChat() {
-        if (Math.abs(speed) == mTransferRate * tickRate) {
+        if (Math.abs(speed) == getMaxSpeed()) {
             return GTUtility.trans("316", "Pump speed limit reached!");
         }
         if (tickRate == 1) {
@@ -160,10 +193,18 @@ public class CoverFluidRegulator extends Cover {
         } else {
             speed -= step;
         }
-        if (Math.abs(speed) > mTransferRate * tickRate) {
-            speed = mTransferRate * tickRate * (speed > 0 ? 1 : -1);
+        if (Math.abs(speed) > getMaxSpeed()) {
+            speed = getMaxSpeed() * (speed > 0 ? 1 : -1);
         }
         GTUtility.sendChatToPlayer(aPlayer, getScredriverClickChat());
+    }
+
+    public int getMaxSpeed() {
+        return mTransferRate * tickRate;
+    }
+
+    public int getMinSpeed() {
+        return -getMaxSpeed();
     }
 
     private boolean faceClickedOnRightSide(float aX, float aY, float aZ) {
@@ -229,6 +270,11 @@ public class CoverFluidRegulator extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverFluidRegulatorGui(this);
     }
 
     @Override

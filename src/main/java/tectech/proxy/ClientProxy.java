@@ -7,7 +7,6 @@ import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -141,11 +140,6 @@ public class ClientProxy extends CommonProxy {
             0,
             0,
             0);
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
     }
 
     @Override

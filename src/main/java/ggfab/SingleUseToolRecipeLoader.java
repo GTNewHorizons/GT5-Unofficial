@@ -1,102 +1,157 @@
 package ggfab;
 
-import static gregtech.api.enums.ToolDictNames.*;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
+import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 class SingleUseToolRecipeLoader implements Runnable {
 
+    /*
+     * MARKED FOR DEPRECATION, will be moved to just the fluid solidifer.
+     * REMOVE TOOLCAST SEGMENT IN NEXT MAJOR UPDATE
+     */
+    public static final int RECIPE_DURATION = 6 * SECONDS;
+    public static final int OUTPUT_QUANTITY_MIN = 2 * 64;
+    public static final int OUTPUT_QUANTITY_MAX = 4 * 64;
+    public static final int SOLIDIFER_RECIPE_DURATION = 2 * SECONDS;
+    public static final int SOLIDIFIER_QUANTITY_MIN = 32;
+    public static final int SOLIDIFIER_QUANTITY_MAX = 64;
+
     @Override
     public void run() {
-        ToolDictNames[] hardTools = new ToolDictNames[] { craftingToolHardHammer, craftingToolScrewdriver,
-            craftingToolWrench, craftingToolCrowbar, craftingToolWireCutter, craftingToolFile, craftingToolSaw };
-        ToolDictNames[] softTools = new ToolDictNames[] { craftingToolSoftHammer };
-        addSingleUseToolRecipe(Materials.Steel, hardTools);
-        addSingleUseToolRecipe(Materials.Silver, 5000, hardTools);
-        addSingleUseToolRecipe(Materials.VanadiumSteel, hardTools);
-        addSingleUseToolRecipe(Materials.TungstenSteel, hardTools);
-        addSingleUseToolRecipe(Materials.HSSG, hardTools);
-        addSingleUseToolRecipe(Materials.Rubber, softTools);
-        addSingleUseToolRecipe(Materials.StyreneButadieneRubber, softTools);
-        addSingleUseToolRecipe(Materials.Polybenzimidazole, softTools);
+        // Hard tool recipes
+        addSingleUseToolRecipes(Materials.Steel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.Silver, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.VanadiumSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.TungstenSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.HSSG, SingleUseTool.HARD_TOOLS);
 
-        String prefix = "Shape_One_Use_";
-        for (GGItemList value : GGItemList.values()) {
-            if (!value.name()
-                .startsWith(prefix)) {
-                continue;
-            }
-            ToolDictNames type = ToolDictNames.valueOf(
-                value.name()
-                    .substring(prefix.length()));
-            GTModHandler
-                .addCraftingRecipe(value.get(1L), new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', type });
+        // Soft tool recipes
+        addSingleUseToolRecipes(Materials.Rubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.StyreneButadieneRubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.Silicone, SingleUseTool.SOFT_TOOLS);
+
+        // Mold recipes
+        for (SingleUseTool singleUseTool : SingleUseTool.values()) {
+            GTModHandler.addCraftingRecipe(
+                singleUseTool.mold.get(1L),
+                new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
         }
     }
 
-    private void addSingleUseToolRecipe(Materials material, ToolDictNames... types) {
-        addSingleUseToolRecipe(material, 10000, types);
-    }
-
-    private static long findNiceFactor(long fluids, long count) {
-        long end = Math.min(fluids, count);
-        for (long i = count / 256; i < end; i++) {
-            if (fluids % i == 0 && count % i == 0 && count / i < 256) return i;
+    /** Finds a common divisor of fluid and output so that output / divisor ≤ max, or falls back to an approximation. */
+    private static double findDivisor(long fluidPerCraft, long outputQuantity) {
+        for (long i = outputQuantity / OUTPUT_QUANTITY_MAX; i < Math.min(fluidPerCraft, outputQuantity); i++) {
+            if (fluidPerCraft % i == 0 && outputQuantity % i == 0 && outputQuantity / i <= OUTPUT_QUANTITY_MAX)
+                return (double) i;
         }
-        return -1;
+        return (double) outputQuantity / (long) OUTPUT_QUANTITY_MAX;
     }
 
-    private void addSingleUseToolRecipe(Materials material, int outputModifier, ToolDictNames... types) {
+    private static double findDivisorSolidifier(long fluidPerCraft, long outputQuantity) {
+        for (long i = outputQuantity / SOLIDIFIER_QUANTITY_MAX; i < Math.min(fluidPerCraft, outputQuantity); i++) {
+            if (fluidPerCraft % i == 0 && outputQuantity % i == 0 && outputQuantity / i <= SOLIDIFIER_QUANTITY_MAX)
+                return (double) i;
+        }
+        return (double) outputQuantity / (long) SOLIDIFIER_QUANTITY_MAX;
+    }
+
+    private void addSingleUseToolRecipes(Materials material, List<SingleUseTool> singleUseTools) {
         if (material.mStandardMoltenFluid == null) {
             throw new IllegalArgumentException("material does not have molten fluid form");
         }
-        for (ToolDictNames type : types) {
-            IToolStats stats = GigaGramFabAPI.SINGLE_USE_TOOLS.get(type);
-            Long cost = GigaGramFabAPI.COST_SINGLE_USE_TOOLS.get(type);
-            if (stats == null || cost == null) {
-                throw new IllegalArgumentException(type + " not registered");
+
+        for (SingleUseTool singleUseTool : singleUseTools) {
+            IToolStats toolStats = GigaGramFabAPI.SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
+            Long toolCost = GigaGramFabAPI.COST_SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
+
+            if (toolStats == null || toolCost == null) {
+                throw new IllegalArgumentException(singleUseTool + " not registered");
             }
-            long fluids = cost * GTValues.L / GTValues.M, duration = 6 * SECONDS;
-            long count = (long) (material.mDurability * stats.getMaxDurabilityMultiplier()
-                * outputModifier
-                * 100
-                / stats.getToolDamagePerContainerCraft()
-                / 10000);
-            if (count > 64 * 4) {
-                long niceFactor = findNiceFactor(fluids, count);
-                if (niceFactor < 0) {
-                    double mod = (double) count / (64 * 4L);
-                    fluids = Math.max((long) (fluids / mod), 1L);
-                    duration = Math.max((long) (duration / mod), 1L);
-                    count = 64 * 4;
-                } else {
-                    fluids /= niceFactor;
-                    duration = Math.max(duration / niceFactor, 1);
-                    count /= niceFactor;
-                }
-            } else if (count < 128) {
-                long mod = GTUtility.ceilDiv(128, count);
-                fluids *= mod;
-                duration *= mod;
-                count *= mod;
+
+            float durabilityMultiplier = toolStats.getMaxDurabilityMultiplier();
+            int damagePerCraft = toolStats.getToolDamagePerContainerCraft();
+
+            long fluidPerCraft = toolCost * INGOTS / GTValues.M;
+            long recipeDuration = RECIPE_DURATION;
+            long outputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
+            long solidifierFluidPerCraft = toolCost * INGOTS / GTValues.M;
+            long solidifierRecipeDuration = SOLIDIFER_RECIPE_DURATION;
+            long solidifierOutputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
+
+            if (solidifierOutputQuantity > SOLIDIFIER_QUANTITY_MAX) {
+                // Too much output — scale down.
+                double divisor = findDivisorSolidifier(fluidPerCraft, outputQuantity);
+                solidifierFluidPerCraft = Math.max((long) (solidifierFluidPerCraft / divisor), 1L);
+                solidifierRecipeDuration = Math.max((long) (solidifierRecipeDuration / divisor), 1L);
+                solidifierOutputQuantity = Math
+                    .min((long) (solidifierOutputQuantity / divisor), SOLIDIFIER_QUANTITY_MAX);
+            } else if (solidifierOutputQuantity < SOLIDIFIER_QUANTITY_MIN) {
+                // Too little output — scale up.
+                long multiplier = GTUtility.ceilDiv(SOLIDIFIER_QUANTITY_MIN, outputQuantity);
+                solidifierFluidPerCraft *= multiplier;
+                solidifierRecipeDuration *= multiplier;
+                solidifierOutputQuantity *= multiplier;
             }
+
+            // MARKED FOR DEPRECATION, REMOVE IN NEXT MAJOR UPDATE
+            if (outputQuantity > OUTPUT_QUANTITY_MAX) {
+                // Too much output — scale down.
+                double divisor = findDivisor(fluidPerCraft, outputQuantity);
+                fluidPerCraft = Math.max((long) (fluidPerCraft / divisor), 1L);
+                recipeDuration = Math.max((long) (recipeDuration / divisor), 1L);
+                outputQuantity = Math.min((long) (outputQuantity / divisor), OUTPUT_QUANTITY_MAX);
+            } else if (outputQuantity < OUTPUT_QUANTITY_MIN) {
+                // Too little output — scale up.
+                long multiplier = GTUtility.ceilDiv(OUTPUT_QUANTITY_MIN, outputQuantity);
+                fluidPerCraft *= multiplier;
+                recipeDuration *= multiplier;
+                outputQuantity *= multiplier;
+            }
+
+            // Split into stacks
+            ItemStack output = singleUseTool.tool.get(0L);
+            output.stackSize = (int) outputQuantity; // This is a safe cast since it is between 128 and 256
+
+            List<ItemStack> outputs = new ArrayList<>();
+            int maxStackSize = output.getMaxStackSize();
+            while (output.stackSize > maxStackSize) outputs.add(output.splitStack(maxStackSize));
+            outputs.add(output);
+
             GTValues.RA.stdBuilder()
-                .fluidInputs(material.getMolten(fluids)) //
-                .metadata(GGFabRecipeMaps.OUTPUT_TYPE, type) //
-                .metadata(GGFabRecipeMaps.OUTPUT_COUNT, (int) count) //
+                .fluidInputs(material.getMolten(fluidPerCraft))
+                .itemInputs(singleUseTool.mold.get(0L))
+                .itemOutputs(outputs.toArray(new ItemStack[0]))
                 .eut(TierEU.RECIPE_MV)
-                .duration(duration) //
+                .duration(recipeDuration)
                 .addTo(GGFabRecipeMaps.toolCastRecipes);
+
+            ItemStack solidifierOutput = singleUseTool.tool.get(0L);
+            solidifierOutput.stackSize = (int) solidifierOutputQuantity;
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(material.getMolten(solidifierFluidPerCraft))
+                .itemInputs(singleUseTool.mold.get(0L))
+                .itemOutputs(solidifierOutput)
+                .eut(TierEU.RECIPE_MV)
+                .duration(solidifierRecipeDuration)
+                .addTo(RecipeMaps.fluidSolidifierRecipes);
         }
     }
 }

@@ -47,23 +47,8 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -72,38 +57,13 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -120,11 +80,6 @@ public class ToolScrewdriver extends GTTool {
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "screwdriver")
             || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.circuits);
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
     }
 
     @Override

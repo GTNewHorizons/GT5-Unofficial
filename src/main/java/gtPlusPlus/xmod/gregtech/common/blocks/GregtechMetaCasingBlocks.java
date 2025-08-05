@@ -38,7 +38,7 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Multitank Exterior Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Zeron-100 Reactor Shielding");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Reactor Shield Casing");
         GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Blast Smelter Casing Block");

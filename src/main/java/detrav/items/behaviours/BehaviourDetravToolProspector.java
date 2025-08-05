@@ -274,14 +274,12 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 String name = Materials.getLocalizedNameForItem(format, meta % 1000);
                 addOreToHashMap(name, aPlayer);
                 if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
-                return;
             }
         } else if (tAssotiation != null) {
             try {
                 String name = tAssotiation.toString();
                 addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
-                return;
             } catch (Exception e) {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }
@@ -346,14 +344,12 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
 
-            return;
         } else {
             if (DetravScannerMod.DEBUG_ENABLED)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
             badluck++;
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
         }
-        // addChatMassageByValue(aPlayer,0,null);
     }
 
     void addOreToHashMap(String orename, EntityPlayer aPlayer) {

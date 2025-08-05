@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.railcraft;
 
+import static gregtech.api.enums.Materials.BioDiesel;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -17,12 +18,13 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
+import mods.railcraft.api.fuel.FuelManager;
+import mods.railcraft.common.core.RailcraftConfig;
 
 public class HandlerRailcraft {
 
@@ -102,6 +104,14 @@ public class HandlerRailcraft {
             new ItemStack(Items.reeds),
             GregtechItemList.SugarCharcoal.get(1),
             GregtechItemList.SugarCoke.get(1));
+        // Taken from the Railcraft code
+        if (Railcraft.isModLoaded()) {
+            int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
+            FuelManager.addBoilerFuel(
+                BioDiesel.getFluid(1L)
+                    .getFluid(),
+                bioheat);
+        }
     }
 
     private static void addCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
@@ -145,7 +155,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke, GTUtility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Ash.getDustSmall(1))
-            .fluidInputs(GTModHandler.getSteam(100))
+            .fluidInputs(Materials.Steam.getGas(100))
             .fluidOutputs(Materials.WoodTar.getFluid(200))
             .eut(240)
             .duration(3 * SECONDS)
@@ -154,7 +164,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke, GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Ash.getDustSmall(1))
-            .fluidInputs(GTModHandler.getSteam(100))
+            .fluidInputs(Materials.Steam.getGas(100))
             .fluidOutputs(Materials.WoodGas.getGas(300))
             .eut(240)
             .duration(3 * SECONDS)
@@ -185,8 +195,8 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Ash.getDustTiny(1))
-            .fluidInputs(Materials.Oxygen.getGas(2000))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
+            .fluidInputs(Materials.Oxygen.getGas(2_000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);

@@ -71,12 +71,6 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
-        int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        return false;
-    }
-
-    @Override
     public EnumAction getItemUseAction(ItemStack p_77661_1_) {
         return getItem(p_77661_1_).getItemUseAction(p_77661_1_);
     }

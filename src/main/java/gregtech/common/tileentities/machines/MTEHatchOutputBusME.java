@@ -39,6 +39,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
@@ -50,6 +51,7 @@ import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
@@ -65,6 +67,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     protected static final long DEFAULT_CAPACITY = 1_600;
     protected long baseCapacity = DEFAULT_CAPACITY;
+    public static final String COPIED_DATA_IDENTIFIER = "outputBusME";
 
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
@@ -123,9 +126,37 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean storeAll(ItemStack aStack) {
-        aStack.stackSize = store(aStack);
-        return aStack.stackSize == 0;
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        if (!lockedItems.isEmpty()) {
+            boolean isOk = false;
+
+            for (ItemStack lockedItem : lockedItems) {
+                if (lockedItem.isItemEqual(stack)) {
+                    isOk = true;
+
+                    break;
+                }
+            }
+
+            if (!isOk) {
+                return false;
+            }
+        }
+
+        // Always allow insertion on the same tick so we can output the entire recipe
+        if (canAcceptItem() || (lastInputTick == tickCounter)) {
+            if (!simulate) {
+                itemCache.add(
+                    AEApi.instance()
+                        .storage()
+                        .createItemStack(stack));
+                lastInputTick = tickCounter;
+            }
+            stack.stackSize = 0;
+            return true;
+        }
+
+        return false;
     }
 
     protected long getCachedAmount() {
@@ -149,41 +180,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
      */
     public boolean canAcceptItem() {
         return getCachedAmount() < getCacheCapacity();
-    }
-
-    /**
-     * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
-     *
-     * @param stack input stack
-     * @return amount of items left over
-     */
-    public int store(final ItemStack stack) {
-        if (!lockedItems.isEmpty()) {
-            boolean isOk = false;
-
-            for (ItemStack lockedItem : lockedItems) {
-                if (lockedItem.isItemEqual(stack)) {
-                    isOk = true;
-
-                    break;
-                }
-            }
-
-            if (!isOk) {
-                return stack.stackSize;
-            }
-        }
-
-        // Always allow insertion on the same tick so we can output the entire recipe
-        if (canAcceptItem() || (lastInputTick == tickCounter)) {
-            itemCache.add(
-                AEApi.instance()
-                    .storage()
-                    .createItemStack(stack));
-            lastInputTick = tickCounter;
-            return 0;
-        }
-        return stack.stackSize;
     }
 
     protected BaseActionSource getRequest() {
@@ -266,10 +262,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected void flushCachedStack() {
+        if (!isActive() || itemCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null) {
-            return;
-        }
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                 .getItemInventory();
@@ -282,9 +276,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {
-
-        }
+        } catch (final GridAccessException ignored) {}
         lastOutputTick = tickCounter;
     }
 
@@ -319,6 +311,25 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
     }
 
     @Override
@@ -483,6 +494,51 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
+        tag.setLong("baseCapacity", baseCapacity);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        baseCapacity = data.getLong("baseCapacity");
     }
 
     @Override

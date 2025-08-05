@@ -6,7 +6,7 @@ import gregtech.api.enums.Mods;
 
 // needs to be loaded early from the coremod because
 // it decides to load some mixins or not
-@Config(modid = Mods.Names.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
 public class PollutionConfig {
 
     // override name to be at the top of the cfg file
@@ -261,15 +261,6 @@ public class PollutionConfig {
     @Config.Comment("pollution rate in gibbl/s for the Industrial mixing machine")
     @Config.DefaultInt(800)
     public static int pollutionPerSecondMultiIndustrialMixer;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in metal mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in fluid mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in misc mode")
-    @Config.DefaultInt(600)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
     @Config.Comment("pollution rate in gibbl/s for the Industrial material press in forming mode")
     @Config.DefaultInt(240)
     public static int pollutionPerSecondMultiIndustrialPlatePress_ModeForming;

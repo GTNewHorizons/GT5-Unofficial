@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,13 +49,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.misc.GTStructureChannels;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
-import gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
+import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
@@ -68,7 +70,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private RecipeTC lastRecipe;
+    private GTRecipe lastRecipe;
 
     // spotless:off
     static {
@@ -203,7 +205,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInputBus(addDotText(3))
             .addOutputBus(addDotText(4))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -216,7 +218,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -226,7 +228,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return BeamlineRecipeAdder2.instance.TargetChamberRecipes;
+        return LanthanidesRecipeMaps.targetChamberRecipes;
     }
 
     @NotNull
@@ -248,17 +250,19 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        RecipeTC tRecipe = (RecipeTC) BeamlineRecipeAdder2.instance.TargetChamberRecipes.findRecipeQuery()
+        GTRecipe tRecipe = LanthanidesRecipeMaps.targetChamberRecipes.findRecipeQuery()
             .items(tItemsWithFocusItemArray)
             .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> {
-                RecipeTC recipeTc = (RecipeTC) recipe;
+                TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
+                if (metadata == null) return false;
+
                 BeamInformation recipeInInfo = this.getInputInformation();
-                int particle = recipeTc.particleId;
+                int particle = metadata.particleID;
 
                 if (recipeInInfo != null) {
-                    return (particle == recipeInInfo.getParticleId() && !(recipeInInfo.getEnergy() < recipeTc.minEnergy
-                        || recipeInInfo.getEnergy() > recipeTc.maxEnergy));
+                    return (particle == recipeInInfo.getParticleId() && !(recipeInInfo.getEnergy() < metadata.minEnergy
+                        || recipeInInfo.getEnergy() > metadata.maxEnergy));
                 }
 
                 return false;
@@ -267,6 +271,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
+        TargetChamberMetadata metadata = tRecipe.getMetadata(TARGET_CHAMBER_METADATA);
+        if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputEnergy = inputInfo.getEnergy();
@@ -274,24 +281,24 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < tRecipe.minEnergy || inputEnergy > tRecipe.maxEnergy)
+        if (inputEnergy < metadata.minEnergy || inputEnergy > metadata.maxEnergy)
             return CheckRecipeResultRegistry.NO_RECIPE;
-        if (inputFocus < tRecipe.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
-        if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
-        if (tRecipe.focusItem != null) {
+        if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (metadata.focusItem != null) {
             if (tFocusItemArray != null) {
-                if (tFocusItemArray.get(0) != null && tRecipe.focusItem.getItem() != tFocusItemArray.get(0)
+                if (tFocusItemArray.get(0) != null && metadata.focusItem.getItem() != tFocusItemArray.get(0)
                     .getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
             }
         }
 
         // 5 seconds per integer multiple over the rate
-        float progressTime = tRecipe.amount / inputRate * 5 * TickTime.SECOND;
+        float progressTime = metadata.amount / inputRate * 5 * TickTime.SECOND;
         int batchAmount = 1;
         if (progressTime < 1) { // Subticking
             batchAmount = (int) Math.round(1.0 / progressTime);
 
-            if (tRecipe.focusItem != null) {
+            if (metadata.focusItem != null) {
                 int maskLimit = 0;
 
                 if (tFocusItemArray != null) {
@@ -321,13 +328,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+            .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-        ItemStack[] itemOutputArray = GTUtility.copyItemArray(tRecipe.mOutputs);
+        tRecipe.consumeInput(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
+        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         for (ItemStack stack : itemOutputArray) {
             stack.stackSize *= batchAmount;
         }
@@ -387,26 +394,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             && this.mInputBusses.size() == 1
             && this.mOutputBusses.size() == 1
             && this.mInputFocus.size() == 1;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack arg0) {
-        return 10000;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack arg0) {
-        return true;
     }
 
     @Override

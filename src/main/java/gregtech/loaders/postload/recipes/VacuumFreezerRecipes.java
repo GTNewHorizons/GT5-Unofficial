@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -338,8 +339,8 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.Boron.getPlasma(144L))
-                .fluidOutputs(Materials.Boron.getMolten(144L))
+                .fluidInputs(Materials.Boron.getPlasma(1 * INGOTS))
+                .fluidOutputs(Materials.Boron.getMolten(1 * INGOTS))
                 .duration(1 * SECONDS)
                 .eut(12)
                 .addTo(vacuumFreezerRecipes);
@@ -350,8 +351,8 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
             .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
-                Materials.SuperCoolant.getFluid(1000))
+                new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
+                Materials.SuperCoolant.getFluid(1_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -377,16 +378,16 @@ public class VacuumFreezerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(144))
+            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 1L))
-            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(144))
+            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1 * INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
     }
 
     private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
-        final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
+        final int partFraction = (int) (prefix.mMaterialAmount * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
@@ -394,7 +395,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(
                 MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
                 Materials.SuperCoolant.getFluid(partFraction * multiplier * 4L))
-            .duration((int) (multiplier * (SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
 

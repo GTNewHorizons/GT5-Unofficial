@@ -31,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -74,7 +73,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 // m = muffler
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    (new String[][] { { "ccchccc", "ccccccc", "ccmmmcc", "ccm~mcc", "ccmmmcc", "ccccccc", "ccchccc" },
+                    (new String[][] { { "ccchccc", "ccccccc", "ccmcmcc", "ccc~ccc", "ccmcmcc", "ccccccc", "ccchccc" },
                         { "ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
@@ -104,10 +103,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addElement(
                     'm',
                     lazy(
-                        t -> buildHatchAdder(MTELargerTurbineBase.class).atLeast(Muffler)
-                            .casingIndex(t.getCasingTextureIndex())
-                            .dot(7)
-                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                        t -> t.requiresMufflers() ? Muffler.newAny(t.getCasingTextureIndex(), 7)
+                            : ofBlock(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }
     };
@@ -188,9 +185,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private boolean requiresMufflers() {
-        if (!GTMod.gregtechproxy.mPollution) {
-            return false;
-        }
         return getPollutionPerSecond(null) > 0;
     }
 
@@ -250,7 +244,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
@@ -556,11 +550,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         return this.getMaxParallelRecipes() == 12 ? 10000 : 0;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     public boolean isLooseMode() {
         return looseFit;
     }
@@ -653,11 +642,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public long maxAmperesOut() {
         return 16;
     }
@@ -677,7 +661,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
+            looseFit = !looseFit;
+            // Clear recipe maps so they don't attempt to filter off of a dummy recipe map
+            clearRecipeMapForAllInputHatches();
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
@@ -841,6 +827,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public boolean supportsBatchMode() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 }

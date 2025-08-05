@@ -196,8 +196,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         // allows for 0 pollution if circuit throttle is too high
         return Math.max(
             0,
-            (int) (pollutionPerSecond
-                * (1 - GTMod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
+            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
     }
 
     @Override
@@ -225,11 +224,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     boolean isFuelValid() {
@@ -401,7 +395,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 } else {
                     if (depleteInput(Materials.Water.getFluid(amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutput(GTModHandler.getSteam(tGeneratedEU));
+                        addOutput(Materials.Steam.getGas(tGeneratedEU));
                     } else {
                         GTLog.exp.println("Boiler " + this.mName + " had no Water!");
                         explodeMultiblock();
@@ -465,21 +459,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             && !mMufflerHatches.isEmpty();
     }
 
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     private int adjustEUtForConfig(int rawEUt) {
         int adjustedSteamOutput = rawEUt - (isSuperheated() ? 75 : 25) * integratedCircuitConfig;
         return Math.max(adjustedSteamOutput, 25);
@@ -512,6 +491,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 }

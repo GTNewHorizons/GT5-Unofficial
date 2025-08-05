@@ -21,6 +21,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import gregtech.common.handlers.PowerGogglesHudHandler;
+import gregtech.common.handlers.PowerGogglesKeybindHandler;
+import gregtech.common.items.gui.PowerGogglesGuiOverlay;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
@@ -38,7 +41,6 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
@@ -50,6 +52,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(e);
         // Do this weird things for textures.
         GTplusplus.loadTextures();
+        PowerGogglesGuiOverlay.init();
     }
 
     @Override
@@ -58,7 +61,8 @@ public class ClientProxy extends CommonProxy {
         new CustomItemBlockRenderer();
         new MachineBlockRenderer();
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
+        PowerGogglesKeybindHandler.init();
         super.init(e);
     }
 

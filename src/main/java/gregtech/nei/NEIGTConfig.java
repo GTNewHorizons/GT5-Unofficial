@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 
+import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
@@ -19,9 +20,10 @@ import codechicken.nei.recipe.HandlerInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.recipe.RecipeCategory;
@@ -59,11 +61,13 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
 
+    private static GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
+
     public static boolean sIsAdded = true;
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
-            GTValues.GT,
+            GTMod.GT,
             "NEIPlugins",
             "register-crafting-handler",
             "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
@@ -90,6 +94,9 @@ public class NEIGTConfig implements IConfigureNEI {
             .map(GTNEIDefaultHandler::new)
             .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
             .forEach(NEIGTConfig::addHandler);
+
+        GuiCraftingRecipe.craftinghandlers.add(CAL_IMPRINT_HANDLER);
+        GuiUsageRecipe.usagehandlers.add(CAL_IMPRINT_HANDLER);
     }
 
     private void registerCatalysts() {
@@ -152,6 +159,14 @@ public class NEIGTConfig implements IConfigureNEI {
                 }
                 event.registerHandlerInfo(handlerInfo);
             });
+
+        event.registerHandlerInfo(
+            new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
+                .setMaxRecipesPerPage(100)
+                .setDisplayStack(
+                    BWMetaItems.getCircuitParts()
+                        .getStack(0))
+                .build());
     }
 
     private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {

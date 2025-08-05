@@ -20,11 +20,11 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class TileEntityBaseFluidCollector extends TileEntityBase implements IFluidHandler {
 
@@ -195,10 +195,10 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                     .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
                 this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
             } else {
-                ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull(), 1);
-                if (!ItemUtils.checkForInvalidItems(aDirtStack)) {
-                    return;
-                }
+                ItemStack aDirtStack = GTUtility.copyAmount(1, itemToSpawnInWorldIfTankIsFull());
+
+                if (aDirtStack == null) return;
+
                 if (!this.mInventory.addItemStack(aDirtStack)) {
                     EntityItem entity = new EntityItem(worldObj, xCoord, yCoord + 1.5, zCoord, aDirtStack);
                     worldObj.spawnEntityInWorld(entity);

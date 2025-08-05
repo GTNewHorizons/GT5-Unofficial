@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -12,6 +14,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverPlayerDetectorGui;
+import gregtech.common.covers.modes.PlayerDetectionMode;
 import gregtech.common.gui.mui1.cover.PlayerDetectorUIFactory;
 
 public class CoverPlayerDetector extends CoverLegacyData {
@@ -25,6 +30,18 @@ public class CoverPlayerDetector extends CoverLegacyData {
 
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
+    }
+
+    public PlayerDetectionMode getPlayerDetectionMode() {
+        int coverVariable = coverData;
+        if (coverVariable >= 0 && coverVariable < PlayerDetectionMode.values().length) {
+            return PlayerDetectionMode.values()[coverVariable];
+        }
+        return PlayerDetectionMode.ANY_PLAYER;
+    }
+
+    public void setPlayerDetectionMode(PlayerDetectionMode mode) {
+        setVariable(mode.ordinal());
     }
 
     @Override
@@ -128,6 +145,11 @@ public class CoverPlayerDetector extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverPlayerDetectorGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

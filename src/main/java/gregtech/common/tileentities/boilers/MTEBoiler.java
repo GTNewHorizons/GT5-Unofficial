@@ -15,15 +15,16 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.FluidSlot;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -108,11 +109,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public boolean isFacingValid(ForgeDirection facingDirection) {
         return (facingDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -232,7 +228,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = GTModHandler.getSteam(aAmount);
+            this.mSteam = Materials.Steam.getGas(aAmount);
         }
     }
 
@@ -351,7 +347,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     protected boolean isAutomatable() {
-        return GTMod.gregtechproxy.mAllowSmallBoilerAutomation;
+        return GTMod.proxy.mAllowSmallBoilerAutomation;
     }
 
     @Override
@@ -420,7 +416,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     protected abstract GTGuiTheme getGuiTheme();
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 0);
         IWidget waterSlots = Flow.column()
             .coverChildren()
@@ -473,7 +469,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     .size(14)
                     .margin(2))
             .childIf(doesAddFuelSlot(), createFuelSlot());
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
                 Flow.row()
@@ -568,7 +564,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     private boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(GTModHandler.getSteam(getSteamCapacity()), stack, false, true) != null
+        return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 

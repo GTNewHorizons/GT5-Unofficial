@@ -17,7 +17,7 @@ import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +50,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -88,7 +89,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -98,6 +99,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
@@ -110,7 +112,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -120,6 +122,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
@@ -131,16 +134,16 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2070';
-                case '1' -> '\u2071';
-                case '2' -> '\u00B2';
-                case '3' -> '\u00B3';
-                case '4' -> '\u2074';
-                case '5' -> '\u2075';
-                case '6' -> '\u2076';
-                case '7' -> '\u2077';
-                case '8' -> '\u2078';
-                case '9' -> '\u2079';
+                case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
+                case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
+                case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
+                case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
+                case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
+                case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
+                case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
+                case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
+                case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
+                case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
                 default -> chars[i];
             };
         }
@@ -172,7 +175,7 @@ public class BWUtil {
 
     @Deprecated
     public static int getMachineVoltageFromTier(int tier) {
-        return (int) (30 * Math.pow(4, tier - 1));
+        return (int) (30 * GTUtility.powInt(4, tier - 1));
     }
 
     public static byte getTier(long voltage) {
@@ -363,8 +366,8 @@ public class BWUtil {
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return createGTCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
@@ -389,8 +392,8 @@ public class BWUtil {
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
-        if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return null;
+        if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
+        if (aRecipe == null || aRecipe.length == 0) return null;
 
         boolean tThereWasARecipe = false;
 
@@ -471,7 +474,7 @@ public class BWUtil {
                         break;
                     case 'r':
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                         break;
                     case 's':
                         tRecipeList.add(c);
@@ -577,7 +580,7 @@ public class BWUtil {
                 .toCharArray()) {
                 x++;
                 tRecipe[x] = tItemStackMap.get(chr);
-                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == WILDCARD)
                     Items.feather.setDamage(tRecipe[x], 0);
             }
             tThereWasARecipe = GTModHandler.removeRecipe(tRecipe) != null;
@@ -613,14 +616,13 @@ public class BWUtil {
             }
         }
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
 
         return new GTShapedRecipe(
             GTUtility.copy(aResult),
-            aDismantleable,
             aRemovable,
             aKeepNBT,
             aEnchantmentsAdded,

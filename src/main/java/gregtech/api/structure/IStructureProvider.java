@@ -35,5 +35,5 @@ public interface IStructureProvider<MTE> {
      * Gets the structure instance. Return is undefined/null for prototype MTEs, but should be well-defined for instance
      * MTEs.
      */
-    IStructureInstance getStructureInstance();
+    IStructureInstance<MTE> getStructureInstance();
 }

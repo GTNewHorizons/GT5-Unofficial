@@ -14,7 +14,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTUtility;
 
 public class MTEWetTransformer extends MTETransformer {
 
@@ -79,11 +79,6 @@ public class MTEWetTransformer extends MTETransformer {
     }
 
     @Override
-    public long getMinimumStoredEU() {
-        return V[mTier + 1];
-    }
-
-    @Override
     public long maxEUStore() {
         return 512L + V[mTier + 1] * 128L;
     }
@@ -121,9 +116,9 @@ public class MTEWetTransformer extends MTETransformer {
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");
+            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 16A:64A in/out Ratio.");
+            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 16A:64A in/out Ratio.");
         }
     }
 }

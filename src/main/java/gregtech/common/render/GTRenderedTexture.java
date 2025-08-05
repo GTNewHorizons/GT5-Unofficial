@@ -1,10 +1,8 @@
 package gregtech.common.render;
 
-import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
+import static gregtech.api.render.SBRContext.MAX_BRIGHTNESS;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -17,13 +15,12 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.SBRContext;
 
 public class GTRenderedTexture extends GTTextureBase implements ITexture, IColorModulationContainer {
 
@@ -32,24 +29,15 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
-    private final Block matBlock;
-    private final int matMeta;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing, Block matBlock, int matMeta) {
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
+        boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
-        this.matBlock = matBlock;
-        this.matMeta = matMeta;
-    }
-
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing) {
-        this(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing, null, 0);
     }
 
     @Override
@@ -58,177 +46,190 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     @Override
-    public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.setShaderMaterialOverride(matBlock, matMeta);
-        }
-
-        super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
-    }
-
-    @Override
-    public void draw(RenderBlocks aRenderer) {
-        super.draw(aRenderer);
-
-        if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            // Iris.resetShaderMaterialOverride();
-        }
-    }
-
-    @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderXPos(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 1.0f, 0.0f, 0.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            if (enableAO) ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+        } else {
+            ctx.clearLightnessOverride()
+                .clearBrightnessOverride();
         }
-        lighting.setupLightingXPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.EAST, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.EAST, 0xffffff);
-            renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingXPos();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.EAST, mRGBa);
+            renderFaceXPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.EAST, 0xffffff);
+            renderFaceXPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderXNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, -1.0f, 0.0f, 0.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
+            } else {
+                ctx.clearLightnessOverride();
+                ctx.clearBrightnessOverride();
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.WEST, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.WEST, 0xffffff);
-            renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingXNeg();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.WEST, mRGBa);
+            renderFaceXNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.WEST, 0xffffff);
+            renderFaceXNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderYPos(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 1.0f, 0.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+        } else {
+            ctx.clearLightnessOverride();
+            ctx.clearBrightnessOverride();
         }
-        lighting.setupLightingYPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.UP, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.UP, 0xffffff);
-            renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingYPos();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.UP, mRGBa);
+            renderFaceYPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.UP, 0xffffff);
+            renderFaceYPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderYNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, -1.0f, 0.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+        } else {
+            ctx.clearLightnessOverride();
+            ctx.clearBrightnessOverride();
         }
-        lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            Tessellator.instance.setColorRGBA(255, 255, 255, 255);
-            renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingYNeg();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.DOWN, mRGBa);
+            renderFaceYNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
+            renderFaceYNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderZPos(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, 1.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+        } else {
+            ctx.clearLightnessOverride();
+            ctx.clearBrightnessOverride();
         }
-        lighting.setupLightingZPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.SOUTH, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.SOUTH, 0xffffff);
-            renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingZPos();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
+            renderFaceZPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
+            renderFaceZPos(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
-        final boolean enableAO = aRenderer.enableAO;
-        final LightingHelper lighting = new LightingHelper(aRenderer);
+    public void renderZNeg(SBRContext ctx) {
+        startDrawingQuads(ctx.renderer, 0.0f, 0.0f, -1.0f);
+        ctx.reset();
+        final boolean enableAO = ctx.renderer.enableAO;
         if (glow) {
-            if (!GTMod.gregtechproxy.mRenderGlowTextures) {
-                draw(aRenderer);
+            if (!GTMod.proxy.mRenderGlowTextures) {
+                draw(ctx.renderer);
                 return;
             }
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            ctx.renderer.enableAO = false;
+            ctx.setLightnessOverride(1.0F);
+            ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+        } else {
+            ctx.clearLightnessOverride();
+            ctx.clearBrightnessOverride();
         }
-        lighting.setupLightingZNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.NORTH, mRGBa);
-        final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
-        renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
-        if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.NORTH, 0xffffff);
-            renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        ctx.setupLightingZNeg();
+        final ExtendedFacing rotation = getExtendedFacing(ctx.x, ctx.y, ctx.z);
+        if (ctx.worldRenderPass == -1 || mIconContainer.canRenderInPass(ctx.worldRenderPass)) {
+            ctx.setupColor(ForgeDirection.NORTH, mRGBa);
+            renderFaceZNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getIcon(), rotation);
         }
-        aRenderer.enableAO = enableAO;
-        draw(aRenderer);
+        if (mIconContainer.getOverlayIcon() != null && (ctx.worldRenderPass == -1 || ctx.worldRenderPass == 1)) {
+            ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
+            renderFaceZNeg(ctx.renderer, ctx.x, ctx.y, ctx.z, mIconContainer.getOverlayIcon(), rotation);
+        }
+        ctx.renderer.enableAO = enableAO;
+        draw(ctx.renderer);
     }
 
     @Override
@@ -248,7 +249,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateBottom = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
 
         aRenderer.renderFaceYNeg(Blocks.air, x, y, z, icon);
 
@@ -262,7 +263,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateTop = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.UP, extendedFacing, icon);
 
         aRenderer.renderFaceYPos(Blocks.air, x, y, z, icon);
 
@@ -276,11 +277,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateEast = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        aRenderer.field_152631_f = true;
+        icon = getFlipped(ForgeDirection.NORTH, extendedFacing, icon);
 
         aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateEast = 0;
+        aRenderer.field_152631_f = false;
     }
 
     /**
@@ -290,7 +293,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateWest = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.SOUTH, extendedFacing, icon);
 
         aRenderer.renderFaceZPos(Blocks.air, x, y, z, icon);
 
@@ -304,7 +307,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateNorth = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        icon = getFlipped(ForgeDirection.WEST, extendedFacing, icon);
 
         aRenderer.renderFaceXNeg(Blocks.air, x, y, z, icon);
 
@@ -318,11 +321,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateSouth = getRotation(extendedFacing);
-        icon = getFlipped(extendedFacing, icon);
+        aRenderer.field_152631_f = true;
+        icon = getFlipped(ForgeDirection.EAST, extendedFacing, icon);
 
         aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateSouth = 0;
+        aRenderer.field_152631_f = false;
     }
 
     private static final int NORMAL = 0;
@@ -331,6 +336,9 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private static final int UPSIDE_DOWN = 3;
 
     private int getRotation(ExtendedFacing extendedFacing) {
+        // if we aren't rendering a multi, don't rotate at all
+        if (extendedFacing == null) return NORMAL;
+
         return switch (extendedFacing.getRotation()) {
             case NORMAL -> NORMAL;
             case CLOCKWISE -> CLOCKWISE;
@@ -339,8 +347,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         };
     }
 
-    private GTIconFlipped getFlipped(ExtendedFacing extendedFacing, IIcon icon) {
+    private IIcon getFlipped(ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon) {
+
         boolean flipU = false, flipV = false;
+
+        // if we aren't rendering a multi, don't flip at all
+        if (extendedFacing == null) {
+            if (side == ForgeDirection.EAST || side == ForgeDirection.DOWN) {
+                flipU = true;
+            }
+
+            if (side == ForgeDirection.NORTH) {
+                flipV = true;
+            }
+
+            return new GTIconFlipped(icon, flipU, flipV);
+        }
 
         ForgeDirection dir = extendedFacing.getDirection();
 
@@ -350,18 +372,18 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         // spotless:off
         if (extendedFacing.getRotation().getIndex() % 2 == 0) {
             // flip U's if normal or upside down
-            flipU ^= extendedFacing.getFlip().isHorizontallyFlipped();
+            flipU = extendedFacing.getFlip().isHorizontallyFlipped();
         } else {
             // flip V's if clockwise or counter-clockwise
-            flipV ^= extendedFacing.getFlip().isHorizontallyFlipped();
+            flipV = extendedFacing.getFlip().isHorizontallyFlipped();
 
-            if (dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH) {
-                flipU ^= true;
+            if (side == ForgeDirection.EAST || side == ForgeDirection.NORTH) {
+                flipU = true;
             }
         }
         // spotless:on
 
-        if (dir == ForgeDirection.DOWN) {
+        if (side == ForgeDirection.DOWN) {
             flipU ^= true;
         }
 
@@ -371,7 +393,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
         if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
 
-        final EntityPlayer player = GTMod.gregtechproxy.getThePlayer();
+        final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;
 
         final World w = player.getEntityWorld();
@@ -386,10 +408,6 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
-            } else if (meta != null) {
-                return ExtendedFacing.of(
-                    meta.getBaseMetaTileEntity()
-                        .getFrontFacing());
             }
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();
@@ -397,6 +415,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
 
         if (alignment != null) return alignment.getExtendedFacing();
 
-        return ExtendedFacing.DEFAULT;
+        // We don't want to rotate the textures if this block isn't a multi
+        return null;
     }
 }

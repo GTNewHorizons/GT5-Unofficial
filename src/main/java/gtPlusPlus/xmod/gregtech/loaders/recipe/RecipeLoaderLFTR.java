@@ -108,7 +108,7 @@ public class RecipeLoaderLFTR {
         // Sparging Recipes
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium.getGas(1000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+            .fluidInputs(Materials.Helium.getGas(1_000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
                 Materials.Helium.getGas(0),

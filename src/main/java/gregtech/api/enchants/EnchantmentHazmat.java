@@ -30,11 +30,6 @@ public class EnchantmentHazmat extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
     public boolean canApply(ItemStack aStack) {
         return aStack != null && (aStack.getItem() instanceof ItemArmor);
     }

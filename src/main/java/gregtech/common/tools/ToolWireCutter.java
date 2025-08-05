@@ -16,28 +16,8 @@ import gregtech.api.util.GTToolHarvestHelper;
 public class ToolWireCutter extends GTTool {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -46,23 +26,8 @@ public class ToolWireCutter extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
     }
 
     @Override
@@ -71,23 +36,8 @@ public class ToolWireCutter extends GTTool {
     }
 
     @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
-    }
-
-    @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "cutter");
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
     }
 
     @Override
@@ -100,9 +50,6 @@ public class ToolWireCutter extends GTTool {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

@@ -1,7 +1,6 @@
 package gregtech.api.structure;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +24,12 @@ import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
@@ -50,6 +53,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     public Vec3Impl controllerOffset, minSize, maxSize;
     public Char2ObjectArrayMap<CasingInfo<MTE>> casings;
     public Char2IntArrayMap minCasingCounts, maxCasingCounts;
+
+    public Function<MTE, IStructureInstance<MTE>> instanceExtractor;
 
     public StructureWrapper(IStructureProvider<MTE> provider) {
         this.provider = provider;
@@ -146,6 +151,22 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     // #region Structure checks/building boilerplate
+
+    public IStructureDefinition<MTE> getStructureDefinition() {
+        return structureDefinition;
+    }
+
+    public Vec3Impl getControllerOffset() {
+        return controllerOffset;
+    }
+
+    public Vec3Impl getMinSize() {
+        return minSize;
+    }
+
+    public Vec3Impl getMaxSize() {
+        return maxSize;
+    }
 
     public boolean checkStructure(MTE instance) {
         return checkStructure(instance, STRUCTURE_SHAPE_MAIN, null);
@@ -287,6 +308,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     // #endregion
 
+    @SuppressWarnings("unchecked")
     public IStructureElement<MTE> getStructureElement(char c) {
         CasingInfo<MTE> casing = casings.get(c);
 
@@ -300,19 +322,28 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             element = onElementPass(
                 instance -> instance.getStructureInstance()
                     .onCasingEncountered(c),
-                casing.casing.asElement(() -> casing.casingGroup));
+                casing.casing.asElement(casing));
+
+            IHatchElement<? super MTE>[] hatches = casing.hatches;
+
+            if (casing.casing.isTiered()) {
+                // If the casing is tiered, we want to keep track of valid hatches so that we can update their
+                // background texture to the correct index after the casing tier is established.
+                hatches = GTDataUtils
+                    .mapToArray(casing.hatches, IHatchElement[]::new, hatch -> new HatchInterceptor<>(casing, hatch));
+            }
 
             element = HatchElementBuilder.<MTE>builder()
-                .atLeast(casing.hatches)
+                .atLeast(hatches)
                 .casingIndex(casing.casing.getTextureId())
                 .dot(casing.dot)
                 .buildAndChain(element);
         } else {
-            element = casing.casing.asElement(() -> casing.casingGroup);
+            element = casing.casing.asElement(casing);
         }
 
         if (casing.channel != null) {
-            element = withChannel(casing.channel, element);
+            element = casing.channel.use(element);
         }
 
         if (casing.elementWrapper != null) {
@@ -320,6 +351,37 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         }
 
         return element;
+    }
+
+    /**
+     * A hatch proxy that adds valid hatches to the structure's pending hatch list.
+     */
+    static class HatchInterceptor<T> extends GTStructureUtility.ProxyHatchElement<T> {
+
+        private final CasingInfo<T> casing;
+
+        public HatchInterceptor(CasingInfo<T> casing, IHatchElement<? super T> element) {
+            super(element);
+            this.casing = casing;
+        }
+
+        @Override
+        public IGTHatchAdder<? super T> adder() {
+            IGTHatchAdder<? super T> realAdder = super.adder();
+
+            return (t, hatch, textureId) -> {
+                if (realAdder.apply(t, hatch, textureId)) {
+                    if (hatch.getMetaTileEntity() instanceof MTEHatch hatch2) {
+                        casing.getInstance(t)
+                            .addTieredHatch(hatch2, casing.casing, casing);
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+        }
     }
 
     public int getCasingMin(char c) {
@@ -363,6 +425,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
         casingInfo.casing = casing;
         casingInfo.casingGroup = ICasingGroup.ofCasing(casing);
+        casingInfo.instanceExtractor = instanceExtractor;
 
         casings.put(c, casingInfo);
 
@@ -426,7 +489,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             return this;
         }
 
-        public CasingBuilder withChannel(String channel) {
+        public CasingBuilder withChannel(IStructureChannels channel) {
             casingInfo.channel = channel;
 
             return this;

@@ -55,16 +55,6 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 3.0F;
     }
@@ -80,18 +70,8 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.RANDOM_ANVIL_USE.toString();
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
     }
 
     @Override
@@ -100,18 +80,8 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -157,11 +127,6 @@ public class ToolHardHammer extends GTTool {
             rConversions++;
         }
         return rConversions;
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
     }
 
     @Override

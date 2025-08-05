@@ -10,7 +10,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -91,11 +90,6 @@ public class MTETransformer extends MTETieredMachineBlock {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTETransformer(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -277,10 +271,10 @@ public class MTETransformer extends MTETieredMachineBlock {
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
                 (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                     : tag.getLong("maxEUOutput"),
                 tag.getLong("maxAmperesOut")));
 
@@ -288,14 +282,14 @@ public class MTETransformer extends MTETieredMachineBlock {
             currenttip.add(
                 String.format(
                     GOLD + "Input:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
                 String.format(
                     BLUE + "Output:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
         }

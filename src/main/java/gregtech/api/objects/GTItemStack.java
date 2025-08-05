@@ -1,10 +1,11 @@
 package gregtech.api.objects;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.Hash;
 
@@ -51,7 +52,7 @@ public class GTItemStack {
         this(
             aStack == null ? null : aStack.getItem(),
             aStack == null ? 0 : aStack.stackSize,
-            aStack == null ? 0 : wildcard ? GTValues.W : Items.feather.getDamage(aStack));
+            aStack == null ? 0 : wildcard ? WILDCARD : Items.feather.getDamage(aStack));
     }
 
     public GTItemStack(int aHashCode) {
@@ -100,6 +101,6 @@ public class GTItemStack {
      * @return a copy of the stack with stack size 1 and no NBT
      */
     public static ItemStack internalCopyStack(ItemStack aStack, boolean wildcard) {
-        return new ItemStack(aStack.getItem(), 1, wildcard ? GTValues.W : Items.feather.getDamage(aStack));
+        return new ItemStack(aStack.getItem(), 1, wildcard ? WILDCARD : Items.feather.getDamage(aStack));
     }
 }

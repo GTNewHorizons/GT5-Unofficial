@@ -10,23 +10,26 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.util.GTUtility;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public abstract class EIGBucket {
 
-    protected ItemStack seed;
+    protected @Nullable ItemStack seed;
     protected int seedCount;
-    protected ItemStack[] supportItems;
+    protected ItemStack @Nullable [] supportItems;
 
-    public EIGBucket(ItemStack seed, int seedCount, ItemStack[] supportItem) {
+    public EIGBucket(@NotNull ItemStack seed, int seedCount, ItemStack[] supportItem) {
         this.seed = seed.copy();
         this.seed.stackSize = 1;
         this.seedCount = seedCount;
         this.supportItems = supportItem;
     }
 
-    public EIGBucket(NBTTagCompound nbt) {
+    public EIGBucket(@NotNull NBTTagCompound nbt) {
         this.seed = readItemStackFromNBT(nbt.getCompoundTag("seed"));
         this.seedCount = nbt.getInteger("count");
 
@@ -71,7 +74,7 @@ public abstract class EIGBucket {
      *
      * @return an item stack representing the seeds in this bucket.
      */
-    public ItemStack getSeedStack() {
+    public @NotNull ItemStack getSeedStack() {
         ItemStack copied = this.seed.copy();
         copied.stackSize = this.seedCount;
         return copied;
@@ -95,7 +98,7 @@ public abstract class EIGBucket {
         return this.seed.getDisplayName();
     }
 
-    public String getInfoData() {
+    public @NotNull String getInfoData() {
         StringBuilder sb = new StringBuilder();
         // display invalid buckets, we don't want people to think they lost their seeds or something.
         sb.append(this.isValid() ? EnumChatFormatting.GREEN : EnumChatFormatting.RED);
@@ -119,7 +122,7 @@ public abstract class EIGBucket {
      * @return number of seeds consumed, 0 for wrong item, -1 if it missed the support items, -2 if you tried to consume
      *         0 or less items;
      */
-    public int tryAddSeed(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack input, int maxConsume,
+    public int tryAddSeed(@NotNull MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input, int maxConsume,
         boolean simulate) {
         // Abort is input if empty
         if (input == null || input.stackSize <= 0) return -2;
@@ -129,7 +132,7 @@ public abstract class EIGBucket {
         if (!GTUtility.areStacksEqual(this.seed, input, false)) return 0;
 
         // no support items, consume and exit early.
-        if (this.supportItems == null || this.supportItems.length <= 0) {
+        if (this.supportItems == null || this.supportItems.length == 0) {
             if (!simulate) {
                 input.stackSize -= maxConsume;
                 this.seedCount += maxConsume;
@@ -170,7 +173,7 @@ public abstract class EIGBucket {
      * @param toRemove The maximum amount of items to remove.
      * @return The items that were removed from the bucket. Null if the bucket is empty.
      */
-    public ItemStack[] tryRemoveSeed(int toRemove, boolean simulate) {
+    public ItemStack @Nullable [] tryRemoveSeed(int toRemove, boolean simulate) {
         // validate inputs
         toRemove = Math.min(this.seedCount, toRemove);
         if (toRemove <= 0) return null;
@@ -196,7 +199,7 @@ public abstract class EIGBucket {
      *
      * @return The contents of the bucket
      */
-    public ItemStack[] emptyBucket() {
+    public ItemStack @Nullable [] emptyBucket() {
         if (this.seedCount <= 0) return null;
         ItemStack[] ret = new ItemStack[1 + (this.supportItems == null ? 0 : this.supportItems.length)];
         ret[0] = this.seed.copy();

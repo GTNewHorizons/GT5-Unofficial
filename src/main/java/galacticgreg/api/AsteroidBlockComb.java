@@ -2,6 +2,9 @@ package galacticgreg.api;
 
 import net.minecraft.block.Block;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Class for a bit more advanced combinations for Asteroids, which supports Custom Blocks as base material and Values
  * required to generate Gregtech ores
@@ -40,7 +43,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
      *
      * @param pOreType The GregTech oreType
      */
-    public AsteroidBlockComb(GTOreTypes pOreType) {
+    public AsteroidBlockComb(@NotNull GTOreTypes pOreType) {
         super(pOreType.getBlock(), pOreType.getMeta());
         _mGTOreMaterial = pOreType;
     }
@@ -55,7 +58,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other == null) return false;
         if (other == this) return true;
         if (!(other instanceof AsteroidBlockComb otherObj)) return false;

@@ -100,6 +100,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_RECYCLING = getNewSubTag("NO_RECYCLING");
     /**
+     * This Material won't auto generate recycling recipes.
+     */
+    public static final SubTag NO_RECYCLING_RECIPES = getNewSubTag("NO_RECYCLING_RECIPES");
+    /**
      * This Material cannot be used in any Furnace alike Structure. Already listed are: Paper, Wood, Gunpowder, Stone
      */
     public static final SubTag NO_SMELTING = getNewSubTag("NO_SMELTING");

@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -17,7 +18,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
@@ -121,19 +121,31 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
         if (dir == null) return null;
-        for (ForgeDirection bendDir : connectedSides) {
-            if (bendDir != null && bendDir != dir) {
-                chainedFrontFacing = bendDir.getOpposite();
-                return bendDir;
-            }
+
+        if (connectionCount < 2) {
+            return null;
         }
+
+        ForgeDirection a = connectedSides[0];
+        ForgeDirection b = connectedSides[1];
+        if (dir == a) {
+            chainedFrontFacing = b.getOpposite();
+            return b;
+        }
+        if (dir == b) {
+            chainedFrontFacing = a.getOpposite();
+            return a;
+        }
+
+        // the input direction is not connected to this mirror
         return null;
     }
 

@@ -16,9 +16,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -42,8 +44,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         mTier < 5 ? "Requires an Air Filter"
             : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
         "Can take Air Filters from an input bus of the multiblock",
-        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%",
-        "Recovers " + (100 - calculatePollutionReduction(100, true)) + "% of CO2/CO/SO2", GTPPCore.GT_Tooltip.get() };
+        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%", GTPPCore.GT_Tooltip.get() };
 
     @Override
     public String[] getDescription() {
@@ -125,7 +126,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (mTier < 2) return (int) (aPollution * 0.95);
         if (mTier > 8) return 0;
 
-        return (int) (aPollution * Math.pow(0.64D, mTier - 1));
+        return (int) (aPollution * GTUtility.powInt(0.64D, mTier - 1));
     }
 
     /**
@@ -180,24 +181,23 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
      *         parent multiblock.
      */
     private boolean findAirFilter(MetaTileEntity parentTileEntity) {
-        if (hasAirFilter()) return true; // Has a filter in inventory.
-        if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
-        if (parentTileEntity == null) return false; // Unknown parent multiblock.
-
-        if (parentTileEntity instanceof MTEMultiBlockBase GTMultiBase) {
-            for (var inputBus : GTMultiBase.mInputBusses) {
-                for (ItemStack stack : inputBus.mInventory) {
-                    if (isAirFilter(stack)) {
-                        ItemStack stackCopy = stack.copy();
-                        if (GTMultiBase.depleteInput(stack)) {
-                            mInventory[SLOT_FILTER] = stackCopy;
-                            return true;
-                        }
+        if (hasAirFilter()) return true;
+        if (mInventory[SLOT_FILTER] != null) return false;
+        if (!(parentTileEntity instanceof MTEMultiBlockBase multiBase)) return false;
+        multiBase.startRecipeProcessing();
+        for (MTEHatchInputBus inputBus : multiBase.mInputBusses) {
+            for (ItemStack stack : inputBus.mInventory) {
+                if (isAirFilter(stack)) {
+                    ItemStack stackCopy = stack.copy();
+                    if (multiBase.depleteInput(stack)) {
+                        mInventory[SLOT_FILTER] = stackCopy;
+                        multiBase.endRecipeProcessing();
+                        return true;
                     }
                 }
             }
         }
-
+        multiBase.endRecipeProcessing();
         return false;
     }
 
@@ -258,7 +258,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk2;
         boolean chk3;
         int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (aPollutionAmount >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);
@@ -325,9 +325,6 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
                 zSpd);
         }
     }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     @Override
     public GUITextureSet getGUITextureSet() {

@@ -27,10 +27,8 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -56,7 +54,6 @@ public class RedstoneSnifferGuiBuilder {
     private final PanelSyncManager guiSyncManager;
     private String freqFilter = "";
     private String ownerFilter = "";
-    private boolean playerIsOp;
 
     public RedstoneSnifferGuiBuilder(GuiData guiData, PanelSyncManager guiSyncManager) {
         this.guiData = guiData;
@@ -108,26 +105,12 @@ public class RedstoneSnifferGuiBuilder {
         ListWidget<IWidget, CategoryList.Root> advancedListWidget = new ListWidget<>();
         advancedListWidget.sizeRel(1);
 
-        guiSyncManager.syncValue("player_is_op", new BooleanSyncValue(() -> false, () -> {
+        BooleanSyncValue playerIsOpSyncer = new BooleanSyncValue(() -> false, () -> {
             EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            boolean result = player.mcServer.getConfigurationManager()
+            return player.mcServer.getConfigurationManager()
                 .func_152596_g(player.getGameProfile());
-            playerIsOp = result;
-            return result;
-        }));
-        StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (k -> {
-            if (guiSyncManager.isClient()) {
-                WidgetTree.resize(regularListWidget);
-                WidgetTree.resize(advancedListWidget);
-            }
-        }));
-        guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
-        StringSyncValue ownerFilterSyncer = new StringSyncValue(() -> ownerFilter, (k -> {
-            if (guiSyncManager.isClient()) {
-                WidgetTree.resize(advancedListWidget);
-            }
-        }));
-        guiSyncManager.syncValue("owner_filter", ownerFilterSyncer);
+        });
+        guiSyncManager.syncValue("player_is_op", playerIsOpSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
             .sizeRel(0.5f, 0.75f)
@@ -144,15 +127,16 @@ public class RedstoneSnifferGuiBuilder {
         data.sizeRel(1, 0.7f);
         data.controller(controller);
         // Process regular wireless redstone frequencies
-        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> regularMapSyncer = new GenericListSyncHandler<>(() -> {
-            List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
-            GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
-                boolean isPrivate = frequency > 65535;
-                int displayFreq = isPrivate ? frequency - 65536 : frequency;
-                result.add(new ItemRedstoneSniffer.SnifferEntry(String.valueOf(displayFreq), isPrivate));
+        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> regularMapSyncer = new SnifferEntryListSyncHandler(
+            () -> {
+                List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
+                GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
+                    boolean isPrivate = frequency > 65535;
+                    int displayFreq = isPrivate ? frequency - 65536 : frequency;
+                    result.add(new ItemRedstoneSniffer.SnifferEntry(String.valueOf(displayFreq), isPrivate));
+                });
+                return result;
             });
-            return result;
-        }, new ItemRedstoneSniffer.SnifferEntryAdapter());
         regularMapSyncer.setChangeListener(() -> {
             if (!regularListWidget.getChildren()
                 .isEmpty()) return;
@@ -185,7 +169,6 @@ public class RedstoneSnifferGuiBuilder {
                                             .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
-            WidgetTree.resize(regularListWidget);
         });
         guiSyncManager.syncValue("regular_map", regularMapSyncer);
 
@@ -205,11 +188,11 @@ public class RedstoneSnifferGuiBuilder {
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(
+        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new SnifferEntryListSyncHandler(
             () -> {
                 List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
                 GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
-                    if (playerIsOp || canSeeCovers(guiData, uuid)) {
+                    if (playerIsOpSyncer.getValue() || canSeeCovers(guiData, uuid)) {
                         String owner = uuid.equals("null") ? "Public"
                             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
                         coverMap.forEach((frequency, covers) -> {
@@ -221,8 +204,7 @@ public class RedstoneSnifferGuiBuilder {
                     }
                 });
                 return result;
-            },
-            new ItemRedstoneSniffer.SnifferEntryAdapter());
+            });
         advancedMapSyncer.setChangeListener(() -> {
             if (!advancedListWidget.getChildren()
                 .isEmpty()) return;
@@ -240,7 +222,6 @@ public class RedstoneSnifferGuiBuilder {
                 textColor));
 
             advancedList.forEach(advancedListWidget::child);
-            WidgetTree.resize(advancedListWidget);
         });
         guiSyncManager.syncValue("adv_map", advancedMapSyncer);
         data.addPage(
@@ -313,6 +294,7 @@ public class RedstoneSnifferGuiBuilder {
     public List<IWidget> processAdvancedFrequencies(List<ItemRedstoneSniffer.SnifferEntry> entryList,
         ListWidget<IWidget, CategoryList.Root> listWidget, PanelSyncManager guiSyncManager, int scale, int textColor) {
         List<IWidget> result = new ArrayList<>();
+        BooleanSyncValue playerIsOpSyncer = (BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0");
         AtomicInteger bgStripe = new AtomicInteger(0);
         int stripe1 = Color.rgb(79, 82, 119);
         int stripe2 = Color.rgb(67, 58, 96);
@@ -383,12 +365,12 @@ public class RedstoneSnifferGuiBuilder {
                                                         StatCollector.translateToLocal(
                                                             "gt.item.redstone_sniffer.wrong_dim_message"));
                                                     listWidget.getPanel()
-                                                        .closeIfOpen(false);
+                                                        .closeIfOpen();
                                                 }
                                                 return true;
                                             })))
                             .child(
-                                new SingleChildWidget<>().setEnabledIf(w -> playerIsOp)
+                                new SingleChildWidget<>().setEnabledIf(w -> playerIsOpSyncer.getValue())
                                     .widthRel(0.5f)
                                     .child(
                                         new ButtonWidget<>().size(25, 25)
@@ -414,7 +396,7 @@ public class RedstoneSnifferGuiBuilder {
                                                         cover.z,
                                                         true));
                                                 listWidget.getPanel()
-                                                    .closeIfOpen(false);
+                                                    .closeIfOpen();
                                                 return true;
                                             })))));
         }

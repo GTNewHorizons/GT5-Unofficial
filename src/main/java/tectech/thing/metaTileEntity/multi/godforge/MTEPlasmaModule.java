@@ -119,6 +119,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
@@ -141,7 +142,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             })
             .setPlayClickSound(false)
             .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
-            .addTooltip("Debug Window")
+            .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 91)
             .setSize(16, 16);
@@ -182,7 +183,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                     if (val) enableWorking();
                     else disableWorking();
                 }), builder)
-                .addTooltip("multi-step")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.multi_step"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(4, 40)
                 .setSize(16, 16));
@@ -195,7 +196,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 .setTextAlignment(Alignment.Center)
                 .setTextColor(Color.WHITE.normal)
                 .setPos(3, 18)
-                .addTooltip("fusion tier")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16)
                 .setPos(4, 20)
@@ -209,7 +210,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 .setTextAlignment(Alignment.Center)
                 .setTextColor(Color.WHITE.normal)
                 .setPos(3, 18)
-                .addTooltip("parallel")
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(70, 16)
                 .setPos(4, 4)

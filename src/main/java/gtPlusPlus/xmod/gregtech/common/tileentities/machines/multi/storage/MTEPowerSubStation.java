@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -26,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -73,13 +72,13 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -135,8 +134,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             .addCasingInfoMin("Sub-Station External Casings", 10, false)
             .addDynamoHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
-            .addSubChannelUsage("height", "Height of structure")
+            .addSubChannelUsage(GTStructureChannels.PSS_CELL)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -268,8 +267,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'I',
-                    withChannel(
-                        "cell",
+                    GTStructureChannels.PSS_CELL.use(
                         ofChain(
                             onlyIf(
                                 x -> x.topState != TopState.NotTop,
@@ -294,8 +292,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                                         onElementPass(x -> ++x.cellCount[5], ofCell(9))))))))
                 .addElement(
                     'H',
-                    withChannel(
-                        "cell",
+                    GTStructureChannels.PSS_CELL.use(
                         // Adding this so preview looks correct
                         ofBlocksTiered(cellTierConverter(), getAllCellTiers(), -1, (te, t) -> {}, (te) -> -1)))
                 .build();
@@ -391,7 +388,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = Math.min(stackSize.stackSize + 3, 18);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 18);
         log("Layer: " + layer);
         log("Building 0");
         buildPiece(mName + "bottom", stackSize, hintsOnly, 2, 0, 0);
@@ -409,15 +406,15 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 18);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 18);
         int built;
-        built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
+        built = survivalBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         for (int i = 1; i < layer - 1; i++) {
-            built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -517,16 +514,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTEPowerSubStation(this.mName);
     }
@@ -582,11 +569,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         this.lEUt = 0;
         this.mEfficiencyIncrease = 10000;
         return SimpleCheckRecipeResult.ofSuccess("managing_power");
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     private long drawEnergyFromHatch(MetaTileEntity aHatch) {
@@ -773,11 +755,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
         return !mIsOutputtingPower;
     }
@@ -831,9 +808,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mIsOutputtingPower = !mIsOutputtingPower;
         if (mIsOutputtingPower) {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
         }
     }
 
@@ -884,7 +861,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 TextWidget
                     .dynamicString(
                         () -> getErrorDisplayID() == 0
-                            ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
+                            ? getBaseMetaTileEntity().isActive()
+                                ? StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.running_perfectly")
+                                : StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.turn_on_with_mallet")
                             : "")
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
@@ -896,27 +875,40 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     val -> getBaseMetaTileEntity().setActive(val)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
-                new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.in"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(178, 10))
             .widget(
-                new TextWidget("Out").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.out"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(176, 28))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Avg In: " + numberFormat.format(clientEUIn) + " EU")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_in",
+                            numberFormat.format(clientEUIn)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Avg Out: " + numberFormat.format(clientEUOut) + " EU")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_out",
+                            numberFormat.format(clientEUOut)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
             .widget(
                 new TextWidget()
-                    .setStringSupplier(() -> "Powerloss: " + numberFormat.format(clientEULoss) + " EU per tick")
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.power_loss",
+                            numberFormat.format(clientEULoss)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 40))
@@ -932,7 +924,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     .setPos(5, 156)
                     .setSize(147, 5))
             .widget(
-                new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.stored"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(10, 132))
             .widget(

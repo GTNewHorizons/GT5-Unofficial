@@ -53,11 +53,6 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
     }
 
     @Override
-    public int getHarvestLevel(int aMeta) {
-        return 1;
-    }
-
-    @Override
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ);
     }

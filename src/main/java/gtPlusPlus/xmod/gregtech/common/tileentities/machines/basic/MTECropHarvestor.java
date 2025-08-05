@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -34,7 +35,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.crops.CropCard;
@@ -52,6 +52,7 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public boolean mModeAlternative = false;
     public boolean mHarvestEnabled = true;
+    public boolean harvestFullGrowth = true;
 
     public MTECropHarvestor(final int aID, final int aTier, final String aDescription) {
         super(
@@ -66,11 +67,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -195,13 +191,13 @@ public class MTECropHarvestor extends MTEBasicTank {
             if (aCrop == null) continue;
             if (!this.mHarvestEnabled) continue;
 
-            if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
+            if (aCrop.canBeHarvested(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
-                ItemStack[] aHarvest = tCrop.harvest_automated(true);
+                ItemStack[] aHarvest = tCrop.harvest_automated(this.harvestFullGrowth);
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
-                    if (!ItemUtils.checkForInvalidItems(aStack)) continue;
+                    if (aStack == null) continue;
                     if (this.mTier * 5 > MathUtils.randInt(1, 100)) {
                         aStack.stackSize += Math.floor(tCrop.getGain() / 10);
                         Logger.INFO("Bonus output given for " + aCrop.displayName());
@@ -300,9 +296,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyWeedEx(aCrop)) {
-            if (consumeWeedEX(false)) {
-                // Logger.INFO("Consumed Weed-EX.");
-            }
+            consumeWeedEX(false);
         }
         if (aCrop.getCrop() == null || aCrop.getCrop()
             .equals(Crops.weed)) return;
@@ -311,9 +305,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyFertilizer(aCrop)) {
-            if (consumeFertilizer(false)) {
-                // Logger.INFO("Consumed Fert.");
-            }
+            consumeFertilizer(false);
         }
         if (this.getFluidAmount() > 0 && this.getBaseMetaTileEntity()
             .getUniversalEnergyStored() >= getMinimumStoredEU()
@@ -482,6 +474,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
             "Secondary mode can Hydrate/Fertilize/Weed-EX",
+            "You can set the mode to harvest any growth stage crop or only fully mature ones",
             "Consumes " + powerUsage() + "eu per harvest",
             "Consumes " + powerUsageSecondary() + "eu per secondary operation",
             "Can harvest 2 block levels above and below itself",
@@ -489,11 +482,6 @@ public class MTECropHarvestor extends MTEBasicTank {
             "Has " + (this.mTier * 5) + "% chance for extra drops",
             "Holds " + this.getCapacity() + "L of Water",
             GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return true;
     }
 
     @Override
@@ -574,6 +562,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
         aNBT.setBoolean("mHarvestEnabled", this.mHarvestEnabled);
+        aNBT.setBoolean("harvestFullGrowth", this.harvestFullGrowth);
     }
 
     @Override
@@ -582,6 +571,9 @@ public class MTECropHarvestor extends MTEBasicTank {
         this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
         if (aNBT.hasKey("mHarvestEnabled")) {
             this.mHarvestEnabled = aNBT.getBoolean("mHarvestEnabled");
+        }
+        if (aNBT.hasKey("harvestFullGrowth")) {
+            this.harvestFullGrowth = aNBT.getBoolean("harvestFullGrowth");
         }
     }
 
@@ -602,6 +594,14 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .addTooltip(1, "Disable Harvest")
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(67, 63)
+                .setSize(18, 18));
+        builder.widget(
+            new CycleButtonWidget().setToggle(() -> harvestFullGrowth, val -> harvestFullGrowth = val)
+                .setTexture(GTPPUITextures.OVERLAY_BUTTON_HARVESTER_GROWTH_TOGGLE)
+                .addTooltip(0, "Enable Full Growth Harvest")
+                .addTooltip(1, "Disable Full Growth Harvest")
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .setPos(87, 63)
                 .setSize(18, 18));
         builder.widget(
             SlotGroup.ofItemHandler(inventoryHandler, 2)
@@ -636,7 +636,11 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .setProgress(() -> (float) getFluidAmount() / getCapacity())
                     .setSynced(false, false)
                     .dynamicTooltip(
-                        () -> Collections.singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
+                        () -> Collections.singletonList(
+                            StatCollector.translateToLocalFormatted(
+                                "gtpp.gui.crop_harvestor.tooltip.water",
+                                getFluidAmount(),
+                                getCapacity())))
                     .setPos(47, 7)
                     .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));

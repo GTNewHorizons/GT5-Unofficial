@@ -4,7 +4,6 @@ import static gregtech.api.util.GTRecipeConstants.RTG_DURATION_IN_DAYS;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
-import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_1;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_2;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_3;
@@ -46,11 +45,12 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.util.data.StringUtils;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaItemX32;
@@ -84,27 +84,27 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 Battery_RE_EV_Sodium.ID,
                 "Quad Cell Sodium Battery",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 2L),
-                getTcAspectStack(TCAspects.METALLUM, 2L),
-                getTcAspectStack(TCAspects.POTENTIA, 2L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 2L),
+                new TC_AspectStack(TCAspects.METALLUM, 2L),
+                new TC_AspectStack(TCAspects.POTENTIA, 2L)));
 
         GregtechItemList.Battery_RE_EV_Cadmium.set(
             this.addItem(
                 Battery_RE_EV_Cadmium.ID,
                 "Quad Cell Cadmium Battery",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.METALLUM, 1L),
-                getTcAspectStack(TCAspects.POTENTIA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.METALLUM, 1L),
+                new TC_AspectStack(TCAspects.POTENTIA, 1L)));
 
         GregtechItemList.Battery_RE_EV_Lithium.set(
             this.addItem(
                 Battery_RE_EV_Lithium.ID,
                 "Quad Cell Lithium Battery",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 3L),
-                getTcAspectStack(TCAspects.METALLUM, 3L),
-                getTcAspectStack(TCAspects.POTENTIA, 3L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 3L),
+                new TC_AspectStack(TCAspects.METALLUM, 3L),
+                new TC_AspectStack(TCAspects.POTENTIA, 3L)));
 
         /**
          * Power Gems
@@ -114,27 +114,27 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 Battery_Gem_1.ID,
                 "Proton Cell",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 8L),
-                getTcAspectStack(TCAspects.METALLUM, 24L),
-                getTcAspectStack(TCAspects.POTENTIA, 16L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 8L),
+                new TC_AspectStack(TCAspects.METALLUM, 24L),
+                new TC_AspectStack(TCAspects.POTENTIA, 16L)));
 
         GregtechItemList.Battery_Gem_2.set(
             this.addItem(
                 Battery_Gem_2.ID,
                 "Electron Cell",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 16L),
-                getTcAspectStack(TCAspects.METALLUM, 32L),
-                getTcAspectStack(TCAspects.POTENTIA, 32L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 16L),
+                new TC_AspectStack(TCAspects.METALLUM, 32L),
+                new TC_AspectStack(TCAspects.POTENTIA, 32L)));
 
         GregtechItemList.Battery_Gem_3.set(
             this.addItem(
                 Battery_Gem_3.ID,
                 "Quark Entanglement",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 32L),
-                getTcAspectStack(TCAspects.METALLUM, 48L),
-                getTcAspectStack(TCAspects.POTENTIA, 64L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 32L),
+                new TC_AspectStack(TCAspects.METALLUM, 48L),
+                new TC_AspectStack(TCAspects.POTENTIA, 64L)));
 
         // RTG Pellet
         GregtechItemList.Pellet_RTG_PU238.set(
@@ -142,36 +142,36 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 Pellet_RTG_PU238.ID,
                 StringUtils.superscript("238") + "Pu Pellet",
                 "",
-                getTcAspectStack(TCAspects.RADIO, 4L),
-                getTcAspectStack(TCAspects.POTENTIA, 2L),
-                getTcAspectStack(TCAspects.METALLUM, 2L)));
+                new TC_AspectStack(TCAspects.RADIO, 4L),
+                new TC_AspectStack(TCAspects.POTENTIA, 2L),
+                new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_SR90.set(
             this.addItem(
                 Pellet_RTG_SR90.ID,
                 StringUtils.superscript("90") + "Sr Pellet",
                 "",
-                getTcAspectStack(TCAspects.RADIO, 4L),
-                getTcAspectStack(TCAspects.POTENTIA, 2L),
-                getTcAspectStack(TCAspects.METALLUM, 2L)));
+                new TC_AspectStack(TCAspects.RADIO, 4L),
+                new TC_AspectStack(TCAspects.POTENTIA, 2L),
+                new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_PO210.set(
             this.addItem(
                 Pellet_RTG_PO210.ID,
                 StringUtils.superscript("210") + "Po Pellet",
                 "",
-                getTcAspectStack(TCAspects.RADIO, 4L),
-                getTcAspectStack(TCAspects.POTENTIA, 2L),
-                getTcAspectStack(TCAspects.METALLUM, 2L)));
+                new TC_AspectStack(TCAspects.RADIO, 4L),
+                new TC_AspectStack(TCAspects.POTENTIA, 2L),
+                new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_AM241.set(
             this.addItem(
                 Pellet_RTG_AM241.ID,
                 StringUtils.superscript("241") + "Am Pellet",
                 "",
-                getTcAspectStack(TCAspects.RADIO, 4L),
-                getTcAspectStack(TCAspects.POTENTIA, 2L),
-                getTcAspectStack(TCAspects.METALLUM, 2L)));
+                new TC_AspectStack(TCAspects.RADIO, 4L),
+                new TC_AspectStack(TCAspects.POTENTIA, 2L),
+                new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         // Computer Cube
         GregtechItemList.Gregtech_Computer_Cube.set(
@@ -179,59 +179,59 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 Gregtech_Computer_Cube.ID,
                 "Gregtech Computer Cube",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 8L),
-                getTcAspectStack(TCAspects.METALLUM, 8L),
-                getTcAspectStack(TCAspects.POTENTIA, 8L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 8L),
+                new TC_AspectStack(TCAspects.METALLUM, 8L),
+                new TC_AspectStack(TCAspects.POTENTIA, 8L)));
 
         GregtechItemList.Cover_Overflow_Valve_LV.set(
             this.addItem(
                 Cover_Overflow_Valve_LV.ID,
                 "Overflow Valve (LV)",
                 "Maximum void amount: 64,000",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.MACHINA, 1L),
-                getTcAspectStack(TCAspects.ITER, 1L),
-                getTcAspectStack(TCAspects.AQUA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.MACHINA, 1L),
+                new TC_AspectStack(TCAspects.ITER, 1L),
+                new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_MV.set(
             this.addItem(
                 Cover_Overflow_Valve_MV.ID,
                 "Overflow Valve (MV)",
                 "Maximum void amount: 512,000",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.MACHINA, 1L),
-                getTcAspectStack(TCAspects.ITER, 1L),
-                getTcAspectStack(TCAspects.AQUA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.MACHINA, 1L),
+                new TC_AspectStack(TCAspects.ITER, 1L),
+                new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_HV.set(
             this.addItem(
                 Cover_Overflow_Valve_HV.ID,
                 "Overflow Valve (HV)",
                 "Maximum void amount: 4,096,000",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.MACHINA, 1L),
-                getTcAspectStack(TCAspects.ITER, 1L),
-                getTcAspectStack(TCAspects.AQUA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.MACHINA, 1L),
+                new TC_AspectStack(TCAspects.ITER, 1L),
+                new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_EV.set(
             this.addItem(
                 Cover_Overflow_Valve_EV.ID,
                 "Overflow Valve (EV)",
                 "Maximum void amount: 32,768,000",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.MACHINA, 1L),
-                getTcAspectStack(TCAspects.ITER, 1L),
-                getTcAspectStack(TCAspects.AQUA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.MACHINA, 1L),
+                new TC_AspectStack(TCAspects.ITER, 1L),
+                new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_IV.set(
             this.addItem(
                 Cover_Overflow_Valve_IV.ID,
                 "Overflow Valve (IV)",
                 "Maximum void amount: 262,144,000",
-                getTcAspectStack(TCAspects.ELECTRUM, 1L),
-                getTcAspectStack(TCAspects.MACHINA, 1L),
-                getTcAspectStack(TCAspects.ITER, 1L),
-                getTcAspectStack(TCAspects.AQUA, 1L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                new TC_AspectStack(TCAspects.MACHINA, 1L),
+                new TC_AspectStack(TCAspects.ITER, 1L),
+                new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         // Fusion Reactor MK4 Singularity
         GregtechItemList.Compressed_Fusion_Reactor.set(
@@ -257,9 +257,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 Battery_Gem_4.ID,
                 "Graviton Anomaly",
                 "Reusable",
-                getTcAspectStack(TCAspects.ELECTRUM, 64L),
-                getTcAspectStack(TCAspects.METALLUM, 64L),
-                getTcAspectStack(TCAspects.POTENTIA, 64L)));
+                new TC_AspectStack(TCAspects.ELECTRUM, 64L),
+                new TC_AspectStack(TCAspects.METALLUM, 64L),
+                new TC_AspectStack(TCAspects.POTENTIA, 64L)));
 
         /*
          * High Tier 'Saws' for the tree Farm
@@ -286,9 +286,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                     IDs[tier - 1],
                     "Transmission Component (" + GTValues.VN[tier] + ")",
                     "",
-                    getTcAspectStack(TCAspects.ELECTRUM, tier),
-                    getTcAspectStack(TCAspects.MACHINA, tier),
-                    getTcAspectStack(TCAspects.MAGNETO, tier)));
+                    new TC_AspectStack(TCAspects.ELECTRUM, tier),
+                    new TC_AspectStack(TCAspects.MACHINA, tier),
+                    new TC_AspectStack(TCAspects.MAGNETO, tier)));
         }
 
         // Distillus Chip

@@ -42,11 +42,6 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 5;
-    }
-
-    @Override
     public boolean canApply(ItemStack itemStack) {
         return false;
     }

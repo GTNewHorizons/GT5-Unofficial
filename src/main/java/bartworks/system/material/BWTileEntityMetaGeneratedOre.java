@@ -76,7 +76,7 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
         if (shouldSilkTouch) {
             rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         } else {
-            switch (GTMod.gregtechproxy.oreDropSystem) {
+            switch (GTMod.proxy.oreDropSystem) {
                 case Item -> {
                     rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                 }
@@ -97,16 +97,8 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
                         rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                     }
                 }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
-                }
-                case Block -> {
-                    // Regular ore
+                case UnifiedBlock, PerDimBlock, Block -> {
+                    // Unified, Per Dimension or Regular ore
                     rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
                 }
             }

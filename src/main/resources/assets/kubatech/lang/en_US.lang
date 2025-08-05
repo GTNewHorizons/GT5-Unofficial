@@ -30,12 +30,54 @@ kubatech.command.tea.usage=<username> get/set/add (<amount>)
 GT5U.gui.text.EEC_nospawner=No powered spawner!
 GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
 GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
-GT5U.gui.text.MegaApiary_slotoverflow=Too much bees inside!
+GT5U.gui.text.MegaApiary_slotoverflow=Too many bees inside!
 GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
 GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+
+kubatech.gui.text.configuration=Configuration
+
+kubatech.gui.text.tea_ultimate.status=STATUS
+kubatech.gui.text.tea_ultimate.tea=Tea
+kubatech.gui.text.tea_ultimate.tea_limit=Tea limit
+kubatech.gui.text.tea_ultimate.exchange=EXCHANGE
+kubatech.gui.text.tea_ultimate.exchange.cost=Cost: %s Tea
+kubatech.gui.text.tea_ultimate.benefits=BENEFITS
+kubatech.gui.tooltip.tea_ultimate.tea_acceptor_research_note=Tea Acceptor Research Note
+
+kubatech.gui.text.tea_acceptor.name=Tea Acceptor
+kubatech.gui.text.tea_acceptor.tea=[Tea]
+kubatech.gui.text.tea_acceptor.not_owner=This is not your block
+kubatech.gui.text.tea_acceptor.in=IN: %s/t
+kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
+
+kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
+kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal!
+kubatech.gui.text.eec.void_all_damaged=Void all damaged and enchanted items
+kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like Sticky Sword!
+kubatech.gui.tooltip.eec.ritual_mode=Ritual mode
+
+kubatech.gui.text.inventory=Inventory
+kubatech.gui.text.status=Status
+kubatech.gui.text.operating=Operating
+kubatech.gui.text.input=Input
+kubatech.gui.text.output=Output
+kubatech.gui.text.eig.setup_mode=Setup mode
+kubatech.gui.text.eig.disabled=Disabled
+kubatech.gui.text.eig.enabled=Enabled
+kubatech.gui.text.eig.ic2_mode=IC2 mode
+kubatech.gui.text.eig.no_humidity_mode=No Humidity mode
+kubatech.gui.text.mia.primary_mode=Primary mode
+kubatech.gui.text.mia.normal=Normal
+kubatech.gui.text.mia.swarmer=Swarmer
+kubatech.gui.text.mia.secondary_mode=Secondary mode
+
+kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
+kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
+kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
+kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
 
 # info data
 ## general

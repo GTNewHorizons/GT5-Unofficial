@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -264,7 +261,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         int pollutionPerSecond = 0;
         for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
             // applying scaling factor
-            pollutionPerSecond += (int) Math.pow(SCALING_FACTOR, min(tTier, tHatch.mTier));
+            pollutionPerSecond += (int) GTUtility.powInt(SCALING_FACTOR, min(tTier, tHatch.mTier));
         }
         // apply the boost
         if (isRateBoosted) {
@@ -456,11 +453,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public abstract int getCasingMeta();
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
             size = 2 * multiTier + 1;
@@ -537,24 +529,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed || !overlayTickets.isEmpty()) return false;
-        int[] xyz = new int[3];
-        ExtendedFacing ext = getExtendedFacing();
-        ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
-        IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
-        // we know this multi can only ever face upwards, so just use +y directly
-        ExtendedFacing direction = ExtendedFacing.of(ForgeDirection.UP);
-        GTUtilityClient.renderTurbineOverlay(
-            aWorld,
-            xyz[0] + aX,
-            xyz[1] + aY,
-            xyz[2] + aZ,
-            aRenderer,
-            direction,
-            GregTechAPI.sBlockCasingsNH,
-            tTextures);
-        return false;
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     @Override
@@ -578,11 +554,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             /**/
         }
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -626,7 +597,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 // negative EU triggers special EU consumption behavior. however it does not produce power.
                 EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.max_energy_income_tie",
+                "GT5U.infodata.max_energy_income_tier",
                 EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(

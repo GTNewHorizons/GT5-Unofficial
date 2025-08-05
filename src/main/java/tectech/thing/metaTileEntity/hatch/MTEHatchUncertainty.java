@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -157,11 +158,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -378,7 +374,10 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
             .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
 
         builder.widget(
-            new TextWidget().setStringSupplier(() -> "Status: " + (status == 0 ? "OK" : "NG"))
+            new TextWidget()
+                .setStringSupplier(
+                    () -> (status == 0 ? StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ok")
+                        : StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ng")))
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setPos(46, 7));
 

@@ -132,11 +132,6 @@ public class MTELightningRod extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
     public long maxEUStore() {
         return 50000000;
     }

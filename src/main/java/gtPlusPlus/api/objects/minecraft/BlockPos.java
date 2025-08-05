@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class BlockPos implements Serializable {
@@ -14,12 +17,12 @@ public class BlockPos implements Serializable {
     public final int zPos;
     public final int dim;
 
-    public static BlockPos generateBlockPos(String sUUID) {
+    public static @NotNull BlockPos generateBlockPos(@NotNull String sUUID) {
         String[] s2 = sUUID.split("@");
         return new BlockPos(s2);
     }
 
-    public BlockPos(String[] s) {
+    public BlockPos(String @NotNull [] s) {
         this(Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[0]));
     }
 
@@ -30,19 +33,19 @@ public class BlockPos implements Serializable {
         this.dim = dim;
     }
 
-    public BlockPos(int x, int y, int z, World world) {
+    public BlockPos(int x, int y, int z, @Nullable World world) {
         this(x, y, z, world == null ? 0 : world.provider.dimensionId);
     }
 
-    public BlockPos(IGregTechTileEntity b) {
+    public BlockPos(@NotNull IGregTechTileEntity b) {
         this(b.getXCoord(), b.getYCoord(), b.getZCoord(), b.getWorld());
     }
 
-    public String getLocationString() {
+    public @NotNull String getLocationString() {
         return "[X: " + this.xPos + "][Y: " + this.yPos + "][Z: " + this.zPos + "][Dim: " + this.dim + "]";
     }
 
-    public String getUniqueIdentifier() {
+    public @NotNull String getUniqueIdentifier() {
         return this.dim + "@" + this.xPos + "@" + this.yPos + "@" + this.zPos;
     }
 
@@ -57,7 +60,7 @@ public class BlockPos implements Serializable {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other == null) {
             return false;
         }
@@ -72,7 +75,7 @@ public class BlockPos implements Serializable {
             && this.dim == otherPoint.dim;
     }
 
-    public BlockPos getUp() {
+    public @NotNull BlockPos getUp() {
         return new BlockPos(this.xPos, this.yPos + 1, this.zPos, this.dim);
     }
 

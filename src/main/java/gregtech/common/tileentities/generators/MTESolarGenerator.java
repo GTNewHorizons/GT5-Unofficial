@@ -97,11 +97,6 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         return false;
     }
 
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
     // No logic for charge vs decharge because generator should not be chargeable
     @Override
     public int rechargerSlotCount() {

@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -92,8 +93,8 @@ public class MTEExoticModule extends MTEBaseModule {
     private boolean recipeInProgress = false;
     private boolean recipeRegenerated = false;
     private boolean magmatterMode = false;
-    private FluidStack[] randomizedFluidInput = new FluidStack[] {};
-    private ItemStack[] randomizedItemInput = new ItemStack[] {};
+    private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
+    private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
     private BigInteger powerForRecipe = BigInteger.ZERO;
     private static final int NUMBER_OF_INPUTS = 7;
@@ -203,6 +204,7 @@ public class MTEExoticModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
     }
@@ -375,11 +377,6 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound NBT) {
 
         NBT.setBoolean("recipeInProgress", recipeInProgress);
@@ -436,7 +433,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialsUEVplus.MagMatter.getMolten(576L * actualParallel);
+                outputFluid = MaterialsUEVplus.MagMatter.getMolten(actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000L * actualParallel);
             }
