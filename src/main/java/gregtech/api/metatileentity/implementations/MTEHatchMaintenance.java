@@ -225,6 +225,28 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
+    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+        IGregTechTileEntity tMte = getBaseMetaTileEntity();
+
+        if (tMte == null || tMte.hasMufflerUpgrade()) return;
+
+        if(mMaintenanceSound == null) {
+            // Use default maintenance sound
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+        }
+
+        GTUtility.sendSoundToPlayers(
+            tMte.getWorld(),
+            mMaintenanceSound,
+            mMaintenanceSoundStrength,
+            mMaintenanceSoundModulation,
+            tMte.getXCoord(),
+            tMte.getYCoord(),
+            tMte.getZCoord());
+
+        setMaintenanceSound((String) null, 1.0F, 1.0F);
+    }
+
     public boolean autoMaintainance() {
         return isRecipeInputEqual(true);
     }
