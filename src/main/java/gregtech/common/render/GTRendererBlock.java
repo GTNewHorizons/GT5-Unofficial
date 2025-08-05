@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -53,7 +52,7 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.SBRContext;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -83,9 +82,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     private final ITexture[] overlayHolder = new ITexture[1];
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
-        RenderBlocks aRenderer, LightingHelper lightingHelper, int worldRenderPass) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public boolean renderStandardBlock(SBRContext ctx) {
+        final TileEntity tTileEntity = ctx.world.getTileEntity(ctx.x, ctx.y, ctx.z);
         if (tTileEntity instanceof IPipeRenderedTileEntity pipeRenderedTileEntity) {
             textureArray[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
             textureArray[1] = pipeRenderedTileEntity.getTextureCovered(UP);
@@ -93,283 +91,74 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             textureArray[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
             textureArray[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
             textureArray[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
-            return renderStandardBlock(
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                aBlock,
-                aRenderer,
-                textureArray,
-                lightingHelper,
-                worldRenderPass);
+            return renderStandardBlock(ctx, textureArray);
         }
         if (tTileEntity instanceof IAllSidedTexturedTileEntity allSidedTexturedTileEntity) {
-            ITexture[] texture = allSidedTexturedTileEntity.getTexture(aBlock);
+            ITexture[] texture = allSidedTexturedTileEntity.getTexture(ctx.block);
             textureArray[0] = texture;
             textureArray[1] = texture;
             textureArray[2] = texture;
             textureArray[3] = texture;
             textureArray[4] = texture;
             textureArray[5] = texture;
-            return renderStandardBlock(
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                aBlock,
-                aRenderer,
-                textureArray,
-                lightingHelper,
-                worldRenderPass);
+            return renderStandardBlock(ctx, textureArray);
         }
         if (tTileEntity instanceof ITexturedTileEntity texturedTileEntity) {
-            textureArray[0] = texturedTileEntity.getTexture(aBlock, DOWN);
-            textureArray[1] = texturedTileEntity.getTexture(aBlock, UP);
-            textureArray[2] = texturedTileEntity.getTexture(aBlock, NORTH);
-            textureArray[3] = texturedTileEntity.getTexture(aBlock, SOUTH);
-            textureArray[4] = texturedTileEntity.getTexture(aBlock, WEST);
-            textureArray[5] = texturedTileEntity.getTexture(aBlock, EAST);
-            return renderStandardBlock(
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                aBlock,
-                aRenderer,
-                textureArray,
-                lightingHelper,
-                worldRenderPass);
+            textureArray[0] = texturedTileEntity.getTexture(ctx.block, DOWN);
+            textureArray[1] = texturedTileEntity.getTexture(ctx.block, UP);
+            textureArray[2] = texturedTileEntity.getTexture(ctx.block, NORTH);
+            textureArray[3] = texturedTileEntity.getTexture(ctx.block, SOUTH);
+            textureArray[4] = texturedTileEntity.getTexture(ctx.block, WEST);
+            textureArray[5] = texturedTileEntity.getTexture(ctx.block, EAST);
+            return renderStandardBlock(ctx, textureArray);
         }
 
         return false;
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
-        RenderBlocks aRenderer, ITexture[][] aTextures, LightingHelper lightingHelper, int worldRenderPass) {
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.setRenderBoundsFromBlock(aBlock);
+    public boolean renderStandardBlock(SBRContext ctx, ITexture[][] aTextures) {
+        ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
 
-        ITexture[] overlays = RenderOverlay.get(aWorld, aX, aY, aZ);
+        ITexture[] overlays = RenderOverlay.get(ctx.world, ctx.x, ctx.y, ctx.z);
         if (overlays != null) {
-            renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_DOWN],
-                true,
-                worldRenderPass);
+            renderNegativeYFacing(ctx, aTextures[SIDE_DOWN], true);
             if (overlays[SIDE_DOWN] != null) {
                 overlayHolder[0] = overlays[SIDE_DOWN];
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, overlayHolder, true);
             }
-            renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_UP],
-                true,
-                worldRenderPass);
+            renderPositiveYFacing(ctx, aTextures[SIDE_UP], true);
             if (overlays[SIDE_UP] != null) {
                 overlayHolder[0] = overlays[SIDE_UP];
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, overlayHolder, true);
             }
-            renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_NORTH],
-                true,
-                worldRenderPass);
+            renderNegativeZFacing(ctx, aTextures[SIDE_NORTH], true);
             if (overlays[SIDE_NORTH] != null) {
                 overlayHolder[0] = overlays[SIDE_NORTH];
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, overlayHolder, true);
             }
-            renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_SOUTH],
-                true,
-                worldRenderPass);
+            renderPositiveZFacing(ctx, aTextures[SIDE_SOUTH], true);
             if (overlays[SIDE_SOUTH] != null) {
                 overlayHolder[0] = overlays[SIDE_SOUTH];
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, overlayHolder, true);
             }
-            renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_WEST],
-                true,
-                worldRenderPass);
+            renderNegativeXFacing(ctx, aTextures[SIDE_WEST], true);
             if (overlays[SIDE_WEST] != null) {
                 overlayHolder[0] = overlays[SIDE_WEST];
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, overlayHolder, true);
             }
-            renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_EAST],
-                true,
-                worldRenderPass);
+            renderPositiveXFacing(ctx, aTextures[SIDE_EAST], true);
             if (overlays[SIDE_EAST] != null) {
                 overlayHolder[0] = overlays[SIDE_EAST];
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    overlayHolder,
-                    true,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, overlayHolder, true);
             }
         } else {
-            renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_DOWN],
-                true,
-                worldRenderPass);
-            renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_UP],
-                true,
-                worldRenderPass);
-            renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_NORTH],
-                true,
-                worldRenderPass);
-            renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_SOUTH],
-                true,
-                worldRenderPass);
-            renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_WEST],
-                true,
-                worldRenderPass);
-            renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                aTextures[SIDE_EAST],
-                true,
-                worldRenderPass);
+            renderNegativeYFacing(ctx, aTextures[SIDE_DOWN], true);
+            renderPositiveYFacing(ctx, aTextures[SIDE_UP], true);
+            renderNegativeZFacing(ctx, aTextures[SIDE_NORTH], true);
+            renderPositiveZFacing(ctx, aTextures[SIDE_SOUTH], true);
+            renderNegativeXFacing(ctx, aTextures[SIDE_WEST], true);
+            renderPositiveXFacing(ctx, aTextures[SIDE_EAST], true);
         }
         return true;
     }
@@ -378,14 +167,11 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     final ITexture[][] tCovers = new ITexture[VALID_DIRECTIONS.length][];
     final boolean[] tIsCovered = new boolean[VALID_DIRECTIONS.length];
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
-        IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        int worldRenderPass) {
+    public boolean renderPipeBlock(SBRContext ctx, IPipeRenderedTileEntity aTileEntity) {
         final byte aConnections = aTileEntity.getConnections();
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, lightingHelper, worldRenderPass);
+            return renderStandardBlock(ctx);
         }
         // Range of block occupied by pipe
         final float pipeMin = (blockMax - thickness) / 2.0F;
@@ -394,1417 +180,337 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
             final ForgeDirection iSide = VALID_DIRECTIONS[i];
             tIsCovered[i] = aTileEntity.hasCoverAtSide(iSide);
-            tCovers[i] = aTileEntity.getTexture(aBlock, iSide);
+            tCovers[i] = aTileEntity.getTexture(ctx.block, iSide);
             tIcons[i] = aTileEntity.getTextureUncovered(iSide);
         }
 
         switch (aConnections) {
             case NO_CONNECTION -> {
-                aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_UP],
-                    false,
-                    worldRenderPass);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_WEST],
-                    false,
-                    worldRenderPass);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
+                renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
             }
             case CONNECTED_EAST | CONNECTED_WEST -> {
                 // EAST - WEST Pipe Sides
-                aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_UP],
-                    false,
-                    worldRenderPass);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
+                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
 
                 // EAST - WEST Pipe Ends
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_WEST],
-                    false,
-                    worldRenderPass);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
             }
             case CONNECTED_DOWN | CONNECTED_UP -> {
                 // UP - DOWN Pipe Sides
-                aBlock.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, blockMax, pipeMax);
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_WEST],
-                    false,
-                    worldRenderPass);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.block.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, blockMax, pipeMax);
+                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
+                renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
 
                 // UP - DOWN Pipe Ends
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
             }
             case CONNECTED_NORTH | CONNECTED_SOUTH -> {
                 // NORTH - SOUTH Pipe Sides
-                aBlock.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, blockMax);
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_UP],
-                    false,
-                    worldRenderPass);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_WEST],
-                    false,
-                    worldRenderPass);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.block.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, blockMax);
+                ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
 
                 // NORTH - SOUTH Pipe Ends
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
             }
             default -> {
                 if ((aConnections & CONNECTED_WEST) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, pipeMin, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_DOWN],
-                        false,
-                        worldRenderPass);
-                    renderPositiveYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_UP],
-                        false,
-                        worldRenderPass);
-                    renderNegativeZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_NORTH],
-                        false,
-                        worldRenderPass);
-                    renderPositiveZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_SOUTH],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, pipeMin, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                    renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                    renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                    renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
                 }
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
                 if ((aConnections & CONNECTED_EAST) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(pipeMax, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_DOWN],
-                        false,
-                        worldRenderPass);
-                    renderPositiveYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_UP],
-                        false,
-                        worldRenderPass);
-                    renderNegativeZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_NORTH],
-                        false,
-                        worldRenderPass);
-                    renderPositiveZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_SOUTH],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(pipeMax, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                    renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                    renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                    renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
                 }
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
                 if ((aConnections & CONNECTED_DOWN) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, pipeMin, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_NORTH],
-                        false,
-                        worldRenderPass);
-                    renderPositiveZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_SOUTH],
-                        false,
-                        worldRenderPass);
-                    renderNegativeXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_WEST],
-                        false,
-                        worldRenderPass);
-                    renderPositiveXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_EAST],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, pipeMin, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                    renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
+                    renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                    renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
                 }
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
                 if ((aConnections & CONNECTED_UP) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(pipeMin, pipeMax, pipeMin, pipeMax, blockMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_NORTH],
-                        false,
-                        worldRenderPass);
-                    renderPositiveZFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_SOUTH],
-                        false,
-                        worldRenderPass);
-                    renderNegativeXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_WEST],
-                        false,
-                        worldRenderPass);
-                    renderPositiveXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_EAST],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(pipeMin, pipeMax, pipeMin, pipeMax, blockMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
+                    renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
+                    renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                    renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
                 }
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
                 if ((aConnections & CONNECTED_NORTH) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, pipeMin);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_DOWN],
-                        false,
-                        worldRenderPass);
-                    renderPositiveYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_UP],
-                        false,
-                        worldRenderPass);
-                    renderNegativeXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_WEST],
-                        false,
-                        worldRenderPass);
-                    renderPositiveXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_EAST],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, pipeMin);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                    renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                    renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                    renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
                 }
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tIcons[SIDE_NORTH], false);
                 if ((aConnections & CONNECTED_SOUTH) == 0) {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
                 } else {
-                    aBlock.setBlockBounds(pipeMin, pipeMin, pipeMax, pipeMax, pipeMax, blockMax);
-                    aRenderer.setRenderBoundsFromBlock(aBlock);
-                    renderNegativeYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_DOWN],
-                        false,
-                        worldRenderPass);
-                    renderPositiveYFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_UP],
-                        false,
-                        worldRenderPass);
-                    renderNegativeXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_WEST],
-                        false,
-                        worldRenderPass);
-                    renderPositiveXFacing(
-                        aWorld,
-                        aRenderer,
-                        lightingHelper,
-                        aBlock,
-                        aX,
-                        aY,
-                        aZ,
-                        tIcons[SIDE_EAST],
-                        false,
-                        worldRenderPass);
+                    ctx.block.setBlockBounds(pipeMin, pipeMin, pipeMax, pipeMax, pipeMax, blockMax);
+                    ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+                    renderNegativeYFacing(ctx, tIcons[SIDE_DOWN], false);
+                    renderPositiveYFacing(ctx, tIcons[SIDE_UP], false);
+                    renderNegativeXFacing(ctx, tIcons[SIDE_WEST], false);
+                    renderPositiveXFacing(ctx, tIcons[SIDE_EAST], false);
                 }
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tIcons[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, tIcons[SIDE_SOUTH], false);
             }
         }
 
         // Render covers on pipes
         if (tIsCovered[SIDE_DOWN]) {
-            aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, coverInnerMin, blockMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, coverInnerMin, blockMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_NORTH]) {
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tCovers[SIDE_DOWN], false);
             }
             if (!tIsCovered[SIDE_SOUTH]) {
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, tCovers[SIDE_DOWN], false);
             }
             if (!tIsCovered[SIDE_WEST]) {
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tCovers[SIDE_DOWN], false);
             }
             if (!tIsCovered[SIDE_EAST]) {
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, tCovers[SIDE_DOWN], false);
             }
-            renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_DOWN],
-                false,
-                worldRenderPass);
+            renderPositiveYFacing(ctx, tCovers[SIDE_DOWN], false);
             if ((aConnections & CONNECTED_DOWN) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, blockMin, pipeMin);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, blockMin, pipeMin);
+                renderNegativeYFacing(ctx, tCovers[SIDE_DOWN], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMin, blockMin, pipeMax, blockMax, blockMin, blockMax);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, pipeMax, blockMax, blockMin, blockMax);
+                renderNegativeYFacing(ctx, tCovers[SIDE_DOWN], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMin, blockMin, pipeMin, pipeMin, blockMin, pipeMax);
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_DOWN],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, pipeMin, pipeMin, blockMin, pipeMax);
+                renderNegativeYFacing(ctx, tCovers[SIDE_DOWN], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(pipeMax, blockMin, pipeMin, blockMax, blockMin, pipeMax);
+                ctx.renderer.setRenderBounds(pipeMax, blockMin, pipeMin, blockMax, blockMin, pipeMax);
             }
-            renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_DOWN],
-                false,
-                worldRenderPass);
+            renderNegativeYFacing(ctx, tCovers[SIDE_DOWN], false);
         }
 
         if (tIsCovered[SIDE_UP]) {
-            aBlock.setBlockBounds(blockMin, coverInnerMax, blockMin, blockMax, blockMax, blockMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(blockMin, coverInnerMax, blockMin, blockMax, blockMax, blockMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_NORTH]) {
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tCovers[SIDE_UP], false);
             }
             if (!tIsCovered[SIDE_SOUTH]) {
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, tCovers[SIDE_UP], false);
             }
             if (!tIsCovered[SIDE_WEST]) {
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tCovers[SIDE_UP], false);
             }
             if (!tIsCovered[SIDE_EAST]) {
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, tCovers[SIDE_UP], false);
             }
-            renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_UP],
-                false,
-                worldRenderPass);
+            renderNegativeYFacing(ctx, tCovers[SIDE_UP], false);
             if ((aConnections & CONNECTED_UP) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMin, blockMax, blockMin, blockMax, blockMax, pipeMin);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMax, blockMin, blockMax, blockMax, pipeMin);
+                renderPositiveYFacing(ctx, tCovers[SIDE_UP], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMin, blockMax, pipeMax, blockMax, blockMax, blockMax);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMax, pipeMax, blockMax, blockMax, blockMax);
+                renderPositiveYFacing(ctx, tCovers[SIDE_UP], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMin, blockMax, pipeMin, pipeMin, blockMax, pipeMax);
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_UP],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMax, pipeMin, pipeMin, blockMax, pipeMax);
+                renderPositiveYFacing(ctx, tCovers[SIDE_UP], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(pipeMax, blockMax, pipeMin, blockMax, blockMax, pipeMax);
+                ctx.renderer.setRenderBounds(pipeMax, blockMax, pipeMin, blockMax, blockMax, pipeMax);
             }
-            renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_UP],
-                false,
-                worldRenderPass);
+            renderPositiveYFacing(ctx, tCovers[SIDE_UP], false);
         }
 
         if (tIsCovered[SIDE_NORTH]) {
-            aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, coverInnerMin);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, coverInnerMin);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_DOWN]) {
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tCovers[SIDE_NORTH], false);
             }
             if (!tIsCovered[SIDE_UP]) {
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, tCovers[SIDE_NORTH], false);
             }
             if (!tIsCovered[SIDE_WEST]) {
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tCovers[SIDE_NORTH], false);
             }
             if (!tIsCovered[SIDE_EAST]) {
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, tCovers[SIDE_NORTH], false);
             }
-            renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_NORTH],
-                false,
-                worldRenderPass);
+            renderPositiveZFacing(ctx, tCovers[SIDE_NORTH], false);
             if ((aConnections & CONNECTED_NORTH) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, pipeMin, blockMin);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, pipeMin, blockMin);
+                renderNegativeZFacing(ctx, tCovers[SIDE_NORTH], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMax, blockMax, blockMin);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMax, blockMax, blockMin);
+                renderNegativeZFacing(ctx, tCovers[SIDE_NORTH], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMin, pipeMin, blockMin, pipeMin, pipeMax, blockMin);
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_NORTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMin, pipeMin, pipeMax, blockMin);
+                renderNegativeZFacing(ctx, tCovers[SIDE_NORTH], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(pipeMax, pipeMin, blockMin, blockMax, pipeMax, blockMin);
+                ctx.renderer.setRenderBounds(pipeMax, pipeMin, blockMin, blockMax, pipeMax, blockMin);
             }
-            renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_NORTH],
-                false,
-                worldRenderPass);
+            renderNegativeZFacing(ctx, tCovers[SIDE_NORTH], false);
         }
 
         if (tIsCovered[SIDE_SOUTH]) {
-            aBlock.setBlockBounds(blockMin, blockMin, coverInnerMax, blockMax, blockMax, blockMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(blockMin, blockMin, coverInnerMax, blockMax, blockMax, blockMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_DOWN]) {
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tCovers[SIDE_SOUTH], false);
             }
             if (!tIsCovered[SIDE_UP]) {
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, tCovers[SIDE_SOUTH], false);
             }
             if (!tIsCovered[SIDE_WEST]) {
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderNegativeXFacing(ctx, tCovers[SIDE_SOUTH], false);
             }
             if (!tIsCovered[SIDE_EAST]) {
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                renderPositiveXFacing(ctx, tCovers[SIDE_SOUTH], false);
             }
-            renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_SOUTH],
-                false,
-                worldRenderPass);
+            renderNegativeZFacing(ctx, tCovers[SIDE_SOUTH], false);
             if ((aConnections & CONNECTED_SOUTH) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMin, blockMin, blockMax, blockMax, pipeMin, blockMax);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMax, blockMax, pipeMin, blockMax);
+                renderPositiveZFacing(ctx, tCovers[SIDE_SOUTH], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMin, pipeMax, blockMax, blockMax, blockMax, blockMax);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMax, blockMax, blockMax, blockMax);
+                renderPositiveZFacing(ctx, tCovers[SIDE_SOUTH], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMin, pipeMin, blockMax, pipeMin, pipeMax, blockMax);
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_SOUTH],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMax, pipeMin, pipeMax, blockMax);
+                renderPositiveZFacing(ctx, tCovers[SIDE_SOUTH], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(pipeMax, pipeMin, blockMax, blockMax, pipeMax, blockMax);
+                ctx.renderer.setRenderBounds(pipeMax, pipeMin, blockMax, blockMax, pipeMax, blockMax);
             }
-            renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_SOUTH],
-                false,
-                worldRenderPass);
+            renderPositiveZFacing(ctx, tCovers[SIDE_SOUTH], false);
         }
 
         if (tIsCovered[SIDE_WEST]) {
-            aBlock.setBlockBounds(blockMin, blockMin, blockMin, coverInnerMin, blockMax, blockMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(blockMin, blockMin, blockMin, coverInnerMin, blockMax, blockMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_DOWN]) {
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tCovers[SIDE_WEST], false);
             }
             if (!tIsCovered[SIDE_UP]) {
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, tCovers[SIDE_WEST], false);
             }
             if (!tIsCovered[SIDE_NORTH]) {
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tCovers[SIDE_WEST], false);
             }
             if (!tIsCovered[SIDE_SOUTH]) {
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, tCovers[SIDE_WEST], false);
             }
-            renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_WEST],
-                false,
-                worldRenderPass);
+            renderPositiveXFacing(ctx, tCovers[SIDE_WEST], false);
             if ((aConnections & CONNECTED_WEST) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMin, pipeMin, blockMax);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, blockMin, blockMin, blockMin, pipeMin, blockMax);
+                renderNegativeXFacing(ctx, tCovers[SIDE_WEST], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMin, blockMax, blockMax);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMin, blockMax, blockMax);
+                renderNegativeXFacing(ctx, tCovers[SIDE_WEST], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMin, pipeMin, blockMin, blockMin, pipeMax, pipeMin);
-                renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_WEST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMin, pipeMin, blockMin, blockMin, pipeMax, pipeMin);
+                renderNegativeXFacing(ctx, tCovers[SIDE_WEST], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(blockMin, pipeMin, pipeMax, blockMin, pipeMax, blockMax);
+                ctx.renderer.setRenderBounds(blockMin, pipeMin, pipeMax, blockMin, pipeMax, blockMax);
             }
-            renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_WEST],
-                false,
-                worldRenderPass);
+            renderNegativeXFacing(ctx, tCovers[SIDE_WEST], false);
         }
 
         if (tIsCovered[SIDE_EAST]) {
-            aBlock.setBlockBounds(coverInnerMax, blockMin, blockMin, blockMax, blockMax, blockMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
+            ctx.block.setBlockBounds(coverInnerMax, blockMin, blockMin, blockMax, blockMax, blockMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
             if (!tIsCovered[SIDE_DOWN]) {
-                renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderNegativeYFacing(ctx, tCovers[SIDE_EAST], false);
             }
             if (!tIsCovered[SIDE_UP]) {
-                renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderPositiveYFacing(ctx, tCovers[SIDE_EAST], false);
             }
             if (!tIsCovered[SIDE_NORTH]) {
-                renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderNegativeZFacing(ctx, tCovers[SIDE_EAST], false);
             }
             if (!tIsCovered[SIDE_SOUTH]) {
-                renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                renderPositiveZFacing(ctx, tCovers[SIDE_EAST], false);
             }
-            renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_EAST],
-                false,
-                worldRenderPass);
+            renderNegativeXFacing(ctx, tCovers[SIDE_EAST], false);
 
             if ((aConnections & CONNECTED_EAST) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
-                aRenderer.setRenderBounds(blockMax, blockMin, blockMin, blockMax, pipeMin, blockMax);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMax, blockMin, blockMin, blockMax, pipeMin, blockMax);
+                renderPositiveXFacing(ctx, tCovers[SIDE_EAST], false);
                 // Upper panel
-                aRenderer.setRenderBounds(blockMax, pipeMax, blockMin, blockMax, blockMax, blockMax);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMax, pipeMax, blockMin, blockMax, blockMax, blockMax);
+                renderPositiveXFacing(ctx, tCovers[SIDE_EAST], false);
                 // Middle left panel
-                aRenderer.setRenderBounds(blockMax, pipeMin, blockMin, blockMax, pipeMax, pipeMin);
-                renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    lightingHelper,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tCovers[SIDE_EAST],
-                    false,
-                    worldRenderPass);
+                ctx.renderer.setRenderBounds(blockMax, pipeMin, blockMin, blockMax, pipeMax, pipeMin);
+                renderPositiveXFacing(ctx, tCovers[SIDE_EAST], false);
                 // Middle right panel
-                aRenderer.setRenderBounds(blockMax, pipeMin, pipeMax, blockMax, pipeMax, blockMax);
+                ctx.renderer.setRenderBounds(blockMax, pipeMin, pipeMax, blockMax, pipeMax, blockMax);
             }
-            renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                lightingHelper,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tCovers[SIDE_EAST],
-                false,
-                worldRenderPass);
+            renderPositiveXFacing(ctx, tCovers[SIDE_EAST], false);
         }
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.setRenderBoundsFromBlock(aBlock);
+        ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
 
         return true;
     }
@@ -1874,8 +580,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
-        final int worldRenderPass = -1;
+        final SBRContext ctx = new SBRContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -1887,30 +592,30 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             // spotless:off
-            ITexture[] texture = tTileEntity.getTexture(aBlock);
-            renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
+            final ITexture[] texture = tTileEntity.getTexture(aBlock);
+            renderNegativeYFacing(ctx, texture, true);
+            renderPositiveYFacing(ctx, texture, true);
+            renderNegativeZFacing(ctx, texture, true);
+            renderPositiveZFacing(ctx, texture, true);
+            renderNegativeXFacing(ctx, texture, true);
+            renderPositiveXFacing(ctx, texture, true);
             // spotless:on
         } else if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length)
             && aBlock instanceof BlockMachines
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
             && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-                renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer, lightingHelper);
+                renderNormalInventoryMetaTileEntity(ctx);
             } else if (aBlock instanceof BlockFrameBox) {
                 ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 // spotless:off
-            renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
-            renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture, true, worldRenderPass);
+            renderNegativeYFacing(ctx, texture, true);
+            renderPositiveYFacing(ctx, texture, true);
+            renderNegativeZFacing(ctx, texture, true);
+            renderPositiveZFacing(ctx, texture, true);
+            renderNegativeXFacing(ctx, texture, true);
+            renderPositiveXFacing(ctx, texture, true);
             // spotless:on
             } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
                 ITexture[][] texture = texturedBlock.getTextures(aMeta);
@@ -1918,12 +623,12 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                     // spotless:off
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.DOWN.ordinal()], true, worldRenderPass);
-                renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.UP.ordinal()], true, worldRenderPass);
-                renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.NORTH.ordinal()], true, worldRenderPass);
-                renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.SOUTH.ordinal()], true, worldRenderPass);
-                renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.WEST.ordinal()], true, worldRenderPass);
-                renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true, worldRenderPass);
+                renderNegativeYFacing(ctx, texture[ForgeDirection.DOWN.ordinal()], false);
+                renderPositiveYFacing(ctx, texture[ForgeDirection.UP.ordinal()], false);
+                renderNegativeZFacing(ctx, texture[ForgeDirection.NORTH.ordinal()], false);
+                renderPositiveZFacing(ctx, texture[ForgeDirection.SOUTH.ordinal()], false);
+                renderNegativeXFacing(ctx, texture[ForgeDirection.WEST.ordinal()], false);
+                renderPositiveXFacing(ctx, texture[ForgeDirection.EAST.ordinal()], false);
                 // spotless:on
                 }
             }
@@ -1935,17 +640,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer,
-        LightingHelper lightingHelper) {
-        if ((aMeta <= 0) || (aMeta >= GregTechAPI.METATILEENTITIES.length)) {
+    private static void renderNormalInventoryMetaTileEntity(SBRContext ctx) {
+        if ((ctx.meta <= 0) || (ctx.meta >= GregTechAPI.METATILEENTITIES.length)) {
             return;
         }
-        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aMeta];
+        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[ctx.meta];
         if (tMetaTileEntity == null) {
             return;
         }
-        aBlock.setBlockBoundsForItemRender();
-        aRenderer.setRenderBoundsFromBlock(aBlock);
+        ctx.block.setBlockBoundsForItemRender();
+        ctx.renderer.setRenderBoundsFromBlock(ctx.block);
 
         final IGregTechTileEntity iGregTechTileEntity = tMetaTileEntity.getBaseMetaTileEntity();
         // spotless:off
@@ -1955,129 +659,123 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             final float pipeMin = (blockMax - tThickness) / 2.0F;
             final float pipeMax = blockMax - pipeMin;
 
-            aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-            renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true, -1);
-            renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true, -1);
-            renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true, -1);
-            renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, SOUTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true, -1);
-            renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true, -1);
-            renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, EAST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true, -1);
+            ctx.block.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
+            ctx.renderer.setRenderBoundsFromBlock(ctx.block);
+            renderNegativeYFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderPositiveYFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderNegativeZFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderPositiveZFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, SOUTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderNegativeXFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
+            renderPositiveXFacing(ctx, pipeEntity.getTexture(iGregTechTileEntity, EAST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
         } else {
-            renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, DOWN, WEST, -1, true, false), true, -1);
-            renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, UP, WEST, -1, true, false), true, -1);
-            renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, NORTH, WEST, -1, true, false), true, -1);
-            renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, SOUTH, WEST, -1, true, false), true, -1);
-            renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, WEST, WEST, -1, true, false), true, -1);
-            renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, EAST, WEST, -1, true, false), true, -1);
+            renderNegativeYFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, DOWN, WEST, -1, true, false), true);
+            renderPositiveYFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, UP, WEST, -1, true, false), true);
+            renderNegativeZFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, NORTH, WEST, -1, true, false), true);
+            renderPositiveZFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, SOUTH, WEST, -1, true, false), true);
+            renderNegativeXFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, WEST, WEST, -1, true, false), true);
+            renderPositiveXFacing(ctx, tMetaTileEntity.getTexture(iGregTechTileEntity, EAST, WEST, -1, true, false), true);
         }
         // spotless:on
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
+    public static void renderNegativeYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y - 1, ctx.z, 0)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y - 1 : ctx.y, ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderYNeg(ctx);
             }
         }
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
+    public static void renderPositiveYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y + 1, ctx.z, 1)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y + 1 : ctx.y, ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderYPos(ctx);
             }
         }
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
+    public static void renderNegativeZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z - 1, 2)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z - 1 : ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderZNeg(ctx);
             }
         }
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
+    public static void renderPositiveZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z + 1, 3)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z + 1 : ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderZPos(ctx);
             }
         }
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
+    public static void renderNegativeXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x - 1, ctx.y, ctx.z, 4)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x - 1 : ctx.x, ctx.y, ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderXNeg(ctx);
             }
         }
     }
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, LightingHelper lightingHelper,
-        Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, int worldRenderPass) {
-        if (aWorld != null) {
-            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
+    public static void renderPositiveXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+        if (ctx.world != null) {
+            if (aFullBlock && !ctx.renderer.renderAllFaces
+                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x + 1, ctx.y, ctx.z, 5)) {
                 return;
             }
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+            Tessellator.instance.setBrightness(
+                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x + 1 : ctx.x, ctx.y, ctx.z));
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+                iTexture.renderXPos(ctx);
             }
         }
     }
@@ -2085,18 +783,17 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
-        final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
+        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
 
-        final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        final TileEntity tileEntity = aWorld.getTileEntity(ctx.x, ctx.y, ctx.z);
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
 
         // If this block does not have a TE, render it as a normal block.
         // Otherwise, render the TE instead.
-        if (tileEntity == null && aBlock instanceof BlockFrameBox frameBlock) {
-            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+        if (tileEntity == null && ctx.block instanceof BlockFrameBox frameBlock) {
+            int meta = aWorld.getBlockMetadata(ctx.x, ctx.y, ctx.z);
             ITexture[] texture = frameBlock.getTexture(meta);
             if (texture == null) return false;
             textureArray[0] = texture;
@@ -2105,15 +802,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             textureArray[3] = texture;
             textureArray[4] = texture;
             textureArray[5] = texture;
-            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray, lightingHelper, worldRenderPass);
+            renderStandardBlock(ctx, textureArray);
             return tessAccess.gt5u$hasVertices();
         }
 
-        if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+        if (ctx.block instanceof IBlockWithTextures texturedBlock) {
+            int meta = aWorld.getBlockMetadata(ctx.x, ctx.y, ctx.z);
             ITexture[][] texture = texturedBlock.getTextures(meta);
             if (texture == null) return false;
-            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture, lightingHelper, worldRenderPass);
+            renderStandardBlock(ctx);
             return tessAccess.gt5u$hasVertices();
         }
 
@@ -2122,25 +819,17 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         if (tileEntity instanceof IGregTechTileEntity) {
             final IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null
-                && metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
+                && metaTileEntity.renderInWorld(aWorld, ctx.x, ctx.y, ctx.z, ctx.block, aRenderer)) {
                 aRenderer.enableAO = false;
                 return tessAccess.gt5u$hasVertices();
             }
         }
-        if (tileEntity instanceof IPipeRenderedTileEntity && renderPipeBlock(
-            aWorld,
-            aX,
-            aY,
-            aZ,
-            aBlock,
-            (IPipeRenderedTileEntity) tileEntity,
-            aRenderer,
-            lightingHelper,
-            worldRenderPass)) {
+        if (tileEntity instanceof IPipeRenderedTileEntity
+            && renderPipeBlock(ctx, (IPipeRenderedTileEntity) tileEntity)) {
             aRenderer.enableAO = false;
             return tessAccess.gt5u$hasVertices();
         }
-        if (renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, lightingHelper, worldRenderPass)) {
+        if (renderStandardBlock(ctx)) {
             aRenderer.enableAO = false;
             return tessAccess.gt5u$hasVertices();
         }

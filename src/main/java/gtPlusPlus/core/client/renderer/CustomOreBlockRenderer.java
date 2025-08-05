@@ -22,7 +22,7 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GTMod;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.render.SBRContext;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.api.objects.Logger;
@@ -42,7 +42,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
+        final SBRContext ctx = new SBRContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -53,12 +53,12 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
         ITexturedBlock textures = (ITexturedBlock) aBlock;
 
         // spotless:off
-        renderNegativeYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.DOWN), true, -1);
-        renderPositiveYFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.UP), true, -1);
-        renderNegativeZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.NORTH), true, -1);
-        renderPositiveZFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.SOUTH), true, -1);
-        renderNegativeXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.WEST), true, -1);
-        renderPositiveXFacing(null, aRenderer, lightingHelper, aBlock, 0, 0, 0, textures.getTexture(ForgeDirection.EAST), true, -1);
+        renderNegativeYFacing(ctx, textures.getTexture(ForgeDirection.DOWN), true);
+        renderPositiveYFacing(ctx, textures.getTexture(ForgeDirection.UP), true);
+        renderNegativeZFacing(ctx, textures.getTexture(ForgeDirection.NORTH), true);
+        renderPositiveZFacing(ctx, textures.getTexture(ForgeDirection.SOUTH), true);
+        renderNegativeXFacing(ctx, textures.getTexture(ForgeDirection.WEST), true);
+        renderPositiveXFacing(ctx, textures.getTexture(ForgeDirection.EAST), true);
         // spotless:on
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -74,7 +74,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
         }
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final LightingHelper lightingHelper = new LightingHelper(aRenderer);
+        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
         final int worldRenderPass = ForgeHooksClient.getWorldRenderPass();
 
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
@@ -82,14 +82,12 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
-        // spotless:off
-        renderNegativeYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.DOWN), true, worldRenderPass);
-        renderPositiveYFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.UP), true, worldRenderPass);
-        renderNegativeZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.NORTH), true, worldRenderPass);
-        renderPositiveZFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.SOUTH), true, worldRenderPass);
-        renderNegativeXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.WEST), true, worldRenderPass);
-        renderPositiveXFacing(aWorld, aRenderer, lightingHelper, aBlock, aX, aY, aZ, textures.getTexture(ForgeDirection.EAST), true, worldRenderPass);
-        // spotless:on
+        renderNegativeYFacing(ctx, textures.getTexture(ForgeDirection.DOWN), true);
+        renderPositiveYFacing(ctx, textures.getTexture(ForgeDirection.UP), true);
+        renderNegativeZFacing(ctx, textures.getTexture(ForgeDirection.NORTH), true);
+        renderPositiveZFacing(ctx, textures.getTexture(ForgeDirection.SOUTH), true);
+        renderNegativeXFacing(ctx, textures.getTexture(ForgeDirection.WEST), true);
+        renderPositiveXFacing(ctx, textures.getTexture(ForgeDirection.EAST), true);
 
         aRenderer.enableAO = false;
         return tessAccess.gt5u$hasVertices();
