@@ -60,7 +60,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -91,7 +90,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
     private int amountToDrain = 1; // drain amount.
-    private int mTier;
+    private int tier;
     private static FluidStack kerosene100;
     private static FluidStack kerosene10;
     public final LimitingItemStackHandler turbineHolder = new LimitingItemStackHandler(8, 1);
@@ -281,7 +280,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mTier = aNBT.getInteger("multiTier");
+        tier = aNBT.getInteger("multiTier");
         mMode = aNBT.getDouble("multiMode");
         RP = aNBT.getInteger("RP");
         mStaticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
@@ -294,7 +293,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("multiTier", mTier);
+        aNBT.setInteger("multiTier", tier);
         aNBT.setDouble("multiMode", mMode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
@@ -374,7 +373,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 "Gains " + EnumChatFormatting.WHITE
                     + "4"
                     + EnumChatFormatting.GRAY
-                    + " * (Total Rotor Tier) Parallels. Non-Huge Turbines have lowered effectiveness.")
+                    + " * (Total Turbine Tier) Parallels. Non-Huge Turbines have lowered effectiveness.")
             .addInfo(
                 "Requires Recipe Tier * " + EnumChatFormatting.BLUE
                     + "10L/s"
@@ -521,47 +520,41 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return 0;
     }
 
-    private int mCasingAmount;
+    private int casingAmount;
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
-        mCasingAmount = 0;
-        mTier = 0;
-        int mMaxCasingsFound = 0;
+        tier = 0;
+        resetParameters();
         if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, depthOffset)) {
-            mTier = 1;
+            tier = 1;
+            return casingAmount >= 550;
         }
-        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
-        mCasingAmount = 0;
+        resetParameters();
         if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset, depthOffset)) {
-            mTier = 2;
+            tier = 2;
+            return casingAmount >= 550;
         }
-        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
-        mCasingAmount = 0;
+        resetParameters();
         if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset, depthOffset)) {
-            mTier = 3;
+            tier = 3;
+            return casingAmount >= 550;
         }
-        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
-        mCasingAmount = 0;
+        resetParameters();
         if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset, depthOffset)) {
-            mTier = 4;
+            tier = 4;
+            return casingAmount >= 550;
         }
-        mMaxCasingsFound = Math.max(mMaxCasingsFound, mCasingAmount);
-        GTDataUtils.dedupList(mExoticEnergyHatches);
-        GTDataUtils.dedupList(mEnergyHatches);
-        GTDataUtils.dedupList(mOutputBusses);
-        GTDataUtils.dedupList(mOutputHatches);
-        GTDataUtils.dedupList(mInputHatches);
-        GTDataUtils.dedupList(mInputBusses);
-        GTDataUtils.dedupList(mMaintenanceHatches);
+        return false;
+    }
 
-        // if someone knows a better workaround, please let me know in review.
-        return mTier > 0 && mMaxCasingsFound >= 550;
+    private void resetParameters() {
+        clearHatches();
+        casingAmount = 0;
     }
 
     @Override
@@ -630,7 +623,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private int getSumRotorLevels() {
         int sumRotorLevels = 0;
 
-        for (int i = 0; i < mTier * 2; i++) {
+        for (int i = 0; i < tier * 2; i++) {
             if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
                 // rotor.
                 ItemStack currentItem = turbineHolder.getStackInSlot(i);
