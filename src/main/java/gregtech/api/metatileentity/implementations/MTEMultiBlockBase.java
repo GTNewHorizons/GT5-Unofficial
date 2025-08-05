@@ -3286,7 +3286,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
+        numberFormat.setMinimumIntegerDigits(2);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        numberFormat.setMinimumIntegerDigits(1);
         ret.append("% ");
         ret.append(EnumChatFormatting.GRAY);
         ret.append("(");
