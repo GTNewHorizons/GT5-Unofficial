@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,6 +40,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -56,6 +58,11 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     private Rotation rotation = Rotation.NORMAL;
 
     private static ItemStack[] sAutoMaintenanceInputs;
+
+    protected String mMaintenanceSound = null;
+    protected float mMaintenanceSoundStrength = 1.0F;
+    protected float mMaintenanceSoundModulation = 1.0F;
+
     public boolean mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mAuto;
 
@@ -174,8 +181,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
                 } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
-                    mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
-                    getBaseMetaTileEntity().setActive(false);
+                    applyDuctTape();
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
                     }
@@ -221,6 +227,20 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     public boolean autoMaintainance() {
         return isRecipeInputEqual(true);
+    }
+
+    public void setMaintenanceSound(SoundResource aSound, float aSoundStrength, float aSoundModulation) {
+        setMaintenanceSound(aSound.resourceLocation, aSoundStrength, aSoundModulation);
+    }
+
+    public void setMaintenanceSound(ResourceLocation aSound, float aSoundStrength, float aSoundModulation) {
+        setMaintenanceSound(aSound.toString(), aSoundStrength, aSoundModulation);
+    }
+
+    public void setMaintenanceSound(String aSoundName, float aSoundStrength, float aSoundModulation) {
+        mMaintenanceSound = aSoundName;
+        mMaintenanceSoundStrength = aSoundStrength;
+        mMaintenanceSoundModulation = aSoundModulation;
     }
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
@@ -285,19 +305,36 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         }
 
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mWrench = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mWrench = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mScrewdriver = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mScrewdriver = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftMallet = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mSoftMallet = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mHardHammer = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mHardHammer = true;
+            setMaintenanceSound(SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F);
+        }
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mCrowbar = true;
-        if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) mSolderingTool = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+            mCrowbar = true;
+            setMaintenanceSound(SoundResource.RANDOM_BREAK, 1.0F, -1.0F);
+        }
+        if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) {
+            mSolderingTool = true;
+            setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, 1.75F);
+        }
         if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
-            mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
-            getBaseMetaTileEntity().setActive(false);
+            applyDuctTape();
             aStack.stackSize--;
         }
         if (mSolderingTool && aPlayer instanceof EntityPlayerMP tPlayer) {
@@ -321,6 +358,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     aToolboxGUI.setInventorySlotContents(i, null);
             }
         }
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+    }
+
+    private void applyDuctTape() {
+        mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_DUCT_TAPE, 1.0F, 1.0F);
+        getBaseMetaTileEntity().setActive(false);
     }
 
     @Override
