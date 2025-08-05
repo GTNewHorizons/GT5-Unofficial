@@ -88,7 +88,12 @@ public class TextureSet {
         mSetName = aSetName;
         for (int i = 0; i < 128; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                mTextures[i] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                switch (SUFFIXES[i]) {
+                    case "/frameGt", "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
+                }
             } else {
                 // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.
                 // Exemption for CUSTOM textures so they can be overriden as normal by placing nanite image in
