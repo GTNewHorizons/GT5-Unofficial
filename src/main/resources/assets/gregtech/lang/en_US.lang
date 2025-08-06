@@ -1133,6 +1133,7 @@ GT5U.machines.perfectoc.tooltip=Performs perfect overclocks
 GT5U.machines.solarindicator1=Is Daytime
 GT5U.machines.solarindicator2=Not Raining
 GT5U.machines.solarindicator3=Can See Sky
+GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT=Structure has insufficient size
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
 GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.0=Cutting

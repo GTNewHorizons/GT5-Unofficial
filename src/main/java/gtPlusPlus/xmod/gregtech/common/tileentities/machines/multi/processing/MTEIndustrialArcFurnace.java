@@ -10,6 +10,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -57,8 +58,9 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
+    private static final int MACHINEMODE_ELECTRIC = 0;
+    private static final int MACHINEMODE_PLASMA = 1;
     public static String mCasingName = "Tempered Arc Furnace Casing";
-    private boolean mPlasmaMode = false;
 
     private int mSize = 0;
     private int mCasing;
@@ -237,7 +239,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mPlasmaMode ? RecipeMaps.plasmaArcFurnaceRecipes : RecipeMaps.arcFurnaceRecipes;
+        return machineMode == MACHINEMODE_ELECTRIC ? RecipeMaps.arcFurnaceRecipes : RecipeMaps.plasmaArcFurnaceRecipes;
     }
 
     @Nonnull
@@ -259,7 +261,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mSize * (mPlasmaMode ? 8 : 1) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (this.mSize * (machineMode == MACHINEMODE_ELECTRIC ? 1 : 8)
+            * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -280,63 +283,48 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mSize > 5) {
-            this.mPlasmaMode = !mPlasmaMode;
-            if (mPlasmaMode) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    "[" + EnumChatFormatting.RED
-                        + "MODE"
-                        + EnumChatFormatting.RESET
-                        + "] "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + "Plasma"
-                        + EnumChatFormatting.RESET);
-            } else {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    "[" + EnumChatFormatting.RED
-                        + "MODE"
-                        + EnumChatFormatting.RESET
-                        + "] "
-                        + EnumChatFormatting.YELLOW
-                        + "Electric"
-                        + EnumChatFormatting.RESET);
-            }
-        } else {
+            setMachineMode(nextMachineMode());
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                "[" + EnumChatFormatting.RED
-                    + "MODE"
-                    + EnumChatFormatting.RESET
-                    + "] "
-                    + EnumChatFormatting.GRAY
-                    + "Cannot change mode, structure not large enough."
-                    + EnumChatFormatting.RESET);
+                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT"));
         }
-        mLastRecipe = null;
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + machineMode);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mPlasmaMode", mPlasmaMode);
         aNBT.setInteger("mSize", mSize);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        mPlasmaMode = aNBT.getBoolean("mPlasmaMode");
+        // Migrates old NBT tag to the new one
+        if (aNBT.hasKey("mPlasmaMode")) {
+            machineMode = aNBT.getBoolean("mPlasmaMode") ? MACHINEMODE_PLASMA : MACHINEMODE_ELECTRIC;
+        }
         mSize = aNBT.getInteger("mSize");
+        super.loadNBTData(aNBT);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", mPlasmaMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -345,9 +333,9 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 
