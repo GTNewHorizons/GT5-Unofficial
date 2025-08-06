@@ -1,9 +1,11 @@
 package gregtech.commands;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +16,8 @@ import net.minecraft.util.IChatComponent;
 import org.jetbrains.annotations.Unmodifiable;
 
 import com.google.common.collect.ImmutableList;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public abstract class GTBaseCommand extends CommandBase {
 
@@ -71,7 +75,18 @@ public abstract class GTBaseCommand extends CommandBase {
     }
 
     protected static @Unmodifiable String[] getAllUsernames() {
-        return MinecraftServer.getServer()
-            .getAllUsernames();
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            return MinecraftServer.getServer()
+                .getAllUsernames();
+        } else {
+            return Objects.requireNonNull(
+                Minecraft.getMinecraft()
+                    .getNetHandler()).playerInfoList.stream()
+                        .map(p -> p.name)
+                        .filter(Objects::nonNull)
+                        .toArray(String[]::new);
+        }
     }
 }
