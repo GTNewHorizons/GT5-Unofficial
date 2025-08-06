@@ -13,8 +13,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-import org.jetbrains.annotations.Unmodifiable;
-
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -74,7 +72,12 @@ public abstract class GTBaseCommand extends CommandBase {
         return false;
     }
 
-    protected static @Unmodifiable String[] getAllUsernames() {
+    /**
+     * Get an array of all online player names.
+     *
+     * @return an array of all online player names.
+     */
+    protected static String[] getAllUsernames() {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) {
