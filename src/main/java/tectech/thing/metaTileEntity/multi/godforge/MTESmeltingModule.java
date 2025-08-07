@@ -188,7 +188,16 @@ public class MTESmeltingModule extends MTEBaseModule {
     }
 
     private void setFurnaceMode(boolean enabled) {
+        // TODO: Replace with machineMode
+        // Hacky solution. Opening the GUI runs this method
+        // The furnaceMode and boolean are likely to be the same
+        // Should be solved when MTEs migrate to MUI2
+        if (furnaceMode == enabled) return;
+
         furnaceMode = enabled;
+        // The machine is using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
     }
 
     @Override
