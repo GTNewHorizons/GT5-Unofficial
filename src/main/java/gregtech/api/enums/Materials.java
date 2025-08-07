@@ -2142,7 +2142,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         Materials.HellishMetal.mChemicalFormula = "RhMa";
         Materials.Netherite.mChemicalFormula = "NhAuMa*";
-        Materials.PrismaticNaquadah.mChemicalFormula = Materials.Naquadah.mChemicalFormula + "\u0394";
+        Materials.PrismaticNaquadah.mChemicalFormula = Materials.Naquadah.mChemicalFormula + "\u2302";
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "\u03A6";
         MaterialsUEVplus.Universium.mChemicalFormula = "\u03A3" + EnumChatFormatting.OBFUSCATED + "X";
     }
