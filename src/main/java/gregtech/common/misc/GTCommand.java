@@ -1,6 +1,8 @@
 package gregtech.common.misc;
 
-import static gregtech.common.misc.WirelessNetworkManager.*;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
+import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -62,7 +64,7 @@ public final class GTCommand extends GTBaseCommand {
         list.add(new ChatComponentText("\"toggle debugChunkloaders\" - toggles chunkloaders debug"));
         list.add(new ChatComponentText("\"toggle debugMulti\" - toggles structurelib debug"));
         list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
-        list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, " + "\n if <amount> isnt specified, will add" + GTMod.gregtechproxy.mPollutionSmogLimit + "gibbl."));
+        list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, " + "\n if <amount> isnt specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
         list.add(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
         list.add(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
         list.add(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_set " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
@@ -164,8 +166,7 @@ public final class GTCommand extends GTBaseCommand {
             }
             case "pollution" -> {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
-                int amount = (strings.length < 2) ? GTMod.gregtechproxy.mPollutionSmogLimit
-                    : Integer.parseInt(strings[1]);
+                int amount = (strings.length < 2) ? GTMod.proxy.mPollutionSmogLimit : Integer.parseInt(strings[1]);
                 Pollution.addPollution(
                     sender.getEntityWorld()
                         .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),

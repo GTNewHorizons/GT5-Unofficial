@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
@@ -22,12 +21,13 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
@@ -36,7 +36,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
             blockType,
-            Utils.sanitizeString(material.getUnlocalizedName()),
+            StringUtils.sanitizeString(material.getUnlocalizedName()),
             net.minecraft.block.material.Material.rock,
             Math.min(Math.max(material.vTier, 1), 6));
         int aMaterialTierForMining = Math.min(Math.max(material.vTier, 1), 6);
@@ -46,15 +46,16 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
         this.setLightLevel(0.0F);
         this.setHarvestLevel("pickaxe", aMaterialTierForMining);
         this.setStepSound(soundTypeStone);
-        this.setBlockName("Ore" + Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
+        this.setBlockName("Ore" + StringUtils.sanitizeString(material.getUnlocalizedName()));
         this.setBlockTextureName("stone");
         try {
             GameRegistry.registerBlock(
                 this,
                 ItemBlockOre.class,
-                Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GTOreDictUnificator
-                .registerOre("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()), new ItemStack(this));
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()));
+            GTOreDictUnificator.registerOre(
+                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
+                new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -62,6 +63,21 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
     public Material getMaterialEx() {
         return this.blockMaterial;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     @Override
@@ -98,7 +114,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         EntityPlayer harvester = this.harvesters.get();
 
-        boolean doFortune = !(harvester instanceof FakePlayer);
+        boolean doFortune = GTUtility.isRealPlayer(harvester);
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
         try (OreInfo<Material> info = GTPPOreAdapter.INSTANCE.getOreInfo(this, metadata)) {

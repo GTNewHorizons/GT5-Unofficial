@@ -60,10 +60,10 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Stone,
             StoneType.Netherrack,
             StoneType.Endstone,
-            StoneType.BlackGranite,
-            StoneType.RedGranite,
-            StoneType.Marble,
-            StoneType.Basalt,
+            GTMod.proxy.enableBlackGraniteOres ? StoneType.BlackGranite : null,
+            GTMod.proxy.enableRedGraniteOres ? StoneType.RedGranite : null,
+            GTMod.proxy.enableMarbleOres ? StoneType.Marble : null,
+            GTMod.proxy.enableBasaltOres ? StoneType.Basalt : null,
             StoneType.Moon,
         });
         GTBlockOre ores2 = new GTBlockOre(3, new StoneType[] {
@@ -139,10 +139,10 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             info.isSmall = meta >= 16000;
             info.isNatural = natural;
 
-            if (!INSTANCE.supports(info)) {
+            if (!this.supports(info)) {
                 return new BlockMeta(Blocks.air, 0);
             } else {
-                return INSTANCE.getBlock(info);
+                return this.getBlock(info);
             }
         }
     }
@@ -255,7 +255,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         if (info.isSmall) {
             return getSmallOreDrops(random, info, fortune);
         } else {
-            OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
+            OreDropSystem oreDropSystem = GTMod.proxy.oreDropSystem;
 
             if (silktouch) oreDropSystem = OreDropSystem.Block;
 
@@ -287,7 +287,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
             return drops2;
         } else {
-            return getBigOreDrops(ThreadLocalRandom.current(), GTMod.gregtechproxy.oreDropSystem, info, 0);
+            return getBigOreDrops(ThreadLocalRandom.current(), GTMod.proxy.oreDropSystem, info, 0);
         }
     }
 

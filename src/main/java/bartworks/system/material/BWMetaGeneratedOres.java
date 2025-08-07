@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
@@ -40,6 +39,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
@@ -132,7 +132,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         EntityPlayer harvester = this.harvesters.get();
 
-        boolean doFortune = !(harvester instanceof FakePlayer);
+        boolean doFortune = GTUtility.isRealPlayer(player);
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
         try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {

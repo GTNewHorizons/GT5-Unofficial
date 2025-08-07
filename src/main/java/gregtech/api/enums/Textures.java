@@ -14,8 +14,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.ResourceUtils;
 
 public class Textures {
+
+    public static final String _OVERLAY = "_OVERLAY";
+    public static final String ICONSETS = "iconsets";
 
     public enum BlockIcons implements IIconContainer, Runnable {
 
@@ -608,9 +612,11 @@ public class Textures {
         OVERLAY_INPUT_HATCH_2x2,
         FLUID_OUT_SIGN,
         FLUID_IN_SIGN,
+        FLUID_VOID_SIGN,
         FLUID_STEAM_IN_SIGN,
         ITEM_IN_SIGN,
         ITEM_OUT_SIGN,
+        ITEM_VOID_SIGN,
         OVERLAY_MUFFLER,
 
         OVERLAY_PIPE_COLOR_BLACK,
@@ -1571,7 +1577,14 @@ public class Textures {
         RADIATION_ABSORBENT_CASING,
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
-        OVERLAY_NANITE_HATCH_GLOW
+        OVERLAY_NANITE_HATCH_GLOW,
+
+        NANO_FORGE_CASING_1,
+        NANO_FORGE_CASING_2,
+        NANO_FORGE_CASING_3,
+        NANO_FORGE_CASING_4,
+        NANITE_CORE,
+        NANITE_SHIELDING_FRAME,
 
         // semicolon after the comment to reduce merge conflicts
         ;
@@ -1881,6 +1894,7 @@ public class Textures {
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
@@ -1953,22 +1967,40 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
+            mIcon = GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
 
-            protected IIcon mIcon;
-            protected String mIconName;
+            protected IIcon mIcon, mOverlay = null;
+            protected final String mIconName, mOverlayName;
 
             public CustomIcon(String aIconName) {
                 mIconName = !aIconName.contains(":") ? GregTech.getResourcePath(aIconName) : aIconName;
+                mOverlayName = mIconName + _OVERLAY;
                 GregTechAPI.sGTBlockIconload.add(this);
             }
 
             @Override
             public void run() {
                 mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
+                // This makes the block _OVERLAY icon totally optional
+                if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
+                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+                }
+            }
+
+            private ResourceLocation getResourceLocation(String iconName) {
+                final String overlayDomain, overlayPath;
+                final int i = iconName.indexOf(':');
+                if (i >= 0) {
+                    overlayDomain = i > 1 ? iconName.substring(0, i) : "minecraft";
+                    overlayPath = TEXTURES_BLOCKS + iconName.substring(i + 1) + ".png";
+                } else {
+                    overlayDomain = "minecraft";
+                    overlayPath = TEXTURES_BLOCKS + iconName + ".png";
+                }
+                return new ResourceLocation(overlayDomain, overlayPath);
             }
 
             @Override
@@ -1978,12 +2010,24 @@ public class Textures {
 
             @Override
             public IIcon getOverlayIcon() {
-                return null;
+                return mOverlay;
             }
 
             @Override
             public ResourceLocation getTextureFile() {
                 return TextureMap.locationBlocksTexture;
+            }
+        }
+
+        public static class CustomAlphaIcon extends CustomIcon {
+
+            public CustomAlphaIcon(String aIconName) {
+                super(aIconName);
+            }
+
+            @Override
+            public int getRenderIconPass() {
+                return 1;
             }
         }
     }
@@ -2080,8 +2124,8 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
-            mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this + "_OVERLAY"));
+            mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()));
+            mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this + _OVERLAY));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -2112,7 +2156,7 @@ public class Textures {
             @Override
             public void run() {
                 mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName));
-                mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + "_OVERLAY"));
+                mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + _OVERLAY));
             }
         }
     }

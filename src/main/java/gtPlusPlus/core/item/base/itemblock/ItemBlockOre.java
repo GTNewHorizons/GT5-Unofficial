@@ -124,18 +124,12 @@ public class ItemBlockOre extends ItemBlock {
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
-        if (this.mThisMaterial != null) {
-            if (this.mThisRadiation > 0) {
-                if (entityHolding instanceof EntityPlayer) {
-                    if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                        EntityUtils.applyRadiationDamageToEntity(
-                            iStack.stackSize,
-                            this.mThisMaterial.vRadiationLevel,
-                            world,
-                            entityHolding);
-                    }
-                }
-            }
+        if (this.mThisMaterial != null && this.mThisRadiation > 0) {
+            EntityUtils.applyRadiationDamageToEntity(
+                iStack.stackSize,
+                this.mThisMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 }

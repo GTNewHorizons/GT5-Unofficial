@@ -16,7 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.ModIDs.RAILCRAFT)
 public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     public final GTBlockOre blockOre;
@@ -59,7 +59,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         int metadata = itemStack.getItemDamage();
         int matId = blockOre.getMaterialIndex(metadata);

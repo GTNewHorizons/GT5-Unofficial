@@ -178,7 +178,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (info.isSmall) {
             return getSmallOreDrops(random, info, fortune);
         } else {
-            OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
+            OreDropSystem oreDropSystem = GTMod.proxy.oreDropSystem;
 
             if (silktouch) oreDropSystem = OreDropSystem.Block;
 
@@ -210,7 +210,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
             return drops2;
         } else {
-            return getBigOreDrops(ThreadLocalRandom.current(), GTMod.gregtechproxy.oreDropSystem, info, 0);
+            return getBigOreDrops(ThreadLocalRandom.current(), GTMod.proxy.oreDropSystem, info, 0);
         }
     }
 

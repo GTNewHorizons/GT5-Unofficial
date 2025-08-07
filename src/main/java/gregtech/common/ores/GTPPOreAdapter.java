@@ -72,7 +72,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
-        OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
+        OreDropSystem oreDropSystem = GTMod.proxy.oreDropSystem;
 
         if (silktouch) oreDropSystem = OreDropSystem.Block;
 
@@ -86,7 +86,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         @SuppressWarnings("unchecked")
         OreInfo<Material> info = (OreInfo<Material>) info2;
 
-        return getBigOreDrops(ThreadLocalRandom.current(), GTMod.gregtechproxy.oreDropSystem, info, 0);
+        return getBigOreDrops(ThreadLocalRandom.current(), GTMod.proxy.oreDropSystem, info, 0);
     }
 
     private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,

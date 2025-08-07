@@ -18,7 +18,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -39,7 +38,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),

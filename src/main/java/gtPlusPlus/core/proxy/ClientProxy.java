@@ -40,7 +40,6 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
@@ -60,7 +59,6 @@ public class ClientProxy extends CommonProxy {
         new CustomItemBlockRenderer();
         new MachineBlockRenderer();
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
         PowerGogglesKeybindHandler.init();
         super.init(e);

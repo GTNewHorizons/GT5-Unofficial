@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static gregtech.GTMod.gregtechproxy;
+import static gregtech.GTMod.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +41,7 @@ public class LinkedPurificationUnit {
         this.mIsActive = nbtData.getBoolean("active");
         NBTTagCompound linkData = nbtData.getCompoundTag("linkData");
         World world = null;
-        if (!gregtechproxy.isClientSide()) {
+        if (!proxy.isClientSide()) {
             world = DimensionManager.getWorld(nbtData.getInteger("worldID"));
         } else {
             world = Minecraft.getMinecraft().thePlayer.worldObj;

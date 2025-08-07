@@ -31,7 +31,7 @@ public class GTChunkManager
     public static GTChunkManager instance = new GTChunkManager();
 
     public static void init() {
-        ForgeChunkManager.setForcedChunkLoadingCallback(GTMod.instance, instance);
+        ForgeChunkManager.setForcedChunkLoadingCallback(GTMod.GT, instance);
     }
 
     @Override
@@ -116,10 +116,10 @@ public class GTChunkManager
             ForgeChunkManager.forceChunk(instance.registeredTickets.get(owner), chunkXZ);
         } else {
             Ticket ticket;
-            if (player.isEmpty()) ticket = ForgeChunkManager
-                .requestTicket(GTMod.instance, owner.getWorldObj(), ForgeChunkManager.Type.NORMAL);
+            if (player.isEmpty())
+                ticket = ForgeChunkManager.requestTicket(GTMod.GT, owner.getWorldObj(), ForgeChunkManager.Type.NORMAL);
             else ticket = ForgeChunkManager
-                .requestPlayerTicket(GTMod.instance, player, owner.getWorldObj(), ForgeChunkManager.Type.NORMAL);
+                .requestPlayerTicket(GTMod.GT, player, owner.getWorldObj(), ForgeChunkManager.Type.NORMAL);
             if (ticket == null) {
                 if (GTValues.debugChunkloaders)
                     GTLog.out.println("GTChunkManager: ForgeChunkManager.requestTicket failed");

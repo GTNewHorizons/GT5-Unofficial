@@ -1,6 +1,5 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,17 +113,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called in the registered MetaTileEntity when the Server starts, to reset static variables
      */
     void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the
-     * World Save
-     */
-    void onWorldLoad(File aSaveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     */
-    void onWorldSave(File aSaveDirectory);
 
     /**
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,

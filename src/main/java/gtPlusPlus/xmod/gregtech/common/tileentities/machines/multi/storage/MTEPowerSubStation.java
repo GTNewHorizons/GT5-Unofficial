@@ -79,7 +79,6 @@ import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -809,9 +808,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mIsOutputtingPower = !mIsOutputtingPower;
         if (mIsOutputtingPower) {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
         }
     }
 

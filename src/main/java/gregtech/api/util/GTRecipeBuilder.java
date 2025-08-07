@@ -240,7 +240,7 @@ public class GTRecipeBuilder {
     }
 
     public static void onConfigLoad() {
-        PANIC_MODE_NULL |= GTMod.gregtechproxy.crashOnNullRecipeInput;
+        PANIC_MODE_NULL |= GTMod.proxy.crashOnNullRecipeInput;
     }
 
     // endregion

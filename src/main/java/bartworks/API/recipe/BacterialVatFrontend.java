@@ -2,7 +2,6 @@ package bartworks.API.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
-import static gregtech.api.util.GTUtility.trans;
 
 import java.util.List;
 
@@ -85,9 +84,14 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
         recipeInfo.drawText(
-            trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t" + getTierNameWithParentheses(eut));
+            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.usage",
+                GTUtility.formatNumbers(eut),
+                getTierNameWithParentheses(eut)));
+
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
         if (sievert != 0) {
             if (!isExact) {

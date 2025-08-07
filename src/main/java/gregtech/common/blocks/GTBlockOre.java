@@ -244,6 +244,21 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         return GTRendererBlock.mRenderID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
@@ -305,11 +320,11 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
             int smallOreBonus = info.isSmall ? -1 : 0;
 
-            int harvestLevel = GTMod.gregtechproxy.mChangeHarvestLevels
-                ? GTMod.gregtechproxy.mHarvestLevel[info.material.mMetaItemSubID]
+            int harvestLevel = GTMod.proxy.mChangeHarvestLevels
+                ? GTMod.proxy.mHarvestLevel[info.material.mMetaItemSubID]
                 : info.material.mToolQuality;
 
-            return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.gregtechproxy.mMaxHarvestLevel);
+            return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.proxy.mMaxHarvestLevel);
         }
     }
 

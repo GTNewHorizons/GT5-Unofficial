@@ -37,7 +37,7 @@ public class ServerEventHandler {
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
         GTValues.NW.sendToPlayer(new PacketOreDictCache(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
-        GTValues.NW.sendToPlayer(new PacketServerJoined(null), (EntityPlayerMP) event.entity);
+        GTValues.NW.sendToPlayer(new PacketServerJoined(), (EntityPlayerMP) event.entity);
     }
 
     // FMLCommonHandler.instance().bus()

@@ -14,7 +14,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.common.GTProxy;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
@@ -135,13 +134,13 @@ public class RunnableMachineUpdate implements Runnable {
                 // `loadedTileEntityList`... which might be in the process
                 // of being iterated over during `UpdateEntities()`... which might cause a
                 // ConcurrentModificationException. So, lock that shit.
-                GTProxy.TICK_LOCK.lock();
+                GTMod.proxy.TICK_LOCK.lock();
                 try {
                     tTileEntity = world.getTileEntity(posX, posY, posZ);
                     isMachineBlock = GregTechAPI
                         .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
                 } finally {
-                    GTProxy.TICK_LOCK.unlock();
+                    GTMod.proxy.TICK_LOCK.unlock();
                 }
 
                 // See if the block itself needs an update

@@ -235,7 +235,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
      * @return True if the crop needs a block below it to grow to its max size
      */
     public boolean needsBlockBelow() {
-        return GTMod.gregtechproxy.mCropNeedBlock && this.mBlock != null;
+        return GTMod.proxy.mCropNeedBlock && this.mBlock != null;
     }
 
     public boolean isBlockBelow(ICropTile aCrop) {

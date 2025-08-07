@@ -1,10 +1,8 @@
 package gregtech.common.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.SBRContext;
 
 /**
  * <p>
@@ -19,7 +17,7 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     protected final ITexture[] mTextures;
 
     public static GTMultiTextureRender get(ITexture... aTextures) {
-        return GTMod.instance.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
+        return GTMod.GT.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
     }
 
     protected GTMultiTextureRender(ITexture... aTextures) {
@@ -27,39 +25,33 @@ public class GTMultiTextureRender extends GTTextureBase implements ITexture {
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXPos(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderXNeg(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYPos(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderYNeg(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZPos(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+    public void renderZNeg(SBRContext ctx) {
+        for (ITexture tTexture : mTextures) if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(ctx);
     }
 
     @Override

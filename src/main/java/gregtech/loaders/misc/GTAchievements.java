@@ -139,7 +139,7 @@ public class GTAchievements {
             "crushed",
             false);
 
-        registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1), "spinit", false);
+        registerAchievement("newfuel", -4, 8, ItemList.RodThorium4.get(1), "spinit", false);
         registerAchievement(
             "newmetal",
             -4,
@@ -352,7 +352,7 @@ public class GTAchievements {
         registerAchievement("uvage", 10, 10, ItemList.Energy_Cluster.get(1), "zpmage", false);
         registerAchievement("whatnow", 12, 10, ItemList.ZPM2.get(1), "uvage", false);
 
-        if (GTMod.gregtechproxy.mAchievements) {
+        if (GTMod.proxy.mAchievements) {
             AchievementPage.registerAchievementPage(
                 new AchievementPage(
                     "GregTech 5",
@@ -370,7 +370,7 @@ public class GTAchievements {
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
         boolean special) {
-        if (!GTMod.gregtechproxy.mAchievements) {
+        if (!GTMod.proxy.mAchievements) {
             return null;
         }
         Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY + y, icon, requirement);
@@ -388,7 +388,7 @@ public class GTAchievements {
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement,
         boolean special) {
-        if (!GTMod.gregtechproxy.mAchievements) {
+        if (!GTMod.proxy.mAchievements) {
             return null;
         }
         Achievement achievement = new Achievement(
@@ -442,7 +442,7 @@ public class GTAchievements {
     }
 
     public void issueAchievement(EntityPlayer entityplayer, String textId) {
-        if (entityplayer == null || !GTMod.gregtechproxy.mAchievements) {
+        if (entityplayer == null || !GTMod.proxy.mAchievements) {
             return;
         }
         entityplayer.triggerAchievement(this.achievementList.get(textId));

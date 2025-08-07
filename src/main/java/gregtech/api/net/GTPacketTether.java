@@ -4,7 +4,9 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.client.TetherLineRenderer;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketTether extends GTPacket {
@@ -19,6 +21,13 @@ public class GTPacketTether extends GTPacket {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public GTPacketTether(MTEMagLevPylon pylon) {
+        IGregTechTileEntity mte = pylon.getBaseMetaTileEntity();
+        this.x = mte.getXCoord();
+        this.y = mte.getYCoord();
+        this.z = mte.getZCoord();
     }
 
     @Override

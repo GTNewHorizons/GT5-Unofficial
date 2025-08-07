@@ -34,10 +34,10 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
     value = {
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL),
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL),
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL) })
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL) })
 public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);

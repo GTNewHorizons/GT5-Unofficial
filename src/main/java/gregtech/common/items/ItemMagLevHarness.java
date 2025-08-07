@@ -21,7 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketTether;
-import gregtech.common.data.maglev.Tether;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -55,34 +55,42 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayerMP player)) return;
         if (player instanceof FakePlayer) return;
 
-        Tether activeTether = GTMod.gregtechproxy.tetherManager.getConnectedPylon(player);
-        Tether closestActivePylon = GTMod.gregtechproxy.tetherManager.getClosestActivePylon(player, 48);
-        Tether newTether = null;
+        // give fly if connected to any and was not before
+        // remove fly + send funny message if connected to none and was connected before
+        // send animation packet when connecting to any and previous was different or null
 
-        if (closestActivePylon != null) {
-            newTether = closestActivePylon;
+        final MTEMagLevPylon prevPylon = GTMod.proxy.tetherManager.getConnectedPylon(player);
+        final MTEMagLevPylon closestPylon = GTMod.proxy.tetherManager.getClosestActivePylon(player);
+
+        boolean sendAnimPacket = false;
+        if (prevPylon == null && closestPylon != null) {
+            GTMod.proxy.tetherManager.connectPlayer(player, closestPylon);
+            setFly(player, true);
+            sendAnimPacket = true;
         }
 
-        if (activeTether == newTether) return;
-        // only trigger the below if the player's tether changes
-        if (newTether != null) {
-            GTValues.NW.sendToPlayer(
-                new GTPacketTether(newTether.sourceX(), newTether.sourceY(), newTether.sourceZ()),
-                player);
-        } else { // only run on tether disconnect
-            if (Math.random() <= 0.03) {
-                GTNHLib.proxy.sendMessageAboveHotbar(
-                    player,
-                    new ChatComponentTranslation(StatCollector.translateToLocal("GT5U.maglevHarness.pylons")),
-                    25,
-                    true,
-                    false);
+        if (prevPylon != null) {
+            if (closestPylon == null) {
+                GTMod.proxy.tetherManager.disconnectPlayer(player);
+                setFly(player, player.capabilities.isCreativeMode);
+                if (Math.random() <= 0.03) {
+                    GTNHLib.proxy.sendMessageAboveHotbar(
+                        player,
+                        new ChatComponentTranslation("GT5U.maglevHarness.pylons"),
+                        25,
+                        true,
+                        false);
+                }
+            } else if (closestPylon != prevPylon) {
+                GTMod.proxy.tetherManager.disconnectPlayer(player);
+                GTMod.proxy.tetherManager.connectPlayer(player, closestPylon);
+                sendAnimPacket = true;
             }
         }
 
-        GTMod.gregtechproxy.tetherManager.connectPlayer(player, newTether);
-
-        setFly(player, player.capabilities.isCreativeMode || newTether != null);
+        if (sendAnimPacket) {
+            GTValues.NW.sendToPlayer(new GTPacketTether(closestPylon), player);
+        }
     }
 
     private static void setFly(EntityPlayer player, boolean fly) {
@@ -103,21 +111,15 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     }
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
-        if (!(entityLivingBase instanceof EntityPlayer player)) return;
-        if (player instanceof FakePlayer) return;
-
-        GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
-    }
+    public void onEquipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {}
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
+        if (entityLivingBase.worldObj == null || entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        GTMod.gregtechproxy.tetherManager.disconnectPlayer(player);
+        GTMod.proxy.tetherManager.disconnectPlayer(player);
         setFly(player, false);
     }
 

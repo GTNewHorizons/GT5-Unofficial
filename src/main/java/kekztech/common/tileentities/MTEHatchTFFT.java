@@ -31,24 +31,24 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 
-@Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = Mods.Names.APPLIED_ENERGISTICS2, striprefs = true)
+@Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = Mods.ModIDs.APPLIED_ENERGISTICS2, striprefs = true)
 public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> {
 
     @Optional.Interface(
         iface = "appeng.api.storage.IExternalStorageHandler",
-        modid = Mods.Names.APPLIED_ENERGISTICS2,
+        modid = Mods.ModIDs.APPLIED_ENERGISTICS2,
         striprefs = true)
     private static class AE2TFFTHatchHandler implements IExternalStorageHandler {
 
         @Override
-        @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+        @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
         public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
             return channel == StorageChannel.FLUIDS && te instanceof BaseMetaTileEntity
                 && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof MTEHatchTFFT;
         }
 
         @Override
-        @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+        @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
         public IMEInventory getInventory(TileEntity te, ForgeDirection d, StorageChannel channel,
             BaseActionSource src) {
             if (channel == StorageChannel.FLUIDS) {
@@ -145,7 +145,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         this.controller = null;
     }
 
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public static void registerAEIntegration() {
         AEApi.instance()
             .registries()
@@ -154,7 +154,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IItemList<IAEFluidStack> getAvailableItems(IItemList out, int iteration) {
         if (controller != null) {
             for (int i = 0; i < MTETankTFFT.MAX_DISTINCT_FLUIDS; i++) {
@@ -169,7 +169,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IItemList<IAEFluidStack> getStorageList() {
         IItemList<IAEFluidStack> fluidList = new FluidList();
         if (controller != null) {
@@ -185,59 +185,59 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public void addListener(IMEMonitorHandlerReceiver<IAEFluidStack> l, Object verificationToken) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(l, verificationToken);
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public void removeListener(IMEMonitorHandlerReceiver<IAEFluidStack> l) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(l);
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public AccessRestriction getAccess() {
         return AccessRestriction.READ_WRITE;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean isPrioritized(IAEFluidStack input) {
         if (controller == null || input == null) return false;
         return controller.contains(input.getFluidStack()) || controller.fluidCount() < MTETankTFFT.MAX_DISTINCT_FLUIDS;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean canAccept(IAEFluidStack input) {
         if (controller == null || input == null) return false;
         return controller.contains(input.getFluidStack()) || controller.fluidCount() < MTETankTFFT.MAX_DISTINCT_FLUIDS;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public int getPriority() {
         return 0;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public int getSlot() {
         return 0;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean validForPass(int i) {
         return true;
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable mode, BaseActionSource src) {
         final FluidStack inputStack = input.getFluidStack();
         if (inputStack == null) return null;
@@ -252,7 +252,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
         if (controller == null || getBaseMetaTileEntity() == null) return null;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
@@ -265,7 +265,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.APPLIED_ENERGISTICS2)
+    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public StorageChannel getChannel() {
         return StorageChannel.FLUIDS;
     }

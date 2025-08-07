@@ -40,7 +40,7 @@ import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 
-@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.Names.OPEN_COMPUTERS)
+@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.ModIDs.OPEN_COMPUTERS)
 public class TileEntityGTDataServer extends TileEntity
     implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
@@ -49,12 +49,12 @@ public class TileEntityGTDataServer extends TileEntity
     private final ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     public String getComponentName() {
         return "GT-Data Server";
     }
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     @Callback
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
@@ -69,7 +69,7 @@ public class TileEntityGTDataServer extends TileEntity
         return ret.toArray(new String[0]);
     }
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     @Callback
     public Object[] imprintOrb(Context context, Arguments args) {
         return new Object[] { false };

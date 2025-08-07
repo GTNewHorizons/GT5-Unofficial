@@ -264,8 +264,8 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isRich() {
         return switch (this) {
-            case Netherrack -> GTMod.gregtechproxy.mNetherOreYieldMultiplier;
-            case Endstone -> GTMod.gregtechproxy.mEndOreYieldMultiplier;
+            case Netherrack -> GTMod.proxy.mNetherOreYieldMultiplier;
+            case Endstone -> GTMod.proxy.mEndOreYieldMultiplier;
             default -> false;
         };
     }
