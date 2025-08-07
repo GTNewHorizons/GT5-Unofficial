@@ -705,7 +705,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleTicksStatic / 10, this.mInputs);
+            return getCycledIngredients(cycleTicksStatic / 20, this.mInputs);
         }
 
         @Override
