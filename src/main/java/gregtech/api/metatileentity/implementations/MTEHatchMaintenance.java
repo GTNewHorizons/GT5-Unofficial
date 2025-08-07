@@ -9,6 +9,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -251,15 +254,40 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         return isRecipeInputEqual(true);
     }
 
-    public void setMaintenanceSound(SoundResource aSound, float aSoundStrength, float aSoundModulation) {
+    /**
+     * Sets the sound resource to use in the next maintenance performed by this hatch.
+     * 
+     * @param aSound           The sound to play.
+     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nonnull SoundResource aSound, float aSoundStrength, float aSoundModulation) {
         setMaintenanceSound(aSound.resourceLocation, aSoundStrength, aSoundModulation);
     }
 
-    public void setMaintenanceSound(ResourceLocation aSound, float aSoundStrength, float aSoundModulation) {
+    /**
+     * Sets the resource location of a sound to use in the next maintenance performed by this hatch.
+     * Useful for playing sounds not present in GT5U's API.
+     * 
+     * @param aSound           The sound to play.
+     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nonnull ResourceLocation aSound, float aSoundStrength, float aSoundModulation) {
         setMaintenanceSound(aSound.toString(), aSoundStrength, aSoundModulation);
     }
 
-    public void setMaintenanceSound(String aSoundName, float aSoundStrength, float aSoundModulation) {
+    /**
+     * Sets the name of the sound resource to use in the next maintenance performed by this hatch.
+     * If possible, prefer using the other overloads of this method:
+     * {@link #setMaintenanceSound(SoundResource, float, float)}, if able to refer to GT5U's API, or
+     * {@link #setMaintenanceSound(ResourceLocation, float, float)} otherwise. (Such as calling a sound not from GT5U)
+     * 
+     * @param aSoundName       The resource name of the sound to play. Can be null.
+     * @param aSoundStrength   The loudness of the sound. From 0 to 1.
+     * @param aSoundModulation The pitch of the sound. From 0 to 2, 1 being the default pitch.
+     */
+    public void setMaintenanceSound(@Nullable String aSoundName, float aSoundStrength, float aSoundModulation) {
         mMaintenanceSound = aSoundName;
         mMaintenanceSoundStrength = aSoundStrength;
         mMaintenanceSoundModulation = aSoundModulation;
