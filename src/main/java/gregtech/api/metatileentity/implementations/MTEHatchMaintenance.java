@@ -230,7 +230,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
         if (tMte == null || tMte.hasMufflerUpgrade()) return;
 
-        if(mMaintenanceSound == null) {
+        if (mMaintenanceSound == null) {
             // Use default maintenance sound
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
         }
@@ -306,6 +306,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     }
                 }
             }
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_AUTO_HATCH, 1.0F, 1.0F);
             mCrowbar = true;
             mHardHammer = true;
             mScrewdriver = true;
