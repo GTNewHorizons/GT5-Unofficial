@@ -1,22 +1,23 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
+import gregtech.api.render.SBRContext;
+
 public interface ITexture {
 
-    void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderXPos(SBRContext ctx);
 
-    void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderXNeg(SBRContext ctx);
 
-    void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderYPos(SBRContext ctx);
 
-    void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderYNeg(SBRContext ctx);
 
-    void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderZPos(SBRContext ctx);
 
-    void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    void renderZNeg(SBRContext ctx);
 
     boolean isValidTexture();
 

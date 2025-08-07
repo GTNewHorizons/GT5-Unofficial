@@ -2039,6 +2039,18 @@ public class Textures {
                 return TextureMap.locationBlocksTexture;
             }
         }
+
+        public static class CustomAlphaIcon extends CustomIcon {
+
+            public CustomAlphaIcon(String aIconName) {
+                super(aIconName);
+            }
+
+            @Override
+            public int getRenderIconPass() {
+                return 1;
+            }
+        }
     }
 
     public enum ItemIcons implements IIconContainer, Runnable {

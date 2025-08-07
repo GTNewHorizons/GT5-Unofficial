@@ -3679,6 +3679,20 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
+    public static String scientificFormat(long aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
+    public static String scientificFormat(BigInteger aNumber) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        DecimalFormat format = new DecimalFormat("0.00E0", dfs);
+        return format.format(aNumber);
+    }
+
     /**
      * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
      * Since it suppresses errors, it should be used only when inputs are unreliable,

@@ -246,7 +246,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Gadolinium.getDust(64),
                 Materials.Samarium.getDust(64),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 11002),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 11007),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 3),
                 ItemList.SuperconductorComposite.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
