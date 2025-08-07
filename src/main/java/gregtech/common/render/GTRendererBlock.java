@@ -810,7 +810,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             int meta = aWorld.getBlockMetadata(ctx.x, ctx.y, ctx.z);
             ITexture[][] texture = texturedBlock.getTextures(meta);
             if (texture == null) return false;
-            renderStandardBlock(ctx);
+            renderStandardBlock(ctx, texture);
             return tessAccess.gt5u$hasVertices();
         }
 
