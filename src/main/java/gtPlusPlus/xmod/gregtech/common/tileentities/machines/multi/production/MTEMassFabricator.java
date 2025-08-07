@@ -29,7 +29,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,8 +37,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
@@ -74,14 +71,10 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
 
-    private int mMode = 0;
-
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
 
     public static boolean sRequiresUUA = false;
-    private static final FluidStack[] mUU = new FluidStack[2];
-    private static final ItemStack[] mScrap = new ItemStack[2];
 
     private int mCasing;
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
@@ -159,26 +152,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
     }
 
-    public static boolean sInit = false;
-
-    public static void init() {
-        if (!sInit) {
-            if (mScrap[0] == null) {
-                mScrap[0] = ItemList.IC2_Scrap.get(1L);
-            }
-            if (mScrap[1] == null) {
-                mScrap[1] = ItemList.IC2_Scrapbox.get(1L);
-            }
-            if (mUU[0] == null) {
-                mUU[0] = Materials.UUAmplifier.getFluid(100);
-            }
-            if (mUU[1] == null) {
-                mUU[1] = Materials.UUMatter.getFluid(100);
-            }
-            sInit = true;
-        }
-    }
-
     @Override
     public IStructureDefinition<MTEMassFabricator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
@@ -236,7 +209,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
      */
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return this.mMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
+        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
     }
 
     @Nonnull
@@ -251,15 +224,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                init();
-                return super.process();
-            }
-
-            @NotNull
-            @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (mMode == MODE_SCRAP) {
+                if (machineMode == MODE_SCRAP) {
                     if (recipe.mOutputs == null) {
                         return SimpleCheckRecipeResult.ofSuccess("no_scrap");
                     }
@@ -270,7 +236,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                if (mMode == MODE_SCRAP) {
+                if (machineMode == MODE_SCRAP) {
                     if (inputItems != null) {
                         for (ItemStack item : inputItems) {
                             if (item == null || item.stackSize == 0) continue;
@@ -306,34 +272,29 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public int getMaxParallelRecipes() {
-        return this.mMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+        return machineMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int aMode = this.mMode + 1;
-        if (aMode > 1) {
-            this.mMode = MODE_UU;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
-        } else if (aMode == 1) {
-            this.mMode = MODE_SCRAP;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-        } else {
-            this.mMode = MODE_SCRAP;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-        }
+        setMachineMode(nextMachineMode());
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
         mLastRecipe = null;
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", mMode);
-        super.saveNBTData(aNBT);
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + machineMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = aNBT.getInteger("mMode");
+        // Migrates old NBT tag to the new one
+        if (aNBT.hasKey("mMode")) {
+            machineMode = aNBT.getInteger("mMode");
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -341,7 +302,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
