@@ -1,13 +1,10 @@
 package gregtech.common.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.SBRContext;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.LightingHelper;
 
 public class GTSidedTextureRender extends GTTextureBase implements ITexture, IColorModulationContainer {
 
@@ -35,39 +32,33 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[5].renderXPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderXPos(SBRContext ctx) {
+        mTextures[5].renderXPos(ctx);
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[4].renderXNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderXNeg(SBRContext ctx) {
+        mTextures[4].renderXNeg(ctx);
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[1].renderYPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderYPos(SBRContext ctx) {
+        mTextures[1].renderYPos(ctx);
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[0].renderYNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderYNeg(SBRContext ctx) {
+        mTextures[0].renderYNeg(ctx);
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[3].renderZPos(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderZPos(SBRContext ctx) {
+        mTextures[3].renderZPos(ctx);
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, LightingHelper lightingHelper, Block aBlock, int aX, int aY, int aZ,
-        int worldRenderPass) {
-        mTextures[2].renderZNeg(aRenderer, lightingHelper, aBlock, aX, aY, aZ, worldRenderPass);
+    public void renderZNeg(SBRContext ctx) {
+        mTextures[2].renderZNeg(ctx);
     }
 
     @Override
