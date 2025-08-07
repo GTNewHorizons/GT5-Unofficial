@@ -382,6 +382,33 @@
       }
     ]
   },
+  "maintenance.MaintenanceAutoHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceAutoHatch",
+        "stream": false
+      }
+    ]
+  },
+  "maintenance.MaintenanceCreativeHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceCreativeHatch",
+        "stream": false
+      }
+    ]
+  },
+  "maintenance.MaintenanceDroneDownlinkHatch": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceDroneDownlinkHatch",
+        "stream": false
+      }
+    ]
+  },
   "maintenance.MaintenanceToolbox": {
     "category": "block",
     "sounds": [
