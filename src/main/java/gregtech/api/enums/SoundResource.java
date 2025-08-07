@@ -101,8 +101,8 @@ public enum SoundResource {
     TECTECH_MACHINES_NOISE(269, TecTech.ID, "fx_noise"),
     TECTECH_MACHINES_FX_WHOOUM(270, TecTech.ID, "fx_whooum"),
 
-    GT_MAINTENANCE_TOOLBOX(271, GregTech.ID, "maintenance.Toolbox"),
-    GT_MAINTENANCE_DUCT_TAPE(272, GregTech.ID, "maintenance.DuctTape"),
+    GT_MAINTENANCE_TOOLBOX(271, GregTech.ID, "maintenance.MaintenanceToolbox"),
+    GT_MAINTENANCE_DUCT_TAPE(272, GregTech.ID, "maintenance.MaintenanceDuctTape"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),

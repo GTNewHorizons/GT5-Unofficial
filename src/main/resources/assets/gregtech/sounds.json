@@ -382,20 +382,20 @@
       }
     ]
   },
-  "maintenance.Toolbox": {
+  "maintenance.MaintenanceToolbox": {
     "category": "block",
     "sounds": [
       {
-        "name": "Toolbox",
+        "name": "MaintenanceToolbox",
         "stream": false
       }
     ]
   },
-  "maintenance.DuctTape": {
+  "maintenance.MaintenanceDuctTape": {
     "category": "block",
     "sounds": [
       {
-        "name": "DuctTape",
+        "name": "MaintenanceDuctTape",
         "stream": false
       }
     ]
