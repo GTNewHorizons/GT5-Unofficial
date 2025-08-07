@@ -381,4 +381,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public boolean showRecipeTextInGUI() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

@@ -469,4 +469,9 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public boolean supportsInputSeparation() {
         return true;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

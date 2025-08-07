@@ -488,4 +488,9 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public boolean supportsVoidProtection() {
         return true;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

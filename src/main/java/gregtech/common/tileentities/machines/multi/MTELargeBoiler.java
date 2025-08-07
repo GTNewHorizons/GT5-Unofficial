@@ -493,4 +493,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

@@ -491,4 +491,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate() };
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

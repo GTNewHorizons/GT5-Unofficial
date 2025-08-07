@@ -362,4 +362,9 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         }
         buildPiece(STRUCTURE_PIECE_LAST, stackSize, hintsOnly, 0, 1, -(tTotalLength - 1));
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

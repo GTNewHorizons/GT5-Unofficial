@@ -344,4 +344,9 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         }
         this.buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

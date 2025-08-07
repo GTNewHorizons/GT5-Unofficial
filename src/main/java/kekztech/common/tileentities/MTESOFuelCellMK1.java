@@ -198,6 +198,11 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public boolean showRecipeTextInGUI() {
         return false;
     }

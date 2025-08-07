@@ -962,4 +962,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

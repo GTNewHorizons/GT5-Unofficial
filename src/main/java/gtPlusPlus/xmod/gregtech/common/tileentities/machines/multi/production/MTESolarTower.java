@@ -629,4 +629,9 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return new String[] { "Internal Heat Level: " + this.mHeatLevel,
             "Connected Solar Reflectors: " + this.mSolarHeaters.size() };
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

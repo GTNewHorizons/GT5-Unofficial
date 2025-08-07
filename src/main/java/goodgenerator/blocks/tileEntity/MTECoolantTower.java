@@ -202,4 +202,9 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

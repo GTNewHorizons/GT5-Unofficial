@@ -621,6 +621,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();

@@ -383,4 +383,9 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         }
         return new ITexture[] { casingTexturePages[12][126] };
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

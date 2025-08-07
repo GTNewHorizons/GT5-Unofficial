@@ -370,4 +370,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

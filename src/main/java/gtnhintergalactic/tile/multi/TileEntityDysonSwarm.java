@@ -534,4 +534,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

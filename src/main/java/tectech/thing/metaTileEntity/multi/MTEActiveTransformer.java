@@ -207,6 +207,11 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public boolean showRecipeTextInGUI() {
         return false;
     }

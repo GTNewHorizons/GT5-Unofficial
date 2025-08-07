@@ -327,4 +327,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
         return PollutionConfig.pollutionPerSecondMultiIndustrialChisel;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

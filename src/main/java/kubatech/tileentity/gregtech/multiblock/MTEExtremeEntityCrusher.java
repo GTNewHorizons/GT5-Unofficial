@@ -864,6 +864,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private static class EECFakePlayer extends FakePlayer {
 
         MTEExtremeEntityCrusher mte;

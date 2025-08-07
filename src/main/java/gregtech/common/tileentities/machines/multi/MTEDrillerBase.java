@@ -772,6 +772,11 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     /**
      * Adds additional buttons to the main button row. You do not need to set the position.
      *

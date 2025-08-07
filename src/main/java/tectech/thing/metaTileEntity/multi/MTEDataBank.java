@@ -364,4 +364,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

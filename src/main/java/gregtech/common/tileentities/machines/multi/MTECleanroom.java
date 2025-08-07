@@ -817,4 +817,9 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mEfficiency, eff -> mEfficiency = eff));
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

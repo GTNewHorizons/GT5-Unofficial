@@ -406,4 +406,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

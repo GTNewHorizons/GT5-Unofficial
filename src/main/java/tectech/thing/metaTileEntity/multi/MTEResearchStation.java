@@ -715,6 +715,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return description;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
 
         INSTANCE;

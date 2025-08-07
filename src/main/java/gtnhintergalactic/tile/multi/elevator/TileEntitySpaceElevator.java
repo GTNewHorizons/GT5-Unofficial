@@ -897,6 +897,11 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     // endregion
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }

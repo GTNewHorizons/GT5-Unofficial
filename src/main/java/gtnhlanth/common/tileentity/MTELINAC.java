@@ -594,4 +594,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

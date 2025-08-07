@@ -863,6 +863,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         destroyAntimatterRender();
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public void updateAntimatterSize(float antimatterAmount) {
         if (antimatterAmount <= 0) {
             destroyAntimatterRender();

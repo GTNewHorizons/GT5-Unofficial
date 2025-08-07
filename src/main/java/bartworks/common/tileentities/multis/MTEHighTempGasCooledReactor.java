@@ -460,6 +460,11 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public static class HTGRMaterials {
 
         private static class CustomHTGRSimpleSubItemClass extends SimpleSubItemClass {

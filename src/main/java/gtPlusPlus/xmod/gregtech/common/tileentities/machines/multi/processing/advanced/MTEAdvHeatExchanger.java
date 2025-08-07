@@ -415,4 +415,9 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             aware.endRecipeProcessing(this);
         }
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

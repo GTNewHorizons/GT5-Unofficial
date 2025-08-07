@@ -807,4 +807,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     protected boolean supportsCraftingMEBuffer() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

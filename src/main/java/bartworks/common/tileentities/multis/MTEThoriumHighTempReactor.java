@@ -378,6 +378,11 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public static class THTRMaterials {
 
         public static final SimpleSubItemClass aTHTR_Materials = new SimpleSubItemClass(

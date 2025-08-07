@@ -470,4 +470,9 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         mFormed = true;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
