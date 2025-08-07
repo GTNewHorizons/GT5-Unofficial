@@ -1,13 +1,11 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -33,13 +30,11 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -50,9 +45,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     private Vec3Impl downlinkCoord;
-    private DroneConnection connection;
-    // This has to be existed for doing random damage.
-    private MTEMultiBlockBase machine;
+    private MTEDroneCentre center;
+    private final Set<DroneConnection> connections = new HashSet<>();
+    private final Set<MTEMultiBlockBase> machines = new HashSet<>();
+
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
         "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
@@ -62,6 +58,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     public MTEHatchDroneDownLink(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures, false);
+    }
+
+    public void registerMachineController(MTEMultiBlockBase machine) {
+        machines.add(machine);
+        addConnection(machine);
     }
 
     @Override
@@ -96,36 +97,53 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
+
+        tryFindDroneCenter();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (hasConnection()) {
-                if (connection.centre.getBaseMetaTileEntity()
-                    .isActive()) {
-                    doNormalMaintain();
-                } else {
-                    // Centre offline? ...do nothing.
-                    // machine.causeMaintenanceIssue();
-                }
-            } else {
-                // If the connection invalid, set it to null.
-                // Find connection every 10 second
-                if (aTick % 200 == 0) {
-                    connection = null;
-                    tryFindConnection();
-                    // Let's have some "surprise". Sorry, surprise party is over.
-                    // if (this.machine != null && this.machine.isValid()) {
-                    // machine.causeMaintenanceIssue();
-                }
+            // validate that all connections to the center and the machines are still valid every 4s
+            if (aTick % 80 == 0) {
+                validateConnections();
+            }
+
+            // if we don't have a connection to a center, search for one every 10s
+            if (center == null && aTick % 200 == 0) {
+                tryFindDroneCenter();
+            }
+
+            if (center != null && center.getBaseMetaTileEntity()
+                .isActive()) {
+                doNormalMaintain();
+            }
+        }
+    }
+
+    private void validateConnections() {
+        if (center != null && (!center.isValid() || !center.getBaseMetaTileEntity()
+            .isActive())) {
+            center.getConnectionList()
+                .removeAll(connections);
+            connections.clear();
+            center = null;
+        }
+
+        for (MTEMultiBlockBase machine : new ArrayList<>(machines)) {
+            if (!machine.isValid()) {
+                machines.remove(machine);
+
+                DroneConnection connection = findConnection(machine);
+                connections.remove(connection);
+                center.getConnectionList()
+                    .remove(connection);
             }
         }
     }
 
     private void doNormalMaintain() {
         this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
-        connection.machine.mWrench = connection.machine.mScrewdriver = connection.machine.mSoftMallet = connection.machine.mHardHammer = connection.machine.mCrowbar = connection.machine.mSolderingTool = true;
     }
 
     @Override
@@ -134,7 +152,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
-            if (connection == null || !connection.isValid()) {
+            if (!hasConnection()) {
                 aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
                 return false;
             }
@@ -158,19 +176,20 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void onRemoval() {
-        if (hasConnection()) connection.machine = null;
+        if (center == null) return;
+        center.getConnectionList()
+            .removeAll(connections);
     }
 
     private boolean hasConnection() {
-        if (connection == null) return false;
-        if (connection.isValid()) return true;
-        return connection.reCheckConnection();
+        validateConnections();
+        return !connections.isEmpty();
     }
 
     /**
-     * Find a drone connection. This will search for all DC in the same dimension, then find one in range.
+     * Find a drone center. This will search for all DC in the same dimension, then find one in range.
      */
-    private void tryFindConnection() {
+    private void tryFindDroneCenter() {
         if (MTEDroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
@@ -182,71 +201,36 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                     .withinDistance(this.downlinkCoord, centre.getRange())
                     && centre.getBaseMetaTileEntity()
                         .isActive()) {
-                    MTEMultiBlockBase machine = tryFindCoreGTMultiBlock();
-                    if (machine != null && machine.isValid()) {
-                        this.machine = machine;
-                        connection = new DroneConnection(machine, centre);
-                        connection.centre.getConnectionList()
-                            .add(connection);
-                        return;
+
+                    connections.clear();
+                    this.center = centre;
+
+                    for (MTEMultiBlockBase machine : machines) {
+                        addConnection(machine);
                     }
+
+                    return;
                 }
             }
         }
     }
 
-    // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
-    private MTEMultiBlockBase tryFindCoreGTMultiBlock() {
-        Queue<ChunkCoordinates> tQueue = new LinkedList<>();
-        Set<ChunkCoordinates> visited = new HashSet<>(80);
-        tQueue.add(
-            this.getBaseMetaTileEntity()
-                .getCoords());
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
-        while (!tQueue.isEmpty()) {
-            final ChunkCoordinates aCoords = tQueue.poll();
-            final TileEntity tTileEntity;
-            final boolean isMachineBlock;
-            tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-            Block block = world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
-            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone
-            // can work with cleanroom.
-            // Todo: loading cleanroom's config for other blocks
-            isMachineBlock = GregTechAPI
-                .isMachineBlock(block, world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ))
-                || (block == GregTechAPI.sBlockReinforced
-                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == 2);
-            // See if the block itself is MultiBlock, also the one we need.
-            if (tTileEntity instanceof IGregTechTileEntity te
-                && te.getMetaTileEntity() instanceof MTEMultiBlockBase mte)
-                if (mte.mMaintenanceHatches.contains(this)) return mte;
-
-            // Now see if we should add the nearby blocks to the queue:
-            // 1) If we've visited less than 5 blocks, then yes
-            // 2) If the tile says we should recursively update (pipes don't, machine blocks do)
-            // 3) If the block at the coordinates is marked as a machine block
-            if (visited.size() < 5
-                || (tTileEntity instanceof IMachineBlockUpdateable
-                    && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
-                || isMachineBlock) {
-                ChunkCoordinates tCoords;
-
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1)))
-                    tQueue.add(tCoords);
-            }
+    private void addConnection(MTEMultiBlockBase machine) {
+        if (center == null || findConnection(machine) != null) {
+            return;
         }
-        return null;
+
+        DroneConnection connection = new DroneConnection(machine, center);
+        connections.add(connection);
+        center.getConnectionList()
+            .add(connection);
+    }
+
+    private DroneConnection findConnection(MTEMultiBlockBase machine) {
+        return connections.stream()
+            .filter(c -> c.machine == machine)
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
@@ -277,8 +261,9 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                     .setPos(0, 5)
                     .setSize(150, 8))
             .widget(
-                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName(false))
-                    .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
+                new TextFieldWidget()
+                    .setGetter(() -> getFirstConnection() == null ? "" : getFirstConnection().getCustomName(false))
+                    .setSetter(var -> connections.forEach(c -> c.setCustomName(var)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setTextColor(Color.WHITE.dark(1))
                     .setFocusOnGuiOpen(true)
@@ -292,30 +277,53 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("connection", connection == null);
-        if (connection != null) {
-            tag.setInteger("x", connection.centreCoord.posX);
-            tag.setInteger("y", connection.centreCoord.posY);
-            tag.setInteger("z", connection.centreCoord.posZ);
-            tag.setString("name", connection.customName);
+
+        tag.setBoolean("connected", center != null);
+        if (center != null) {
+            tag.setInteger(
+                "x",
+                center.getCoords()
+                    .get0());
+            tag.setInteger(
+                "y",
+                center.getCoords()
+                    .get1());
+            tag.setInteger(
+                "z",
+                center.getCoords()
+                    .get2());
         }
+
+        DroneConnection firstConnection = getFirstConnection();
+        if (firstConnection != null) {
+            tag.setString("name", firstConnection.customName);
+        }
+    }
+
+    private DroneConnection getFirstConnection() {
+        return connections.stream()
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("connection")) {
-            currenttip
-                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
-        } else {
+        if (tag.getBoolean("connected")) {
             currenttip.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.drone_downlink.connection",
                     tag.getInteger("x"),
                     tag.getInteger("y"),
                     tag.getInteger("z")));
-            currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
+
+            if (tag.hasKey("name")) {
+                currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
+            }
+        } else {
+            currenttip
+                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

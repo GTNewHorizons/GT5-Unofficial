@@ -48,7 +48,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -240,7 +240,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             return 0;
         } else {
             int totalAir = 0;
-            for (METHatchAirIntake u : this.mAirIntakes) {
+            for (MTEHatchAirIntake u : this.mAirIntakes) {
                 if (u != null && u.mFluid != null) {
                     FluidStack f = u.mFluid;
                     if (f.isFluidEqual(sAirFluidStack)) {
@@ -268,7 +268,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             return SimpleCheckRecipeResult.ofFailure("no_air");
         } else {
             int aTotalAir = 0;
-            for (METHatchAirIntake aAirHatch : this.mAirIntakes) {
+            for (MTEHatchAirIntake aAirHatch : this.mAirIntakes) {
                 if (aAirHatch.mFluid != null) {
                     aTotalAir += aAirHatch.getFluidAmount();
                 }
@@ -276,7 +276,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             if (aTotalAir >= aAirToConsume) {
                 int aSplitAmount = (aAirToConsume / this.mAirIntakes.size());
                 if (aSplitAmount > 0) {
-                    for (METHatchAirIntake aAirHatch : mAirIntakes) {
+                    for (MTEHatchAirIntake aAirHatch : mAirIntakes) {
                         boolean hasIntakeAir = aAirHatch.drain(aSplitAmount, true) != null;
                         if (!hasIntakeAir) {
                             this.freeFuelTicks = 0;

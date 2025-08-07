@@ -465,7 +465,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_generator")
                 + " "
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
