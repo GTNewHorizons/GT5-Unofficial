@@ -2443,7 +2443,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Steel_Boiler_Lava.get(1L),
             GTModHandler.RecipeBits.BITSD,
-            new Object[] { aTextPlate, "PTP", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P',
+            new Object[] { aTextPlate, "PTP", aTextPlateMotor, 'M', ItemList.Hull_HP, 'P',
                 OrePrefixes.plate.get(Materials.Steel), 'T',
                 GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0) });
         GTModHandler.addCraftingRecipe(
