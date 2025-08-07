@@ -146,16 +146,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                         inputFluid.amount = 0;
                     }
                 }
-
-                // If we don't have a lava filter, remove non-obsidian outputs
-                // so that output space for them is not required if void protection is on.
-                if (!findLavaFilter()) {
-                    for (ItemStack outputItem : adjustedRecipe.mOutputs) {
-                        if (outputItem != null && outputItem.getItem() != itemObsidian) {
-                            outputItem.stackSize = 0;
-                        }
-                    }
-                }
                 return super.createParallelHelper(adjustedRecipe);
             }
         };
