@@ -155,7 +155,7 @@ public class MaterialBuilder {
     public MaterialBuilder setRGB(int rgb) {
         this.r = (rgb >> 16) & 0xFF;
         this.g = (rgb >> 8) & 0xFF;
-        this.b = b & 0xFF;
+        this.b = rgb & 0xFF;
         return this;
     }
 
