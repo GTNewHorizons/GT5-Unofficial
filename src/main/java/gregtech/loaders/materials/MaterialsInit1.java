@@ -205,9 +205,9 @@ public class MaterialsInit1 {
         Materials.ConstructionFoam = loadConstructionFoam();
         Materials.Chert = loadChert();
         Materials.Chimerite = loadChimerite();
+        Materials.Coral = loadCoral();
 
         // spotless:off;
-        Materials.Coral                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 128, 255,   0,   "Coral"                   ,   "Coral"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.CrudeOil                = new Materials( 858, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         ,  10,  10,  10,   0,   "CrudeOil"                ,   "Crude Oil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
         Materials.Chrysocolla             = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chrysocolla"             ,   "Chrysocolla"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.CrystalFlux             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  3, 1  |4                     , 100,  50, 100,   0,   "CrystalFlux"             ,   "Flux Crystal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3605,6 +3605,15 @@ public class MaterialsInit1 {
     private static Materials loadChimerite() {
         return new MaterialBuilder().setName("Chimerite")
             .setDefaultLocalName("Chimerite")
+            .addDustItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadCoral() {
+        return new MaterialBuilder().setName("Coral")
+            .setDefaultLocalName("Coral")
+            .setRGB(0xff80ff)
             .addDustItems()
             .setOreValue(3)
             .constructMaterial();
