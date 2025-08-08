@@ -1119,6 +1119,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName) {
         this(
@@ -1135,6 +1136,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             "null");
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
         String aCustomID) {
@@ -1153,6 +1155,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mIconSet = aIconSet;
     }
 
+    @Deprecated
     public Materials(Materials aMaterialInto, boolean aReRegisterIntoThis) {
         mUnificatable = false;
         mDefaultLocalName = aMaterialInto.mDefaultLocalName;
@@ -1164,6 +1167,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mIconSet = TextureSet.SET_NONE;
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1196,6 +1200,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             "null");
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1248,6 +1253,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * @param aBlastFurnaceRequired If this requires a Blast Furnace.
      * @param aColor                Vanilla MC Wool Color which comes the closest to this.
      */
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1285,6 +1291,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1316,6 +1323,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1355,6 +1363,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mAspects.addAll(aAspects);
     }
 
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1388,52 +1397,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             null);
     }
 
-    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-        boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
-        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList,
-        Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
-        this(
-            aMetaItemSubID,
-            aIconSet,
-            aToolSpeed,
-            aDurability,
-            aToolQuality,
-            aTypes,
-            aR,
-            aG,
-            aB,
-            aA,
-            aName,
-            aDefaultLocalName,
-            aFuelType,
-            aFuelPower,
-            aMeltingPoint,
-            aBlastFurnaceTemp,
-            aBlastFurnaceRequired,
-            aTransparent,
-            0,
-            aDensityMultiplier,
-            aDensityDivider,
-            aColor,
-            aExtraData,
-            aMaterialList,
-            aAspects);
-        this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
-        this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
-        if (aElement != null) {
-            mElement = aElement;
-            mElement.mLinkedMaterials.add(this);
-            if (mElement == Element._NULL) {
-                mChemicalFormula = "Empty";
-            } else {
-                mChemicalFormula = aElement.toString();
-                mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
-            }
-        }
-    }
-
+    @Deprecated
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
@@ -1487,6 +1451,52 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (aAspects == null) for (TCAspects.TC_AspectStack tAspect : mAspects)
             tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
         else mAspects.addAll(aAspects);
+    }
+
+    public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
+        boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
+        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList,
+        Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
+        this(
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            0,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor,
+            aExtraData,
+            aMaterialList,
+            aAspects);
+        this.mAutoGenerateBlastFurnaceRecipes = aAutoGenerateBlastFurnaceRecipes;
+        this.mAutoGenerateVacuumFreezerRecipes = aAutoGenerateVacuumFreezerRecipes;
+        if (aElement != null) {
+            mElement = aElement;
+            mElement.mLinkedMaterials.add(this);
+            if (mElement == Element._NULL) {
+                mChemicalFormula = "Empty";
+            } else {
+                mChemicalFormula = aElement.toString();
+                mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+            }
+        }
     }
 
     private static void setSmeltingInto() {
