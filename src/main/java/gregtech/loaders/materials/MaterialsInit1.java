@@ -241,9 +241,9 @@ public class MaterialsInit1 {
         Materials.Graphene = loadGraphene();
         Materials.Greenschist = loadGreenschist();
         Materials.Greenstone = loadGreenstone();
+        Materials.Greywacke = loadGreywacke();
 
         // spotless:off
-        Materials.Greywacke               = new Materials( 897, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greywacke"               ,   "Greywacke"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
         Materials.Haderoth                = new Materials( 963, TextureSet.SET_METALLIC          ,  10.0F,   3200,  3, 1|2  |8      |64          , 119,  52,  30,   0,   "Haderoth"                ,   "Haderoth"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Hematite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Hematite"                ,   "Hematite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Hepatizon               = new Materials( 957, TextureSet.SET_METALLIC          ,  12.0F,    128,  2, 1|2  |8      |64          , 117,  94, 117,   0,   "Hepatizon"               ,   "Hepatizon"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4110,6 +4110,16 @@ public class MaterialsInit1 {
             .setMetaItemSubID(867)
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGreywacke() {
+        return new MaterialBuilder().setName("Greywacke")
+            .setDefaultLocalName("Greywacke")
+            .setMetaItemSubID(897)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
             .addDustItems()
             .constructMaterial();
     }
