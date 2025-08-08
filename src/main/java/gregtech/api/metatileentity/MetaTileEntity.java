@@ -138,7 +138,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Nullable
     @Override
-    public IGregTechTileEntity getBaseMetaTileEntity() {
+    // making this method final allows it to be inlined by the JIT compiler
+    public final IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;
     }
 
