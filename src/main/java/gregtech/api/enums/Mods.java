@@ -2,11 +2,10 @@ package gregtech.api.enums;
 
 import java.util.Locale;
 
-import net.minecraft.util.ResourceLocation;
-
 import com.gtnewhorizon.gtnhlib.util.data.IMod;
 
 import cpw.mods.fml.common.Loader;
+import net.minecraft.util.ResourceLocation;
 
 public enum Mods implements IMod {
 
@@ -276,10 +275,12 @@ public enum Mods implements IMod {
 
     Minecraft(ModIDs.MINECRAFT) {
 
-        @Override
-        public boolean isModLoaded() {
-            return true;
+        {
+            // instance initializer to avoid having to override isModLoaded
+            checked = true;
+            modLoaded = true;
         }
+
     },
 
     Aroma1997Core(ModIDs.AROMA1997_CORE),
@@ -295,17 +296,19 @@ public enum Mods implements IMod {
 
     public final String ID;
     public final String resourceDomain;
-    private Boolean modLoaded;
+    protected boolean checked, modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
+    // isModLoaded is final to allow the JIT to inline this
     @Override
-    public boolean isModLoaded() {
-        if (this.modLoaded == null) {
+    public final boolean isModLoaded() {
+        if (!this.checked) {
             this.modLoaded = Loader.isModLoaded(ID);
+            this.checked = true;
         }
         return this.modLoaded;
     }
