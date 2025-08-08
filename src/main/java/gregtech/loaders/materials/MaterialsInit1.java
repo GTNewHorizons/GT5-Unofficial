@@ -249,9 +249,9 @@ public class MaterialsInit1 {
         Materials.Ignatius = loadIgnatius();
         Materials.Infernal = loadInfernal();
         Materials.Infuscolium = loadInfuscolium();
+        Materials.InfusedGold = loadInfusedGold();
 
         // spotless:off
-        Materials.InfusedGold             = new Materials( 323, TextureSet.SET_SHINY             ,  12.0F,     64,  3, 1|2  |8      |64|128      , 255, 200,  60,   0,   "InfusedGold"             ,   "Infused Gold"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
         Materials.InfusedAir              = new Materials( 540, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255, 255,   0,   0,   "InfusedAir"              ,   "Aer"                           ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
         Materials.InfusedFire             = new Materials( 541, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255,   0,   0,   0,   "InfusedFire"             ,   "Ignis"                         ,    5,     320,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
         Materials.InfusedEarth            = new Materials( 542, TextureSet.SET_SHARDS            ,   8.0F,    256,  3, 1  |4|8      |64|128      ,   0, 255,   0,   0,   "InfusedEarth"            ,   "Terra"                         ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeGreen       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.TERRA, 2)));
@@ -4221,6 +4221,25 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedGold() {
+        return new MaterialBuilder().setName("InfusedGold")
+            .setDefaultLocalName("Infused Gold")
+            .setMetaItemSubID(323)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeYellow)
+            .setRGB(0xffc83c)
+            .setToolSpeed(12.0f)
+            .setDurability(64)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
             .setOreValue(3)
             .constructMaterial();
     }
