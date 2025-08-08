@@ -216,9 +216,9 @@ public class MaterialsInit1 {
         Materials.Demonite = loadDemonite();
         Materials.Desh = loadDesh();
         Materials.Desichalkos = loadDesichalkos();
+        Materials.Dilithium = loadDilithium();
 
         // spotless:off
-        Materials.Dilithium               = new Materials( 515, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                , 255, 250, 250, 127,   "Dilithium"               ,   "Dilithium"                     ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       );
         Materials.Draconic                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Draconic"                ,   "Draconic"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Drulloy                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|16                      , 255, 255, 255,   0,   "Drulloy"                 ,   "Drulloy"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Duranium                = new Materials( 328, TextureSet.SET_METALLIC          ,  32.0F,  40960, 11, 1|2          |64          , 255, 255, 255,   0,   "Duranium"                ,   "Duranium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   ).setTurbineMultipliers(16, 16, 1);
@@ -3741,6 +3741,20 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadDilithium() {
+        return new MaterialBuilder().setName("Dilithium")
+            .setDefaultLocalName("Dilithium")
+            .setMetaItemSubID(515)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x7ffffafa)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
             .constructMaterial();
     }
 
