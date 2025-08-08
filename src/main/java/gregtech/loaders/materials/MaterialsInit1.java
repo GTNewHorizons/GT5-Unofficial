@@ -257,9 +257,9 @@ public class MaterialsInit1 {
         Materials.InfusedEntropy = loadInfusedEntropy();
         Materials.InfusedOrder = loadInfusedOrder();
         Materials.InfusedVis = loadInfusedVis();
+        Materials.InfusedDull = loadInfusedDull();
 
         // spotless:off
-        Materials.InfusedDull             = new Materials(  -1, TextureSet.SET_SHARDS            ,  32.0F,     64,  3, 1  |4|8      |64|128      , 100, 100, 100,   0,   "InfusedDull"             ,   "Vacuus"                        ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2)));
         Materials.Inolashite              = new Materials( 954, TextureSet.SET_NONE              ,   8.0F,   2304,  3, 1|2  |8      |64          , 148, 216, 187,   0,   "Inolashite"              ,   "Inolashite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Invisium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Invisium"                ,   "Invisium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Jade                    = new Materials( 537, TextureSet.SET_SHINY             ,   1.0F,     16,  2, 1  |4|8      |64          ,   0, 100,   0,   0,   "Jade"                    ,   "Jade"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeGreen       ,0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
@@ -4402,6 +4402,28 @@ public class MaterialsInit1 {
             .setFuelPower(240)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AURAM, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedDull() {
+        return new MaterialBuilder().setName("InfusedDull")
+            .setDefaultLocalName("Vacuus")
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0x00646464)
+            .setToolSpeed(32.0f)
+            .setDurability(64)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setOreValue(3)
+            .setFuelType(5)
+            .setFuelPower(160)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
             .constructMaterial();
     }
 
