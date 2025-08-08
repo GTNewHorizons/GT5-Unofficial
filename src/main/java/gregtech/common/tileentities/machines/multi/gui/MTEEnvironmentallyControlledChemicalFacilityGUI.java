@@ -101,21 +101,40 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         return format + plus + String.format("%.1f %s", value, unit);
     }
 
-    public ModularPanel createECCFPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        int eccfPanelWidth = 176;
-        int eccfPanelHeight = 136;
-        ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
-            .size(eccfPanelWidth, eccfPanelHeight)
-            .background(GTGuiTextures.BACKGROUND_STANDARD);
+    private Flow createValueRow(IKey tempValue, IKey presValue, String label) {
+        return new Row().marginTop(10)
+            .child(
+                new TextWidget(tempValue).marginRight(5)
+                    .size(54, 10)
+                    .alignment(Alignment.Center))
+            .child(
+                new TextWidget(presValue).marginLeft(5)
+                    .size(54, 10)
+                    .alignment(Alignment.Center))
+            .child(
+                new TextWidget(IKey.str(label)).size(54, 10)
+                    .alignment(Alignment.Center))
+            .height(10);
+    }
 
-        DoubleSyncValue pressureSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Pressure:0");
+    private double updateTotalTemp(PanelSyncManager syncManager) {
+        DoubleSyncValue tempModule = (DoubleSyncValue) syncManager.getSyncHandler("TempModule:0");
+        DoubleSyncValue lossTemp = (DoubleSyncValue) syncManager.getSyncHandler("LossTemp:0");
+        IntSyncValue deltaTemp = (IntSyncValue) syncManager.getSyncHandler("DeltaTemp:0");
+        return tempModule.getValue() + lossTemp.getValue() + deltaTemp.getValue();
+    }
+
+    private double updateTotalPres(PanelSyncManager syncManager) {
+        DoubleSyncValue presModule = (DoubleSyncValue) syncManager.getSyncHandler("PresModule:0");
+        DoubleSyncValue lossPres = (DoubleSyncValue) syncManager.getSyncHandler("LossPres:0");
+        IntSyncValue deltaPres = (IntSyncValue) syncManager.getSyncHandler("DeltaPres:0");
+        DoubleSyncValue leakPres = (DoubleSyncValue) syncManager.getSyncHandler("LeakPres:0");
+        return presModule.getValue() + lossPres.getValue() + deltaPres.getValue() + leakPres.getValue();
+    }
+
+    private Flow createInfoColumn(PanelSyncManager syncManager) {
         DoubleSyncValue tempSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Temperature:0");
-        IntSyncValue heatCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
-        IntSyncValue coolCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
-        IntSyncValue vacuumCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
-        IntSyncValue compressCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
-        IntSyncValue leftParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
-        IntSyncValue rightParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
+        DoubleSyncValue pressureSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Pressure:0");
         DoubleSyncValue initTemp = (DoubleSyncValue) syncManager.getSyncHandler("InitTemp:0");
         DoubleSyncValue initPres = (DoubleSyncValue) syncManager.getSyncHandler("InitPres:0");
         DoubleSyncValue lossTemp = (DoubleSyncValue) syncManager.getSyncHandler("LossTemp:0");
@@ -125,6 +144,64 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         DoubleSyncValue leakPres = (DoubleSyncValue) syncManager.getSyncHandler("LeakPres:0");
         DoubleSyncValue tempModule = (DoubleSyncValue) syncManager.getSyncHandler("TempModule:0");
         DoubleSyncValue presModule = (DoubleSyncValue) syncManager.getSyncHandler("PresModule:0");
+
+        return new Column().marginTop(43)
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")),
+                    IKey.dynamic(() -> valueConverter(pressureSyncer.getValue(), false, "Pa")),
+                    "Values"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(initTemp.getValue(), false, "K")),
+                    IKey.dynamic(() -> valueConverter(initPres.getValue(), false, "Pa")),
+                    "Ambient"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(deltaTemp.getValue(), true, "K")),
+                    IKey.dynamic(() -> valueConverter(deltaPres.getValue(), true, "Pa")),
+                    "Recipe"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(lossTemp.getValue(), true, "K")),
+                    IKey.dynamic(() -> valueConverter(lossPres.getValue(), true, "Pa")),
+                    "Loss"))
+            .child(
+                createValueRow(
+                    IKey.str("-"),
+                    IKey.dynamic(() -> valueConverter(leakPres.getValue(), true, "Pa")),
+                    "Leak"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")),
+                    IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")),
+                    "Modules"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")),
+                    IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")),
+                    "Modules"))
+            .child(
+                createValueRow(
+                    IKey.dynamic(() -> valueConverter(updateTotalTemp(syncManager), true, "K")),
+                    IKey.dynamic(() -> valueConverter(updateTotalPres(syncManager), true, "Pa")),
+                    "Total"))
+            .coverChildrenHeight();
+    }
+
+    public ModularPanel createECCFPanel(ModularPanel parent, PanelSyncManager syncManager) {
+        int eccfPanelWidth = 176;
+        int eccfPanelHeight = 136;
+        ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
+            .size(eccfPanelWidth, eccfPanelHeight)
+            .background(GTGuiTextures.BACKGROUND_STANDARD);
+
+        IntSyncValue heatCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
+        IntSyncValue coolCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
+        IntSyncValue vacuumCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
+        IntSyncValue compressCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
+        IntSyncValue leftParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
+        IntSyncValue rightParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
 
         ParentWidget<?> infoPage = new ParentWidget<>().top(5)
             .child(
@@ -163,154 +240,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             }).asWidget()
                 .size(48, 48)
                 .horizontalCenter())
-            .child(
-                new Column().marginTop(43)
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(
-                                    IKey.dynamic(() -> valueConverter(pressureSyncer.getValue(), false, "Pa")))
-                                        .marginLeft(5)
-                                        .size(54, 10)
-                                        .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Values")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(initTemp.getValue(), false, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(initPres.getValue(), false, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Ambient")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(deltaTemp.getValue(), true, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(deltaPres.getValue(), true, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Recipe")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(lossTemp.getValue(), true, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(lossPres.getValue(), true, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Loss")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.str("-")).marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(leakPres.getValue(), true, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Leak")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Modules")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(tempModule.getValue(), true, "K")))
-                                    .marginRight(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.dynamic(() -> valueConverter(presModule.getValue(), true, "Pa")))
-                                    .marginLeft(5)
-                                    .size(54, 10)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Modules")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10)
-
-                    .child(
-                        new Row().marginTop(10)
-                            .child(
-                                new TextWidget(
-                                    IKey.dynamic(
-                                        () -> valueConverter(
-                                            tempModule.getValue() + lossTemp.getValue() + deltaTemp.getValue(),
-                                            true,
-                                            "K"))).marginRight(5)
-                                                .size(54, 10)
-                                                .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(
-                                    IKey.dynamic(
-                                        () -> valueConverter(
-                                            presModule.getValue() + lossPres.getValue()
-                                                + deltaPres.getValue()
-                                                + leakPres.getValue(),
-                                            true,
-                                            "Pa"))).marginLeft(5)
-                                                .size(54, 10)
-                                                .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(IKey.str("Total")).size(54, 10)
-                                    .alignment(Alignment.Center)))
-                    .height(10))
-            .coverChildrenHeight();
+            .child(createInfoColumn(syncManager));
 
         infoPage.sizeRel(1.0f);
         return ui.child(infoPage.sizeRel(1.0f))
