@@ -209,9 +209,9 @@ public class MaterialsInit1 {
         Materials.CrudeOil = loadCrudeOil();
         Materials.Chrysocolla = loadChrysocolla();
         Materials.CrystalFlux = loadCrystalFlux();
+        Materials.Cyanite = loadCyanite();
 
         // spotless:off;
-        Materials.Cyanite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Cyanite"                 ,   "Cyanite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        );
         Materials.Dacite                  = new Materials( 859, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Dacite"                  ,   "Dacite"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray   );
         Materials.DarkIron                = new Materials( 342, TextureSet.SET_DULL              ,   7.0F,    384,  3, 1|2  |8      |64          ,  55,  40,  60,   0,   "DarkIron"                ,   "Deep Dark Iron"                ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyePurple      );
         Materials.DarkStone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "DarkStone"               ,   "Dark Stone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
@@ -3645,6 +3645,15 @@ public class MaterialsInit1 {
             .setRGB(0x643264)
             .addDustItems()
             .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadCyanite() {
+        return new MaterialBuilder().setName("Cyanite")
+            .setDefaultLocalName("Cyanite")
+            .setColor(Dyes.dyeCyan)
+            .addDustItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
