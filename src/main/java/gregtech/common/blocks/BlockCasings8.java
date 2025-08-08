@@ -19,9 +19,9 @@ public class BlockCasings8 extends BlockCasingsAbstract {
     public BlockCasings8() {
         super(ItemCasings.class, "gt.blockcasings8", MaterialCasings.INSTANCE, 15);
         /*
-         * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/KubaTech/pull/101
-         * glee8e: above comment means texture ID15 + 48 is used for DEFCCasingBlock meta 0 so it should not be reused
-         * here without added special case for this ID in #getTextureIndex()
+         * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/KubaTech/pull/101 glee8e: above comment
+         * means texture ID15 + 48 is used for DEFCCasingBlock meta 0 so it should not be reused here without added
+         * special case for this ID in #getTextureIndex()
          */
 
         register(0, ItemList.Casing_Chemically_Inert, "Chemically Inert Machine Casing");
