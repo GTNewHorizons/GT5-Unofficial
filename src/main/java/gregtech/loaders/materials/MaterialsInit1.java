@@ -242,9 +242,9 @@ public class MaterialsInit1 {
         Materials.Greenschist = loadGreenschist();
         Materials.Greenstone = loadGreenstone();
         Materials.Greywacke = loadGreywacke();
+        Materials.Haderoth = loadHaderoth();
 
         // spotless:off
-        Materials.Haderoth                = new Materials( 963, TextureSet.SET_METALLIC          ,  10.0F,   3200,  3, 1|2  |8      |64          , 119,  52,  30,   0,   "Haderoth"                ,   "Haderoth"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Hematite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Hematite"                ,   "Hematite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Hepatizon               = new Materials( 957, TextureSet.SET_METALLIC          ,  12.0F,    128,  2, 1|2  |8      |64          , 117,  94, 117,   0,   "Hepatizon"               ,   "Hepatizon"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.HSLA                    = new Materials( 322, TextureSet.SET_METALLIC          ,   6.0F,    500,  3, 1|2          |64|128      , 128, 128, 128,   0,   "HSLA"                    ,   "HSLA Steel"                    ,    0,       0,       1811, 1000,  true, false,   3,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
@@ -4121,6 +4121,22 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHaderoth() {
+        return new MaterialBuilder().setName("Haderoth")
+            .setDefaultLocalName("Haderoth")
+            .setMetaItemSubID(963)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x77341e)
+            .setToolSpeed(10.0f)
+            .setDurability(3200)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
             .constructMaterial();
     }
 
