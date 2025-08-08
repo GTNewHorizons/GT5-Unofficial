@@ -53,7 +53,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContext;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
