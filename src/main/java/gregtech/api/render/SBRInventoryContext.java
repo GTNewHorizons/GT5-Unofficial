@@ -35,10 +35,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
 
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
-    public final RenderBlocks renderer;
-    public final Block block;
     public final int meta;
-    public final int modelId;
 
     /**
      * Constructs a new {@link SBRInventoryContext} used to render a single {@link Block} inside an inventory
@@ -50,10 +47,7 @@ public class SBRInventoryContext extends SBRContextBase<SBRInventoryContext> {
      */
     public SBRInventoryContext(@NotNull Block block, int meta, int modelId, @NotNull RenderBlocks renderer) {
         super(block, modelId, renderer);
-        this.block = block;
         this.meta = meta;
-        this.modelId = modelId;
-        this.renderer = renderer;
         reset();
     }
 
