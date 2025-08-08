@@ -207,9 +207,9 @@ public class MaterialsInit1 {
         Materials.Chimerite = loadChimerite();
         Materials.Coral = loadCoral();
         Materials.CrudeOil = loadCrudeOil();
+        Materials.Chrysocolla = loadChrysocolla();
 
         // spotless:off;
-        Materials.Chrysocolla             = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chrysocolla"             ,   "Chrysocolla"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.CrystalFlux             = new Materials(  -1, TextureSet.SET_QUARTZ            ,   1.0F,      0,  3, 1  |4                     , 100,  50, 100,   0,   "CrystalFlux"             ,   "Flux Crystal"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Cyanite                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Cyanite"                 ,   "Cyanite"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeCyan        );
         Materials.Dacite                  = new Materials( 859, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Dacite"                  ,   "Dacite"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray   );
@@ -3627,6 +3627,14 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeBlack)
             .setRGB(0x0a0a0a)
             .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChrysocolla() {
+        return new MaterialBuilder().setName("Chrysocolla")
+            .setDefaultLocalName("Chrysocolla")
+            .addDustItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
