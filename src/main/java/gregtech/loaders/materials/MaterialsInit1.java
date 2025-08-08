@@ -233,9 +233,9 @@ public class MaterialsInit1 {
         Materials.FoolsRuby = loadFoolsRuby();
         Materials.Force = loadForce();
         Materials.Forcicium = loadForcicium();
+        Materials.Forcillium = loadForcillium();
 
         // spotless:off
-        Materials.Forcillium              = new Materials( 519, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcillium"              ,   "Forcillium"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
         Materials.Gabbro                  = new Materials( 863, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gabbro"                  ,   "Gabbro"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
         Materials.Glowstone               = new Materials( 811, TextureSet.SET_SHINY             ,   1.0F,      0,  1, 1      |16                , 255, 255,   0,   0,   "Glowstone"               ,   "Glowstone"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUX, 2), new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
         Materials.Gneiss                  = new Materials( 864, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Gneiss"                  ,   "Gneiss"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
@@ -3992,6 +3992,22 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Forcicium")
             .setDefaultLocalName("Forcicium")
             .setMetaItemSubID(518)
+            .setIconSet(TextureSet.SET_DIAMOND)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x323246)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addCell()
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadForcillium() {
+        return new MaterialBuilder().setName("Forcillium")
+            .setDefaultLocalName("Forcillium")
+            .setMetaItemSubID(519)
             .setIconSet(TextureSet.SET_DIAMOND)
             .setColor(Dyes.dyeGreen)
             .setRGB(0x323246)
