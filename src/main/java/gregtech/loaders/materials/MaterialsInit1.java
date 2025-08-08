@@ -229,9 +229,9 @@ public class MaterialsInit1 {
         Materials.Eximite = loadEximite();
         Materials.FierySteel = loadFierySteel();
         Materials.Firestone = loadFirestone();
+        Materials.Fluorite = loadFluorite();
 
         // spotless:off
-        Materials.Fluorite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Fluorite"                ,   "Fluorite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       );
         Materials.FoolsRuby               = new Materials( 512, TextureSet.SET_RUBY              ,   1.0F,      0,  2, 1  |4|8                   , 255, 100, 100, 127,   "FoolsRuby"               ,   "Spinel"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Force                   = new Materials( 521, TextureSet.SET_DIAMOND           ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 255, 255,   0,   0,   "Force"                   ,   "Force"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5)));
         Materials.Forcicium               = new Materials( 518, TextureSet.SET_DIAMOND           ,   1.0F,      0,  1, 1  |4|8|16                ,  50,  50,  70,   0,   "Forcicium"               ,   "Forcicium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2)));
@@ -3933,6 +3933,16 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
+            .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadFluorite() {
+        return new MaterialBuilder().setName("Fluorite")
+            .setDefaultLocalName("Fluorite")
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .addOreItems()
             .setOreValue(3)
             .constructMaterial();
     }
