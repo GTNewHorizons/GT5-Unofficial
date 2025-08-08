@@ -244,9 +244,9 @@ public class MaterialsInit1 {
         Materials.Greywacke = loadGreywacke();
         Materials.Haderoth = loadHaderoth();
         Materials.Hematite = loadHematite();
+        Materials.Hepatizon = loadHepatizon();
 
         // spotless:off
-        Materials.Hepatizon               = new Materials( 957, TextureSet.SET_METALLIC          ,  12.0F,    128,  2, 1|2  |8      |64          , 117,  94, 117,   0,   "Hepatizon"               ,   "Hepatizon"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.HSLA                    = new Materials( 322, TextureSet.SET_METALLIC          ,   6.0F,    500,  3, 1|2          |64|128      , 128, 128, 128,   0,   "HSLA"                    ,   "HSLA Steel"                    ,    0,       0,       1811, 1000,  true, false,   3,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Ignatius                = new Materials( 950, TextureSet.SET_METALLIC          ,  12.0F,    512,  2, 1|2                       , 255, 169,  83,   0,   "Ignatius"                ,   "Ignatius"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infernal                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Infernal"                ,   "Infernal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4147,6 +4147,22 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadHepatizon() {
+        return new MaterialBuilder().setName("Hepatizon")
+            .setDefaultLocalName("Hepatizon")
+            .setMetaItemSubID(957)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x755e75)
+            .setToolSpeed(12.0f)
+            .setDurability(128)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
             .constructMaterial();
     }
 
