@@ -6,6 +6,7 @@ import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.MathUtils;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -36,7 +37,7 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
     }
 
     @Override
-    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, GuiData data) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
