@@ -230,6 +230,7 @@ public class MaterialsInit1 {
         Materials.FierySteel = loadFierySteel();
         Materials.Firestone = loadFirestone();
         Materials.Fluorite = loadFluorite();
+        Materials.FoolsRuby = loadFoolsRuby();
 
         // spotless:off
         Materials.FoolsRuby               = new Materials( 512, TextureSet.SET_RUBY              ,   1.0F,      0,  2, 1  |4|8                   , 255, 100, 100, 127,   "FoolsRuby"               ,   "Spinel"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
@@ -3944,6 +3945,26 @@ public class MaterialsInit1 {
             .addDustItems()
             .addOreItems()
             .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadFoolsRuby() {
+        return new MaterialBuilder().setName("FoolsRuby")
+            .setDefaultLocalName("Spinel")
+            .setMetaItemSubID(512)
+            .setIconSet(TextureSet.SET_RUBY)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x7fff6464)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .setOreValue(3)
+            .addElectrolyzerRecipe()
+            .addMaterial(new MaterialStack(Magnesium, 1))
+            .addMaterial(new MaterialStack(Aluminium, 2))
+            .addMaterial(new MaterialStack(Oxygen, 4))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
             .constructMaterial();
     }
 
