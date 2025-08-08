@@ -1084,7 +1084,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
-    public int mOreValue = 0;
     public int mOreMultiplier = 1;
     public int mByProductMultiplier = 1;
     public int mSmeltingMultiplier = 1;
@@ -1272,7 +1271,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mTransparent = aTransparent;
         mFuelPower = aFuelPower;
         mFuelType = aFuelType;
-        mOreValue = aOreValue;
         mDensityMultiplier = aDensityMultiplier;
         mDensityDivider = aDensityDivider;
         mDensity = (M * aDensityMultiplier) / aDensityDivider;
