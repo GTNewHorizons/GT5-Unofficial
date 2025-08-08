@@ -1392,8 +1392,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
         int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
         boolean aAutoGenerateBlastFurnaceRecipes, boolean aAutoGenerateVacuumFreezerRecipes, boolean aTransparent,
-        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
-        List<MaterialStack> aMaterialList, Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
+        int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList,
+        Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
         this(
             aMetaItemSubID,
             aIconSet,
@@ -1413,7 +1413,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             aBlastFurnaceTemp,
             aBlastFurnaceRequired,
             aTransparent,
-            aOreValue,
+            0,
             aDensityMultiplier,
             aDensityDivider,
             aColor,
