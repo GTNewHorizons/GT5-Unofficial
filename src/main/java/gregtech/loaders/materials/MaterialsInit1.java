@@ -252,9 +252,9 @@ public class MaterialsInit1 {
         Materials.InfusedGold = loadInfusedGold();
         Materials.InfusedAir = loadInfusedAir();
         Materials.InfusedFire = loadInfusedFire();
+        Materials.InfusedEarth = loadInfusedEarth();
 
         // spotless:off
-        Materials.InfusedEarth            = new Materials( 542, TextureSet.SET_SHARDS            ,   8.0F,    256,  3, 1  |4|8      |64|128      ,   0, 255,   0,   0,   "InfusedEarth"            ,   "Terra"                         ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeGreen       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.TERRA, 2)));
         Materials.InfusedWater            = new Materials( 543, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      ,   0,   0, 255,   0,   "InfusedWater"            ,   "Aqua"                          ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlue        , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AQUA, 2)));
         Materials.InfusedEntropy          = new Materials( 544, TextureSet.SET_SHARDS            ,  32.0F,     64,  4, 1  |4|8      |64|128      ,  62,  62,  62,   0,   "InfusedEntropy"          ,   "Perditio"                      ,    5,     320,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2)));
         Materials.InfusedOrder            = new Materials( 545, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 252, 252, 252,   0,   "InfusedOrder"            ,   "Ordo"                          ,    5,     240,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeWhite       , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 2)));
@@ -4288,6 +4288,29 @@ public class MaterialsInit1 {
             .setFuelPower(320)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadInfusedEarth() {
+        return new MaterialBuilder().setName("InfusedEarth")
+            .setDefaultLocalName("Terra")
+            .setMetaItemSubID(542)
+            .setIconSet(TextureSet.SET_SHARDS)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x0000ff00)
+            .setToolSpeed(8.0f)
+            .setDurability(256)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setOreValue(3)
+            .setFuelType(5)
+            .setFuelPower(160)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.TERRA, 2))
             .constructMaterial();
     }
 
