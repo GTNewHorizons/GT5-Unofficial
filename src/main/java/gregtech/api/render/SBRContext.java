@@ -1,6 +1,6 @@
 /*
- * SBRContext - Derived and adapted from @Mineshopper / carpentersblocks Copyright (c) 2013-2021. This library is
- * free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as
+ * SBRContext - Derived and adapted from @Mineshopper / carpentersblocks Copyright (c) 2013-2021. This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation version 2.1 of the License. This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have received a copy of
@@ -26,10 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * Represents the rendering context for a single block during a render pass.
  * <p>
- * This class holds the tightly-coupled mutable state required to coordinate lighting,
- * shading, ambient occlusion, and color calculation based on the block, its coordinates,
- * the renderer, and the world in which it is rendered. It is passed
- * to various rendering methods throughout a block's render cycle.
+ * This class holds the tightly-coupled mutable state required to coordinate lighting, shading, ambient occlusion, and
+ * color calculation based on the block, its coordinates, the renderer, and the world in which it is rendered. It is
+ * passed to various rendering methods throughout a block's render cycle.
  * <p>
  * {@code @SuppressWarnings} is used here intentionally:
  * <ul>
@@ -113,8 +112,8 @@ public class SBRContext {
     }
 
     /**
-     * Constructs a new {@link SBRContext} used to render a single {@link Block} in world for the
-     * current render pass at the given coordinates
+     * Constructs a new {@link SBRContext} used to render a single {@link Block} in world for the current render pass at
+     * the given coordinates
      *
      * @param x            the x coordinate
      * @param y            the y coordinate
@@ -140,11 +139,10 @@ public class SBRContext {
     }
 
     /**
-     * Populates the caches for Mixed Brightness for Blocks (MBFB)
-     * and Ambient Occlusion Light Values (AOLV).
+     * Populates the caches for Mixed Brightness for Blocks (MBFB) and Ambient Occlusion Light Values (AOLV).
      * <p>
-     * These caches store lighting values for the block at the current coordinates
-     * and its neighbors within a 3×3×3 cube centered on (x, y, z).
+     * These caches store lighting values for the block at the current coordinates and its neighbors within a 3×3×3 cube
+     * centered on (x, y, z).
      * <p>
      * This method skips processing if Ambient Occlusion is disabled in the game settings.
      */
@@ -198,8 +196,7 @@ public class SBRContext {
     /**
      * Resets override flags to their default values.
      * <p>
-     * This ensures deterministic rendering by clearing any leftover state
-     * from previous use of this context instance.
+     * This ensures deterministic rendering by clearing any leftover state from previous use of this context instance.
      *
      * @return this {@link SBRContext} instance for chaining
      */
