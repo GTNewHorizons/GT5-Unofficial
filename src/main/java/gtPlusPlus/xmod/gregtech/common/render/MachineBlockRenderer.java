@@ -34,7 +34,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRInventoryContext;
+import gregtech.api.render.SBRWorldContext;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
@@ -63,7 +64,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     // spotless:off
-    private static void renderNormalInventoryMetaTileEntity(SBRContext ctx) {
+    private static void renderNormalInventoryMetaTileEntity(SBRInventoryContext ctx) {
         if (ctx.meta > 0 && ctx.meta < GregTechAPI.METATILEENTITIES.length) {
             IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[ctx.meta];
             if (tMetaTileEntity != null) {
@@ -136,7 +137,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
     // spotless:on
 
-    public boolean renderStandardBlock(SBRContext ctx) {
+    public boolean renderStandardBlock(SBRWorldContext ctx) {
         final TileEntity te = ctx.world.getTileEntity(ctx.x, ctx.y, ctx.z);
         return te instanceof ITexturedTileEntity && renderStandardBlock(
             ctx,
@@ -148,7 +149,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 GTMethodHelper.getTexture(te, ctx.block, ForgeDirection.EAST) });
     }
 
-    public boolean renderStandardBlock(SBRContext ctx, ITexture[][] aTextures) {
+    public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
         renderNegativeYFacing(ctx, aTextures[DOWN.ordinal()], true);
@@ -161,7 +162,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     // spotless:off
-    public boolean renderPipeBlock(SBRContext ctx, IPipeRenderedTileEntity aTileEntity) {
+    public boolean renderPipeBlock(SBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
         final int aConnections = aTileEntity.getConnections();
         float tThickness = aTileEntity.getThickNess();
         if (tThickness >= 0.99F) {
@@ -482,7 +483,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
     // spotless:on
 
-    public static void renderNegativeYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeYFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y - 1, ctx.z, 0)) {
@@ -504,7 +505,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderPositiveYFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y + 1, ctx.z, 1)) {
@@ -527,7 +528,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeZFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z - 1, 2)) {
@@ -551,7 +552,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderPositiveZFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z + 1, 3)) {
@@ -574,7 +575,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeXFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x - 1, ctx.y, ctx.z, 4)) {
@@ -597,7 +598,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderPositiveXFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.world != null) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
                 && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x + 1, ctx.y, ctx.z, 5)) {
@@ -622,7 +623,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRContext ctx = new SBRContext(aBlock, aMeta, aModelID, aRenderer);
+        final SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aMeta += 30400;
         if (aBlock instanceof BlockMachines) {
             if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length
@@ -640,7 +641,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity

@@ -52,7 +52,9 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRContextBase;
+import gregtech.api.render.SBRInventoryContext;
+import gregtech.api.render.SBRWorldContext;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -81,8 +83,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public boolean renderStandardBlock(SBRContext ctx) {
+    public boolean renderStandardBlock(SBRWorldContext ctx) {
         final TileEntity tTileEntity = ctx.world.getTileEntity(ctx.x, ctx.y, ctx.z);
         if (tTileEntity instanceof IPipeRenderedTileEntity pipeRenderedTileEntity) {
             textureArray[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
@@ -116,7 +117,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         return false;
     }
 
-    public boolean renderStandardBlock(SBRContext ctx, ITexture[][] aTextures) {
+    public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         ctx.renderer.setRenderBoundsFromBlock(ctx.block);
 
@@ -167,7 +168,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     final ITexture[][] tCovers = new ITexture[VALID_DIRECTIONS.length][];
     final boolean[] tIsCovered = new boolean[VALID_DIRECTIONS.length];
 
-    public boolean renderPipeBlock(SBRContext ctx, IPipeRenderedTileEntity aTileEntity) {
+    public boolean renderPipeBlock(SBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
         final byte aConnections = aTileEntity.getConnections();
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
@@ -580,7 +581,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRContext ctx = new SBRContext(aBlock, aMeta, aModelID, aRenderer);
+        final SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -640,7 +641,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(SBRContext ctx) {
+    private static void renderNormalInventoryMetaTileEntity(SBRInventoryContext ctx) {
         if ((ctx.meta <= 0) || (ctx.meta >= GregTechAPI.METATILEENTITIES.length)) {
             return;
         }
@@ -678,14 +679,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         // spotless:on
     }
 
-    public static void renderNegativeYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
-            if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y - 1, ctx.z, 0)) {
+    public static void renderNegativeYFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
+            if (aFullBlock && !ctxW.renderer.renderAllFaces
+                && !ctxW.block.shouldSideBeRendered(ctxW.world, ctxW.x, ctxW.y - 1, ctxW.z, 0)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y - 1 : ctx.y, ctx.z));
+                ctxW.block.getMixedBrightnessForBlock(ctxW.world, ctxW.x, aFullBlock ? ctxW.y - 1 : ctxW.y, ctxW.z));
+            ctxW.setupAOYNeg();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -695,14 +698,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveYFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
+    public static void renderPositiveYFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y + 1, ctx.z, 1)) {
+                && !ctx.block.shouldSideBeRendered(ctxW.world, ctxW.x, ctxW.y + 1, ctxW.z, 1)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, aFullBlock ? ctx.y + 1 : ctx.y, ctx.z));
+                ctx.block.getMixedBrightnessForBlock(ctxW.world, ctxW.x, aFullBlock ? ctxW.y + 1 : ctxW.y, ctxW.z));
+            ctxW.setupAOYPos();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -712,14 +717,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderNegativeZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
+    public static void renderNegativeZFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z - 1, 2)) {
+                && !ctx.block.shouldSideBeRendered(ctxW.world, ctxW.x, ctxW.y, ctxW.z - 1, 2)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z - 1 : ctx.z));
+                ctx.block.getMixedBrightnessForBlock(ctxW.world, ctxW.x, ctxW.y, aFullBlock ? ctxW.z - 1 : ctxW.z));
+            ctxW.setupAOZNeg();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -729,14 +736,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveZFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
+    public static void renderPositiveZFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x, ctx.y, ctx.z + 1, 3)) {
+                && !ctx.block.shouldSideBeRendered(ctxW.world, ctxW.x, ctxW.y, ctxW.z + 1, 3)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, ctx.x, ctx.y, aFullBlock ? ctx.z + 1 : ctx.z));
+                ctx.block.getMixedBrightnessForBlock(ctxW.world, ctxW.x, ctxW.y, aFullBlock ? ctxW.z + 1 : ctxW.z));
+            ctxW.setupAOZPos();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -746,14 +755,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderNegativeXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
+    public static void renderNegativeXFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x - 1, ctx.y, ctx.z, 4)) {
+                && !ctx.block.shouldSideBeRendered(ctxW.world, ctxW.x - 1, ctxW.y, ctxW.z, 4)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x - 1 : ctx.x, ctx.y, ctx.z));
+                ctx.block.getMixedBrightnessForBlock(ctxW.world, aFullBlock ? ctxW.x - 1 : ctxW.x, ctxW.y, ctxW.z));
+            ctxW.setupAOXNeg();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -763,14 +774,16 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    public static void renderPositiveXFacing(SBRContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.world != null) {
+    public static void renderPositiveXFacing(SBRContextBase<? extends SBRContextBase<?>> ctx, ITexture[] aIcon,
+        boolean aFullBlock) {
+        if (ctx instanceof SBRWorldContext ctxW) {
             if (aFullBlock && !ctx.renderer.renderAllFaces
-                && !ctx.block.shouldSideBeRendered(ctx.world, ctx.x + 1, ctx.y, ctx.z, 5)) {
+                && !ctx.block.shouldSideBeRendered(ctxW.world, ctxW.x + 1, ctxW.y, ctxW.z, 5)) {
                 return;
             }
             Tessellator.instance.setBrightness(
-                ctx.block.getMixedBrightnessForBlock(ctx.world, aFullBlock ? ctx.x + 1 : ctx.x, ctx.y, ctx.z));
+                ctx.block.getMixedBrightnessForBlock(ctxW.world, aFullBlock ? ctxW.x + 1 : ctxW.x, ctxW.y, ctxW.z));
+            ctxW.setupAOXPos();
         }
         if (aIcon == null) return;
         for (final ITexture iTexture : aIcon) {
@@ -783,7 +796,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
 

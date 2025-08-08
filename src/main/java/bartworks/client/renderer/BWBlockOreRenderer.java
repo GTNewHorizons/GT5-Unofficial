@@ -36,7 +36,8 @@ import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GTMod;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRInventoryContext;
+import gregtech.api.render.SBRWorldContext;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 @ThreadSafeISBRH(perThread = true)
@@ -55,7 +56,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
-        SBRContext ctx = new SBRContext(aBlock, aMeta, modelId, aRenderer);
+        SBRInventoryContext ctx = new SBRInventoryContext(aBlock, aMeta, modelId, aRenderer);
         TileEntityMetaGeneratedBlock tTileEntity = ((BWMetaGeneratedBlocks) aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = (short) aMeta;
         aRenderer.enableAO = false;
@@ -89,7 +90,7 @@ public class BWBlockOreRenderer implements ISimpleBlockRenderingHandler {
         if(actualTileEntity == null) return false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, modelId, aRenderer);
+        final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, modelId, aRenderer);
 
         fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;

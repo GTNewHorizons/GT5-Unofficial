@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.SBRContext;
+import gregtech.api.render.SBRWorldContext;
 
 public interface IRenderedBlock {
 
@@ -102,7 +102,7 @@ public interface IRenderedBlock {
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
-            final SBRContext ctx = new SBRContext(aX, aY, aZ, aBlock, 0, aRenderer);
+            final SBRWorldContext ctx = new SBRWorldContext(aX, aY, aZ, aBlock, 0, aRenderer);
             aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
             GTRendererBlock.renderNegativeYFacing(ctx, mErrorTexture, false);
             GTRendererBlock.renderPositiveYFacing(ctx, mErrorTexture, false);
