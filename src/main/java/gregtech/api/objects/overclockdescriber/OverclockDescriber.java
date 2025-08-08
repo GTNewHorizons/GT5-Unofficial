@@ -74,8 +74,8 @@ public abstract class OverclockDescriber {
      * Used to limit the shown recipes when searching recipes with NEI recipe catalyst. Unless overridden, this method
      * doesn't do anything special (except for a bit worse performance).
      * <p>
-     * In order to make use of this method, {@link gregtech.api.recipe.RecipeMapBuilder#useCustomFilterForNEI}
-     * should be enabled for the recipemap.
+     * In order to make use of this method, {@link gregtech.api.recipe.RecipeMapBuilder#useCustomFilterForNEI} should be
+     * enabled for the recipemap.
      *
      * @return If this object can handle the supplied recipe
      */

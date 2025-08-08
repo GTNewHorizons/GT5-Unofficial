@@ -31,8 +31,7 @@ import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
 
 /**
- * TODO: Implement overlay rendering only with
- * {@link Cover#getOverlayTexture()}
+ * TODO: Implement overlay rendering only with {@link Cover#getOverlayTexture()}
  */
 public class CoverLiquidMeter extends Cover implements Invertable {
 

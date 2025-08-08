@@ -68,8 +68,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
      */
     public static final long INPUT_CHEMICAL_PER_LEVEL = 100000;
     /**
-     * Amount of waste water produced for each success chance level. This matches the amount of input fluid
-     * so it can be perfectly recycled into each other.
+     * Amount of waste water produced for each success chance level. This matches the amount of input fluid so it can be
+     * perfectly recycled into each other.
      */
     private static final long WASTE_WATER_PER_LEVEL = INPUT_CHEMICAL_PER_LEVEL;
     /**
