@@ -23,49 +23,31 @@ import gregtech.api.util.GTUtility;
 public class NeutronActivatorLoader {
 
     public static void NARecipeLoad() {
+        GTValues.RA.stdBuilder().fluidInputs(thoriumBasedLiquidFuelExcited.getFluidOrGas(200))
+                .fluidOutputs(thoriumBasedLiquidFuelDepleted.getFluidOrGas(200)).duration(8 * MINUTES + 20 * SECONDS)
+                .eut(0).metadata(NKE_RANGE, computeRangeNKE(700, 500)).addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
-            .fluidInputs(thoriumBasedLiquidFuelExcited.getFluidOrGas(200))
-            .fluidOutputs(thoriumBasedLiquidFuelDepleted.getFluidOrGas(200))
-            .duration(8 * MINUTES + 20 * SECONDS)
-            .eut(0)
-            .metadata(NKE_RANGE, computeRangeNKE(700, 500))
-            .addTo(neutronActivatorRecipes);
+                .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
+                .fluidInputs(uraniumBasedLiquidFuel.getFluidOrGas(100))
+                .fluidOutputs(uraniumBasedLiquidFuelExcited.getFluidOrGas(100)).duration(4 * SECONDS).eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(550, 450)).addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
-            .fluidInputs(uraniumBasedLiquidFuel.getFluidOrGas(100))
-            .fluidOutputs(uraniumBasedLiquidFuelExcited.getFluidOrGas(100))
-            .duration(4 * SECONDS)
-            .eut(0)
-            .metadata(NKE_RANGE, computeRangeNKE(550, 450))
-            .addTo(neutronActivatorRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
-            .fluidInputs(plutoniumBasedLiquidFuel.getFluidOrGas(100))
-            .fluidOutputs(plutoniumBasedLiquidFuelExcited.getFluidOrGas(100))
-            .duration(4 * SECONDS)
-            .eut(0)
-            .metadata(NKE_RANGE, computeRangeNKE(600, 500))
-            .addTo(neutronActivatorRecipes);
+                .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
+                .fluidInputs(plutoniumBasedLiquidFuel.getFluidOrGas(100))
+                .fluidOutputs(plutoniumBasedLiquidFuelExcited.getFluidOrGas(100)).duration(4 * SECONDS).eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(600, 500)).addTo(neutronActivatorRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Tesseract.get(1))
-            .fluidInputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(64))
-            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(64))
-            .itemOutputs(ItemList.EnergisedTesseract.get(1))
-            .duration(16400 * SECONDS)
-            .eut(0)
-            .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
-            .addTo(neutronActivatorRecipes);
+        GTValues.RA.stdBuilder().itemInputs(ItemList.Tesseract.get(1))
+                .fluidInputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(64))
+                .fluidOutputs(GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(64))
+                .itemOutputs(ItemList.EnergisedTesseract.get(1)).duration(16400 * SECONDS).eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(1100, 1050)).addTo(neutronActivatorRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Tesseract.get(1))
-            .fluidInputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(64))
-            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(64))
-            .itemOutputs(ItemList.EnergisedTesseract.get(1))
-            .duration(24600 * SECONDS)
-            .eut(0)
-            .metadata(NKE_RANGE, computeRangeNKE(1100, 1075))
-            .addTo(neutronActivatorRecipes);
+        GTValues.RA.stdBuilder().itemInputs(ItemList.Tesseract.get(1))
+                .fluidInputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(64))
+                .fluidOutputs(GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(64))
+                .itemOutputs(ItemList.EnergisedTesseract.get(1)).duration(24600 * SECONDS).eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(1100, 1075)).addTo(neutronActivatorRecipes);
 
     }
 }

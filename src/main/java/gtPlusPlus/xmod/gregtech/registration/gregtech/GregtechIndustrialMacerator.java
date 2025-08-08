@@ -9,9 +9,9 @@ public class GregtechIndustrialMacerator {
 
     public static void run() {
         GregtechItemList.Industrial_MacerationStack.set(
-            new MTEIndustrialMacerator(
-                Industrial_MacerationStack.ID,
-                "industrialmacerator.controller.tier.single",
-                "Industrial Maceration Stack").getStackForm(1L));
+                new MTEIndustrialMacerator(
+                        Industrial_MacerationStack.ID,
+                        "industrialmacerator.controller.tier.single",
+                        "Industrial Maceration Stack").getStackForm(1L));
     }
 }

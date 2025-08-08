@@ -27,13 +27,15 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool) {
 
         if (!this.descSpectrum.isEmpty()) list.add(
-            StatCollector.translateToLocalFormatted("tooltip.gtnhlanth.photomask.desc_spectrum", this.descSpectrum));
+                StatCollector
+                        .translateToLocalFormatted("tooltip.gtnhlanth.photomask.desc_spectrum", this.descSpectrum));
 
         if (this.getMaxDamage() > 0) // Not a precursor.
             // maximum uses = max damage + 1 in general, as 0-durability masks still function
             list.add(
-                StatCollector
-                    .translateToLocalFormatted("tooltip.gtnhlanth.photomask.max_uses", this.getMaxDamage() + 1));
+                    StatCollector.translateToLocalFormatted(
+                            "tooltip.gtnhlanth.photomask.max_uses",
+                            this.getMaxDamage() + 1));
 
     }
 

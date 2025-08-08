@@ -19,11 +19,7 @@ public class SideReference {
 
     public static class Side {
 
-        public static final boolean Server = FMLCommonHandler.instance()
-            .getSide()
-            .isServer();
-        public static final boolean Client = FMLCommonHandler.instance()
-            .getSide()
-            .isClient();
+        public static final boolean Server = FMLCommonHandler.instance().getSide().isServer();
+        public static final boolean Client = FMLCommonHandler.instance().getSide().isClient();
     }
 }

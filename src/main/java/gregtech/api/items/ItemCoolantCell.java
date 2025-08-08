@@ -64,8 +64,8 @@ public class ItemCoolantCell extends GTGenericItem {
             default -> EnumChatFormatting.DARK_RED;
         };
         aList.add(
-            EnumChatFormatting.WHITE
-                + translateToLocalFormatted("gt.item.desc.stored_heat", "" + color + getHeatOfStack(aStack)));
+                EnumChatFormatting.WHITE
+                        + translateToLocalFormatted("gt.item.desc.stored_heat", "" + color + getHeatOfStack(aStack)));
         if (getControlTagOfStack(aStack) == 1) {
             aList.add(translateToLocal("ic2.reactoritem.heatwarning.line1"));
             aList.add(translateToLocal("ic2.reactoritem.heatwarning.line2"));

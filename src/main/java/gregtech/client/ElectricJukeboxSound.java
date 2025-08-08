@@ -25,7 +25,7 @@ public class ElectricJukeboxSound implements ISound, ISeekingSound, ITickableSou
     }
 
     public ElectricJukeboxSound(ResourceLocation soundResource, float volume, long seekMs, float xPosition,
-        float yPosition, float zPosition) {
+            float yPosition, float zPosition) {
         this(soundResource, seekMs);
         this.volume = volume;
         this.xPosition = xPosition;

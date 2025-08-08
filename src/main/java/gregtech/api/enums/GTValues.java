@@ -97,22 +97,18 @@ public class GTValues {
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
     public static final long[] V = new long[] { 8L, 32L, 128L, 512L, 2048L, 8192L, 32_768L, 131_072L, 524_288L,
-        2_097_152L, 8_388_608L, 33_554_432L, 134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
-        // Error tier to prevent out of bounds errors. Not really a real tier (for now).
-        8_589_934_592L };
+            2_097_152L, 8_388_608L, 33_554_432L, 134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
+            // Error tier to prevent out of bounds errors. Not really a real tier (for now).
+            8_589_934_592L };
 
     /**
      * The Voltage Practical. These are recipe voltage you should use if you expect the recipe to use a full amp of that
      * tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
      */
     // this will correctly map ULV to 7.
-    public static final long[] VP = Arrays.stream(V)
-        .map(
-            i -> BigInteger.valueOf(i)
-                .multiply(BigInteger.valueOf(30))
-                .divide(BigInteger.valueOf(32))
-                .longValueExact())
-        .toArray();
+    public static final long[] VP = Arrays.stream(V).map(
+            i -> BigInteger.valueOf(i).multiply(BigInteger.valueOf(30)).divide(BigInteger.valueOf(32)).longValueExact())
+            .toArray();
     // TODO:Adding that in coremod!!!
     // TODO:tier 14,15 wires and transformers only (not even cables !!!)
     // TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
@@ -134,67 +130,67 @@ public class GTValues {
      * </p>
      */
     public static final long[] AatV = new long[] { 268435455, 67108863, 16777215, 4194303, 1048575, 262143, 65535,
-        16383, 4095, 1023, 255, 63, 15, 3, 1, 1 };
+            16383, 4095, 1023, 255, 63, 15, 3, 1, 1 };
     /**
      * The short Names for the Voltages
      */
     public static final String[] VN = new String[] { "ULV", // 0
-        "LV", // 1
-        "MV", // 2
-        "HV", // 3
-        "EV", // 4
-        "IV", // 5
-        "LuV", // 6
-        "ZPM", // 7
-        "UV", // 8
-        "UHV", // 9
-        "UEV", // 10
-        "UIV", // 11
-        "UMV", // 12
-        "UXV", // 13
-        "MAX", // 14
-        "MAX+" // 15
+            "LV", // 1
+            "MV", // 2
+            "HV", // 3
+            "EV", // 4
+            "IV", // 5
+            "LuV", // 6
+            "ZPM", // 7
+            "UV", // 8
+            "UHV", // 9
+            "UEV", // 10
+            "UIV", // 11
+            "UMV", // 12
+            "UXV", // 13
+            "MAX", // 14
+            "MAX+" // 15
     };
 
     /**
      * The long Names for the Voltages
      */
     public static final String[] VOLTAGE_NAMES = new String[] { "Ultra Low Voltage", // 0
-        "Low Voltage", // 1
-        "Medium Voltage", // 2
-        "High Voltage", // 3
-        "Extreme Voltage", // 4
-        "Insane Voltage", // 5
-        "Ludicrous Voltage", // 6
-        "ZPM Voltage", // 7
-        "Ultimate Voltage", // 8
-        "Ultimate High Voltage", // 9
-        "Ultimate Extreme Voltage", // 10
-        "Ultimate Insane Voltage", // 11
-        "Ultimate Mega Voltage", // 12
-        "Ultimate Extended Mega Voltage", // 13
-        "Maximum Voltage", // 14
-        "Error Voltage, report this" // 15
+            "Low Voltage", // 1
+            "Medium Voltage", // 2
+            "High Voltage", // 3
+            "Extreme Voltage", // 4
+            "Insane Voltage", // 5
+            "Ludicrous Voltage", // 6
+            "ZPM Voltage", // 7
+            "Ultimate Voltage", // 8
+            "Ultimate High Voltage", // 9
+            "Ultimate Extreme Voltage", // 10
+            "Ultimate Insane Voltage", // 11
+            "Ultimate Mega Voltage", // 12
+            "Ultimate Extended Mega Voltage", // 13
+            "Maximum Voltage", // 14
+            "Error Voltage, report this" // 15
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV, 1
-        EnumChatFormatting.GOLD.toString(), // MV, 2
-        EnumChatFormatting.YELLOW.toString(), // HV, 3
-        EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
-        EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-        EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
-        EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
-        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
-        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
-        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-            + EnumChatFormatting.UNDERLINE
-            + EnumChatFormatting.ITALIC, // MAX+, 15
+            EnumChatFormatting.GRAY.toString(), // LV, 1
+            EnumChatFormatting.GOLD.toString(), // MV, 2
+            EnumChatFormatting.YELLOW.toString(), // HV, 3
+            EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
+            EnumChatFormatting.GREEN.toString(), // IV, 5
+            EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
+            EnumChatFormatting.AQUA.toString(), // ZPM, 7
+            EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
+            EnumChatFormatting.DARK_RED.toString(), // UHV, 9
+            EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
+            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
+            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + EnumChatFormatting.ITALIC, // MAX+, 15
     };
 
     /**
@@ -229,8 +225,8 @@ public class GTValues {
                                                                                                         // stupidly
                                                                                                         // mirrored
                                                                                                         // Texture
-        SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
-        SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
+            SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+            SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
     public static final byte[] COMPASS_DIRECTIONS = { SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST };
@@ -244,13 +240,13 @@ public class GTValues {
      * For Facing Checks.
      */
     public static final boolean[] INVALID_SIDES = { false, false, false, false, false, false, true },
-        VALID_SIDES = { true, true, true, true, true, true, false };
+            VALID_SIDES = { true, true, true, true, true, true, false };
 
     /**
      * Side->Offset Mappings.
      */
     public static final byte[] OFFX = { 0, 0, 0, 0, -1, +1, 0 }, OFFY = { -1, +1, 0, 0, 0, 0, 0 },
-        OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
+            OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
 
     /**
      * Side->Opposite Mappings.
@@ -262,8 +258,8 @@ public class GTValues {
      * front, 4 = right, 5 = back, 6 = undefined.
      */
     public static final byte[][] FACING_ROTATIONS = { { 0, 1, 2, 3, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 },
-        { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
-        { 0, 1, 2, 3, 4, 5, 6 } };
+            { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
+            { 0, 1, 2, 3, 4, 5, 6 } };
 
     /**
      * Use this Object to add Recipes. (Recipe Adder)
@@ -360,59 +356,60 @@ public class GTValues {
      * This will set the blacklist for the world accelerator in TE mode.
      */
     public static String[] blacklistedTileEntiyClassNamesForWA = new String[] {
-        "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
-        "advsolar.common.tiles.TileEntityUltimateSolarPanel", "advsolar.common.tiles.TileEntitySolarPanel",
-        "advsolar.common.tiles.TileEntityQuantumSolarPanel", "advsolar.common.tiles.TileEntityHybridSolarPanel",
-        "advsolar.common.tiles.TileEntityAdvancedSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
-        "com.supsolpans.tiles.TilePhotonicSolarPanel", "com.supsolpans.tiles.TileSingularSolarPanel",
-        "com.supsolpans.tiles.TileSpectralSolarPanel", "emt.tile.solar.air.TileEntityAirSolar",
-        "emt.tile.solar.air.TileEntityDoubleAirSolar", "emt.tile.solar.air.TileEntityTripleAirSolar",
-        "emt.tile.solar.air.TileEntityQuadrupleAirSolar", "emt.tile.solar.air.TileEntityQuintupleAirSolar",
-        "emt.tile.solar.air.TileEntitySextupleAirSolar", "emt.tile.solar.air.TileEntitySeptupleAirSolar",
-        "emt.tile.solar.air.TileEntityOctupleAirSolar", "emt.tile.solar.compressed.TileEntityCompressedSolar",
-        "emt.tile.solar.compressed.TileEntityDoubleCompressedSolar",
-        "emt.tile.solar.compressed.TileEntityTripleCompressedSolar",
-        "emt.tile.solar.compressed.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.compressed.TileEntityQuintupleAirSolar", "emt.tile.solar.compressed.TileEntitySextupleAirSolar",
-        "emt.tile.solar.compressed.TileEntitySeptupleAirSolar", "emt.tile.solar.compressed.TileEntityOctupleAirSolar",
-        "emt.tile.solar.dark.TileEntityDarkSolar", "emt.tile.solar.dark.TileEntityDoubleDarkSolar",
-        "emt.tile.solar.dark.TileEntityTripleDarkSolar", "emt.tile.solar.dark.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.dark.TileEntityQuintupleAirSolar", "emt.tile.solar.dark.TileEntitySextupleAirSolar",
-        "emt.tile.solar.dark.TileEntitySeptupleAirSolar", "emt.tile.solar.dark.TileEntityOctupleAirSolar",
-        "emt.tile.solar.earth.TileEntityDoubleEarthSolar", "emt.tile.solar.earth.TileEntityEarthSolar",
-        "emt.tile.solar.earth.TileEntityTripleEarthSolar", "emt.tile.solar.earth.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.earth.TileEntityQuintupleAirSolar", "emt.tile.solar.earth.TileEntitySextupleAirSolar",
-        "emt.tile.solar.earth.TileEntitySeptupleAirSolar", "emt.tile.solar.earth.TileEntityOctupleAirSolar",
-        "emt.tile.solar.fire.TileEntityDoubleFireSolar", "emt.tile.solar.fire.TileEntityFireSolar",
-        "emt.tile.solar.fire.TileEntityTripleFireSolar", "emt.tile.solar.fire.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.fire.TileEntityQuintupleAirSolar", "emt.tile.solar.fire.TileEntitySextupleAirSolar",
-        "emt.tile.solar.fire.TileEntitySeptupleAirSolar", "emt.tile.solar.fire.TileEntityOctupleAirSolar",
-        "emt.tile.solar.order.TileEntityDoubleOrderSolar", "emt.tile.solar.order.TileEntityOrderSolar",
-        "emt.tile.solar.order.TileEntityTripleOrderSolar", "emt.tile.solar.order.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.order.TileEntityQuintupleAirSolar", "emt.tile.solar.order.TileEntitySextupleAirSolar",
-        "emt.tile.solar.order.TileEntitySeptupleAirSolar", "emt.tile.solar.order.TileEntityOctupleAirSolar",
-        "emt.tile.solar.water.TileEntityDoubleWaterSolar", "emt.tile.solar.water.TileEntityTripleWaterSolar",
-        "emt.tile.solar.water.TileEntityWaterSolar", "emt.tile.solar.water.TileEntityQuadrupleAirSolar",
-        "emt.tile.solar.water.TileEntityQuintupleAirSolar", "emt.tile.solar.water.TileEntitySextupleAirSolar",
-        "emt.tile.solar.water.TileEntitySeptupleAirSolar", "emt.tile.solar.water.TileEntityOctupleAirSolar",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkgE",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkgH",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkgL",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkgM",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwaE",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwaH",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwaL",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwaM",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwmE",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwmH",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwmL",
-        "com.lulan.compactkineticgenerators.tileentity.TileCkwmM", "com.supsolpans.tiles.TileSpectralSolarPanel",
-        "com.supsolpans.tiles.TileSingularSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
-        "com.supsolpans.tiles.TilePhotonicSolarPanel", "gtPlusPlus.core.tileentities.general.TileEntityFishTrap",
-        "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest",
-        "net.bdew.gendustry.machines.apiary.TileApiary", "goodgenerator.blocks.tileEntity.EssentiaHatch",
-        "magicbees.tileentity.TileEntityApimancersDrainerCommon",
-        "magicbees.tileentity.TileEntityApimancersDrainerGT" };
+            "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
+            "advsolar.common.tiles.TileEntityUltimateSolarPanel", "advsolar.common.tiles.TileEntitySolarPanel",
+            "advsolar.common.tiles.TileEntityQuantumSolarPanel", "advsolar.common.tiles.TileEntityHybridSolarPanel",
+            "advsolar.common.tiles.TileEntityAdvancedSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
+            "com.supsolpans.tiles.TilePhotonicSolarPanel", "com.supsolpans.tiles.TileSingularSolarPanel",
+            "com.supsolpans.tiles.TileSpectralSolarPanel", "emt.tile.solar.air.TileEntityAirSolar",
+            "emt.tile.solar.air.TileEntityDoubleAirSolar", "emt.tile.solar.air.TileEntityTripleAirSolar",
+            "emt.tile.solar.air.TileEntityQuadrupleAirSolar", "emt.tile.solar.air.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.air.TileEntitySextupleAirSolar", "emt.tile.solar.air.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.air.TileEntityOctupleAirSolar", "emt.tile.solar.compressed.TileEntityCompressedSolar",
+            "emt.tile.solar.compressed.TileEntityDoubleCompressedSolar",
+            "emt.tile.solar.compressed.TileEntityTripleCompressedSolar",
+            "emt.tile.solar.compressed.TileEntityQuadrupleAirSolar",
+            "emt.tile.solar.compressed.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.compressed.TileEntitySextupleAirSolar",
+            "emt.tile.solar.compressed.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.compressed.TileEntityOctupleAirSolar", "emt.tile.solar.dark.TileEntityDarkSolar",
+            "emt.tile.solar.dark.TileEntityDoubleDarkSolar", "emt.tile.solar.dark.TileEntityTripleDarkSolar",
+            "emt.tile.solar.dark.TileEntityQuadrupleAirSolar", "emt.tile.solar.dark.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.dark.TileEntitySextupleAirSolar", "emt.tile.solar.dark.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.dark.TileEntityOctupleAirSolar", "emt.tile.solar.earth.TileEntityDoubleEarthSolar",
+            "emt.tile.solar.earth.TileEntityEarthSolar", "emt.tile.solar.earth.TileEntityTripleEarthSolar",
+            "emt.tile.solar.earth.TileEntityQuadrupleAirSolar", "emt.tile.solar.earth.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.earth.TileEntitySextupleAirSolar", "emt.tile.solar.earth.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.earth.TileEntityOctupleAirSolar", "emt.tile.solar.fire.TileEntityDoubleFireSolar",
+            "emt.tile.solar.fire.TileEntityFireSolar", "emt.tile.solar.fire.TileEntityTripleFireSolar",
+            "emt.tile.solar.fire.TileEntityQuadrupleAirSolar", "emt.tile.solar.fire.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.fire.TileEntitySextupleAirSolar", "emt.tile.solar.fire.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.fire.TileEntityOctupleAirSolar", "emt.tile.solar.order.TileEntityDoubleOrderSolar",
+            "emt.tile.solar.order.TileEntityOrderSolar", "emt.tile.solar.order.TileEntityTripleOrderSolar",
+            "emt.tile.solar.order.TileEntityQuadrupleAirSolar", "emt.tile.solar.order.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.order.TileEntitySextupleAirSolar", "emt.tile.solar.order.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.order.TileEntityOctupleAirSolar", "emt.tile.solar.water.TileEntityDoubleWaterSolar",
+            "emt.tile.solar.water.TileEntityTripleWaterSolar", "emt.tile.solar.water.TileEntityWaterSolar",
+            "emt.tile.solar.water.TileEntityQuadrupleAirSolar", "emt.tile.solar.water.TileEntityQuintupleAirSolar",
+            "emt.tile.solar.water.TileEntitySextupleAirSolar", "emt.tile.solar.water.TileEntitySeptupleAirSolar",
+            "emt.tile.solar.water.TileEntityOctupleAirSolar", "com.lulan.compactkineticgenerators.tileentity.TileCkgE",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkgH",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkgL",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkgM",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwaE",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwaH",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwaL",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwaM",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwmE",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwmH",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwmL",
+            "com.lulan.compactkineticgenerators.tileentity.TileCkwmM", "com.supsolpans.tiles.TileSpectralSolarPanel",
+            "com.supsolpans.tiles.TileSingularSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
+            "com.supsolpans.tiles.TilePhotonicSolarPanel", "gtPlusPlus.core.tileentities.general.TileEntityFishTrap",
+            "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest",
+            "net.bdew.gendustry.machines.apiary.TileApiary", "goodgenerator.blocks.tileEntity.EssentiaHatch",
+            "magicbees.tileentity.TileEntityApimancersDrainerCommon",
+            "magicbees.tileentity.TileEntityApimancersDrainerGT" };
     /**
      * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
      */
@@ -452,170 +449,170 @@ public class GTValues {
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
-     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
-     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
-     * be ran.
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
+     * ran.
      */
     public static boolean DEVENV = Launch.blackboard == null ? true
-        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+            : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
      */
     public static final String Colen = "" + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "C"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "o"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "l"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "e"
-        + EnumChatFormatting.DARK_PURPLE
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
-        + "n";
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "C"
+            + EnumChatFormatting.GOLD
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "o"
+            + EnumChatFormatting.GREEN
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "l"
+            + EnumChatFormatting.DARK_AQUA
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "e"
+            + EnumChatFormatting.DARK_PURPLE
+            + EnumChatFormatting.BOLD
+            + EnumChatFormatting.ITALIC
+            + EnumChatFormatting.UNDERLINE
+            + "n";
 
     public static final String AuthorColen = "Author: " + Colen;
     public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
-        + "k"
-        + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
-        + "u"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + "b"
-        + EnumChatFormatting.YELLOW
-        + EnumChatFormatting.BOLD
-        + "a"
-        + EnumChatFormatting.DARK_GREEN
-        + EnumChatFormatting.BOLD
-        + "6"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + "0"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "0"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "0";
+            + EnumChatFormatting.BOLD
+            + "k"
+            + EnumChatFormatting.RED
+            + EnumChatFormatting.BOLD
+            + "u"
+            + EnumChatFormatting.GOLD
+            + EnumChatFormatting.BOLD
+            + "b"
+            + EnumChatFormatting.YELLOW
+            + EnumChatFormatting.BOLD
+            + "a"
+            + EnumChatFormatting.DARK_GREEN
+            + EnumChatFormatting.BOLD
+            + "6"
+            + EnumChatFormatting.GREEN
+            + EnumChatFormatting.BOLD
+            + "0"
+            + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD
+            + "0"
+            + EnumChatFormatting.DARK_AQUA
+            + EnumChatFormatting.BOLD
+            + "0";
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "Blue"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "Weabo";
+            + EnumChatFormatting.BOLD
+            + "Blue"
+            + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD
+            + "Weabo";
 
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "minecraft7771";
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "minecraft7771";
 
     public static final Supplier<String> AuthorCloud = chain(
-        text("Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
-        animatedText(
-            "C",
-            1,
-            500,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + "\u238B" + RESET + AQUA + BOLD,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + "\u0B83" + RESET + AQUA + BOLD,
-            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
-            DARK_AQUA + BOLD + "\u29BC" + RESET + AQUA + BOLD),
-        text(EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "loud" + EnumChatFormatting.RESET),
-        animatedText(
-            " ",
-            1,
-            500,
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + "\u238B",
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + "\u0B83",
-            DARK_AQUA + OBFUSCATED + BOLD + "X",
-            DARK_AQUA + BOLD + "\u29BC"));
+            text("Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
+            animatedText(
+                    "C",
+                    1,
+                    500,
+                    DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+                    DARK_AQUA + "\u238B" + RESET + AQUA + BOLD,
+                    DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+                    DARK_AQUA + "\u0B83" + RESET + AQUA + BOLD,
+                    DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+                    DARK_AQUA + BOLD + "\u29BC" + RESET + AQUA + BOLD),
+            text(EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "loud" + EnumChatFormatting.RESET),
+            animatedText(
+                    " ",
+                    1,
+                    500,
+                    DARK_AQUA + OBFUSCATED + BOLD + "X",
+                    DARK_AQUA + "\u238B",
+                    DARK_AQUA + OBFUSCATED + BOLD + "X",
+                    DARK_AQUA + "\u0B83",
+                    DARK_AQUA + OBFUSCATED + BOLD + "X",
+                    DARK_AQUA + BOLD + "\u29BC"));
 
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
-        + "Ba"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "ps";
+            + "Ba"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "ps";
     public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
-        + "Omda"
-        + EnumChatFormatting.RED
-        + "CZ";
+            + "Omda"
+            + EnumChatFormatting.RED
+            + "CZ";
 
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
-        + "Evgen"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "War"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + "Gold";
+            + EnumChatFormatting.BOLD
+            + "Evgen"
+            + EnumChatFormatting.BLUE
+            + EnumChatFormatting.BOLD
+            + "War"
+            + EnumChatFormatting.GOLD
+            + EnumChatFormatting.BOLD
+            + "Gold";
     public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
 
     public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
-        + "Eigen"
-        + EnumChatFormatting.BOLD
-        + "Raven";
+            + "Eigen"
+            + EnumChatFormatting.BOLD
+            + "Raven";
 
     public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "Not"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "APenguin";
+            + EnumChatFormatting.BOLD
+            + "Not"
+            + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD
+            + "APenguin";
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
-        text("Author: "),
-        animatedText(
-            "Noc",
-            0,
-            500,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
+            text("Author: "),
+            animatedText(
+                    "Noc",
+                    0,
+                    500,
+                    EnumChatFormatting.GOLD + BOLD,
+                    EnumChatFormatting.DARK_GREEN + BOLD,
+                    EnumChatFormatting.GOLD + BOLD,
+                    EnumChatFormatting.DARK_GREEN + BOLD,
+                    EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
-        + "Pure"
-        + EnumChatFormatting.AQUA
-        + "B"
-        + EnumChatFormatting.DARK_AQUA
-        + "l"
-        + EnumChatFormatting.BLUE
-        + "u"
-        + EnumChatFormatting.DARK_BLUE
-        + "ez";
+            + "Pure"
+            + EnumChatFormatting.AQUA
+            + "B"
+            + EnumChatFormatting.DARK_AQUA
+            + "l"
+            + EnumChatFormatting.BLUE
+            + "u"
+            + EnumChatFormatting.DARK_BLUE
+            + "ez";
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
-        V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
+            V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
     private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,
-        9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
+            9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
 
     public static float getExplosionPowerForVoltage(long voltage) {
         for (int i = 0; i < EXPLOSION_LOOKUP_V.length; i++) {
@@ -630,9 +627,8 @@ public class GTValues {
         if (voltage >= VOLTAGE_NAMES.length) {
             return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
         }
-        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
-            .replace(",", "")
-            .replace(' ', '_');
+        String unlocalizedName = "GT5U.voltage_names."
+                + VOLTAGE_NAMES[voltage].toLowerCase().replace(",", "").replace(' ', '_');
         if (StatCollector.canTranslate(unlocalizedName)) {
             return StatCollector.translateToLocal(unlocalizedName);
         }

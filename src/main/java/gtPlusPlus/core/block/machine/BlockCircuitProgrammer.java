@@ -41,7 +41,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
      */
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly,
-        float lz) {
+            float lz) {
         if (world.isRemote) {
             return true;
         }
@@ -50,7 +50,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
             final ItemStack mHandStack = player.getHeldItem();
             final Item mHandItem = mHandStack.getItem();
             if (((mHandItem instanceof MetaGeneratedTool01)
-                && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+                    && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
                 final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
                 if (tile != null) {
                     if (tile.onScrewdriverRightClick((byte) side, player, x, y, z)) {
@@ -91,7 +91,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
-        final ItemStack stack) {
+            final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityCircuitProgrammer) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
@@ -130,9 +130,9 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_B", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I" };
+                GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_B", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+                GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+                GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I" };
         return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
     }
 }

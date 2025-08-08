@@ -52,66 +52,61 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
-                "Use Soft Mallet to disable and retract the pipe",
-                String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
-                String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Small ore fortune bonus of %d", aTier) },
-            2,
-            2,
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
-                    .glow()
-                    .build()));
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
+                        "Use Soft Mallet to disable and retract the pipe",
+                        String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
+                        String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
+                        String.format("Small ore fortune bonus of %d", aTier) },
+                2,
+                2,
+                TextureFactory.of(
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
+                                .glow().build()));
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
     }
@@ -135,9 +130,9 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) //
-            && aStack.getItem() == DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
+                && aStack.getItem() == DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
     }
 
     /** Both output slots must be free to work */
@@ -152,7 +147,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
             if (aPlayer.isSneaking()) {
@@ -172,12 +167,12 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             }
 
             GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    "%s %dx%d",
-                    StatCollector.translateToLocal("GT5U.machines.workareaset"),
-                    (radiusConfig * 2 + 1),
-                    (radiusConfig * 2 + 1)));
+                    aPlayer,
+                    String.format(
+                            "%s %dx%d",
+                            StatCollector.translateToLocal("GT5U.machines.workareaset"),
+                            (radiusConfig * 2 + 1),
+                            (radiusConfig * 2 + 1)));
 
             // Rebuild ore cache after change config
             fillOreList(getBaseMetaTileEntity());
@@ -215,9 +210,9 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
                 GTLog.out.println(
-                    "MINER: Not enough energy yet, want " + (ENERGY[mTier] * mSpeed)
-                        + " have "
-                        + aBaseMetaTileEntity.getUniversalEnergyStored());
+                        "MINER: Not enough energy yet, want " + (ENERGY[mTier] * mSpeed)
+                                + " have "
+                                + aBaseMetaTileEntity.getUniversalEnergyStored());
             }
             return;
         }
@@ -248,14 +243,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 do {
                     ChunkPosition oreBlockPos = oreBlockPositions.remove(0);
                     oreBlock = aBaseMetaTileEntity
-                        .getBlockOffset(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+                            .getBlockOffset(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
                     x = aBaseMetaTileEntity.getXCoord() + oreBlockPos.chunkPosX;
                     y = aBaseMetaTileEntity.getYCoord() + oreBlockPos.chunkPosY;
                     z = aBaseMetaTileEntity.getZCoord() + oreBlockPos.chunkPosZ;
-                    isOre = GTUtility.isOre(
-                        oreBlock,
-                        aBaseMetaTileEntity.getWorld()
-                            .getBlockMetadata(x, y, z));
+                    isOre = GTUtility.isOre(oreBlock, aBaseMetaTileEntity.getWorld().getBlockMetadata(x, y, z));
                 } // someone else might have removed the block
                 while (!isOre && !oreBlockPositions.isEmpty());
 
@@ -313,7 +305,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     @Override
     public boolean pushOutputs(ItemStack stack, int count, boolean simulate, boolean allowInputSlots) {
         return allowInputSlots && pushOutput(getInputSlot(), getInputSlot() + mInputSlotCount, stack, count, simulate)
-            || pushOutput(getOutputSlot(), getOutputSlot() + mOutputItems.length, stack, count, simulate);
+                || pushOutput(getOutputSlot(), getOutputSlot() + mOutputItems.length, stack, count, simulate);
     }
 
     private boolean pushOutput(int startIndex, int endIndex, ItemStack stack, int count, boolean simulate) {
@@ -367,18 +359,18 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     @Override
     public String[] getInfoData() {
         return new String[] {
-            String.format(
-                "%s%s%s",
-                EnumChatFormatting.BLUE,
-                StatCollector.translateToLocal("GT5U.machines.miner"),
-                EnumChatFormatting.RESET),
-            String.format(
-                "%s: %s%d%s %s",
-                StatCollector.translateToLocal("GT5U.machines.workarea"),
-                EnumChatFormatting.GREEN,
-                (radiusConfig * 2 + 1),
-                EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.blocks")) };
+                String.format(
+                        "%s%s%s",
+                        EnumChatFormatting.BLUE,
+                        StatCollector.translateToLocal("GT5U.machines.miner"),
+                        EnumChatFormatting.RESET),
+                String.format(
+                        "%s: %s%d%s %s",
+                        StatCollector.translateToLocal("GT5U.machines.workarea"),
+                        EnumChatFormatting.GREEN,
+                        (radiusConfig * 2 + 1),
+                        EnumChatFormatting.RESET,
+                        StatCollector.translateToLocal("GT5U.machines.blocks")) };
     }
 
     @Override
@@ -396,12 +388,10 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     }
 
     private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("miner", GTUITextures.PROGRESSBAR_CANNER);
+            .fallbackableProgressbar("miner", GTUITextures.PROGRESSBAR_CANNER);
 
     @Override
     protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .progressBarTexture(progressBarTexture)
-            .build();
+        return super.getUIProperties().toBuilder().progressBarTexture(progressBarTexture).build();
     }
 }

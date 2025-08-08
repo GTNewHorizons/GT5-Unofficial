@@ -28,13 +28,12 @@ import gregtech.common.items.behaviors.BehaviourProspecting;
 public class ToolHardHammer extends GTTool {
 
     public static final List<String> mEffectiveList = Arrays
-        .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
+            .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-        EntityPlayer aPlayer) {
-        String tName = aEntity.getClass()
-            .getName();
+            EntityPlayer aPlayer) {
+        String tName = aEntity.getClass().getName();
         tName = tName.substring(tName.lastIndexOf('.') + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -92,25 +91,21 @@ public class ToolHardHammer extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hammer", "pickaxe")
-            || GTToolHarvestHelper
-                .isAppropriateMaterial(aBlock, Material.rock, Material.glass, Material.ice, Material.packedIce)
-            || RecipeMaps.hammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
+                || GTToolHarvestHelper
+                        .isAppropriateMaterial(aBlock, Material.rock, Material.glass, Material.ice, Material.packedIce)
+                || RecipeMaps.hammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
     }
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+            int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
-            .items(new ItemStack(aBlock, 1, aMetaData))
-            .notUnificated(true)
-            .find();
+        GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery().items(new ItemStack(aBlock, 1, aMetaData))
+                .notUnificated(true).find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
-                    .items(GTUtility.copyAmount(1, tDrop))
-                    .notUnificated(true)
-                    .find();
+                tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery().items(GTUtility.copyAmount(1, tDrop))
+                        .notUnificated(true).find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {
@@ -132,16 +127,16 @@ public class ToolHardHammer extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex]
-            : MetaGeneratedTool
-                .getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+                ? MetaGeneratedTool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex]
+                : MetaGeneratedTool.getSecondaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -152,12 +147,12 @@ public class ToolHardHammer extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-            EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                + EnumChatFormatting.WHITE
-                + " was squashed by "
-                + EnumChatFormatting.GREEN
-                + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " was squashed by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 
     @Override

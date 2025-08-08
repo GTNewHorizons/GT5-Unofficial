@@ -19,7 +19,7 @@ public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
     }
 
     public MTEHatchBulkCatalystHousing(String name, String[] description, ITexture[][][] textures, int tier,
-        int itemCapacity) {
+            int itemCapacity) {
         super(name, tier, description, textures);
         catalystCapacity = itemCapacity;
     }
@@ -41,28 +41,16 @@ public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().build(),
+                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().glow().build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().build(),
+                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().glow().build() };
     }
 
     @Override

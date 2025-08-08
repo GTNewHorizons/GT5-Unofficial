@@ -142,10 +142,10 @@ public class ItemBasicScrubberTurbine extends Item {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.scrubber_turbine.early_tier"));
         int maxDamage = getMaxDurability(stack);
         list.add(
-            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                "gtpp.tooltip.scrubber_turbine.uses_left",
-                (maxDamage - getFilterDamage(stack)),
-                maxDamage));
+                EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.scrubber_turbine.uses_left",
+                        (maxDamage - getFilterDamage(stack)),
+                        maxDamage));
         super.addInformation(stack, player, list, bool);
     }
 

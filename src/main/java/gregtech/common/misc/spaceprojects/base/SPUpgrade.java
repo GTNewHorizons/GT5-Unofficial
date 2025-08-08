@@ -294,21 +294,14 @@ public class SPUpgrade implements ISP_Upgrade {
             return true;
         }
 
-        if (requirements.getBodyType() != null && !requirements.getBodyType()
-            .equals(SpaceBodyType.NONE)) {
-            if (!requirements.getBodyType()
-                .equals(
-                    projectBelongingTo.getProjectLocation()
-                        .getType())) {
+        if (requirements.getBodyType() != null && !requirements.getBodyType().equals(SpaceBodyType.NONE)) {
+            if (!requirements.getBodyType().equals(projectBelongingTo.getProjectLocation().getType())) {
                 return false;
             }
         }
 
         if (requirements.getStarType() != null) {
-            if (!requirements.getStarType()
-                .equals(
-                    projectBelongingTo.getProjectLocation()
-                        .getStarType())) {
+            if (!requirements.getStarType().equals(projectBelongingTo.getProjectLocation().getStarType())) {
                 return false;
             }
         }
@@ -334,14 +327,9 @@ public class SPUpgrade implements ISP_Upgrade {
 
     @Override
     public SPUpgrade copy() {
-        return new SPUpgrade().setUpgradeName(name)
-            .setUpgradeUnlocalizedName(unlocalizedName)
-            .setUpgradeBuildTime(buildTime)
-            .setUpgradeFluidsCost(fluidsCost)
-            .setUpgradeItemsCost(itemsCost)
-            .setUpgradeRequirements(requirements)
-            .setUpgradeTotalStages(totalStages)
-            .setUpgradeVoltage(voltage);
+        return new SPUpgrade().setUpgradeName(name).setUpgradeUnlocalizedName(unlocalizedName)
+                .setUpgradeBuildTime(buildTime).setUpgradeFluidsCost(fluidsCost).setUpgradeItemsCost(itemsCost)
+                .setUpgradeRequirements(requirements).setUpgradeTotalStages(totalStages).setUpgradeVoltage(voltage);
     }
 
     @Override

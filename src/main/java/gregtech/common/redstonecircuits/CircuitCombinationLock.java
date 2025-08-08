@@ -97,7 +97,7 @@ public class CircuitCombinationLock extends CircuitryBehavior {
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         return StatCollector
-            .translateToLocalFormatted("GT5U.gui.circuit.combination_lock.data_description", aCircuitDataIndex);
+                .translateToLocalFormatted("GT5U.gui.circuit.combination_lock.data_description", aCircuitDataIndex);
     }
 
     @Override

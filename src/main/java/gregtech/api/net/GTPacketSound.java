@@ -51,12 +51,12 @@ public class GTPacketSound extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketSound(
-            aData.readUTF(),
-            aData.readFloat(),
-            aData.readFloat(),
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt());
+                aData.readUTF(),
+                aData.readFloat(),
+                aData.readFloat(),
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt());
     }
 
     @Override

@@ -28,12 +28,12 @@ public class MTEFilter extends MTEFilterBase {
 
     public MTEFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            19,
-            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size" });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                19,
+                new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size" });
     }
 
     public MTEFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -48,11 +48,8 @@ public class MTEFilter extends MTEFilterBase {
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-            TextureFactory.of(AUTOMATION_FILTER),
-            TextureFactory.builder()
-                .addIcon(AUTOMATION_FILTER_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(AUTOMATION_FILTER),
+                TextureFactory.builder().addIcon(AUTOMATION_FILTER_GLOW).glow().build());
     }
 
     @Override
@@ -69,7 +66,7 @@ public class MTEFilter extends MTEFilterBase {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
@@ -89,45 +86,34 @@ public class MTEFilter extends MTEFilterBase {
         super.addUIWidgets(builder, buildContext);
         addAllowNbtButton(builder);
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
-                .setPos(6, 19)
-                .setSize(9, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
-                    .setPos(71, 19)
-                    .setSize(24, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_RED.apply(19, true))
-                    .setPos(152, 19)
-                    .setSize(19, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(16, 4)
-                    .setSize(54, 54))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(FILTER_SLOT_INDEX)
-                    .endAtSlot(FILTER_SLOT_INDEX + NUM_FILTER_SLOTS - 1)
-                    .phantom(true)
-                    .applyForWidget(
-                        widget -> widget.disableShiftInsert()
-                            .setBackground(GTUITextures.TRANSPARENT))
-                    .build()
-                    .setPos(16, 4))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(NUM_INVENTORY_SLOTS - 1)
-                    .build()
-                    .setPos(97, 4));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_WHITE.apply(9, false)).setPos(6, 19)
+                        .setSize(9, 24))
+                .widget(
+                        new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
+                                .setPos(71, 19).setSize(24, 24))
+                .widget(
+                        new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_RED.apply(19, true))
+                                .setPos(152, 19).setSize(19, 24))
+                .widget(
+                        new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3).setPos(16, 4)
+                                .setSize(54, 54))
+                .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(FILTER_SLOT_INDEX)
+                                .endAtSlot(FILTER_SLOT_INDEX + NUM_FILTER_SLOTS - 1).phantom(true)
+                                .applyForWidget(
+                                        widget -> widget.disableShiftInsert().setBackground(GTUITextures.TRANSPARENT))
+                                .build().setPos(16, 4))
+                .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(NUM_INVENTORY_SLOTS - 1)
+                                .build().setPos(97, 4));
     }
 
     private void addAllowNbtButton(ModularWindow.Builder builder) {
         builder.widget(
-            createToggleButton(
-                () -> ignoreNbt,
-                val -> ignoreNbt = val,
-                GTUITextures.OVERLAY_BUTTON_NBT,
-                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
+                createToggleButton(
+                        () -> ignoreNbt,
+                        val -> ignoreNbt = val,
+                        GTUITextures.OVERLAY_BUTTON_NBT,
+                        () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
     }
 }

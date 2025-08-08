@@ -50,15 +50,15 @@ public class MTERecipeFilter extends MTESpecialFilter {
 
     public MTERecipeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size" });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size" });
     }
 
     public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-        ITexture[][][] aTextures) {
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -80,12 +80,8 @@ public class MTERecipeFilter extends MTESpecialFilter {
     }
 
     private static List<ItemStack> getFilteredMachines(RecipeMap<?> recipeMap) {
-        return RecipeCatalysts.getRecipeCatalysts(
-            recipeMap.getFrontend()
-                .getUIProperties().neiTransferRectId)
-            .stream()
-            .map(positionedStack -> positionedStack.item)
-            .collect(Collectors.toList());
+        return RecipeCatalysts.getRecipeCatalysts(recipeMap.getFrontend().getUIProperties().neiTransferRectId).stream()
+                .map(positionedStack -> positionedStack.item).collect(Collectors.toList());
     }
 
     @Override
@@ -96,29 +92,27 @@ public class MTERecipeFilter extends MTESpecialFilter {
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GTUtility.copyAmount(
-            1,
-            this.filteredMachines.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.filteredMachines.size()));
+                1,
+                this.filteredMachines
+                        .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.filteredMachines.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTERecipeFilter(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-            TextureFactory.of(AUTOMATION_RECIPEFILTER),
-            TextureFactory.builder()
-                .addIcon(AUTOMATION_RECIPEFILTER_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(AUTOMATION_RECIPEFILTER),
+                TextureFactory.builder().addIcon(AUTOMATION_RECIPEFILTER_GLOW).glow().build());
     }
 
     @Override
@@ -157,9 +151,9 @@ public class MTERecipeFilter extends MTESpecialFilter {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-            new FakeSyncWidget.StringSyncer(
-                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.unlocalizedName,
-                id -> this.mRecipeMap = RecipeMap.ALL_RECIPE_MAPS.get(id)));
+                new FakeSyncWidget.StringSyncer(
+                        () -> this.mRecipeMap == null ? "" : this.mRecipeMap.unlocalizedName,
+                        id -> this.mRecipeMap = RecipeMap.ALL_RECIPE_MAPS.get(id)));
     }
 
     @Override
@@ -180,12 +174,11 @@ public class MTERecipeFilter extends MTESpecialFilter {
     private List<String> assembleItemStackReplacementTooltip(RecipeMap<?> recipeMap) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
-            StatCollector.translateToLocal(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocal(recipeMap.unlocalizedName)
-                + EnumChatFormatting.RESET);
-        int recipeSize = recipeMap.getAllRecipes()
-            .size();
+                StatCollector.translateToLocal(TT_machineType) + ": "
+                        + EnumChatFormatting.YELLOW
+                        + StatCollector.translateToLocal(recipeMap.unlocalizedName)
+                        + EnumChatFormatting.RESET);
+        int recipeSize = recipeMap.getAllRecipes().size();
         if (recipeSize > 0) {
             tooltip.add("Filter size: §e" + recipeSize + "§r");
         }
@@ -214,9 +207,7 @@ public class MTERecipeFilter extends MTESpecialFilter {
 
         @Override
         public ClickResult onClick(int buttonId, boolean doubleClick) {
-            updateAndSendRecipeMapToServer(
-                getContext().getCursor()
-                    .getItemStack());
+            updateAndSendRecipeMapToServer(getContext().getCursor().getItemStack());
             return ClickResult.SUCCESS;
         }
 
@@ -298,8 +289,8 @@ public class MTERecipeFilter extends MTESpecialFilter {
             if (init && mRecipeMap != null && filteredMachines.isEmpty()) {
                 // backward compatibility: This machine used to store only mRecipeMap, not filteredMachines
                 syncToClient(
-                    REQUEST_FILTERED_MACHINES_S2C,
-                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.unlocalizedName));
+                        REQUEST_FILTERED_MACHINES_S2C,
+                        buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.unlocalizedName));
             }
         }
 

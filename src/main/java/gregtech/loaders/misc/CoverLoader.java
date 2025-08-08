@@ -17,27 +17,27 @@ public class CoverLoader implements Runnable {
     public void run() {
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             CoverRegistry
-                .registerDecorativeCover(new ItemStack(Blocks.carpet, 1, i), TextureFactory.of(Blocks.wool, i));
+                    .registerDecorativeCover(new ItemStack(Blocks.carpet, 1, i), TextureFactory.of(Blocks.wool, i));
         }
         CoverRegistry.registerCover(
-            GTModHandler.getIC2Item("reactorVent", 1L, 1),
-            TextureFactory.of(VENT_NORMAL),
-            context -> new CoverVent(context, 1));
+                GTModHandler.getIC2Item("reactorVent", 1L, 1),
+                TextureFactory.of(VENT_NORMAL),
+                context -> new CoverVent(context, 1));
         CoverRegistry.registerCover(
-            GTModHandler.getIC2Item("reactorVentCore", 1L, 1),
-            TextureFactory.of(VENT_NORMAL),
-            context -> new CoverVent(context, 1));
+                GTModHandler.getIC2Item("reactorVentCore", 1L, 1),
+                TextureFactory.of(VENT_NORMAL),
+                context -> new CoverVent(context, 1));
         CoverRegistry.registerCover(
-            GTModHandler.getIC2Item("reactorVentGold", 1L, 1),
-            TextureFactory.of(VENT_ADVANCED),
-            context -> new CoverVent(context, 2));
+                GTModHandler.getIC2Item("reactorVentGold", 1L, 1),
+                TextureFactory.of(VENT_ADVANCED),
+                context -> new CoverVent(context, 2));
         CoverRegistry.registerCover(
-            GTModHandler.getIC2Item("reactorVentSpread", 1L),
-            TextureFactory.of(VENT_NORMAL),
-            context -> new CoverVent(context, 2));
+                GTModHandler.getIC2Item("reactorVentSpread", 1L),
+                TextureFactory.of(VENT_NORMAL),
+                context -> new CoverVent(context, 2));
         CoverRegistry.registerCover(
-            GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1),
-            TextureFactory.of(VENT_ADVANCED),
-            context -> new CoverVent(context, 3));
+                GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1),
+                TextureFactory.of(VENT_ADVANCED),
+                context -> new CoverVent(context, 3));
     }
 }

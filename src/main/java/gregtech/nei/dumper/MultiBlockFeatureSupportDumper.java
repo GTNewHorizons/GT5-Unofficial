@@ -14,7 +14,7 @@ public abstract class MultiBlockFeatureSupportDumper extends DataDumper {
     private final Function<IControllerWithOptionalFeatures, Boolean> isFeatureSupported;
 
     public MultiBlockFeatureSupportDumper(String name,
-        Function<IControllerWithOptionalFeatures, Boolean> isFeatureSupported) {
+            Function<IControllerWithOptionalFeatures, Boolean> isFeatureSupported) {
         super("tools.dump.gt5u." + name);
         this.isFeatureSupported = isFeatureSupported;
     }
@@ -31,9 +31,7 @@ public abstract class MultiBlockFeatureSupportDumper extends DataDumper {
             IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[i];
             if (!(mte instanceof IControllerWithOptionalFeatures controller)) continue;
             if (!isFeatureSupported.apply(controller)) {
-                list.add(
-                    new String[] { controller.getClass()
-                        .getName() });
+                list.add(new String[] { controller.getClass().getName() });
             }
         }
         return list;

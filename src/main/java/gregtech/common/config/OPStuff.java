@@ -5,10 +5,10 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(
-    modid = Mods.ModIDs.GREG_TECH,
-    category = "op_stuff",
-    configSubDirectory = "GregTech",
-    filename = "OverpoweredStuff")
+        modid = Mods.ModIDs.GREG_TECH,
+        category = "op_stuff",
+        configSubDirectory = "GregTech",
+        filename = "OverpoweredStuff")
 public class OPStuff {
 
     @Config.Comment("How much RF you get with 100 EU in input.")

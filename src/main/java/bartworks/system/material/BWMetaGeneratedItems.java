@@ -65,16 +65,16 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+                "bw.itemtype." + orePrefixes,
+                orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+                "bw.itemtype." + orePrefixes,
+                orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
@@ -86,9 +86,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure
-            || this.orePrefixes == OrePrefixes.crushed) {
-            int aDamage = aItemEntity.getEntityItem()
-                .getItemDamage();
+                || this.orePrefixes == OrePrefixes.crushed) {
+            int aDamage = aItemEntity.getEntityItem().getItemDamage();
             if (aDamage >= 0 && !aItemEntity.worldObj.isRemote) {
                 Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get((short) aDamage);
                 if (aMaterial != null && aMaterial != Werkstoff.default_null_Werkstoff) {
@@ -100,16 +99,16 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
                     if (tBlock == Blocks.cauldron && tMetaData > 0) {
                         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
                             aItemEntity.setEntityItemStack(
-                                WerkstoffLoader.getCorrespondingItemStack(
-                                    OrePrefixes.dust,
-                                    aMaterial,
-                                    aItemEntity.getEntityItem().stackSize));
+                                    WerkstoffLoader.getCorrespondingItemStack(
+                                            OrePrefixes.dust,
+                                            aMaterial,
+                                            aItemEntity.getEntityItem().stackSize));
                         } else {
                             aItemEntity.setEntityItemStack(
-                                WerkstoffLoader.getCorrespondingItemStack(
-                                    OrePrefixes.crushedPurified,
-                                    aMaterial,
-                                    aItemEntity.getEntityItem().stackSize));
+                                    WerkstoffLoader.getCorrespondingItemStack(
+                                            OrePrefixes.crushedPurified,
+                                            aMaterial,
+                                            aItemEntity.getEntityItem().stackSize));
                         }
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
@@ -128,7 +127,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         if (this.orePrefixes == OrePrefixes.crushed) aList.add(translateToLocal("GT5U.tooltip.purify.2"));
 
         if (aStack != null && aStack.getItem() instanceof BWMetaGeneratedItems
-            && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
+                && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(translateToLocal("GT5U.tooltip.nqgen"));
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
@@ -152,15 +151,12 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     public IIconContainer getIconContainer(int aMetaData) {
         if (Werkstoff.werkstoffHashMap.get((short) aMetaData) == null) return null;
         if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
-        return Werkstoff.werkstoffHashMap.get((short) aMetaData)
-            .getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+        return Werkstoff.werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
         if (SideReference.Side.Client) return PrefixTextureLinker.texMap.get(this.orePrefixes)
-            .get(
-                Werkstoff.werkstoffHashMap.get((short) aMetaData)
-                    .getTexSet());
+                .get(Werkstoff.werkstoffHashMap.get((short) aMetaData).getTexSet());
         return null;
     }
 
@@ -191,13 +187,11 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         Werkstoff w = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if (w == null || w.getStats() == null) return;
 
-        if (w.getStats()
-            .isToxic() && !HazardProtection.isWearingFullBioHazmat(bPlayer)) {
+        if (w.getStats().isToxic() && !HazardProtection.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
-        if (w.getStats()
-            .isRadioactive() && !HazardProtection.isWearingFullRadioHazmat(bPlayer)) {
+        if (w.getStats().isRadioactive() && !HazardProtection.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
@@ -220,11 +214,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public int getRadiationLevel(ItemStack aStack) {
         Werkstoff w = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
-        return w.getStats()
-            .isRadioactive()
-                ? (int) w.getStats()
-                    .getProtons()
-                : 0;
+        return w.getStats().isRadioactive() ? (int) w.getStats().getProtons() : 0;
     }
 
     @Override
@@ -247,17 +237,17 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma
-                ? 1_000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
-                    ? 1 * INGOTS
-                    : 0;
+                || this.orePrefixes == OrePrefixes.cellPlasma
+                        ? 1_000
+                        : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
+                                ? 1 * INGOTS
+                                : 0;
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         if (this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
-            || this.orePrefixes == OrePrefixes.cellMolten) {
+                || this.orePrefixes == OrePrefixes.cellMolten) {
             return Materials.Empty.getCells(1);
         }
 

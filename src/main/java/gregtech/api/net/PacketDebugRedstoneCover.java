@@ -40,11 +40,11 @@ public class PacketDebugRedstoneCover extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
         return new PacketDebugRedstoneCover(
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readBoolean());
+                buf.readInt(),
+                buf.readInt(),
+                buf.readInt(),
+                buf.readInt(),
+                buf.readBoolean());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
                 manager.transferPlayerToDimension(player, this.dim);
             }
             player.playerNetServerHandler
-                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch);
+                    .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch);
             // try not to tp the player into the hull
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();

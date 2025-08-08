@@ -34,11 +34,8 @@ public class GTConfig implements Runnable {
 
     public static int addIDConfig(Object aCategory, String aName, int aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
-        Property tProperty = sConfigFileIDs.get(
-            aCategory.toString()
-                .replaceAll("\\|", "."),
-            aName.replaceAll("\\|", "."),
-            aDefault);
+        Property tProperty = sConfigFileIDs
+                .get(aCategory.toString().replaceAll("\\|", "."), aName.replaceAll("\\|", "."), aDefault);
         int rResult = tProperty.getInt(aDefault);
         sConfigFileIDs.save();
         return rResult;
@@ -49,8 +46,7 @@ public class GTConfig implements Runnable {
         Object rName = GTOreDictUnificator.getAssociation(aStack);
         if (rName != null) return rName.toString();
         if (GTUtility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();
-        String sName = aStack.getItem()
-            .toString();
+        String sName = aStack.getItem().toString();
         String[] tmp = sName.split("@");
         if (tmp.length > 0) sName = tmp[0];
         return sName + "." + aStack.getItemDamage();
@@ -64,10 +60,9 @@ public class GTConfig implements Runnable {
     public boolean get(Object aCategory, String aName, boolean aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            (aName + "_" + aDefault).replaceAll("\\|", "_"),
-            aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         boolean rResult = tProperty.getBoolean(aDefault);
         if (!tProperty.wasRead() && shouldSave()) mConfig.save();
         return rResult;
@@ -80,10 +75,9 @@ public class GTConfig implements Runnable {
     public int get(Object aCategory, String aName, int aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            (aName + "_" + aDefault).replaceAll("\\|", "_"),
-            aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         int rResult = tProperty.getInt(aDefault);
         if (!tProperty.wasRead() && shouldSave()) mConfig.save();
         return rResult;
@@ -96,10 +90,9 @@ public class GTConfig implements Runnable {
     public double get(Object aCategory, String aName, double aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            (aName + "_" + aDefault).replaceAll("\\|", "_"),
-            aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         double rResult = tProperty.getDouble(aDefault);
         if (!tProperty.wasRead() && shouldSave()) mConfig.save();
         return rResult;
@@ -112,10 +105,9 @@ public class GTConfig implements Runnable {
     public String get(Object aCategory, String aName, String aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            (aName + "_" + aDefault).replaceAll("\\|", "_"),
-            aDefault);
+                aCategory.toString().replaceAll("\\|", "_"),
+                (aName + "_" + aDefault).replaceAll("\\|", "_"),
+                aDefault);
         String rResult = tProperty.getString();
         if (!tProperty.wasRead() && shouldSave()) mConfig.save();
         return rResult;
@@ -127,11 +119,8 @@ public class GTConfig implements Runnable {
 
     public String[] get(Object aCategory, String aName, String... aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
-        Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            aName.replaceAll("\\|", "_"),
-            aDefault);
+        Property tProperty = mConfig
+                .get(aCategory.toString().replaceAll("\\|", "_"), aName.replaceAll("\\|", "_"), aDefault);
         String[] rResult = tProperty.getStringList();
         if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;
@@ -140,12 +129,11 @@ public class GTConfig implements Runnable {
     public String getWithValidValues(Object aCategory, String aName, String[] validValues, String aDefault) {
         if (GTUtility.isStringInvalid(aName)) return aDefault;
         Property tProperty = mConfig.get(
-            aCategory.toString()
-                .replaceAll("\\|", "_"),
-            aName.replaceAll("\\|", "_"),
-            aDefault,
-            null,
-            validValues);
+                aCategory.toString().replaceAll("\\|", "_"),
+                aName.replaceAll("\\|", "_"),
+                aDefault,
+                null,
+                validValues);
         String rResult = tProperty.getString();
         if (!tProperty.wasRead() && GregTechAPI.sPostloadFinished) mConfig.save();
         return rResult;

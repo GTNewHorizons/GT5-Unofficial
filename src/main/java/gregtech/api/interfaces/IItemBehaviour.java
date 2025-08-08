@@ -30,16 +30,15 @@ public interface IItemBehaviour<E extends Item> {
     /**
      * Suppresses standard block activation for a {@link gregtech.common.blocks.BlockMachines GT machine block}. Put
      * your item's right click activation in
-     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse}
-     * for best results.
+     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse} for
+     * best results.
      * <p>
      * Typically used when the item needs support for the Ring of Loki (from Botania.) If you don't care about that,
      * using
      * {@link #onItemUseFirst(Item, ItemStack, EntityPlayer, World, int, int, int, ForgeDirection, float, float, float)
-     * onItemUseFirst}
-     * instead of {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float)
-     * onItemUse}
-     * will act before block activation with a little less overhead.
+     * onItemUseFirst} instead of
+     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse} will
+     * act before block activation with a little less overhead.
      *
      * @param player     the player making the request
      * @param tileEntity the tile entity that is attempting to be activated
@@ -53,10 +52,10 @@ public interface IItemBehaviour<E extends Item> {
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
     boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ);
+            int ordinalSide, float hitX, float hitY, float hitZ);
 
     boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        ForgeDirection side, float hitX, float hitY, float hitZ);
+            ForgeDirection side, float hitX, float hitY, float hitZ);
 
     ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
@@ -77,8 +76,8 @@ public interface IItemBehaviour<E extends Item> {
     boolean hasProjectile(MetaBaseItem aItem, SubTag aProjectileType, ItemStack aStack);
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-        double aZ);
+            double aZ);
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-        float aSpeed);
+            float aSpeed);
 }

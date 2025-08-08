@@ -45,13 +45,14 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     public MTEBuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
     }
 
     public MTEBuckConverter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -73,13 +74,13 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            side == facing ? (aActive ? BUCK_ACTIVE : BUCK)
-                : (side == facing.getOpposite()
-                    ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier]
-                    : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])) };
+                side == facing ? (aActive ? BUCK_ACTIVE : BUCK)
+                        : (side == facing.getOpposite()
+                                ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier]
+                                : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
+                                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])) };
     }
 
     @Override
@@ -89,13 +90,13 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
@@ -141,7 +142,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return getBaseMetaTileEntity().isActive() && side != getBaseMetaTileEntity().getFrontFacing()
-            && side != getBaseMetaTileEntity().getBackFacing();
+                && side != getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -187,9 +188,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
+                        .setPos(113, 56));
     }
 
     @Override
@@ -198,35 +198,33 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> AMP, val -> AMP = val));
 
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 8))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 16))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 24))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 32));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("tt.gui.text.debug.eut") + " "
+                                                + numberFormat.format(EUT))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                                "tt.gui.text.debug.tier",
+                                                VN[GTUtility.getTier(Math.abs(EUT))]))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocal("tt.gui.text.debug.amp") + " "
+                                                + numberFormat.format(AMP))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                                "tt.gui.text.debug.sum",
+                                                numberFormat.format((long) AMP * EUT)))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32));
 
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
@@ -250,13 +248,10 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     }
 
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int changeNumberShift, int changeNumber, int xPos, int yPos) {
+            int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             setter.accept(clickData.shift ? changeNumberShift : changeNumber);
             getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
-        })
-            .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-            .setSize(18, 18)
-            .setPos(xPos, yPos));
+        }).setBackground(GTUITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
     }
 }

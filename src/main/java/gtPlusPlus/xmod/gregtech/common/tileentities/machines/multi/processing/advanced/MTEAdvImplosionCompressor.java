@@ -33,7 +33,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosionCompressor>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<MTEAdvImplosionCompressor> STRUCTURE_DEFINITION = null;
@@ -59,20 +59,13 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Factory Grade Advanced Implosion Compressor")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
-            .addInfo("Constructed exactly the same as a normal Implosion Compressor")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Implosion Compressor")
+                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
+                .addInfo("Constructed exactly the same as a normal Implosion Compressor")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
+                .addController("Front center").addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
+                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -80,20 +73,19 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     public IStructureDefinition<MTEAdvImplosionCompressor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvImplosionCompressor>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(MTEAdvImplosionCompressor.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(getCasingTextureId())
-                            .dot(1)
-                            .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            ofChain(
+                                    buildHatchAdder(MTEAdvImplosionCompressor.class)
+                                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                                            .casingIndex(getCasingTextureId()).dot(1).build(),
+                                    onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -152,9 +144,8 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 2F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

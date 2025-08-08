@@ -42,28 +42,29 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory
-            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.of(
+                        EM_D_ACTIVE,
+                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
+        return new ITexture[] { aBaseTexture, TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -90,8 +91,8 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
+                translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
     }
 
     @Override
@@ -99,11 +100,10 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
-            aTick = MinecraftServer.getServer()
-                .getTickCounter();
+            aTick = MinecraftServer.getServer().getTickCounter();
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
-                    .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                        .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
                 this.recipes = wirelessDataStore.downloadData(aTick);
             }
         }

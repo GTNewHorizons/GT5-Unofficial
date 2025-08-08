@@ -47,7 +47,7 @@ public enum SingleUseTool {
     SoftMallet(SingleUseSoftMallet, 5, SingleUseSoftMalletMold, 35, craftingToolSoftMallet);
 
     public static final List<SingleUseTool> HARD_TOOLS = ImmutableList
-        .of(File, Wrench, Crowbar, WireCutter, HardHammer, Screwdriver, Saw);
+            .of(File, Wrench, Crowbar, WireCutter, HardHammer, Screwdriver, Saw);
 
     public static final List<SingleUseTool> SOFT_TOOLS = ImmutableList.of(SoftMallet);
 

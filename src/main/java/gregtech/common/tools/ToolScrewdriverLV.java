@@ -16,9 +16,9 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_ELECTRIC_SCREWDRIVER;
+                ? MetaGeneratedTool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
+                : Textures.ItemIcons.HANDLE_ELECTRIC_SCREWDRIVER;
     }
 
 }

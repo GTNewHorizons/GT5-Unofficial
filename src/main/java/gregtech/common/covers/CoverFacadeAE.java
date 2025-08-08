@@ -11,7 +11,7 @@ import gregtech.api.covers.CoverPlacementPredicate;
 public class CoverFacadeAE extends CoverFacadeBase {
 
     public static CoverPlacementPredicate isCoverPlaceable = CoverFacadeBase
-        .isCoverPlaceable(CoverFacadeAE::getFacadeItemBlock, CoverFacadeAE::getFacadeItemMeta);
+            .isCoverPlaceable(CoverFacadeAE::getFacadeItemBlock, CoverFacadeAE::getFacadeItemMeta);
 
     public CoverFacadeAE(CoverContext context) {
         super(context);

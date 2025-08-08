@@ -34,7 +34,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialElectrolyzer>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<MTEndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
@@ -60,22 +60,13 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("180% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes two items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Electrolyzer Casings", 6, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("180% faster than using single block machines of the same voltage")
+                .addInfo("Only uses 90% of the EU/t normally required").addInfo("Processes two items per voltage tier")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfoMin("Electrolyzer Casings", 6, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -83,18 +74,18 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     public IStructureDefinition<MTEndustrialElectrolyzer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEndustrialElectrolyzer>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEndustrialElectrolyzer.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                        .casingIndex(TAE.GTPP_INDEX(5))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 5))))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEndustrialElectrolyzer.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                                    .casingIndex(TAE.GTPP_INDEX(5)).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 5))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -148,10 +139,8 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2.8F)
-            .setEuModifier(0.9F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 2.8F).setEuModifier(0.9F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

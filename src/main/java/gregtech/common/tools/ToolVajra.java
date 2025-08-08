@@ -48,7 +48,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     private final String tooltip;
 
     public ToolVajra(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
-        boolean aSwingIfUsed) {
+            boolean aSwingIfUsed) {
         super(aUnlocalized, aEnglish, aTooltip, aMaxDamage, aEntityDamage, aSwingIfUsed);
         this.tooltip = aTooltip;
     }
@@ -68,7 +68,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
-        EntityLivingBase entityLiving) {
+            EntityLivingBase entityLiving) {
         ElectricItem.manager.use(stack, baseCost, entityLiving);
         return true;
     }
@@ -110,7 +110,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
         list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.vajra.tooltip.flavor"));
         list.add(
-            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
+                EnumChatFormatting.WHITE
+                        + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
         list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
     }
 
@@ -146,14 +147,14 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
+            float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) return this.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
+            float hitX, float hitY, float hitZ) {
         Block target = world.getBlock(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
@@ -162,7 +163,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking()
-            || !isHarvestableOwned(tileEntity, player))
+                || !isHarvestableOwned(tileEntity, player))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
@@ -175,8 +176,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
                 target.harvestBlock(world, player, x, y, z, metaData);
             }
         }
-        stack.getTagCompound()
-            .setBoolean("harvested", true); // prevent onItemRightClick from going through
+        stack.getTagCompound().setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
         return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
@@ -222,8 +222,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         }
 
         if (!worldIn.isRemote && player.isSneaking()) {
-            if (itemStackIn.getTagCompound()
-                .hasKey("ench")) {
+            if (itemStackIn.getTagCompound().hasKey("ench")) {
                 tag.removeTag("ench");
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
             } else {

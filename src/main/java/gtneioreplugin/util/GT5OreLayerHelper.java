@@ -49,15 +49,14 @@ public class GT5OreLayerHelper {
 
             for (String dim : dims.keySet()) {
                 NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
-                    .getOrDefault(dim, new NormalOreDimensionWrapper());
+                        .getOrDefault(dim, new NormalOreDimensionWrapper());
                 dimensionOres.internalDimOreList.add(veinInfo);
                 dimToOreWrapper.put(dim, dimensionOres);
             }
 
             // Calculate probabilities for each dim.
             for (String dim : dimToOreWrapper.keySet()) {
-                dimToOreWrapper.get(dim)
-                    .calculateWeights();
+                dimToOreWrapper.get(dim).calculateWeights();
             }
         });
         // --- End of handling for dimToOreWrapper ---
@@ -110,9 +109,9 @@ public class GT5OreLayerHelper {
 
         public boolean containsOre(short materialIndex) {
             return Meta[OreVeinLayer.VEIN_PRIMARY] == materialIndex
-                || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
-                || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
-                || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
+                    || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
+                    || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
+                    || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
         }
     }
 }

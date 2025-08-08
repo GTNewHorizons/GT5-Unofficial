@@ -25,9 +25,7 @@ public class GTPacketPollution extends GTPacket {
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeInt(chunk.chunkXPos)
-            .writeInt(chunk.chunkZPos)
-            .writeInt(pollution);
+        aOut.writeInt(chunk.chunkXPos).writeInt(chunk.chunkZPos).writeInt(pollution);
     }
 
     @Override
@@ -37,8 +35,7 @@ public class GTPacketPollution extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        GTMod.clientProxy()
-            .processChunkPollutionPacket(chunk, pollution);
+        GTMod.clientProxy().processChunkPollutionPacket(chunk, pollution);
     }
 
     @Override

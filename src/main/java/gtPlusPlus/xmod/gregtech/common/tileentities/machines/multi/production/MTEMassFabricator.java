@@ -102,26 +102,15 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Speed: +0% | EU Usage: 80%")
-            .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
-            .addInfo("Produces UU-A, UU-M & Scrap")
-            .addInfo("Change mode with screwdriver")
-            .addPerfectOCInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin(mCasingName3, 9, false)
-            .addCasingInfoMin(mCasingName2, 24, false)
-            .addCasingInfoMin(mCasingName1, 36, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Speed: +0% | EU Usage: 80%")
+                .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier").addInfo("Produces UU-A, UU-M & Scrap")
+                .addInfo("Change mode with screwdriver").addPerfectOCInfo()
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(5, 4, 5, true)
+                .addController("Front Center").addCasingInfoMin(mCasingName3, 9, false)
+                .addCasingInfoMin(mCasingName2, 24, false).addCasingInfoMin(mCasingName1, 36, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -183,23 +172,21 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public IStructureDefinition<MTEMassFabricator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEMassFabricator>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                            { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEMassFabricator.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.GTPP_INDEX(9))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
-                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
-                .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+                                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+                                            { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEMassFabricator.class)
+                                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                                    .casingIndex(TAE.GTPP_INDEX(9)).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
+                    .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
+                    .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -275,18 +262,18 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                         for (ItemStack item : inputItems) {
                             if (item == null || item.stackSize == 0) continue;
                             ItemStack aPotentialOutput = GTModHandler
-                                .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
+                                    .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
                             GTRecipe recipe = new GTRecipe(
-                                false,
-                                new ItemStack[] { GTUtility.copyAmount(1, item) },
-                                aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
-                                null,
-                                new int[] { 2000 },
-                                null,
-                                null,
-                                40,
-                                (int) TierEU.RECIPE_LV,
-                                0);
+                                    false,
+                                    new ItemStack[] { GTUtility.copyAmount(1, item) },
+                                    aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                                    null,
+                                    new int[] { 2000 },
+                                    null,
+                                    null,
+                                    40,
+                                    (int) TierEU.RECIPE_LV,
+                                    0);
                             return Stream.of(recipe);
                         }
                     }
@@ -294,8 +281,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.setEuModifier(0.8F).setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -339,20 +325,21 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                        + EnumChatFormatting.WHITE
+                        + StatCollector
+                                .translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + tag.getInteger("mode"))
+                        + EnumChatFormatting.RESET);
     }
 }

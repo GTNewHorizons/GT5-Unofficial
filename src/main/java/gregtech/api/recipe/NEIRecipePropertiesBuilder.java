@@ -51,19 +51,19 @@ public final class NEIRecipePropertiesBuilder {
 
     public NEIRecipeProperties build() {
         return new NEIRecipeProperties(
-            registerNEI,
-            handlerInfoCreator,
-            recipeBackgroundSize,
-            recipeBackgroundOffset,
-            neiSpecialInfoFormatter,
-            unificateOutput,
-            useCustomFilter,
-            renderRealStackSizes,
-            itemInputsGetter,
-            fluidInputsGetter,
-            itemOutputsGetter,
-            fluidOutputsGetter,
-            comparator);
+                registerNEI,
+                handlerInfoCreator,
+                recipeBackgroundSize,
+                recipeBackgroundOffset,
+                neiSpecialInfoFormatter,
+                unificateOutput,
+                useCustomFilter,
+                renderRealStackSizes,
+                itemInputsGetter,
+                fluidInputsGetter,
+                itemOutputsGetter,
+                fluidOutputsGetter,
+                comparator);
     }
 
     public NEIRecipePropertiesBuilder disableRegisterNEI() {

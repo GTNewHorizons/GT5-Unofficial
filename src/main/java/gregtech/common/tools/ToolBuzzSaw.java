@@ -52,25 +52,25 @@ public class ToolBuzzSaw extends ToolSaw {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_BUZZSAW;
+                ? MetaGeneratedTool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex]
+                : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-            EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                + EnumChatFormatting.WHITE
-                + " got buzzed by "
-                + EnumChatFormatting.GREEN
-                + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+                EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                        + EnumChatFormatting.WHITE
+                        + " got buzzed by "
+                        + EnumChatFormatting.GREEN
+                        + aPlayer.getCommandSenderName()
+                        + EnumChatFormatting.WHITE);
     }
 }

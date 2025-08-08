@@ -33,7 +33,7 @@ import gregtech.common.pollution.Pollution;
 public final class GTCommand extends GTBaseCommand {
 
     private static final List<String> GLOBAL_ENERGY_COMMANDS = Arrays
-        .asList("global_energy_set", "global_energy_add", "global_energy_join", "global_energy_display");
+            .asList("global_energy_set", "global_energy_add", "global_energy_join", "global_energy_display");
 
     public GTCommand() {
         super("gt");
@@ -87,34 +87,34 @@ public final class GTCommand extends GTBaseCommand {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 0 || args.length == 1) {
             return getListOfStringsMatchingLastWord(
-                args,
-                "toggle",
-                "chunks",
-                "pollution",
-                "global_energy_add",
-                "global_energy_set",
-                "global_energy_join",
-                "global_energy_display",
-                "dump_music_durations");
+                    args,
+                    "toggle",
+                    "chunks",
+                    "pollution",
+                    "global_energy_add",
+                    "global_energy_set",
+                    "global_energy_join",
+                    "global_energy_display",
+                    "dump_music_durations");
         }
 
         if (args.length == 2 && args[0].equals("toggle")) {
             return getListOfStringsMatchingLastWord(
-                args,
-                "D1",
-                "D2",
-                "debugCleanroom",
-                "debugDriller",
-                "debugBlockPump",
-                "debugBlockMiner",
-                "debugWorldGen",
-                "debugEntityCramming",
-                "debugOrevein",
-                "debugSmallOres",
-                "debugStones",
-                "debugChunkloaders",
-                "debugMulti",
-                "debugWorldData");
+                    args,
+                    "D1",
+                    "D2",
+                    "debugCleanroom",
+                    "debugDriller",
+                    "debugBlockPump",
+                    "debugBlockMiner",
+                    "debugWorldGen",
+                    "debugEntityCramming",
+                    "debugOrevein",
+                    "debugSmallOres",
+                    "debugStones",
+                    "debugChunkloaders",
+                    "debugMulti",
+                    "debugWorldData");
         }
 
         if (args.length == 2 && GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
@@ -168,9 +168,8 @@ public final class GTCommand extends GTBaseCommand {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
                 int amount = (strings.length < 2) ? GTMod.proxy.mPollutionSmogLimit : Integer.parseInt(strings[1]);
                 Pollution.addPollution(
-                    sender.getEntityWorld()
-                        .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
-                    amount);
+                        sender.getEntityWorld().getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
+                        amount);
             }
             case "global_energy_add" -> {
                 String username = strings[1];
@@ -182,28 +181,28 @@ public final class GTCommand extends GTBaseCommand {
                 // Usage is /gt global_energy_add username EU
 
                 String EU_string_formatted = EnumChatFormatting.RED + GTUtility.formatNumbers(new BigInteger(EU_String))
-                    + EnumChatFormatting.RESET;
+                        + EnumChatFormatting.RESET;
 
                 if (addEUToGlobalEnergyMap(uuid, new BigInteger(EU_String))) sendChatToPlayer(
-                    sender,
-                    "Successfully added " + EU_string_formatted
-                        + "EU to the global energy network of "
-                        + formatted_username
-                        + ".");
+                        sender,
+                        "Successfully added " + EU_string_formatted
+                                + "EU to the global energy network of "
+                                + formatted_username
+                                + ".");
                 else sendChatToPlayer(
-                    sender,
-                    "Failed to add " + EU_string_formatted
-                        + "EU to the global energy map of "
-                        + formatted_username
-                        + ". Insufficient energy in network.");
+                        sender,
+                        "Failed to add " + EU_string_formatted
+                                + "EU to the global energy map of "
+                                + formatted_username
+                                + ". Insufficient energy in network.");
 
                 sendChatToPlayer(
-                    sender,
-                    formatted_username + " currently has "
-                        + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
-                        + EnumChatFormatting.RESET
-                        + "EU in their network.");
+                        sender,
+                        formatted_username + " currently has "
+                                + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
+                                + EnumChatFormatting.RESET
+                                + "EU in their network.");
 
             }
             case "global_energy_set" -> {
@@ -224,13 +223,13 @@ public final class GTCommand extends GTBaseCommand {
                 setUserEU(uuid, new BigInteger(EU_String_0));
 
                 sendChatToPlayer(
-                    sender,
-                    "Successfully set " + formatted_username
-                        + "'s global energy network to "
-                        + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(new BigInteger(EU_String_0))
-                        + EnumChatFormatting.RESET
-                        + "EU.");
+                        sender,
+                        "Successfully set " + formatted_username
+                                + "'s global energy network to "
+                                + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(new BigInteger(EU_String_0))
+                                + EnumChatFormatting.RESET
+                                + "EU.");
 
             }
             case "global_energy_join" -> {
@@ -250,15 +249,14 @@ public final class GTCommand extends GTBaseCommand {
                     // leave team
                     SpaceProjectManager.putInTeam(uuidSubject, uuidSubject);
                     sendChatToPlayer(
-                        sender,
-                        "User " + formattedUsernameSubject + " has rejoined their own global energy network.");
+                            sender,
+                            "User " + formattedUsernameSubject + " has rejoined their own global energy network.");
                     break;
                 }
 
                 // join other's team
 
-                if (SpaceProjectManager.getLeader(uuidSubject)
-                    .equals(SpaceProjectManager.getLeader(uuidTeam))) {
+                if (SpaceProjectManager.getLeader(uuidSubject).equals(SpaceProjectManager.getLeader(uuidTeam))) {
                     sendChatToPlayer(sender, "They are already in the same network!");
                     break;
                 }
@@ -266,15 +264,15 @@ public final class GTCommand extends GTBaseCommand {
                 SpaceProjectManager.putInTeam(uuidSubject, uuidTeam);
 
                 sendChatToPlayer(
-                    sender,
-                    "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + ".");
+                        sender,
+                        "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + ".");
                 sendChatToPlayer(
-                    sender,
-                    "To undo this simply join your own network again with /gt global_energy_join "
-                        + formattedUsernameSubject
-                        + " "
-                        + formattedUsernameSubject
-                        + ".");
+                        sender,
+                        "To undo this simply join your own network again with /gt global_energy_join "
+                                + formattedUsernameSubject
+                                + " "
+                                + formattedUsernameSubject
+                                + ".");
 
             }
             case "global_energy_display" -> {
@@ -292,26 +290,25 @@ public final class GTCommand extends GTBaseCommand {
                 UUID teamUUID = SpaceProjectManager.getLeader(userUUID);
 
                 sendChatToPlayer(
-                    sender,
-                    "User " + formatted_username
-                        + " has "
-                        + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(getUserEU(userUUID))
-                        + EnumChatFormatting.RESET
-                        + "EU in their network.");
+                        sender,
+                        "User " + formatted_username
+                                + " has "
+                                + EnumChatFormatting.RED
+                                + GTUtility.formatNumbers(getUserEU(userUUID))
+                                + EnumChatFormatting.RESET
+                                + "EU in their network.");
                 if (!userUUID.equals(teamUUID)) sendChatToPlayer(
-                    sender,
-                    "User " + formatted_username
-                        + " is currently in network of "
-                        + EnumChatFormatting.BLUE
-                        + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
-                        + EnumChatFormatting.RESET
-                        + ".");
+                        sender,
+                        "User " + formatted_username
+                                + " is currently in network of "
+                                + EnumChatFormatting.BLUE
+                                + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
+                                + EnumChatFormatting.RESET
+                                + ".");
 
             }
             case "dump_music_durations" -> {
-                if (!FMLLaunchHandler.side()
-                    .isClient()) {
+                if (!FMLLaunchHandler.side().isClient()) {
                     sendChatToPlayer(sender, EnumChatFormatting.RED + "This command is client-only.");
                 }
                 GTMusicSystem.ClientSystem.dumpAllRecordDurations();

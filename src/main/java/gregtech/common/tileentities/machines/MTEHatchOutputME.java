@@ -81,9 +81,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    final IItemList<IAEFluidStack> fluidCache = AEApi.instance()
-        .storage()
-        .createFluidList();
+    final IItemList<IAEFluidStack> fluidCache = AEApi.instance().storage().createFluidList();
     long lastOutputTick = 0;
     long lastInputTick = 0;
     long tickCounter = 0;
@@ -95,15 +93,16 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            3,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs" },
-            1);
+                aID,
+                aName,
+                aNameRegional,
+                3,
+                new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
+                        "Can cache up to 128kL of fluids by default",
+                        "Change cache size by inserting a fluid storage cell",
+                        "Change ME connection behavior by right-clicking with wire cutter",
+                        "Partition the inserted Storage Cell to filter accepted outputs" },
+                1);
     }
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -142,9 +141,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             boolean isOk = false;
 
             for (String lockedFluid : lockedFluids) {
-                if (lockedFluid.equals(
-                    aFluid.getFluid()
-                        .getName())) {
+                if (lockedFluid.equals(aFluid.getFluid().getName())) {
                     isOk = true;
 
                     break;
@@ -171,9 +168,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         for (String lockedFluid : lockedFluids) {
-            if (lockedFluid.equals(
-                fluidStack.getFluid()
-                    .getName())) {
+            if (lockedFluid.equals(fluidStack.getFluid().getName())) {
                 return true;
             }
         }
@@ -198,7 +193,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
             if (this.mMode == 0) {
                 CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
-                    .getConfigInventory(upgradeItemStack);
+                        .getConfigInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -218,17 +213,14 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         if (tFluid != null) {
                             hadFilters = true;
 
-                            lockedFluids.add(
-                                tFluid.getFluid()
-                                    .getName());
+                            lockedFluids.add(tFluid.getFluid().getName());
 
                             if (isFirst) {
                                 builder.append(tFluid.getLocalizedName());
 
                                 isFirst = false;
                             } else {
-                                builder.append(", ")
-                                    .append(tFluid.getLocalizedName());
+                                builder.append(", ").append(tFluid.getLocalizedName());
                             }
                         }
                     }
@@ -236,8 +228,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     if (hadFilters) {
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
-                                lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
+                                    lastClickedPlayer,
+                                    StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
                         }
 
                         this.mMode = 10;
@@ -257,8 +249,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 markDirty();
 
                 GTUtility.sendChatToPlayer(
-                    lastClickedPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
+                        lastClickedPlayer,
+                        StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
             }
         }
     }
@@ -313,10 +305,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (aFluid == null) return 0;
         // Always allow insertion on the same tick so we can output the entire recipe
         if (canAcceptFluid() || (lastInputTick == tickCounter)) {
-            fluidCache.add(
-                AEApi.instance()
-                    .storage()
-                    .createFluidStack(aFluid));
+            fluidCache.add(AEApi.instance().storage().createFluidStack(aFluid));
             lastInputTick = tickCounter;
             return aFluid.amount;
         }
@@ -369,8 +358,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
         }
         if (proxy.getNode() != null) {
-            proxy.getNode()
-                .updateState();
+            proxy.getNode().updateState();
         }
     }
 
@@ -386,18 +374,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side)
-            .isGUIClickable()) return;
+            ItemStack aTool) {
+        if (!getBaseMetaTileEntity().getCoverAtSide(side).isGUIClickable()) return;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+                new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
     }
 
@@ -417,15 +404,15 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
-                    "proxy",
-                    ItemList.Hatch_Output_ME.get(1),
-                    true);
+                        (IGridProxyable) getBaseMetaTileEntity(),
+                        "proxy",
+                        ItemList.Hatch_Output_ME.get(1),
+                        true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                        getBaseMetaTileEntity().getWorld()
+                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -435,8 +422,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (!isActive() || fluidCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
         try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
+            IMEMonitor<IAEFluidStack> sg = proxy.getStorage().getFluidInventory();
             for (IAEFluidStack s : fluidCache) {
                 if (s.getStackSize() == 0) continue;
                 IAEFluidStack rest = fluidAEInsert(proxy.getEnergy(), sg, s, getRequest());
@@ -477,26 +463,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
-                    + "L");
+                    "Current cache capacity: " + EnumChatFormatting.YELLOW
+                            + ReadableNumberConverter.INSTANCE
+                                    .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
+                            + "L");
         }
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("cacheCapacity", getCacheCapacity());
         tag.setInteger("stackCount", fluidCache.size());
 
         IAEFluidStack[] stacks = fluidCache.toArray(new IAEFluidStack[0]);
 
-        Arrays.sort(
-            stacks,
-            Comparator.comparingLong(IAEFluidStack::getStackSize)
-                .reversed());
+        Arrays.sort(stacks, Comparator.comparingLong(IAEFluidStack::getStackSize).reversed());
 
         if (stacks.length > 10) {
             stacks = Arrays.copyOf(stacks, 10);
@@ -507,8 +490,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         for (IAEFluidStack stack : stacks) {
             NBTTagCompound stackTag = new NBTTagCompound();
-            stack.getFluidStack()
-                .writeToNBT(stackTag);
+            stack.getFluidStack().writeToNBT(stackTag);
             stackTag.setLong("Amount", stack.getStackSize());
             tagList.appendTag(stackTag);
         }
@@ -517,17 +499,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     @SideOnly(Side.CLIENT)
     public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, ss, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Fluid cache capacity: %s%s L%s",
-                EnumChatFormatting.GOLD,
-                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
-                EnumChatFormatting.RESET));
+                String.format(
+                        "Fluid cache capacity: %s%s L%s",
+                        EnumChatFormatting.GOLD,
+                        GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
+                        EnumChatFormatting.RESET));
 
         if (!GuiScreen.isShiftKeyDown()) {
             ss.add("Hold Shift for more info");
@@ -541,24 +523,24 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             ss.add("This hatch has no cached fluids");
         } else {
             ss.add(
-                String.format(
-                    "The hatch contains %s%d%s cached fluid%s: ",
-                    EnumChatFormatting.GOLD,
-                    stackCount,
-                    EnumChatFormatting.RESET,
-                    stackCount > 1 ? "s" : ""));
+                    String.format(
+                            "The hatch contains %s%d%s cached fluid%s: ",
+                            EnumChatFormatting.GOLD,
+                            stackCount,
+                            EnumChatFormatting.RESET,
+                            stackCount > 1 ? "s" : ""));
 
             for (int i = 0; i < stacks.tagCount(); i++) {
                 NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
                 FluidStack stack = FluidStack.loadFluidStackFromNBT(stackTag);
 
                 ss.add(
-                    String.format(
-                        "%s: %s%s L%s",
-                        stack.getLocalizedName(),
-                        EnumChatFormatting.GOLD,
-                        GTUtility.formatNumbers(stackTag.getLong("Amount")),
-                        EnumChatFormatting.RESET));
+                        String.format(
+                                "%s: %s%s L%s",
+                                stack.getLocalizedName(),
+                                EnumChatFormatting.GOLD,
+                                GTUtility.formatNumbers(stackTag.getLong("Amount")),
+                                EnumChatFormatting.RESET));
             }
 
             if (stackCount > stacks.tagCount()) {
@@ -592,8 +574,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (s.getStackSize() == 0) continue;
             NBTTagCompound tag = new NBTTagCompound();
             NBTTagCompound tagFluidStack = new NBTTagCompound();
-            s.getFluidStack()
-                .writeToNBT(tagFluidStack);
+            s.getFluidStack().writeToNBT(tagFluidStack);
             tag.setTag("fluidStack", tagFluidStack);
             tag.setLong("size", s.getStackSize());
             fluids.appendTag(tag);
@@ -623,16 +604,14 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             for (int i = 0; i < l.tagCount(); ++i) {
                 NBTTagCompound tag = l.getCompoundTagAt(i);
                 NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
-                final IAEFluidStack s = AEApi.instance()
-                    .storage()
-                    .createFluidStack(GTUtility.loadFluid(tagFluidStack));
+                final IAEFluidStack s = AEApi.instance().storage().createFluidStack(GTUtility.loadFluid(tagFluidStack));
                 if (s != null) {
                     s.setStackSize(tag.getLong("size"));
                     fluidCache.add(s);
                 } else {
                     GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
-                            + tagFluidStack);
+                            "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
+                                    + tagFluidStack);
                 }
             }
         }
@@ -664,8 +643,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         additionalConnection = nbt.getBoolean("additionalConnection");
         updateValidGridProxySides();
         byte color = nbt.getByte("color");
-        this.getBaseMetaTileEntity()
-            .setColorization(color);
+        this.getBaseMetaTileEntity().setColorization(color);
 
         return true;
     }
@@ -697,31 +675,31 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
+                (getProxy() != null && getProxy().isActive())
+                        ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                        : StatCollector.translateToLocalFormatted(
+                                "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                                getAEDiagnostics()));
         ss.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
-                    + " L"
-                    + EnumChatFormatting.RESET));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.hatch.output_me.cache_capacity",
+                        EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
+                                + " L"
+                                + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
             ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
             ss.add(
-                StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
+                    StatCollector
+                            .translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(
-                    s.getFluidStack()
-                        .getLocalizedName() + ": "
-                        + EnumChatFormatting.GOLD
-                        + GTUtility.formatNumbers(s.getStackSize())
-                        + " L"
-                        + EnumChatFormatting.RESET);
+                        s.getFluidStack().getLocalizedName() + ": "
+                                + EnumChatFormatting.GOLD
+                                + GTUtility.formatNumbers(s.getStackSize())
+                                + " L"
+                                + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
         }
@@ -729,7 +707,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     public static IAEFluidStack fluidAEInsert(final IEnergySource energy, final IMEInventory<IAEFluidStack> cell,
-        final IAEFluidStack input, final BaseActionSource src) {
+            final IAEFluidStack input, final BaseActionSource src) {
         final IAEFluidStack possible = cell.injectItems(input.copy(), Actionable.SIMULATE, src);
 
         long stored = input.getStackSize();

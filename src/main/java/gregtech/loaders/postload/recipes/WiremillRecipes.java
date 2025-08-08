@@ -24,18 +24,11 @@ public class WiremillRecipes implements Runnable {
 
         registerWiremillRecipes(MaterialsUEVplus.SpaceTime, 20 * SECONDS, (int) TierEU.RECIPE_LuV);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
-            .itemOutputs(new ItemStack(Items.string, 32))
-            .duration(4 * SECONDS)
-            .eut(48)
-            .addTo(wiremillRecipes);
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
+                .itemOutputs(new ItemStack(Items.string, 32)).duration(4 * SECONDS).eut(48).addTo(wiremillRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
-            .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1))
-            .duration(10 * SECONDS)
-            .eut(16)
-            .addTo(wiremillRecipes);
+        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
+                .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1)).duration(10 * SECONDS).eut(16)
+                .addTo(wiremillRecipes);
     }
 }

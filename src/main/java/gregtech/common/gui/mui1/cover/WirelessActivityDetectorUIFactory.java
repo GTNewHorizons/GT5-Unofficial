@@ -17,7 +17,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class WirelessActivityDetectorUIFactory
-    extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessDoesWorkDetector> {
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessDoesWorkDetector> {
 
     public WirelessActivityDetectorUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
@@ -55,56 +55,51 @@ public class WirelessActivityDetectorUIFactory
                 return GTUtility.trans("241", "Recipe progress");
             }
 
-        })
-            .setSynced(false)
-            .setDefaultColor(COLOR_TEXT_GRAY.get())
-            .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        getCoverString(
-                            c -> c.isPhysical()
-                                ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
-                                : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                    .setSize(spaceX * 10, 12));
+        }).setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        getCoverString(
+                                                c -> c.isPhysical()
+                                                        ? StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.1")
+                                                        : StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.0")))
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setTextAlignment(Alignment.CenterLeft).setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                                .setSize(spaceX * 10, 12));
     }
 
     @Override
     protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessDoesWorkDetector> controller) {
         super.addUIForDataController(controller);
 
-        controller
-            .addFollower(
+        controller.addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.RECIPE_PROGRESS,
                 (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.RECIPE_PROGRESS),
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
-                    .addTooltip(GTUtility.trans("241", "Recipe progress"))
-                    .setPos(spaceX * 0, spaceY * 2))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE,
-                (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE),
-                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                    .addTooltip(GTUtility.trans("242", "Machine idle"))
-                    .setPos(spaceX * 1, spaceY * 2))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED,
-                (coverData, state) -> coverData.setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED),
-                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                    .addTooltip(GTUtility.trans("271", "Machine enabled"))
-                    .setPos(spaceX * 2, spaceY * 2))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                CoverWirelessDoesWorkDetector::isPhysical,
-                CoverWirelessDoesWorkDetector::setPhysical,
-                widget -> widget
-                    .addTooltip(StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
-                    .setPos(0, 1 + spaceY * 3));
+                        .addTooltip(GTUtility.trans("241", "Recipe progress")).setPos(spaceX * 0, spaceY * 2))
+                .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE,
+                        (coverData, state) -> coverData
+                                .setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_IDLE),
+                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
+                                .addTooltip(GTUtility.trans("242", "Machine idle")).setPos(spaceX * 1, spaceY * 2))
+                .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        coverData -> coverData.getMode() == CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED,
+                        (coverData, state) -> coverData
+                                .setMode(CoverWirelessDoesWorkDetector.ActivityMode.MACHINE_ENABLED),
+                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                                .addTooltip(GTUtility.trans("271", "Machine enabled")).setPos(spaceX * 2, spaceY * 2))
+                .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        CoverWirelessDoesWorkDetector::isPhysical,
+                        CoverWirelessDoesWorkDetector::setPhysical,
+                        widget -> widget.addTooltip(
+                                StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
+                                .setPos(0, 1 + spaceY * 3));
     }
 }

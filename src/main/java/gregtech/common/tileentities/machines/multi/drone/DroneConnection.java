@@ -32,16 +32,13 @@ public class DroneConnection {
     public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
         this.machine = machine;
         this.machineItem = machine.getStackForm(1);
-        machineCoord = machine.getBaseMetaTileEntity()
-            .getCoords();
+        machineCoord = machine.getBaseMetaTileEntity().getCoords();
         this.centre = centre;
-        centreCoord = centre.getBaseMetaTileEntity()
-            .getCoords();
-        this.world = centre.getBaseMetaTileEntity()
-            .getWorld();
+        centreCoord = centre.getBaseMetaTileEntity().getCoords();
+        this.world = centre.getBaseMetaTileEntity().getWorld();
         unlocalizedName = machine.mName;
         customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
-            .orElse(machine.getLocalName());
+                .orElse(machine.getLocalName());
     }
 
     public DroneConnection(NBTTagCompound aNBT) {
@@ -54,14 +51,14 @@ public class DroneConnection {
         }
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
-            machineTag.getInteger("x"),
-            machineTag.getInteger("y"),
-            machineTag.getInteger("z"));
+                machineTag.getInteger("x"),
+                machineTag.getInteger("y"),
+                machineTag.getInteger("z"));
         this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
         centreCoord = new ChunkCoordinates(
-            centreTag.getInteger("x"),
-            centreTag.getInteger("y"),
-            centreTag.getInteger("z"));
+                centreTag.getInteger("x"),
+                centreTag.getInteger("y"),
+                centreTag.getInteger("z"));
         this.centre = (MTEDroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         this.customName = aNBT.getString("name");
         this.unlocalizedName = aNBT.getString("unlocalizedName");
@@ -86,14 +83,9 @@ public class DroneConnection {
 
     public boolean isMachineShutdown() {
         return machine != null && machine.shouldDisplayShutDownReason()
-            && !machine.getBaseMetaTileEntity()
-                .isActive()
-            && GTUtility.isStringValid(
-                machine.getBaseMetaTileEntity()
-                    .getLastShutDownReason()
-                    .getDisplayString())
-            && machine.getBaseMetaTileEntity()
-                .wasShutdown();
+                && !machine.getBaseMetaTileEntity().isActive()
+                && GTUtility.isStringValid(machine.getBaseMetaTileEntity().getLastShutDownReason().getDisplayString())
+                && machine.getBaseMetaTileEntity().wasShutdown();
     }
 
     public NBTTagCompound transConnectionToNBT() {
@@ -101,10 +93,7 @@ public class DroneConnection {
         aNBT.setTag("machine", transCoordsToNBT(machineCoord));
         aNBT.setTag("centre", transCoordsToNBT(centreCoord));
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
-        aNBT.setInteger(
-            "worldID",
-            centre.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId);
+        aNBT.setInteger("worldID", centre.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         aNBT.setString("name", getCustomName(false));
         aNBT.setString("unlocalizedName", unlocalizedName);
         return aNBT;

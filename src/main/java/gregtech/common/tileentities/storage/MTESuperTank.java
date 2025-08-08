@@ -28,32 +28,32 @@ public class MTESuperTank extends MTEDigitalTankBase {
 
         if (mFluid == null) {
             return new String[] {
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
-                    + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + "0 L"
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(getCapacity())
-                    + " L"
-                    + EnumChatFormatting.RESET };
+                    EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
+                            + EnumChatFormatting.RESET,
+                    StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                    EnumChatFormatting.GOLD
+                            + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
+                            + EnumChatFormatting.RESET,
+                    EnumChatFormatting.GREEN + "0 L"
+                            + EnumChatFormatting.RESET
+                            + " "
+                            + EnumChatFormatting.YELLOW
+                            + GTUtility.formatNumbers(getCapacity())
+                            + " L"
+                            + EnumChatFormatting.RESET };
         }
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-            EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
-                + " L"
-                + EnumChatFormatting.RESET
-                + " "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
-                + " L"
-                + EnumChatFormatting.RESET };
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
+                        + " L"
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(getCapacity())
+                        + " L"
+                        + EnumChatFormatting.RESET };
     }
 }

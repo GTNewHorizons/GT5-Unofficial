@@ -18,7 +18,7 @@ public class VanillaTradingMixin {
 
     @Inject(method = "func_146089_b", at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private static void gt5u$removeEyeOfEnder(MerchantRecipeList p_146089_0_, Item p_146089_1_, Random p_146089_2_,
-        float p_146089_3_, CallbackInfo ci) {
+            float p_146089_3_, CallbackInfo ci) {
         if (p_146089_1_.equals(Items.ender_eye)) {
             ci.cancel();
         }

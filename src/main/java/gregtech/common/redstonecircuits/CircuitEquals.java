@@ -36,9 +36,10 @@ public class CircuitEquals extends CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         aRedstoneCircuitBlock.setRedstone(
-            ((byte) (((aCircuitData[1] != 0) == (getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0])) ? 0
-                : 15)),
-            aRedstoneCircuitBlock.getOutputFacing());
+                ((byte) (((aCircuitData[1] != 0) == (getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0]))
+                        ? 0
+                        : 15)),
+                aRedstoneCircuitBlock.getOutputFacing());
     }
 
     @Override
@@ -56,8 +57,8 @@ public class CircuitEquals extends CircuitryBehavior {
         return switch (aCircuitDataIndex) {
             case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.equals.data_description.signal");
             case 1 -> StatCollector.translateToLocal(
-                aCircuitData[1] == 0 ? "GT5U.gui.circuit.equals.data_description.equal"
-                    : "GT5U.gui.circuit.equals.data_description.unequal");
+                    aCircuitData[1] == 0 ? "GT5U.gui.circuit.equals.data_description.equal"
+                            : "GT5U.gui.circuit.equals.data_description.unequal");
             default -> "";
         };
     }

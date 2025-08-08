@@ -32,7 +32,7 @@ public class ClientProxy extends CommonProxy {
         BlockSpaceElevatorCable.setRenderID(RenderingRegistry.getNextAvailableRenderId());
         RenderingRegistry.registerBlockHandler(BlockSpaceElevatorCable.getRenderID(), new RenderSpaceElevatorCable());
         ClientRegistry
-            .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
+                .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
         new IGTextures().run();
         MinecraftForge.EVENT_BUS.register(new NEI_IG_Config());
     }

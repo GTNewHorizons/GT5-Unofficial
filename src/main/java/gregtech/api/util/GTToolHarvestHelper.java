@@ -55,9 +55,9 @@ public class GTToolHarvestHelper {
 
     public static boolean isIC2Wrenchable(Block block) {
         return (block instanceof BlockMultiID && !(block instanceof BlockCable) && !(block instanceof BlockCrop))
-            || block instanceof BlockScaffold
-            || block instanceof BlockMiningPipe
-            || block instanceof BlockMiningTip;
+                || block instanceof BlockScaffold
+                || block instanceof BlockMiningPipe
+                || block instanceof BlockMiningTip;
     }
 
     public static boolean hasNull(Object... obj) {

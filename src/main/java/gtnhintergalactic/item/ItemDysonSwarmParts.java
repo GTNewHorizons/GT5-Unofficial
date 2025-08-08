@@ -14,7 +14,7 @@ import gtnhintergalactic.GTNHIntergalactic;
 public class ItemDysonSwarmParts extends Item {
 
     private static final String[] names = { "dysonSwarmModule", "TaHfCNanofibers", "NtNanofibers", "UHTResistantMesh",
-        "TaHfNanoparticles", "NtNanoparticles" };
+            "TaHfNanoparticles", "NtNanoparticles" };
     private static final IIcon[] icons = new IIcon[names.length];
 
     public ItemDysonSwarmParts() {

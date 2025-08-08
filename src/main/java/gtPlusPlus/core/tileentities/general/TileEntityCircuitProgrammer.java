@@ -44,8 +44,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     // Rename to hasCircuitToConfigure
     public final boolean hasCircuitToConfigure() {
-        for (ItemStack i : this.getInventory()
-            .getInventory()) {
+        for (ItemStack i : this.getInventory().getInventory()) {
             if (i != null) {
                 return true;
             }
@@ -58,9 +57,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
     }
 
     public boolean addOutput() {
-        ItemStack[] aInputs = this.getInventory()
-            .getInventory()
-            .clone();
+        ItemStack[] aInputs = this.getInventory().getInventory().clone();
         // Check if there is output in slot.
         boolean hasOutput = aInputs[25] != null;
         ArrayList<Integer> aValidSlots = new ArrayList<>();
@@ -160,44 +157,37 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     @Override
     public int getSizeInventory() {
-        return this.getInventory()
-            .getSizeInventory();
+        return this.getInventory().getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(final int slot) {
-        return this.getInventory()
-            .getStackInSlot(slot);
+        return this.getInventory().getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(final int slot, final int count) {
-        return this.getInventory()
-            .decrStackSize(slot, count);
+        return this.getInventory().decrStackSize(slot, count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(final int slot) {
-        return this.getInventory()
-            .getStackInSlotOnClosing(slot);
+        return this.getInventory().getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(final int slot, final ItemStack stack) {
-        this.getInventory()
-            .setInventorySlotContents(slot, stack);
+        this.getInventory().setInventorySlotContents(slot, stack);
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return this.getInventory()
-            .getInventoryStackLimit();
+        return this.getInventory().getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-        return this.getInventory()
-            .isUseableByPlayer(entityplayer);
+        return this.getInventory().isUseableByPlayer(entityplayer);
     }
 
     @Override
@@ -205,8 +195,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory()
-            .openInventory();
+        this.getInventory().openInventory();
     }
 
     @Override
@@ -214,21 +203,18 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory()
-            .closeInventory();
+        this.getInventory().closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-        return this.getInventory()
-            .isItemValidForSlot(slot, itemstack);
+        return this.getInventory().isItemValidForSlot(slot, itemstack);
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         final int[] accessibleSides = new int[this.getSizeInventory()];
-        for (int r = 0; r < this.getInventory()
-            .getSizeInventory(); r++) {
+        for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
             accessibleSides[r] = r;
         }
         return accessibleSides;

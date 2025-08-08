@@ -37,10 +37,10 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     public MTEAdvancedBoilerBase(int aID, String aNameRegional, int tier) {
         super(
-            aID,
-            "electricboiler." + tier + ".tier.single",
-            aNameRegional,
-            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+                aID,
+                "electricboiler." + tier + ".tier.single",
+                aNameRegional,
+                "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
         this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
@@ -54,12 +54,12 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Produces " + getPollution() + " pollution/sec",
-            "Consumes fuel only when temperature is less than 100C",
-            "Fuel with burn time greater than 500 is more efficient.",
-            "Doesn't explode if there's no water",
-            GTPPCore.GT_Tooltip.get());
+                this.mDescriptionArray,
+                "Produces " + getPollution() + " pollution/sec",
+                "Consumes fuel only when temperature is less than 100C",
+                "Fuel with burn time greater than 500 is more efficient.",
+                "Doesn't explode if there's no water",
+                GTPPCore.GT_Tooltip.get());
     }
 
     public ITexture getOverlayIcon() {
@@ -96,10 +96,12 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
-            : side == facing.getOpposite() ? 1
-                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
@@ -144,8 +146,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -218,7 +219,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     // support returning those different capacities.
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         return new FluidTankInfo[] { new FluidTankInfo(this.mFluid, getCapacity()),
-            new FluidTankInfo(this.mSteam, getSteamCapacity()) };
+                new FluidTankInfo(this.mSteam, getSteamCapacity()) };
     }
 
     @Override
@@ -229,7 +230,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     protected int getPollution() {
         return (int) (PollutionConfig.basePollutionPerSecondBoiler
-            * PollutionConfig.pollutionReleasedByTierBoiler[this.tier]);
+                * PollutionConfig.pollutionReleasedByTierBoiler[this.tier]);
     }
 
     @Override
@@ -260,12 +261,8 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
 
         tile.decrStackSize(2, 1);
         if (tile.getRandomNumber(3) == 0) {
-            if (fuel.getDisplayName()
-                .toLowerCase()
-                .contains("charcoal")
-                || fuel.getDisplayName()
-                    .toLowerCase()
-                    .contains("coke")) {
+            if (fuel.getDisplayName().toLowerCase().contains("charcoal")
+                    || fuel.getDisplayName().toLowerCase().contains("coke")) {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
             } else {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
@@ -275,8 +272,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        if (side != this.getBaseMetaTileEntity()
-            .getFrontFacing()) {
+        if (side != this.getBaseMetaTileEntity().getFrontFacing()) {
             return true;
         }
         return super.allowCoverOnSide(side, coverItem);

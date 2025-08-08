@@ -34,13 +34,14 @@ public class PrinterBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot) {
+            @Nullable ItemStack specialSlot) {
         if (items[0].getItem() == Items.paper) {
             assert specialSlot != null;
             if (!ItemList.Tool_DataStick.isStackEqual(specialSlot, false, true)) return null;
             NBTTagCompound nbt = specialSlot.getTagCompound();
             if (nbt == null || GTUtility.isStringInvalid(nbt.getString("title"))
-                || GTUtility.isStringInvalid(nbt.getString("author"))) return null;
+                    || GTUtility.isStringInvalid(nbt.getString("author")))
+                return null;
 
             recipe = recipe.copy();
             recipe.mCanBeBuffered = false;
@@ -67,10 +68,10 @@ public class PrinterBackend extends RecipeMapBackend {
             recipe = recipe.copy();
             recipe.mCanBeBuffered = false;
             recipe.mOutputs[0].setTagCompound(
-                GTUtility.getNBTContainingString(
-                    new NBTTagCompound(),
-                    "GT.PunchCardData",
-                    nbt.getString("GT.PunchCardData")));
+                    GTUtility.getNBTContainingString(
+                            new NBTTagCompound(),
+                            "GT.PunchCardData",
+                            nbt.getString("GT.PunchCardData")));
             return recipe;
         }
         return recipe;
@@ -85,42 +86,28 @@ public class PrinterBackend extends RecipeMapBackend {
         if (dye == null) return null;
 
         ItemStack batchRecolorOutput = GTModHandler.getAllRecipeOutput(
-            null,
-            items[0],
-            items[0],
-            items[0],
-            items[0],
-            ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1),
-            items[0],
-            items[0],
-            items[0],
-            items[0]);
+                null,
+                items[0],
+                items[0],
+                items[0],
+                items[0],
+                ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1),
+                items[0],
+                items[0],
+                items[0],
+                items[0]);
         if (batchRecolorOutput != null) {
-            return GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(8, items[0]))
-                .itemOutputs(batchRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
-                .duration(256)
-                .eut(2)
-                .hidden()
-                .build()
-                .map(this::compileRecipe)
-                .orElse(null);
+            return GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(8, items[0]))
+                    .itemOutputs(batchRecolorOutput).fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
+                    .duration(256).eut(2).hidden().build().map(this::compileRecipe).orElse(null);
         }
 
         ItemStack singleRecolorOutput = GTModHandler
-            .getAllRecipeOutput(null, items[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1));
+                .getAllRecipeOutput(null, items[0], ItemList.DYE_ONLY_ITEMS[dye.mIndex].get(1));
         if (singleRecolorOutput != null) {
-            return GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, items[0]))
-                .itemOutputs(singleRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
-                .duration(32)
-                .eut(2)
-                .hidden()
-                .build()
-                .map(this::compileRecipe)
-                .orElse(null);
+            return GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, items[0]))
+                    .itemOutputs(singleRecolorOutput).fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
+                    .duration(32).eut(2).hidden().build().map(this::compileRecipe).orElse(null);
         }
 
         return null;

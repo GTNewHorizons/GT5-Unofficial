@@ -21,17 +21,17 @@ public class MTEChestBuffer extends MTEBuffer {
 
     public MTEChestBuffer(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            28,
-            new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
-                getTickRateDesc(aTier) });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                28,
+                new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
+                        getTickRateDesc(aTier) });
     }
 
     public MTEChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String[] aDescription) {
+            String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
@@ -42,21 +42,18 @@ public class MTEChestBuffer extends MTEBuffer {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEChestBuffer(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-            TextureFactory.of(AUTOMATION_CHESTBUFFER),
-            TextureFactory.builder()
-                .addIcon(AUTOMATION_CHESTBUFFER_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(AUTOMATION_CHESTBUFFER),
+                TextureFactory.builder().addIcon(AUTOMATION_CHESTBUFFER_GLOW).glow().build());
     }
 
     @Override
@@ -109,9 +106,8 @@ public class MTEChestBuffer extends MTEBuffer {
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(98, 60)
-                .setSize(51, 22));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(69, true)).setPos(98, 60)
+                        .setSize(51, 22));
         addMainUI(builder);
     }
 

@@ -23,12 +23,10 @@ public class ShutDownReasonRegistry {
     public static void register(ShutDownReason sample) {
         if (isRegistered(sample.getID())) {
             throw new IllegalStateException(
-                String.format(
-                    "ID %s is already registered for %s",
-                    sample.getID(),
-                    registry.get(sample.getID())
-                        .getClass()
-                        .getCanonicalName()));
+                    String.format(
+                            "ID %s is already registered for %s",
+                            sample.getID(),
+                            registry.get(sample.getID()).getClass().getCanonicalName()));
         }
         registry.put(sample.getID(), sample);
     }

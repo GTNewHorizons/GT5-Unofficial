@@ -25,7 +25,8 @@ public final class FlaskRenderer implements IItemRenderer {
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+                || (helper == ItemRendererHelper.ENTITY_ROTATION
+                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
     }
 
     @Override

@@ -62,7 +62,7 @@ import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
-    implements IConstructable, ISurvivalConstructable {
+        implements IConstructable, ISurvivalConstructable {
 
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
@@ -77,13 +77,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     // Left side represents the wafers to look for, right side represents their tier.
     public static ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
-        Pair.of(ItemList.Circuit_Silicon_Wafer.get(1), 1),
-        Pair.of(ItemList.Circuit_Silicon_Wafer2.get(1), 2),
-        Pair.of(ItemList.Circuit_Silicon_Wafer3.get(1), 3),
-        Pair.of(ItemList.Circuit_Silicon_Wafer4.get(1), 4),
-        Pair.of(ItemList.Circuit_Silicon_Wafer5.get(1), 5),
-        Pair.of(ItemList.Circuit_Silicon_Wafer6.get(1), 6),
-        Pair.of(ItemList.Circuit_Silicon_Wafer7.get(1), 7));
+            Pair.of(ItemList.Circuit_Silicon_Wafer.get(1), 1),
+            Pair.of(ItemList.Circuit_Silicon_Wafer2.get(1), 2),
+            Pair.of(ItemList.Circuit_Silicon_Wafer3.get(1), 3),
+            Pair.of(ItemList.Circuit_Silicon_Wafer4.get(1), 4),
+            Pair.of(ItemList.Circuit_Silicon_Wafer5.get(1), 5),
+            Pair.of(ItemList.Circuit_Silicon_Wafer6.get(1), 6),
+            Pair.of(ItemList.Circuit_Silicon_Wafer7.get(1), 7));
 
     public MTESolarFactory(String aName) {
         super(aName);
@@ -102,87 +102,97 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final IStructureDefinition<MTESolarFactory> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTESolarFactory>builder()
-        .addShape(
-            STRUCTURE_TIER_1,
-            transpose(
-                new String[][] { { "EAAAE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" },
-                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" }, { "E   E", " GGG ", " G G ", " GGG ", "E   E" },
-                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" }, { "EA~AE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" } }))
-        .addShape(
-            STRUCTURE_TIER_2,
-            transpose(
-                new String[][] {
-                    { " F     F ", "FFF   FFF", " FFF FFF ", "  FBBBF  ", "  FBBBF  ", " FFFFFFF ", "FFF   FFF",
-                        " F     F " },
-                    { "BBB   BBB", "BBB   BBB", "BB     BB", "   BBB   ", "   BBB   ", "BB     BB", "BBB   BBB",
-                        "BBB   BBB" },
-                    { "BF     FB", "FBGGGGGBF", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ", "FBGGGGGBF",
-                        "BF     FB" },
-                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ", "FBGGGGGBF",
-                        "BF     FB" },
-                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ", "FBGGGGGBF",
-                        "BF     FB" },
-                    { "BBBB~BBBB", "BBFFFFFBB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB", "BBFFFFFBB",
-                        "BBBBBBBBB" } }))
-        .addShape(
-            STRUCTURE_TIER_3,
-            transpose(
-                new String[][] {
-                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ", "   CCC   " },
-                    { "   GGG   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ", "   GGG   " },
-                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
-                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
-                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
-                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
-                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
-                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
-                    { "   G~G   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ", "   GGG   " },
-                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ", "   CCC   " } }))
-        // Clean stainless steel
-        .addElement(
-            'A',
-            buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(CASING_T1_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
-        // Tungstensteel
-        .addElement(
-            'B',
-            buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy)
-                .casingIndex(CASING_T2_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
-        // Advanced iridium
-        .addElement(
-            'C',
-            buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy, ExoticEnergy)
-                .casingIndex(CASING_T3_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
-        .addElement('F', ofFrame(Materials.Tungsten))
-        // G for Glass ^-^
-        .addElement('G', chainAllGlasses())
-        // Black plutonium item pipe
-        .addElement('H', ofBlock(GregTechAPI.sBlockCasings11, 7))
-        // P for Precise Electronic Unit Casing ^-^
-        .addElement(
-            'P',
-            GTStructureChannels.PRASS_UNIT_CASING.use(
-                ofBlocksTiered(
-                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
-                    ImmutableList.of(
-                        Pair.of(Loaders.preciseUnitCasing, 0),
-                        Pair.of(Loaders.preciseUnitCasing, 1),
-                        Pair.of(Loaders.preciseUnitCasing, 2),
-                        Pair.of(Loaders.preciseUnitCasing, 3)),
-                    -3,
-                    MTESolarFactory::setCasingTier,
-                    MTESolarFactory::getCasingTier)))
-        .build();
+            .<MTESolarFactory>builder()
+            .addShape(
+                    STRUCTURE_TIER_1,
+                    transpose(
+                            new String[][] { { "EAAAE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" },
+                                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" },
+                                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" },
+                                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" },
+                                    { "EA~AE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" } }))
+            .addShape(
+                    STRUCTURE_TIER_2,
+                    transpose(
+                            new String[][] {
+                                    { " F     F ", "FFF   FFF", " FFF FFF ", "  FBBBF  ", "  FBBBF  ", " FFFFFFF ",
+                                            "FFF   FFF", " F     F " },
+                                    { "BBB   BBB", "BBB   BBB", "BB     BB", "   BBB   ", "   BBB   ", "BB     BB",
+                                            "BBB   BBB", "BBB   BBB" },
+                                    { "BF     FB", "FBGGGGGBF", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ",
+                                            "FBGGGGGBF", "BF     FB" },
+                                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ",
+                                            "FBGGGGGBF", "BF     FB" },
+                                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ",
+                                            "FBGGGGGBF", "BF     FB" },
+                                    { "BBBB~BBBB", "BBFFFFFBB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB",
+                                            "BBFFFFFBB", "BBBBBBBBB" } }))
+            .addShape(
+                    STRUCTURE_TIER_3,
+                    transpose(
+                            new String[][] {
+                                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ",
+                                            "   CCC   " },
+                                    { "   GGG   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ",
+                                            "   GGG   " },
+                                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ",
+                                            "   CCC   " },
+                                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ",
+                                            "         " },
+                                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ",
+                                            "         " },
+                                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ",
+                                            "         " },
+                                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ",
+                                            "         " },
+                                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ",
+                                            "   CCC   " },
+                                    { "   G~G   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ",
+                                            "   GGG   " },
+                                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ",
+                                            "   CCC   " } }))
+            // Clean stainless steel
+            .addElement(
+                    'A',
+                    buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(CASING_T1_INDEX).dot(1)
+                            .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
+            // Tungstensteel
+            .addElement(
+                    'B',
+                    buildHatchAdder(MTESolarFactory.class)
+                            .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy)
+                            .casingIndex(CASING_T2_INDEX).dot(1)
+                            .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
+            // Advanced iridium
+            .addElement(
+                    'C',
+                    buildHatchAdder(MTESolarFactory.class)
+                            .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy, ExoticEnergy)
+                            .casingIndex(CASING_T3_INDEX).dot(1).buildAndChain(
+                                    onElementPass(
+                                            MTESolarFactory::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings8, 7))))
+            .addElement('E', ofFrame(Materials.DamascusSteel)).addElement('F', ofFrame(Materials.Tungsten))
+            // G for Glass ^-^
+            .addElement('G', chainAllGlasses())
+            // Black plutonium item pipe
+            .addElement('H', ofBlock(GregTechAPI.sBlockCasings11, 7))
+            // P for Precise Electronic Unit Casing ^-^
+            .addElement(
+                    'P',
+                    GTStructureChannels.PRASS_UNIT_CASING.use(
+                            ofBlocksTiered(
+                                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
+                                    ImmutableList.of(
+                                            Pair.of(Loaders.preciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 1),
+                                            Pair.of(Loaders.preciseUnitCasing, 2),
+                                            Pair.of(Loaders.preciseUnitCasing, 3)),
+                                    -3,
+                                    MTESolarFactory::setCasingTier,
+                                    MTESolarFactory::getCasingTier)))
+            .build();
 
     public int getCasingTier() {
         return casingTier;
@@ -302,7 +312,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
-                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                    @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
                 result = super.applyRecipe(recipe, helper, calculator, result);
                 if (shouldMultiplyOutputs) {
                     // We multiply outputs here since its after parallels are calculated, however this is after void
@@ -375,47 +385,41 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Solar Factory")
-            .addInfo("Controller block for the Solar Factory")
-            .addInfo("Produces solar panels in bulk")
-            .addInfo("The structure has 3 tiers, each allowing greater production than the last")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
-            .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
-            .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
-            .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
-            .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
-            .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Parallels are based on Precise Casing Tier")
-            .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3")
-            .addInfo(GREEN + "  Supports Laser energy hatches")
-            .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Bonus per increased wafer tier is raised to 50%")
-            .beginStructureBlock(7, 10, 9, false)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
-            .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
-            .addCasingInfoExactly("Any Tiered Glass", 74, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 75, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
-            .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
-            .addCasingInfoExactly("Any Tiered Glass", 67, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 24, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
-            .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
-            .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
-            .addInputHatch("Any Machine Casing")
-            .addInputBus("Any Machine Casing")
-            .addOutputBus("Any Machine Casing")
-            .addEnergyHatch("Any Machine Casing")
-            .addMaintenanceHatch("Any Machine Casing")
-            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .toolTipFinisher(GTValues.AuthorPureBluez);
+        tt.addMachineType("Solar Factory").addInfo("Controller block for the Solar Factory")
+                .addInfo("Produces solar panels in bulk")
+                .addInfo("The structure has 3 tiers, each allowing greater production than the last")
+                .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
+                .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
+                .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
+                .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
+                .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
+                .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
+                .addInfo("  Parallels are based on Precise Casing Tier")
+                .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
+                .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3")
+                .addInfo(GREEN + "  Supports Laser energy hatches")
+                .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
+                .addInfo("  Bonus per increased wafer tier is raised to 50%").beginStructureBlock(7, 10, 9, false)
+                .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
+                .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
+                .addCasingInfoExactly("Any Tiered Glass", 24, false)
+                .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
+                .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
+                .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
+                .addCasingInfoExactly("Any Tiered Glass", 74, false)
+                .addCasingInfoExactly("Tungsten Frame Box", 75, false)
+                .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
+                .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
+                .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
+                .addCasingInfoExactly("Any Tiered Glass", 67, false)
+                .addCasingInfoExactly("Tungsten Frame Box", 24, false)
+                .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
+                .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
+                .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
+                .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used").addInputHatch("Any Machine Casing")
+                .addInputBus("Any Machine Casing").addOutputBus("Any Machine Casing")
+                .addEnergyHatch("Any Machine Casing").addMaintenanceHatch("Any Machine Casing")
+                .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING).toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }
 
@@ -440,27 +444,16 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW).extFacing().glow()
+                            .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)) };
     }

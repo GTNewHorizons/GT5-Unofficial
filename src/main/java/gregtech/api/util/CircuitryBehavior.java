@@ -36,8 +36,8 @@ public abstract class CircuitryBehavior {
      */
     public static boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     return true;
                 }
@@ -51,8 +51,8 @@ public abstract class CircuitryBehavior {
      */
     public static boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) == 0) {
                     return false;
                 }
@@ -67,8 +67,8 @@ public abstract class CircuitryBehavior {
     public static boolean getOneRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         int tRedstoneAmount = 0;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     tRedstoneAmount++;
                 }
@@ -83,8 +83,8 @@ public abstract class CircuitryBehavior {
     public static byte getStrongestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte tRedstoneAmount = 0;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
@@ -100,8 +100,8 @@ public abstract class CircuitryBehavior {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0)
                     tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
@@ -116,8 +116,8 @@ public abstract class CircuitryBehavior {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn()) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
+                    && aRedstoneCircuitBlock.getCover(side).letsRedstoneGoIn()) {
                 tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }

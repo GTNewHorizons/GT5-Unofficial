@@ -82,7 +82,7 @@ import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+        implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -328,36 +328,45 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .addShape(STRUCTURE_PIECE_TIER4_RENDER, STRUCTURE_PIECE_TIER4_STRUCT)
                     .addShape(STRUCTURE_PIECE_TIER4_AIR_RENDER, STRUCTURE_PIECE_TIER4_STRUCT_AIR)
                     //spotless:on
-        .addElement('F', ofFrame(Materials.StellarAlloy))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement(
-            'B',
-            buildHatchAdder(MTENanoForge.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 10))
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
-        .addElement('M', ofFrame(MaterialsUEVplus.MagMatter))
-        .addElement('N', ofFrame(MaterialsUEVplus.BlackDwarfMatter))
-        .addElement('O', ofFrame(MaterialsUEVplus.WhiteDwarfMatter))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
-        .addElement(
-            'V',
-            buildHatchAdder(MTENanoForge.class).atLeast(
-                ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
-                .dot(1)
-                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
-                .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
-        .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
-        .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
-        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('Z', ofBlock(Blocks.air, 0))
-        .build();
+            .addElement('F', ofFrame(Materials.StellarAlloy)).addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
+            .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
+            .addElement(
+                    'B',
+                    buildHatchAdder(MTENanoForge.class)
+                            .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy)).dot(1)
+                            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                            .buildAndChain(GregTechAPI.sBlockCasings8, 10))
+            .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
+            .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
+            .addElement('M', ofFrame(MaterialsUEVplus.MagMatter))
+            .addElement('N', ofFrame(MaterialsUEVplus.BlackDwarfMatter))
+            .addElement('O', ofFrame(MaterialsUEVplus.WhiteDwarfMatter))
+            .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
+            .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
+            .addElement(
+                    'V',
+                    buildHatchAdder(MTENanoForge.class)
+                            .atLeast(
+                                    ImmutableMap.of(
+                                            InputHatch,
+                                            1,
+                                            OutputBus,
+                                            1,
+                                            InputBus,
+                                            1,
+                                            Maintenance,
+                                            0,
+                                            Energy.or(ExoticEnergy),
+                                            1))
+                            .dot(1).casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTENanoForge::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings13, 6))))
+            .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
+            .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
+            .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 5))
+            .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10)).addElement('Z', ofBlock(Blocks.air, 0)).build();
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
@@ -399,41 +408,28 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] {
-                BlockIcons.getCasingTextureForId(
-                    GTUtility.getCasingTextureIndex(
-                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                        mSpecialTier < 4 ? 10 : 6)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    BlockIcons.getCasingTextureForId(
+                            GTUtility.getCasingTextureIndex(
+                                    mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                                    mSpecialTier < 4 ? 10 : 6)),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(
-                    GTUtility.getCasingTextureIndex(
-                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                        mSpecialTier < 4 ? 10 : 6)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    BlockIcons.getCasingTextureForId(
+                            GTUtility.getCasingTextureIndex(
+                                    mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                                    mSpecialTier < 4 ? 10 : 6)),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { BlockIcons.getCasingTextureForId(
-            GTUtility.getCasingTextureIndex(
-                mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                mSpecialTier < 4 ? 10 : 6)) };
+                GTUtility.getCasingTextureIndex(
+                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
+                        mSpecialTier < 4 ? 10 : 6)) };
     }
 
     @Override
@@ -496,15 +492,14 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (foundNanite) {
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
-                                ForgeDirection.UNKNOWN,
-                                MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
-                                true);
+                                    ForgeDirection.UNKNOWN,
+                                    MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
+                                    true);
                             if (drained == null) {
                                 continue;
                             }
                             drainedMagmatter = drained.amount;
-                            mInputBusses.get(busWithNaniteIndex)
-                                .decrStackSize(slotWithNaniteIndex, 1);
+                            mInputBusses.get(busWithNaniteIndex).decrStackSize(slotWithNaniteIndex, 1);
                         }
                     }
                 } else {
@@ -512,7 +507,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 }
                 maxParallel = Math.max((int) (drainedMagmatter / (144 / GTUtility.powInt(2, 4 - mSpecialTier))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
+                        : CheckRecipeResultRegistry.NO_RECIPE;
             }
 
             @NotNull
@@ -525,8 +520,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
-                    .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
+                        .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
+                        .setDurationModifier(mSpecialTier >= 4 ? GTUtility.powInt(0.9999, maxParallel) : 1);
             }
         };
     }
@@ -609,8 +604,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             }
 
             if (aStack.isItemEqual(MaterialsUEVplus.TranscendentMetal.getNanite(1))
-                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
-                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
+                    && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
+                    && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
                 mSpecialTier = 3;
             }
         } else if (aStack != null && aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))) {
@@ -654,49 +649,49 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             if (built >= 0) return built;
             if (stackSize.stackSize > 1) {
                 built += survivalBuildPiece(
-                    STRUCTURE_PIECE_TIER2,
-                    stackSize,
-                    -7,
-                    14,
-                    4,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
+                        STRUCTURE_PIECE_TIER2,
+                        stackSize,
+                        -7,
+                        14,
+                        4,
+                        elementBudget,
+                        env,
+                        false,
+                        true);
             }
             if (stackSize.stackSize > 2) {
                 built += survivalBuildPiece(
-                    STRUCTURE_PIECE_TIER3,
+                        STRUCTURE_PIECE_TIER3,
+                        stackSize,
+                        14,
+                        26,
+                        4,
+                        elementBudget,
+                        env,
+                        false,
+                        true);
+            }
+        } else {
+            built += survivalBuildPiece(
+                    STRUCTURE_PIECE_TIER4_BASE,
                     stackSize,
-                    14,
-                    26,
-                    4,
+                    20,
+                    33,
+                    0,
                     elementBudget,
                     env,
                     false,
                     true);
-            }
-        } else {
             built += survivalBuildPiece(
-                STRUCTURE_PIECE_TIER4_BASE,
-                stackSize,
-                20,
-                33,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-            built += survivalBuildPiece(
-                STRUCTURE_PIECE_TIER4_RENDER,
-                stackSize,
-                20,
-                50,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+                    STRUCTURE_PIECE_TIER4_RENDER,
+                    stackSize,
+                    20,
+                    50,
+                    0,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
         }
         return built;
     }
@@ -733,113 +728,105 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
+        screenElements.widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.button.tier") + " " + mSpecialTier)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> (int) mSpecialTier,
-                    val -> mSpecialTier = (byte) (val % Byte.MAX_VALUE)));
+                        .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getErrorDisplayID() == 0))
+                .widget(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> (int) mSpecialTier,
+                                val -> mSpecialTier = (byte) (val % Byte.MAX_VALUE)));
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites. Each tier")
-            .addInfo("requires some structural changes. The nanite in the")
-            .addInfo("controller slot controls the tier.")
-            .addInfo("Tier 4 has additional mechanics, check the controller.")
-            .addSeparator()
-            .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
-            .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
-            .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
-            .addSeparator()
-            .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-            .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
-            .addTecTechHatchInfo()
-            .addUnlimitedTierSkips()
-            .beginStructureBlock(30, 38, 13, false)
-            .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
-            .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
-            .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
-            .addStructureInfo(getTieredText("0", "16", "32") + "Assembly Line Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Tier " + EnumChatFormatting.DARK_GREEN
-                    + "4 "
-                    + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks.")
-            .addStructureInfo("Check the NEI preview for specifics.")
-            .addStructureInfo(
-                "Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN
-                    + "4"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input hatches.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 0
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output hatches.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input buses.")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output buses.")
-            .toolTipFinisher(AuthorBlueWeabo);
+        tt.addMachineType("Nanite Fabricator").addInfo("Requires insane amounts of power to create nanites. Each tier")
+                .addInfo("requires some structural changes. The nanite in the")
+                .addInfo("controller slot controls the tier.")
+                .addInfo("Tier 4 has additional mechanics, check the controller.").addSeparator()
+                .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
+                .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
+                .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
+                .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4).addSeparator()
+                .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
+                .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
+                .addTecTechHatchInfo().addUnlimitedTierSkips().beginStructureBlock(30, 38, 13, false)
+                .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
+                .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
+                .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
+                .addStructureInfo(getTieredText("0", "16", "32") + "Assembly Line Casing").addStructureInfoSeparator()
+                .addStructureInfo(
+                        "Tier " + EnumChatFormatting.DARK_GREEN
+                                + "4 "
+                                + EnumChatFormatting.GRAY
+                                + "requires a whole new set of blocks.")
+                .addStructureInfo("Check the NEI preview for specifics.")
+                .addStructureInfo(
+                        "Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN
+                                + "4"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addStructureInfoSeparator()
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + "1"
+                                + EnumChatFormatting.GRAY
+                                + "-"
+                                + EnumChatFormatting.GOLD
+                                + "2"
+                                + EnumChatFormatting.GRAY
+                                + " energy hatches or "
+                                + EnumChatFormatting.GOLD
+                                + "1"
+                                + EnumChatFormatting.GRAY
+                                + " TT energy hatch.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + 1
+                                + EnumChatFormatting.GRAY
+                                + "+"
+                                + EnumChatFormatting.GRAY
+                                + " input hatches.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + 0
+                                + EnumChatFormatting.GRAY
+                                + "+"
+                                + EnumChatFormatting.GRAY
+                                + " output hatches.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + 1
+                                + EnumChatFormatting.GRAY
+                                + "+"
+                                + EnumChatFormatting.GRAY
+                                + " input buses.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD
+                                + 1
+                                + EnumChatFormatting.GRAY
+                                + "+"
+                                + EnumChatFormatting.GRAY
+                                + " output buses.")
+                .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
 
     private static String getTieredText(String tierOne, String tierTwo, String tierThree) {
         return EnumChatFormatting.DARK_PURPLE + tierOne
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.DARK_BLUE
-            + tierTwo
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.DARK_AQUA
-            + tierThree
-            + EnumChatFormatting.GRAY
-            + " ";
+                + EnumChatFormatting.GRAY
+                + "/"
+                + EnumChatFormatting.DARK_BLUE
+                + tierTwo
+                + EnumChatFormatting.GRAY
+                + "/"
+                + EnumChatFormatting.DARK_AQUA
+                + tierThree
+                + EnumChatFormatting.GRAY
+                + " ";
     }
 
     @Override
@@ -847,16 +834,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         buildContext.addSyncedWindow(INFO_WINDOW_ID, this::createT4InfoWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(INFO_WINDOW_ID);
+                widget.getContext().openSyncedWindow(INFO_WINDOW_ID);
             }
-        })
-            .setPlayClickSound(true)
-            .setBackground(ModularUITextures.ICON_INFO)
-            .addTooltip(translateToLocal("GT5U.machines.nano_forge.t4_info_tooltip"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 111)
-            .setSize(16, 16));
+        }).setPlayClickSound(true).setBackground(ModularUITextures.ICON_INFO)
+                .addTooltip(translateToLocal("GT5U.machines.nano_forge.t4_info_tooltip"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 111).setSize(16, 16));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -868,70 +850,52 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         builder.setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
-        scrollable
-            .widget(
+        scrollable.widget(
                 new TextWidget(EnumChatFormatting.BOLD + translateToLocal("GT5U.machines.nano_forge.t4_info_header"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(0, 0)
-                    .setSize(244, 20))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.1")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 20)
-                    .setSize(244, 60))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 80)
-                    .setSize(244, 60))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 140)
-                    .setSize(244, 20))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 160)
-                    .setSize(244, 40))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.5")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 200)
-                    .setSize(244, 30))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.6")
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 230)
-                    .setSize(244, 20));
-        builder.widget(
-            scrollable.setSize(244, 244)
-                .setPos(3, 3))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(233, 4));
+                        .setDefaultColor(EnumChatFormatting.GOLD).setTextAlignment(Alignment.Center).setPos(0, 0)
+                        .setSize(244, 20))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.1")
+                                .setDefaultColor(EnumChatFormatting.GOLD).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 20).setSize(244, 60))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
+                                .setDefaultColor(EnumChatFormatting.GOLD).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 80).setSize(244, 60))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
+                                .setDefaultColor(EnumChatFormatting.GREEN).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 140).setSize(244, 20))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
+                                .setDefaultColor(EnumChatFormatting.GOLD).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 160).setSize(244, 40))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.5")
+                                .setDefaultColor(EnumChatFormatting.GOLD).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 200).setSize(244, 30))
+                .widget(
+                        TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.6")
+                                .setDefaultColor(EnumChatFormatting.GREEN).setTextAlignment(Alignment.CenterLeft)
+                                .setPos(0, 230).setSize(244, 20));
+        builder.widget(scrollable.setSize(244, 244).setPos(3, 3))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(233, 4));
         return builder.build();
     }
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         renderDisabled = !renderDisabled;
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+                aPlayer,
+                StatCollector
+                        .translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -969,9 +933,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
     private TileEntityNanoForgeRenderer getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
-        TileEntity tile = this.getBaseMetaTileEntity()
-            .getWorld()
-            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
+        TileEntity tile = this.getBaseMetaTileEntity().getWorld()
+                .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
         if (tile instanceof TileEntityNanoForgeRenderer nanoForgeTile) {
             return nanoForgeTile;
@@ -985,11 +948,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
         double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetX;
+                + 33 * getExtendedFacing().getRelativeUpInWorld().offsetX;
         double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetY;
+                + 33 * getExtendedFacing().getRelativeUpInWorld().offsetY;
         double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ
-            + 33 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
+                + 33 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
         return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
     }
 

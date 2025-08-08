@@ -46,14 +46,15 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
 
     public MTEDebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") });
     }
 
     public MTEDebugPollutor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -74,9 +75,10 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            (side == facing) ? POLLUTOR : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
+                (side == facing) ? POLLUTOR
+                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
     }
 
     @Override
@@ -86,13 +88,13 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
@@ -141,34 +143,29 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
+                        .setPos(113, 56));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
-                            + numberFormat.format(pollution))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 8));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
+                .widget(
+                        new TextWidget().setStringSupplier(
+                                () -> StatCollector.translateToLocal("tt.gui.text.debug_pollutor.pollution") + ": "
+                                        + numberFormat.format(pollution))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8));
 
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> pollution -= val, 512, 64, 7, 4);
         addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_MINUS_LARGE,
-            val -> pollution /= val,
-            512,
-            64,
-            7,
-            22);
+                builder,
+                GTUITextures.OVERLAY_BUTTON_MINUS_LARGE,
+                val -> pollution /= val,
+                512,
+                64,
+                7,
+                22);
 
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution -= val, 16, 1, 25, 4);
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> pollution /= val, 16, 2, 25, 22);
@@ -177,31 +174,29 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> pollution *= val, 16, 2, 133, 22);
 
         addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution += val,
-            512,
-            64,
-            151,
-            4);
+                builder,
+                GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
+                val -> pollution += val,
+                512,
+                64,
+                151,
+                4);
         addChangeNumberButton(
-            builder,
-            GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
-            val -> pollution *= val,
-            512,
-            64,
-            151,
-            22);
+                builder,
+                GTUITextures.OVERLAY_BUTTON_PLUS_LARGE,
+                val -> pollution *= val,
+                512,
+                64,
+                151,
+                22);
 
     }
 
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int changeNumberShift, int changeNumber, int xPos, int yPos) {
+            int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(
-            new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
-                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
+                new ButtonWidget().setOnClick(
+                        (clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
+                        .setBackground(GTUITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
     }
 }

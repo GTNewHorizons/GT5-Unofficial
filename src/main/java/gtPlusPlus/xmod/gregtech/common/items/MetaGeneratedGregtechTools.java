@@ -26,28 +26,28 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
 
         // Electric File
         this.addTool(
-            ANGLE_GRINDER,
-            "Angle Grinder",
-            "Hand-held electric filing device",
-            new ToolAngleGrinder(),
-            ToolDictNames.craftingToolAngleGrinder,
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+                ANGLE_GRINDER,
+                "Angle Grinder",
+                "Hand-held electric filing device",
+                new ToolAngleGrinder(),
+                ToolDictNames.craftingToolAngleGrinder,
+                ToolDictNames.craftingToolFile,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
 
         // Electric Wire Cutter
         GregTechAPI.registerWireCutter(
-            this.addTool(
-                ELECTRIC_SNIPS,
-                "Automatic Snips",
-                "Hand-held electric wire cutter",
-                new ToolElectricSnips(),
-                ToolDictNames.craftingToolElectricSnips,
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L)));
+                this.addTool(
+                        ELECTRIC_SNIPS,
+                        "Automatic Snips",
+                        "Hand-held electric wire cutter",
+                        new ToolElectricSnips(),
+                        ToolDictNames.craftingToolElectricSnips,
+                        ToolDictNames.craftingToolWireCutter,
+                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
+                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
+                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L)));
 
     }
 }

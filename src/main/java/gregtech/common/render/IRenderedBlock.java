@@ -60,7 +60,7 @@ public interface IRenderedBlock {
 
         @Override
         public ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass,
-            boolean[] aShouldSideBeRendered) {
+                boolean[] aShouldSideBeRendered) {
             return mErrorTexture;
         }
 

@@ -133,22 +133,16 @@ import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse> {
 
     /***
-     * BALANCE OF THE IC2 MODE:
-     * (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER)
-     * All IC2 crops are simulated and all drops are generated based on the real crop drops.
-     * T is a tick accelerator tier for the IC2 crops,
-     * Each crop in the EIG is accelerated using T tier accelerator
-     * (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage, 6 amps)
-     * IC2 mode is unlocked at T+1 tier (glass and power)
-     * And each amp of T gives one crop slot, EIG only consumes 1 AMP of a tier that it is at
-     * (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of slots)
-     * Each crop is accelerated 2^T times
-     * Summary:
-     * Accelerators in EIG are a bit cheaper than on the crop field (4 amps instead of 6 amps)
-     * There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
+     * BALANCE OF THE IC2 MODE: (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER) All IC2 crops are simulated and all drops are
+     * generated based on the real crop drops. T is a tick accelerator tier for the IC2 crops, Each crop in the EIG is
+     * accelerated using T tier accelerator (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage,
+     * 6 amps) IC2 mode is unlocked at T+1 tier (glass and power) And each amp of T gives one crop slot, EIG only
+     * consumes 1 AMP of a tier that it is at (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of
+     * slots) Each crop is accelerated 2^T times Summary: Accelerators in EIG are a bit cheaper than on the crop field
+     * (4 amps instead of 6 amps) There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
      * <p>
-     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
-     * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
+     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice (That is
+     * because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
      */
     public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.IV;
     public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
@@ -214,11 +208,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEExtremeIndustrialGreenhouse>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { // spotless:off
+            .<MTEExtremeIndustrialGreenhouse>builder().addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { // spotless:off
                     { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
                     { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
                     { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
@@ -226,34 +219,36 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
                     { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
                 })) // spotless:on
-        .addElement(
-            'c',
-            ofChain(
-                onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addEnergyInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addMaintenanceToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)))
-        .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)))
-        .addElement(
-            'l',
-            ProjectRedIllumination.isModLoaded()
-                ? ofChain(
-                    ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
-                    ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
-                : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
-        .addElement(
-            'g',
-            BorosilicateGlass
-                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement(
-            'd',
-            ofBlock(
-                RandomThings.isModLoaded() ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled")
-                    : Blocks.farmland,
-                0))
-        .addElement('w', ofAnyWater())
-        .build();
+            .addElement(
+                    'c',
+                    ofChain(
+                            onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                            ofHatchAdder(MTEExtremeIndustrialGreenhouse::addEnergyInputToMachineList, CASING_INDEX, 1),
+                            ofHatchAdder(MTEExtremeIndustrialGreenhouse::addMaintenanceToMachineList, CASING_INDEX, 1),
+                            ofHatchAdder(MTEExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
+                            ofHatchAdder(MTEExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)))
+            .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)))
+            .addElement(
+                    'l',
+                    ProjectRedIllumination.isModLoaded() ? ofChain(
+                            ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
+                            ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
+                            : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
+            .addElement(
+                    'g',
+                    BorosilicateGlass.ofBoroGlass(
+                            (byte) 0,
+                            (byte) 1,
+                            Byte.MAX_VALUE,
+                            (te, t) -> te.glassTier = t,
+                            te -> te.glassTier))
+            .addElement(
+                    'd',
+                    ofBlock(
+                            RandomThings.isModLoaded() ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled")
+                                    : Blocks.farmland,
+                            0))
+            .addElement('w', ofAnyWater()).build();
 
     @Override
     public IStructureDefinition<MTEExtremeIndustrialGreenhouse> getStructureDefinition() {
@@ -296,41 +291,37 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm, EIG")
-            .addInfo("Grow your crops like a chad!")
-            .addInfo("Use screwdriver to enable/change/disable setup mode")
-            .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
-            .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
-            .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
-            .addInfo(
-                "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
-                    + " per operation per seed if it contains more than "
-                    + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
-                    + " seeds")
-            .addInfo("Otherwise, around 1% of seeds will be voided each operation")
-            .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
-            .addInfo("Does not take power")
-            .addInfo("There are two modes: input / output")
-            .addInfo("Input mode: machine will take seeds from input bus and plant them")
-            .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them");
+        tt.addMachineType("Crop Farm, EIG").addInfo("Grow your crops like a chad!")
+                .addInfo("Use screwdriver to enable/change/disable setup mode")
+                .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
+                .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
+                .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
+                .addInfo(
+                        "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
+                                + " per operation per seed if it contains more than "
+                                + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
+                                + " seeds")
+                .addInfo("Otherwise, around 1% of seeds will be voided each operation")
+                .addInfo(
+                        "You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
+                .addSeparator().addInfo(EnumChatFormatting.GOLD + "Setup Mode:").addInfo("Does not take power")
+                .addInfo("There are two modes: input / output")
+                .addInfo("Input mode: machine will take seeds from input bus and plant them")
+                .addInfo("[IC2] You need to also input block that is required under the crop")
+                .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(5, 6, 5, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
-            .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("The dirt is from RandomThings, must be tilled")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
-            .addMaintenanceHatch("Any casing (Except inner bottom ones)", 1)
-            .addInputBus("Any casing (Except inner bottom ones)", 1)
-            .addOutputBus("Any casing (Except inner bottom ones)", 1)
-            .addInputHatch("Any casing (Except inner bottom ones)", 1)
-            .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-            .toolTipFinisher(GTValues.AuthorKuba);
+        tt.beginStructureBlock(5, 6, 5, false).addController("Front bottom center")
+                .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
+                .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
+                .addStructureInfo("The glass tier limits the Energy Input tier")
+                .addStructureInfo("The dirt is from RandomThings, must be tilled")
+                .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
+                .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
+                .addMaintenanceHatch("Any casing (Except inner bottom ones)", 1)
+                .addInputBus("Any casing (Except inner bottom ones)", 1)
+                .addOutputBus("Any casing (Except inner bottom ones)", 1)
+                .addInputHatch("Any casing (Except inner bottom ones)", 1)
+                .addEnergyHatch("Any casing (Except inner bottom ones)", 1).toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
 
@@ -367,8 +358,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (this.mode == EIGModes.IC2) {
                 for (EIGMigrationHolder holder : toMigrate) {
                     // We will have to revalidate the seeds on the next cycle.
-                    this.buckets
-                        .add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
+                    this.buckets.add(
+                            new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
                 }
             } else {
                 this.mode = EIGModes.Normal;
@@ -403,14 +394,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         for (EIGBucket bucket : this.buckets) {
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
                 EntityItem entityitem = new EntityItem(
-                    mte.getWorld(),
-                    mte.getXCoord(),
-                    mte.getYCoord(),
-                    mte.getZCoord(),
-                    stack);
+                        mte.getWorld(),
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        stack);
                 entityitem.delayBeforeCanPickup = 10;
-                mte.getWorld()
-                    .spawnEntityInWorld(entityitem);
+                mte.getWorld().spawnEntityInWorld(entityitem);
             }
         }
     }
@@ -420,12 +410,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region tool interactions
 
     /**
-     * Right click = change setup phase
-     * Shift+Right Click = change EIG Mode
+     * Right click = change setup phase Shift+Right Click = change EIG Mode
      */
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             tryChangeMode(aPlayer);
         } else {
@@ -438,7 +427,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         this.tryChangeHumidityMode(aPlayer);
         return true;
     }
@@ -530,10 +519,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         for (EIGBucket b : this.buckets) {
             bucketListNBT.appendTag(b.save());
         }
-        aNBT.setTag(
-            "progress",
-            this.dropTracker.intersect(this.guiDropTracker)
-                .save());
+        aNBT.setTag("progress", this.dropTracker.intersect(this.guiDropTracker).save());
         aNBT.setTag("buckets", bucketListNBT);
     }
 
@@ -550,7 +536,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.count = this.seed.stackSize;
             this.seed.stackSize = 1;
             this.supportBlock = nbt.hasKey("undercrop", 10) ? readItemStackFromNBT(nbt.getCompoundTag("undercrop"))
-                : null;
+                    : null;
             this.useNoHumidity = nbt.getBoolean("noHumidity");
             this.isValid = true;
         }
@@ -611,8 +597,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
                 int[] abc = new int[] { 0, -2, 2 };
                 int[] xyz = new int[] { 0, 0, 0 };
-                this.getExtendedFacing()
-                    .getWorldOffset(abc, xyz);
+                this.getExtendedFacing().getWorldOffset(abc, xyz);
                 xyz[0] += aBaseMetaTileEntity.getXCoord();
                 xyz[1] += aBaseMetaTileEntity.getYCoord();
                 xyz[2] += aBaseMetaTileEntity.getZCoord();
@@ -630,8 +615,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     private int getTotalSeedCount() {
         // null check is to prevent a occasional weird NPE from MUI
-        return this.buckets.parallelStream()
-            .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
+        return this.buckets.parallelStream().reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
     }
 
     /**
@@ -703,10 +687,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // Else attempt to empty the bucket while not voiding anything.
         ItemStack[] simulated = bucket.tryRemoveSeed(1, true);
-        VoidProtectionHelper helper = new VoidProtectionHelper().setMachine(this, true, false)
-            .setItemOutputs(simulated)
-            .setMaxParallel(bucket.getSeedCount())
-            .build();
+        VoidProtectionHelper helper = new VoidProtectionHelper().setMachine(this, true, false).setItemOutputs(simulated)
+                .setMaxParallel(bucket.getSeedCount()).build();
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
                 for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
@@ -779,7 +761,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         // TODO: We only really need to update water usage and WeedEX usage when adding seeds or when loading NBT.
         this.waterUsage = seedCount * 1000;
         this.weedEXUsage = (seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0)
-            * this.mode.getWeedEXMultiplier();
+                * this.mode.getWeedEXMultiplier();
 
         // Consume water, fail if we don't have enough
         if (!this.tryDrain(new FluidStack(FluidRegistry.WATER, this.waterUsage), false)) {
@@ -826,7 +808,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (consumedFertilizer == maxFertilizerToConsume) break;
         }
         double multiplier = 1.d
-            + (((double) consumedFertilizer / (double) maxFertilizerToConsume) * EIG_BALANCE_MAX_FERTILIZER_BOOST);
+                + (((double) consumedFertilizer / (double) maxFertilizerToConsume) * EIG_BALANCE_MAX_FERTILIZER_BOOST);
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
@@ -902,17 +884,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region ui
 
     private static final UIInfo<?, ?> GreenhouseUI = createKTMetaTileEntityUI(
-        KT_ModulaUIContainer_ExtremeIndustrialGreenhouse::new);
+            KT_ModulaUIContainer_ExtremeIndustrialGreenhouse::new);
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         GreenhouseUI.open(
-            aPlayer,
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
         return true;
     }
 
@@ -921,7 +903,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         final WeakReference<MTEExtremeIndustrialGreenhouse> parent;
 
         public KT_ModulaUIContainer_ExtremeIndustrialGreenhouse(ModularUIContext context, ModularWindow mainWindow,
-            MTEExtremeIndustrialGreenhouse mte) {
+                MTEExtremeIndustrialGreenhouse mte) {
             super(context, mainWindow);
             parent = new WeakReference<>(mte);
         }
@@ -955,43 +937,42 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
         configurationElements.setSynced(false);
         configurationElements.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(CONFIGURATION_WINDOW_ID);
-                })
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration"))
-                .setSize(16, 16));
+                new ButtonWidget()
+                        .setOnClick(
+                                (clickData, widget) -> {
+                                    if (!widget.isClient())
+                                        widget.getContext().openSyncedWindow(CONFIGURATION_WINDOW_ID);
+                                })
+                        .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setSize(16, 16));
     }
 
     EIGDynamicInventory<EIGBucket> dynamicInventory = new EIGDynamicInventory<>(
-        128,
-        60,
-        () -> this.maxSeedTypes,
-        () -> this.maxSeedCount,
-        this.buckets::size,
-        this::getTotalSeedCount,
-        this.buckets,
-        EIGBucket::getSeedStack).allowInventoryInjection(this::addCrop)
-            .allowInventoryExtraction((bucket, player) -> {
-                if (bucket == null) return null;
-                int maxRemove = bucket.getSeedStack()
-                    .getMaxStackSize();
-                ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
-                if (outputs == null || outputs.length == 0) return null;
-                ItemStack ret = outputs[0];
-                for (int i = 1; i < outputs.length; i++) {
-                    ItemStack suppertItem = outputs[i];
-                    if (!player.inventory.addItemStackToInventory(suppertItem)) {
-                        player.entityDropItem(suppertItem, 0.f);
-                    }
-                }
-                if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
-                return ret;
-            })
-            // TODO: re-add allow inventory replace?
-            .setEnabled(() -> this.mMaxProgresstime == 0);
+            128,
+            60,
+            () -> this.maxSeedTypes,
+            () -> this.maxSeedCount,
+            this.buckets::size,
+            this::getTotalSeedCount,
+            this.buckets,
+            EIGBucket::getSeedStack).allowInventoryInjection(this::addCrop)
+                    .allowInventoryExtraction((bucket, player) -> {
+                        if (bucket == null) return null;
+                        int maxRemove = bucket.getSeedStack().getMaxStackSize();
+                        ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
+                        if (outputs == null || outputs.length == 0) return null;
+                        ItemStack ret = outputs[0];
+                        for (int i = 1; i < outputs.length; i++) {
+                            ItemStack suppertItem = outputs[i];
+                            if (!player.inventory.addItemStackToInventory(suppertItem)) {
+                                player.entityDropItem(suppertItem, 0.f);
+                            }
+                        }
+                        if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
+                        return ret;
+                    })
+                    // TODO: re-add allow inventory replace?
+                    .setEnabled(() -> this.mMaxProgresstime == 0);
 
     @Override
     public void createInventorySlots() {
@@ -1004,174 +985,194 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85)
-                .setEnabled(w -> !isInInventory));
-        builder.widget(
-            dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setEnabled(w -> isInInventory));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85)
+                        .setEnabled(w -> !isInInventory));
+        builder.widget(dynamicInventory.asWidget(builder, buildContext).setPos(10, 16).setEnabled(w -> isInInventory));
 
         builder.widget(
-            new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(
-                    i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
-                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(140, 91)
-                .setSize(55, 16));
+                new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
+                        .setTextureGetter(
+                                i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
+                                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
+                        .setBackground(GTUITextures.BUTTON_STANDARD).setPos(140, 91).setSize(55, 16));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
         builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(screenElements)
-                .setPos(10, 7)
-                .setSize(182, 79)
-                .setEnabled(w -> !isInInventory));
+                new Scrollable().setVerticalScroll().widget(screenElements).setPos(10, 7).setSize(182, 79)
+                        .setEnabled(w -> !isInInventory));
 
-        builder.widget(createPowerSwitchButton(builder))
-            .widget(createVoidExcessButton(builder))
-            .widget(createInputSeparationButton(builder))
-            .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
+        builder.widget(createPowerSwitchButton(builder)).widget(createVoidExcessButton(builder))
+                .widget(createInputSeparationButton(builder)).widget(createBatchModeButton(builder))
+                .widget(createLockToSingleRecipeButton(builder)).widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
         builder.widget(
-            configurationElements.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setPos(getRecipeLockingButtonPos().add(18, 0)));
+                configurationElements.setSpace(2).setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                        .setPos(getRecipeLockingButtonPos().add(18, 0)));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 100);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(185, 3))
-            .widget(
-                new Column().widget(
-                    new CycleButtonWidget().setLength(3)
-                        .setGetter(() -> this.setupPhase)
-                        .setSetter(val -> {
-                            if (!(player instanceof EntityPlayerMP)) return;
-                            tryChangeSetupPhase(player);
-                        })
-                        .addTooltip(
-                            0,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                .color(Color.GREEN.dark(3)))
-                        .addTooltip(
-                            1,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                .color(Color.YELLOW.dark(3)))
-                        .addTooltip(
-                            2,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                .color(Color.YELLOW.dark(3)))
-                        .setTextureGetter(
-                            i -> i == 0
-                                ? new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                    .color(Color.GREEN.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                        .setBackground(
-                            ModularUITextures.VANILLA_BACKGROUND,
-                            GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                        .setSize(70, 18)
-                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")))
-                    .widget(
-                        new CycleButtonWidget().setLength(2)
-                            .setGetter(() -> this.mode.getUIIndex())
-                            .setSetter(val -> {
-                                if (!(player instanceof EntityPlayerMP)) return;
-                                tryChangeMode(player);
-                            })
-                            .addTooltip(
-                                0,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                    .color(Color.RED.dark(3)))
-                            .addTooltip(
-                                1,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                    .color(Color.GREEN.dark(3)))
-                            .setTextureGetter(
-                                i -> i == 0
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                        .color(Color.RED.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                            .setBackground(
-                                ModularUITextures.VANILLA_BACKGROUND,
-                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                            .setSize(70, 18)
-                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode")))
-                    .widget(
-                        new CycleButtonWidget().setLength(2)
-                            .setGetter(() -> useNoHumidity ? 1 : 0)
-                            .setSetter(val -> {
-                                if (!(player instanceof EntityPlayerMP)) return;
-                                this.tryChangeHumidityMode(player);
-                            })
-                            .addTooltip(
-                                0,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                    .color(Color.RED.dark(3)))
-                            .addTooltip(
-                                1,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                    .color(Color.GREEN.dark(3)))
-                            .setTextureGetter(
-                                i -> i == 0
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                        .color(Color.RED.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                            .setBackground(
-                                ModularUITextures.VANILLA_BACKGROUND,
-                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                            .setSize(70, 18)
-                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode")))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(10, 30))
-            .widget(
-                new Column().widget(
-                    new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")).setSize(100, 18))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode"))
-                            .setSize(100, 18))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode"))
-                            .setSize(100, 18))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(80, 30))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setSize(18, 18)
-                    .setPos(10, 30)
-                    .addTooltip(
-                        new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
-                            .color(Color.RED.dark(3)))
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC).setPos(5, 5).setSize(16, 16))
+                .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
+                .widget(
+                        new Column().widget(
+                                new CycleButtonWidget().setLength(3).setGetter(() -> this.setupPhase).setSetter(val -> {
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    tryChangeSetupPhase(player);
+                                }).addTooltip(
+                                        0,
+                                        new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                                .color(Color.GREEN.dark(3)))
+                                        .addTooltip(
+                                                1,
+                                                new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                                        .color(Color.YELLOW.dark(3)))
+                                        .addTooltip(
+                                                2,
+                                                new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                                        .color(Color.YELLOW.dark(3)))
+                                        .setTextureGetter(
+                                                i -> i == 0 ? new Text(
+                                                        StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                                                .color(Color.GREEN.dark(3))
+                                                                .withFixedSize(70 - 18, 18, 15, 0)
+                                                        : i == 1 ? new Text(
+                                                                StatCollector
+                                                                        .translateToLocal("kubatech.gui.text.input"))
+                                                                                .color(Color.YELLOW.dark(3))
+                                                                                .withFixedSize(70 - 18, 18, 15, 0)
+                                                                : new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.output"))
+                                                                                        .color(Color.YELLOW.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0))
+                                        .setBackground(
+                                                ModularUITextures.VANILLA_BACKGROUND,
+                                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                        .setSize(70, 18)
+                                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")))
+                                .widget(
+                                        new CycleButtonWidget().setLength(2).setGetter(() -> this.mode.getUIIndex())
+                                                .setSetter(val -> {
+                                                    if (!(player instanceof EntityPlayerMP)) return;
+                                                    tryChangeMode(player);
+                                                })
+                                                .addTooltip(
+                                                        0,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.eig.disabled"))
+                                                                                .color(Color.RED.dark(3)))
+                                                .addTooltip(
+                                                        1,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.eig.enabled"))
+                                                                                .color(Color.GREEN.dark(3)))
+                                                .setTextureGetter(
+                                                        i -> i == 0
+                                                                ? new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.eig.disabled"))
+                                                                                        .color(Color.RED.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0)
+                                                                : new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.eig.enabled"))
+                                                                                        .color(Color.GREEN.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0))
+                                                .setBackground(
+                                                        ModularUITextures.VANILLA_BACKGROUND,
+                                                        GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                                .setSize(70, 18).addTooltip(
+                                                        StatCollector
+                                                                .translateToLocal("kubatech.gui.text.eig.ic2_mode")))
+                                .widget(
+                                        new CycleButtonWidget().setLength(2).setGetter(() -> useNoHumidity ? 1 : 0)
+                                                .setSetter(val -> {
+                                                    if (!(player instanceof EntityPlayerMP)) return;
+                                                    this.tryChangeHumidityMode(player);
+                                                })
+                                                .addTooltip(
+                                                        0,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.eig.disabled"))
+                                                                                .color(Color.RED.dark(3)))
+                                                .addTooltip(
+                                                        1,
+                                                        new Text(
+                                                                StatCollector.translateToLocal(
+                                                                        "kubatech.gui.text.eig.enabled"))
+                                                                                .color(Color.GREEN.dark(3)))
+                                                .setTextureGetter(
+                                                        i -> i == 0
+                                                                ? new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.eig.disabled"))
+                                                                                        .color(Color.RED.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0)
+                                                                : new Text(
+                                                                        StatCollector.translateToLocal(
+                                                                                "kubatech.gui.text.eig.enabled"))
+                                                                                        .color(Color.GREEN.dark(3))
+                                                                                        .withFixedSize(
+                                                                                                70 - 18,
+                                                                                                18,
+                                                                                                15,
+                                                                                                0))
+                                                .setBackground(
+                                                        ModularUITextures.VANILLA_BACKGROUND,
+                                                        GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
+                                                .setSize(70, 18).addTooltip(
+                                                        StatCollector.translateToLocal(
+                                                                "kubatech.gui.text.eig.no_humidity_mode")))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(10, 30))
+                .widget(
+                        new Column().widget(
+                                new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode"))
+                                        .setSize(100, 18))
+                                .widget(
+                                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode"))
+                                                .setSize(100, 18))
+                                .widget(
+                                        new TextWidget(
+                                                StatCollector
+                                                        .translateToLocal("kubatech.gui.text.eig.no_humidity_mode"))
+                                                                .setSize(100, 18))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(80, 30))
+                .widget(
+                        new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS).setSize(18, 18)
+                                .setPos(10, 30)
+                                .addTooltip(
+                                        new Text(
+                                                StatCollector
+                                                        .translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                                                                .color(Color.RED.dark(3)))
+                                .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
         return builder.build();
     }
 
@@ -1181,47 +1182,35 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         if (mOutputItems == null || synchedGUIDropTracker == null) return processingDetails;
 
-        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet()
-            .stream()
-            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
-                assert mOutputItems != null;
-                return Arrays.stream(mOutputItems)
-                    .filter(s -> s.isItemEqual(entry.getKey()))
-                    .mapToInt(i -> i.stackSize)
-                    .sum();
-            })
-                .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet().stream()
+                .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                    assert mOutputItems != null;
+                    return Arrays.stream(mOutputItems).filter(s -> s.isItemEqual(entry.getKey()))
+                            .mapToInt(i -> i.stackSize).sum();
+                }).reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
             assert mOutputItems != null;
-            int outputSize = Arrays.stream(mOutputItems)
-                .filter(s -> s.isItemEqual(drop.getKey()))
-                .mapToInt(i -> i.stackSize)
-                .sum();
+            int outputSize = Arrays.stream(mOutputItems).filter(s -> s.isItemEqual(drop.getKey()))
+                    .mapToInt(i -> i.stackSize).sum();
             if (outputSize != 0) {
                 Long itemCount = (long) outputSize;
-                String itemName = drop.getKey()
-                    .getDisplayName();
+                String itemName = drop.getKey().getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
+                        + EnumChatFormatting.GOLD
+                        + formatShortenedLong(itemCount)
+                        + EnumChatFormatting.WHITE
+                        + appendRate(false, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                    new MultiChildWidget().addChild(
-                        new ItemDrawable(
-                            drop.getKey()
-                                .copy()).asWidget()
-                                    .setSize(8, 8)
-                                    .setPos(0, 0))
-                        .addChild(
-                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                        new MultiChildWidget()
+                                .addChild(new ItemDrawable(drop.getKey().copy()).asWidget().setSize(8, 8).setPos(0, 0))
+                                .addChild(
+                                        new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                                .addTooltip(lineTooltip).setPos(10, 1)));
             }
         }
         return processingDetails;
@@ -1230,9 +1219,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.widget(
-            new FakeSyncWidget.BooleanSyncer(
-                () -> this.mode == EIGModes.IC2,
-                b -> this.mode = b ? EIGModes.IC2 : EIGModes.Normal));
+                new FakeSyncWidget.BooleanSyncer(
+                        () -> this.mode == EIGModes.IC2,
+                        b -> this.mode = b ? EIGModes.IC2 : EIGModes.Normal));
         screenElements.widget(new FakeSyncWidget<>(() -> {
             HashMap<ItemStack, Double> ret = new HashMap<>();
 
@@ -1269,37 +1258,38 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
-            Arrays
-                .asList(
-                    StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                        + EnumChatFormatting.GREEN
-                        + (this.setupPhase == 0 ? this.mode.getName()
-                            : (this.setupPhase == 1
-                                ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
-                                : StatCollector
-                                    .translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage),
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage),
-                    StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
-                        + this.maxSeedTypes
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
-                        + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                        + this.buckets.size()
-                        + EnumChatFormatting.RESET));
+                Arrays.asList(
+                        StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                                + EnumChatFormatting.GREEN
+                                + (this.setupPhase == 0 ? this.mode.getName()
+                                        : (this.setupPhase == 1
+                                                ? StatCollector.translateToLocal(
+                                                        "kubatech.infodata.eig.running_mode.setup_mode.input")
+                                                : StatCollector.translateToLocal(
+                                                        "kubatech.infodata.eig.running_mode.setup_mode.output")))
+                                + EnumChatFormatting.RESET,
+                        StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage),
+                        StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                        StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
+                                + this.maxSeedTypes
+                                + EnumChatFormatting.RESET,
+                        StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
+                                + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED
+                                        : EnumChatFormatting.GREEN)
+                                + this.buckets.size()
+                                + EnumChatFormatting.RESET));
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());
         }
         if (this.buckets.size() > this.maxSeedTypes) {
             info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_types")
-                    + EnumChatFormatting.RESET);
+                    EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_types")
+                            + EnumChatFormatting.RESET);
         }
         if (this.getTotalSeedCount() > this.maxSeedCount) {
             info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_seeds")
-                    + EnumChatFormatting.RESET);
+                    EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_seeds")
+                            + EnumChatFormatting.RESET);
         }
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);
@@ -1307,27 +1297,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
+                            .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }

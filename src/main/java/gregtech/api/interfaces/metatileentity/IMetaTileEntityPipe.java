@@ -20,5 +20,5 @@ public interface IMetaTileEntityPipe extends IMetaTileEntity {
      *                      mBaseMetaTileEntity.mRedstone!!!)
      */
     ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, int facingBitMask,
-        int colorIndex, boolean active, boolean redstoneLevel);
+            int colorIndex, boolean active, boolean redstoneLevel);
 }

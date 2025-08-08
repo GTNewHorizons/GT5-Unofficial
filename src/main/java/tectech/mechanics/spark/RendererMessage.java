@@ -81,17 +81,17 @@ public class RendererMessage implements IMessage {
             World world = Minecraft.getMinecraft().theWorld;
             if (world.provider.dimensionId == spark.wID) {
                 FXLightningBolt bolt = new FXLightningBolt(
-                    world,
-                    spark.x + 0.5F,
-                    spark.y + 0.5F,
-                    spark.z + 0.5F,
-                    spark.x + spark.xR + 0.5F,
-                    spark.y + spark.yR + 0.5F,
-                    spark.z + spark.zR + 0.5F,
-                    world.rand.nextLong(),
-                    10,
-                    0.5F,
-                    8);
+                        world,
+                        spark.x + 0.5F,
+                        spark.y + 0.5F,
+                        spark.z + 0.5F,
+                        spark.x + spark.xR + 0.5F,
+                        spark.y + spark.yR + 0.5F,
+                        spark.z + spark.zR + 0.5F,
+                        world.rand.nextLong(),
+                        10,
+                        0.5F,
+                        8);
                 bolt.defaultFractal();
                 bolt.setType(2);
                 bolt.setWidth(0.125F);

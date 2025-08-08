@@ -56,6 +56,6 @@ public class ItemDehydratorCoilWire extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return StatCollector
-            .translateToLocalFormatted("item.itemDehydratorCoilWire.name", GTValues.VN[tItem.getItemDamage() + 4]);
+                .translateToLocalFormatted("item.itemDehydratorCoilWire.name", GTValues.VN[tItem.getItemDamage() + 4]);
     }
 }

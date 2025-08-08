@@ -43,7 +43,7 @@ public class CoverPump extends CoverIOBase {
     }
 
     protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection coverSide,
-        boolean export) {
+            boolean export) {
         IFluidHandler source = export ? current : toAccess;
         IFluidHandler dest = export ? toAccess : current;
         ForgeDirection drainSide = export ? coverSide : coverSide.getOpposite();

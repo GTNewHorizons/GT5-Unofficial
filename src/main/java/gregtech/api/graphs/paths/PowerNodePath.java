@@ -35,8 +35,7 @@ public class PowerNodePath extends NodePath {
 
         avgVoltageCounter.addValue(Math.max(aVoltage - mLoss, 0));
 
-        int tNewTime = MinecraftServer.getServer()
-            .getTickCounter();
+        int tNewTime = MinecraftServer.getServer().getTickCounter();
         if (mTick != tNewTime) {
             reset(tNewTime - mTick);
             mTick = tNewTime;

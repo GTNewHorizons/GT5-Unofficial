@@ -64,12 +64,9 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private static final Item itemLavaFilter = ItemList.Component_LavaFilter.getItem();
     private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
     private static final Fluid fluidWater = FluidRegistry.WATER;
-    private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
-        .getFluid();
-    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
-        .getFluid();
-    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
-        .getFluid();
+    private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1).getFluid();
+    private static final Fluid fluidSteam = Materials.Steam.getGas(1).getFluid();
+    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1).getFluid();
 
     public MTEThermalBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -129,9 +126,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                 if (map == null) {
                     return Stream.empty();
                 }
-                return map.getAllRecipes()
-                    .stream()
-                    .filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
+                return map.getAllRecipes().stream().filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
             }
 
             @NotNull
@@ -142,7 +137,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                 // Hack the recipe logic to not consume water, so that we can explode.
                 for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
                     if (inputFluid != null
-                        && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
+                            && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
                         inputFluid.amount = 0;
                     }
                 }
@@ -174,7 +169,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             if (mOutputFluids != null) {
                 for (FluidStack outputFluid : mOutputFluids) {
                     if (outputFluid != null
-                        && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
+                            && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
 
                         // Purely for display reasons, we don't actually make any EU.
                         if (outputFluid.getFluid() == fluidSteam) {
@@ -187,7 +182,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                         // TODO: This is not reflected in the GUI while the player has it open??
                         if (mEfficiency < getMaxEfficiency(null)) {
                             outputFluid.amount = Math
-                                .max(1, (outputFluid.amount * mEfficiency) / getMaxEfficiency(null));
+                                    .max(1, (outputFluid.amount * mEfficiency) / getMaxEfficiency(null));
                         }
 
                         // Consume water to run recipe.
@@ -244,7 +239,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
         // Round up to not dupe decimal amounts of water.
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
         if (depleteInput(Materials.Water.getFluid(waterAmount))
-            || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
+                || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;
         } else {
@@ -271,22 +266,13 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Converts Water & Heat into Steam")
-            .addInfo("Filters raw materials from lava")
-            .addInfo("Explodes if water is not supplied")
-            .addInfo("Consult user manual for more information")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Thermal Containment Casings", 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Converts Water & Heat into Steam")
+                .addInfo("Filters raw materials from lava").addInfo("Explodes if water is not supplied")
+                .addInfo("Consult user manual for more information").addPollutionAmount(getPollutionPerSecond(null))
+                .beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfoMin("Thermal Containment Casings", 10, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -319,18 +305,18 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     public IStructureDefinition<MTEThermalBoiler> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEThermalBoiler>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEThermalBoiler.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler)
-                        .casingIndex(TAE.getIndexFromPage(0, 1))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEThermalBoiler.class)
+                                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler)
+                                    .casingIndex(TAE.getIndexFromPage(0, 1)).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }

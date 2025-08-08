@@ -66,10 +66,10 @@ public class MTELocker extends MTETieredMachineBlock {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             return new ITexture[] { this.mTextures[2][(colorIndex + 1)][0], this.mTextures[2][(colorIndex + 1)][1],
-                LOCKERS[Math.abs(this.mType % LOCKERS.length)] };
+                    LOCKERS[Math.abs(this.mType % LOCKERS.length)] };
         }
         return this.mTextures[0][(colorIndex + 1)];
     }
@@ -148,7 +148,7 @@ public class MTELocker extends MTETieredMachineBlock {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             this.mType = ((byte) (this.mType + 1));
         }
@@ -161,7 +161,7 @@ public class MTELocker extends MTETieredMachineBlock {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         if ((aBaseMetaTileEntity.isServerSide()) && (side == aBaseMetaTileEntity.getFrontFacing())) {
             for (int i = 0; i < 4; i++) {
                 ItemStack tSwapStack = this.mInventory[i];
@@ -176,19 +176,19 @@ public class MTELocker extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         for (int i = 0; i < 4; i++) {
             final ItemStack itemStack = this.mInventory[3 - i];
@@ -201,7 +201,7 @@ public class MTELocker extends MTETieredMachineBlock {
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
 
         final NBTTagCompound tag = accessor.getNBTData();
@@ -211,39 +211,36 @@ public class MTELocker extends MTETieredMachineBlock {
 
             if (tag.hasKey(CHARGE_SLOT_WAILA_TAG + i)) {
                 final ItemStack slotItem = ItemStack
-                    .loadItemStackFromNBT(tag.getCompoundTag(CHARGE_SLOT_WAILA_TAG + i));
+                        .loadItemStackFromNBT(tag.getCompoundTag(CHARGE_SLOT_WAILA_TAG + i));
                 assert slotItem != null;
 
-                currentTip.add(
-                    GTModHandler.getElectricItemCharge(slotItem)
-                        .map(chargeInfo -> {
-                            final float ratio = (float) chargeInfo[0] / (float) chargeInfo[1];
-                            final EnumChatFormatting chargeFormat;
+                currentTip.add(GTModHandler.getElectricItemCharge(slotItem).map(chargeInfo -> {
+                    final float ratio = (float) chargeInfo[0] / (float) chargeInfo[1];
+                    final EnumChatFormatting chargeFormat;
 
-                            if (ratio == 0L) {
-                                chargeFormat = EnumChatFormatting.GRAY;
-                            } else if (ratio < 0.25) {
-                                chargeFormat = EnumChatFormatting.RED;
-                            } else if (ratio < 0.5) {
-                                chargeFormat = EnumChatFormatting.GOLD;
-                            } else if (ratio < 0.75) {
-                                chargeFormat = EnumChatFormatting.YELLOW;
-                            } else if (ratio < 1L) {
-                                chargeFormat = EnumChatFormatting.GREEN;
-                            } else {
-                                chargeFormat = EnumChatFormatting.AQUA;
-                            }
+                    if (ratio == 0L) {
+                        chargeFormat = EnumChatFormatting.GRAY;
+                    } else if (ratio < 0.25) {
+                        chargeFormat = EnumChatFormatting.RED;
+                    } else if (ratio < 0.5) {
+                        chargeFormat = EnumChatFormatting.GOLD;
+                    } else if (ratio < 0.75) {
+                        chargeFormat = EnumChatFormatting.YELLOW;
+                    } else if (ratio < 1L) {
+                        chargeFormat = EnumChatFormatting.GREEN;
+                    } else {
+                        chargeFormat = EnumChatFormatting.AQUA;
+                    }
 
-                            return StatCollector.translateToLocalFormatted(
-                                "gt.locker.waila_armor_slot_charged",
-                                index,
-                                slotItem.getDisplayName(),
-                                chargeFormat,
-                                GTUtility.formatNumbers(ratio * 100));
-                        })
-                        .orElseGet(
-                            // Lazy initialization
-                            () -> StatCollector.translateToLocalFormatted(
+                    return StatCollector.translateToLocalFormatted(
+                            "gt.locker.waila_armor_slot_charged",
+                            index,
+                            slotItem.getDisplayName(),
+                            chargeFormat,
+                            GTUtility.formatNumbers(ratio * 100));
+                }).orElseGet(
+                        // Lazy initialization
+                        () -> StatCollector.translateToLocalFormatted(
                                 "gt.locker.waila_armor_slot_generic",
                                 index,
                                 slotItem.getDisplayName())));

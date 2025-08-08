@@ -41,36 +41,26 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
-            aFacing == side ? (aActive ? TextureFactory.builder()
-                .addIcon(LARGETURBINE_NEW_ACTIVE5)
-                .build()
-                : hasTurbine() ? TextureFactory.builder()
-                    .addIcon(LARGETURBINE_NEW5)
-                    .build()
-                    : TextureFactory.builder()
-                        .addIcon(LARGETURBINE_NEW_EMPTY5)
-                        .build())
-                : casingTexturePages[0][57] };
+                aFacing == side
+                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
+                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
+                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+                        : casingTexturePages[0][57] };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Outputs Distilled Water as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoRange("Turbine Casing", 8, 31, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Steam, Side centered", 2)
-            .addOutputHatch("Distilled Water, Side centered", 2)
-            .toolTipFinisher();
+        tt.addMachineType("Steam Turbine, LST").addInfo("Needs a Turbine, place inside controller")
+                .addInfo("Outputs Distilled Water as well as producing power")
+                .addInfo("Power output depends on turbine and fitting")
+                .addInfo("Use screwdriver to adjust fitting of turbine").beginStructureBlock(3, 3, 4, true)
+                .addController("Front center").addCasingInfoRange("Turbine Casing", 8, 31, false)
+                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
+                .addInputHatch("Steam, Side centered", 2).addOutputHatch("Distilled Water, Side centered", 2)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -136,12 +126,9 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
                 totalFlow += flow; // track total input used
                 if (!achievement) {
                     GTMod.achievements.issueAchievement(
-                        this.getBaseMetaTileEntity()
-                            .getWorld()
-                            .getPlayerEntityByName(
-                                this.getBaseMetaTileEntity()
-                                    .getOwnerName()),
-                        "muchsteam");
+                            this.getBaseMetaTileEntity().getWorld()
+                                    .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
+                            "muchsteam");
                     achievement = true;
                 }
             } else if (GTModHandler.isSuperHeatedSteam(aFluidStack)) {
@@ -154,18 +141,19 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         addOutput(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
             tEU = GTUtility.safeInt(
-                (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())
+                            * 0.5f));
         } else {
             float efficiency = getOverflowEfficiency(
-                totalFlow,
-                (GTUtility.safeInt((long) realOptFlow)),
-                overflowMultiplier);
+                    totalFlow,
+                    (GTUtility.safeInt((long) realOptFlow)),
+                    overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(
-                1,
-                GTUtility.safeInt(
-                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())
-                        * 0.5f)));
+                    1,
+                    GTUtility.safeInt(
+                            (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())
+                                    * 0.5f)));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
@@ -189,8 +177,8 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         float efficiency = 0;
 
         if (totalFlow > actualOptimalFlow) {
-            efficiency = 1.0f
-                - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * (overflowMultiplier + 1));
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
+                    / ((float) actualOptimalFlow * (overflowMultiplier + 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

@@ -23,7 +23,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class WirelessFluidDetectorUIFactory
-    extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessFluidDetector> {
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessFluidDetector> {
 
     private int maxCapacity;
 
@@ -54,51 +54,47 @@ public class WirelessFluidDetectorUIFactory
         setMaxCapacity();
         super.addUIWidgets(builder);
         builder.widget(
-            new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        getCoverString(
-                            c -> c.isPhysical()
-                                ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
-                                : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                    .setSize(spaceX * 10, 12));
+                new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                .widget(
+                        TextWidget
+                                .dynamicString(
+                                        getCoverString(
+                                                c -> c.isPhysical()
+                                                        ? StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.1")
+                                                        : StatCollector.translateToLocal(
+                                                                "gt.cover" + ".wirelessdetector.redstone.0")))
+                                .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setTextAlignment(Alignment.CenterLeft).setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                                .setSize(spaceX * 10, 12));
     }
 
     @Override
     protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessFluidDetector> controller) {
         super.addUIForDataController(controller);
         controller
-            .addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.getThreshold(),
-                (coverData, state) -> coverData.setThreshold(state.intValue()),
-                widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                    .setScrollValues(1000, 144, 100000)
-                    .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                CoverWirelessFluidDetector::isPhysical,
-                CoverWirelessFluidDetector::setPhysical,
-                widget -> widget
-                    .addTooltip(StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
-                    .setPos(0, 1 + spaceY * 3));
+                .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThreshold(state.intValue()),
+                        widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                                .setScrollValues(1000, 144, 100000).setFocusOnGuiOpen(true).setPos(1, 2 + spaceY * 2)
+                                .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        CoverWirelessFluidDetector::isPhysical,
+                        CoverWirelessFluidDetector::setPhysical,
+                        widget -> widget.addTooltip(
+                                StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.tooltip"))
+                                .setPos(0, 1 + spaceY * 3));
     }
 
     private void setMaxCapacity() {
         final ICoverable tile = getUIBuildContext().getTile();
         if (!tile.isDead() && tile instanceof IFluidHandler) {
             FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
-            maxCapacity = Arrays.stream(tanks)
-                .mapToInt(tank -> tank.capacity)
-                .sum();
+            maxCapacity = Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
         } else {
             maxCapacity = -1;
         }

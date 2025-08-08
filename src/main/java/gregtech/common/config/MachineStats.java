@@ -5,10 +5,10 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(
-    modid = Mods.ModIDs.GREG_TECH,
-    category = "machine_stats",
-    configSubDirectory = "GregTech",
-    filename = "MachineStats")
+        modid = Mods.ModIDs.GREG_TECH,
+        category = "machine_stats",
+        configSubDirectory = "GregTech",
+        filename = "MachineStats")
 @Config.LangKey("GT5U.gui.config.machine_stats")
 public class MachineStats {
 
@@ -37,7 +37,7 @@ public class MachineStats {
     public static class BronzeSolarBoiler {
 
         @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
-            "100% calcification and minimal output will be reached at 2 times this." })
+                "100% calcification and minimal output will be reached at 2 times this." })
         @Config.DefaultInt(1_080_000)
         @Config.RequiresMcRestart
         public int calcificationTicks;
@@ -60,7 +60,7 @@ public class MachineStats {
     public static class SteelSolarBoiler {
 
         @Config.Comment({ "Number of run-time ticks before boiler starts calcification.",
-            "100% calcification and minimal output will be reached at 2 times this." })
+                "100% calcification and minimal output will be reached at 2 times this." })
         @Config.DefaultInt(1_080_000)
         @Config.RequiresMcRestart
         public int calcificationTicks;
@@ -187,10 +187,10 @@ public class MachineStats {
 
         @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
         @Config.DefaultStringList({ "BW_GlasBlocks", // All Bart glass (including HV tier)
-            "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
-            "tile.blockTravelAnchor", // EnderIO travel anchors
-            "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)
-            "tile.extrautils:etherealglass" // ExtraUtils ineffable glass and variants
+                "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
+                "tile.blockTravelAnchor", // EnderIO travel anchors
+                "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)
+                "tile.extrautils:etherealglass" // ExtraUtils ineffable glass and variants
         })
         @Config.RequiresMcRestart
         public String[] allowedBlocks;

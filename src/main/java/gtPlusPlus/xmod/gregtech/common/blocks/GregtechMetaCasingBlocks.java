@@ -27,7 +27,7 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Centrifuge Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
         GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
+                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing"); // 60
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
@@ -40,7 +40,7 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Reactor Shield Casing");
         GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
+                .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Blast Smelter Casing Block");
         GregtechItemList.Casing_Centrifuge1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_CokeOven.set(new ItemStack(this, 1, 1));
@@ -68,9 +68,9 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-        final int ordinalSide) {
+            final int ordinalSide) {
         final GregtechMetaCasingBlocks i = this;
         return CasingTextureHandler
-            .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), i);
+                .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), i);
     }
 }

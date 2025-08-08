@@ -19,7 +19,7 @@ public class MTEHatchReservoir extends MTEHatchFluidGenerator {
     }
 
     public MTEHatchReservoir(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures) {
+            final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

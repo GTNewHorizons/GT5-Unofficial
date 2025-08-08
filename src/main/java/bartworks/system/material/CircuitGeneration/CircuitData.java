@@ -40,14 +40,10 @@ public class CircuitData {
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-            ByteBuffer.allocate(13)
-                .put(this.aTier)
-                .putInt(this.aSpecial)
-                .putLong(this.aVoltage)
-                .array(),
-            0,
-            13,
-            31);
+                ByteBuffer.allocate(13).put(this.aTier).putInt(this.aSpecial).putLong(this.aVoltage).array(),
+                0,
+                13,
+                31);
     }
 
     public long getaVoltage() {

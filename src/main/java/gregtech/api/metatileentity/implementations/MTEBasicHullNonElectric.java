@@ -17,7 +17,7 @@ public abstract class MTEBasicHullNonElectric extends MTEBasicHull {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return mTextures[Math.min(2, sideDirection.ordinal())][colorIndex + 1];
     }
 

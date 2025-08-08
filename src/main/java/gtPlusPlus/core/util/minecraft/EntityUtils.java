@@ -20,7 +20,7 @@ public class EntityUtils {
     }
 
     public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world,
-        final Entity entityHolding) {
+            final Entity entityHolding) {
         if (!world.isRemote && entityHolding instanceof EntityPlayer player) {
             if (!player.capabilities.isCreativeMode) {
                 GTUtility.applyRadioactivity(player, radiationLevel, stackSize);

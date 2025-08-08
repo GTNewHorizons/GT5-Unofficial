@@ -23,15 +23,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1)
-            .extFacing()
-            .build(),
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1_GLOW)
-            .extFacing()
-            .glow()
-            .build());
+            TextureFactory.builder().addIcon(OVERLAY_FUSION1).extFacing().build(),
+            TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build());
 
     public MTELargeFusionComputer1(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -44,38 +37,35 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("Millions of nuclear.")
-            .addInfo(
-                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.AQUA
-                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
-                    + "M"
-                    + EnumChatFormatting.GRAY
-                    + " EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo(
-                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
-                    + EnumChatFormatting.GRAY
-                    + " , you can't do it either")
-            .addInfo("It can run 64x recipes at most.")
-            .addTecTechHatchInfo()
-            .addCasingInfoMin("LuV Machine Casing", 1664, false)
-            .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)
-            .addCasingInfoMin("Naquadah Alloy Frame Boxes", 128, false)
-            .addCasingInfoMin("Rhodium-Plated Palladium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
-            .addStructureInfo("Supports Crafting Input Buffer")
-            .addStructureInfo(
-                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
-                    + EnumChatFormatting.GRAY
-                    + " or better")
-            .toolTipFinisher();
+        tt.addMachineType("Fusion Reactor").addInfo("Millions of nuclear.")
+                .addInfo(
+                        EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
+                                + EnumChatFormatting.GRAY
+                                + " EU/t and "
+                                + EnumChatFormatting.AQUA
+                                + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
+                                + "M"
+                                + EnumChatFormatting.GRAY
+                                + " EU capacity per Energy Hatch")
+                .addInfo("If the recipe has a startup cost greater than the")
+                .addInfo("number of energy hatches * cap, you can't do it")
+                .addInfo(
+                        "If the recipe requires a voltage tier over "
+                                + GTUtility.getColoredTierNameFromTier((byte) tier())
+                                + EnumChatFormatting.GRAY
+                                + " , you can't do it either")
+                .addInfo("It can run 64x recipes at most.").addTecTechHatchInfo()
+                .addCasingInfoMin("LuV Machine Casing", 1664, false)
+                .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)
+                .addCasingInfoMin("Naquadah Alloy Frame Boxes", 128, false)
+                .addCasingInfoMin("Rhodium-Plated Palladium Reinforced Borosilicate Glass Block", 63, false)
+                .addEnergyHatch("1-32, Hint block with dot 2", 2).addInputHatch("1-16, Hint block with dot 1", 1)
+                .addOutputHatch("1-16, Hint block with dot 1", 1).addStructureInfo("Supports Crafting Input Buffer")
+                .addStructureInfo(
+                        "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
+                                + EnumChatFormatting.GRAY
+                                + " or better")
+                .toolTipFinisher();
         return tt;
     }
 

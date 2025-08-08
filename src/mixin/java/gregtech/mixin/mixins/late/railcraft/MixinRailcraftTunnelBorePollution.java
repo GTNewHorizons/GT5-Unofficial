@@ -28,7 +28,7 @@ public abstract class MixinRailcraftTunnelBorePollution extends EntityMinecart {
     private void gt5u$addPollution(CallbackInfo ci) {
         if (!worldObj.isRemote || !active) return;
         Pollution.addPollution(
-            worldObj.getChunkFromBlockCoords((int) posX, (int) posZ),
-            PollutionConfig.tunnelBorePollutionAmount);
+                worldObj.getChunkFromBlockCoords((int) posX, (int) posZ),
+                PollutionConfig.tunnelBorePollutionAmount);
     }
 }

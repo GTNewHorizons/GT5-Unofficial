@@ -44,11 +44,8 @@ public class GTMetaItemEnhancer {
         if (!Forestry.isModLoaded()) {
             return;
         }
-        NoMetaValue = Materials.getMaterialsMap()
-            .values()
-            .stream()
-            .filter(m -> m.mMetaItemSubID == -1)
-            .collect(Collectors.toList());
+        NoMetaValue = Materials.getMaterialsMap().values().stream().filter(m -> m.mMetaItemSubID == -1)
+                .collect(Collectors.toList());
         Item moltenCapsuls = new BWGTMetaItems(OrePrefixes.capsuleMolten, null);
         Item capsuls = new BWGTMetaItems(OrePrefixes.capsule, NoMetaValue);
         // Item bottles = new BWGTMetaItems(OrePrefixes.bottle, NoMetaValue);
@@ -58,9 +55,9 @@ public class GTMetaItemEnhancer {
             Materials m = values[i];
             if (m.mStandardMoltenFluid != null && GTOreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
                 final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-                    m.getMolten(1 * INGOTS),
-                    new ItemStack(moltenCapsuls, 1, i),
-                    GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
+                        m.getMolten(1 * INGOTS),
+                        new ItemStack(moltenCapsuls, 1, i),
+                        GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
                 GTUtility.addFluidContainerData(emptyData);
             }
@@ -82,14 +79,11 @@ public class GTMetaItemEnhancer {
     }
 
     private static void addFluidData(Materials m, ItemStack container, Item filled, int amount, int it, boolean empty) {
-        Fluid f = m.getFluid(1) != null ? m.getFluid(1)
-            .getFluid()
-            : m.getGas(1)
-                .getFluid();
+        Fluid f = m.getFluid(1) != null ? m.getFluid(1).getFluid() : m.getGas(1).getFluid();
         final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-            new FluidStack(f, amount),
-            new ItemStack(filled, 1, it),
-            container);
+                new FluidStack(f, amount),
+                new ItemStack(filled, 1, it),
+                container);
         FluidContainerRegistry.registerFluidContainer(emptyData);
         GTUtility.addFluidContainerData(emptyData);
     }

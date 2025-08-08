@@ -94,48 +94,56 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     }
 
     private static final IStructureDefinition<MTEMultiLathe> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMultiLathe>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "       " }, { "       " }, { "       " }, { "       " }, { "AAA~AAA" } }))
-        .addShape(
-            STRUCTURE_PIECE_BODY,
-            (transpose(
-                new String[][] { { "       ", "AAAAAAA", "       ", "       " },
-                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " }, { "ABCCCCA", "ABFFFFA", "ABCCCCA", "       " },
-                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
-        .addShape(
-            STRUCTURE_PIECE_BODY_ALT,
-            (transpose(
-                new String[][] { { "       ", "AAAAAAA", "       ", "       " },
-                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " }, { "ACCCCBA", "AFFFFBA", "ACCCCBA", "       " },
-                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
-        .addElement(
-            'A',
-            buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                .dot(1)
-                .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
-        .addElement('C', chainAllGlasses()) // Glass
-        .addElement(
-            'F',
-            GTStructureChannels.ITEM_PIPE_CASING.use(
-                ofBlocksTiered(
-                    MTEMultiLathe::getTierFromMeta,
-                    ImmutableList.of(
-                        Pair.of(GregTechAPI.sBlockCasings11, 0),
-                        Pair.of(GregTechAPI.sBlockCasings11, 1),
-                        Pair.of(GregTechAPI.sBlockCasings11, 2),
-                        Pair.of(GregTechAPI.sBlockCasings11, 3),
-                        Pair.of(GregTechAPI.sBlockCasings11, 4),
-                        Pair.of(GregTechAPI.sBlockCasings11, 5),
-                        Pair.of(GregTechAPI.sBlockCasings11, 6),
-                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                    -1,
-                    MTEMultiLathe::setPipeTier,
-                    MTEMultiLathe::getPipeTier)))
-        .build();
+            .<MTEMultiLathe>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "       " }, { "       " }, { "       " }, { "       " },
+                                    { "AAA~AAA" } }))
+            .addShape(
+                    STRUCTURE_PIECE_BODY,
+                    (transpose(
+                            new String[][] { { "       ", "AAAAAAA", "       ", "       " },
+                                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " },
+                                    { "ABCCCCA", "ABFFFFA", "ABCCCCA", "       " },
+                                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " },
+                                    { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
+            .addShape(
+                    STRUCTURE_PIECE_BODY_ALT,
+                    (transpose(
+                            new String[][] { { "       ", "AAAAAAA", "       ", "       " },
+                                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " },
+                                    { "ACCCCBA", "AFFFFBA", "ACCCCBA", "       " },
+                                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " },
+                                    { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
+            .addElement(
+                    'A',
+                    buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)).dot(1)
+                            .buildAndChain(
+                                    onElementPass(
+                                            MTEMultiLathe::onCasingAdded,
+                                            ofBlock(GregTechAPI.sBlockCasings2, 0))))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
+            .addElement('C', chainAllGlasses()) // Glass
+            .addElement(
+                    'F',
+                    GTStructureChannels.ITEM_PIPE_CASING.use(
+                            ofBlocksTiered(
+                                    MTEMultiLathe::getTierFromMeta,
+                                    ImmutableList.of(
+                                            Pair.of(GregTechAPI.sBlockCasings11, 0),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 1),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 2),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 3),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 4),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 5),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 6),
+                                            Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                                    -1,
+                                    MTEMultiLathe::setPipeTier,
+                                    MTEMultiLathe::getPipeTier)))
+            .build();
 
     @Override
     public IStructureDefinition<MTEMultiLathe> getStructureDefinition() {
@@ -149,39 +157,26 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW).extFacing().glow()
+                                .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        Textures.BlockIcons
+                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_LATHE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_LATHE_GLOW).extFacing().glow().build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
         }
         return rTexture;
     }
@@ -189,26 +184,20 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Lathe, IPL")
-            .addInfo("300% faster than using single block machines of the same voltage")
-            .addInfo("Gains 8 parallel per Pipe Casing Tier")
-            .addInfo("Only uses 80% of the EU/t normally required.")
-            .beginStructureBlock(7, 5, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Any Tiered Glass", 32, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
-                "Center of the glass",
-                4)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
-            .toolTipFinisher(AuthorVolence);
+        tt.addMachineType("Lathe, IPL").addInfo("300% faster than using single block machines of the same voltage")
+                .addInfo("Gains 8 parallel per Pipe Casing Tier")
+                .addInfo("Only uses 80% of the EU/t normally required.").beginStructureBlock(7, 5, 5, true)
+                .addController("Front Center").addCasingInfoMin("Solid Steel Machine Casing", 42, false)
+                .addCasingInfoExactly("Grate Machine Casing", 9, false)
+                .addCasingInfoExactly("Any Tiered Glass", 32, false).addInputBus("Any Solid Steel Casing", 1)
+                .addOutputBus("Any Solid Steel Casing", 1).addEnergyHatch("Any Solid Steel Casing", 1)
+                .addMaintenanceHatch("Any Solid Steel Casing", 1)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
+                        "Center of the glass",
+                        4)
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+                .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING).toolTipFinisher(AuthorVolence);
         return tt;
     }
 
@@ -255,10 +244,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 4F)
-            .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 4F).setEuModifier(0.8F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -268,7 +255,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("itemPipeTier", Math.max(0, getPipeTier()));
         tag.setFloat("speedBonus", 400);
@@ -279,22 +266,22 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
-                + EnumChatFormatting.WHITE
-                + Math.max(0, tag.getInteger("itemPipeTier")));
+                StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
+                        + EnumChatFormatting.WHITE
+                        + Math.max(0, tag.getInteger("itemPipeTier")));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.WHITE
+                        + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format((Math.max(0, tag.getInteger("speedBonus"))))
-                + "%");
+                StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                        + EnumChatFormatting.WHITE
+                        + dfNone.format((Math.max(0, tag.getInteger("speedBonus"))))
+                        + "%");
     }
 
     @Override
@@ -324,7 +311,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

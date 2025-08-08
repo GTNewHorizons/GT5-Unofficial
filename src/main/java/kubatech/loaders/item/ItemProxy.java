@@ -43,26 +43,23 @@ import kubatech.Tags;
 
 public class ItemProxy {
 
-    private static final UIInfo<?, ?> HeldItemUIInfo = UIBuilder.of()
-        .container((player, w, x, y, z) -> {
-            ItemStack stack = player.getHeldItem();
-            ItemProxy proxy = KubaItems.getItemProxy(stack);
-            if (!(proxy instanceof IItemProxyGUI)) return null;
-            UIBuildContext context = new UIBuildContext(player);
-            ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
-            return new ModularUIContainer(
+    private static final UIInfo<?, ?> HeldItemUIInfo = UIBuilder.of().container((player, w, x, y, z) -> {
+        ItemStack stack = player.getHeldItem();
+        ItemProxy proxy = KubaItems.getItemProxy(stack);
+        if (!(proxy instanceof IItemProxyGUI)) return null;
+        UIBuildContext context = new UIBuildContext(player);
+        ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
+        return new ModularUIContainer(
                 new ModularUIContext(context, () -> player.inventoryContainer.detectAndSendChanges()),
                 window);
-        })
-        .gui((player, w, x, y, z) -> {
-            ItemStack stack = player.getHeldItem();
-            ItemProxy proxy = KubaItems.getItemProxy(stack);
-            if (!(proxy instanceof IItemProxyGUI)) return null;
-            UIBuildContext context = new UIBuildContext(player);
-            ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
-            return new ModularGui(new ModularUIContainer(new ModularUIContext(context, null), window));
-        })
-        .build();
+    }).gui((player, w, x, y, z) -> {
+        ItemStack stack = player.getHeldItem();
+        ItemProxy proxy = KubaItems.getItemProxy(stack);
+        if (!(proxy instanceof IItemProxyGUI)) return null;
+        UIBuildContext context = new UIBuildContext(player);
+        ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
+        return new ModularGui(new ModularUIContainer(new ModularUIContext(context, null), window));
+    }).build();
     private final String unlocalizedName;
     private final String texturepath;
     private IIcon icon;
@@ -83,8 +80,7 @@ public class ItemProxy {
     }
 
     public String getDisplayName(ItemStack stack) {
-        return StatCollector.translateToLocal(this.unlocalizedName + ".name")
-            .trim();
+        return StatCollector.translateToLocal(this.unlocalizedName + ".name").trim();
     }
 
     public void registerIcon(IIconRegister iconRegister) {

@@ -43,47 +43,41 @@ public class CoverDrain extends CoverLegacyData {
         if (coverSide != ForgeDirection.UNKNOWN) {
             final Block tBlock = coverable.getBlockAtSide(coverSide);
             if ((this.coverData < 3) && ((coverable instanceof IFluidHandler))) {
-                if ((coverSide == ForgeDirection.UP) && (coverable.getWorld()
-                    .isRaining())
-                    && (coverable.getWorld()
-                        .getPrecipitationHeight(coverable.getXCoord(), coverable.getZCoord()) - 2
-                        < coverable.getYCoord())) {
+                if ((coverSide == ForgeDirection.UP) && (coverable.getWorld().isRaining())
+                        && (coverable.getWorld().getPrecipitationHeight(coverable.getXCoord(), coverable.getZCoord())
+                                - 2 < coverable.getYCoord())) {
                     int tAmount = (int) (coverable.getBiome().rainfall * 10.0F);
                     if (tAmount > 0) {
                         ((IFluidHandler) coverable).fill(
-                            coverSide,
-                            Materials.Water.getFluid(
-                                coverable.getWorld()
-                                    .isThundering() ? tAmount * 2L : tAmount),
-                            true);
+                                coverSide,
+                                Materials.Water.getFluid(coverable.getWorld().isThundering() ? tAmount * 2L : tAmount),
+                                true);
                     }
                 }
                 FluidStack tLiquid = null;
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
-                        && (coverable.getMetaIDAtSide(coverSide) == 0)) {
+                            && (coverable.getMetaIDAtSide(coverSide) == 0)) {
                         tLiquid = Materials.Water.getFluid(1_000);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
-                        && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                            tLiquid = Materials.Lava.getFluid(1_000);
-                        } else if ((tBlock instanceof IFluidBlock)) {
+                            && (coverable.getMetaIDAtSide(coverSide) == 0)) {
+                                tLiquid = Materials.Lava.getFluid(1_000);
+                            } else
+                        if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
-                                coverable.getWorld(),
-                                coverable.getOffsetX(coverSide, 1),
-                                coverable.getOffsetY(coverSide, 1),
-                                coverable.getOffsetZ(coverSide, 1),
-                                false);
+                                    coverable.getWorld(),
+                                    coverable.getOffsetX(coverSide, 1),
+                                    coverable.getOffsetY(coverSide, 1),
+                                    coverable.getOffsetZ(coverSide, 1),
+                                    false);
                         }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null)
-                        && ((coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 // Horizontal
-                            || ((coverSide == ForgeDirection.DOWN) && (tLiquid.getFluid()
-                                .getDensity() <= 0))
-                            || ((coverSide == ForgeDirection.UP) && (tLiquid.getFluid()
-                                .getDensity() >= 0)))
-                        && (((IFluidHandler) coverable).fill(coverSide, tLiquid, false) == tLiquid.amount)) {
+                            && ((coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 // Horizontal
+                                    || ((coverSide == ForgeDirection.DOWN) && (tLiquid.getFluid().getDensity() <= 0))
+                                    || ((coverSide == ForgeDirection.UP) && (tLiquid.getFluid().getDensity() >= 0)))
+                            && (((IFluidHandler) coverable).fill(coverSide, tLiquid, false) == tLiquid.amount)) {
                         ((IFluidHandler) coverable).fill(coverSide, tLiquid, true);
-                        coverable.getWorld()
-                            .setBlockToAir(
+                        coverable.getWorld().setBlockToAir(
                                 coverable.getXCoord() + coverSide.offsetX,
                                 coverable.getYCoord() + coverSide.offsetY,
                                 coverable.getZCoord() + coverSide.offsetZ);
@@ -91,12 +85,11 @@ public class CoverDrain extends CoverLegacyData {
                 }
             }
             if ((this.coverData >= 3) && (tBlock != null)
-                && ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)
-                    || (tBlock == Blocks.water)
-                    || (tBlock == Blocks.flowing_water)
-                    || ((tBlock instanceof IFluidBlock)))) {
-                coverable.getWorld()
-                    .setBlock(
+                    && ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)
+                            || (tBlock == Blocks.water)
+                            || (tBlock == Blocks.flowing_water)
+                            || ((tBlock instanceof IFluidBlock)))) {
+                coverable.getWorld().setBlock(
                         coverable.getOffsetX(coverSide, 1),
                         coverable.getOffsetY(coverSide, 1),
                         coverable.getOffsetZ(coverSide, 1),

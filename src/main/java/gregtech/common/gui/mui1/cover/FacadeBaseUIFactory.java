@@ -33,56 +33,48 @@ public class FacadeBaseUIFactory extends CoverUIFactory<CoverFacadeBase> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder
-            .widget(
+        builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCover,
-                    this::isEnabled,
-                    (id, coverData) -> coverData.setFlags(getNewCoverVariable(id, coverData.getFlags())),
-                    getUIBuildContext())
-                        .addToggleButton(
-                            0,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(
-                            1,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                        .addToggleButton(
-                            2,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .addToggleButton(
-                            3,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                        .setPos(startX, startY))
-            .widget(new ItemDrawable(() -> {
-                CoverFacadeBase cover = getCover();
-                return cover != null ? cover.getStack() : null;
-            }).asWidget()
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(TextWidget.dynamicString(() -> {
-                CoverFacadeBase cover = getCover();
-                return cover != null ? cover.getStack()
-                    .getDisplayName() : "";
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TITLE.get())
-                .setPos(25, 9))
-            .widget(
-                new TextWidget(GTUtility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-            .widget(
-                new TextWidget(GTUtility.trans("129", "Energy")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-            .widget(
-                new TextWidget(GTUtility.trans("130", "Fluids")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-            .widget(
-                new TextWidget(GTUtility.trans("131", "Items")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+                        this::getCover,
+                        this::isEnabled,
+                        (id, coverData) -> coverData.setFlags(getNewCoverVariable(id, coverData.getFlags())),
+                        getUIBuildContext())
+                                .addToggleButton(
+                                        0,
+                                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                        widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                                .addToggleButton(
+                                        1,
+                                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                        widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                                .addToggleButton(
+                                        2,
+                                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                        widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                                .addToggleButton(
+                                        3,
+                                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                        widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                                .setPos(startX, startY))
+                .widget(new ItemDrawable(() -> {
+                    CoverFacadeBase cover = getCover();
+                    return cover != null ? cover.getStack() : null;
+                }).asWidget().setPos(5, 5).setSize(16, 16)).widget(TextWidget.dynamicString(() -> {
+                    CoverFacadeBase cover = getCover();
+                    return cover != null ? cover.getStack().getDisplayName() : "";
+                }).setSynced(false).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9))
+                .widget(
+                        new TextWidget(GTUtility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+                .widget(
+                        new TextWidget(GTUtility.trans("129", "Energy")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+                .widget(
+                        new TextWidget(GTUtility.trans("130", "Fluids")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+                .widget(
+                        new TextWidget(GTUtility.trans("131", "Items")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
     }
 
     @Override

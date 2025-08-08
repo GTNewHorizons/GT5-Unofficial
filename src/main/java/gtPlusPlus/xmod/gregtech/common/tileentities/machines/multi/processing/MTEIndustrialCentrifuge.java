@@ -48,7 +48,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+        implements ISurvivalConstructable, INEIPreviewModifier {
 
     private boolean mIsAnimated;
     private int mCasing;
@@ -83,23 +83,14 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("125% faster than using single block machines of the same voltage")
-            .addInfo("Disable animations with a screwdriver")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes six items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Centrifuge Casings", 6, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("125% faster than using single block machines of the same voltage")
+                .addInfo("Disable animations with a screwdriver").addInfo("Only uses 90% of the EU/t normally required")
+                .addInfo("Processes six items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
+                .beginStructureBlock(3, 3, 3, true).addController("Front Center")
+                .addCasingInfoMin("Centrifuge Casings", 6, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -107,18 +98,18 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     public IStructureDefinition<MTEIndustrialCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCentrifuge>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialCentrifuge.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                        .casingIndex(getCasingTextureIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEIndustrialCentrifuge.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -183,13 +174,13 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         else tTextures = TURBINE_NEW;
 
         GTUtilityClient.setTurbineOverlay(
-            tile.getWorld(),
-            tile.getXCoord(),
-            tile.getYCoord(),
-            tile.getZCoord(),
-            getExtendedFacing(),
-            tTextures,
-            overlayTickets);
+                tile.getWorld(),
+                tile.getXCoord(),
+                tile.getYCoord(),
+                tile.getZCoord(),
+                getExtendedFacing(),
+                tTextures,
+                overlayTickets);
     }
 
     @Override
@@ -204,10 +195,8 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setEuModifier(0.9F)
-            .setSpeedBonus(1F / 2.25F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setEuModifier(0.9F).setSpeedBonus(1F / 2.25F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

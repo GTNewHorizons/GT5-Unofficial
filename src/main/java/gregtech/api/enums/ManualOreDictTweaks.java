@@ -22,19 +22,19 @@ public class ManualOreDictTweaks {
     private static final String[] enderio = new String[] { "ingotDarkSteel" };
     private static final String[] draconicevolution = new String[] { "dustDraconium" };
     private static final String[] thaumcraft = new String[] { "ingotThaumium", "ingotVoid", "nuggetThaumium",
-        "nuggetVoid" };
+            "nuggetVoid" };
     private static final String[] projred_core = new String[] { "dustElectrotine" };
     private static final String[] translocator = new String[] { "nuggetDiamond" };
     private static final String[] hardcoreenderexpansion = new String[] { "ingotHeeEndium" };
     private static final String[] avaritia = new String[] { "ingotCosmicNeutronium", "ingotInfinity" };
     private static final String[] randomthings = new String[] { "stickObsidian" };
     private static final String[] botania = new String[] { "ingotElvenElementium", "ingotManasteel", "ingotTerrasteel",
-        "nuggetElvenElementium", "nuggetManasteel", "nuggetTerrasteel" };
+            "nuggetElvenElementium", "nuggetManasteel", "nuggetTerrasteel" };
 
     private static final String[] modNames = { GregTech.ID, EnderIO.ID, DraconicEvolution.ID, Thaumcraft.ID,
-        ProjectRedCore.ID, Translocator.ID, HardcoreEnderExpansion.ID, Avaritia.ID, RandomThings.ID, Botania.ID };
+            ProjectRedCore.ID, Translocator.ID, HardcoreEnderExpansion.ID, Avaritia.ID, RandomThings.ID, Botania.ID };
     private static final String[][] array = new String[][] { gregtech, enderio, draconicevolution, thaumcraft,
-        projred_core, translocator, hardcoreenderexpansion, avaritia, randomthings, botania };
+            projred_core, translocator, hardcoreenderexpansion, avaritia, randomthings, botania };
 
     static {
         initTweakedValues();

@@ -72,50 +72,50 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
     private static final IStructureDefinition<MTEAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEAssemblyLine>builder()
-        .addShape(
-            STRUCTURE_PIECE_FIRST,
-            transpose(new String[][] { { " ", "e", " " }, { "~", "l", "G" }, { "g", "m", "g" }, { "b", "i", "b" }, }))
-        .addShape(
-            STRUCTURE_PIECE_LATER,
-            transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "b", "I", "b" }, }))
-        .addShape(
-            STRUCTURE_PIECE_LAST,
-            transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
-        .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
-        .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
-        .addElement('g', chainAllGlasses())
-        .addElement(
-            'e',
-            ofChain(
-                Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
-                ofBlock(GregTechAPI.sBlockCasings2, 0)))
-        .addElement(
-            'd',
-            buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess)
-                .dot(2)
-                .casingIndex(42)
-                .allowOnly(ForgeDirection.NORTH)
-                .buildAndChain(GregTechAPI.sBlockCasings3, 10))
-        .addElement(
-            'b',
-            buildHatchAdder(MTEAssemblyLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
-                .casingIndex(16)
-                .dot(3)
-                .allowOnly(ForgeDirection.DOWN)
-                .buildAndChain(
-                    ofBlock(GregTechAPI.sBlockCasings2, 0),
-                    ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 4)))
-        .addElement(
-            'I',
-            ofChain(
-                // all blocks nearby use solid steel casing, so let's use the texture of that
-                InputBus.newAny(16, 4, ForgeDirection.DOWN),
-                ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 3)))
-        .addElement('i', InputBus.newAny(16, 4, ForgeDirection.DOWN))
-        .addElement('o', OutputBus.newAny(16, 3, ForgeDirection.DOWN))
-        .build();
+            .<MTEAssemblyLine>builder()
+            .addShape(
+                    STRUCTURE_PIECE_FIRST,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "~", "l", "G" }, { "g", "m", "g" },
+                                    { "b", "i", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LATER,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
+                                    { "b", "I", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LAST,
+                    transpose(
+                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
+                                    { "o", "i", "b" }, }))
+            .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
+            .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
+            .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
+            .addElement('g', chainAllGlasses())
+            .addElement(
+                    'e',
+                    ofChain(
+                            Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                            ofBlock(GregTechAPI.sBlockCasings2, 0)))
+            .addElement(
+                    'd',
+                    buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess).dot(2).casingIndex(42)
+                            .allowOnly(ForgeDirection.NORTH).buildAndChain(GregTechAPI.sBlockCasings3, 10))
+            .addElement(
+                    'b',
+                    buildHatchAdder(MTEAssemblyLine.class)
+                            .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance).casingIndex(16).dot(3)
+                            .allowOnly(ForgeDirection.DOWN).buildAndChain(
+                                    ofBlock(GregTechAPI.sBlockCasings2, 0),
+                                    ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 4)))
+            .addElement(
+                    'I',
+                    ofChain(
+                            // all blocks nearby use solid steel casing, so let's use the texture of that
+                            InputBus.newAny(16, 4, ForgeDirection.DOWN),
+                            ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 3)))
+            .addElement('i', InputBus.newAny(16, 4, ForgeDirection.DOWN))
+            .addElement('o', OutputBus.newAny(16, 3, ForgeDirection.DOWN)).build();
 
     public MTEAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -133,55 +133,39 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, Assline, AL")
-            .addInfo("Used to craft complex machine parts (LuV+)")
-            .addInfo("Items & Fluids are inserted in NEI order, one per slice")
-            .addInfo("Does not run Assembler recipes")
-            .addInfo("Recipe tier is at most Energy Hatch tier + 1.")
-            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-            .addController("Either Grate Machine Casing on the first slice")
-            .addEnergyHatch("Any layer 4 casing", 1)
-            .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4)
-            .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any Grate Machine Casing NOT on the first slice",
-                2)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+        tt.addMachineType("Assembly Line, Assline, AL").addInfo("Used to craft complex machine parts (LuV+)")
+                .addInfo("Items & Fluids are inserted in NEI order, one per slice")
+                .addInfo("Does not run Assembler recipes").addInfo("Recipe tier is at most Energy Hatch tier + 1.")
+                .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
+                .addStructureInfo("From Bottom to Top, Left to Right")
+                .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+                .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
+                .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
+                .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
+                .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
+                .addController("Either Grate Machine Casing on the first slice").addEnergyHatch("Any layer 4 casing", 1)
+                .addMaintenanceHatch("Any layer 1 casing", 3).addInputBus("As specified on layer 1", 4)
+                .addInputHatch("Any layer 1 casing", 3)
+                .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
+                        "Any Grate Machine Casing NOT on the first slice",
+                        2)
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { BlockIcons.casingTexturePages[0][16],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
     }
@@ -244,11 +228,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (mInputBusses.size() < tRecipe.mInputs.length || mInputHatches.size() < tRecipe.mFluidInputs.length) {
                 if (GTValues.D1) {
                     GT_FML_LOGGER.info(
-                        "Not enough sources: Need ({}, {}), has ({}, {})",
-                        mInputBusses.size(),
-                        tRecipe.mInputs.length,
-                        mInputHatches.size(),
-                        tRecipe.mFluidInputs.length);
+                            "Not enough sources: Need ({}, {}), has ({}, {})",
+                            mInputBusses.size(),
+                            tRecipe.mInputs.length,
+                            mInputHatches.size(),
+                            tRecipe.mFluidInputs.length);
                 }
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
@@ -256,12 +240,9 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             int originalMaxParallel = 1;
             maxParallel = originalMaxParallel;
-            OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
-                .setEUt(averageVoltage)
-                .setAmperage(maxAmp)
-                .setAmperageOC(mEnergyHatches.size() != 1)
-                .setDuration(tRecipe.mDuration)
-                .setParallel(originalMaxParallel);
+            OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(averageVoltage)
+                    .setAmperage(maxAmp).setAmperageOC(mEnergyHatches.size() != 1).setDuration(tRecipe.mDuration)
+                    .setParallel(originalMaxParallel);
             maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {
@@ -270,10 +251,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             if (protectsExcessItem()) {
                 VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
-                voidProtectionHelper.setMachine(this)
-                    .setItemOutputs(new ItemStack[] { tRecipe.mOutput })
-                    .setMaxParallel(maxParallel)
-                    .build();
+                voidProtectionHelper.setMachine(this).setItemOutputs(new ItemStack[] { tRecipe.mOutput })
+                        .setMaxParallel(maxParallel).build();
                 maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
                 if (voidProtectionHelper.isItemFull()) {
                     result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
@@ -291,7 +270,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             int currentParallel = maxParallel;
 
             currentParallel = (int) GTRecipe.RecipeAssemblyLine
-                .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
+                    .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
 
             if (currentParallel <= 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -307,10 +286,10 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             // Check Fluid Inputs allign
             if (tRecipe.mFluidInputs.length > 0) {
                 currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
-                    mInputHatches,
-                    currentParallel,
-                    tRecipe.mFluidInputs,
-                    fluidsFromME);
+                        mInputHatches,
+                        currentParallel,
+                        tRecipe.mFluidInputs,
+                        fluidsFromME);
                 if (currentParallel <= 0) {
                     if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
                         result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -329,15 +308,14 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
-            calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-                .calculate();
+            calculator.setCurrentParallel(currentParallelBeforeBatchMode).calculate();
 
             double batchMultiplierMax = 1;
             // In case batch mode enabled
             if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
                 batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
                 batchMultiplierMax = Math
-                    .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
+                        .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
             int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 

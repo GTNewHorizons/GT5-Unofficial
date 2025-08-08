@@ -266,8 +266,7 @@ public enum ForgeOfGodsUpgrade {
         EnumMap<ForgeOfGodsUpgrade, List<ForgeOfGodsUpgrade>> dependencies = new EnumMap<>(ForgeOfGodsUpgrade.class);
         for (ForgeOfGodsUpgrade upgrade : VALUES) {
             for (ForgeOfGodsUpgrade prerequisite : upgrade.prerequisites) {
-                dependencies.computeIfAbsent(prerequisite, $ -> new ArrayList<>())
-                    .add(upgrade);
+                dependencies.computeIfAbsent(prerequisite, $ -> new ArrayList<>()).add(upgrade);
             }
         }
         for (var entry : dependencies.entrySet()) {
@@ -311,7 +310,7 @@ public enum ForgeOfGodsUpgrade {
         Builder b = u.apply(new Builder());
 
         this.prerequisites = b.prerequisites != null ? b.prerequisites.toArray(new ForgeOfGodsUpgrade[0])
-            : new ForgeOfGodsUpgrade[0];
+                : new ForgeOfGodsUpgrade[0];
         this.requireAllPrerequisites = b.requireAllPrerequisites;
         this.shardCost = b.shardCost;
         this.color = b.color;

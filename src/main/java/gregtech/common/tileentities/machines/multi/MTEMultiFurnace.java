@@ -63,22 +63,22 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMultiFurnace>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
-        .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
-        .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement('C', activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel)))
-        .addElement(
-            'b',
-            ofChain(
-                buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
-                    .casingIndex(CASING_INDEX)
-                    .dot(1)
-                    .build(),
-                ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX)))
-        .build();
+            .<MTEMultiFurnace>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" },
+                                    { "b~b", "bbb", "bbb" } }))
+            .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+            .addElement('C', activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel)))
+            .addElement(
+                    'b',
+                    ofChain(
+                            buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
+                                    .casingIndex(CASING_INDEX).dot(1).build(),
+                            ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX)))
+            .build();
 
     public MTEMultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -96,44 +96,25 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
-            .addInfo("Smelts 4 * 2^(Coil Tier) items in parallel")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front bottom")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-            .addOtherStructurePart("Heating Coils", "Middle layer")
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType("Furnace").addInfo("Smelts 4 * 2^(Coil Tier) items in parallel")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
+                .addController("Front bottom").addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
+                .addOtherStructurePart("Heating Coils", "Middle layer").addEnergyHatch("Any bottom casing", 1)
+                .addMaintenanceHatch("Any bottom casing", 1).addMufflerHatch("Top Middle", 2)
+                .addInputBus("Any bottom casing", 1).addOutputBus("Any bottom casing", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != facingDirection) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW).extFacing().glow().build() };
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX],
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW).extFacing().glow().build() };
     }
 
     @Override
@@ -166,10 +147,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         int maxParallel = this.mLevel;
         int originalMaxParallel = this.mLevel;
 
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
-            .setRecipeEUt(RECIPE_EUT)
-            .setDuration(RECIPE_DURATION)
-            .setParallel(originalMaxParallel);
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt).setRecipeEUt(RECIPE_EUT)
+                .setDuration(RECIPE_DURATION).setParallel(originalMaxParallel);
 
         maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 
@@ -194,8 +173,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
-        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-            .calculate();
+        calculator.setCurrentParallel(currentParallelBeforeBatchMode).calculate();
 
         double batchMultiplierMax = 1;
         // In case batch mode enabled
@@ -337,66 +315,64 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (final MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(-lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
-                + EnumChatFormatting.GREEN
-                + mLevel
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GTUtility.formatNumbers(-lEUt)
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(getMaxInputVoltage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GTUtility.getTier(getMaxInputVoltage())]
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
+                        + EnumChatFormatting.GREEN
+                        + mLevel
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + getAveragePollutionPercentage()
+                        + EnumChatFormatting.RESET
+                        + " %" };
     }
 
     @Override
@@ -417,7 +393,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

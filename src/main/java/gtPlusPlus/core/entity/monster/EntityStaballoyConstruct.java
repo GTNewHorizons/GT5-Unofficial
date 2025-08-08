@@ -16,27 +16,21 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     public EntityStaballoyConstruct(World world) {
         super(world);
         this.experienceValue = 250;
-        this.getNavigator()
-            .setBreakDoors(true);
-        this.getNavigator()
-            .setCanSwim(false);
-        this.getNavigator()
-            .setAvoidSun(false);
+        this.getNavigator().setBreakDoors(true);
+        this.getNavigator().setCanSwim(false);
+        this.getNavigator().setAvoidSun(false);
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-            .setBaseValue(500.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
-            .setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(500.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
     }
 
     @Override
     public boolean canAttackClass(Class<? extends Entity> clazz) {
-        return !this.getClass()
-            .equals(clazz);
+        return !this.getClass().equals(clazz);
     }
 
     @Override

@@ -26,12 +26,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     private ItemStack ae2CraftingIcon;
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
-        ITexture... aTextures) {
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription,
-        ITexture... aTextures) {
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -54,7 +54,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
 
         try {
             ITexture background;
@@ -143,8 +143,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     /**
-     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for
-     * structure check, while keeping {@link #mTier} for other uses.
+     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for structure
+     * check, while keeping {@link #mTier} for other uses.
      *
      * @return Tier used for multiblock structure
      */

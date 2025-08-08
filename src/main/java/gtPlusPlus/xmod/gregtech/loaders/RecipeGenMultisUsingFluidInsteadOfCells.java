@@ -30,12 +30,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
-            mItemsToIgnore.add(
-                new ItemStack(
-                    ItemList.Cell_Empty.get(1)
-                        .getItem(),
-                    1,
-                    8));
+            mItemsToIgnore.add(new ItemStack(ItemList.Cell_Empty.get(1).getItem(), 1, 8));
         }
     }
 
@@ -74,8 +69,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         init();
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
-        int aOriginalCount = aInputs.getAllRecipes()
-            .size();
+        int aOriginalCount = aInputs.getAllRecipes().size();
         ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
         recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
@@ -151,21 +145,21 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 }
 
                 if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
-                    && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
+                        && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
                     aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
                 GTRecipe aNewRecipe = new GTRecipe(
-                    false,
-                    aNewItemInputs,
-                    aNewItemOutputs,
-                    x.mSpecialItems,
-                    x.mChances,
-                    aNewFluidInputs,
-                    aNewFluidOutputs,
-                    x.mDuration,
-                    x.mEUt,
-                    x.mSpecialValue);
+                        false,
+                        aNewItemInputs,
+                        aNewItemOutputs,
+                        x.mSpecialItems,
+                        x.mChances,
+                        aNewFluidInputs,
+                        aNewFluidOutputs,
+                        x.mDuration,
+                        x.mEUt,
+                        x.mSpecialValue);
                 aNewRecipe.owners = x.owners == null ? null : new ArrayList<>(x.owners);
 
                 // add all recipes to an intermediate array
@@ -178,7 +172,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
         List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils
-            .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
+                .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);

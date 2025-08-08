@@ -73,29 +73,26 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final String[][] structure = new String[][] {
-        { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
-        { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
-        { "ABBBA", "B   B", "B   B", "B   B", "B   B", "B   B", "ABBBA" },
-        { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
-        { " CAC ", " ABA ", " ABA ", " ABA ", " ABA ", " ABA ", " CAC " } };
+            { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
+            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+            { "ABBBA", "B   B", "B   B", "B   B", "B   B", "B   B", "ABBBA" },
+            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+            { " CAC ", " ABA ", " ABA ", " ABA ", " ABA ", " ABA ", " CAC " } };
 
     private static final String STRUCTURE_PIECE_MAIN = "MAIN";
     private static final IStructureDefinition<MTETranscendentPlasmaMixer> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTETranscendentPlasmaMixer>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement(
-            'B',
-            buildHatchAdder(MTETranscendentPlasmaMixer.class)
-                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
-                .casingIndex(DIM_INJECTION_CASING)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
-        .build();
+            .<MTETranscendentPlasmaMixer>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
+            .addElement(
+                    'B',
+                    buildHatchAdder(MTETranscendentPlasmaMixer.class)
+                            .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
+                            .casingIndex(DIM_INJECTION_CASING).dot(1)
+                            .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
+            .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING)).build();
 
     private UUID ownerUUID;
 
@@ -120,26 +117,21 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs.")
-            .addInfo("This multiblock will run in parallel according to the amount set")
-            .addInfo("in the parallel menu. All inputs will scale, except time.")
-            .addInfo("All EU is deducted from wireless EU networks only.")
-            .beginStructureBlock(5, 7, 5, false)
-            .addController("Front Center")
-            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
-            .addCasingInfoExactly("Dimensional Bridge", 16, false)
-            .addCasingInfoRangeColored(
-                "Dimensional Injection Casing",
-                EnumChatFormatting.GRAY,
-                0,
-                33,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Dimensional Injection Casing", 1)
-            .addInputHatch("Any Dimensional Injection Casing", 1)
-            .addOutputHatch("Any Dimensional Injection Casing", 1)
-            .toolTipFinisher(AuthorColen);
+        tt.addMachineType("Transcendent Mixer, TPM").addInfo("Assisting in all your DTPF needs.")
+                .addInfo("This multiblock will run in parallel according to the amount set")
+                .addInfo("in the parallel menu. All inputs will scale, except time.")
+                .addInfo("All EU is deducted from wireless EU networks only.").beginStructureBlock(5, 7, 5, false)
+                .addController("Front Center").addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
+                .addCasingInfoExactly("Dimensional Bridge", 16, false)
+                .addCasingInfoRangeColored(
+                        "Dimensional Injection Casing",
+                        EnumChatFormatting.GRAY,
+                        0,
+                        33,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addInputBus("Any Dimensional Injection Casing", 1).addInputHatch("Any Dimensional Injection Casing", 1)
+                .addOutputHatch("Any Dimensional Injection Casing", 1).toolTipFinisher(AuthorColen);
         return tt;
     }
 
@@ -150,21 +142,13 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_ON)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FUSION1_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_OFF)
-                .extFacing()
-                .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING],
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_ON).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build() };
+            return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING],
+                    TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
         }
 
         return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING] };
@@ -194,9 +178,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                     finalConsumption = BigInteger.ZERO;
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipeEU);
                 }
-                maxParallel = availableEU.divide(recipeEU)
-                    .min(BigInteger.valueOf(maxParallel))
-                    .intValue();
+                maxParallel = availableEU.divide(recipeEU).min(BigInteger.valueOf(maxParallel)).intValue();
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -248,15 +230,15 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            HORIZONTAL_OFFSET,
-            VERTICAL_OFFSET,
-            DEPTH_OFFSET,
-            elementBudget,
-            env,
-            false,
-            true);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                HORIZONTAL_OFFSET,
+                VERTICAL_OFFSET,
+                DEPTH_OFFSET,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
@@ -295,21 +277,15 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(PARALLEL_WINDOW_ID);
+                widget.getContext().openSyncedWindow(PARALLEL_WINDOW_ID);
             }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16));
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GTUITextures.BUTTON_STANDARD);
+            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+            return ret.toArray(new IDrawable[0]);
+        }).addTooltip(translateToLocal("GT5U.tpm.parallelwindow")).setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 112)
+                .setSize(16, 16));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -323,29 +299,17 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
-                .setPos(3, 4)
-                .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> multiplier = (int) val)
-                    .setGetter(() -> multiplier)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(150, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> multiplier, (val) -> multiplier = val),
-                        builder));
+                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
+                        Alignment.BottomRight
+                                .getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                                .add(WIDTH - 3, 0).subtract(0, 10)));
+        builder.widget(TextWidget.localised("GTPP.CC.parallel").setPos(3, 4).setSize(150, 20)).widget(
+                new NumericWidget().setSetter(val -> multiplier = (int) val).setGetter(() -> multiplier)
+                        .setBounds(1, Integer.MAX_VALUE).setDefaultValue(1).setScrollValues(1, 4, 64)
+                        .setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setSize(150, 18)
+                        .setPos(4, 25).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD).attachSyncer(
+                                new FakeSyncWidget.IntegerSyncer(() -> multiplier, (val) -> multiplier = val),
+                                builder));
         return builder.build();
     }
 
@@ -364,21 +328,21 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + (mMaxProgresstime == 0 ? "0"
-                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-                + EnumChatFormatting.RESET
-                + " EU/t" };
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + (mMaxProgresstime == 0 ? "0"
+                                : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+                        + EnumChatFormatting.RESET
+                        + " EU/t" };
     }
 
     @Override

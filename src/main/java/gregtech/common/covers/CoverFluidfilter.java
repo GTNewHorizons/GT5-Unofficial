@@ -139,17 +139,13 @@ public class CoverFluidfilter extends Cover {
     protected @NotNull NBTBase saveDataToNbt() {
         NBTTagCompound tNBT = new NBTTagCompound();
         tNBT.setInteger("mFilterMode", mFilterMode);
-        if (mFluidID >= 0) tNBT.setString(
-            "mFluid",
-            FluidRegistry.getFluid(mFluidID)
-                .getName());
+        if (mFluidID >= 0) tNBT.setString("mFluid", FluidRegistry.getFluid(mFluidID).getName());
         return tNBT;
     }
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        byteBuf.writeByte(mFilterMode)
-            .writeInt(mFluidID);
+        byteBuf.writeByte(mFilterMode).writeInt(mFluidID);
     }
 
     @Override
@@ -189,8 +185,9 @@ public class CoverFluidfilter extends Cover {
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (coverSide == ForgeDirection.UNKNOWN) return false;
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
-            || (coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D && aZ < 0.625D
-            || (coverSide.offsetZ != 0)) {
+                || (coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D
+                        && aZ < 0.625D
+                || (coverSide.offsetZ != 0)) {
             final ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
 
@@ -199,8 +196,9 @@ public class CoverFluidfilter extends Cover {
                 final int aFluid = tFluid.getFluidID();
                 mFluidID = aFluid;
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GTUtility
-                    .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GTUtility.sendChatToPlayer(
+                        aPlayer,
+                        GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
             }
             return true;
         }

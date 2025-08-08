@@ -66,7 +66,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactory>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
@@ -74,54 +74,56 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final long RECIPE_EUT = 30;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEIntegratedOreFactory>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "           ", "           ", "       WWW ", "       WWW ", "           ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ", "           " },
-                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ", "           " },
-                    { "iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi", "iiiiii     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi", "iggggi     " },
-                    { "iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi", "iggggi     " },
-                    { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
-        .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 7))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('g', chainAllGlasses())
-        .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
-        .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('t', ofFrame(Materials.TungstenSteel))
-        .addElement(
-            'E',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
-                .casingIndex(CASING_INDEX1)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement(
-            'I',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus)
-                .casingIndex(CASING_INDEX1)
-                .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement(
-            'W',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
-                .casingIndex(CASING_INDEX2)
-                .dot(3)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-        .addElement(
-            'O',
-            buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
-                .casingIndex(CASING_INDEX2)
-                .dot(4)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-        .build();
+            .<MTEIntegratedOreFactory>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                            new String[][] {
+                                    { "           ", "           ", "       WWW ", "       WWW ", "           ",
+                                            "           " },
+                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
+                                            "           " },
+                                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ",
+                                            "           " },
+                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
+                                            "           " },
+                                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ",
+                                            "           " },
+                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
+                                            "           " },
+                                    { "iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi",
+                                            "iiiiii     " },
+                                    { "iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi",
+                                            "iggggi     " },
+                                    { "iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi",
+                                            "iggggi     " },
+                                    { "iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi",
+                                            "iggggi     " },
+                                    { "iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi",
+                                            "iggggi     " },
+                                    { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE",
+                                            "EEEEEE     " } }))
+            .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 7))
+            .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1)).addElement('g', chainAllGlasses())
+            .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
+            .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15)).addElement('t', ofFrame(Materials.TungstenSteel))
+            .addElement(
+                    'E',
+                    buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
+                            .casingIndex(CASING_INDEX1).dot(1).buildAndChain(GregTechAPI.sBlockCasings8, 7))
+            .addElement(
+                    'I',
+                    buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus).casingIndex(CASING_INDEX1).dot(2)
+                            .buildAndChain(GregTechAPI.sBlockCasings8, 7))
+            .addElement(
+                    'W',
+                    buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
+                            .casingIndex(CASING_INDEX2).dot(3).buildAndChain(GregTechAPI.sBlockCasings4, 1))
+            .addElement(
+                    'O',
+                    buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
+                            .casingIndex(CASING_INDEX2).dot(4).buildAndChain(GregTechAPI.sBlockCasings4, 1))
+            .build();
 
     private static final IntOpenHashSet isCrushedOre = new IntOpenHashSet();
     private static final IntOpenHashSet isCrushedPureOre = new IntOpenHashSet();
@@ -200,30 +202,22 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor, IOF")
-            .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do all ore processing in one step.")
-            .addInfo("Can process up to 1024 ores at a time.")
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-            .addInfo("Processing time is dependent on mode.")
-            .addInfo("Use a screwdriver to switch mode.")
-            .addInfo("Sneak click with screwdriver to void the stone dust.")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(6, 12, 11, false)
-            .addController("The third layer")
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Reinforced Glass", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addInputBus("Input ore/crushed ore", 2)
-            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-            .addMufflerHatch("Output Pollution", 3)
-            .addOutputBus("Output products", 4)
-            .toolTipFinisher();
+        tt.addMachineType("Ore Processor, IOF").addInfo("It is OP. I mean ore processor.")
+                .addInfo("Do all ore processing in one step.").addInfo("Can process up to 1024 ores at a time.")
+                .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
+                .addInfo("Processing time is dependent on mode.").addInfo("Use a screwdriver to switch mode.")
+                .addInfo("Sneak click with screwdriver to void the stone dust.")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(6, 12, 11, false)
+                .addController("The third layer")
+                .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
+                .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
+                .addCasingInfoExactly("Reinforced Glass", 48, false)
+                .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
+                .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
+                .addCasingInfoExactly("Steel Gear Box Casing", 16, false).addEnergyHatch("Any bottom Casing", 1)
+                .addMaintenanceHatch("Any bottom Casing", 1).addInputBus("Input ore/crushed ore", 2)
+                .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
+                .addMufflerHatch("Output Pollution", 3).addOutputBus("Output products", 4).toolTipFinisher();
         return tt;
     }
 
@@ -279,10 +273,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         int maxParallel = MAX_PARA;
         int originalMaxParallel = maxParallel;
 
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
-            .setRecipeEUt(RECIPE_EUT)
-            .setDuration(getTime(sMode))
-            .setParallel(originalMaxParallel);
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt).setRecipeEUt(RECIPE_EUT)
+                .setDuration(getTime(sMode)).setParallel(originalMaxParallel);
 
         maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 
@@ -316,10 +308,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isPureDust.contains(tID) || isImpureDust.contains(tID)
-                || isCrushedPureOre.contains(tID)
-                || isThermal.contains(tID)
-                || isCrushedOre.contains(tID)
-                || isOre.contains(tID)) {
+                    || isCrushedPureOre.contains(tID)
+                    || isThermal.contains(tID)
+                    || isCrushedOre.contains(tID)
+                    || isOre.contains(tID)) {
                 if (itemParallel + ore.stackSize <= currentParallel) {
                     itemParallel += ore.stackSize;
                 } else {
@@ -334,8 +326,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
-        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-            .calculate();
+        calculator.setCurrentParallel(currentParallelBeforeBatchMode).calculate();
 
         double batchMultiplierMax = 1;
         // In case batch mode enabled
@@ -361,10 +352,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             int tID = GTUtility.stackToInt(ore);
             if (tID == 0) continue;
             if (isPureDust.contains(tID) || isImpureDust.contains(tID)
-                || isCrushedPureOre.contains(tID)
-                || isThermal.contains(tID)
-                || isCrushedOre.contains(tID)
-                || isOre.contains(tID)) {
+                    || isCrushedPureOre.contains(tID)
+                    || isThermal.contains(tID)
+                    || isCrushedOre.contains(tID)
+                    || isOre.contains(tID)) {
                 if (remainingCost >= ore.stackSize) {
                     tOres.add(GTUtility.copy(ore));
                     remainingCost -= ore.stackSize;
@@ -441,12 +432,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
             GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+                    aPlayer,
+                    StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
             return;
         }
         sMode = (sMode + 1) % 6;
@@ -476,10 +467,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery().caching(false).items(aStack)
+                            .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -499,11 +488,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE))
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipeQuery().caching(false).items(aStack)
+                            .fluids(GTModHandler.getDistilledWater(Integer.MAX_VALUE)).find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -523,10 +509,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery()
-                        .caching(false)
-                        .items(aStack)
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.thermalCentrifugeRecipes.findRecipeQuery().caching(false)
+                            .items(aStack).find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -546,9 +530,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.centrifugeRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.centrifugeRecipes.findRecipeQuery().items(aStack).find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -568,9 +550,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.sifterRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.sifterRecipes.findRecipeQuery().items(aStack).find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -590,13 +570,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             for (ItemStack aStack : sMidProduct) {
                 int tID = GTUtility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GTRecipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipeQuery()
-                        .items(aStack)
-                        .fluids(getStoredFluids().toArray(new FluidStack[0]))
-                        .find();
+                    GTRecipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipeQuery().items(aStack)
+                            .fluids(getStoredFluids().toArray(new FluidStack[0])).find();
                     if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
-                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0)
-                            .copy();
+                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0).copy();
                         int tStored = getFluidAmount(tInputFluid);
                         int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
                         depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
@@ -644,9 +621,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 tOutput.add(GTUtility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
-        return tOutput.stream()
-            .filter(i -> (i != null && i.stackSize > 0))
-            .collect(Collectors.toList());
+        return tOutput.stream().filter(i -> (i != null && i.stackSize > 0)).collect(Collectors.toList());
     }
 
     private void doCompress(List<ItemStack> aList) {
@@ -678,7 +653,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1) && mMaintenanceHatches.size() <= 1
-            && !mMufflerHatches.isEmpty();
+                && !mMufflerHatches.isEmpty();
     }
 
     @Override
@@ -703,9 +678,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public String[] getInfoData() {
         List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.BLUE
-            + getCurrentParallelism()
-            + EnumChatFormatting.RESET;
+                + EnumChatFormatting.BLUE
+                + getCurrentParallelism()
+                + EnumChatFormatting.RESET;
         informationData.add(parallelism);
         informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
         informationData.addAll(getDisplayMode(sMode));
@@ -714,27 +689,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_FACTORY)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_FACTORY).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
     }
@@ -743,13 +706,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
         final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
-            .replace(" ", " " + AQUA);
+                .replace(" ", " " + AQUA);
         final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
-            .replace(" ", " " + AQUA);
+                .replace(" ", " " + AQUA);
         final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
         final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
         final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
-            .replace(" ", " " + AQUA);
+                .replace(" ", " " + AQUA);
         final String ARROW = " " + AQUA + "-> ";
 
         List<String> des = new ArrayList<>();
@@ -801,24 +764,24 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.BLUE
-                + tag.getInteger("currentParallelism")
-                + EnumChatFormatting.RESET);
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.BLUE
+                        + tag.getInteger("currentParallelism")
+                        + EnumChatFormatting.RESET);
         currenttip.addAll(getDisplayMode(tag.getInteger("ssMode")));
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
+        currenttip.add(
+                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
 
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("ssMode", sMode);
         tag.setBoolean("ssStone", sVoidStone);

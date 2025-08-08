@@ -113,8 +113,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
-     * overloads.
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
      * <br>
      * This texture will be overlaid on top of the block's base texture for that face.
      */
@@ -131,8 +130,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     /**
-     * This cover id should only be used to get the {@link CoverPlacer} from the {@link CoverRegistry}, or to
-     * compare 2 covers to see if they're of the same type.
+     * This cover id should only be used to get the {@link CoverPlacer} from the {@link CoverRegistry}, or to compare 2
+     * covers to see if they're of the same type.
      */
     public int getCoverID() {
         return coverID;
@@ -193,8 +192,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
-     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
-     * <br>
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads. <br>
      * This texture takes up the entire face on which it is rendered.
      */
     public ITexture getSpecialFaceTexture() {
@@ -334,11 +332,11 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         ICoverable tile = this.coveredTile.get();
         if (tile == null) return null;
         final CoverUIBuildContext buildContext = new CoverUIBuildContext(
-            player,
-            this.coverID,
-            this.coverSide,
-            tile,
-            false);
+                player,
+                this.coverID,
+                this.coverSide,
+                tile,
+                false);
         final ModularWindow window = this.createWindow(buildContext);
         if (window == null) return null;
         return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
@@ -346,11 +344,11 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     public ModularWindow createCoverWindow(EntityPlayer player) {
         final CoverUIBuildContext buildContext = new CoverUIBuildContext(
-            player,
-            coverID,
-            coverSide,
-            coveredTile.get(),
-            true);
+                player,
+                coverID,
+                coverSide,
+                coveredTile.get(),
+                true);
         return createWindow(buildContext);
     }
 
@@ -358,8 +356,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * If it lets you rightclick the Machine normally
      */
     public final boolean isGUIClickable() {
-        return CoverRegistry.getCoverPlacer(GTUtility.intToStack(coverID))
-            .isGuiClickable();
+        return CoverRegistry.getCoverPlacer(GTUtility.intToStack(coverID)).isGuiClickable();
     }
 
     public boolean hasCoverGUI() {
@@ -438,7 +435,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             if (GTGuis.GLOBAL_SWITCH_MUI2) {
                 gregtech.api.modularui2.CoverUIFactory.INSTANCE
-                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide);
+                        .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide);
             } else {
                 GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
             }
@@ -451,8 +448,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         adjustTickRateMultiplier(aPlayer.isSneaking());
 
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
+                aPlayer,
+                StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
     }
 
     /**
@@ -483,7 +480,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         // Mimic adjustTickRateMultiplier logic
         int simulatedTickRateAddition = clamp(tickRateAddition + 20);
         return tickRateAddition
-            == clamp(simulatedTickRateAddition - ((getMinimumTickRate() + simulatedTickRateAddition) % 20));
+                == clamp(simulatedTickRateAddition - ((getMinimumTickRate() + simulatedTickRateAddition) % 20));
     }
 
     /**

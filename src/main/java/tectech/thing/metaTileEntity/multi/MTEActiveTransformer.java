@@ -65,24 +65,25 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     // region structure
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
-                                                                               // Power Casing
+            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
+                                                                                   // Power Casing
     };
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
-        .<MTEActiveTransformer>builder()
-        .addShape(
-            "main",
-            new String[][] { { "111", "1~1", "111", }, { "111", "101", "111", }, { "111", "111", "111", }, })
-        .addElement('0', ofBlock(sBlockCasings1, 15))
-        .addElement(
-            '1',
-            buildHatchAdder(MTEActiveTransformer.class)
-                .atLeast(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti)
-                .casingIndex(BlockGTCasingsTT.textureOffset)
-                .dot(1)
-                .buildAndChain(onElementPass(t -> t.casingCount++, ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))))
-        .build();
+            .<MTEActiveTransformer>builder()
+            .addShape(
+                    "main",
+                    new String[][] { { "111", "1~1", "111", }, { "111", "101", "111", }, { "111", "111", "111", }, })
+            .addElement('0', ofBlock(sBlockCasings1, 15))
+            .addElement(
+                    '1',
+                    buildHatchAdder(MTEActiveTransformer.class)
+                            .atLeast(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti)
+                            .casingIndex(BlockGTCasingsTT.textureOffset).dot(1).buildAndChain(
+                                    onElementPass(
+                                            t -> t.casingCount++,
+                                            ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))))
+            .build();
     private int casingCount = 0;
 
     @Override
@@ -119,41 +120,41 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         eAmpereFlow = 0;
         mEUt = 0;
         return ePowerPass ? SimpleCheckRecipeResult.ofSuccess("routing")
-            : SimpleCheckRecipeResult.ofFailure("no_routing");
+                : SimpleCheckRecipeResult.ofFailure("no_routing");
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
-            // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
-                                                                                              // and from any
-                                                                                              // voltage
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
-                                                                                              // loss, HAYO!
-            .addTecTechHatchInfo()
-            .beginStructureBlock(3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
-                                                                                      // (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
-                translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
-                                                                                            // High Power Casing
-            .toolTipFinisher();
+                // Transformer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
+                                                                                                  // and from any
+                                                                                                  // voltage
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
+                                                                                                  // loss, HAYO!
+                .addTecTechHatchInfo().beginStructureBlock(3, 3, 3, false)
+                .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
+                .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
+                                                                                          // (minimum)
+                .addOtherStructurePart(
+                        translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
+                        translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
+                                                                                                // High Power Casing
+                .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
+                                                                                                // High Power Casing
+                .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][0],
-                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
+                    new TTRenderedExtendedFacingTexture(
+                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][0] };
     }

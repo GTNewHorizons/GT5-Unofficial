@@ -72,11 +72,11 @@ public class GTPacketRequestCoverData extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketRequestCoverData(
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt(),
-            ForgeDirection.getOrientation(aData.readByte()),
-            aData.readInt());
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt(),
+                ForgeDirection.getOrientation(aData.readByte()),
+                aData.readInt());
     }
 
     @Override
@@ -94,8 +94,7 @@ public class GTPacketRequestCoverData extends GTPacket {
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof CoverableTileEntity te) {
-                if (!te.isDead() && te.getCoverAtSide(side)
-                    .getCoverID() == coverID) {
+                if (!te.isDead() && te.getCoverAtSide(side).getCoverID() == coverID) {
                     te.issueCoverUpdate(side);
                 }
             }

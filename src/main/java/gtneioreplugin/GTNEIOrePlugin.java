@@ -25,10 +25,10 @@ import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5UndergroundFluidHelper;
 
 @Mod(
-    modid = GTNEIOrePlugin.MODID,
-    name = GTNEIOrePlugin.NAME,
-    version = GTNEIOrePlugin.VERSION,
-    dependencies = "required-after:gregtech;required-after:NotEnoughItems")
+        modid = GTNEIOrePlugin.MODID,
+        name = GTNEIOrePlugin.NAME,
+        version = GTNEIOrePlugin.VERSION,
+        dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
 
     static {
@@ -50,8 +50,7 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        instanceDir = event.getModConfigurationDirectory()
-            .getParentFile();
+        instanceDir = event.getModConfigurationDirectory().getParentFile();
     }
 
     @EventHandler

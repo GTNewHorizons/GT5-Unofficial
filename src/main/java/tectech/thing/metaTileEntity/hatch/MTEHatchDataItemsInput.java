@@ -43,17 +43,18 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory
-            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.of(
+                        EM_D_ACTIVE,
+                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            TextureFactory
+        return new ITexture[] { aBaseTexture, TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+                TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
@@ -63,13 +64,13 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -177,8 +178,8 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
-            translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
-            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
+                translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
     }
 
     @Override

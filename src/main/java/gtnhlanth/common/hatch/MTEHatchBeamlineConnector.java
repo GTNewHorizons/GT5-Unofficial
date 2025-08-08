@@ -94,17 +94,17 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + (this.dataPacket != null ? this.dataPacket.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
+                translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
+                        + EnumChatFormatting.AQUA
+                        + (this.dataPacket != null ? this.dataPacket.getContentString() : 0),
+                translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
+                        + EnumChatFormatting.RED
+                        + (this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { "Text description shouldn't be seen, report to Tec", "High speed fibre optics connector.",
-            EnumChatFormatting.AQUA + "Must be painted to work" };
+                EnumChatFormatting.AQUA + "Must be painted to work" };
     }
 }

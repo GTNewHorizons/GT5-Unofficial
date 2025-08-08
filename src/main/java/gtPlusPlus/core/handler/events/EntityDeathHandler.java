@@ -47,8 +47,11 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         mMobDropMap.put(aMobClass, aDataMap);
 
         Logger.INFO(
-            "[Loot] Registered " + aStack
-                .getDisplayName() + " (1-" + aMaxAmount + ") as a valid drop for " + aMobClass.getCanonicalName());
+                "[Loot] Registered " + aStack.getDisplayName()
+                        + " (1-"
+                        + aMaxAmount
+                        + ") as a valid drop for "
+                        + aMobClass.getCanonicalName());
 
         mInternalClassKeyCache.add(aMobClass);
     }
@@ -126,7 +129,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
     @Optional.Method(modid = Mods.ModIDs.MOBS_INFO)
     @Override
     public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
-        @NotNull MobRecipe recipe) {
+            @NotNull MobRecipe recipe) {
         ArrayList<Triple<ItemStack, Integer, Integer>> dropEntry = mMobDropMap.get(recipe.entity.getClass());
 
         if (dropEntry != null && !dropEntry.isEmpty()) {
@@ -140,13 +143,13 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
                 loot.stackSize = 1;
 
                 MobDrop drop = new MobDrop(
-                    loot,
-                    MobDrop.DropType.Normal,
-                    (int) (MobDrop.getChanceBasedOnFromTo(1, maxDrop) * 10000d * ((double) chance / 10000d)),
-                    null,
-                    null,
-                    false,
-                    false);
+                        loot,
+                        MobDrop.DropType.Normal,
+                        (int) (MobDrop.getChanceBasedOnFromTo(1, maxDrop) * 10000d * ((double) chance / 10000d)),
+                        null,
+                        null,
+                        false,
+                        false);
 
                 drop.clampChance();
 

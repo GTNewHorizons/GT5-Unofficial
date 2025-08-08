@@ -25,7 +25,7 @@ import gregtech.api.interfaces.metatileentity.IItemLockable;
 public class PhantomItemButton extends SlotWidget {
 
     public static final IDrawable[] FILTER_BACKGROUND = { ModularUITextures.ITEM_SLOT,
-        GTUITextures.OVERLAY_SLOT_FILTER };
+            GTUITextures.OVERLAY_SLOT_FILTER };
 
     public PhantomItemButton(final IItemLockable delegate) {
         super(BaseSlot.phantom(new PhantomItemDelegate(delegate), 0));

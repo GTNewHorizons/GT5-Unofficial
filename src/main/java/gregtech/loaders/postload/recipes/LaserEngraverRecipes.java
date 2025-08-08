@@ -13,45 +13,26 @@ public class LaserEngraverRecipes implements Runnable {
     @Override
     public void run() {
 
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1_000))
-            .requiresCleanRoom()
-            .duration(41 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_ZPM)
-            .addTo(laserEngraverRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
+                .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1_000)).requiresCleanRoom()
+                .duration(41 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_ZPM).addTo(laserEngraverRecipes);
+
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
+                .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1_000)).requiresCleanRoom()
+                .duration(41 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UV).addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1_000))
-            .requiresCleanRoom()
-            .duration(41 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_UV)
-            .addTo(laserEngraverRecipes);
+                .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
+                .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1_000)).requiresCleanRoom()
+                .duration(41 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UHV).addTo(laserEngraverRecipes);
 
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1_000))
-            .requiresCleanRoom()
-            .duration(41 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_UHV)
-            .addTo(laserEngraverRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
+                .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1_000)).requiresCleanRoom()
+                .duration(41 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UEV).addTo(laserEngraverRecipes);
 
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1_000))
-            .requiresCleanRoom()
-            .duration(41 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_UEV)
-            .addTo(laserEngraverRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1_000))
-            .requiresCleanRoom()
-            .duration(41 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_UIV)
-            .addTo(laserEngraverRecipes);
+        GTValues.RA.stdBuilder().fluidInputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
+                .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1_000)).requiresCleanRoom()
+                .duration(41 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UIV).addTo(laserEngraverRecipes);
 
     }
 }

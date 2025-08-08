@@ -58,25 +58,23 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
 
         @Override
         protected IStructureDefinition<MTEDieselEngine> computeValue(Class<?> type) {
-            return StructureDefinition.<MTEDieselEngine>builder()
-                .addShape(
+            return StructureDefinition.<MTEDieselEngine>builder().addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
-                        new String[][] { { "---", "iii", "chc", "chc", "ccc", }, { "---", "i~i", "hgh", "hgh", "cdc", },
-                            { "---", "iii", "chc", "chc", "ccc", }, }))
-                .addElement('i', lazy(t -> ofBlock(t.getIntakeBlock(), t.getIntakeMeta())))
-                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                .addElement('g', lazy(t -> ofBlock(t.getGearboxBlock(), t.getGearboxMeta())))
-                .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 2)))
-                .addElement(
-                    'h',
-                    lazy(
-                        t -> buildHatchAdder(MTEDieselEngine.class)
-                            .atLeast(InputHatch, InputHatch, InputHatch, Muffler, Maintenance)
-                            .casingIndex(t.getCasingTextureIndex())
-                            .dot(1)
-                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
-                .build();
+                            new String[][] { { "---", "iii", "chc", "chc", "ccc", },
+                                    { "---", "i~i", "hgh", "hgh", "cdc", }, { "---", "iii", "chc", "chc", "ccc", }, }))
+                    .addElement('i', lazy(t -> ofBlock(t.getIntakeBlock(), t.getIntakeMeta())))
+                    .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                    .addElement('g', lazy(t -> ofBlock(t.getGearboxBlock(), t.getGearboxMeta())))
+                    .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 2)))
+                    .addElement(
+                            'h',
+                            lazy(
+                                    t -> buildHatchAdder(MTEDieselEngine.class)
+                                            .atLeast(InputHatch, InputHatch, InputHatch, Muffler, Maintenance)
+                                            .casingIndex(t.getCasingTextureIndex()).dot(1)
+                                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                    .build();
         }
     };
     protected int fuelConsumption = 0;
@@ -96,50 +94,34 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator, LCE")
-            .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
-            .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-            .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
-            .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-            .addInputHatch("Diesel Fuel, next to a Gear Box", 1)
-            .addInputHatch("Lubricant, next to a Gear Box", 1)
-            .addInputHatch("Oxygen, optional, next to a Gear Box", 1)
-            .toolTipFinisher();
+                .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
+                .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
+                .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
+                .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
+                .addInfo("You need to wait for it to reach 300% to output full power")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 4, false)
+                .addController("Front center").addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
+                .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
+                .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
+                .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
+                .addDynamoHatch("Back center", 2).addMaintenanceHatch("One of the casings next to a Gear Box", 1)
+                .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
+                .addInputHatch("Diesel Fuel, next to a Gear Box", 1).addInputHatch("Lubricant, next to a Gear Box", 1)
+                .addInputHatch("Oxygen, optional, next to a Gear Box", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][50],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][50],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { casingTexturePages[0][50] };
     }
@@ -208,8 +190,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
             double boostedOutput = 0;
             double extraFuelFraction = 0;
             for (FluidStack tFluid : tFluids) {
-                GTRecipe tRecipe = getRecipeMap().getBackend()
-                    .findFuel(tFluid);
+                GTRecipe tRecipe = getRecipeMap().getBackend().findFuel(tFluid);
                 if (tRecipe == null) continue;
                 fuelValue = tRecipe.mSpecialValue;
 
@@ -246,7 +227,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
                 if ((mRuntime % 72 == 0 || mRuntime == 0)
-                    && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
+                        && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel
@@ -270,7 +251,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1) && !mMufflerHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
+                && mMaintenanceHatches.size() == 1;
     }
 
     public Block getCasingBlock() {
@@ -341,59 +322,57 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(fuelRemaining)
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                getIdealStatus() == getRepairStatus()
+                        ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
+                                + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
+                                + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.engine.output") + ": "
+                        + EnumChatFormatting.RED
+                        + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(fuelConsumption)
+                        + EnumChatFormatting.RESET
+                        + " L/t",
+                StatCollector.translateToLocal("GT5U.engine.value") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(fuelValue)
+                        + EnumChatFormatting.RESET
+                        + " EU/L",
+                StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                        + EnumChatFormatting.GOLD
+                        + GTUtility.formatNumbers(fuelRemaining)
+                        + EnumChatFormatting.RESET
+                        + " L",
+                StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + (mEfficiency / 100F)
+                        + EnumChatFormatting.YELLOW
+                        + " %",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                        + EnumChatFormatting.GREEN
+                        + getAveragePollutionPercentage()
+                        + EnumChatFormatting.RESET
+                        + " %" };
     }
 
     @Override

@@ -34,14 +34,15 @@ public class MTEHatchEnergyMulti extends MTEHatch {
 
     public MTEHatchEnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
-                translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
-                translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
+                        translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
+                        translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
         Amperes = maxAmperes = aAmp;
     }
 
@@ -51,7 +52,7 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     }
 
     public MTEHatchEnergyMulti(int aID, String aName, String aNameRegional, int aTier, int i, String[] description,
-        int aAmp) {
+            int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, description);
         Amperes = maxAmperes = aAmp;
     }
@@ -122,32 +123,30 @@ public class MTEHatchEnergyMulti extends MTEHatch {
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("amperage", Amperes);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
-                    accessor.getNBTData()
-                        .getLong("amperage") * V[mTier])
-                + EnumChatFormatting.RESET
-                + " EU/t");
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(accessor.getNBTData().getLong("amperage") * V[mTier])
+                        + EnumChatFormatting.RESET
+                        + " EU/t");
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] { translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
-            + EnumChatFormatting.RESET
-            + " EU/t" };
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(Amperes * V[mTier])
+                + EnumChatFormatting.RESET
+                + " EU/t" };
     }
 
     @Override
@@ -157,13 +156,13 @@ public class MTEHatchEnergyMulti extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 }

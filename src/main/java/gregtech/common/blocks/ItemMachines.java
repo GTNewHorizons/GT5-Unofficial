@@ -75,16 +75,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
                 if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
+                        && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
                     final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
+                            .getSecondaryDescription();
                     addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
                 }
                 {
                     final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
                     final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
+                            && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
+                                    : "";
                     addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
                     tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
@@ -92,29 +92,29 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                                translateToLocalFormatted(
+                                        "gt.tileentity.eup_in",
+                                        GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
+                                        GTUtility.getColoredTierNameFromTier(inputTier)));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                                translateToLocalFormatted(
+                                        "gt.tileentity.eup_out",
+                                        GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
+                                        GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                                translateToLocalFormatted(
+                                        "gt.tileentity.eup_amount",
+                                        GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
+                            translateToLocalFormatted(
+                                    "gt.tileentity.eup_store",
+                                    GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -129,10 +129,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
                     aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.colored",
-                            Dyes.get(aNBT.getByte("mColor") - 1).formatting,
-                            Dyes.get(aNBT.getByte("mColor") - 1).mName));
+                            translateToLocalFormatted(
+                                    "gt.tileentity.colored",
+                                    Dyes.get(aNBT.getByte("mColor") - 1).formatting,
+                                    Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
         } catch (Throwable e) {
@@ -143,7 +143,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     }
 
     private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
-        String aSuffix) {
+            String aSuffix) {
         if (aDescription == null) return;
         for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
             String tDescLine = aDescription[i];
@@ -160,8 +160,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tRep[j / 2] = tSplitStrings[j];
                 }
                 final String tTranslated = formatStringSafe(
-                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
-                    (Object[]) tRep);
+                        GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
+                        (Object[]) tRep);
                 if (aList != null) aList.add(tTranslated);
             } else {
                 String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
@@ -175,10 +175,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
-                .getMetaTileEntity();
+                    .getMetaTileEntity();
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
-                    .getSecondaryDescription();
+                        .getSecondaryDescription();
                 addDescription(null, tSecondaryDescription, aDamage, "_Secondary");
             }
             addDescription(null, tMetaTileEntity.getDescription(), aDamage, "");
@@ -202,7 +202,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
-            && GregTechAPI.METATILEENTITIES[aDamage] != null) {
+                && GregTechAPI.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
             if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe itemPipe) {
                 aMaterial = itemPipe.mMaterial;
@@ -226,15 +226,15 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         super.onCreated(aStack, aWorld, aPlayer);
         final short tDamage = (short) getDamage(aStack);
-        if ((tDamage < 0)
-            || ((tDamage >= GregTechAPI.METATILEENTITIES.length) && (GregTechAPI.METATILEENTITIES[tDamage] != null))) {
+        if ((tDamage < 0) || ((tDamage >= GregTechAPI.METATILEENTITIES.length)
+                && (GregTechAPI.METATILEENTITIES[tDamage] != null))) {
             GregTechAPI.METATILEENTITIES[tDamage].onCreated(aStack, aWorld, aPlayer);
         }
     }
 
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
+            int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         final short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
@@ -247,11 +247,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
             if (aWorld.getBlock(aX, aY, aZ) != this.field_150939_a) {
                 throw new GTItsNotMyFaultException(
-                    "Failed to place Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
+                        "Failed to place Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
             if (aWorld.getBlockMetadata(aX, aY, aZ) != tMetaData) {
                 throw new GTItsNotMyFaultException(
-                    "Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
+                        "Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
             final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null) {
@@ -260,8 +260,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
-                tTileEntity.getMetaTileEntity()
-                    .initDefaultModes(aStack.getTagCompound());
+                tTileEntity.getMetaTileEntity().initDefaultModes(aStack.getTagCompound());
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
@@ -290,7 +289,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         final short tDamage = (short) getDamage(aStack);
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
         if (GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperChest
-            || GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperTank) {
+                || GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperTank) {
             final NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
             if (tNBT.hasNoTags()) {
@@ -298,7 +297,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
             if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0) || (tNBT.hasKey("mFluid")
-                && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
+                    && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
                 final FluidStack tFluid = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
                 int tEffectDuration = 1200;
                 if (tFluid != null) {

@@ -22,7 +22,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     int mRestRF = 0;
 
     public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+            ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, side, aConsumers);
     }
 
@@ -41,7 +41,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
             return ampsUsed;
         }
         if (GregTechAPI.mRFExplosions && GregTechAPI.sMachineExplosions
-            && ((IEnergyReceiver) mTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600L) {
+                && ((IEnergyReceiver) mTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600L) {
             explode(rfOut);
         }
         return 0;
@@ -58,11 +58,8 @@ public class NodeEnergyReceiver extends ConsumerNode {
             if (GregTechAPI.sMachineExplosions) if (GTMod.proxy.mPollution)
                 Pollution.addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GTMod.proxy.mPollutionOnExplosion);
 
-            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
-                .setSmoking(true)
-                .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
-                .setWorld(tWorld)
-                .run();
+            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength).setSmoking(true)
+                    .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5).setWorld(tWorld).run();
         }
     }
 }

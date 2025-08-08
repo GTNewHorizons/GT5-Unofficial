@@ -107,17 +107,11 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
         overlays[INPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT);
         overlays[OUTPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK);
         overlays[SIDE_UP_DOWN_INDEX] = TextureFactory.of(
-            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN),
+                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN_GLOW).glow().build());
         overlays[SIDE_LEFT_RIGHT_INDEX] = TextureFactory.of(
-            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT_GLOW)
-                .glow()
-                .build());
+                TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT),
+                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT_GLOW).glow().build());
 
         return overlays;
     }

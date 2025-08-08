@@ -230,9 +230,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+                && mInputHatches.size() > 0
+                && eInputData.size() > 0
+                && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
     }
 
     @Override
@@ -246,13 +246,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
         for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
-            for (int i = 0; i < bus.getBaseMetaTileEntity()
-                .getSizeInventory(); i++) {
-                ItemStack stack = bus.getBaseMetaTileEntity()
-                    .getStackInSlot(i);
+            for (int i = 0; i < bus.getBaseMetaTileEntity().getSizeInventory(); i++) {
+                ItemStack stack = bus.getBaseMetaTileEntity().getStackInSlot(i);
                 if (stack != null && stack.getItem() == ItemList.DysonSwarmModule.getItem()
-                    && stack.getItemDamage() == 0
-                    && moduleCount < IGConfig.dysonSwarm.maxModules + 1) {
+                        && stack.getItemDamage() == 0
+                        && moduleCount < IGConfig.dysonSwarm.maxModules + 1) {
                     int usedStackSize = Math.min(stack.stackSize, IGConfig.dysonSwarm.maxModules - moduleCount);
                     moduleCount += usedStackSize;
                     stack.stackSize -= usedStackSize;
@@ -280,9 +278,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         }
 
         moduleCount -= moduleCount * (2 * IGConfig.dysonSwarm.destroyModuleChance)
-            / (Math.exp(-IGConfig.dysonSwarm.destroyModuleA * (moduleCount - 1)) + Math.exp(
-                IGConfig.dysonSwarm.destroyModuleB
-                    * Math.min(eAvailableData, (long) IGConfig.dysonSwarm.destroyModuleMaxCPS)));
+                / (Math.exp(-IGConfig.dysonSwarm.destroyModuleA * (moduleCount - 1)) + Math.exp(
+                        IGConfig.dysonSwarm.destroyModuleB
+                                * Math.min(eAvailableData, (long) IGConfig.dysonSwarm.destroyModuleMaxCPS)));
 
         if (moduleCount < 0) {
             moduleCount = 0;
@@ -315,13 +313,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             if (tHatch.maxEUOutput() < euVar && !allowMixedVoltages) {
                 explodeMultiblock();
             }
-            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
+            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity().getStoredEU();
             if (diff > 0) {
                 if (euVar <= diff) {
-                    tHatch.setEUVar(
-                        tHatch.getBaseMetaTileEntity()
-                            .getStoredEU() + euVar);
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                     return true;
                 }
                 tHatch.setEUVar(tHatch.maxEUStore());
@@ -332,13 +327,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             if (tHatch.maxEUOutput() < euVar && !allowMixedVoltages) {
                 explodeMultiblock();
             }
-            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
+            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity().getStoredEU();
             if (diff > 0) {
                 if (euVar <= diff) {
-                    tHatch.setEUVar(
-                        tHatch.getBaseMetaTileEntity()
-                            .getStoredEU() + euVar);
+                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                     return true;
                 }
                 tHatch.setEUVar(tHatch.maxEUStore());
@@ -351,20 +343,20 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         ItemStack heldItem = aPlayer.getHeldItem();
 
         // Check if the player is holding a plunger
         if (heldItem == null || heldItem.getItem() != MetaGeneratedTool01.INSTANCE
-            || heldItem.getItemDamage() != IDMetaTool01.PLUNGER.ID) {
+                || heldItem.getItemDamage() != IDMetaTool01.PLUNGER.ID) {
             return super.onRightclick(aBaseMetaTileEntity, aPlayer);
         }
 
         // Setup
         int prevCount = this.moduleCount;
         int maxReduction = (int) Math.min(
-            this.moduleCount,
-            MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
+                this.moduleCount,
+                MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
         ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
 
         // Fill player inventory
@@ -374,7 +366,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         // front of the controller
         if (modules.stackSize > 0 && aPlayer.isSneaking()) {
             aPlayer.worldObj.spawnEntityInWorld(
-                new EntityItem(aPlayer.worldObj, aPlayer.posX, aPlayer.posY + 0.5, aPlayer.posZ, modules));
+                    new EntityItem(aPlayer.worldObj, aPlayer.posX, aPlayer.posY + 0.5, aPlayer.posZ, modules));
 
             // Set moduleCount based on the number of ejected modules and damage the plunger
             this.moduleCount = 0;
@@ -392,19 +384,15 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      ****************/
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive)
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE), TextureFactory.builder()
-                        .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+                        TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE),
+                        TextureFactory.builder().addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW).glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT), TextureFactory.builder()
-                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW)
-                    .glow()
-                    .build() };
+                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT),
+                    TextureFactory.builder().addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW).glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER) };
     }
@@ -416,82 +404,75 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc2",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc3",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc5",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-                    IGConfig.dysonSwarm.getCoolantStack()
-                        .getLocalizedName()))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(16, 20, 16, false)
-            .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
-            .addInputBus("1 - 11", 2)
-            .addInputHatch("1 - 11", 2)
-            .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4)
-            .addStructureInfo("")
-            .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.receiver.dish"), 81, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.deployment.base"), 62, 72, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.core"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.magnet"), 32, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.control.base"), 115, 138, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.primary"), 20, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.secondary"), 12, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.toroid"), 128, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.floor"), 256, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.coil"), 9, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.hermetic"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameTitanium"), 16, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameHSSS"), 23, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameUHVBase"), 64, false)
-            .toolTipFinisher();
+                .addInfo(
+                        translateToLocalFormatted(
+                                "gt.blockmachines.multimachine.ig.dyson.desc2",
+                                getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
+                .addInfo(
+                        translateToLocalFormatted(
+                                "gt.blockmachines.multimachine.ig.dyson.desc3",
+                                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+                                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+                                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
+                .addInfo(
+                        translateToLocalFormatted(
+                                "gt.blockmachines.multimachine.ig.dyson.desc5",
+                                getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+                                IGConfig.dysonSwarm.getCoolantStack().getLocalizedName()))
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7")).addTecTechHatchInfo()
+                .beginStructureBlock(16, 20, 16, false).addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
+                .addInputBus("1 - 11", 2).addInputHatch("1 - 11", 2)
+                .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4).addStructureInfo("")
+                .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
+                .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.receiver.dish"), 81, false)
+                .addCasingInfoRange(translateToLocal("ig.dyson.structure.deployment.base"), 62, 72, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.core"), 1, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.magnet"), 32, false)
+                .addCasingInfoRange(translateToLocal("ig.dyson.structure.control.base"), 115, 138, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.primary"), 20, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.secondary"), 12, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.toroid"), 128, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.floor"), 256, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.coil"), 9, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.hermetic"), 1, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameTitanium"), 16, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameHSSS"), 23, false)
+                .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameUHVBase"), 64, false)
+                .toolTipFinisher();
         return tt;
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + GTUtility.formatNumbers(powerFactor * 100.0)
-                + "%"
-                + RESET,
-            "Theoretical Output: " + YELLOW
-                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-                + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
-            "---------------------------------------------" };
+                "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
+                "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
+                        + GTUtility.formatNumbers(powerFactor * 100.0)
+                        + "%"
+                        + RESET,
+                "Theoretical Output: " + YELLOW
+                        + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
+                        + RESET
+                        + " EU/t",
+                "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
+                "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
+                "---------------------------------------------" };
     }
 
     /******************
      * HELPER METHODS *
      ******************/
     public double getPowerFactor() {
-        WorldProvider provider = this.getBaseMetaTileEntity()
-            .getWorld().provider;
+        WorldProvider provider = this.getBaseMetaTileEntity().getWorld().provider;
 
         if (provider instanceof IOrbitDimension orbitDimension) {
             return IGConfig.dysonSwarm.getPowerFactor(orbitDimension.getPlanetToOrbit());
         }
 
-        String className = provider.getClass()
-            .getName();
+        String className = provider.getClass().getName();
         return switch (className) {
             case "me.eigenraven.personalspace.world.PersonalWorldProvider" -> IGConfig.dysonSwarm.getPowerFactor("PS");
             default -> IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));

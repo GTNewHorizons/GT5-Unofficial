@@ -44,7 +44,7 @@ public class ItemFluidDisplay extends GTGenericItem {
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
             String tChemicalFormula = getChemicalFormula(
-                new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
+                    new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
             if (!tChemicalFormula.isEmpty())
                 aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
         }
@@ -59,21 +59,24 @@ public class ItemFluidDisplay extends GTGenericItem {
             long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
             if (tToolTipAmount > 0L) {
                 aList.add(
-                    EnumChatFormatting.BLUE + StatCollector
-                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", GTUtility.formatNumbers(tToolTipAmount))
-                        + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
+                                "GT5U.tooltip.fluid.amount",
+                                GTUtility.formatNumbers(tToolTipAmount)) + EnumChatFormatting.GRAY);
             }
             aList.add(
-                EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
-                    "GT5U.tooltip.fluid.temperature",
-                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.RED
+                            + StatCollector.translateToLocalFormatted(
+                                    "GT5U.tooltip.fluid.temperature",
+                                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat")))
+                            + EnumChatFormatting.GRAY);
             aList.add(
-                EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocalFormatted(
-                        "GT5U.tooltip.fluid.stat",
-                        aNBT.getBoolean("mFluidState") ? StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.gas")
-                            : StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.liquid"))
-                    + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.GREEN
+                            + StatCollector.translateToLocalFormatted(
+                                    "GT5U.tooltip.fluid.stat",
+                                    aNBT.getBoolean("mFluidState")
+                                            ? StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.gas")
+                                            : StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.liquid"))
+                            + EnumChatFormatting.GRAY);
         }
     }
 
@@ -83,12 +86,8 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @Override
     public IIcon getIconFromDamage(int aMetaData) {
-        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER)
-            .filter(Objects::nonNull)
-            .map(Fluid::getStillIcon)
-            .filter(Objects::nonNull)
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
+        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER).filter(Objects::nonNull)
+                .map(Fluid::getStillIcon).filter(Objects::nonNull).findFirst().orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -131,8 +130,7 @@ public class ItemFluidDisplay extends GTGenericItem {
                         } else {
                             if (!tMaterial.mChemicalFormula.isEmpty()) {
                                 // Check if its a werkstoff. If so, use that tooltip instead
-                                Werkstoff w = WerkstoffLoader.fluids.inverse()
-                                    .get(fluid);
+                                Werkstoff w = WerkstoffLoader.fluids.inverse().get(fluid);
                                 if (w != null) {
                                     return w.getLocalizedToolTip();
                                 }
@@ -182,10 +180,8 @@ public class ItemFluidDisplay extends GTGenericItem {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return Materials.getRealMaterial(
-                    tOreDictName.replace("cell", "")
-                        .replace("Molten", "")
-                        .replace("Plasma", ""));
+                return Materials
+                        .getRealMaterial(tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
             }
         }
         return Materials._NULL;

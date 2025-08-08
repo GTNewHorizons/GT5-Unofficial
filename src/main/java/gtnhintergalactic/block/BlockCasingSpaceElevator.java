@@ -64,13 +64,13 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
     public void registerBlockIcons(IIconRegister iconRegister) {
         IconSECasing0 = iconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/BaseCasing");
         IconSECasing1[0] = iconRegister
-            .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure");
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure");
         IconSECasing1[1] = iconRegister
-            .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure_Side");
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure_Side");
         IconSECasing2[0] = iconRegister
-            .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure");
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure");
         IconSECasing2[1] = iconRegister
-            .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure_Side");
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure_Side");
     }
 
     /**

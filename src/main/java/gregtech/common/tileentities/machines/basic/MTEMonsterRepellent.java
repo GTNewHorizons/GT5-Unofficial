@@ -24,48 +24,43 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     public MTEMonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            "Repels nasty Creatures. Range: " + (4 + (12 * aTier))
-                + " unpowered / "
-                + (16 + (48 * aTier))
-                + " powered. Costs "
-                + (1L << (aTier * 2))
-                + " EU/t");
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                "Repels nasty Creatures. Range: " + (4 + (12 * aTier))
+                        + " unpowered / "
+                        + (16 + (48 * aTier))
+                        + " powered. Costs "
+                        + (1L << (aTier * 2))
+                        + " EU/t");
     }
 
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-        ITexture[][][] aTextures) {
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMonsterRepellent(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+                this.mName,
+                this.mTier,
+                this.mInventory.length,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
+                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build() };
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build() };
     }
 
     @Override
@@ -74,7 +69,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
         if (mte.isAllowedToWork()) {
             final int prevRange = mRange;
             if (mte.isUniversalEnergyStored(getMinimumStoredEU())
-                && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
+                    && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
                 mRange = getRepellentRange(mTier, true);
             } else {
                 mRange = getRepellentRange(mTier, false);
@@ -148,13 +143,13 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 

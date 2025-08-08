@@ -10,11 +10,10 @@ import gregtech.api.factory.IFactoryGrid;
 import gregtech.api.factory.IFactoryNetwork;
 
 /**
- * A pretty basic factory network.
- * This doesn't do much beyond tracking elements and components.
+ * A pretty basic factory network. This doesn't do much beyond tracking elements and components.
  */
 public class StandardFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElement, TGrid>, TElement extends IFactoryElement<TElement, TSelf, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TSelf>>
-    implements IFactoryNetwork<TSelf, TElement, TGrid> {
+        implements IFactoryNetwork<TSelf, TElement, TGrid> {
 
     public final HashSet<TElement> elements = new HashSet<>();
     public final HashMap<Class<?>, Collection<Object>> components = new HashMap<>();
@@ -40,8 +39,7 @@ public class StandardFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElemen
     }
 
     private void addComponentImpl(Class<?> iface, Object impl) {
-        components.computeIfAbsent(iface, x -> new HashSet<>())
-            .add(impl);
+        components.computeIfAbsent(iface, x -> new HashSet<>()).add(impl);
     }
 
     public <TIface, TImpl extends TIface> void addComponent(Class<TIface> iface, TImpl impl) {

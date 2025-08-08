@@ -33,18 +33,16 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("network", network == null ? "null" : network.toString());
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+        currenttip.add("Network: " + accessor.getNBTData().getString("network"));
     }
 
     @Override

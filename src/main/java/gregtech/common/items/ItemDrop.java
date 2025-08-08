@@ -108,102 +108,80 @@ public class ItemDrop extends Item {
 
         tDrop = getStackForType(DropType.OIL);
         RecipeManagers.squeezerManager.addRecipe(
-            40,
-            new ItemStack[] { tDrop },
-            Materials.OilHeavy.getFluid(100L),
-            GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
-            30);
+                40,
+                new ItemStack[] { tDrop },
+                Materials.OilHeavy.getFluid(100L),
+                GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
+                30);
         tDrop = getStackForType(DropType.COOLANT);
         RecipeManagers.squeezerManager.addRecipe(
-            40,
-            new ItemStack[] { tDrop },
-            GTModHandler.getIC2Coolant(100),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
-            30);
+                40,
+                new ItemStack[] { tDrop },
+                GTModHandler.getIC2Coolant(100),
+                GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
+                30);
         tDrop = getStackForType(DropType.HOT_COOLANT);
         RecipeManagers.squeezerManager.addRecipe(
-            40,
-            new ItemStack[] { tDrop },
-            new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
-            30);
+                40,
+                new ItemStack[] { tDrop },
+                new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
+                GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
+                30);
         tDrop = getStackForType(DropType.SNOW_QUEEN);
         addProcessMV(
-            tDrop,
-            Materials.FierySteel.getFluid(200L),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
-            1500,
-            48);
+                tDrop,
+                Materials.FierySteel.getFluid(200L),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
+                1500,
+                48);
         tDrop = getStackForType(DropType.LAPIS);
         RecipeManagers.squeezerManager.addRecipe(
-            400,
-            new ItemStack[] { tDrop },
-            GTModHandler.getIC2Coolant(100),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
-            30);
+                400,
+                new ItemStack[] { tDrop },
+                GTModHandler.getIC2Coolant(100),
+                GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
+                30);
         tDrop = getStackForType(DropType.HYDRA);
         addProcessMV(
-            tDrop,
-            Materials.FierySteel.getFluid(50L),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
-            3000,
-            8);
+                tDrop,
+                Materials.FierySteel.getFluid(50L),
+                GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
+                3000,
+                8);
         tDrop = getStackForType(DropType.OXYGEN);
         RecipeManagers.squeezerManager.addRecipe(
-            400,
-            new ItemStack[] { tDrop },
-            Materials.LiquidOxygen.getGas(100),
-            GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
-            30);
+                400,
+                new ItemStack[] { tDrop },
+                Materials.LiquidOxygen.getGas(100),
+                GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
+                30);
         tDrop = getStackForType(DropType.ENDERGOO);
         if (HardcoreEnderExpansion.isModLoaded())
             addProcessHV(tDrop, new FluidStack(FluidRegistry.getFluid("endergoo"), 500), GTValues.NI, 1000);
     }
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .itemOutputs(aOutput2)
-            .outputChances(aChance)
-            .fluidOutputs(aOutput)
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(aEUt)
-            .addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput2).outputChances(aChance).fluidOutputs(aOutput)
+                .duration(1 * SECONDS + 12 * TICKS).eut(aEUt).addTo(fluidExtractionRecipes);
     }
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration,
-        int aEUt) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .itemOutputs(aOutput2)
-            .outputChances(aChance)
-            .fluidOutputs(aOutput)
-            .duration(aDuration)
-            .eut(aEUt)
-            .addTo(fluidExtractionRecipes);
+            int aEUt) {
+        GTValues.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput2).outputChances(aChance).fluidOutputs(aOutput)
+                .duration(aDuration).eut(aEUt).addTo(fluidExtractionRecipes);
     }
 
     public void addProcessMV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .itemOutputs(aOutput2)
-            .outputChances(aChance)
-            .fluidOutputs(aOutput)
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(aEUt)
-            .addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput2).outputChances(aChance).fluidOutputs(aOutput)
+                .duration(6 * SECONDS + 8 * TICKS).eut(aEUt).addTo(fluidExtractionRecipes);
     }
 
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
         GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
         recipeBuilder.itemInputs(tDrop);
         if (aOutput2 != GTValues.NI) {
-            recipeBuilder.itemOutputs(aOutput2)
-                .outputChances(aChance);
+            recipeBuilder.itemOutputs(aOutput2).outputChances(aChance);
         }
-        recipeBuilder.fluidOutputs(aOutput)
-            .duration(24 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(fluidExtractionRecipes);
+        recipeBuilder.fluidOutputs(aOutput).duration(24 * SECONDS).eut(TierEU.RECIPE_HV).addTo(fluidExtractionRecipes);
     }
 }

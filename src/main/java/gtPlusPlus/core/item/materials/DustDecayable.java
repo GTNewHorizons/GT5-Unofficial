@@ -26,7 +26,7 @@ public class DustDecayable extends BaseItemTickable {
     private final int radLevel;
 
     public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, ItemStack turnsInto, int radLevel,
-        GTRecipeConstants.DecayType decayType) {
+            GTRecipeConstants.DecayType decayType) {
         super(true, true, unlocal, colour, maxTicks, desc1);
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
@@ -51,16 +51,15 @@ public class DustDecayable extends BaseItemTickable {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
         list.add(
-            GTUtility.translate(
-                "GTPP.tooltip.dust-decay-hint",
-                ModBlocks.blockDecayablesChest.getLocalizedName(),
-                ItemList.DecayWarehouse.get(1)
-                    .getDisplayName()));
+                GTUtility.translate(
+                        "GTPP.tooltip.dust-decay-hint",
+                        ModBlocks.blockDecayablesChest.getLocalizedName(),
+                        ItemList.DecayWarehouse.get(1).getDisplayName()));
     }
 
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
-        final boolean heldInHand) {
+            final boolean heldInHand) {
         if (world == null || stack == null || world.isRemote) {
             return;
         }

@@ -31,7 +31,7 @@ public class InventoryUtils {
                     EntityItem entityitem;
 
                     for (float f2 = mRandom.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; world
-                        .spawnEntityInWorld(entityitem)) {
+                            .spawnEntityInWorld(entityitem)) {
                         int j1 = mRandom.nextInt(21) + 10;
 
                         if (j1 > itemstack.stackSize) {
@@ -40,11 +40,11 @@ public class InventoryUtils {
 
                         itemstack.stackSize -= j1;
                         entityitem = new EntityItem(
-                            world,
-                            x + f,
-                            y + f1,
-                            z + f2,
-                            new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                                world,
+                                x + f,
+                                y + f1,
+                                z + f2,
+                                new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) mRandom.nextGaussian() * f3;
                         entityitem.motionY = (float) mRandom.nextGaussian() * f3 + 0.2F;
@@ -52,9 +52,7 @@ public class InventoryUtils {
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem()
-                                .setTagCompound(
-                                    (NBTTagCompound) itemstack.getTagCompound()
-                                        .copy());
+                                    .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                         }
                     }
                 }

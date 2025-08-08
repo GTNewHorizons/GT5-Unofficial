@@ -59,7 +59,7 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             case 13 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();
             case 14 -> Textures.BlockIcons.RADIATOR_MS160.getIcon();
             case 15 -> ordinalSide > 1 ? Textures.BlockIcons.CASING_REINFORCED_WOOD.getIcon()
-                : Textures.BlockIcons.CASING_REINFORCED_WOOD_TOP.getIcon();
+                    : Textures.BlockIcons.CASING_REINFORCED_WOOD_TOP.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

@@ -42,9 +42,7 @@ public class BlockFluidSludge extends BlockFluidClassic {
 
     @Override
     public boolean canDisplace(final IBlockAccess world, final int x, final int y, final int z) {
-        if (world.getBlock(x, y, z)
-            .getMaterial()
-            .isLiquid()) {
+        if (world.getBlock(x, y, z).getMaterial().isLiquid()) {
             return false;
         }
         return super.canDisplace(world, x, y, z);
@@ -52,9 +50,7 @@ public class BlockFluidSludge extends BlockFluidClassic {
 
     @Override
     public boolean displaceIfPossible(final World world, final int x, final int y, final int z) {
-        if (world.getBlock(x, y, z)
-            .getMaterial()
-            .isLiquid()) {
+        if (world.getBlock(x, y, z).getMaterial().isLiquid()) {
             return false;
         }
         return super.displaceIfPossible(world, x, y, z);
@@ -62,7 +58,7 @@ public class BlockFluidSludge extends BlockFluidClassic {
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
+            final int z) {
         return false;
     }
 }

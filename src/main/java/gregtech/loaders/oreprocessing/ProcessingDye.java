@@ -32,7 +32,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
+            ItemStack stack) {
         Dyes aDye = Dyes.get(oreDictName);
         if ((aDye.mIndex >= 0) && (aDye.mIndex < 16) && (GTUtility.getContainerItem(stack, true) == null)) {
             registerAlloySmelter(stack, aDye);
@@ -42,44 +42,36 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     }
 
     public void registerMixer(ItemStack stack, Dyes dye) {
-        String fluidName = "dye.watermixed." + dye.name()
-            .toLowerCase(Locale.ENGLISH);
+        String fluidName = "dye.watermixed." + dye.name().toLowerCase(Locale.ENGLISH);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(GTModHandler.getDistilledWater(2 * INGOTS))
-            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
-            .duration(16 * TICKS)
-            .eut(4)
-            .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
+                .fluidInputs(GTModHandler.getDistilledWater(2 * INGOTS))
+                .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288)).duration(16 * TICKS).eut(4)
+                .addTo(mixerRecipes);
     }
 
     public void registerAlloySmelter(ItemStack stack, Dyes dye) {
         RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L), GTUtility.copyAmount(1, stack))
-            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(alloySmelterRecipes);
+                .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                        GTUtility.copyAmount(1, stack))
+                .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex)).duration(10 * SECONDS).eut(8)
+                .addTo(alloySmelterRecipes);
 
-        RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.glass, 8, WILDCARD), GTUtility.copyAmount(1, stack))
-            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(alloySmelterRecipes);
+        RA.stdBuilder().itemInputs(new ItemStack(Blocks.glass, 8, WILDCARD), GTUtility.copyAmount(1, stack))
+                .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex)).duration(10 * SECONDS).eut(8)
+                .addTo(alloySmelterRecipes);
     }
 
     public void registerChemicalReactor(ItemStack stack, Dyes dye) {
-        String fluidName = "dye.chemical." + dye.name()
-            .toLowerCase(Locale.ENGLISH);
+        String fluidName = "dye.chemical." + dye.name().toLowerCase(Locale.ENGLISH);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, stack), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(432))
-            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
-            .duration(30 * SECONDS)
-            .eut(48)
-            .addTo(UniversalChemical);
+                .itemInputs(
+                        GTUtility.copyAmount(1, stack),
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2))
+                .fluidInputs(Materials.SulfuricAcid.getFluid(432))
+                .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288)).duration(30 * SECONDS).eut(48)
+                .addTo(UniversalChemical);
     }
 }

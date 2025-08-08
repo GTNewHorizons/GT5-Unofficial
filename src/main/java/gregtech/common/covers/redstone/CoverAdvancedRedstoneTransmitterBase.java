@@ -104,8 +104,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         invert = !invert;
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            invert ? translateToLocal("gt.interact.desc.inverted") : translateToLocal("gt.interact.desc.normal"));
+                aPlayer,
+                invert ? translateToLocal("gt.interact.desc.inverted") : translateToLocal("gt.interact.desc.normal"));
     }
     // GUI stuff
 

@@ -37,10 +37,10 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
-            blockType,
-            StringUtils.sanitizeString(material.getUnlocalizedName()),
-            net.minecraft.block.material.Material.rock,
-            Math.min(Math.max(material.vTier, 1), 6));
+                blockType,
+                StringUtils.sanitizeString(material.getUnlocalizedName()),
+                net.minecraft.block.material.Material.rock,
+                Math.min(Math.max(material.vTier, 1), 6));
         int aMaterialTierForMining = Math.min(Math.max(material.vTier, 1), 6);
         this.blockMaterial = material;
         this.setHardness(1.0f * aMaterialTierForMining);
@@ -52,12 +52,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         this.setBlockTextureName("stone");
         try {
             GameRegistry.registerBlock(
-                this,
-                ItemBlockOre.class,
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()));
+                    this,
+                    ItemBlockOre.class,
+                    "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()));
             GTOreDictUnificator.registerOre(
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
-                new ItemStack(this));
+                    "ore" + StringUtils.sanitizeString(this.blockMaterial.getLocalizedName()),
+                    new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -113,17 +113,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     public ITexture[] getTexture(Block block, ForgeDirection side) {
         if (this.blockMaterial != null) {
             ITexture texture = TextureFactory.builder()
-                .addIcon(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex])
-                .setRGBA(blockMaterial.getRGBA())
-                .stdOrient()
-                .build();
+                    .addIcon(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex])
+                    .setRGBA(blockMaterial.getRGBA()).stdOrient().build();
             return new ITexture[] { TextureFactory.of(Blocks.stone, 0), texture };
         }
-        return new ITexture[] { TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.STONES[0])
-            .setRGBA(new short[] { 240, 240, 240, 0 })
-            .stdOrient()
-            .build() };
+        return new ITexture[] { TextureFactory.builder().addIcon(Textures.BlockIcons.STONES[0])
+                .setRGBA(new short[] { 240, 240, 240, 0 }).stdOrient().build() };
     }
 
     @Override
@@ -157,8 +152,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         } else {
             switch (GTMod.proxy.oreDropSystem) {
                 case Item -> drops.add(
-                    ItemUtils
-                        .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));
+                        ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                                "oreRaw" + this.blockMaterial.getLocalizedName(),
+                                1));
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
                     // if not shouldFortune or not isNatural then get normal drops
@@ -171,15 +167,15 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                         long amount = (long) new Random().nextInt(fortune) + aMinAmount;
                         for (int i = 0; i < amount; i++) {
                             drops.add(
-                                ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                                    "oreRaw" + this.blockMaterial.getLocalizedName(),
-                                    1));
+                                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                                            "oreRaw" + this.blockMaterial.getLocalizedName(),
+                                            1));
                         }
                     } else {
                         drops.add(
-                            ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                                "oreRaw" + this.blockMaterial.getLocalizedName(),
-                                1));
+                                ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                                        "oreRaw" + this.blockMaterial.getLocalizedName(),
+                                        1));
                     }
                 }
                 // Unified ore, Dimension ore, Regular ore

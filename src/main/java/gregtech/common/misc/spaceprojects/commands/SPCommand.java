@@ -25,7 +25,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 public class SPCommand extends GTBaseCommand {
 
     private static final Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections
-        .newSetFromMap(new WeakHashMap<>());
+            .newSetFromMap(new WeakHashMap<>());
     private static final Set<EntityPlayerMP> confirm = Collections.newSetFromMap(new WeakHashMap<>());
 
     private static final String INVITE = "invite";
@@ -77,11 +77,11 @@ public class SPCommand extends GTBaseCommand {
         EntityPlayerMP teamMember = getPlayer(sender, playerInvited);
         invite.add(Pair.of(teamMember, teamLeader));
         String message = EnumChatFormatting.GOLD + teamLeader.getCommandSenderName()
-            + EnumChatFormatting.RESET
-            + " has sent you an invite to join their team. Accept it with"
-            + EnumChatFormatting.GOLD
-            + " /sp accept "
-            + teamLeader.getCommandSenderName();
+                + EnumChatFormatting.RESET
+                + " has sent you an invite to join their team. Accept it with"
+                + EnumChatFormatting.GOLD
+                + " /sp accept "
+                + teamLeader.getCommandSenderName();
         sendChatToPlayer(teamMember, message);
     }
 
@@ -90,8 +90,8 @@ public class SPCommand extends GTBaseCommand {
         EntityPlayerMP teamLeader = getPlayer(sender, playerInviter);
         if (invite.contains(Pair.of(teamMember, teamLeader))) {
             String message = EnumChatFormatting.GOLD + teamMember.getCommandSenderName()
-                + EnumChatFormatting.RESET
-                + " has accepted the invite.";
+                    + EnumChatFormatting.RESET
+                    + " has accepted the invite.";
             SpaceProjectManager.putInTeam(teamMember.getUniqueID(), teamLeader.getUniqueID());
             sendChatToPlayer(teamLeader, message);
             invite.remove(Pair.of(teamMember, teamLeader));
@@ -101,10 +101,10 @@ public class SPCommand extends GTBaseCommand {
     private void processLeave(ICommandSender sender) {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
         String message = "Are you sure you want to leave the team. You will lose all progress. Use "
-            + EnumChatFormatting.GOLD
-            + "/sp confirm"
-            + EnumChatFormatting.RESET
-            + " to confirm this. This does nothing if you are the team leader.";
+                + EnumChatFormatting.GOLD
+                + "/sp confirm"
+                + EnumChatFormatting.RESET
+                + " to confirm this. This does nothing if you are the team leader.";
         sendChatToPlayer(player, message);
         confirm.add(player);
     }
@@ -134,29 +134,22 @@ public class SPCommand extends GTBaseCommand {
 
                 if (arguments[0].equals(CONFIRM)) {
                     Optional<Pair<EntityPlayerMP, EntityPlayerMP>> pairOpt = invite.stream()
-                        .filter(
-                            (e) -> e.getKey()
-                                .getUniqueID() == getCommandSenderAsPlayer(sender).getUniqueID())
-                        .findFirst();
+                            .filter((e) -> e.getKey().getUniqueID() == getCommandSenderAsPlayer(sender).getUniqueID())
+                            .findFirst();
                     if (pairOpt.isPresent()) {
-                        autoComplete.add(
-                            SpaceProjectManager.getPlayerNameFromUUID(
-                                pairOpt.get()
-                                    .getRight()
-                                    .getUniqueID()));
+                        autoComplete
+                                .add(SpaceProjectManager.getPlayerNameFromUUID(pairOpt.get().getRight().getUniqueID()));
                     }
                 }
             }
         }
         String finalFilter = filter;
-        return autoComplete.stream()
-            .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
-            .collect(Collectors.toList());
+        return autoComplete.stream().filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+                .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
-        return MinecraftServer.getServer()
-            .getAllUsernames();
+        return MinecraftServer.getServer().getAllUsernames();
     }
 
     private String[] getSubCommands() {

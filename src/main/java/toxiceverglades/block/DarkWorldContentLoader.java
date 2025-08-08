@@ -30,25 +30,20 @@ public class DarkWorldContentLoader {
     public static synchronized void initMisc() {
         // Fluids
         SLUDGE = (BlockDarkWorldSludgeFluid) new BlockDarkWorldSludgeFluid("sludge", Utils.rgbtoHexValue(30, 130, 30))
-            .setDensity(1800)
-            .setGaseous(false)
-            .setLuminosity(2)
-            .setViscosity(25000)
-            .setTemperature(300);
+                .setDensity(1800).setGaseous(false).setLuminosity(2).setViscosity(25000).setTemperature(300);
         FluidRegistry.registerFluid(SLUDGE);
     }
 
     public static synchronized void initItems() {
         portalItem = (ItemEvergladesPortalTrigger) (new ItemEvergladesPortalTrigger()
-            .setUnlocalizedName("everglades.trigger"));
+                .setUnlocalizedName("everglades.trigger"));
         GameRegistry.registerItem(portalItem, "everglades.trigger");
     }
 
     public static synchronized void initBlocks() {
         // Create Block Instances
         blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, BlockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f)
-            .setLightOpacity(1)
-            .setBlockName("fluidSludge");
+                .setLightOpacity(1).setBlockName("fluidSludge");
         portalBlock = new BlockEvergladesPortal();
         blockTopLayer = new BlockDarkWorldGround();
         blockSecondLayer = new BlockDarkWorldPollutedDirt();

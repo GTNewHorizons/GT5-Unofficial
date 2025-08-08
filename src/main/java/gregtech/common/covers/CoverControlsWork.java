@@ -113,22 +113,21 @@ public class CoverControlsWork extends CoverLegacyData {
                     if (machine.isAllowedToWork()) machine.disableWorking();
                 }
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
-                    if (machine.wasShutdown() && machine.getLastShutDownReason()
-                        .wasCritical() && !handledShutdown) {
+                    if (machine.wasShutdown() && machine.getLastShutDownReason().wasCritical() && !handledShutdown) {
                         if (!mPlayerNotified) {
                             EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
                             if (player != null) {
                                 lastPlayer = null;
                                 mPlayerNotified = true;
                                 GTUtility.sendChatToPlayer(
-                                    player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
+                                        player,
+                                        coverable.getInventoryName() + "at "
+                                                + String.format(
+                                                        "(%d,%d,%d)",
+                                                        coverable.getXCoord(),
+                                                        coverable.getYCoord(),
+                                                        coverable.getZCoord())
+                                                + " shut down.");
                             }
                         }
                         handledShutdown = true;

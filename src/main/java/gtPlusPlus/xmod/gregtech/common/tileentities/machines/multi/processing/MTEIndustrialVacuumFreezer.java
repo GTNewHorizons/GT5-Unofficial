@@ -52,7 +52,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrialVacuumFreezer>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String CASING_NAME;
@@ -70,10 +70,8 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
         GregTechAPI.sAfterGTLoad.add(() -> {
             CRYO_STACK = new FluidStack(TFFluids.fluidCryotheum, 1);
-            CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1)
-                .getDisplayName();
-            HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1)
-                .getDisplayName();
+            CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
+            HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1).getDisplayName();
         });
     }
 
@@ -94,51 +92,43 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
-            .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
-            .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin(CASING_NAME, 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart(HATCH_NAME, "Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Vacuum Freezer")
+                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
+                .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
+                .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfoMin(CASING_NAME, 10, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addOtherStructurePart(HATCH_NAME, "Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialVacuumFreezer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialVacuumFreezer>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialVacuumFreezer>builder().addShape(
                     mName,
                     transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(MTEIndustrialVacuumFreezer.class)
-                            .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
-                            .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
-                            .casingIndex(CASING_TEXTURE_ID)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(MTEIndustrialVacuumFreezer.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                            .casingIndex(CASING_TEXTURE_ID)
-                            .dot(1)
-                            .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
-                .build();
+                            new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
+                                    { "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            ofChain(
+                                    buildHatchAdder(MTEIndustrialVacuumFreezer.class)
+                                            .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
+                                            .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
+                                            .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
+                                    buildHatchAdder(MTEIndustrialVacuumFreezer.class).atLeast(
+                                            InputBus,
+                                            OutputBus,
+                                            Maintenance,
+                                            Energy,
+                                            Muffler,
+                                            InputHatch,
+                                            OutputHatch).casingIndex(CASING_TEXTURE_ID).dot(1).build(),
+                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -187,12 +177,13 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     @Override
     @SideOnly(Side.CLIENT)
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
+            List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
             lines.add(
-                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
+                    StatCollector
+                            .translateToLocalFormatted("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
         }
 
         if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {
@@ -209,8 +200,9 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
-                .getMetaTileID() == MetaTileEntityIDs.Hatch_Input_Cryotheum.ID) {
+            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase
+                    && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID()
+                            == MetaTileEntityIDs.Hatch_Input_Cryotheum.ID) {
                 return addToMachineListInternal(mCryotheumHatches, aTileEntity, aBaseCasingIndex);
             }
         }
@@ -255,9 +247,8 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 2F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -279,14 +270,13 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (this.mStartUpCheck < 0) {
-            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
-                .hasWorkJustBeenEnabled()) {
-                if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
-                    .hasWorkJustBeenEnabled()) {
+            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0
+                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+                if (aTick % 20 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                            ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidCryotheum, 10)));
+                                ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidCryotheum, 10)));
                     }
                 }
             }

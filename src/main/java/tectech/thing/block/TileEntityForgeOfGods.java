@@ -66,12 +66,12 @@ public class TileEntityForgeOfGods extends TileEntity {
             // but since this is not always known (set dynamically by the MTE), this
             // currently just bounds as if the beam is in all 4 directions.
             renderBoundingBox = AxisAlignedBB.getBoundingBox(
-                x - RING_RADIUS - BEAM_LENGTH,
-                y - RING_RADIUS - BEAM_LENGTH,
-                z - RING_RADIUS - BEAM_LENGTH,
-                x + RING_RADIUS + BEAM_LENGTH + 1,
-                y + RING_RADIUS + BEAM_LENGTH + 1,
-                z + RING_RADIUS + BEAM_LENGTH + 1);
+                    x - RING_RADIUS - BEAM_LENGTH,
+                    y - RING_RADIUS - BEAM_LENGTH,
+                    z - RING_RADIUS - BEAM_LENGTH,
+                    x + RING_RADIUS + BEAM_LENGTH + 1,
+                    y + RING_RADIUS + BEAM_LENGTH + 1,
+                    z + RING_RADIUS + BEAM_LENGTH + 1);
         }
         return renderBoundingBox;
     }

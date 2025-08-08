@@ -36,14 +36,15 @@ public class GeneratedItemRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-            || type == ItemRenderType.INVENTORY
-            || type == ItemRenderType.ENTITY;
+                || type == ItemRenderType.INVENTORY
+                || type == ItemRenderType.ENTITY;
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+                || (helper == ItemRendererHelper.ENTITY_ROTATION
+                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][8];
                     } else {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][(7
-                            - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
+                                - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
                     }
                 }
             } else {
@@ -131,13 +132,11 @@ public class GeneratedItemRenderer implements IItemRenderer {
         FluidStack fluidStack = GTUtility.getFluidForFilledItem(stack, true);
 
         if (fluidStack != null && fluidStack.getFluid() != null) {
-            IIcon fluidIcon = fluidStack.getFluid()
-                .getIcon(fluidStack);
+            IIcon fluidIcon = fluidStack.getFluid().getIcon(fluidStack);
             if (fluidIcon == null) {
                 fluidIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
             }
-            int fluidColor = fluidStack.getFluid()
-                .getColor(fluidStack);
+            int fluidColor = fluidStack.getFluid().getColor(fluidStack);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             markNeedsAnimationUpdate(fluidIcon);

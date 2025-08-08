@@ -58,8 +58,7 @@ public class BlockMachinesSubclassTest {
         @Override
         protected boolean createNewMetatileEntity(short aID) {
             assert aID != 0;
-            templateInstance.newMetaEntity(this)
-                .setBaseMetaTileEntity(this);
+            templateInstance.newMetaEntity(this).setBaseMetaTileEntity(this);
             return true;
         }
     }
@@ -107,13 +106,13 @@ public class BlockMachinesSubclassTest {
 
         @Override
         public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+                ItemStack aStack) {
             return false;
         }
 
         @Override
         public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+                ItemStack aStack) {
             return false;
         }
 
@@ -124,7 +123,7 @@ public class BlockMachinesSubclassTest {
 
         @Override
         public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean active, boolean redstoneLevel) {
+                int colorIndex, boolean active, boolean redstoneLevel) {
             return new ITexture[0];
         }
     }
@@ -137,9 +136,8 @@ public class BlockMachinesSubclassTest {
         // And apparently the mocked getIC2Coolant is enough to let us instantiate real BaseMetaTileEntity classes.
         // Huzzah!
         try (MockedStatic<GameRegistry> gameRegistry = mockStatic(GameRegistry.class);
-            MockedStatic<GTModHandler> modHandler = mockStatic(GTModHandler.class)) {
-            modHandler.when(() -> GTModHandler.getIC2Coolant(anyLong()))
-                .thenReturn(mock(FluidStack.class));
+                MockedStatic<GTModHandler> modHandler = mockStatic(GTModHandler.class)) {
+            modHandler.when(() -> GTModHandler.getIC2Coolant(anyLong())).thenReturn(mock(FluidStack.class));
 
             MyBlockMachines block = new MyBlockMachines();
             TileEntity tileEntity = block.createNewTileEntity(mock(World.class), 0);
@@ -148,10 +146,7 @@ public class BlockMachinesSubclassTest {
 
             MyTileEntity myTileEntity = (MyTileEntity) tileEntity;
             assertInstanceOf(MyMTE.class, myTileEntity.getMetaTileEntity());
-            assertSame(
-                myTileEntity,
-                myTileEntity.getMetaTileEntity()
-                    .getBaseMetaTileEntity());
+            assertSame(myTileEntity, myTileEntity.getMetaTileEntity().getBaseMetaTileEntity());
         }
     }
 }

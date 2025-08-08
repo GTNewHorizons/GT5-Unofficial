@@ -37,14 +37,14 @@ public class CoverTickRateButton extends ButtonWidget {
         super.setOnClick(this::onClick);
         super.dynamicTooltip(this::dynamicTooltip);
         super.attachSyncer(
-            new FakeSyncWidget.IntegerSyncer(this.cover::getTickRate, integer -> clientTickRate = integer),
-            builder,
-            (widget, aInt) -> notifyTooltipChange())
-                .attachSyncer(
-                    new FakeSyncWidget.IntegerSyncer(
-                        this.cover::getTickRateAddition,
-                        integer -> tickRateAddition = integer),
-                    builder);
+                new FakeSyncWidget.IntegerSyncer(this.cover::getTickRate, integer -> clientTickRate = integer),
+                builder,
+                (widget, aInt) -> notifyTooltipChange())
+                        .attachSyncer(
+                                new FakeSyncWidget.IntegerSyncer(
+                                        this.cover::getTickRateAddition,
+                                        integer -> tickRateAddition = integer),
+                                builder);
 
     }
 
@@ -73,11 +73,11 @@ public class CoverTickRateButton extends ButtonWidget {
         }
 
         return ImmutableList.of(
-            StatCollector.translateToLocalFormatted(
-                "gt.cover.info.button.tick_rate.1",
-                new ClientTickRateFormatter(clientTickRate),
-                boundsNotification),
-            StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"),
-            StatCollector.translateToLocal("gt.cover.info.button.tick_rate.3"));
+                StatCollector.translateToLocalFormatted(
+                        "gt.cover.info.button.tick_rate.1",
+                        new ClientTickRateFormatter(clientTickRate),
+                        boundsNotification),
+                StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"),
+                StatCollector.translateToLocal("gt.cover.info.button.tick_rate.3"));
     }
 }

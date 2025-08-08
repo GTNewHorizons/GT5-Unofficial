@@ -40,7 +40,7 @@ public class GT5OreSmallHelper {
             }
             for (OreSmallWrapper oreVein : internalDimOreList) {
                 oreVeinToProbabilityInDimension
-                    .put(oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
+                        .put(oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
             }
         }
     }
@@ -57,7 +57,7 @@ public class GT5OreSmallHelper {
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!worldGen.mWorldGenName.startsWith("ore.small.")
-                || !(worldGen instanceof WorldgenGTOreSmallPieces worldGenSmallPieces)) {
+                    || !(worldGen instanceof WorldgenGTOreSmallPieces worldGenSmallPieces)) {
                 continue;
             }
 
@@ -65,21 +65,24 @@ public class GT5OreSmallHelper {
             if (meta < 0) break;
             material = GregTechAPI.sGeneratedMaterials[meta];
             mapOreSmallWrapper.put(
-                worldGen.mWorldGenName,
-                new OreSmallWrapper(smallOreDefMap.get(worldGenSmallPieces.mWorldGenName)));
+                    worldGen.mWorldGenName,
+                    new OreSmallWrapper(smallOreDefMap.get(worldGenSmallPieces.mWorldGenName)));
             if (mapOreMetaToOreDrops.containsKey(meta)) {
                 continue;
             }
 
             List<ItemStack> stackList = new ArrayList<>();
-            stack = GTOreDictUnificator
-                .get(OrePrefixes.gemExquisite, material, GTOreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+            stack = GTOreDictUnificator.get(
+                    OrePrefixes.gemExquisite,
+                    material,
+                    GTOreDictUnificator.get(OrePrefixes.gem, material, 1L),
+                    1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
             stack = GTOreDictUnificator
-                .get(OrePrefixes.gemFlawless, material, GTOreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
+                    .get(OrePrefixes.gemFlawless, material, GTOreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
@@ -89,8 +92,11 @@ public class GT5OreSmallHelper {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
             }
-            stack = GTOreDictUnificator
-                .get(OrePrefixes.gemFlawed, material, GTOreDictUnificator.get(OrePrefixes.crushed, material, 1L), 1L);
+            stack = GTOreDictUnificator.get(
+                    OrePrefixes.gemFlawed,
+                    material,
+                    GTOreDictUnificator.get(OrePrefixes.crushed, material, 1L),
+                    1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
@@ -101,10 +107,10 @@ public class GT5OreSmallHelper {
                 stackList.add(stack);
             }
             stack = GTOreDictUnificator.get(
-                OrePrefixes.gemChipped,
-                material,
-                GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L),
-                1L);
+                    OrePrefixes.gemChipped,
+                    material,
+                    GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L),
+                    1L);
             if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
                 mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);
                 stackList.add(stack);
@@ -128,15 +134,14 @@ public class GT5OreSmallHelper {
         bufferedDims.forEach((veinInfo, dims) -> {
             for (String dim : dims.keySet()) {
                 SmallOreDimensionWrapper dimensionSmallOres = dimToSmallOreWrapper
-                    .getOrDefault(dim, new SmallOreDimensionWrapper());
+                        .getOrDefault(dim, new SmallOreDimensionWrapper());
                 dimensionSmallOres.internalDimOreList.add(veinInfo);
                 dimToSmallOreWrapper.put(dim, dimensionSmallOres);
             }
 
             // Calculate probabilities for each dim.
             for (String dim : dimToSmallOreWrapper.keySet()) {
-                dimToSmallOreWrapper.get(dim)
-                    .calculateWeights();
+                dimToSmallOreWrapper.get(dim).calculateWeights();
             }
         });
         // --- End of handling for dimToOreWrapper ---
@@ -144,7 +149,7 @@ public class GT5OreSmallHelper {
 
     public static Materials[] getDroppedDusts() {
         return new Materials[] { Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack,
-            Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone };
+                Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone };
     }
 
     public static class OreSmallWrapper {

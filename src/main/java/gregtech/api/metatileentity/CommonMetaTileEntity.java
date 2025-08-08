@@ -67,8 +67,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * While this is set to false, lag caused by this block won't be reported to console. Use it while the block is
-     * intentionally doing something that lags, such as scanning multiple chunks or file IO.
-     * Don't forget to set it back to true on the next tick.
+     * intentionally doing something that lags, such as scanning multiple chunks or file IO. Don't forget to set it back
+     * to true on the next tick.
      */
     public boolean doTickProfilingInThisTick = true;
 
@@ -85,17 +85,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         } else {
             var existing = GregTechAPI.METATILEENTITIES[id];
             throw new IllegalArgumentException(
-                "MetaTileEntity id " + id
-                    + " is already occupied! Existing MTE is "
-                    + existing.getMetaName()
-                    + "("
-                    + existing.getClass()
-                        .getCanonicalName()
-                    + ").");
+                    "MetaTileEntity id " + id
+                            + " is already occupied! Existing MTE is "
+                            + existing.getMetaName()
+                            + "("
+                            + existing.getClass().getCanonicalName()
+                            + ").");
         }
         mInventory = new ItemStack[invSlotCount];
-        mName = basicName.replace(" ", "_")
-            .toLowerCase(Locale.ENGLISH);
+        mName = basicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
         GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
     }
 
@@ -139,8 +137,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
+        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy().changeDetected() == 4) {
             /*
              * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
              * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
@@ -172,7 +169,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     @Override
     public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
-        float x, float y, float z) {
+            float x, float y, float z) {
         return false;
     }
 
@@ -244,7 +241,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
-        int logLevel, ArrayList<String> list) {
+            int logLevel, ArrayList<String> list) {
         return list;
     }
 
@@ -428,16 +425,20 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
         return isValidSlot(index) && itemStack != null
-            && index < mInventory.length
-            && (mInventory[index] == null || GTUtility.areStacksEqual(itemStack, mInventory[index]))
-            && allowPutStack(getBaseMetaTileEntity(), index, ForgeDirection.getOrientation(ordinalSide), itemStack);
+                && index < mInventory.length
+                && (mInventory[index] == null || GTUtility.areStacksEqual(itemStack, mInventory[index]))
+                && allowPutStack(getBaseMetaTileEntity(), index, ForgeDirection.getOrientation(ordinalSide), itemStack);
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
         return isValidSlot(index) && itemStack != null
-            && index < mInventory.length
-            && allowPullStack(getBaseMetaTileEntity(), index, ForgeDirection.getOrientation(ordinalSide), itemStack);
+                && index < mInventory.length
+                && allowPullStack(
+                        getBaseMetaTileEntity(),
+                        index,
+                        ForgeDirection.getOrientation(ordinalSide),
+                        itemStack);
     }
 
     @Override
@@ -536,7 +537,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
+            List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(world, x, y, z);
         if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
@@ -568,9 +569,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2.
-     * We're gradually migrating to MUI2. However, since cover panel is not supported for the time being,
-     * leave support for MUI1 ({@link IAddUIWidgets#addUIWidgets}) as well.
+     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2. We're gradually
+     * migrating to MUI2. However, since cover panel is not supported for the time being, leave support for MUI1
+     * ({@link IAddUIWidgets#addUIWidgets}) as well.
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {

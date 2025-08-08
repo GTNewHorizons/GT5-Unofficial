@@ -47,7 +47,7 @@ import tectech.util.CommonValues;
  * Created by Tec on 23.03.2017.
  */
 public class MTEDebugPowerGenerator extends MTETieredMachineBlock
-    implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
+        implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
 
     public static ITexture GENNY;
     private boolean LASER = false;
@@ -57,15 +57,16 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     public MTEDebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
     }
 
     public MTEDebugPowerGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -79,7 +80,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         LASER = !LASER;
         GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
     }
@@ -93,15 +94,14 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            side != facing
-                ? LASER
-                    ? (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[mTier])
-                    : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])
-                : GENNY };
+                side != facing ? LASER
+                        ? (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier]
+                                : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[mTier])
+                        : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
+                                : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])
+                        : GENNY };
     }
 
     @Override
@@ -111,13 +111,13 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
@@ -257,7 +257,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
             ForgeDirection opposite = face.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
-                    .getIGregTechTileEntityAtSideAndDistance(face, dist);
+                        .getIGregTechTileEntityAtSideAndDistance(face, dist);
                 if (tGTTileEntity == null) {
                     break;
                 }
@@ -282,15 +282,13 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                         aMetaTileEntity.doExplosion(maxEUOutput());
                     } else {
                         long diff = Math.min(
-                            AMP * 20L * maxEUOutput(),
-                            Math.min(
-                                ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
-                                    - aMetaTileEntity.getBaseMetaTileEntity()
-                                        .getStoredEU(),
-                                aBaseMetaTileEntity.getStoredEU()));
-                        ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
-                            aMetaTileEntity.getBaseMetaTileEntity()
-                                .getStoredEU() + diff);
+                                AMP * 20L * maxEUOutput(),
+                                Math.min(
+                                        ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
+                                                - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
+                                        aBaseMetaTileEntity.getStoredEU()));
+                        ((MTEHatchEnergyTunnel) aMetaTileEntity)
+                                .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
                     }
                 } else if (aMetaTileEntity instanceof MTEPipeLaser) {
                     if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {
@@ -308,48 +306,47 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
+                        .setPos(113, 56));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
 
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 22))
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> translateToLocalFormatted(
+                                                "tt.gui.text.debug.tier",
+                                                VN[GTUtility.getTier(Math.abs(EUT))]))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 22))
 
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 46));
+                .widget(
+                        new TextWidget()
+                                .setStringSupplier(
+                                        () -> translateToLocalFormatted(
+                                                "tt.gui.text.debug.sum",
+                                                numberFormat.format((long) AMP * EUT)))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 46));
 
         addLabelledIntegerTextField(
-            builder,
-            translateToLocal("tt.gui.text.debug.eut") + " ",
-            24,
-            this::getEUT,
-            this::setEUT,
-            46,
-            8);
+                builder,
+                translateToLocal("tt.gui.text.debug.eut") + " ",
+                24,
+                this::getEUT,
+                this::setEUT,
+                46,
+                8);
         addLabelledIntegerTextField(
-            builder,
-            translateToLocal("tt.gui.text.debug.amp") + " ",
-            24,
-            this::getAMP,
-            this::setAMP,
-            46,
-            34);
+                builder,
+                translateToLocal("tt.gui.text.debug.amp") + " ",
+                24,
+                this::getAMP,
+                this::setAMP,
+                46,
+                34);
 
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
@@ -373,27 +370,19 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     private void addLabelledIntegerTextField(ModularWindow.Builder builder, String label, int labelWidth,
-        IntSupplier getter, IntConsumer setter, int xPos, int yPos) {
-        builder.widget(
-            new TextWidget(label).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setPos(xPos, yPos))
-            .widget(
-                new NumericWidget().setGetter(getter::getAsInt)
-                    .setSetter(val -> setter.accept((int) val))
-                    .setTextColor(COLOR_TEXT_WHITE.get())
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(xPos + labelWidth, yPos - 1)
-                    .setSize(56, 10));
+            IntSupplier getter, IntConsumer setter, int xPos, int yPos) {
+        builder.widget(new TextWidget(label).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(xPos, yPos)).widget(
+                new NumericWidget().setGetter(getter::getAsInt).setSetter(val -> setter.accept((int) val))
+                        .setTextColor(COLOR_TEXT_WHITE.get())
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                        .setPos(xPos + labelWidth, yPos - 1).setSize(56, 10));
     }
 
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int changeNumberShift, int changeNumber, int xPos, int yPos) {
+            int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             setter.accept(clickData.shift ? changeNumberShift : changeNumber);
             producing = (long) AMP * EUT >= 0;
-        })
-            .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-            .setSize(18, 18)
-            .setPos(xPos, yPos));
+        }).setBackground(GTUITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
     }
 }

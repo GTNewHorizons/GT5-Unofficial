@@ -30,8 +30,9 @@ public class StandardBaseParticles extends BaseItemParticle {
     }
 
     private static final String[] aTypes = new String[] { "Graviton", "Up", "Down", "Charm", "Strange", "Top", "Bottom",
-        "Electron", "Electron Neutrino", "Muon", "Muon Neutrino", "Tau", "Tau Neutrino", "Gluon", "Photon", "Z Boson",
-        "W Boson", "Higgs Boson", "Proton", "Neutron", "Lambda", "Omega", "Pion", "ETA Meson", "Unknown" };
+            "Electron", "Electron Neutrino", "Muon", "Muon Neutrino", "Tau", "Tau Neutrino", "Gluon", "Photon",
+            "Z Boson", "W Boson", "Higgs Boson", "Proton", "Neutron", "Lambda", "Omega", "Pion", "ETA Meson",
+            "Unknown" };
 
     public IIcon[] icons = new IIcon[aTypes.length];
 
@@ -111,31 +112,25 @@ public class StandardBaseParticles extends BaseItemParticle {
         Particle aCharge = getParticle(stack);
         EnumChatFormatting aColour = EnumChatFormatting.GRAY;
         if (aCharge != null) {
-            String aGroup = aCharge.mParticleType.name()
-                .toLowerCase();
-            if (aGroup.toLowerCase()
-                .contains("quark")) {
+            String aGroup = aCharge.mParticleType.name().toLowerCase();
+            if (aGroup.toLowerCase().contains("quark")) {
                 aColour = EnumChatFormatting.LIGHT_PURPLE;
-            } else if (aGroup.toLowerCase()
-                .contains("lepton")) {
-                    aColour = EnumChatFormatting.GREEN;
-                } else if (aCharge == Particle.HIGGS_BOSON) {
-                    aColour = EnumChatFormatting.YELLOW;
-                } else if (aGroup.toLowerCase()
-                    .contains("boson")) {
-                        aColour = EnumChatFormatting.RED;
-                    } else if (aGroup.toLowerCase()
-                        .contains("baryon")) {
-                            aColour = EnumChatFormatting.BLUE;
-                        } else if (aGroup.toLowerCase()
-                            .contains("meson")) {
-                                aColour = EnumChatFormatting.WHITE;
-                            }
+            } else if (aGroup.toLowerCase().contains("lepton")) {
+                aColour = EnumChatFormatting.GREEN;
+            } else if (aCharge == Particle.HIGGS_BOSON) {
+                aColour = EnumChatFormatting.YELLOW;
+            } else if (aGroup.toLowerCase().contains("boson")) {
+                aColour = EnumChatFormatting.RED;
+            } else if (aGroup.toLowerCase().contains("baryon")) {
+                aColour = EnumChatFormatting.BLUE;
+            } else if (aGroup.toLowerCase().contains("meson")) {
+                aColour = EnumChatFormatting.WHITE;
+            }
             String aGroupKey = "gtpp.tooltip.base_particles.type." + aGroup;
             String aState = aColour + StatCollector.translateToLocal(aGroupKey) + EnumChatFormatting.RESET;
             list.add(
-                EnumChatFormatting.GRAY
-                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.base_particles.type", aState));
+                    EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("gtpp.tooltip.base_particles.type", aState));
         }
         super.addInformation(stack, player, list, bool);
     }

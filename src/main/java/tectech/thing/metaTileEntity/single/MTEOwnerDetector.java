@@ -34,15 +34,16 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     public MTEOwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
+                        EnumChatFormatting.BLUE
+                                + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
     }
 
     public MTEOwnerDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -64,9 +65,9 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            aActive ? OWNER_ONLINE : OWNER_OFFLINE };
+                aActive ? OWNER_ONLINE : OWNER_OFFLINE };
     }
 
     @Override
@@ -76,13 +77,13 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
+            ItemStack itemStack) {
         return false;
     }
 
@@ -113,8 +114,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == CommonValues.RECIPE_AT) {
-            boolean detected = TecTech.proxy.isOnlineUUID(uuid)
-                || (uuid != null && !uuid.isEmpty() && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
+            boolean detected = TecTech.proxy.isOnlineUUID(uuid) || (uuid != null && !uuid.isEmpty()
+                    && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
@@ -126,7 +127,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         final String clientLocale;
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
@@ -135,9 +136,9 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
         }
         interdimensional ^= true;
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
-                : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
+                aPlayer,
+                interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
+                        : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
     }
 
     @Override

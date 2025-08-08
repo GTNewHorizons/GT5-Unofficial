@@ -21,8 +21,7 @@ public class CoverVent extends CoverLegacyData {
 
     private final int mEfficiency;
     private final Fluid IC2_HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");
-    private final Fluid IC2_COOLANT = GTModHandler.getIC2Coolant(0)
-        .getFluid();
+    private final Fluid IC2_COOLANT = GTModHandler.getIC2Coolant(0).getFluid();
 
     public CoverVent(CoverContext context, int aEfficiency) {
         super(context);
@@ -59,13 +58,13 @@ public class CoverVent extends CoverLegacyData {
     }
 
     protected int doProgressEfficiency(final ForgeDirection coverSide, final IMachineProgress coverable,
-        final int coverData) {
+            final int coverData) {
         final int offsetX = coverable.getOffsetX(coverSide, 1);
         final int offsetY = coverable.getOffsetY(coverSide, 1);
         final int offsetZ = coverable.getOffsetZ(coverSide, 1);
         final World world = coverable.getWorld();
         if (coverable.hasThingsToDo() && coverData != coverable.getProgress()
-            && !GTUtility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
+                && !GTUtility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
             coverable.increaseProgress(this.mEfficiency);
         }
         return coverable.getProgress();

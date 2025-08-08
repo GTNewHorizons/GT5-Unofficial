@@ -14,11 +14,9 @@ public class LHECoolantRegistry {
     private static final Map<String, LHECoolantInfo> lheCoolants = new HashMap<>();
 
     /**
-     * Registers a coolant for use in Large Heat Exchangers and Whakawhiti Weras.
-     * See the constants in {@link #registerBaseCoolants()} as a reference for what the multipliers should be.
-     * The multipliers are used in
-     * {@link MTEHeatExchanger#checkProcessing()}
-     * and {@link MTEHeatExchanger#onRunningTick()}.
+     * Registers a coolant for use in Large Heat Exchangers and Whakawhiti Weras. See the constants in
+     * {@link #registerBaseCoolants()} as a reference for what the multipliers should be. The multipliers are used in
+     * {@link MTEHeatExchanger#checkProcessing()} and {@link MTEHeatExchanger#onRunningTick()}.
      *
      * @param coldFluidName        The fluid name of the resulting cold coolant
      * @param hotFluidName         The fluid name of the input hot coolant
@@ -27,7 +25,7 @@ public class LHECoolantRegistry {
      *                             {@link #registerBaseCoolants()} for a reference
      */
     public static void registerCoolant(String coldFluidName, String hotFluidName, double steamMultiplier,
-        double superheatedThreshold) {
+            double superheatedThreshold) {
         var coolant = new LHECoolantInfo(coldFluidName, hotFluidName, steamMultiplier, superheatedThreshold);
 
         lheCoolants.put(hotFluidName, coolant);
@@ -46,24 +44,24 @@ public class LHECoolantRegistry {
         // MTEHeatExchanger
 
         registerCoolant(
-            "ic2pahoehoelava",
-            "lava",
-            1.0 / 5.0, // lava is not boosted
-            1.0 / 4.0 // unchanged
+                "ic2pahoehoelava",
+                "lava",
+                1.0 / 5.0, // lava is not boosted
+                1.0 / 4.0 // unchanged
         );
 
         registerCoolant(
-            "ic2coolant",
-            "ic2hotcoolant",
-            1.0 / 2.0, // was boosted x2 on top of x5 -> total x10 -> nerf with this code back to 5x
-            1.0 / 5.0 // 10x smaller since the Hot Things production in reactor is the same
+                "ic2coolant",
+                "ic2hotcoolant",
+                1.0 / 2.0, // was boosted x2 on top of x5 -> total x10 -> nerf with this code back to 5x
+                1.0 / 5.0 // 10x smaller since the Hot Things production in reactor is the same
         );
 
         registerCoolant(
-            "molten.solarsaltcold",
-            "molten.solarsalthot",
-            2.5, // Solar Salt to Steam ratio is 5x higher than Hot Coolant's ratio
-            1.0 / 25.0 // Given that, multiplier is 5x higher and threshold is 5x lower
+                "molten.solarsaltcold",
+                "molten.solarsalthot",
+                2.5, // Solar Salt to Steam ratio is 5x higher than Hot Coolant's ratio
+                1.0 / 25.0 // Given that, multiplier is 5x higher and threshold is 5x lower
         );
     }
 
@@ -75,7 +73,7 @@ public class LHECoolantRegistry {
         private Fluid coldFluid, hotFluid;
 
         public LHECoolantInfo(String coldFluidName, String hotFluidName, double steamMultiplier,
-            double superheatedThreshold) {
+                double superheatedThreshold) {
             this.coldFluidName = coldFluidName;
             this.hotFluidName = hotFluidName;
             this.steamMultiplier = steamMultiplier;

@@ -29,13 +29,13 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeMapFrontend {
 
     public PurificationUnitFlocculatorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-            80,
-            uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_FLOCCULATION))
-                .logoPos(new Pos2d(152, 100)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+                80,
+                uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
+                        .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_FLOCCULATION))
+                        .logoPos(new Pos2d(152, 100)),
+                neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override
@@ -60,18 +60,18 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     @Override
     @NotNull
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(1_000), false))) {
             currentTip.add("Consumed during operation");
             currentTip.add(
-                "+" + MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL
-                    + "%/"
-                    + MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
-                    + "L");
-        } else if (stack
-            .isItemEqual(GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1_000), false))) {
-                currentTip.add("Returned in amount equivalent to consumed flocculant.");
-            }
+                    "+" + MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL
+                            + "%/"
+                            + MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
+                            + "L");
+        } else if (stack.isItemEqual(
+                GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1_000), false))) {
+                    currentTip.add("Returned in amount equivalent to consumed flocculant.");
+                }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }
 
@@ -82,19 +82,19 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         if (neiCachedRecipe.mInputs.size() == 1) {
             // Display flocculation chemical
             neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100_000), true),
-                    5,
-                    -1,
-                    false));
+                    new PositionedStack(
+                            GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100_000), true),
+                            5,
+                            -1,
+                            false));
 
             // Display waste output
             neiCachedRecipe.mOutputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100_000), true),
-                    147,
-                    48,
-                    false));
+                    new PositionedStack(
+                            GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100_000), true),
+                            147,
+                            48,
+                            false));
         }
     }
 }

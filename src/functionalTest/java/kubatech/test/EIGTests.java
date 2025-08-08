@@ -129,10 +129,10 @@ public class EIGTests {
                     return "dummy";
                 }
             },
-                "DummyTestWorld",
-                256,
-                new WorldSettings(256, WorldSettings.GameType.SURVIVAL, false, false, WorldType.DEFAULT),
-                MinecraftServer.getServer().theProfiler) {
+                    "DummyTestWorld",
+                    256,
+                    new WorldSettings(256, WorldSettings.GameType.SURVIVAL, false, false, WorldType.DEFAULT),
+                    MinecraftServer.getServer().theProfiler) {
 
                 @Override
                 public File getChunkSaveLocation() {
@@ -213,17 +213,17 @@ public class EIGTests {
 
         ItemMachines itemMachines = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
         itemMachines.placeBlockAt(
-            new ItemStack(itemMachines, 1, EIG_CONTROLLER_METADATA),
-            null,
-            myWorld,
-            0,
-            81,
-            0,
-            2,
-            0,
-            0,
-            0,
-            EIG_CONTROLLER_METADATA);
+                new ItemStack(itemMachines, 1, EIG_CONTROLLER_METADATA),
+                null,
+                myWorld,
+                0,
+                81,
+                0,
+                2,
+                0,
+                0,
+                0,
+                EIG_CONTROLLER_METADATA);
         IGregTechTileEntity te = (IGregTechTileEntity) myWorld.getTileEntity(0, 81, 0);
         MTEExtremeIndustrialGreenhouse EIG = (MTEExtremeIndustrialGreenhouse) te.getMetaTileEntity();
 
@@ -234,8 +234,7 @@ public class EIGTests {
 
         int[] abc = new int[] { 0, -2, 3 };
         int[] xyz = new int[] { 0, 0, 0 };
-        EIG.getExtendedFacing()
-            .getWorldOffset(abc, xyz);
+        EIG.getExtendedFacing().getWorldOffset(abc, xyz);
         xyz[0] += te.getXCoord();
         xyz[1] += te.getYCoord();
         xyz[2] += te.getZCoord();
@@ -253,14 +252,8 @@ public class EIGTests {
 
             // we are only comparing one item from drops
             if (stackToTest == null) {
-                stackToTest = expected.entrySet()
-                    .stream()
-                    .filter(
-                        x -> x.getKey()
-                            .isItemEqual(Ic2Items.resin))
-                    .findFirst()
-                    .get()
-                    .getKey();
+                stackToTest = expected.entrySet().stream().filter(x -> x.getKey().isItemEqual(Ic2Items.resin))
+                        .findFirst().get().getKey();
             }
 
             realAvg += expected.getItemAmount(stackToTest);
@@ -279,8 +272,8 @@ public class EIGTests {
         if (accuracy < 0.99d) {
             LOG.warn(String.format("accuracy check failed! %.5f running secondary check", accuracy));
             assertTrue(
-                eigAvg >= 1049.81851 - 0.00001 && eigAvg <= 1049.81851 + 0.00001,
-                String.format("secondary check failed, expected 1049.81851 +- 0.00001 got %.5f", eigAvg));
+                    eigAvg >= 1049.81851 - 0.00001 && eigAvg <= 1049.81851 + 0.00001,
+                    String.format("secondary check failed, expected 1049.81851 +- 0.00001 got %.5f", eigAvg));
         }
     }
 

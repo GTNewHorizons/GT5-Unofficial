@@ -69,37 +69,34 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import kubatech.Tags;
 
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> {
+        extends MTEExtendedPowerMultiBlockBase<T> {
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
-        @NotNull KTContainerConstructor<K> containerConstructor) {
-        return UIBuilder.of()
-            .container((player, world, x, y, z) -> {
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof BaseMetaTileEntity) {
-                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                    if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
-                }
-                return null;
-            })
-            .gui(((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof BaseMetaTileEntity) {
-                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                    if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return new ModularGui(
+            @NotNull KTContainerConstructor<K> containerConstructor) {
+        return UIBuilder.of().container((player, world, x, y, z) -> {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof BaseMetaTileEntity) {
+                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
+            }
+            return null;
+        }).gui(((player, world, x, y, z) -> {
+            if (!world.isRemote) return null;
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof BaseMetaTileEntity) {
+                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return new ModularGui(
                         containerConstructor.of(new ModularUIContext(buildContext, null), window, (K) mte));
-                }
-                return null;
-            }))
-            .build();
+            }
+            return null;
+        })).build();
     }
 
     @FunctionalInterface
@@ -149,7 +146,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             return 0;
         }
         int durationTiers = isPerfect ? GTUtility.log4ceil(aDuration / minDuration)
-            : GTUtility.log2ceil(aDuration / minDuration);
+                : GTUtility.log2ceil(aDuration / minDuration);
         if (durationTiers < 0) durationTiers = 0; // We do not support downclocks (yet)
         if (durationTiers > tiers) durationTiers = tiers;
         if (!isOverclockingInfinite()) {
@@ -241,11 +238,9 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     public void addGregTechLogo(ModularWindow.@NotNull Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
-                .setSize(13, 15)
-                .setPos(191 - 13, 86 - 15)
-                .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
+                new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO).setSize(13, 15).setPos(191 - 13, 86 - 15)
+                        .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     protected @NotNull List<SlotWidget> slotWidgets = new ArrayList<>(1);
@@ -269,9 +264,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85));
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85));
 
         slotWidgets.clear();
         createInventorySlots();
@@ -280,32 +273,22 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         for (int i = slotWidgets.size() - 1; i >= 0; i--) {
             slotsColumn.widget(slotWidgets.get(i));
         }
-        builder.widget(
-            slotsColumn.setAlignment(MainAxisAlignment.END)
-                .setPos(173, 167 - 1));
+        builder.widget(slotsColumn.setAlignment(MainAxisAlignment.END).setPos(173, 167 - 1));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, !slotWidgets.isEmpty() ? slotWidgets.get(0) : null);
-        builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(screenElements)
-                .setPos(10, 7)
-                .setSize(182, 79));
+        builder.widget(new Scrollable().setVerticalScroll().widget(screenElements).setPos(10, 7).setSize(182, 79));
 
-        builder.widget(createPowerSwitchButton(builder))
-            .widget(createVoidExcessButton(builder))
-            .widget(createInputSeparationButton(builder))
-            .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
+        builder.widget(createPowerSwitchButton(builder)).widget(createVoidExcessButton(builder))
+                .widget(createInputSeparationButton(builder)).widget(createBatchModeButton(builder))
+                .widget(createLockToSingleRecipeButton(builder)).widget(createStructureUpdateButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
         builder.widget(
-            configurationElements.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setPos(getRecipeLockingButtonPos().add(18, 0)));
+                configurationElements.setSpace(2).setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                        .setPos(getRecipeLockingButtonPos().add(18, 0)));
     }
 
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
@@ -318,8 +301,8 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
 
     protected final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
     protected static final Function<Integer, IDrawable> toggleButtonTextureGetter = val -> val == 0
-        ? GTUITextures.OVERLAY_BUTTON_CROSS
-        : GTUITextures.OVERLAY_BUTTON_CHECKMARK;
+            ? GTUITextures.OVERLAY_BUTTON_CROSS
+            : GTUITextures.OVERLAY_BUTTON_CHECKMARK;
     protected static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> new IDrawable[] {
-        val == 0 ? GTUITextures.BUTTON_STANDARD : GTUITextures.BUTTON_STANDARD_PRESSED };
+            val == 0 ? GTUITextures.BUTTON_STANDARD : GTUITextures.BUTTON_STANDARD_PRESSED };
 }

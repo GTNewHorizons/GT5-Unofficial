@@ -41,19 +41,18 @@ public class ItemBlockTFFTStorageField extends ItemBlock {
         if (meta > 0) {
             lines.add(StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.desc"));
             lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.kekztech.tfft.capacity",
-                    NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())));
+                    StatCollector.translateToLocalFormatted(
+                            "tooltip.kekztech.tfft.capacity",
+                            NumberFormat.getNumberInstance().format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())));
             lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.kekztech.tfft.capacity.per_fluid",
-                    NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)));
+                    StatCollector.translateToLocalFormatted(
+                            "tooltip.kekztech.tfft.capacity.per_fluid",
+                            NumberFormat.getNumberInstance().format(
+                                    MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)));
             lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.kekztech.tfft.power_draw",
-                    MTETankTFFT.Field.VALUES[meta - 1].getCost()));
+                    StatCollector.translateToLocalFormatted(
+                            "tooltip.kekztech.tfft.power_draw",
+                            MTETankTFFT.Field.VALUES[meta - 1].getCost()));
         }
     }
 }

@@ -44,61 +44,43 @@ public class RecipeGenFluids extends RecipeGenBase {
         }
 
         // Melting Shapes to fluid
-        if (material.getFluidStack(1) != null && !material.getFluidStack(1)
-            .getUnlocalizedName()
-            .toLowerCase()
-            .contains("plasma")) {
+        if (material.getFluidStack(1) != null
+                && !material.getFluidStack(1).getUnlocalizedName().toLowerCase().contains("plasma")) {
 
             // Making Shapes from fluid
 
             // Ingot
             if (material.getIngot(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
-                    .itemOutputs(material.getIngot(1))
-                    .fluidInputs(material.getFluidStack(144))
-                    .duration(1 * SECONDS + 12 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Ingot.get(0)).itemOutputs(material.getIngot(1))
+                        .fluidInputs(material.getFluidStack(144)).duration(1 * SECONDS + 12 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING("144l fluid molder for 1 ingot Recipe: " + material.getLocalizedName() + " - Success");
             }
 
             // Plate
             if (material.getPlate(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Plate.get(0))
-                    .itemOutputs(material.getPlate(1))
-                    .fluidInputs(material.getFluidStack(144))
-                    .duration(1 * SECONDS + 12 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Plate.get(0)).itemOutputs(material.getPlate(1))
+                        .fluidInputs(material.getFluidStack(144)).duration(1 * SECONDS + 12 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING("144l fluid molder for 1 plate Recipe: " + material.getLocalizedName() + " - Success");
             }
 
             // Nugget
             if (material.getNugget(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Nugget.get(0))
-                    .itemOutputs(material.getNugget(1))
-                    .fluidInputs(material.getFluidStack(16))
-                    .duration(16 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Nugget.get(0))
+                        .itemOutputs(material.getNugget(1)).fluidInputs(material.getFluidStack(16)).duration(16 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING("16l fluid molder for 1 nugget Recipe: " + material.getLocalizedName() + " - Success");
             }
 
             // Gears
             if (material.getGear(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Gear.get(0))
-                    .itemOutputs(material.getGear(1))
-                    .fluidInputs(material.getFluidStack(576))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Gear.get(0)).itemOutputs(material.getGear(1))
+                        .fluidInputs(material.getFluidStack(576)).duration(6 * SECONDS + 8 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING("576l fluid molder for 1 gear Recipe: " + material.getLocalizedName() + " - Success");
 
@@ -106,102 +88,82 @@ public class RecipeGenFluids extends RecipeGenBase {
 
             // Blocks
             if (material.getBlock(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Block.get(0))
-                    .itemOutputs(material.getBlock(1))
-                    .fluidInputs(material.getFluidStack(144 * 9))
-                    .duration(14 * SECONDS + 8 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Block.get(0)).itemOutputs(material.getBlock(1))
+                        .fluidInputs(material.getFluidStack(144 * 9)).duration(14 * SECONDS + 8 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 block Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 block Recipe: "
+                                + material.getLocalizedName()
+                                + " - Success");
             }
 
             // Rod
             if (material.getRod(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Rod.get(0))
-                    .itemOutputs(material.getRod(1))
-                    .fluidInputs(material.getFluidStack(72))
-                    .duration(7 * SECONDS + 10 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Rod.get(0)).itemOutputs(material.getRod(1))
+                        .fluidInputs(material.getFluidStack(72)).duration(7 * SECONDS + 10 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getLocalizedName() + " - Success");
             }
 
             // Rod Long
             if (material.getLongRod(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
-                    .itemOutputs(material.getLongRod(1))
-                    .fluidInputs(material.getFluidStack(144))
-                    .duration(15 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
+                        .itemOutputs(material.getLongRod(1)).fluidInputs(material.getFluidStack(144))
+                        .duration(15 * SECONDS).eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rod long Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 rod long Recipe: "
+                                + material.getLocalizedName()
+                                + " - Success");
             }
 
             // Bolt
             if (material.getBolt(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Bolt.get(0))
-                    .itemOutputs(material.getBolt(1))
-                    .fluidInputs(material.getFluidStack(18))
-                    .duration(2 * SECONDS + 10 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Bolt.get(0)).itemOutputs(material.getBolt(1))
+                        .fluidInputs(material.getFluidStack(18)).duration(2 * SECONDS + 10 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getLocalizedName() + " - Success");
             }
 
             // Screw
             if (material.getScrew(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Screw.get(0))
-                    .itemOutputs(material.getScrew(1))
-                    .fluidInputs(material.getFluidStack(18))
-                    .duration(2 * SECONDS + 10 * TICKS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Screw.get(0)).itemOutputs(material.getScrew(1))
+                        .fluidInputs(material.getFluidStack(18)).duration(2 * SECONDS + 10 * TICKS)
+                        .eut(material.vVoltageMultiplier).addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 screw Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 screw Recipe: "
+                                + material.getLocalizedName()
+                                + " - Success");
 
             }
 
             // Ring
             if (material.getRing(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Ring.get(0))
-                    .itemOutputs(material.getRing(1))
-                    .fluidInputs(material.getFluidStack(36))
-                    .duration(5 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Ring.get(0)).itemOutputs(material.getRing(1))
+                        .fluidInputs(material.getFluidStack(36)).duration(5 * SECONDS).eut(material.vVoltageMultiplier)
+                        .addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName() + " - Success");
 
             }
 
             // Rotor
             if (material.getRotor(1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Shape_Mold_Rotor.get(0))
-                    .itemOutputs(material.getRotor(1))
-                    .fluidInputs(material.getFluidStack(612))
-                    .duration(5 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(fluidSolidifierRecipes);
+                GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Rotor.get(0)).itemOutputs(material.getRotor(1))
+                        .fluidInputs(material.getFluidStack(612)).duration(5 * SECONDS).eut(material.vVoltageMultiplier)
+                        .addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING(
-                    (144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getLocalizedName() + " - Success");
+                        (144 * 9) + "l fluid molder from 1 rotor Recipe: "
+                                + material.getLocalizedName()
+                                + " - Success");
             }
         }
     }

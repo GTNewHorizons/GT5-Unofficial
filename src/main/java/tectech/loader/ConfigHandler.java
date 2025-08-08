@@ -65,7 +65,7 @@ public class ConfigHandler {
     public static class Visual {
 
         @Config.Comment({ "Eye of Harmony energy input and output display:", " - 'Numerical': Shows the entire number",
-            " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
+                " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
 
         @Config.DefaultEnum("Scientific")
         @Config.RequiresMcRestart

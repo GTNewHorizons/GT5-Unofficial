@@ -56,9 +56,9 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             if (meta == 7 && tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
                 aList.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tooltip.meta_casing.energy_storage",
-                        GTUtility.formatNumbers(capacity)));
+                        StatCollector.translateToLocalFormatted(
+                                "gtpp.tooltip.meta_casing.energy_storage",
+                                GTUtility.formatNumbers(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
@@ -76,12 +76,12 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
         GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
+                .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
         GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
+                .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");

@@ -36,8 +36,8 @@ import gregtech.common.covers.Cover;
  * Extend this Class to add a new MetaPipe Call the Constructor with the desired ID at the load-phase (not preload and
  * also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
@@ -53,11 +53,10 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     private IGregTechTileEntity mBaseMetaTileEntity;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -88,8 +87,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if (!GTMod.GT.isClientSide()) return;
 
         ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, aID);
-        Objects.requireNonNull(tStack.getItem())
-            .addInformation(tStack, null, new ArrayList<>(), true);
+        Objects.requireNonNull(tStack.getItem()).addInformation(tStack, null, new ArrayList<>(), true);
     }
 
     /**
@@ -104,15 +102,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public float getThickness() {
         // If we are holding a soldering iron, minimize the rendered thickness of the pipe.
-        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
-            .shouldHideThings()) return 0.0625F;
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy().shouldHideThings()) return 0.0625F;
         return getCollisionThickness();
     }
 
     /**
-     * For Bounding Box collision checks
-     * The bounding box is unaffected in case a soldering iron is held and the render thickness of the pipe is
-     * minimized.
+     * For Bounding Box collision checks The bounding box is unaffected in case a soldering iron is held and the render
+     * thickness of the pipe is minimized.
      */
     public abstract float getCollisionThickness();
 
@@ -123,12 +119,12 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
@@ -140,8 +136,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
-            mBaseMetaTileEntity.getMetaTileEntity()
-                .inValidate();
+            mBaseMetaTileEntity.getMetaTileEntity().inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -189,23 +184,23 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {}
+            ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ, ItemStack aTool) {
+            float aY, float aZ, ItemStack aTool) {
         return false;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         return false;
     }
 
@@ -265,15 +260,12 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     public void doExplosion(long aExplosionPower) {
         float tStrength = GTValues.getExplosionPowerForVoltage(aExplosionPower);
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(),
-            tZ = getBaseMetaTileEntity().getZCoord();
+                tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTechAPI.sMachineExplosions) {
-            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
-                .setSmoking(true)
-                .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
-                .setWorld(tWorld)
-                .run();
+            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength).setSmoking(true)
+                    .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5).setWorld(tWorld).run();
         }
     }
 
@@ -317,10 +309,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if ((alwaysLookConnected || letsIn || letsOut)) {
             // Are we trying to connect to a pipe? let's do it!
             final IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity
-                ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                : null;
-            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass()
-                .isInstance(this))) {
+                    ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
+                    : null;
+            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this))) {
                 connectAtSide(side);
                 if (!((IConnectable) tPipe).isConnectedAtSide(oppositeSide)) {
                     // Make sure pipes all get together -- connect back to us if we're connecting to a pipe
@@ -333,9 +324,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 connectAtSide(side);
                 return 1;
             }
-            if (!baseMetaTile.getWorld()
-                .getChunkProvider()
-                .chunkExists(baseMetaTile.getOffsetX(side, 1) >> 4, baseMetaTile.getOffsetZ(side, 1) >> 4)) {
+            if (!baseMetaTile.getWorld().getChunkProvider()
+                    .chunkExists(baseMetaTile.getOffsetX(side, 1) >> 4, baseMetaTile.getOffsetZ(side, 1) >> 4)) {
                 // Target chunk unloaded
                 return -1;
             }
@@ -365,11 +355,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final ForgeDirection oppositeSide = side.getOpposite();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(side);
         IMetaTileEntity tPipe = tTileEntity == null ? null : tTileEntity.getMetaTileEntity();
-        if ((this.getClass()
-            .isInstance(tPipe)
-            || (tPipe != null && tPipe.getClass()
-                .isInstance(this)))
-            && ((IConnectable) tPipe).isConnectedAtSide(oppositeSide)) {
+        if ((this.getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this)))
+                && ((IConnectable) tPipe).isConnectedAtSide(oppositeSide)) {
             ((IConnectable) tPipe).disconnect(oppositeSide);
         }
     }
@@ -381,7 +368,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
+            List<AxisAlignedBB> outputAABB, Entity collider) {
         if (boundingBoxShouldBeFullBlock()) {
             AxisAlignedBB fullSizeBoundingBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
             if (inputAABB.intersectsWith(fullSizeBoundingBox)) outputAABB.add(fullSizeBoundingBox);
@@ -404,8 +391,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return (GTMod.GT.isClientSide() && GTMod.clientProxy()
-            .forceFullBlockBB()) || getCollisionThickness() == 1;
+        return (GTMod.GT.isClientSide() && GTMod.clientProxy().forceFullBlockBB()) || getCollisionThickness() == 1;
     }
 
     /**

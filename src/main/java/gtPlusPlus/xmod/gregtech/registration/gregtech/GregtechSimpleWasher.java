@@ -37,88 +37,87 @@ public class GregtechSimpleWasher {
         // every other tier, and they were numbered numerically. In order to maintain backwards compatibility,
         // the tier numbers need to stay as they were.
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_LV,
-            SimpleDustWasher_LV.ID,
-            "simplewasher.01.tier.06",
-            "Simple Washer I",
-            1);
+                GregtechItemList.SimpleDustWasher_LV,
+                SimpleDustWasher_LV.ID,
+                "simplewasher.01.tier.06",
+                "Simple Washer I",
+                1);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_MV,
-            SimpleDustWasher_MV.ID,
-            "simplewasher.01.tier.02",
-            "Simple Washer II",
-            2);
+                GregtechItemList.SimpleDustWasher_MV,
+                SimpleDustWasher_MV.ID,
+                "simplewasher.01.tier.02",
+                "Simple Washer II",
+                2);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_HV,
-            SimpleDustWasher_HV.ID,
-            "simplewasher.01.tier.07",
-            "Simple Washer III",
-            3);
+                GregtechItemList.SimpleDustWasher_HV,
+                SimpleDustWasher_HV.ID,
+                "simplewasher.01.tier.07",
+                "Simple Washer III",
+                3);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_EV,
-            SimpleDustWasher_EV.ID,
-            "simplewasher.01.tier.03",
-            "Simple Washer IV",
-            4);
+                GregtechItemList.SimpleDustWasher_EV,
+                SimpleDustWasher_EV.ID,
+                "simplewasher.01.tier.03",
+                "Simple Washer IV",
+                4);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_IV,
-            SimpleDustWasher_IV.ID,
-            "simplewasher.01.tier.08",
-            "Simple Washer V",
-            5);
+                GregtechItemList.SimpleDustWasher_IV,
+                SimpleDustWasher_IV.ID,
+                "simplewasher.01.tier.08",
+                "Simple Washer V",
+                5);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_LuV,
-            SimpleDustWasher_LuV.ID,
-            "simplewasher.01.tier.04",
-            "Simple Washer VI",
-            6);
+                GregtechItemList.SimpleDustWasher_LuV,
+                SimpleDustWasher_LuV.ID,
+                "simplewasher.01.tier.04",
+                "Simple Washer VI",
+                6);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_ZPM,
-            SimpleDustWasher_ZPM.ID,
-            "simplewasher.01.tier.09",
-            "Simple Washer VII",
-            7);
+                GregtechItemList.SimpleDustWasher_ZPM,
+                SimpleDustWasher_ZPM.ID,
+                "simplewasher.01.tier.09",
+                "Simple Washer VII",
+                7);
         registerSimpleWasher(
-            GregtechItemList.SimpleDustWasher_UV,
-            SimpleDustWasher_UV.ID,
-            "simplewasher.01.tier.05",
-            "Simple Washer VIII",
-            8);
+                GregtechItemList.SimpleDustWasher_UV,
+                SimpleDustWasher_UV.ID,
+                "simplewasher.01.tier.05",
+                "Simple Washer VIII",
+                8);
 
         GregtechItemList.SimpleDustWasher_ULV.set(
-            new MTEBasicMachineWithRecipe(
-                SimpleDustWasher_ULV.ID,
-                "simplewasher.01.tier.01",
-                "Deprecated ULV Simple Washer",
-                0,
-                new String[] { "It's like an automatic Cauldron for washing dusts.",
-                    "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", GTPPCore.GT_Tooltip.get() },
-                simpleWasherRecipes,
-                1,
-                1,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "SIMPLE_WASHER").setRecipeCatalystPriority(-11)
-                    .getStackForm(1L));
+                new MTEBasicMachineWithRecipe(
+                        SimpleDustWasher_ULV.ID,
+                        "simplewasher.01.tier.01",
+                        "Deprecated ULV Simple Washer",
+                        0,
+                        new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", GTPPCore.GT_Tooltip.get() },
+                        simpleWasherRecipes,
+                        1,
+                        1,
+                        true,
+                        SoundResource.NONE,
+                        SpecialEffects.NONE,
+                        "SIMPLE_WASHER").setRecipeCatalystPriority(-11).getStackForm(1L));
     }
 
     private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
         washer.set(
-            new MTEBasicMachineWithRecipe(
-                id,
-                unloc,
-                loc,
-                tier,
-                new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() },
-                simpleWasherRecipes,
-                1,
-                1,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "SIMPLE_WASHER").setRecipeCatalystPriority(-tier)
-                    .getStackForm(1L));
+                new MTEBasicMachineWithRecipe(
+                        id,
+                        unloc,
+                        loc,
+                        tier,
+                        new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                GTPPCore.GT_Tooltip.get() },
+                        simpleWasherRecipes,
+                        1,
+                        1,
+                        true,
+                        SoundResource.NONE,
+                        SpecialEffects.NONE,
+                        "SIMPLE_WASHER").setRecipeCatalystPriority(-tier).getStackForm(1L));
     }
 
     private static boolean generateDirtyDustRecipes() {
@@ -132,10 +131,10 @@ public class GregtechSimpleWasher {
                 continue;
             }
             if (v == Materials.Platinum || v == Materials.Osmium
-                || v == Materials.Iridium
-                || v == Materials.Palladium
-                || v == Materials.AnyCopper
-                || v == Materials.AnyIron) {
+                    || v == Materials.Iridium
+                    || v == Materials.Palladium
+                    || v == Materials.AnyCopper
+                    || v == Materials.AnyIron) {
                 continue;
             }
 
@@ -154,13 +153,11 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        return simpleWasherRecipes.getAllRecipes()
-            .size() > mRecipeCount;
+        return simpleWasherRecipes.getAllRecipes().size() > mRecipeCount;
     }
 
     private static boolean generateDirtyCrushedRecipes() {
-        int mRecipeCount = simpleWasherRecipes.getAllRecipes()
-            .size();
+        int mRecipeCount = simpleWasherRecipes.getAllRecipes().size();
         // Generate Recipe Map for the Dust Washer.
         ItemStack crushedClean;
         ItemStack crushedDirty;
@@ -179,19 +176,13 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        return simpleWasherRecipes.getAllRecipes()
-            .size() > mRecipeCount;
+        return simpleWasherRecipes.getAllRecipes().size() > mRecipeCount;
     }
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
         if (aInput != null && aOutput != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aInput)
-                .itemOutputs(aOutput)
-                .fluidInputs(Materials.Water.getFluid(100))
-                .duration(5 * TICKS)
-                .eut(8)
-                .addTo(simpleWasherRecipes);
+            GTValues.RA.stdBuilder().itemInputs(aInput).itemOutputs(aOutput).fluidInputs(Materials.Water.getFluid(100))
+                    .duration(5 * TICKS).eut(8).addTo(simpleWasherRecipes);
         }
     }
 }

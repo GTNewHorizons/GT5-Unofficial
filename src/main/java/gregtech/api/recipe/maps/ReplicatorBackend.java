@@ -52,7 +52,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GTRecipe cachedRecipe) {
+            @Nullable GTRecipe cachedRecipe) {
         if (specialSlot == null) {
             return null;
         }
@@ -65,11 +65,9 @@ public class ReplicatorBackend extends RecipeMapBackend {
 
     @Nullable
     private static Materials getMaterialFromDataOrb(ItemStack stack) {
-        if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true) && BehaviourDataOrb.getDataTitle(stack)
-            .equals("Elemental-Scan")) {
-            return Element.get(BehaviourDataOrb.getDataName(stack)).mLinkedMaterials.stream()
-                .findFirst()
-                .orElse(null);
+        if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true)
+                && BehaviourDataOrb.getDataTitle(stack).equals("Elemental-Scan")) {
+            return Element.get(BehaviourDataOrb.getDataName(stack)).mLinkedMaterials.stream().findFirst().orElse(null);
         }
         return null;
     }
@@ -79,18 +77,13 @@ public class ReplicatorBackend extends RecipeMapBackend {
         if (material == null) {
             throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
-        return Optional.of(material)
-            .map(material1 -> material1.mElement)
-            .map(Element::getMass)
-            .map(ReplicatorBackend::getUUMAmountFromMass)
-            .flatMap(
-                uum -> builder.fluidInputs(Materials.UUMatter.getFluid(uum))
-                    .duration(GTUtility.safeInt(uum * 512L, 1))
-                    .eut(TierEU.RECIPE_LV)
-                    .ignoreCollision()
-                    .build())
-            .map(Collections::singletonList)
-            .orElse(Collections.emptyList());
+        return Optional.of(material).map(material1 -> material1.mElement).map(Element::getMass)
+                .map(ReplicatorBackend::getUUMAmountFromMass)
+                .flatMap(
+                        uum -> builder.fluidInputs(Materials.UUMatter.getFluid(uum))
+                                .duration(GTUtility.safeInt(uum * 512L, 1)).eut(TierEU.RECIPE_LV).ignoreCollision()
+                                .build())
+                .map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
     private static int getUUMAmountFromMass(long mass) {

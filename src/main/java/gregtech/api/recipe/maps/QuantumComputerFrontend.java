@@ -21,10 +21,10 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 public class QuantumComputerFrontend extends RecipeMapFrontend {
 
     public QuantumComputerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-            uiPropertiesBuilder,
-            neiPropertiesBuilder.neiSpecialInfoFormatter(new QuantumComputerMetaDataFormatter()));
+                uiPropertiesBuilder,
+                neiPropertiesBuilder.neiSpecialInfoFormatter(new QuantumComputerMetaDataFormatter()));
     }
 
     private static class QuantumComputerMetaDataFormatter implements INEISpecialInfoFormatter {

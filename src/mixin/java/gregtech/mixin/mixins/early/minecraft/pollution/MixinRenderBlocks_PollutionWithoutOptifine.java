@@ -17,10 +17,10 @@ import gregtech.common.pollution.Pollution;
 public class MixinRenderBlocks_PollutionWithoutOptifine {
 
     @ModifyExpressionValue(
-        method = "renderStandardBlock",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
+            method = "renderStandardBlock",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int gt5u$pollutionStandardBlock(int color, Block block, int blockX, int blockY, int blockZ) {
         ColorOverrideType type = Pollution.standardBlocks.matchesID(block);
         if (type == null) return color;
@@ -28,10 +28,10 @@ public class MixinRenderBlocks_PollutionWithoutOptifine {
     }
 
     @ModifyExpressionValue(
-        method = "renderBlockLiquid",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
+            method = "renderBlockLiquid",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int gt5u$pollutionBlockLiquid(int color, Block block, int blockX, int blockY, int blockZ) {
         ColorOverrideType type = Pollution.liquidBlocks.matchesID(block);
         if (type == null || block.getMaterial() != Material.water) {
@@ -41,10 +41,10 @@ public class MixinRenderBlocks_PollutionWithoutOptifine {
     }
 
     @ModifyExpressionValue(
-        method = "renderBlockDoublePlant",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/BlockDoublePlant;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
+            method = "renderBlockDoublePlant",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/BlockDoublePlant;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int gt5u$pollutionBlockDoublePlant(int color, BlockDoublePlant block, int blockX, int blockY, int blockZ) {
         ColorOverrideType type = Pollution.doublePlants.matchesID(block);
         if (type == null) return color;
@@ -52,10 +52,10 @@ public class MixinRenderBlocks_PollutionWithoutOptifine {
     }
 
     @ModifyExpressionValue(
-        method = "renderCrossedSquares",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
+            method = "renderCrossedSquares",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int gt5u$pollutionCrossedSquares(int color, Block block, int blockX, int blockY, int blockZ) {
         ColorOverrideType type = Pollution.crossedSquares.matchesID(block);
         if (type == null) return color;
@@ -63,10 +63,10 @@ public class MixinRenderBlocks_PollutionWithoutOptifine {
     }
 
     @ModifyExpressionValue(
-        method = "renderBlockVine",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
+            method = "renderBlockVine",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I"))
     private int gt5u$pollutionBlockVine(int color, Block block, int blockX, int blockY, int blockZ) {
         ColorOverrideType type = Pollution.blockVine.matchesID(block);
         if (type == null) return color;

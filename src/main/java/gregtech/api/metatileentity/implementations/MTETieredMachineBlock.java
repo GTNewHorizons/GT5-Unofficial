@@ -31,7 +31,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     public final ITexture[][][] mTextures;
 
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String aDescription, ITexture... aTextures) {
+            String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
@@ -41,7 +41,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     }
 
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String[] aDescription, ITexture... aTextures) {
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 15));
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
@@ -52,7 +52,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     }
 
     public MTETieredMachineBlock(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-        ITexture[][][] aTextures) {
+            ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
@@ -103,9 +103,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
 
     protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
         return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex()).disableShiftInsert()
-            .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER)
-            .setPos(x, y);
+                .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs)).setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER).setPos(x, y);
     }
 }

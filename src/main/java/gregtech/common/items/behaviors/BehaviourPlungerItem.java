@@ -23,7 +23,7 @@ public class BehaviourPlungerItem extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.plunger.item", "Clears Items from Pipes");
+            .addStringLocalization("gt.behaviour.plunger.item", "Clears Items from Pipes");
 
     public BehaviourPlungerItem(int aCosts) {
         this.mCosts = aCosts;
@@ -31,7 +31,7 @@ public class BehaviourPlungerItem extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -39,36 +39,35 @@ public class BehaviourPlungerItem extends BehaviourNone {
         if (aTileEntity instanceof IGregTechTileEntity gtTE) {
             IMetaTileEntity tMetaTileEntity = gtTE.getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
-                for (IMetaTileEntityItemPipe tTileEntity : GTUtility
-                    .sortMapByValuesAcending(
+                for (IMetaTileEntityItemPipe tTileEntity : GTUtility.sortMapByValuesAcending(
                         IMetaTileEntityItemPipe.Util
-                            .scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true))
-                    .keySet()) {
+                                .scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true))
+                        .keySet()) {
                     int i = 0;
                     for (int j = tTileEntity.getSizeInventory(); i < j; i++) {
                         if (tTileEntity.isValidSlot(i)) {
                             if ((tTileEntity.getStackInSlot(i) != null) && ((aPlayer.capabilities.isCreativeMode)
-                                || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts)))) {
+                                    || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts)))) {
                                 final ItemStack tStack = tTileEntity.decrStackSize(i, 64);
                                 if (tStack != null) {
                                     final EntityItem tEntity = new EntityItem(
-                                        aWorld,
-                                        gtTE.getOffsetX(side, 1) + 0.5D,
-                                        gtTE.getOffsetY(side, 1) + 0.5D,
-                                        gtTE.getOffsetZ(side, 1) + 0.5D,
-                                        tStack);
+                                            aWorld,
+                                            gtTE.getOffsetX(side, 1) + 0.5D,
+                                            gtTE.getOffsetY(side, 1) + 0.5D,
+                                            gtTE.getOffsetZ(side, 1) + 0.5D,
+                                            tStack);
                                     tEntity.motionX = 0.0D;
                                     tEntity.motionY = 0.0D;
                                     tEntity.motionZ = 0.0D;
                                     aWorld.spawnEntityInWorld(tEntity);
                                     GTUtility.sendSoundToPlayers(
-                                        aWorld,
-                                        SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                                        1.0F,
-                                        -1.0F,
-                                        aX,
-                                        aY,
-                                        aZ);
+                                            aWorld,
+                                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                                            1.0F,
+                                            -1.0F,
+                                            aX,
+                                            aY,
+                                            aZ);
                                 }
                                 return true;
                             }

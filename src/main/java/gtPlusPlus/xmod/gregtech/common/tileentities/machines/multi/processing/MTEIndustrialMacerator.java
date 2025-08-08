@@ -58,7 +58,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMacerator>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int controllerTier = 1;
     private int structureTier;
@@ -99,29 +99,21 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("60% faster than using single block machines of the same voltage")
-            .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
-            .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 3, true)
-            .addController("Bottom center")
-            .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
-            .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("60% faster than using single block machines of the same voltage")
+                .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
+                .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 6, 3, true)
+                .addController("Bottom center").addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
+                .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false).addInputBus("Any casing", 1)
+                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
+                .addMufflerHatch("Any casing", 1).toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMacerator>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMacerator>builder().addShape(
                     STRUCTURE_PIECE_MAIN,
                     // spotless:off
                     transpose(
@@ -133,25 +125,24 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                             {"AAA","A A","AAA"},
                             {"A~A","AAA","AAA"} }))
                 //spotless:on
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildHatchAdder(MTEIndustrialMacerator.class)
-                            .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
-                            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
-                            .allowOnly(ForgeDirection.NORTH)
-                            .dot(1)
-                            .build(),
-                        onElementPass(
-                            m -> m.mCasing++,
-                            ofBlocksTiered(
-                                MTEIndustrialMacerator::getStructureCasingTier,
-                                ImmutableList
-                                    .of(Pair.of(GregTechAPI.sBlockCasings4, 2), Pair.of(ModBlocks.blockCasingsMisc, 7)),
-                                -1,
-                                (m, t) -> m.structureTier = t,
-                                m -> m.structureTier))))
-                .build();
+                    .addElement(
+                            'A',
+                            ofChain(
+                                    buildHatchAdder(MTEIndustrialMacerator.class)
+                                            .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
+                                            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
+                                            .allowOnly(ForgeDirection.NORTH).dot(1).build(),
+                                    onElementPass(
+                                            m -> m.mCasing++,
+                                            ofBlocksTiered(
+                                                    MTEIndustrialMacerator::getStructureCasingTier,
+                                                    ImmutableList.of(
+                                                            Pair.of(GregTechAPI.sBlockCasings4, 2),
+                                                            Pair.of(ModBlocks.blockCasingsMisc, 7)),
+                                                    -1,
+                                                    (m, t) -> m.structureTier = t,
+                                                    m -> m.structureTier))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -159,27 +150,27 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            hintsOnly,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                hintsOnly,
+                HORIZONTAL_OFF_SET,
+                VERTICAL_OFF_SET,
+                DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET,
-            elementBudget,
-            env,
-            false,
-            true);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                HORIZONTAL_OFF_SET,
+                VERTICAL_OFF_SET,
+                DEPTH_OFF_SET,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
@@ -205,8 +196,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public boolean checkHatch() {
         return !mMufflerHatches.isEmpty() && !mMaintenanceHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
+                && !mOutputBusses.isEmpty()
+                && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
     }
 
     @Override
@@ -254,12 +245,11 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
-            && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
-            && (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP))
-            && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
+                && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
+                && (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP))
+                && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-            aBaseMetaTileEntity.getWorld()
-                .spawnParticle(
+            aBaseMetaTileEntity.getWorld().spawnParticle(
                     "smoke",
                     (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
                     aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
@@ -287,7 +277,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         if (controllerTier == 1 && !aPlayer.isSneaking()) {
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
@@ -352,9 +342,8 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 1.6F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1F / 1.6F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -371,21 +360,21 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", controllerTier);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("tier")) {
             currentTip.add(
-                "Tier: " + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(tag.getInteger("tier"))
-                    + EnumChatFormatting.RESET);
+                    "Tier: " + EnumChatFormatting.YELLOW
+                            + GTUtility.formatNumbers(tag.getInteger("tier"))
+                            + EnumChatFormatting.RESET);
         }
     }
 }

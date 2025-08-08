@@ -43,8 +43,8 @@ public class MTEPipeBlockData extends MTEPipeData {
     @Override
     public String[] getDescription() {
         return ArrayUtils.add(
-            super.getDescription(),
-            EnumChatFormatting.DARK_AQUA.toString() + EnumChatFormatting.BOLD
-                + translateToLocal("gt.blockmachines.pipe.desc.4"));
+                super.getDescription(),
+                EnumChatFormatting.DARK_AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockmachines.pipe.desc.4"));
     }
 }

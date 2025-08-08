@@ -41,79 +41,72 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         // aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String
         // aCustomID
         Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
-            : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName())
-                : new Materials(
-                    -1,
-                    werkstoff.getTexSet(),
-                    werkstoff.getToolSpeed(),
-                    werkstoff.getDurability(),
-                    werkstoff.getToolQuality(),
-                    0,
-                    werkstoff.getRGBA()[0],
-                    werkstoff.getRGBA()[1],
-                    werkstoff.getRGBA()[2],
-                    werkstoff.getRGBA()[3],
-                    werkstoff.getVarName(),
-                    werkstoff.getDefaultName(),
-                    0,
-                    0,
-                    werkstoff.getStats()
-                        .getMeltingPoint(),
-                    werkstoff.getStats()
-                        .getMeltingPoint(),
-                    werkstoff.getStats()
-                        .isBlastFurnace(),
-                    false,
-                    0,
-                    1,
-                    1,
-                    null);
+                : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName())
+                        : new Materials(
+                                -1,
+                                werkstoff.getTexSet(),
+                                werkstoff.getToolSpeed(),
+                                werkstoff.getDurability(),
+                                werkstoff.getToolQuality(),
+                                0,
+                                werkstoff.getRGBA()[0],
+                                werkstoff.getRGBA()[1],
+                                werkstoff.getRGBA()[2],
+                                werkstoff.getRGBA()[3],
+                                werkstoff.getVarName(),
+                                werkstoff.getDefaultName(),
+                                0,
+                                0,
+                                werkstoff.getStats().getMeltingPoint(),
+                                werkstoff.getStats().getMeltingPoint(),
+                                werkstoff.getStats().isBlastFurnace(),
+                                false,
+                                0,
+                                1,
+                                1,
+                                null);
         final Element[] ELEMENT_VALUES = Element.values();
         for (OrePrefixes prefixes : values()) {
             if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                 if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())
-                    && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+                        && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                     boolean ElementSet = false;
                     for (Element e : ELEMENT_VALUES) {
-                        if (e.toString()
-                            .equals(werkstoff.getToolTip())) {
+                        if (e.toString().equals(werkstoff.getToolTip())) {
                             if (!e.mLinkedMaterials.isEmpty()) break;
                             werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
-                                ? werkstoff.getBridgeMaterial()
-                                : Materials.get(werkstoff.getVarName()) != Materials._NULL
-                                    ? Materials.get(werkstoff.getVarName())
-                                    : new Materials(
-                                        -1,
-                                        werkstoff.getTexSet(),
-                                        werkstoff.getToolSpeed(),
-                                        werkstoff.getDurability(),
-                                        werkstoff.getToolQuality(),
-                                        0,
-                                        werkstoff.getRGBA()[0],
-                                        werkstoff.getRGBA()[1],
-                                        werkstoff.getRGBA()[2],
-                                        werkstoff.getRGBA()[3],
-                                        werkstoff.getVarName(),
-                                        werkstoff.getDefaultName(),
-                                        0,
-                                        0,
-                                        werkstoff.getStats()
-                                            .getMeltingPoint(),
-                                        werkstoff.getStats()
-                                            .getMeltingPoint(),
-                                        werkstoff.getStats()
-                                            .isBlastFurnace(),
-                                        false,
-                                        0,
-                                        1,
-                                        1,
-                                        null);
+                                    ? werkstoff.getBridgeMaterial()
+                                    : Materials.get(werkstoff.getVarName()) != Materials._NULL
+                                            ? Materials.get(werkstoff.getVarName())
+                                            : new Materials(
+                                                    -1,
+                                                    werkstoff.getTexSet(),
+                                                    werkstoff.getToolSpeed(),
+                                                    werkstoff.getDurability(),
+                                                    werkstoff.getToolQuality(),
+                                                    0,
+                                                    werkstoff.getRGBA()[0],
+                                                    werkstoff.getRGBA()[1],
+                                                    werkstoff.getRGBA()[2],
+                                                    werkstoff.getRGBA()[3],
+                                                    werkstoff.getVarName(),
+                                                    werkstoff.getDefaultName(),
+                                                    0,
+                                                    0,
+                                                    werkstoff.getStats().getMeltingPoint(),
+                                                    werkstoff.getStats().getMeltingPoint(),
+                                                    werkstoff.getStats().isBlastFurnace(),
+                                                    false,
+                                                    0,
+                                                    1,
+                                                    1,
+                                                    null);
                             werkstoffBridgeMaterial.mElement = e;
                             e.mLinkedMaterials = new ArrayList<>();
                             e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                             if (werkstoff.hasItemType(dust)) {
                                 GTOreDictUnificator
-                                    .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
+                                        .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
                                 GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                             }
                             ElementSet = true;
@@ -128,15 +121,12 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 if (werkstoff.hasItemType(cell)) {
                     werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
                     werkstoffBridgeMaterial.setHasCorrespondingGas(true);
-                    werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1)
-                        .getFluid();
-                    werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1)
-                        .getFluid();
+                    werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
+                    werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
                 }
 
                 if (werkstoff.hasItemType(cellMolten)) {
-                    werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1)
-                        .getFluid();
+                    werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
                 }
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();
                 werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
@@ -144,26 +134,23 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
                     // only reload from lang file if not localized already
                     werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
-                        "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
-                        werkstoffBridgeMaterial.mDefaultLocalName);
+                            "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
+                            werkstoffBridgeMaterial.mDefaultLocalName);
                 if (Thaumcraft.isModLoaded()) {
                     werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
                 }
                 werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
                 werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze
-                    : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium
-                        : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel
-                            : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
-                if (werkstoff.getStats()
-                    .isRadioactive()) {
+                        : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium
+                                : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel
+                                        : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
+                if (werkstoff.getStats().isRadioactive()) {
                     werkstoffBridgeMaterial.setEnchantmentForArmors(
-                        EnchantmentRadioactivity.INSTANCE,
-                        werkstoff.getStats()
-                            .getEnchantmentlvl());
+                            EnchantmentRadioactivity.INSTANCE,
+                            werkstoff.getStats().getEnchantmentlvl());
                     werkstoffBridgeMaterial.setEnchantmentForTools(
-                        EnchantmentRadioactivity.INSTANCE,
-                        werkstoff.getStats()
-                            .getEnchantmentlvl());
+                            EnchantmentRadioactivity.INSTANCE,
+                            werkstoff.getStats().getEnchantmentlvl());
                 }
                 werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
             }

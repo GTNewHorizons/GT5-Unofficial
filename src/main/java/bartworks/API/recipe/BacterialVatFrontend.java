@@ -28,13 +28,13 @@ import gregtech.nei.RecipeDisplayInfo;
 public class BacterialVatFrontend extends RecipeMapFrontend {
 
     public BacterialVatFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
+            GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
             return currentTip;
@@ -44,7 +44,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
+            GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.output.tooltip"));
             return currentTip;
@@ -65,12 +65,12 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     private void drawFluidOverlay(GTNEIDefaultHandler.FixedPositionedStack stack) {
         if (stack.isFluid()) {
             drawNEIOverlayText(
-                "+",
-                stack,
-                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                0.5f,
-                true,
-                Alignment.TopRight);
+                    "+",
+                    stack,
+                    colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+                    0.5f,
+                    true,
+                    Alignment.TopRight);
             return;
         }
         super.drawNEIOverlayForOutput(stack);
@@ -85,12 +85,13 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         int sievert = data.sievert;
         boolean isExact = data.isExact;
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
+                StatCollector
+                        .translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(eut),
-                getTierNameWithParentheses(eut)));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.display.usage",
+                        GTUtility.formatNumbers(eut),
+                        getTierNameWithParentheses(eut)));
 
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
         if (sievert != 0) {

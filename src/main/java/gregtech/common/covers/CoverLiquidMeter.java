@@ -31,8 +31,7 @@ import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
 
 /**
- * TODO: Implement overlay rendering only with
- * {@link Cover#getOverlayTexture()}
+ * TODO: Implement overlay rendering only with {@link Cover#getOverlayTexture()}
  */
 public class CoverLiquidMeter extends Cover implements Invertable {
 
@@ -103,10 +102,10 @@ public class CoverLiquidMeter extends Cover implements Invertable {
             if (tanks != null) {
                 for (FluidTankInfo tank : tanks) {
                     if (tank != null) {
-                        if (tileEntity instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tileEntity).getMetaTileEntity() instanceof MTEDigitalTankBase) {
+                        if (tileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tileEntity)
+                                .getMetaTileEntity() instanceof MTEDigitalTankBase) {
                             max += ((MTEDigitalTankBase) ((BaseMetaTileEntity) tileEntity).getMetaTileEntity())
-                                .getRealCapacity();
+                                    .getRealCapacity();
                         } else max += tank.capacity;
                         FluidStack tLiquid = tank.fluid;
                         if (tLiquid != null) {
@@ -191,9 +190,7 @@ public class CoverLiquidMeter extends Cover implements Invertable {
         final ICoverable tile = getTile();
         if (!tile.isDead() && tile instanceof IFluidHandler) {
             FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
-            return Arrays.stream(tanks)
-                .mapToInt(tank -> tank.capacity)
-                .sum();
+            return Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
         } else {
             return -1;
         }

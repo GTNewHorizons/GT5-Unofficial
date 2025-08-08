@@ -58,9 +58,9 @@ public class BlockTeaStorage extends BlockProxy implements IProxyTileEntityProvi
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         tooltipList.add(
-            StatCollector.translateToLocalFormatted(
-                "kubatech.tooltip.tea_storage.0",
-                EnumChatFormatting.RED + numberFormat.format(Long.MAX_VALUE)));
+                StatCollector.translateToLocalFormatted(
+                        "kubatech.tooltip.tea_storage.0",
+                        EnumChatFormatting.RED + numberFormat.format(Long.MAX_VALUE)));
     }
 
     @Override

@@ -131,9 +131,7 @@ public class CoverFluidRegulator extends Cover {
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        byteBuf.writeInt(tickRate)
-            .writeInt(speed)
-            .writeByte(condition.ordinal());
+        byteBuf.writeInt(tickRate).writeInt(speed).writeByte(condition.ordinal());
     }
 
     @Override
@@ -174,15 +172,15 @@ public class CoverFluidRegulator extends Cover {
         }
         if (tickRate == 1) {
             return GTUtility.trans("048", "Pump speed: ") + speed
-                + GTUtility.trans("049", "L/tick ")
-                + speed * 20
-                + GTUtility.trans("050", "L/sec");
+                    + GTUtility.trans("049", "L/tick ")
+                    + speed * 20
+                    + GTUtility.trans("050", "L/sec");
         }
         return String.format(
-            GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
-            speed,
-            tickRate,
-            speed * 20d / tickRate);
+                GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
+                speed,
+                tickRate,
+                speed * 20d / tickRate);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS),
-            OVERLAYS_ENERGY_OUT[mTier] };
+                OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
@@ -54,47 +54,32 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build(),
+                OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-            TextureFactory.builder()
-                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build() };
+                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
     }
 
     @Override

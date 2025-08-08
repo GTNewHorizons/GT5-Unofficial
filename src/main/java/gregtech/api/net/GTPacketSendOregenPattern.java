@@ -36,9 +36,9 @@ public class GTPacketSendOregenPattern extends GTPacket {
         }
         // invalid data, default to AXISSYMMETRICAL:
         GTLog.err.printf(
-            "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.%n",
-            ordinal,
-            OregenPattern.values().length - 1);
+                "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.%n",
+                ordinal,
+                OregenPattern.values().length - 1);
         return new GTPacketSendOregenPattern();
     }
 

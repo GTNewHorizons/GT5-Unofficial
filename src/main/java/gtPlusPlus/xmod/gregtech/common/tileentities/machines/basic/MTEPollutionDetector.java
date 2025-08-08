@@ -33,33 +33,33 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     private long mRedstoneLevel = 0;
 
     public MTEPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,
-        final String aDescription, final int aSlotCount) {
+            final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public MTEPollutionDetector(final String aName, final int aTier, final String[] aDescription,
-        final ITexture[][][] aTextures, final int aSlotCount) {
+            final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.",
-            "Does not use power.",
-            GTPPCore.GT_Tooltip.get());
+                this.mDescriptionArray,
+                "Right click to check pollution levels.",
+                "Configure with screwdriver to set redstone output amount.",
+                "Does not use power.",
+                GTPPCore.GT_Tooltip.get());
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                        TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+                : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                        TextureFactory.of(Textures.BlockIcons.VOID) };
     }
 
     @Override
@@ -89,62 +89,62 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTEPollutionDetector(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mInventory.length);
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures,
+                this.mInventory.length);
     }
 
     @Override
@@ -159,14 +159,12 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public boolean isInputFacing(final ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -191,14 +189,12 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public int getProgresstime() {
-        return (int) this.getBaseMetaTileEntity()
-            .getUniversalEnergyStored();
+        return (int) this.getBaseMetaTileEntity().getUniversalEnergyStored();
     }
 
     @Override
     public int maxProgresstime() {
-        return (int) this.getBaseMetaTileEntity()
-            .getUniversalEnergyCapacity();
+        return (int) this.getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 
     @Override
@@ -221,13 +217,13 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-        final ForgeDirection side, final ItemStack aStack) {
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-        final ForgeDirection side, final ItemStack aStack) {
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -242,12 +238,14 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
+                StatCollector
+                        .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+                StatCollector.translateToLocalFormatted(
+                        "gtpp.infodata.pollution_detector.pollution.avg",
+                        this.mAveragePollution),
+                StatCollector.translateToLocalFormatted(
+                        "gtpp.infodata.pollution_detector.redstone_level",
+                        this.mRedstoneLevel) };
     }
 
     @Override
@@ -323,8 +321,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     }
 
     public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -332,21 +329,18 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         // Only Calc server-side
-        if (!this.getBaseMetaTileEntity()
-            .isServerSide()) {
+        if (!this.getBaseMetaTileEntity().isServerSide()) {
             return;
         }
         // Emit Redstone
         if (this.getCurrentChunkPollution() >= this.mRedstoneLevel) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                this.getBaseMetaTileEntity()
-                    .setStrongOutputRedstoneSignal(side, (byte) 16);
+                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal(side, (byte) 16);
             }
             this.markDirty();
         } else {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                this.getBaseMetaTileEntity()
-                    .setStrongOutputRedstoneSignal(side, (byte) 0);
+                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal(side, (byte) 0);
             }
             this.markDirty();
         }
@@ -370,10 +364,9 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
 
-        if (side == this.getBaseMetaTileEntity()
-            .getFrontFacing()) {
+        if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
             final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
             switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                 case 0 -> this.mRedstoneLevel -= 5000;
@@ -399,7 +392,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 

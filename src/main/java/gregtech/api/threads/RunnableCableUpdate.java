@@ -55,12 +55,12 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to
                 if (tTileEntity instanceof BaseMetaPipeEntity metaPipe
-                    && metaPipe.getMetaTileEntity() instanceof MTECable cable) {
+                        && metaPipe.getMetaTileEntity() instanceof MTECable cable) {
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         if (cable.isConnectedAtSide(side)) {
                             final long tCoords = CoordinatePacker
-                                .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+                                    .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
                             if (visited.add(tCoords)) {
                                 tQueue.enqueue(tCoords);
                             }
@@ -70,17 +70,17 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
             }
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(
-                "Well this update was broken... " + initialX
-                    + ", "
-                    + initialY
-                    + ", "
-                    + initialZ
-                    + ", mWorld={"
-                    + world.getProviderName()
-                    + " @dimId "
-                    + world.provider.dimensionId
-                    + "}",
-                e);
+                    "Well this update was broken... " + initialX
+                            + ", "
+                            + initialY
+                            + ", "
+                            + initialZ
+                            + ", mWorld={"
+                            + world.getProviderName()
+                            + " @dimId "
+                            + world.provider.dimensionId
+                            + "}",
+                    e);
         }
     }
 }

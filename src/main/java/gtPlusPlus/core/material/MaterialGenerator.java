@@ -74,13 +74,13 @@ public class MaterialGenerator {
 
     @Deprecated
     public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn,
-        FluidStack rFluidOut) {
+            FluidStack rFluidOut) {
         return addFluidCannerRecipe(aEmpty, aFullContainer, aFluidIn, rFluidOut, null, null);
     }
 
     @Deprecated
     public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn,
-        FluidStack rFluidOut, Integer aTime, Integer aEu) {
+            FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
         return g.valid();
@@ -95,7 +95,7 @@ public class MaterialGenerator {
     }
 
     public static boolean generate(final Material matInfo, final boolean generateEverything,
-        final boolean generateBlastSmelterRecipes) {
+            final boolean generateBlastSmelterRecipes) {
         try {
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
@@ -242,20 +242,16 @@ public class MaterialGenerator {
     public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe) {
         generateNuclearMaterial(matInfo, false, true, false, false, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(20))
-                .itemOutputs(matInfo.getDust(1))
-                .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
-                .eut(matInfo.vVoltageMultiplier)
-                .duration(10 * (matInfo.vVoltageMultiplier / 5))
-                .addTo(chemicalDehydratorRecipes);
+            GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(20)).itemOutputs(matInfo.getDust(1))
+                    .fluidInputs(matInfo.getFluidStack(1 * INGOTS)).eut(matInfo.vVoltageMultiplier)
+                    .duration(10 * (matInfo.vVoltageMultiplier / 5)).addTo(chemicalDehydratorRecipes);
         } else {
             Logger.INFO(
-                "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalizedName()
-                    + " | Null Fluid? "
-                    + (matInfo.getFluid() == null)
-                    + " | Null Dust? "
-                    + (matInfo.getDust(0) == null));
+                    "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalizedName()
+                            + " | Null Fluid? "
+                            + (matInfo.getFluid() == null)
+                            + " | Null Dust? "
+                            + (matInfo.getDust(0) == null));
         }
     }
 
@@ -264,8 +260,8 @@ public class MaterialGenerator {
     }
 
     public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock,
-        final boolean generateDusts, final boolean generateIngot, final boolean generatePlates,
-        final boolean disableOptionalRecipes) {
+            final boolean generateDusts, final boolean generateIngot, final boolean generatePlates,
+            final boolean disableOptionalRecipes) {
         try {
 
             if (generateBlock) {
@@ -309,7 +305,7 @@ public class MaterialGenerator {
 
     @SuppressWarnings("unused")
     public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust,
-        boolean generateSmallTinyDusts, short[] customRGB) {
+            boolean generateSmallTinyDusts, short[] customRGB) {
         try {
 
             if (matInfo == null) {
@@ -350,8 +346,8 @@ public class MaterialGenerator {
             temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
-                "Generated all ore components for " + matInfo.getLocalizedName()
-                    + ", now generating processing recipes.");
+                    "Generated all ore components for " + matInfo.getLocalizedName()
+                            + ", now generating processing recipes.");
 
             if (matInfo == MaterialsFluorides.FLUORITE) {
                 new RecipeGenFluorite(matInfo);
@@ -361,7 +357,8 @@ public class MaterialGenerator {
 
         } catch (final Throwable t) {
             Logger.MATERIALS(
-                "[Error] " + (matInfo != null ? matInfo.getLocalizedName() : "Null Material") + " failed to generate.");
+                    "[Error] " + (matInfo != null ? matInfo.getLocalizedName() : "Null Material")
+                            + " failed to generate.");
             t.printStackTrace();
         }
     }
@@ -391,8 +388,8 @@ public class MaterialGenerator {
             temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
-                "Generated all ore & base components for " + matInfo.getLocalizedName()
-                    + ", now generating processing recipes.");
+                    "Generated all ore & base components for " + matInfo.getLocalizedName()
+                            + ", now generating processing recipes.");
 
             new RecipeGenOre(matInfo, true);
             new RecipeGenAlloySmelter(matInfo);

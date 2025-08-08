@@ -58,7 +58,7 @@ public class RecipeGenFluidCanning implements Runnable {
 
     // Alternative Constructor
     public RecipeGenFluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn,
-        FluidStack aFluidOut, Integer aDuration, Integer aEUt) {
+            FluidStack aFluidOut, Integer aDuration, Integer aEUt) {
         ItemStack aInput;
         ItemStack aOutput;
         FluidStack aFluidInput;
@@ -67,7 +67,7 @@ public class RecipeGenFluidCanning implements Runnable {
         // Safety check on the duration
         if (aDuration == null || aDuration <= 0) {
             aDuration = (aFluidIn != null) ? (aFluidIn.amount / 62)
-                : ((aFluidOut != null) ? (aFluidOut.amount / 62) : 10);
+                    : ((aFluidOut != null) ? (aFluidOut.amount / 62) : 10);
         }
 
         // Safety check on the EU
@@ -95,16 +95,16 @@ public class RecipeGenFluidCanning implements Runnable {
         // Check validity
 
         GTRecipe aRecipe = new GTRecipe(
-            true,
-            new ItemStack[] { aInput },
-            new ItemStack[] { aOutput },
-            null,
-            new int[] { 10000 },
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            aDuration,
-            aEUt,
-            0);
+                true,
+                new ItemStack[] { aInput },
+                new ItemStack[] { aOutput },
+                null,
+                new int[] { 10000 },
+                new FluidStack[] { aFluidInput },
+                new FluidStack[] { aFluidOutput },
+                aDuration,
+                aEUt,
+                0);
 
         // Check Valid
         boolean aTempValidityCheck = false;
@@ -163,13 +163,13 @@ public class RecipeGenFluidCanning implements Runnable {
         aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
         if (aCount1 <= aCount2) {
             Logger.INFO(
-                "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
+                    "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
+                            + ", "
+                            + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
     }
@@ -179,7 +179,6 @@ public class RecipeGenFluidCanning implements Runnable {
     }
 
     private int getMapSize(RecipeMap<?> aMap) {
-        return aMap.getAllRecipes()
-            .size();
+        return aMap.getAllRecipes().size();
     }
 }

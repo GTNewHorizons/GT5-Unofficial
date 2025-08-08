@@ -65,8 +65,7 @@ public class ChestUIFactory extends CoverUIFactory<CoverChest> {
             return;
         }
         h = cover.getItems();
-        SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
-            .build();
+        SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3).build();
         if (getUIBuildContext().isAnotherWindow()) {
             slotGroup.setPos(4, 4);
         } else {
@@ -76,8 +75,8 @@ public class ChestUIFactory extends CoverUIFactory<CoverChest> {
         builder.widget(w);
 
         builder.setPos(
-            (size, mainWindow) -> Alignment.Center.getAlignedPos(size, new Size(getGUIWidth(), getGUIHeight()))
-                .subtract(getUIBuildContext().isAnotherWindow() ? getGUIWidth() + 80 : 0, 0));
+                (size, mainWindow) -> Alignment.Center.getAlignedPos(size, new Size(getGUIWidth(), getGUIHeight()))
+                        .subtract(getUIBuildContext().isAnotherWindow() ? getGUIWidth() + 80 : 0, 0));
     }
 
     @Override

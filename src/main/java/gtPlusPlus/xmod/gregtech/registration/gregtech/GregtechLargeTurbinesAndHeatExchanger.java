@@ -27,30 +27,32 @@ public class GregtechLargeTurbinesAndHeatExchanger {
 
     private static void run1() {
         GregtechItemList.Large_Steam_Turbine.set(
-            new MTELargeTurbineSteam(Large_Steam_Turbine.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
-                .getStackForm(1L));
+                new MTELargeTurbineSteam(Large_Steam_Turbine.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
+                        .getStackForm(1L));
         GregtechItemList.Large_HPSteam_Turbine.set(
-            new MTELargeTurbineSHSteam(
-                Large_HPSteam_Turbine.ID,
-                "multimachine.largerhpturbine",
-                "XL Turbo HP Steam Turbine").getStackForm(1L));
+                new MTELargeTurbineSHSteam(
+                        Large_HPSteam_Turbine.ID,
+                        "multimachine.largerhpturbine",
+                        "XL Turbo HP Steam Turbine").getStackForm(1L));
         GregtechItemList.Large_Gas_Turbine.set(
-            new MTELargeTurbineGas(Large_Gas_Turbine.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
-                .getStackForm(1L));
+                new MTELargeTurbineGas(Large_Gas_Turbine.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
+                        .getStackForm(1L));
         GregtechItemList.Large_Plasma_Turbine.set(
-            new MTELargerTurbinePlasma(
-                Large_Plasma_Turbine.ID,
-                "multimachine.largerplasmaturbine",
-                "XL Turbo Plasma Turbine").getStackForm(1L));
+                new MTELargerTurbinePlasma(
+                        Large_Plasma_Turbine.ID,
+                        "multimachine.largerplasmaturbine",
+                        "XL Turbo Plasma Turbine").getStackForm(1L));
         GregtechItemList.Large_SCSteam_Turbine.set(
-            new MTELargeTurbineSCSteam(
-                Large_SCSteam_Turbine.ID,
-                "multimachine.largerscturbine",
-                "XL Turbo SC Steam Turbine").getStackForm(1L));
-        GregtechItemList.Hatch_Turbine_Rotor
-            .set(new MTEHatchTurbine(Hatch_Turbine_Rotor.ID, "hatch.turbine", "Rotor Assembly", 8).getStackForm(1L));
+                new MTELargeTurbineSCSteam(
+                        Large_SCSteam_Turbine.ID,
+                        "multimachine.largerscturbine",
+                        "XL Turbo SC Steam Turbine").getStackForm(1L));
+        GregtechItemList.Hatch_Turbine_Rotor.set(
+                new MTEHatchTurbine(Hatch_Turbine_Rotor.ID, "hatch.turbine", "Rotor Assembly", 8).getStackForm(1L));
         GregtechItemList.XL_HeatExchanger.set(
-            new MTEAdvHeatExchanger(XL_HeatExchanger.ID, "multimachine.reallybigheatexchanger", "Whakawhiti Wera XL")
-                .getStackForm(1L));
+                new MTEAdvHeatExchanger(
+                        XL_HeatExchanger.ID,
+                        "multimachine.reallybigheatexchanger",
+                        "Whakawhiti Wera XL").getStackForm(1L));
     }
 }

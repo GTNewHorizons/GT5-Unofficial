@@ -19,14 +19,15 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack stack, ItemRenderType type) {
         return (type == ItemRenderType.EQUIPPED_FIRST_PERSON) || (type == ItemRenderType.INVENTORY)
-            || (type == ItemRenderType.EQUIPPED)
-            || (type == ItemRenderType.ENTITY);
+                || (type == ItemRenderType.EQUIPPED)
+                || (type == ItemRenderType.ENTITY);
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack stack, ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+                || (helper == ItemRendererHelper.ENTITY_ROTATION
+                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             renderToolPart(type, stack, toolStats, true);
 
             if ((type == ItemRenderType.INVENTORY)
-                && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
+                    && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
                 if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);
@@ -53,7 +54,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[0];
                     } else {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[((int) Math
-                            .max(0L, Math.min(7L, (maxDamage - damage) * 8L / maxDamage)))];
+                                .max(0L, Math.min(7L, (maxDamage - damage) * 8L / maxDamage)))];
                     }
                     renderIcon(iconContainer);
                 }
@@ -69,7 +70,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[8];
                         } else {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[(7
-                                - (int) Math.max(0L, Math.min(6L, (stats[0] - tCharge) * 7L / stats[0])))];
+                                    - (int) Math.max(0L, Math.min(6L, (stats[0] - tCharge) * 7L / stats[0])))];
                         }
                     } else {
                         iconContainer = null;

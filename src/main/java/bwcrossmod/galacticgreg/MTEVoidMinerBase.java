@@ -58,7 +58,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
@@ -142,22 +142,22 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Miner")
-            .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
-            .addInfo(
+        tt.addMachineType("Miner").addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t").addInfo(
                 "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
-            .addInfo(
-                "Will output " + 2 * this.TIER_MULTIPLIER
-                    + " Ores per Second depending on the Dimension it is build in")
-            .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-            .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
-            .addInfo(
-                "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                    + "VOIDED"
-                    + EnumChatFormatting.RESET
-                    + ".")
-            .toolTipFinisher();
+                .addInfo(
+                        "Will output " + 2 * this.TIER_MULTIPLIER
+                                + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                        "You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE
+                                + " 16x Time 16x Output")
+                .addInfo(
+                        "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                                + "VOIDED"
+                                + EnumChatFormatting.RESET
+                                + ".")
+                .toolTipFinisher();
         return tt;
     }
 
@@ -174,17 +174,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         float currentWeight = 0.f;
         while (true) {
             float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap()
-                .entrySet()) {
+            for (Map.Entry<GTUtility.ItemId, Float> entry : this.dropMap.getInternalMap().entrySet()) {
                 currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
+                if (randomNumber < currentWeight) return entry.getKey().getItemStack();
             }
-            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
-                .entrySet()) {
+            for (Map.Entry<GTUtility.ItemId, Float> entry : this.extraDropMap.getInternalMap().entrySet()) {
                 currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey()
-                    .getItemStack();
+                if (randomNumber < currentWeight) return entry.getKey().getItemStack();
             }
         }
     }
@@ -252,10 +248,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
             this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
         } else {
-            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
-                .getWorld()
-                .getChunkProvider()).currentChunkProvider.getClass()
-                    .getName();
+            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity().getWorld()
+                    .getChunkProvider()).currentChunkProvider.getClass().getName();
 
             if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
                 this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
@@ -270,8 +264,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     private void calculateDropMap() {
         this.dropMap = new VoidMinerUtility.DropMap();
         this.extraDropMap = new VoidMinerUtility.DropMap();
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
+        int id = this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
         this.handleModDimDef(id);
         this.handleExtraDrops(id);
         this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
@@ -281,30 +274,27 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * Output logic of the VM
      */
     private void handleOutputs() {
-        final List<ItemStack> inputOres = this.getStoredInputs()
-            .stream()
-            .filter(GTUtility::isOre)
-            .collect(Collectors.toList());
+        final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GTUtility::isOre)
+                .collect(Collectors.toList());
         final ItemStack output = this.nextOre();
         output.stackSize = multiplier * (batchMode ? 16 : 1);
-        if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
-            .noneMatch(is -> GTUtility.areStacksEqual(is, output))
-            || !this.mBlacklist && inputOres.stream()
-                .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
+        if (inputOres.isEmpty()
+                || this.mBlacklist && inputOres.stream().noneMatch(is -> GTUtility.areStacksEqual(is, output))
+                || !this.mBlacklist && inputOres.stream().anyMatch(is -> GTUtility.areStacksEqual(is, output)))
             this.addOutput(output);
         this.updateSlots();
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         this.mBlacklist = !this.mBlacklist;
         GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
         this.batchMode = !this.batchMode;
         GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
         return true;
@@ -317,34 +307,22 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_DRILL)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { getCasingTextureForId(casingTextureIndex),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW).extFacing().glow().build() };
+            return new ITexture[] { getCasingTextureForId(casingTextureIndex),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
 
     protected boolean checkHatches() {
         return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
+                && !mOutputBusses.isEmpty()
+                && !mEnergyHatches.isEmpty();
     }
 
     public abstract int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env);

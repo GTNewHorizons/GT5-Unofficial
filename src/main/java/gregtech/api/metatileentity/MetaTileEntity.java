@@ -58,8 +58,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * Extend this Class to add a new MetaMachine Call the Constructor with the desired ID at the load-phase (not preload
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
@@ -73,8 +73,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
-        "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
-        "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
+            "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
+            "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
 
     @Override
     public IItemHandlerModifiable getInventoryHandler() {
@@ -91,11 +91,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     private String playerLang;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -146,8 +145,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
-            mBaseMetaTileEntity.getMetaTileEntity()
-                .inValidate();
+            mBaseMetaTileEntity.getMetaTileEntity().inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -158,7 +156,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
-            && !getBaseMetaTileEntity().isDead();
+                && !getBaseMetaTileEntity().isDead();
     }
 
     /**
@@ -192,11 +190,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {}
+            ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
 
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
@@ -207,7 +205,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
 
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
@@ -216,14 +214,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
-                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+                    .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+            float aX, float aY, float aZ, ItemStack aTool) {
 
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
@@ -232,7 +230,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
-                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+                    .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
     }
@@ -240,18 +238,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void onExplosion() {
         GTLog.exp.println(
-            "Machine at " + this.getBaseMetaTileEntity()
-                .getXCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIMID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId
-                + " exploded.");
+                "Machine at " + this.getBaseMetaTileEntity().getXCoord()
+                        + " | "
+                        + this.getBaseMetaTileEntity().getYCoord()
+                        + " | "
+                        + this.getBaseMetaTileEntity().getZCoord()
+                        + " DIMID: "
+                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+                        + " exploded.");
     }
 
     /**
@@ -263,7 +257,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+            float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aPlayer instanceof EntityPlayerMPAccessor) {
                 playerLang = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
@@ -279,17 +273,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         if (playerLang != null) {
             // note: playerLang is set in onRightclick, so this may not be 100% correct in some situations
             // on server
-            base = LanguageRegistry.instance()
-                .getStringLocalization(key, playerLang);
+            base = LanguageRegistry.instance().getStringLocalization(key, playerLang);
         } else {
             // on client
-            base = LanguageRegistry.instance()
-                .getStringLocalization(key);
+            base = LanguageRegistry.instance().getStringLocalization(key);
         }
 
         if (base.isEmpty()) {
-            base = LanguageRegistry.instance()
-                .getStringLocalization(key, "en_US");
+            base = LanguageRegistry.instance().getStringLocalization(key, "en_US");
         }
 
         return base;
@@ -526,7 +517,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public boolean isTeleporterCompatible() {
         return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128
-            && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
+                && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
     }
 
     /**
@@ -552,9 +543,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * Called when a slot is changed.
-     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
-     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
      */
     protected void onContentsChanged(int slot) {
 
@@ -578,10 +568,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
-                Integer.MAX_VALUE,
-                Math.min(
-                    aFluid.amount / 2,
-                    getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+                    Integer.MAX_VALUE,
+                    Math.min(
+                            aFluid.amount / 2,
+                            getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
                 markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
@@ -696,13 +686,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.facing",
-                getFacingNameLocalized(
-                    mBaseMetaTileEntity.getFrontFacing()
-                        .ordinal())));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.facing",
+                        getFacingNameLocalized(mBaseMetaTileEntity.getFrontFacing().ordinal())));
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -722,7 +710,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         if (this instanceof IPowerChannelState state) {
             final boolean isActive = state.isActive();
             final boolean isPowered = state.isPowered();
@@ -738,19 +726,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             if (getProxy() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.proxy");
             if (getProxy().getNode() == null)
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.node");
-            if (getProxy().getNode()
-                .getGrid() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.grid");
-            if (!getProxy().getNode()
-                .meetsChannelRequirements())
+            if (getProxy().getNode().getGrid() == null)
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.grid");
+            if (!getProxy().getNode().meetsChannelRequirements())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.channels");
-            IPathingGrid pg = getProxy().getNode()
-                .getGrid()
-                .getCache(IPathingGrid.class);
+            IPathingGrid pg = getProxy().getNode().getGrid().getCache(IPathingGrid.class);
             if (!pg.isNetworkBooting())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.booting");
-            IEnergyGrid eg = getProxy().getNode()
-                .getGrid()
-                .getCache(IEnergyGrid.class);
+            IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Throwable ex) {

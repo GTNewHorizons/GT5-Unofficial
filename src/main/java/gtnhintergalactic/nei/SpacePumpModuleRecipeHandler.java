@@ -59,13 +59,11 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      * Initialize the handler for space pumping recipes
      */
     public SpacePumpModuleRecipeHandler() {
-        modularWindow = ModularWindow.builder(170, 82)
-            .setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
-            .widget(
-                new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO)
-                    .setSize(17, 17)
-                    .setPos(new Pos2d(147, 52)))
-            .build();
+        modularWindow = ModularWindow.builder(170, 82).setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
+                .widget(
+                        new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO).setSize(17, 17)
+                                .setPos(new Pos2d(147, 52)))
+                .build();
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
     }
 
@@ -96,9 +94,9 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     public void loadTransferRects() {
         int stringLength = GuiDraw.getStringWidth(I18n.format(SEE_ALL));
         transferRects.add(
-            new RecipeTransferRect(
-                new Rectangle(getGuiWidth() - stringLength - 3, 10 + 16, stringLength, 9),
-                getOutputId()));
+                new RecipeTransferRect(
+                        new Rectangle(getGuiWidth() - stringLength - 3, 10 + 16, stringLength, 9),
+                        getOutputId()));
     }
 
     /**
@@ -121,14 +119,11 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         if (outputId.equals(getOutputId())) {
             for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
                 arecipes.add(
-                    new CachedPumpRecipe(
-                        entry.getKey()
-                            .getLeft(),
-                        entry.getKey()
-                            .getRight(),
-                        entry.getValue()
-                            .getFluid(),
-                        entry.getValue().amount));
+                        new CachedPumpRecipe(
+                                entry.getKey().getLeft(),
+                                entry.getKey().getRight(),
+                                entry.getValue().getFluid(),
+                                entry.getValue().amount));
             }
         } else {
             super.loadCraftingRecipes(outputId, results);
@@ -183,16 +178,13 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         if (fluid == null) return;
 
         for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
-            if (entry.getValue()
-                .isFluidEqual(new FluidStack(fluid, 0))) {
+            if (entry.getValue().isFluidEqual(new FluidStack(fluid, 0))) {
                 arecipes.add(
-                    new CachedPumpRecipe(
-                        entry.getKey()
-                            .getLeft(),
-                        entry.getKey()
-                            .getRight(),
-                        fluid,
-                        entry.getValue().amount));
+                        new CachedPumpRecipe(
+                                entry.getKey().getLeft(),
+                                entry.getKey().getRight(),
+                                fluid,
+                                entry.getValue().amount));
             }
         }
     }
@@ -205,23 +197,23 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void drawExtras(int recipeIndex) {
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.planettype") + ":",
-            CATEGORY_TITLE_X,
-            PLANET_TYPE_Y,
-            TEXT_COLOR,
-            false);
+                I18n.format("ig.nei.elevatorpump.planettype") + ":",
+                CATEGORY_TITLE_X,
+                PLANET_TYPE_Y,
+                TEXT_COLOR,
+                false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.gastype") + ":",
-            CATEGORY_TITLE_X,
-            GAS_TYPE_Y,
-            TEXT_COLOR,
-            false);
+                I18n.format("ig.nei.elevatorpump.gastype") + ":",
+                CATEGORY_TITLE_X,
+                GAS_TYPE_Y,
+                TEXT_COLOR,
+                false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.amount") + ":",
-            CATEGORY_TITLE_X,
-            OUT_AMOUNT_Y,
-            TEXT_COLOR,
-            false);
+                I18n.format("ig.nei.elevatorpump.amount") + ":",
+                CATEGORY_TITLE_X,
+                OUT_AMOUNT_Y,
+                TEXT_COLOR,
+                false);
 
         CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(Integer.toString(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
@@ -229,11 +221,11 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
-            EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
-            getGuiWidth() - 3,
-            OUT_AMOUNT_Y,
-            TEXT_COLOR,
-            false);
+                EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
+                getGuiWidth() - 3,
+                OUT_AMOUNT_Y,
+                TEXT_COLOR,
+                false);
     }
 
     /**

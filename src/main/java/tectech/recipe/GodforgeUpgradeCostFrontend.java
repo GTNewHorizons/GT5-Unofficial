@@ -26,16 +26,15 @@ import tectech.thing.gui.TecTechUITextures;
 public class GodforgeUpgradeCostFrontend extends RecipeMapFrontend {
 
     public GodforgeUpgradeCostFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
         builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
-                .setSize(18, 18)
-                .setPos(new Pos2d(151, 63).add(windowOffset)));
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO).setSize(18, 18)
+                        .setPos(new Pos2d(151, 63).add(windowOffset)));
     }
 
     @Override
@@ -67,8 +66,10 @@ public class GodforgeUpgradeCostFrontend extends RecipeMapFrontend {
         int xOffset = 18 - width / 2 - 1;
         recipeInfo.drawText(" ", 83, -76);
         recipeInfo.drawText(
-            EnumChatFormatting.BLUE.toString() + EnumChatFormatting.UNDERLINE + EnumChatFormatting.BOLD + upgradeName,
-            110 + xOffset,
-            0);
+                EnumChatFormatting.BLUE.toString() + EnumChatFormatting.UNDERLINE
+                        + EnumChatFormatting.BOLD
+                        + upgradeName,
+                110 + xOffset,
+                0);
     }
 }

@@ -22,7 +22,7 @@ public class AssemblerBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot) {
+            @Nullable ItemStack specialSlot) {
         for (ItemStack item : items) {
             if (ItemList.Paper_Printed_Pages.isStackEqual(item, false, true)) {
                 recipe = recipe.copy();

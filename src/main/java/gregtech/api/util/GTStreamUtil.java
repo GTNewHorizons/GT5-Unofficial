@@ -19,8 +19,8 @@ public final class GTStreamUtil {
     }
 
     /**
-     * Returns a sequential ordered {@code Stream} whose elements are the specified values,
-     * if {@code condition} is true, otherwise returns an empty {@code Stream}.
+     * Returns a sequential ordered {@code Stream} whose elements are the specified values, if {@code condition} is
+     * true, otherwise returns an empty {@code Stream}.
      *
      * @param <T>    the type of stream elements
      * @param values the elements of the new stream
@@ -38,7 +38,6 @@ public final class GTStreamUtil {
      * @return the new stream
      */
     public static <T> Stream<T> ofSupplier(Supplier<T> supplier) {
-        return Stream.generate(supplier)
-            .limit(1);
+        return Stream.generate(supplier).limit(1);
     }
 }

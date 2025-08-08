@@ -45,8 +45,8 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     public double getDemandedEnergy() {
         if (cableMeta != null) {
             /*
-             * We don't want everything to join the enet, treating the cable as a conductor, so we join it as a link.
-             * We don't want to traverse all cables connected to this, like we would during distribution, to see if it
+             * We don't want everything to join the enet, treating the cable as a conductor, so we join it as a link. We
+             * don't want to traverse all cables connected to this, like we would during distribution, to see if it
              * actually needs any EU, so we just always say we want it all. If there are more than two things attached
              * and one of them is a GT cable that doesn't have anywhere to send its energy, the distribution will be a
              * bit weird. In that case, use only one cable or a transformer.
@@ -79,7 +79,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
         final long amps = (long) Math
-            .max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
+                .max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
         final long euPerAmp = (long) (amount / (amps * 1.0));
 
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
@@ -88,10 +88,10 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
         final long usedAmps;
         if (cableMeta != null) {
             usedAmps = ((IMetaTileEntityCable) metaTile).transferElectricity(
-                directionFrom,
-                Math.min(euPerAmp, cableMeta.mVoltage),
-                amps,
-                Sets.newHashSet((TileEntity) myMeta));
+                    directionFrom,
+                    Math.min(euPerAmp, cableMeta.mVoltage),
+                    amps,
+                    Sets.newHashSet((TileEntity) myMeta));
 
         } else usedAmps = myMeta.injectEnergyUnits(directionFrom, Math.min(euPerAmp, myMeta.getInputVoltage()), amps);
         return amount - (usedAmps * euPerAmp);
@@ -112,7 +112,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
         if (metaTile instanceof IMetaTileEntityCable
-            && (direction == ForgeDirection.UNKNOWN || ((IConnectable) metaTile).isConnectedAtSide(direction)))
+                && (direction == ForgeDirection.UNKNOWN || ((IConnectable) metaTile).isConnectedAtSide(direction)))
             return true;
         else return myMeta.inputEnergyFrom(direction, false);
     }

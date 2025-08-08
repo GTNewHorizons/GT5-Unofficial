@@ -25,11 +25,11 @@ public class BehaviourLighter extends BehaviourNone {
     private final ItemStack mFullLighter;
     private final long mFuelAmount;
     private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+            .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
     private final String mTooltipUses = GTLanguageManager
-        .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+            .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GTLanguageManager
-        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public BehaviourLighter(ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter, long aFuelAmount) {
         this.mFullLighter = aFullLighter;
@@ -49,13 +49,13 @@ public class BehaviourLighter extends BehaviourNone {
             long tFuelAmount = GTUtility.ItemNBT.getLighterFuel(aStack);
             if (GTUtility.areStacksEqual(aStack, this.mUsedLighter, true)) {
                 GTUtility.sendSoundToPlayers(
-                    aPlayer.worldObj,
-                    SoundResource.FIRE_IGNITE,
-                    1.0F,
-                    1.0F,
-                    MathHelper.floor_double(aEntity.posX),
-                    MathHelper.floor_double(aEntity.posY),
-                    MathHelper.floor_double(aEntity.posZ));
+                        aPlayer.worldObj,
+                        SoundResource.FIRE_IGNITE,
+                        1.0F,
+                        1.0F,
+                        MathHelper.floor_double(aEntity.posX),
+                        MathHelper.floor_double(aEntity.posY),
+                        MathHelper.floor_double(aEntity.posZ));
                 ((EntityCreeper) aEntity).func_146079_cb();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
@@ -72,7 +72,7 @@ public class BehaviourLighter extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -82,7 +82,7 @@ public class BehaviourLighter extends BehaviourNone {
         aY += side.offsetY;
         aZ += side.offsetZ;
         if ((!GTUtility.isBlockAir(aWorld, aX, aY, aZ))
-            || (!aPlayer.canPlayerEdit(aX, aY, aZ, side.ordinal(), aStack))) {
+                || (!aPlayer.canPlayerEdit(aX, aY, aZ, side.ordinal(), aStack))) {
             return false;
         }
         prepare(aStack);
@@ -124,8 +124,8 @@ public class BehaviourLighter extends BehaviourNone {
         aList.add(this.mTooltip);
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tFuelAmount = tNBT == null ? this.mFuelAmount
-            : GTUtility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount
-                : tNBT.getLong("GT.LighterFuel");
+                : GTUtility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount
+                        : tNBT.getLong("GT.LighterFuel");
         aList.add(this.mTooltipUses + " " + tFuelAmount);
         aList.add(this.mTooltipUnstackable);
         return aList;

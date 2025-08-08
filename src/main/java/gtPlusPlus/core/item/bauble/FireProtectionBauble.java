@@ -34,7 +34,7 @@ public class FireProtectionBauble extends BaseBauble {
 
     @Override
     public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-        final boolean p_77663_5_) {
+            final boolean p_77663_5_) {
         super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 

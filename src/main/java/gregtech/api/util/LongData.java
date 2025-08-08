@@ -13,8 +13,7 @@ public interface LongData {
     default long avgLong() {
         int size = size();
         if (size == 0) return 0;
-        return sum().divide(BigInteger.valueOf(size))
-            .longValueExact();
+        return sum().divide(BigInteger.valueOf(size)).longValueExact();
     }
 
     int size();

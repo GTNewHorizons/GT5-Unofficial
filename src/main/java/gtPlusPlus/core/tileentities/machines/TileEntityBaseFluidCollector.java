@@ -72,14 +72,14 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
             }
 
             FluidEvent.fireEvent(
-                new FluidEvent.FluidDrainingEvent(
-                    fluid,
-                    this.getWorldObj(),
-                    this.xCoord,
-                    this.yCoord,
-                    this.zCoord,
-                    this.tank,
-                    0));
+                    new FluidEvent.FluidDrainingEvent(
+                            fluid,
+                            this.getWorldObj(),
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this.tank,
+                            0));
         }
         return stack;
     }
@@ -192,7 +192,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
             if (this.tank.getFluidAmount() < this.tank.getCapacity()) {
                 int aFluidAmount = onPostTick(aEntity);
                 aFluidAmount = Math
-                    .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
+                        .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
                 this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
             } else {
                 ItemStack aDirtStack = GTUtility.copyAmount(1, itemToSpawnInWorldIfTankIsFull());

@@ -70,30 +70,28 @@ public class BWMetaItems {
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS
-            .addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
+                .addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
-            .itemOutputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(formingPressRecipes);
+                .itemInputs(
+                        WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
+                        WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
+                .itemOutputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2)).duration(15 * SECONDS).eut(TierEU.RECIPE_HV)
+                .addTo(formingPressRecipes);
 
         RecipeMaps.autoclaveRecipes.add(
-            new GTRecipe(
-                false,
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2) },
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
-                null,
-                new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
-                null,
-                300,
-                (int) TierEU.RECIPE_EV,
-                BWUtil.CLEANROOM));
+                new GTRecipe(
+                        false,
+                        new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2) },
+                        new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
+                        null,
+                        new int[] { 7500 },
+                        new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
+                        null,
+                        300,
+                        (int) TierEU.RECIPE_EV,
+                        BWUtil.CLEANROOM));
     }
 
     public static class BW_GT_MetaGenCircuits extends BWMetaItems.BW_GT_MetaGen_Item_Hook {
@@ -134,30 +132,28 @@ public class BWMetaItems {
             for (short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
                 if (this.mEnabledItems.get(i)) {
                     BWUtil.set2DCoordTo1DArray(
-                        i,
-                        0,
-                        2,
-                        aIconRegister.registerIcon("gregtech:" + this.getUnlocalizedName() + "/" + i),
-                        this.mIconList);
+                            i,
+                            0,
+                            2,
+                            aIconRegister.registerIcon("gregtech:" + this.getUnlocalizedName() + "/" + i),
+                            this.mIconList);
                 }
             }
 
             for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
                 if (this.mEnabledItems.get(i)) {
                     BWUtil.set2DCoordTo1DArray(
-                        i,
-                        0,
-                        2,
-                        Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i))
-                            .get(1)
-                            .getIconIndex(),
-                        this.mIconList);
+                            i,
+                            0,
+                            2,
+                            Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i)).get(1).getIconIndex(),
+                            this.mIconList);
                     BWUtil.set2DCoordTo1DArray(
-                        i,
-                        1,
-                        2,
-                        aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
-                        this.mIconList);
+                            i,
+                            1,
+                            2,
+                            aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
+                            this.mIconList);
                 }
             }
         }
@@ -167,15 +163,16 @@ public class BWMetaItems {
             if (aStack.getTagCompound() != null) {
                 ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
                 String itemName = tagStack != null
-                    ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
-                    : StatCollector.translateToLocal("tooltip.bw.item.circuit.tagged");
+                        ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
+                        : StatCollector.translateToLocal("tooltip.bw.item.circuit.tagged");
 
                 if (aStack.getItemDamage() == 0) {
                     aList.add(
-                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.imprint", itemName));
+                            StatCollector
+                                    .translateToLocalFormatted("tooltip.bw.item.circuit.tagged.imprint", itemName));
                 } else if (aStack.getItemDamage() == 1) {
                     aList.add(
-                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.sliced", itemName));
+                            StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.sliced", itemName));
                 }
             } else {
                 if (aStack.getItemDamage() == 0) {
@@ -321,7 +318,7 @@ public class BWMetaItems {
 
         @Override
         public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem,
-            int useRemaining) {
+                int useRemaining) {
             return this.getIconFromDamage(stack.getItemDamage());
         }
 

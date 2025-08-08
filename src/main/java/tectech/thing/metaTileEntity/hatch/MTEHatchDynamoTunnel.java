@@ -35,20 +35,20 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
     public MTEHatchDynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier, int amps) {
         super(
-            ID,
-            unlocalisedName,
-            localisedName,
-            tier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(amps * V[tier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t" },
-            amps);
+                ID,
+                unlocalisedName,
+                localisedName,
+                tier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+                        translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
+                                + EnumChatFormatting.YELLOW
+                                + GTUtility.formatNumbers(amps * V[tier])
+                                + EnumChatFormatting.RESET
+                                + " EU/t" },
+                amps);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -135,7 +135,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         for (short dist = 1; dist < 1000; dist++) {
 
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
-                .getIGregTechTileEntityAtSideAndDistance(front, dist);
+                    .getIGregTechTileEntityAtSideAndDistance(front, dist);
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
@@ -158,18 +158,16 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                             return;
                         } else if (maxEUOutput() == ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
                             long diff = Math.min(
-                                Amperes * 20L * maxEUOutput(),
-                                Math.min(
-                                    ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
-                                        - aMetaTileEntity.getBaseMetaTileEntity()
-                                            .getStoredEU(),
-                                    aBaseMetaTileEntity.getStoredEU()));
+                                    Amperes * 20L * maxEUOutput(),
+                                    Math.min(
+                                            ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
+                                                    - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
+                                            aBaseMetaTileEntity.getStoredEU()));
 
                             setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
 
-                            ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
-                                aMetaTileEntity.getBaseMetaTileEntity()
-                                    .getStoredEU() + diff);
+                            ((MTEHatchEnergyTunnel) aMetaTileEntity)
+                                    .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
                         }
                         return;
                     } else if (aMetaTileEntity instanceof MTEPipeLaser) {
@@ -192,7 +190,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -203,20 +201,11 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val)
-                    .setGetter(() -> Amperes)
-                    .setBounds(1, maxAmperes)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(TextWidget.localised("GT5U.machines.laser_hatch.amperage").setPos(x, y).setSize(74, 14)).widget(
+                new NumericWidget().setSetter(val -> Amperes = (int) val).setGetter(() -> Amperes)
+                        .setBounds(1, maxAmperes).setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
+                        .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(x, y + 16)
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 
     @Override

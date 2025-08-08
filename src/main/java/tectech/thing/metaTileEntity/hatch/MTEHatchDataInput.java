@@ -33,13 +33,13 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
     }
 
     public MTEHatchDataInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -107,18 +107,18 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("computation", history);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip
-            .add(translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
+        currenttip.add(
+                translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
     }
 }

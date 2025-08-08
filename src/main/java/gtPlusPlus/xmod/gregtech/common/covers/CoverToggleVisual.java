@@ -33,8 +33,10 @@ public class CoverToggleVisual extends CoverLegacyData {
         try {
             if (coverable != null) {
                 BlockPos aPos = new BlockPos(
-                    coverable
-                        .getIGregTechTileEntity(coverable.getXCoord(), coverable.getYCoord(), coverable.getZCoord()));
+                        coverable.getIGregTechTileEntity(
+                                coverable.getXCoord(),
+                                coverable.getYCoord(),
+                                coverable.getZCoord()));
 
                 return coverable.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
             }

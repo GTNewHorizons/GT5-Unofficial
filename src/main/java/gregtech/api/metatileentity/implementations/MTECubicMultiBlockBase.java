@@ -42,7 +42,7 @@ import gregtech.api.util.GTStructureUtility;
  * @param <T>
  */
 public abstract class MTECubicMultiBlockBase<T extends MTECubicMultiBlockBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<MTECubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -50,23 +50,22 @@ public abstract class MTECubicMultiBlockBase<T extends MTECubicMultiBlockBase<T>
         @Override
         protected IStructureDefinition<MTECubicMultiBlockBase<?>> computeValue(Class<?> type) {
             return StructureDefinition.<MTECubicMultiBlockBase<?>>builder()
-                .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                        new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" }, { "hhh", "hhh", "hhh" }, }))
-                .addElement(
-                    'h',
-                    ofChain(
-                        lazy(
-                            t -> GTStructureUtility.<MTECubicMultiBlockBase<?>>buildHatchAdder()
-                                .atLeastList(t.getAllowedHatches())
-                                .casingIndex(t.getHatchTextureIndex())
-                                .dot(1)
-                                .build()),
-                        onElementPass(
-                            MTECubicMultiBlockBase::onCorrectCasingAdded,
-                            lazy(MTECubicMultiBlockBase::getCasingElement))))
-                .build();
+                    .addShape(
+                            STRUCTURE_PIECE_MAIN,
+                            transpose(
+                                    new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" },
+                                            { "hhh", "hhh", "hhh" }, }))
+                    .addElement(
+                            'h',
+                            ofChain(
+                                    lazy(
+                                            t -> GTStructureUtility.<MTECubicMultiBlockBase<?>>buildHatchAdder()
+                                                    .atLeastList(t.getAllowedHatches())
+                                                    .casingIndex(t.getHatchTextureIndex()).dot(1).build()),
+                                    onElementPass(
+                                            MTECubicMultiBlockBase::onCorrectCasingAdded,
+                                            lazy(MTECubicMultiBlockBase::getCasingElement))))
+                    .build();
         }
     };
     private int mCasingAmount = 0;
@@ -106,7 +105,7 @@ public abstract class MTECubicMultiBlockBase<T extends MTECubicMultiBlockBase<T>
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= getRequiredCasingCount()
-            && checkHatches(aBaseMetaTileEntity, aStack);
+                && checkHatches(aBaseMetaTileEntity, aStack);
     }
 
     /**

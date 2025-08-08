@@ -19,13 +19,10 @@ public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistra
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+            ItemStack aStack) {
         if (aOreDictName.equals("waxMagical")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack))
-                .metadata(FUEL_VALUE, 6)
-                .metadata(FUEL_TYPE, 5)
-                .addTo(GTRecipeConstants.Fuel);
+            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack)).metadata(FUEL_VALUE, 6)
+                    .metadata(FUEL_TYPE, 5).addTo(GTRecipeConstants.Fuel);
         }
     }
 }

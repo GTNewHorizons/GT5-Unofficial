@@ -44,7 +44,8 @@ public class ServerEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
         if (event == null || !(event.player instanceof EntityPlayerMP)
-            || event.player.worldObj.getTotalWorldTime() % 20 != 0) return;
+                || event.player.worldObj.getTotalWorldTime() % 20 != 0)
+            return;
 
         boolean replace = false;
         ItemStack toReplace = null;

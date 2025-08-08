@@ -58,13 +58,13 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main TileEntity for EVERYTHING.
  */
 public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
-    implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
+        implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
 
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldConnections = 0,
-        oldUpdateData = 0;
+            oldUpdateData = 0;
     private int oldX = 0, oldY = 0, oldZ = 0;
     protected Node node;
     protected NodePath nodePath;
@@ -282,45 +282,45 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
             if (mMetaTileEntity instanceof ITemporaryTE) {
                 NW.sendPacketToAllPlayersInRange(
-                    worldObj,
-                    new GTPacketCreateTE(
+                        worldObj,
+                        new GTPacketCreateTE(
+                                xCoord,
+                                (short) yCoord,
+                                zCoord,
+                                mID,
+                                getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
+                                getCoverAtSide(ForgeDirection.UP).getCoverID(),
+                                getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
+                                getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
+                                getCoverAtSide(ForgeDirection.WEST).getCoverID(),
+                                getCoverAtSide(ForgeDirection.EAST).getCoverID(),
+                                oldConnections,
+                                oldUpdateData,
+                                oldRedstoneData,
+                                oldColor,
+                                GTPacketCreateTE.TYPE_META_PIPE),
                         xCoord,
-                        (short) yCoord,
-                        zCoord,
-                        mID,
-                        getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                        getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                        getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                        getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oldConnections,
-                        oldUpdateData,
-                        oldRedstoneData,
-                        oldColor,
-                        GTPacketCreateTE.TYPE_META_PIPE),
-                    xCoord,
-                    zCoord);
+                        zCoord);
             } else {
                 NW.sendPacketToAllPlayersInRange(
-                    worldObj,
-                    new GTPacketTileEntity(
+                        worldObj,
+                        new GTPacketTileEntity(
+                                xCoord,
+                                (short) yCoord,
+                                zCoord,
+                                mID,
+                                getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
+                                getCoverAtSide(ForgeDirection.UP).getCoverID(),
+                                getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
+                                getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
+                                getCoverAtSide(ForgeDirection.WEST).getCoverID(),
+                                getCoverAtSide(ForgeDirection.EAST).getCoverID(),
+                                oldConnections,
+                                oldUpdateData,
+                                oldRedstoneData,
+                                oldColor),
                         xCoord,
-                        (short) yCoord,
-                        zCoord,
-                        mID,
-                        getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                        getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                        getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                        getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oldConnections,
-                        oldUpdateData,
-                        oldRedstoneData,
-                        oldColor),
-                    xCoord,
-                    zCoord);
+                        zCoord);
                 mSendClientData = false;
             }
         }
@@ -329,7 +329,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
-        int aCover4, int aCover5, byte aConnections, byte aUpdateData, byte aRedstoneData, byte aColorData) {
+            int aCover4, int aCover5, byte aConnections, byte aUpdateData, byte aRedstoneData, byte aColorData) {
         issueTextureUpdate();
         if (aID > 0 && mID != aID) {
             mID = aID;
@@ -390,27 +390,27 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 3) {
             tList.add(
-                "Meta-ID: " + EnumChatFormatting.BLUE
-                    + mID
-                    + EnumChatFormatting.RESET
-                    + (hasValidMetaTileEntity() ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
-                    + (mMetaTileEntity == null
-                        ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                        : " "));
+                    "Meta-ID: " + EnumChatFormatting.BLUE
+                            + mID
+                            + EnumChatFormatting.RESET
+                            + (hasValidMetaTileEntity() ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
+                                    : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
+                            + (mMetaTileEntity == null
+                                    ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
+                                    : " "));
         }
         if (aLogLevel > 1) {
             addProfilingInformation(tList);
             if (mMetaTileEntity != null) {
                 tList.add(
-                    "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
-                        : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
+                        "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
+                                : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             }
         }
         if (joinedIc2Enet) tList.add("Joined IC2 ENet");
 
         return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList)
-            : new ArrayList<>();
+                : new ArrayList<>();
     }
 
     @Override
@@ -459,8 +459,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
         mInventoryChanged = true;
-        if (canAccessData()) mMetaTileEntity
-            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
+        if (canAccessData()) mMetaTileEntity.setInventorySlotContents(
+                aIndex,
+                worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
     }
 
     @Override
@@ -489,9 +490,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
         return hasValidMetaTileEntity() && mTickTimer > 1
-            && getTileEntityOffset(0, 0, 0) == this
-            && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
-            && mMetaTileEntity.isAccessAllowed(aPlayer);
+                && getTileEntityOffset(0, 0, 0) == this
+                && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
+                && mMetaTileEntity.isAccessAllowed(aPlayer);
     }
 
     @Override
@@ -717,12 +718,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         else if (tConnections == IConnectable.CONNECTED_NORTH || tConnections == IConnectable.CONNECTED_SOUTH)
             tConnections = IConnectable.CONNECTED_NORTH | IConnectable.CONNECTED_SOUTH;
         if (hasValidMetaTileEntity()) return mMetaTileEntity.getTexture(
-            this,
-            sideDirection,
-            tConnections,
-            mColor - 1,
-            tConnections == 0 || (tConnections & sideDirection.flag) != 0,
-            getOutputRedstoneSignal(sideDirection) > 0);
+                this,
+                sideDirection,
+                tConnections,
+                mColor - 1,
+                tConnections == 0 || (tConnections & sideDirection.flag) != 0,
+                getOutputRedstoneSignal(sideDirection) > 0);
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
@@ -755,7 +756,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean onRightclick(final EntityPlayer aPlayer, final ForgeDirection side, final float aX, final float aY,
-        final float aZ) {
+            final float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = (!hasCoverAtSide(side)) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
@@ -769,7 +770,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 if (getColorization() >= 0
-                    && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
+                        && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                     mMetaTileEntity.markDirty();
                     tCurrentItem.func_150996_a(Items.bucket);
                     setColorization((byte) -1);
@@ -813,10 +814,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         else enableWorking();
                         mMetaTileEntity.markDirty();
                         GTUtility.sendChatToPlayer(
-                            aPlayer,
-                            GTUtility.trans("090", "Machine Processing: ")
-                                + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                    : GTUtility.trans("087", "Disabled")));
+                                aPlayer,
+                                GTUtility.trans("090", "Machine Processing: ")
+                                        + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
+                                                : GTUtility.trans("087", "Disabled")));
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1);
                     }
                     return true;
@@ -824,7 +825,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                 if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
                     if (mMetaTileEntity
-                        .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                            .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
@@ -835,7 +836,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                 if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
                     if (mMetaTileEntity
-                        .onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                            .onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
@@ -843,11 +844,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= wrenchingSide.flag;
                         GTUtility.sendChatToPlayer(
-                            aPlayer,
-                            GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
-                                + GTUtility.trans("092", " set to: ")
-                                + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                    : GTUtility.trans("094", "Weak")));
+                                aPlayer,
+                                GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
+                                        + GTUtility.trans("092", " set to: ")
+                                        + ((mStrongRedstone & wrenchingSide.flag) != 0
+                                                ? GTUtility.trans("093", "Strong")
+                                                : GTUtility.trans("094", "Weak")));
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                         issueBlockUpdate();
                     }
@@ -858,11 +860,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (!hasCoverAtSide(effectiveSide)) {
                     if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
                         if (CoverRegistry.getCoverPlacer(tCurrentItem)
-                            .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                            && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+                                .isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
 
                             CoverRegistry.getCoverPlacer(tCurrentItem)
-                                .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
+                                    .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -956,7 +958,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return canAccessData() && getCoverAtSide(ForgeDirection.getOrientation(ordinalSide)).letsItemsIn(aIndex)
-            && mMetaTileEntity.canInsertItem(aIndex, aStack, ordinalSide);
+                && mMetaTileEntity.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
     /**
@@ -966,7 +968,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && getCoverAtSide(side).letsItemsOut(aIndex)
-            && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
+                && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
     @Override
@@ -1063,7 +1065,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public int fill(ForgeDirection side, FluidStack aFluidStack, boolean doFill) {
         if (mTickTimer > 5 && canAccessData()
-            && canMoveFluidOnSide(side, aFluidStack == null ? null : aFluidStack.getFluid(), true))
+                && canMoveFluidOnSide(side, aFluidStack == null ? null : aFluidStack.getFluid(), true))
             return mMetaTileEntity.fill(side, aFluidStack, doFill);
         return 0;
     }
@@ -1071,12 +1073,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
-            && canMoveFluidOnSide(
-                side,
-                mMetaTileEntity.getFluid() == null ? null
-                    : mMetaTileEntity.getFluid()
-                        .getFluid(),
-                false))
+                && canMoveFluidOnSide(
+                        side,
+                        mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(),
+                        false))
             return mMetaTileEntity.drain(side, maxDrain, doDrain);
         return null;
     }
@@ -1084,7 +1084,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack aFluidStack, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
-            && canMoveFluidOnSide(side, aFluidStack == null ? null : aFluidStack.getFluid(), false))
+                && canMoveFluidOnSide(side, aFluidStack == null ? null : aFluidStack.getFluid(), false))
             return mMetaTileEntity.drain(side, aFluidStack, doDrain);
         return null;
     }
@@ -1107,10 +1107,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (canAccessData()
-            && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput(side) && cover.letsFluidIn(null))
-                || (mMetaTileEntity.isLiquidOutput(side) && cover.letsFluidOut(null))
-            // Doesn't need to be connected to get Tank Info -- otherwise things can't connect
-            )) return mMetaTileEntity.getTankInfo(side);
+                && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput(side) && cover.letsFluidIn(null))
+                        || (mMetaTileEntity.isLiquidOutput(side) && cover.letsFluidOut(null))
+                // Doesn't need to be connected to get Tank Info -- otherwise things can't connect
+                )) return mMetaTileEntity.getTankInfo(side);
         return GTValues.emptyFluidTankInfo;
     }
 
@@ -1124,8 +1124,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             return true;
         }
         aStack = GTOreDictUnificator.get(aStack);
-        if (GTUtility.areStacksEqual(tStack, aStack)
-            && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
+        if (GTUtility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize
+                <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             markDirty();
             tStack.stackSize += aStack.stackSize;
             return true;
@@ -1207,7 +1207,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         if (hasValidMetaTileEntity()) {
             getMetaTileEntity().getWailaBody(itemStack, currentTip, accessor, config);
         }
@@ -1216,7 +1216,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         if (hasValidMetaTileEntity()) {
             getMetaTileEntity().getWailaNBTData(player, tile, tag, world, x, y, z);

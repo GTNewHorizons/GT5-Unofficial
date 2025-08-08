@@ -30,16 +30,16 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final byte mColor;
     protected String mTooltip;
     private final String mTooltipUses = GTLanguageManager
-        .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
+            .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GTLanguageManager
-        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
     protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.chain",
-        "If used while sneaking it will spray a chain of blocks");
+            "gt.behaviour.paintspray.chain",
+            "If used while sneaking it will spray a chain of blocks");
 
     protected final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.chain_amount",
-        "Sprays up to %d blocks, in the direction you're looking at");
+            "gt.behaviour.paintspray.chain_amount",
+            "Sprays up to %d blocks, in the direction you're looking at");
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -48,8 +48,8 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mUses = aUses;
         this.mColor = ((byte) aColor);
         this.mTooltip = GTLanguageManager.addStringLocalization(
-            "gt.behaviour.paintspray." + this.mColor + ".tooltip",
-            "Can Color things in " + Dyes.get(this.mColor).mName);
+                "gt.behaviour.paintspray." + this.mColor + ".tooltip",
+                "Can Color things in " + Dyes.get(this.mColor).mName);
     }
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
@@ -64,12 +64,11 @@ public class BehaviourSprayColor extends BehaviourNone {
     @Override
     // Included for Ring of Loki support.
     public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
-        final float hitY, final float hitZ) {
+            final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+            final float hitY, final float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
 
-        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
-            .isValid()) {
+        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer).isValid()) {
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
 
@@ -78,7 +77,7 @@ public class BehaviourSprayColor extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -132,17 +131,16 @@ public class BehaviourSprayColor extends BehaviourNone {
             if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
 
             /*
-             * Check if the initial block had a TE and if the next one does, check if it's the same kind.
-             * else one does and the other doesn't, thus stop checking.
+             * Check if the initial block had a TE and if the next one does, check if it's the same kind. else one does
+             * and the other doesn't, thus stop checking.
              */
             TileEntity targetTE = aWorld.getTileEntity(aX, aY, aZ);
             if (initialTE == null ^ targetTE == null) break;
             if (initialTE != null && targetTE != null) {
-                if (!initialTE.getClass()
-                    .isInstance(targetTE)) break;
+                if (!initialTE.getClass().isInstance(targetTE)) break;
 
                 if (initialTE instanceof IGregTechTileEntity currentGTTile
-                    && targetTE instanceof IGregTechTileEntity targetGTTile) {
+                        && targetTE instanceof IGregTechTileEntity targetGTTile) {
                     if (currentGTTile.getMetaTileID() != targetGTTile.getMetaTileID()) break;
                 }
             }
@@ -153,9 +151,8 @@ public class BehaviourSprayColor extends BehaviourNone {
 
     @Override
     public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
-        final ForgeDirection side) {
-        return ColoredBlockContainer.getInstance(player, tileEntity, side)
-            .isValid();
+            final ForgeDirection side) {
+        return ColoredBlockContainer.getInstance(player, tileEntity, side).isValid();
     }
 
     protected long getUses(ItemStack aStack, NBTTagCompound tNBT) {
@@ -189,8 +186,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
-            .setColor(getColor());
+        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player).setColor(getColor());
     }
 
     protected byte getColor() {
@@ -204,7 +200,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         aList.add(String.format(this.mTooltipChainAmount, Other.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
-            : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
+                : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
         aList.add(this.mTooltipUses + " " + tRemainingPaint);
         aList.add(this.mTooltipUnstackable);
         return aList;

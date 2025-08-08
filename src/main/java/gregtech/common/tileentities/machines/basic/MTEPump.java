@@ -44,7 +44,7 @@ public class MTEPump extends MTEBasicMachine {
     private static final ItemStack MINING_PIPE_ONE = GTModHandler.getIC2Item("miningPipe", 1);
     private static final Block MINING_PIPE_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE);
     private static final Block MINING_PIPE_TIP_BLOCK = GTUtility
-        .getBlockFromStack(GTModHandler.getIC2Item("miningPipeTip", 0));
+            .getBlockFromStack(GTModHandler.getIC2Item("miningPipeTip", 0));
 
     public static int getMaxDistanceForTier(int aTier) {
         return (10 * ((int) GTUtility.powInt(1.6D, aTier)));
@@ -68,71 +68,65 @@ public class MTEPump extends MTEBasicMachine {
 
     public MTEPump(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            new String[] { "The best way to empty Oceans!",
-                getEuUsagePerTier(aTier) + " EU/operation, "
-                    + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
-                    + " sec per bucket, no stuttering",
-                "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
-                    + "x"
-                    + (getMaxDistanceForTier(aTier) * 2 + 1),
-                "Use Screwdriver to regulate pumping area", "Use Soft Mallet to disable and retract the pipe",
-                "Disable the bottom pump to retract the pipe!",
-                "Use Soldering Iron to auto retract the pipe when hitting a rock", },
-            2,
-            2,
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
-                    .glow()
-                    .build()));
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                new String[] { "The best way to empty Oceans!",
+                        getEuUsagePerTier(aTier) + " EU/operation, "
+                                + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
+                                + " sec per bucket, no stuttering",
+                        "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
+                                + "x"
+                                + (getMaxDistanceForTier(aTier) * 2 + 1),
+                        "Use Screwdriver to regulate pumping area", "Use Soft Mallet to disable and retract the pipe",
+                        "Disable the bottom pump to retract the pipe!",
+                        "Use Soldering Iron to auto retract the pipe when hitting a rock", },
+                2,
+                2,
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW")).glow()
+                                .build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory
+                                .of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
+                        TextureFactory.builder().addIcon(
+                                new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                                .glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM")),
+                        TextureFactory.builder()
+                                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
+                                .glow().build()));
 
         radiusConfig = getMaxDistanceForTier(mTier);
     }
@@ -148,24 +142,18 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("pump", GTUITextures.PROGRESSBAR_CANNER);
+            .fallbackableProgressbar("pump", GTUITextures.PROGRESSBAR_CANNER);
 
     @Override
     protected BasicUIProperties getUIProperties() {
-        return BasicUIProperties.builder()
-            .maxItemInputs(2)
-            .maxItemOutputs(2)
-            .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
-                if (!isFluid && !isOutput && !isSpecial) {
-                    return GTUITextures.OVERLAY_SLOT_MINING_PIPE;
-                } else {
-                    return null;
-                }
-            })
-            .maxFluidInputs(0)
-            .maxFluidOutputs(1)
-            .progressBarTexture(progressBarTexture)
-            .build();
+        return BasicUIProperties.builder().maxItemInputs(2).maxItemOutputs(2)
+                .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
+                    if (!isFluid && !isOutput && !isSpecial) {
+                        return GTUITextures.OVERLAY_SLOT_MINING_PIPE;
+                    } else {
+                        return null;
+                    }
+                }).maxFluidInputs(0).maxFluidOutputs(1).progressBarTexture(progressBarTexture).build();
     }
 
     @Override
@@ -175,9 +163,9 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-            && aStack.getItem() == DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
+                && aStack.getItem() == DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
     }
 
     @Override
@@ -185,20 +173,21 @@ public class MTEPump extends MTEBasicMachine {
         boolean wasPumping = this.wasPumping || !this.mPumpList.isEmpty();
         if (debugBlockPump) {
             GTLog.out.println(
-                "PUMP: NBT:Save - WasPumping - " + wasPumping
-                    + " blocks ("
-                    + this.mPrimaryPumpedBlock
-                    + ", "
-                    + this.mSecondaryPumpedBlock
-                    + ")");
+                    "PUMP: NBT:Save - WasPumping - " + wasPumping
+                            + " blocks ("
+                            + this.mPrimaryPumpedBlock
+                            + ", "
+                            + this.mSecondaryPumpedBlock
+                            + ")");
         }
         super.saveNBTData(aNBT);
         aNBT.setString(
-            "mPumpedBlock1",
-            this.mPrimaryPumpedBlock == null ? "" : Block.blockRegistry.getNameForObject(this.mPrimaryPumpedBlock));
+                "mPumpedBlock1",
+                this.mPrimaryPumpedBlock == null ? "" : Block.blockRegistry.getNameForObject(this.mPrimaryPumpedBlock));
         aNBT.setString(
-            "mPumpedBlock2",
-            this.mSecondaryPumpedBlock == null ? "" : Block.blockRegistry.getNameForObject(this.mSecondaryPumpedBlock));
+                "mPumpedBlock2",
+                this.mSecondaryPumpedBlock == null ? ""
+                        : Block.blockRegistry.getNameForObject(this.mSecondaryPumpedBlock));
         aNBT.setBoolean("wasPumping", wasPumping);
         aNBT.setInteger("radiusConfig", radiusConfig);
         aNBT.setBoolean("mRetractDone", mRetractDone);
@@ -243,11 +232,11 @@ public class MTEPump extends MTEBasicMachine {
 
         if (debugBlockPump) {
             GTLog.out.println(
-                "PUMP: NBT:Load - WasPumping - " + this.wasPumping
-                    + "("
-                    + aNBT.getString("mPumpedBlock1")
-                    + ") "
-                    + this.mPrimaryPumpedBlock);
+                    "PUMP: NBT:Load - WasPumping - " + this.wasPumping
+                            + "("
+                            + aNBT.getString("mPumpedBlock1")
+                            + ") "
+                            + this.mPrimaryPumpedBlock);
         }
     }
 
@@ -260,7 +249,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+            ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
@@ -281,23 +270,23 @@ public class MTEPump extends MTEBasicMachine {
             if (radiusConfig > max) radiusConfig = 0;
         }
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + (radiusConfig * 2 + 1)
-                + "x"
-                + (radiusConfig * 2 + 1)); // TODO Add translation support
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
+                        + (radiusConfig * 2 + 1)
+                        + "x"
+                        + (radiusConfig * 2 + 1)); // TODO Add translation support
 
         clearQueue(false);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+            EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(
-            entityPlayer,
-            StatCollector.translateToLocal(
-                mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled"));
+                entityPlayer,
+                StatCollector.translateToLocal(
+                        mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled"));
         return true;
     }
 
@@ -315,9 +304,9 @@ public class MTEPump extends MTEBasicMachine {
 
             IGregTechTileEntity tTileEntity;
             for (int i = 1; (i < 21)
-                && ((tTileEntity = getBaseMetaTileEntity()
-                    .getIGregTechTileEntityAtSideAndDistance(ForgeDirection.DOWN, i)) != null)
-                && ((tTileEntity.getMetaTileEntity() instanceof MTEPump)); i++) {
+                    && ((tTileEntity = getBaseMetaTileEntity()
+                            .getIGregTechTileEntityAtSideAndDistance(ForgeDirection.DOWN, i)) != null)
+                    && ((tTileEntity.getMetaTileEntity() instanceof MTEPump)); i++) {
                 // Apparently someone might stack 21 pumps on top of each other, so let's check for that
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
@@ -333,16 +322,16 @@ public class MTEPump extends MTEBasicMachine {
                 if (getBaseMetaTileEntity().isAllowedToWork()) {
                     mRetractDone = false;
                     if ((getBaseMetaTileEntity().isUniversalEnergyStored(this.getEuUsagePerAction()))
-                        && (fluidOutputTank.getFluidAmount() + 1000 <= fluidOutputTank.getCapacity())) {
+                            && (fluidOutputTank.getFluidAmount() + 1000 <= fluidOutputTank.getCapacity())) {
                         boolean tMovedOneDown = false;
                         if ((this.mPumpList.isEmpty()) && (getBaseMetaTileEntity().getTimer() % 100L == 0L)) {
                             if (!this.wasPumping) {
                                 tMovedOneDown = moveOneDown();
                                 if (!tMovedOneDown) {
                                     if (canMoveDown(
-                                        getBaseMetaTileEntity().getXCoord(),
-                                        Math.max(getYOfPumpHead() - 1, 1),
-                                        getBaseMetaTileEntity().getZCoord())) {
+                                            getBaseMetaTileEntity().getXCoord(),
+                                            Math.max(getYOfPumpHead() - 1, 1),
+                                            getBaseMetaTileEntity().getZCoord())) {
                                         if (debugBlockPump) {
                                             GTLog.out.println("PUMP: No pipe left. Idle for a little longer.");
                                         }
@@ -368,11 +357,11 @@ public class MTEPump extends MTEBasicMachine {
 
                             if (debugBlockPump && this.mPrimaryPumpedBlock != null) {
                                 GTLog.out.println(
-                                    "PUMP: Had an invalid pump block. Trying to find a fluid at Y: " + y
-                                        + " Previous blocks 1: "
-                                        + this.mPrimaryPumpedBlock
-                                        + " 2: "
-                                        + this.mSecondaryPumpedBlock);
+                                        "PUMP: Had an invalid pump block. Trying to find a fluid at Y: " + y
+                                                + " Previous blocks 1: "
+                                                + this.mPrimaryPumpedBlock
+                                                + " 2: "
+                                                + this.mSecondaryPumpedBlock);
                             }
                             // First look down
                             checkForFluidToPump(x, y - 1, z);
@@ -392,8 +381,9 @@ public class MTEPump extends MTEBasicMachine {
                         } else if (getYOfPumpHead() < getBaseMetaTileEntity().getYCoord()) {
                             // We didn't just look for a block, and the pump head is below the pump
                             if ((tMovedOneDown) || this.wasPumping
-                                || ((this.mPumpList.isEmpty()) && (getBaseMetaTileEntity().getTimer() % 200L == 100L))
-                                || (getBaseMetaTileEntity().getTimer() % 72000L == 100L)) {
+                                    || ((this.mPumpList.isEmpty())
+                                            && (getBaseMetaTileEntity().getTimer() % 200L == 100L))
+                                    || (getBaseMetaTileEntity().getTimer() % 72000L == 100L)) {
                                 // Rebuild the list to pump if any of the following conditions are true:
                                 // 1) We just moved down
                                 // 2) We were previously pumping (and possibly just reloaded)
@@ -401,11 +391,11 @@ public class MTEPump extends MTEBasicMachine {
                                 // 4) A long while has passed
                                 if (debugBlockPump) {
                                     GTLog.out.println(
-                                        "PUMP: Rebuilding pump list - Size " + this.mPumpList.size()
-                                            + " WasPumping: "
-                                            + this.wasPumping
-                                            + " Timer "
-                                            + getBaseMetaTileEntity().getTimer());
+                                            "PUMP: Rebuilding pump list - Size " + this.mPumpList.size()
+                                                    + " WasPumping: "
+                                                    + this.wasPumping
+                                                    + " Timer "
+                                                    + getBaseMetaTileEntity().getTimer());
                                 }
                                 int yPump = getBaseMetaTileEntity().getYCoord() - 1, yHead = getYOfPumpHead();
 
@@ -447,19 +437,13 @@ public class MTEPump extends MTEBasicMachine {
                         // 2. once per 5 tick
                         // 3. can hold retracted pipe in inventory
                         int tHeadY = getYOfPumpHead();
-                        if (tHeadY < this.getBaseMetaTileEntity()
-                            .getYCoord()) {
-                            final int tXCoord = this.getBaseMetaTileEntity()
-                                .getXCoord();
-                            final int tZCoord = this.getBaseMetaTileEntity()
-                                .getZCoord();
-                            this.getBaseMetaTileEntity()
-                                .getWorld()
-                                .setBlockToAir(tXCoord, tHeadY, tZCoord);
-                            if (tHeadY < this.getBaseMetaTileEntity()
-                                .getYCoord() - 1) {
+                        if (tHeadY < this.getBaseMetaTileEntity().getYCoord()) {
+                            final int tXCoord = this.getBaseMetaTileEntity().getXCoord();
+                            final int tZCoord = this.getBaseMetaTileEntity().getZCoord();
+                            this.getBaseMetaTileEntity().getWorld().setBlockToAir(tXCoord, tHeadY, tZCoord);
+                            if (tHeadY < this.getBaseMetaTileEntity().getYCoord() - 1) {
                                 getBaseMetaTileEntity().getWorld()
-                                    .setBlock(tXCoord, tHeadY + 1, tZCoord, MINING_PIPE_TIP_BLOCK);
+                                        .setBlock(tXCoord, tHeadY + 1, tZCoord, MINING_PIPE_TIP_BLOCK);
                             }
 
                             for (int i = 0; i < mOutputItems.length; ++i) {
@@ -540,13 +524,13 @@ public class MTEPump extends MTEBasicMachine {
         }
         // Try to set the block below us to a tip
         if (!GTUtility.setBlockByFakePlayer(
-            getFakePlayer(getBaseMetaTileEntity()),
-            x,
-            yHead - 1,
-            z,
-            MINING_PIPE_TIP_BLOCK,
-            0,
-            false)) {
+                getFakePlayer(getBaseMetaTileEntity()),
+                x,
+                yHead - 1,
+                z,
+                MINING_PIPE_TIP_BLOCK,
+                0,
+                false)) {
             if (debugBlockPump) {
                 GTLog.out.println("PUMP: Could not set block below to new tip");
             }
@@ -554,8 +538,7 @@ public class MTEPump extends MTEBasicMachine {
         }
         // And change the previous block to a pipe -- as long as it isn't the pump itself!
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld()
-                .setBlock(x, yHead, z, MINING_PIPE_BLOCK);
+            getBaseMetaTileEntity().getWorld().setBlock(x, yHead, z, MINING_PIPE_BLOCK);
         }
 
         // Remove pipe from inputs.
@@ -589,7 +572,7 @@ public class MTEPump extends MTEBasicMachine {
 
         // TODO: Handle pipe|pipe|head|pipe|pipe
         int y = getBaseMetaTileEntity().getYCoord() - 1, x = getBaseMetaTileEntity().getXCoord(),
-            z = getBaseMetaTileEntity().getZCoord();
+                z = getBaseMetaTileEntity().getZCoord();
 
         while (y > 0) {
             Block curBlock = getBaseMetaTileEntity().getBlock(x, y, z);
@@ -600,8 +583,7 @@ public class MTEPump extends MTEBasicMachine {
                 if (nextBlock == MINING_PIPE_BLOCK || nextBlock == MINING_PIPE_TIP_BLOCK) {
                     // We're running into an existing set of pipes -- Turn this block into a pipe and keep going
                     this.clearQueue(true);
-                    getBaseMetaTileEntity().getWorld()
-                        .setBlock(x, y, z, MINING_PIPE_BLOCK);
+                    getBaseMetaTileEntity().getWorld().setBlock(x, y, z, MINING_PIPE_BLOCK);
                     if (debugBlockPump) {
                         GTLog.out.println("PUMP: Hit pipes already in place, trying to merge");
                     }
@@ -615,12 +597,11 @@ public class MTEPump extends MTEBasicMachine {
 
         if (getBaseMetaTileEntity().getBlock(x, y, z) != MINING_PIPE_TIP_BLOCK) {
             if (y != getBaseMetaTileEntity().getYCoord() - 1
-                && getBaseMetaTileEntity().getBlock(x, y + 1, z) == MINING_PIPE_BLOCK) {
+                    && getBaseMetaTileEntity().getBlock(x, y + 1, z) == MINING_PIPE_BLOCK) {
                 // We're below the pump at the bottom of the pipes, we haven't found a tip; make the previous pipe a
                 // tip!
                 this.clearQueue(true);
-                getBaseMetaTileEntity().getWorld()
-                    .setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
+                getBaseMetaTileEntity().getWorld().setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
                 if (debugBlockPump) {
                     GTLog.out.println("PUMP: Did not find a tip at bottom, setting last pipe as tip");
                 }
@@ -679,7 +660,7 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     private boolean queueFluid(int aX, int aY, int aZ, ArrayDeque<ChunkPosition> fluidsFound,
-        Set<ChunkPosition> checked) {
+            Set<ChunkPosition> checked) {
         // If we haven't already looked at this coordinate set, and it's not already in the list of fluids found, see if
         // there is
         // a valid fluid and add it to the fluids found
@@ -741,7 +722,7 @@ public class MTEPump extends MTEBasicMachine {
 
         if (aBlock != null && ((this.mPrimaryPumpedBlock == aBlock) || (this.mSecondaryPumpedBlock == aBlock))) {
             boolean isWaterOrLava = ((this.mPrimaryPumpedBlock == Blocks.water
-                || this.mPrimaryPumpedBlock == Blocks.lava));
+                    || this.mPrimaryPumpedBlock == Blocks.lava));
 
             if (isWaterOrLava && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0) {
                 // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
@@ -757,31 +738,28 @@ public class MTEPump extends MTEBasicMachine {
                 else {
                     // Not water or lava; try to drain and set to air
                     setDrainableStack(
-                        ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, true));
+                            ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, true));
                 }
 
             } else if (GTModHandler.isWater(getDrainableStack()) || GTModHandler.isLava(getDrainableStack())
-                || getDrainableStack().isFluidEqual(
-                    ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, false))) {
-                        if (!isWaterOrLava) {
-                            // Only set Block to Air for non lava/water fluids
-                            this.getBaseMetaTileEntity()
-                                .getWorld()
-                                .setBlockToAir(aX, aY, aZ);
-                        }
-                        getDrainableStack().amount += 1000;
+                    || getDrainableStack().isFluidEqual(
+                            ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, false))) {
+                                if (!isWaterOrLava) {
+                                    // Only set Block to Air for non lava/water fluids
+                                    this.getBaseMetaTileEntity().getWorld().setBlockToAir(aX, aY, aZ);
+                                }
+                                getDrainableStack().amount += 1000;
 
-                    } else {
-                        if (debugBlockPump) {
-                            GTLog.out.println("PUMP: Couldn't consume " + aBlock);
-                        }
-                        // We didn't do anything
-                        return false;
-                    }
+                            } else {
+                                if (debugBlockPump) {
+                                    GTLog.out.println("PUMP: Couldn't consume " + aBlock);
+                                }
+                                // We didn't do anything
+                                return false;
+                            }
 
             getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.getEuUsagePerAction(), true);
-            getBaseMetaTileEntity().getWorld()
-                .setBlock(aX, aY, aZ, Blocks.air, 0, 2);
+            getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, Blocks.air, 0, 2);
             return true;
         }
         return false;
@@ -801,26 +779,28 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-        int aLogLevel, ArrayList<String> aList) {
+            int aLogLevel, ArrayList<String> aList) {
         aList.addAll(
-            Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + (radiusConfig * 2 + 1)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
-                "Primary pumping fluid:   "
-                    + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
-                "Secondary pumping fluid: "
-                    + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None"),
-                "Pumps below: " + mPumpCountBelow,
-                "Queue size: " + mPumpList.size(),
-                "Pump head at Y: " + getYOfPumpHead(),
-                "Pump timer: " + mPumpTimer,
-                "Meta Entity Timer: " + getBaseMetaTileEntity().getTimer()));
+                Arrays.asList(
+                        EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
+                                + EnumChatFormatting.RESET,
+                        StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                                + EnumChatFormatting.GREEN
+                                + (radiusConfig * 2 + 1)
+                                + EnumChatFormatting.RESET
+                                + " "
+                                + StatCollector.translateToLocal("GT5U.machines.blocks"),
+                        "Primary pumping fluid:   "
+                                + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName()
+                                        : "None"),
+                        "Secondary pumping fluid: "
+                                + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName()
+                                        : "None"),
+                        "Pumps below: " + mPumpCountBelow,
+                        "Queue size: " + mPumpList.size(),
+                        "Pump head at Y: " + getYOfPumpHead(),
+                        "Pump timer: " + mPumpTimer,
+                        "Meta Entity Timer: " + getBaseMetaTileEntity().getTimer()));
         return aList;
     }
 
@@ -836,12 +816,13 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                + EnumChatFormatting.GREEN
-                + (radiusConfig * 2 + 1)
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.machines.blocks") };
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                        + EnumChatFormatting.GREEN
+                        + (radiusConfig * 2 + 1)
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
 }

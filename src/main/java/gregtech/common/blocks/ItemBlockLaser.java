@@ -18,7 +18,8 @@ public class ItemBlockLaser extends ItemBlock {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
         tooltip.add(
-            GTLanguageManager
-                .addStringLocalization("gt.laserplatingtooltip", "Engineered to withstand extreme temperatures"));
+                GTLanguageManager.addStringLocalization(
+                        "gt.laserplatingtooltip",
+                        "Engineered to withstand extreme temperatures"));
     }
 }

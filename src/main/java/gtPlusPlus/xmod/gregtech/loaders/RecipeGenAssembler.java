@@ -38,48 +38,33 @@ public class RecipeGenAssembler extends RecipeGenBase {
 
         // Frame Box
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.getRod(4), GTUtility.getIntegratedCircuit(4))
-                .itemOutputs(material.getFrameBox(1))
-                .duration(3 * SECONDS)
-                .eut(material.vVoltageMultiplier)
-                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder().itemInputs(material.getRod(4), GTUtility.getIntegratedCircuit(4))
+                    .itemOutputs(material.getFrameBox(1)).duration(3 * SECONDS).eut(material.vVoltageMultiplier)
+                    .addTo(assemblerRecipes);
         }
 
         // Rotor
-        if (ItemUtils
-            .checkForInvalidItems(new ItemStack[] { material.getPlate(1), material.getRing(1), material.getRotor(1) }))
+        if (ItemUtils.checkForInvalidItems(
+                new ItemStack[] { material.getPlate(1), material.getRing(1), material.getRotor(1) }))
             addAssemblerRecipe(
-                material.getPlate(4),
-                material.getRing(1),
-                material.getRotor(1),
-                240,
-                material.vVoltageMultiplier);
+                    material.getPlate(4),
+                    material.getRing(1),
+                    material.getRotor(1),
+                    240,
+                    material.vVoltageMultiplier);
     }
 
     @Deprecated
     private static void addAssemblerRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1,
-        final int seconds, final int euCost) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(input1, input2)
-            .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.solderingalloy", 16))
-            .duration(seconds)
-            .eut(euCost)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(input1, input2)
-            .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.tin", 32))
-            .duration(seconds)
-            .eut(euCost)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(input1, input2)
-            .itemOutputs(output1)
-            .fluidInputs(FluidUtils.getFluidStack("molten.lead", 48))
-            .duration(seconds)
-            .eut(euCost)
-            .addTo(assemblerRecipes);
+            final int seconds, final int euCost) {
+        GTValues.RA.stdBuilder().itemInputs(input1, input2).itemOutputs(output1)
+                .fluidInputs(FluidUtils.getFluidStack("molten.solderingalloy", 16)).duration(seconds).eut(euCost)
+                .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder().itemInputs(input1, input2).itemOutputs(output1)
+                .fluidInputs(FluidUtils.getFluidStack("molten.tin", 32)).duration(seconds).eut(euCost)
+                .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder().itemInputs(input1, input2).itemOutputs(output1)
+                .fluidInputs(FluidUtils.getFluidStack("molten.lead", 48)).duration(seconds).eut(euCost)
+                .addTo(assemblerRecipes);
     }
 }

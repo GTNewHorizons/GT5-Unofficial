@@ -33,8 +33,8 @@ public class BlockMetal extends BlockStorage {
         for (int i = 0; i < aMats.length; i++) {
             if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
                 GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name",
-                    "Block of " + (GTLanguageManager.i18nPlaceholder ? "%material" : aMats[i].mDefaultLocalName));
+                        getUnlocalizedName() + "." + i + ".name",
+                        "Block of " + (GTLanguageManager.i18nPlaceholder ? "%material" : aMats[i].mDefaultLocalName));
                 if (aPrefix.mIsUnificatable) {
                     GTOreDictUnificator.set(aPrefix, aMats[i], new ItemStack(this, 1, i));
                 } else {

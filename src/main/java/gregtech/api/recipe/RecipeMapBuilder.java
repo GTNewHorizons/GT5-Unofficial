@@ -60,23 +60,23 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     private RecipeMapFrontend.FrontendCreator frontendCreator = RecipeMapFrontend::new;
 
     /**
-     * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend,
-     * call {@link #frontend} for the created builder object.
+     * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend, call
+     * {@link #frontend} for the created builder object.
      *
-     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key
-     *                        for NEI recipe GUI header, so add localization for it if needed.
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key for NEI recipe
+     *                        GUI header, so add localization for it if needed.
      * @return New builder object.
      */
     public static <B extends RecipeMapBackend> RecipeMapBuilder<B> of(String unlocalizedName,
-        RecipeMapBackend.BackendCreator<B> backendCreator) {
+            RecipeMapBackend.BackendCreator<B> backendCreator) {
         return new RecipeMapBuilder<>(unlocalizedName, backendCreator);
     }
 
     /**
      * Constructs builder object for {@link RecipeMap}.
      *
-     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key
-     *                        for NEI recipe GUI header, so add localization for it if needed.
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key for NEI recipe
+     *                        GUI header, so add localization for it if needed.
      * @return New builder object.
      */
     public static RecipeMapBuilder<RecipeMapBackend> of(String unlocalizedName) {
@@ -87,8 +87,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         this.unlocalizedName = unlocalizedName;
         this.backendCreator = backendCreator;
         this.uiPropertiesBuilder = BasicUIProperties.builder()
-            .progressBarTexture(GTUITextures.fallbackableProgressbar(unlocalizedName, GTUITextures.PROGRESSBAR_ARROW))
-            .neiTransferRectId(unlocalizedName);
+                .progressBarTexture(
+                        GTUITextures.fallbackableProgressbar(unlocalizedName, GTUITextures.PROGRESSBAR_ARROW))
+                .neiTransferRectId(unlocalizedName);
     }
 
     // region backend
@@ -97,8 +98,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Sets minimum amount of inputs required for the recipes.
      */
     public RecipeMapBuilder<B> minInputs(int minItemInputs, int minFluidInputs) {
-        backendPropertiesBuilder.minItemInputs(minItemInputs)
-            .minFluidInputs(minFluidInputs);
+        backendPropertiesBuilder.minItemInputs(minItemInputs).minFluidInputs(minFluidInputs);
         return this;
     }
 
@@ -111,8 +111,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Transformer which allows you to modify the recipe builder before it emits recipes.
-     * <br>
+     * Transformer which allows you to modify the recipe builder before it emits recipes. <br>
      * Allows modification of the builder to modify this recipe, or adding recipes to other places based on the builder.
      */
     public RecipeMapBuilder<B> builderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
@@ -124,7 +123,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Changes how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
      */
     public RecipeMapBuilder<B> recipeEmitter(
-        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
+            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         backendPropertiesBuilder.recipeEmitter(recipeEmitter);
         return this;
     }
@@ -135,7 +134,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      */
     public RecipeMapBuilder<B> recipeEmitterSingle(
-        Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
+            Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
         return recipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -147,7 +146,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitter(
-        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
+            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         backendPropertiesBuilder.combineRecipeEmitter(recipeEmitter);
         return this;
     }
@@ -161,7 +160,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitterSingle(
-        Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
+            Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
         return combineRecipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -180,14 +179,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     // region frontend UI properties
 
     /**
-     * Sets how many item/fluid inputs/outputs does this recipemap usually has at most.
-     * It does not actually restrict the number of items that can be used in recipes.
+     * Sets how many item/fluid inputs/outputs does this recipemap usually has at most. It does not actually restrict
+     * the number of items that can be used in recipes.
      */
     public RecipeMapBuilder<B> maxIO(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs) {
-        uiPropertiesBuilder.maxItemInputs(maxItemInputs)
-            .maxItemOutputs(maxItemOutputs)
-            .maxFluidInputs(maxFluidInputs)
-            .maxFluidOutputs(maxFluidOutputs);
+        uiPropertiesBuilder.maxItemInputs(maxItemInputs).maxItemOutputs(maxItemOutputs).maxFluidInputs(maxFluidInputs)
+                .maxFluidOutputs(maxFluidOutputs);
         return this;
     }
 
@@ -210,8 +207,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Sets texture and animation direction of the progressbar.
      * <p>
-     * Unless specified, size should be (20, 36), consisting of two parts;
-     * First is (20, 18) size of "empty" image at the top, Second is (20, 18) size of "filled" image at the bottom.
+     * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
+     * the top, Second is (20, 18) size of "filled" image at the bottom.
      * <p>
      * By default, it's set to {@code GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT}.
      */
@@ -222,35 +219,34 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Sets progressbar texture with right direction.
      * <p>
-     * Unless specified, size should be (20, 36), consisting of two parts;
-     * First is (20, 18) size of "empty" image at the top, Second is (20, 18) size of "filled" image at the bottom.
+     * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
+     * the top, Second is (20, 18) size of "filled" image at the bottom.
      */
     public RecipeMapBuilder<B> progressBar(UITexture texture) {
         return progressBar(texture, ProgressBar.Direction.RIGHT);
     }
 
     /**
-     * Some resource packs want to use custom progress bar textures even for plain arrow. This method allows them to
-     * add unique textures, yet other packs don't need to make textures for every recipemap.
+     * Some resource packs want to use custom progress bar textures even for plain arrow. This method allows them to add
+     * unique textures, yet other packs don't need to make textures for every recipemap.
      */
     private RecipeMapBuilder<B> progressBarWithFallback(FallbackableUITexture texture,
-        ProgressBar.Direction direction) {
-        uiPropertiesBuilder.progressBarTexture(texture)
-            .progressBarDirection(direction);
+            ProgressBar.Direction direction) {
+        uiPropertiesBuilder.progressBarTexture(texture).progressBarDirection(direction);
         return this;
     }
 
     /**
      * Sets progressbar texture for steam machines.
      * <p>
-     * Unless specified, size should be (20, 36), consisting of two parts;
-     * First is (20, 18) size of "empty" image at the top, Second is (20, 18) size of "filled" image at the bottom.
+     * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
+     * the top, Second is (20, 18) size of "filled" image at the bottom.
      */
     public RecipeMapBuilder<B> progressBarSteam(SteamTexture texture) {
         return progressBarSteamWithFallback(
-            new FallbackableSteamTexture(
-                SteamTexture.fullImage(GregTech.ID, "gui/progressbar/" + unlocalizedName + "_%s"),
-                texture));
+                new FallbackableSteamTexture(
+                        SteamTexture.fullImage(GregTech.ID, "gui/progressbar/" + unlocalizedName + "_%s"),
+                        texture));
     }
 
     private RecipeMapBuilder<B> progressBarSteamWithFallback(FallbackableSteamTexture texture) {
@@ -283,8 +279,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Configures this recipemap to use special slot. This means special slot shows up on NEI and tooltip for
-     * special slot on basic machine GUI indicates it has actual usage.
+     * Configures this recipemap to use special slot. This means special slot shows up on NEI and tooltip for special
+     * slot on basic machine GUI indicates it has actual usage.
      */
     public RecipeMapBuilder<B> useSpecialSlot() {
         uiPropertiesBuilder.useSpecialSlot(true);
@@ -362,8 +358,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     // region frontend NEI properties
 
     /**
-     * Stops adding dedicated NEI recipe page for this recipemap. This does not prevent adding transferrect
-     * for the machine GUI.
+     * Stops adding dedicated NEI recipe page for this recipemap. This does not prevent adding transferrect for the
+     * machine GUI.
      */
     public RecipeMapBuilder<B> disableRegisterNEI() {
         neiPropertiesBuilder.disableRegisterNEI();
@@ -371,16 +367,16 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Sets properties of NEI handler info this recipemap belongs to. You can specify icon shown on recipe tab,
-     * handler height, number of recipes per page, etc. Either use supplied template or return newly constructed one.
+     * Sets properties of NEI handler info this recipemap belongs to. You can specify icon shown on recipe tab, handler
+     * height, number of recipes per page, etc. Either use supplied template or return newly constructed one.
      * <p>
-     * Invocation of the builder creator is delayed until the actual registration (FMLLoadCompleteEvent),
-     * so you can safely use itemstack that doesn't exist as of recipemap initialization.
+     * Invocation of the builder creator is delayed until the actual registration (FMLLoadCompleteEvent), so you can
+     * safely use itemstack that doesn't exist as of recipemap initialization.
      * <p>
      * If this method is not used, handler icon will be inferred from recipe catalysts associated with this recipemap.
      * <p>
-     * Precisely, what's registered to NEI is {@link RecipeCategory}, not RecipeMap. However, handler info supplied
-     * by this method will be used for default category where most of the recipes belong to.
+     * Precisely, what's registered to NEI is {@link RecipeCategory}, not RecipeMap. However, handler info supplied by
+     * this method will be used for default category where most of the recipes belong to.
      */
     public RecipeMapBuilder<B> neiHandlerInfo(UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
         neiPropertiesBuilder.handlerInfoCreator(handlerInfoCreator);
@@ -498,9 +494,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMap<B> build() {
         return new RecipeMap<>(
-            unlocalizedName,
-            backendCreator.create(backendPropertiesBuilder),
-            frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
+                unlocalizedName,
+                backendCreator.create(backendPropertiesBuilder),
+                frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
     }
 
     private static <T> Function<? super T, ? extends T> withIdentityReturn(Consumer<T> func) {

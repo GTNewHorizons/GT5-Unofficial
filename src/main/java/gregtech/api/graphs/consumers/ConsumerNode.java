@@ -15,7 +15,7 @@ public class ConsumerNode extends Node {
     public ForgeDirection mSide;
 
     public ConsumerNode(int aNodeValue, TileEntity aTileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+            ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aConsumers);
         this.mSide = side;
     }

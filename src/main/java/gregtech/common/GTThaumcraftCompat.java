@@ -83,65 +83,65 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
         TCAspects.VOLATUS.mAspect = Aspect.FLIGHT;
 
         TCAspects.STRONTIO.mAspect = new Aspect(
-            "strontio",
-            0xEEC2B3,
-            new Aspect[] { Aspect.MIND, Aspect.ENTROPY },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.STRONTIO.name() + ".png"),
-            1);
+                "strontio",
+                0xEEC2B3,
+                new Aspect[] { Aspect.MIND, Aspect.ENTROPY },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.STRONTIO.name() + ".png"),
+                1);
         TCAspects.NEBRISUM.mAspect = new Aspect(
-            "nebrisum",
-            0xEEEE7E,
-            new Aspect[] { Aspect.MINE, Aspect.GREED },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.NEBRISUM.name() + ".png"),
-            1);
+                "nebrisum",
+                0xEEEE7E,
+                new Aspect[] { Aspect.MINE, Aspect.GREED },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.NEBRISUM.name() + ".png"),
+                1);
         TCAspects.ELECTRUM.mAspect = new Aspect(
-            "electrum",
-            0xC0EEEE,
-            new Aspect[] { Aspect.ENERGY, Aspect.MECHANISM },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ELECTRUM.name() + ".png"),
-            1);
+                "electrum",
+                0xC0EEEE,
+                new Aspect[] { Aspect.ENERGY, Aspect.MECHANISM },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ELECTRUM.name() + ".png"),
+                1);
         TCAspects.MAGNETO.mAspect = new Aspect(
-            "magneto",
-            0xC0C0C0,
-            new Aspect[] { Aspect.METAL, Aspect.TRAVEL },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.MAGNETO.name() + ".png"),
-            1);
+                "magneto",
+                0xC0C0C0,
+                new Aspect[] { Aspect.METAL, Aspect.TRAVEL },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.MAGNETO.name() + ".png"),
+                1);
         TCAspects.RADIO.mAspect = new Aspect(
-            "radio",
-            0xC0FFC0,
-            new Aspect[] { Aspect.LIGHT, Aspect.ENERGY },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.RADIO.name() + ".png"),
-            1);
+                "radio",
+                0xC0FFC0,
+                new Aspect[] { Aspect.LIGHT, Aspect.ENERGY },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.RADIO.name() + ".png"),
+                1);
         TCAspects.AEQUALITAS.mAspect = new LocalizedCustomAspectName(
-            "custom1",
-            0xEEF0EA,
-            new Aspect[] { Aspect.MIND, Aspect.ORDER },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.AEQUALITAS.name() + ".png"),
-            1);
+                "custom1",
+                0xEEF0EA,
+                new Aspect[] { Aspect.MIND, Aspect.ORDER },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.AEQUALITAS.name() + ".png"),
+                1);
         TCAspects.VESANIA.mAspect = new LocalizedCustomAspectName(
-            "custom2",
-            0x1B122C,
-            new Aspect[] { Aspect.MIND, Aspect.TAINT },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.VESANIA.name() + ".png"),
-            1);
+                "custom2",
+                0x1B122C,
+                new Aspect[] { Aspect.MIND, Aspect.TAINT },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.VESANIA.name() + ".png"),
+                1);
         TCAspects.PRIMORDIUM.mAspect = new LocalizedCustomAspectName(
-            "custom3",
-            0xF7F7DB,
-            new Aspect[] { Aspect.VOID, Aspect.MOTION },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.PRIMORDIUM.name() + ".png"),
-            1);
+                "custom3",
+                0xF7F7DB,
+                new Aspect[] { Aspect.VOID, Aspect.MOTION },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.PRIMORDIUM.name() + ".png"),
+                1);
         TCAspects.ASTRUM.mAspect = new LocalizedCustomAspectName(
-            "custom4",
-            0x2D2C2B,
-            new Aspect[] { Aspect.LIGHT, Aspect.getAspect("custom3") },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ASTRUM.name() + ".png"),
-            1);
+                "custom4",
+                0x2D2C2B,
+                new Aspect[] { Aspect.LIGHT, Aspect.getAspect("custom3") },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.ASTRUM.name() + ".png"),
+                1);
         TCAspects.GLORIA.mAspect = new LocalizedCustomAspectName(
-            "custom5",
-            0xFFE980,
-            new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
-            new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
-            1);
+                "custom5",
+                0xFFE980,
+                new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
+                new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
+                1);
 
         GTLanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
         GTLanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
@@ -153,7 +153,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
     public class LocalizedCustomAspectName extends Aspect {
 
         public LocalizedCustomAspectName(String tag, int color, Aspect[] components, ResourceLocation image,
-            int blend) {
+                int blend) {
             super(tag, color, components, image, blend);
         }
 
@@ -167,7 +167,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
         AspectList rAspects = new AspectList();
         TCAspects.TC_AspectStack tAspect;
         for (Iterator<TCAspects.TC_AspectStack> i$ = aAspects.iterator(); i$.hasNext(); rAspects
-            .add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount)) {
+                .add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount)) {
             tAspect = i$.next();
         }
         return rAspects;
@@ -175,8 +175,8 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
 
     @Override
     public Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches,
-        String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY,
-        List<TCAspects.TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
+            String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY,
+            List<TCAspects.TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
         ResearchCategoryList tCategory = ResearchCategories.getResearchList(aCategory);
         if (tCategory == null) {
             return null;
@@ -188,13 +188,13 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             }
         }
         ResearchItem rResearch = new ResearchItem(
-            aResearch,
-            aCategory,
-            getAspectList(aAspects),
-            aX,
-            aY,
-            aComplexity,
-            aIcon);
+                aResearch,
+                aCategory,
+                getAspectList(aAspects),
+                aX,
+                aY,
+                aComplexity,
+                aIcon);
         ArrayList<ResearchPage> tPages = new ArrayList<>(aPages.length);
         GTLanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
         GTLanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT] " + aText);
@@ -252,55 +252,59 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
 
     @Override
     public Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput,
-        List<TCAspects.TC_AspectStack> aAspects) {
+            List<TCAspects.TC_AspectStack> aAspects) {
         if ((GTUtility.isStringInvalid(aResearch)) || (aInput == null)
-            || (aOutput == null)
-            || (aAspects == null)
-            || (aAspects.isEmpty())) {
+                || (aOutput == null)
+                || (aAspects == null)
+                || (aAspects.isEmpty())) {
             return null;
         }
         return ThaumcraftApi.addCrucibleRecipe(
-            aResearch,
-            GTUtility.copyOrNull(aOutput),
-            ((aInput instanceof ItemStack)) || ((aInput instanceof ArrayList)) ? aInput : aInput.toString(),
-            getAspectList(aAspects));
+                aResearch,
+                GTUtility.copyOrNull(aOutput),
+                ((aInput instanceof ItemStack)) || ((aInput instanceof ArrayList)) ? aInput : aInput.toString(),
+                getAspectList(aAspects));
     }
 
     @Override
     public Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput,
-        int aInstability, List<TCAspects.TC_AspectStack> aAspects) {
+            int aInstability, List<TCAspects.TC_AspectStack> aAspects) {
         if ((GTUtility.isStringInvalid(aResearch)) || (aMainInput == null)
-            || (aSideInputs == null)
-            || (aOutput == null)
-            || (aAspects == null)
-            || (aAspects.isEmpty())) {
+                || (aSideInputs == null)
+                || (aOutput == null)
+                || (aAspects == null)
+                || (aAspects.isEmpty())) {
             return null;
         }
         return ThaumcraftApi.addInfusionCraftingRecipe(
-            aResearch,
-            GTUtility.copyOrNull(aOutput),
-            aInstability,
-            getAspectList(aAspects),
-            aMainInput,
-            aSideInputs);
+                aResearch,
+                GTUtility.copyOrNull(aOutput),
+                aInstability,
+                getAspectList(aAspects),
+                aMainInput,
+                aSideInputs);
     }
 
     @Override
     public Object addInfusionEnchantmentRecipe(String aResearch, Enchantment aEnchantment, int aInstability,
-        List<TCAspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs) {
+            List<TCAspects.TC_AspectStack> aAspects, ItemStack[] aSideInputs) {
         if ((GTUtility.isStringInvalid(aResearch)) || (aSideInputs == null)
-            || (aAspects == null)
-            || (aEnchantment == null)
-            || (aAspects.isEmpty())) {
+                || (aAspects == null)
+                || (aEnchantment == null)
+                || (aAspects.isEmpty())) {
             return null;
         }
-        return ThaumcraftApi
-            .addInfusionEnchantmentRecipe(aResearch, aEnchantment, aInstability, getAspectList(aAspects), aSideInputs);
+        return ThaumcraftApi.addInfusionEnchantmentRecipe(
+                aResearch,
+                aEnchantment,
+                aInstability,
+                getAspectList(aAspects),
+                aSideInputs);
     }
 
     @Override
     public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TCAspects.TC_AspectStack> aAspects,
-        String aOreDict) {
+            String aOreDict) {
         if (aAspects.isEmpty()) return false;
         ThaumcraftApi.registerObjectTag(aOreDict, getAspectList(aAspects));
         return true;
@@ -308,7 +312,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
 
     @Override
     public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TCAspects.TC_AspectStack> aAspects,
-        boolean aAdditive) {
+            boolean aAdditive) {
         if (aAspects.isEmpty()) return false;
         if (aAdditive) {
             ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));

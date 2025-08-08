@@ -31,7 +31,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean useExtFacing;
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
-        boolean extFacing) {
+            boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
@@ -227,7 +227,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateBottom = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
@@ -241,7 +241,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateTop = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.UP, extendedFacing, icon);
@@ -255,7 +255,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the north (z-negative) face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceZNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateEast = getRotation(extendedFacing);
         aRenderer.field_152631_f = true;
@@ -271,7 +271,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the south (z-positive) face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceZPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateWest = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.SOUTH, extendedFacing, icon);
@@ -285,7 +285,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the west (x-negative) face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceXNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateNorth = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.WEST, extendedFacing, icon);
@@ -299,7 +299,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      * Renders the given texture to the east (x-positive) face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceXPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
-        ExtendedFacing extendedFacing) {
+            ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateSouth = getRotation(extendedFacing);
         aRenderer.field_152631_f = true;

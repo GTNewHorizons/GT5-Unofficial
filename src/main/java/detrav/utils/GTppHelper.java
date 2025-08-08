@@ -33,7 +33,7 @@ public class GTppHelper {
                 }
             } catch (Exception e) {
                 GTMod.GT_FML_LOGGER
-                    .error("Exception caught when trying to generate GT++ ore ids for detrav ore scanner", e);
+                        .error("Exception caught when trying to generate GT++ ore ids for detrav ore scanner", e);
             }
         }
         // Manually add ores from other places than the ore class

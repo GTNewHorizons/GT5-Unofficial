@@ -38,9 +38,7 @@ public class BlockUpdateHandler {
         blocksToUpdate = new HashMap<>();
         cooldowns = new HashMap<>();
 
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
+        FMLCommonHandler.instance().bus().register(this);
     }
 
     public void enqueueBlockUpdate(World world, WorldCoord pos) {
@@ -61,8 +59,7 @@ public class BlockUpdateHandler {
 
         ResetDataIfPlayerWorldChanged(getPlayer());
 
-        var it = blocksToUpdate.entrySet()
-            .iterator();
+        var it = blocksToUpdate.entrySet().iterator();
 
         while (it.hasNext()) {
 

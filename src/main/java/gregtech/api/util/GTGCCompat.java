@@ -18,19 +18,19 @@ public class GTGCCompat {
         // GC Compat
         if (GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC) {
             if (!(tTileEntity instanceof IConnector)
-                || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
+                    || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
                 EnergySource eSource = new EnergySourceAdjacent(tDirection);
 
                 float tSizeToReceive = aVoltage * EnergyConfigHandler.IC2_RATIO,
-                    tStored = ((IEnergyHandlerGC) tTileEntity).getEnergyStoredGC(eSource);
+                        tStored = ((IEnergyHandlerGC) tTileEntity).getEnergyStoredGC(eSource);
                 if (tSizeToReceive >= tStored
-                    || tSizeToReceive <= ((IEnergyHandlerGC) tTileEntity).getMaxEnergyStoredGC(eSource) - tStored) {
+                        || tSizeToReceive <= ((IEnergyHandlerGC) tTileEntity).getMaxEnergyStoredGC(eSource) - tStored) {
                     float tReceived = ((IEnergyHandlerGC) tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
                     if (tReceived > 0) {
                         tSizeToReceive -= tReceived;
                         while (tSizeToReceive > 0) {
                             tReceived = ((IEnergyHandlerGC) tTileEntity)
-                                .receiveEnergyGC(eSource, tSizeToReceive, false);
+                                    .receiveEnergyGC(eSource, tSizeToReceive, false);
                             if (tReceived < 1) break;
                             tSizeToReceive -= tReceived;
                         }
@@ -46,7 +46,7 @@ public class GTGCCompat {
     public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
         return GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC
-            && (!(tTileEntity instanceof IConnector)
-                || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER));
+                && (!(tTileEntity instanceof IConnector)
+                        || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER));
     }
 }

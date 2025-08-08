@@ -105,7 +105,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         float f;
         float f1;
         if (par1IBlockAccess.getBlock(par2 - 1, par3, par4) != this
-            && par1IBlockAccess.getBlock(par2 + 1, par3, par4) != this) {
+                && par1IBlockAccess.getBlock(par2 + 1, par3, par4) != this) {
             f = 0.125F;
             f1 = 0.5F;
             this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
@@ -140,11 +140,11 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         byte b0 = 0;
         byte b1 = 0;
         if (par1World.getBlock(par2 - 1, par3, par4) == DimensionEverglades.blockPortalFrame
-            || par1World.getBlock(par2 + 1, par3, par4) == DimensionEverglades.blockPortalFrame) {
+                || par1World.getBlock(par2 + 1, par3, par4) == DimensionEverglades.blockPortalFrame) {
             b0 = 1;
         }
         if (par1World.getBlock(par2, par3, par4 - 1) == DimensionEverglades.blockPortalFrame
-            || par1World.getBlock(par2, par3, par4 + 1) == DimensionEverglades.blockPortalFrame) {
+                || par1World.getBlock(par2, par3, par4 + 1) == DimensionEverglades.blockPortalFrame) {
             b1 = 1;
         }
         if (b0 == b1) {
@@ -209,9 +209,9 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                     world.setBlockToAir(x, y, z);
                 } else {
                     if ((world.getBlock(x + b0, y, z + b1) != DimensionEverglades.blockPortalFrame
-                        || world.getBlock(x - b0, y, z - b1) != this)
-                        && (world.getBlock(x - b0, y, z - b1) != DimensionEverglades.blockPortalFrame
-                            || world.getBlock(x + b0, y, z + b1) != this)) {
+                            || world.getBlock(x - b0, y, z - b1) != this)
+                            && (world.getBlock(x - b0, y, z - b1) != DimensionEverglades.blockPortalFrame
+                                    || world.getBlock(x + b0, y, z + b1) != this)) {
                         world.setBlockToAir(x, y, z);
                     }
                 }
@@ -238,13 +238,13 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             return false;
         } else {
             boolean flag = par1IBlockAccess.getBlock(par2 - 1, par3, par4) == this
-                && par1IBlockAccess.getBlock(par2 - 2, par3, par4) != this;
+                    && par1IBlockAccess.getBlock(par2 - 2, par3, par4) != this;
             boolean flag1 = par1IBlockAccess.getBlock(par2 + 1, par3, par4) == this
-                && par1IBlockAccess.getBlock(par2 + 2, par3, par4) != this;
+                    && par1IBlockAccess.getBlock(par2 + 2, par3, par4) != this;
             boolean flag2 = par1IBlockAccess.getBlock(par2, par3, par4 - 1) == this
-                && par1IBlockAccess.getBlock(par2, par3, par4 - 2) != this;
+                    && par1IBlockAccess.getBlock(par2, par3, par4 - 2) != this;
             boolean flag3 = par1IBlockAccess.getBlock(par2, par3, par4 + 1) == this
-                && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
+                    && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
             boolean flag4 = flag || flag1;
             boolean flag5 = flag2 || flag3;
             return flag4 && par5 == 4 || (flag4 && par5 == 5 || (flag5 && par5 == 2 || flag5 && par5 == 3));
@@ -265,21 +265,19 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
         if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null)
-            && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
+                && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
             } else if (thePlayer.dimension != DimensionEverglades.DIMID) {
                 thePlayer.timeUntilPortal = 100;
-                thePlayer.mcServer.getConfigurationManager()
-                    .transferPlayerToDimension(
+                thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(
                         thePlayer,
                         DimensionEverglades.DIMID,
                         new TeleporterDimensionMod(
-                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIMID)));
+                                thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIMID)));
             } else {
                 thePlayer.timeUntilPortal = 100;
-                thePlayer.mcServer.getConfigurationManager()
-                    .transferPlayerToDimension(
+                thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(
                         thePlayer,
                         0,
                         new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
@@ -304,13 +302,13 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         if (GTPPCore.RANDOM.nextInt(100) == 0) {
             par1World.playSound(
-                par2 + 0.5D,
-                par3 + 0.5D,
-                par4 + 0.5D,
-                "portal.portal",
-                0.5F,
-                GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F,
-                false);
+                    par2 + 0.5D,
+                    par3 + 0.5D,
+                    par4 + 0.5D,
+                    "portal.portal",
+                    0.5F,
+                    GTPPCore.RANDOM.nextFloat() * 0.4F + 0.8F,
+                    false);
         }
         for (int l = 0; l < 4; ++l) {
             double d0 = par2 + GTPPCore.RANDOM.nextFloat();

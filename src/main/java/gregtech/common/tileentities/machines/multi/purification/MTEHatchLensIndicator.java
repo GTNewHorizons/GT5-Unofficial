@@ -44,13 +44,13 @@ public class MTEHatchLensIndicator extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
@@ -62,7 +62,7 @@ public class MTEHatchLensIndicator extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the UV Treatment Purification Unit.",
-            "Outputs Redstone Signal when a lens swap is requested." };
+                "Outputs Redstone Signal when a lens swap is requested." };
     }
 
     /**
@@ -93,10 +93,8 @@ public class MTEHatchLensIndicator extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
-            .addIcon(textureFont_Glow)
-            .glow()
-            .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
+                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
     }
 
     @Override

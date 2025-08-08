@@ -18,47 +18,53 @@ public class InternalEntityRegistry {
         Logger.INFO("Registering GT++ Entities.");
 
         EntityRegistry.registerModEntity(
-            EntityPrimedMiningExplosive.class,
-            "MiningCharge",
-            mEntityID++,
-            GTplusplus.instance,
-            64,
-            20,
-            true);
-
-        EntityRegistry
-            .registerModEntity(EntityToxinballSmall.class, "toxinBall", mEntityID++, GTplusplus.instance, 64, 20, true);
+                EntityPrimedMiningExplosive.class,
+                "MiningCharge",
+                mEntityID++,
+                GTplusplus.instance,
+                64,
+                20,
+                true);
 
         EntityRegistry.registerModEntity(
-            EntityStaballoyConstruct.class,
-            "constructStaballoy",
-            mEntityID++,
-            GTplusplus.instance,
-            64,
-            3,
-            true);
-        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
-            0,
-            "constructStaballoy",
-            Utils.rgbtoHexValue(20, 200, 20),
-            Utils.rgbtoHexValue(20, 20, 20));
-
-        EntityRegistry
-            .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 3, true);
-        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
-            1,
-            "sickBlaze",
-            Utils.rgbtoHexValue(40, 180, 40),
-            Utils.rgbtoHexValue(75, 75, 75));
+                EntityToxinballSmall.class,
+                "toxinBall",
+                mEntityID++,
+                GTplusplus.instance,
+                64,
+                20,
+                true);
 
         EntityRegistry.registerModEntity(
-            EntityLightningAttack.class,
-            "EntityLightningAttack",
-            mEntityID++,
-            GTplusplus.instance,
-            64,
-            20,
-            true);
+                EntityStaballoyConstruct.class,
+                "constructStaballoy",
+                mEntityID++,
+                GTplusplus.instance,
+                64,
+                3,
+                true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
+                0,
+                "constructStaballoy",
+                Utils.rgbtoHexValue(20, 200, 20),
+                Utils.rgbtoHexValue(20, 20, 20));
+
+        EntityRegistry
+                .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 3, true);
+        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
+                1,
+                "sickBlaze",
+                Utils.rgbtoHexValue(40, 180, 40),
+                Utils.rgbtoHexValue(75, 75, 75));
+
+        EntityRegistry.registerModEntity(
+                EntityLightningAttack.class,
+                "EntityLightningAttack",
+                mEntityID++,
+                GTplusplus.instance,
+                64,
+                20,
+                true);
 
     }
 }

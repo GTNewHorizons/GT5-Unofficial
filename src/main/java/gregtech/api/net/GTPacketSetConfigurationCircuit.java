@@ -84,10 +84,10 @@ public class GTPacketSetConfigurationCircuit extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketSetConfigurationCircuit(
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt(),
-            GTByteBuffer.readItemStackFromGreggyByteBuf(aData));
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt(),
+                GTByteBuffer.readItemStackFromGreggyByteBuf(aData));
     }
 
     @Override
@@ -101,10 +101,8 @@ public class GTPacketSetConfigurationCircuit extends GTPacket {
         final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
         if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
-        GTUtility.getAllIntegratedCircuits()
-            .stream()
-            .filter(stack -> GTUtility.areStacksEqual(stack, circuit))
-            .findFirst()
-            .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+        GTUtility.getAllIntegratedCircuits().stream().filter(stack -> GTUtility.areStacksEqual(stack, circuit))
+                .findFirst()
+                .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

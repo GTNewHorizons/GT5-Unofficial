@@ -75,7 +75,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int ordinalSide,
-        float xOffset, float yOffset, float zOffset) {
+            float xOffset, float yOffset, float zOffset) {
         if (player instanceof FakePlayer) {
             return false;
         }
@@ -100,8 +100,8 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
             FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
             if (placeFluid(fluidStack, world, x, y, z)
-                || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack)
-                    && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
+                    || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack)
+                            && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
                 if (!player.capabilities.isCreativeMode) drainContainerStack(stack, player, 1000, false);
                 return true;
             }
@@ -218,10 +218,10 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
             info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumbers(fs.amount)));
         } else {
             info.add(
-                String.format(
-                    "< %s, %s mB >",
-                    StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.empty"),
-                    formatNumbers(getCapacity(stack))));
+                    String.format(
+                            "< %s, %s mB >",
+                            StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.empty"),
+                            formatNumbers(getCapacity(stack))));
         }
         info.add(StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.set_volume"));
     }
@@ -230,8 +230,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> itemList) {
         itemList.add(new ItemStack(this));
-        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
-            .values()) {
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
             if (fluid != null) {
                 ItemStack stack = new ItemStack(this);
                 setCapacity(stack, getMaxCapacity());
@@ -242,7 +241,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     }
 
     private boolean interactWithTank(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide) {
+            int ordinalSide) {
         if (world.isRemote) {
             return false;
         }
@@ -333,31 +332,24 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
             NumericWidget capacityWidget = new NumericWidget();
             builder.widget(
-                capacityWidget.setGetter(() -> capacity)
-                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
-                    .setBounds(1, maxCapacity)
-                    .setScrollValues(1, 144, 1000)
-                    .setDefaultValue(capacity)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(8, 8)
-                    .setSize(77, 12))
-                .widget(
-                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
-                        .setPos(88, 10))
-                .widget(
-                    new VanillaButtonWidget()
-                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
-                        .setOnClick((clickData, widget) -> {
-                            capacityWidget.onRemoveFocus();
-                            widget.getWindow()
-                                .tryClose();
-                        })
-                        .setSynced(false, false)
-                        .setPos(8, 26)
-                        .setSize(48, 20));
+                    capacityWidget.setGetter(() -> capacity)
+                            .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
+                            .setBounds(1, maxCapacity).setScrollValues(1, 144, 1000).setDefaultValue(capacity)
+                            .setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
+                            .setFocusOnGuiOpen(true)
+                            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2)).setPos(8, 8)
+                            .setSize(77, 12))
+                    .widget(
+                            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
+                                    .setPos(88, 10))
+                    .widget(
+                            new VanillaButtonWidget()
+                                    .setDisplayString(
+                                            StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
+                                    .setOnClick((clickData, widget) -> {
+                                        capacityWidget.onRemoveFocus();
+                                        widget.getWindow().tryClose();
+                                    }).setSynced(false, false).setPos(8, 26).setSize(48, 20));
 
             return builder.build();
         }

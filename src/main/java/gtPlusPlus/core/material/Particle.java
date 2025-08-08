@@ -120,10 +120,9 @@ public class Particle {
 
     public static ItemStack getIon(String aElementName, int aCharge) {
         for (String g : gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap.keySet()) {
-            if (g.toLowerCase()
-                .equals(StringUtils.sanitizeString(aElementName.toLowerCase()))) {
+            if (g.toLowerCase().equals(StringUtils.sanitizeString(aElementName.toLowerCase()))) {
                 Integer meta = gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap
-                    .get(StringUtils.sanitizeString(aElementName.toLowerCase()));
+                        .get(StringUtils.sanitizeString(aElementName.toLowerCase()));
                 if (meta == null) {
                     meta = 0;
                 }
@@ -140,8 +139,7 @@ public class Particle {
     public static ItemStack getBaseParticle(Particle aParticle) {
         String aPartName = StringUtils.sanitizeString(aParticle.mParticleName.toLowerCase());
         for (String g : gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.keySet()) {
-            if (g.toLowerCase()
-                .equals(aPartName)) {
+            if (g.toLowerCase().equals(aPartName)) {
                 Integer meta = gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.get(aPartName);
                 if (meta == null) {
                     meta = 0;

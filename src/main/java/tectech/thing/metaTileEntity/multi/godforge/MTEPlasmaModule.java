@@ -82,7 +82,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
-                    || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
+                        || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
                     return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -95,9 +95,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -109,7 +107,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
-                    .setDurationDecreasePerOC(getOverclockTimeFactor());
+                        .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
     }
@@ -136,16 +134,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     protected ButtonWidget createDebugWindowButton() {
         Widget button = new ButtonWidget().setOnClick(
-            (data, widget) -> {
-                if (!widget.isClient()) widget.getContext()
-                    .openSyncedWindow(DEBUG_WINDOW_ID);
-            })
-            .setPlayClickSound(false)
-            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
-            .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 91)
-            .setSize(16, 16);
+                (data, widget) -> { if (!widget.isClient()) widget.getContext().openSyncedWindow(DEBUG_WINDOW_ID); })
+                .setPlayClickSound(false)
+                .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
+                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 91).setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -159,62 +152,52 @@ public class MTEPlasmaModule extends MTEBaseModule {
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
+                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
+                        Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                                .add(WIDTH - 3, 0)));
 
         // Debug enable/disable multi-step
         builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
-                .setPlayClickSoundResource(
-                    () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-                .setBackground(() -> {
-                    if (isMultiStepPlasmaCapable) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                    }
-                })
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
-                    if (val) enableWorking();
-                    else disableWorking();
-                }), builder)
-                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.multi_step"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(4, 40)
-                .setSize(16, 16));
+                new ButtonWidget()
+                        .setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
+                        .setPlayClickSoundResource(
+                                () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
+                                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
+                        .setBackground(() -> {
+                            if (isMultiStepPlasmaCapable) {
+                                return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                            } else {
+                                return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                            }
+                        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
+                            if (val) enableWorking();
+                            else disableWorking();
+                        }), builder)
+                        .addTooltip(
+                                StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.multi_step"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(4, 40).setSize(16, 16));
 
         // Debug set plasma tier
         builder.widget(
-            new TextFieldWidget().setSetterInt(this::setPlasmaTier)
-                .setGetterInt(this::getPlasmaTier)
-                .setNumbers(0, 2)
-                .setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.normal)
-                .setPos(3, 18)
-                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16)
-                .setPos(4, 20)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+                new TextFieldWidget().setSetterInt(this::setPlasmaTier).setGetterInt(this::getPlasmaTier)
+                        .setNumbers(0, 2).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal)
+                        .setPos(3, 18)
+                        .addTooltip(
+                                StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(16, 16).setPos(4, 20)
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
 
         // Debug set max parallel
         builder.widget(
-            new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val)
-                .setGetterInt(() -> inputMaxParallel)
-                .setNumbers(0, Integer.MAX_VALUE)
-                .setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.normal)
-                .setPos(3, 18)
-                .addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(70, 16)
-                .setPos(4, 4)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+                new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val).setGetterInt(() -> inputMaxParallel)
+                        .setNumbers(0, Integer.MAX_VALUE).setTextAlignment(Alignment.Center)
+                        .setTextColor(Color.WHITE.normal).setPos(3, 18)
+                        .addTooltip(
+                                StatCollector.translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(70, 16).setPos(4, 4)
+                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
 
         return builder.build();
     }
@@ -228,64 +211,65 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.progress",
+                        GREEN + formatNumbers(mProgresstime / 20) + RESET,
+                        YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
+                StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.currently_using",
+                        RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumbers(getActualParallel())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.max_parallel",
+                        RESET + formatNumbers(getActualParallel())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.parallel.current",
+                        RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumbers(getSpeedBonus())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.recipe_time",
+                        RESET + formatNumbers(getSpeedBonus())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumbers(getEnergyDiscount())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.multiplier.energy",
+                        RESET + formatNumbers(getEnergyDiscount())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumbers(getOverclockTimeFactor())));
+                YELLOW + StatCollector.translateToLocalFormatted(
+                        "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
+                        RESET + formatNumbers(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Fabricator")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for extreme temperature matter ionization.")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
-            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked.")
-            .addInfo("This module is specialized towards energy and overclock efficiency.")
-            .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+        tt.addMachineType("Plasma Fabricator").addInfo("This is a module of the Godforge.")
+                .addInfo("Must be part of a Godforge to function.")
+                .addInfo("Used for extreme temperature matter ionization.").addSeparator(EnumChatFormatting.AQUA, 74)
+                .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
+                .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
+                .addInfo("right away, some of them require certain upgrades to be unlocked.")
+                .addInfo("This module is specialized towards energy and overclock efficiency.")
+                .beginStructureBlock(7, 7, 13, false)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Singularity Reinforced Stellar Shielding Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20"
+                                + EnumChatFormatting.GRAY
+                                + " Boundless Gravitationally Severed Structure Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "5"
+                                + EnumChatFormatting.GRAY
+                                + " Harmonic Phonon Transmission Conduit")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+                .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

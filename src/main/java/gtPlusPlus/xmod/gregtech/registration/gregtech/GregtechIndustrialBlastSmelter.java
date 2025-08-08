@@ -18,14 +18,14 @@ public class GregtechIndustrialBlastSmelter {
     private static void run1() {
         // Industrial Alloy Blast Smelter Multiblock
         GregtechItemList.Industrial_AlloyBlastSmelter.set(
-            new MTEAlloyBlastSmelter(
-                Industrial_AlloyBlastSmelter.ID,
-                "industrialsalloyamelter.controller.tier.single",
-                "Alloy Blast Smelter").getStackForm(1L));
+                new MTEAlloyBlastSmelter(
+                        Industrial_AlloyBlastSmelter.ID,
+                        "industrialsalloyamelter.controller.tier.single",
+                        "Alloy Blast Smelter").getStackForm(1L));
         GregtechItemList.Mega_AlloyBlastSmelter.set(
-            new MTEMegaAlloyBlastSmelter(
-                Mega_AlloyBlastSmelter.ID,
-                "industrialsalloyamelter.controller.tier.mega",
-                "Mega Alloy Blast Smelter").getStackForm(1L));
+                new MTEMegaAlloyBlastSmelter(
+                        Mega_AlloyBlastSmelter.ID,
+                        "industrialsalloyamelter.controller.tier.mega",
+                        "Mega Alloy Blast Smelter").getStackForm(1L));
     }
 }

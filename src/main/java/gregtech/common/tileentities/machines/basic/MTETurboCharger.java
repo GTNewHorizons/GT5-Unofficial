@@ -19,7 +19,7 @@ import gregtech.api.util.GTUtility;
 public class MTETurboCharger extends MTECharger {
 
     public MTETurboCharger(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        int aSlotCount) {
+            int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
@@ -38,7 +38,7 @@ public class MTETurboCharger extends MTECharger {
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
         return rTextures;
     }
@@ -68,9 +68,9 @@ public class MTETurboCharger extends MTECharger {
         if (aBaseMetaTileEntity.isServerSide()) {
 
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3
-                || !aBaseMetaTileEntity.isAllowedToWork();
+                    || !aBaseMetaTileEntity.isAllowedToWork();
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3
-                && aBaseMetaTileEntity.isAllowedToWork();
+                    && aBaseMetaTileEntity.isAllowedToWork();
             mBatteryCount = 0;
             mChargeableCount = 0;
             for (ItemStack tStack : mInventory) {
@@ -85,25 +85,25 @@ public class MTETurboCharger extends MTECharger {
             if (getBaseMetaTileEntity() instanceof BaseMetaTileEntity mBaseMetaTileEntity) {
                 if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                     if (mMetaTileEntity.dechargerSlotCount() > 0
-                        && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
+                            && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                         for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                            k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+                                k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                             if (mMetaTileEntity.mInventory[i] != null
-                                && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
+                                    && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                                 // CODE
                                 mBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                    GTModHandler.dischargeElectricItem(
-                                        mMetaTileEntity.mInventory[i],
-                                        GTUtility.safeInt(
-                                            Math.min(
-                                                V[mTier] * 120,
-                                                mBaseMetaTileEntity.getEUCapacity()
-                                                    - mBaseMetaTileEntity.getStoredEU())),
-                                        (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
-                                        true,
-                                        false,
-                                        false),
-                                    true);
+                                        GTModHandler.dischargeElectricItem(
+                                                mMetaTileEntity.mInventory[i],
+                                                GTUtility.safeInt(
+                                                        Math.min(
+                                                                V[mTier] * 120,
+                                                                mBaseMetaTileEntity.getEUCapacity()
+                                                                        - mBaseMetaTileEntity.getStoredEU())),
+                                                (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
+                                                true,
+                                                false,
+                                                false),
+                                        true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
                                     mMetaTileEntity.mInventory[i] = null;
                                 }
@@ -112,18 +112,17 @@ public class MTETurboCharger extends MTECharger {
                     }
                     if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
                         for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                            k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+                                k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                             if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                                 // CODE
-                                mBaseMetaTileEntity
-                                    .decreaseStoredEU(
+                                mBaseMetaTileEntity.decreaseStoredEU(
                                         GTModHandler.chargeElectricItem(
-                                            mMetaTileEntity.mInventory[i],
-                                            GTUtility
-                                                .safeInt(Math.min(V[mTier] * 120, mBaseMetaTileEntity.getStoredEU())),
-                                            (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
-                                            true,
-                                            false),
+                                                mMetaTileEntity.mInventory[i],
+                                                GTUtility.safeInt(
+                                                        Math.min(V[mTier] * 120, mBaseMetaTileEntity.getStoredEU())),
+                                                (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
+                                                true,
+                                                false),
                                         true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
                                     mMetaTileEntity.mInventory[i] = null;

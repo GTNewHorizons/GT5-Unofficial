@@ -50,10 +50,11 @@ public class CircuitBitAnd extends CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         aRedstoneCircuitBlock.setRedstone(
-            (byte) ((getStrongestRedstone(aRedstoneCircuitBlock)
-                & (aCircuitData[0] | aCircuitData[1] << 1 | aCircuitData[2] << 2 | aCircuitData[3] << 3)) != 0 ? 15
-                    : 0),
-            aRedstoneCircuitBlock.getOutputFacing());
+                (byte) ((getStrongestRedstone(aRedstoneCircuitBlock)
+                        & (aCircuitData[0] | aCircuitData[1] << 1 | aCircuitData[2] << 2 | aCircuitData[3] << 3)) != 0
+                                ? 15
+                                : 0),
+                aRedstoneCircuitBlock.getOutputFacing());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class CircuitBitAnd extends CircuitryBehavior {
     @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         return aCircuitData[aCircuitDataIndex] == 0
-            ? StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.off")
-            : StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.on");
+                ? StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.off")
+                : StatCollector.translateToLocal("GT5U.gui.circuit.generic.data_display.on");
     }
 }

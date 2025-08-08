@@ -11,17 +11,17 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     public final PipeStats pipeStats;
 
     public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
-        int aCapacity, int aHeatResistance, boolean aGasProof) {
+            int aCapacity, int aHeatResistance, boolean aGasProof) {
         this(aID, aName, aNameRegional, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
     public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats, final int aCapacity,
-        final int aHeatResistance, final boolean aGasProof) {
+            final int aHeatResistance, final boolean aGasProof) {
         this(aName, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
     public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
-        int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+            int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
@@ -29,7 +29,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     }
 
     public GTPPMTEFluidPipe(String aName, float aThickNess, PipeStats pipeStats, int aCapacity, int aHeatResistance,
-        boolean aGasProof, int aFluidTypes) {
+            boolean aGasProof, int aFluidTypes) {
         super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
@@ -44,12 +44,12 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GTPPMTEFluidPipe(
-            this.mName,
-            this.mThickNess,
-            this.pipeStats,
-            this.mCapacity,
-            this.mHeatResistance,
-            this.mGasProof);
+                this.mName,
+                this.mThickNess,
+                this.pipeStats,
+                this.mCapacity,
+                this.mHeatResistance,
+                this.mGasProof);
     }
 
     @Override

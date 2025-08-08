@@ -43,13 +43,12 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
     public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
-            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
-                .intValue();
+            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             if (aPlayer.isSneaking()) {
                 data++;
                 if (data > 3) data = 0;
                 aPlayer.addChatMessage(
-                    new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode." + data)));
+                        new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode." + data)));
 
                 DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
@@ -68,12 +67,12 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             size = size - 1;
 
             final ProspectingPacket packet = new ProspectingPacket(
-                cX,
-                cZ,
-                (int) aPlayer.posX,
-                (int) aPlayer.posZ,
-                size,
-                data);
+                    cX,
+                    cZ,
+                    (int) aPlayer.posX,
+                    (int) aPlayer.posZ,
+                    size,
+                    data);
             final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (Chunk c : chunks) {
                 for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
@@ -86,11 +85,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                 if (tBlock instanceof BlockOresAbstract) {
                                     TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
                                     if ((tTileEntity instanceof TileEntityOres)
-                                        && ((TileEntityOres) tTileEntity).mNatural) {
+                                            && ((TileEntityOres) tTileEntity).mNatural) {
                                         tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                                         try {
-                                            String name = GTLanguageManager
-                                                .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                            String name = GTLanguageManager.getTranslation(
+                                                    tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
                                             if (data != 1 && name.startsWith(small_ore_keyword)) continue;
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                         } catch (Exception e) {
@@ -101,27 +100,26 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     }
                                 } else if (GTppHelper.isGTppBlock(tBlock)) {
                                     packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        y,
-                                        c.zPosition * 16 + z,
-                                        GTppHelper.getMetaFromBlock(tBlock));
-                                } else if (BartWorksHelper.isOre(tBlock)) {
-                                    if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                                    packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        y,
-                                        c.zPosition * 16 + z,
-                                        BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
-                                } else if (data == 1) {
-                                    ItemData tAssotiation = GTOreDictUnificator
-                                        .getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                                    if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
-                                        .startsWith("ore"))) {
-                                        packet.addBlock(
                                             c.xPosition * 16 + x,
                                             y,
                                             c.zPosition * 16 + z,
-                                            (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
+                                            GTppHelper.getMetaFromBlock(tBlock));
+                                } else if (BartWorksHelper.isOre(tBlock)) {
+                                    if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
+                                    packet.addBlock(
+                                            c.xPosition * 16 + x,
+                                            y,
+                                            c.zPosition * 16 + z,
+                                            BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
+                                } else if (data == 1) {
+                                    ItemData tAssotiation = GTOreDictUnificator
+                                            .getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                                    if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+                                        packet.addBlock(
+                                                c.xPosition * 16 + x,
+                                                y,
+                                                c.zPosition * 16 + z,
+                                                (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
                                     }
                                 }
                             }
@@ -130,23 +128,26 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     break;
                                 }
                                 FluidStack fStack = UndergroundOil.undergroundOil(
-                                    aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z),
-                                    -1);
+                                        aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z),
+                                        -1);
                                 if (fStack.amount > 0) {
                                     packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        1,
-                                        c.zPosition * 16 + z,
-                                        (short) fStack.getFluidID());
-                                    packet
-                                        .addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
+                                            c.xPosition * 16 + x,
+                                            1,
+                                            c.zPosition * 16 + z,
+                                            (short) fStack.getFluidID());
+                                    packet.addBlock(
+                                            c.xPosition * 16 + x,
+                                            2,
+                                            c.zPosition * 16 + z,
+                                            (short) fStack.amount);
                                 }
                             }
                             case 3 -> {
                                 float polution = (float) getPollution(
-                                    aWorld,
-                                    c.xPosition * 16 + x,
-                                    c.zPosition * 16 + z);
+                                        aWorld,
+                                        c.xPosition * 16 + x,
+                                        c.zPosition * 16 + z);
                                 polution /= 2000000;
                                 polution *= -0xFF;
                                 if (polution > 0xFF) polution = 0xFF;
@@ -165,22 +166,22 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             if (VisualProspecting.isModLoaded()) {
                 if (data == 0 || data == 1) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                        (EntityPlayerMP) aPlayer,
-                        VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
-                            aWorld.provider.dimensionId,
-                            (int) aPlayer.posX,
-                            (int) aPlayer.posZ,
-                            size * 16),
-                        new ArrayList<>());
+                            (EntityPlayerMP) aPlayer,
+                            VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
+                                    aWorld.provider.dimensionId,
+                                    (int) aPlayer.posX,
+                                    (int) aPlayer.posZ,
+                                    size * 16),
+                            new ArrayList<>());
                 } else if (data == 2) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                        (EntityPlayerMP) aPlayer,
-                        new ArrayList<>(),
-                        VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(
-                            aWorld,
-                            (int) aPlayer.posX,
-                            (int) aPlayer.posZ,
-                            size * 16));
+                            (EntityPlayerMP) aPlayer,
+                            new ArrayList<>(),
+                            VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(
+                                    aWorld,
+                                    (int) aPlayer.posX,
+                                    (int) aPlayer.posZ,
+                                    size * 16));
                 }
             }
         }
@@ -190,16 +191,17 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
             aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
+                    new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
         } else if (value < 1) {
-            aPlayer
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6")));
+            aPlayer.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6")));
         } else aPlayer.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
+                new ChatComponentText(
+                        StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
     }
 
     public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-        int aZ, int aSide, float hitX, float hitY, float hitZ) {
+            int aZ, int aSide, float hitX, float hitY, float hitZ) {
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
         if (data < 2) {
             if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {

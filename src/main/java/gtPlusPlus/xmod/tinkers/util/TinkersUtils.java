@@ -31,7 +31,7 @@ public class TinkersUtils {
     }
 
     public static boolean registerFluidType(String name, Block block, int meta, int baseTemperature, Fluid fluid,
-        boolean isToolpart) {
+            boolean isToolpart) {
         FluidType.registerFluidType(name, block, meta, baseTemperature, fluid, isToolpart);
         return true;
     }
@@ -50,7 +50,7 @@ public class TinkersUtils {
     }
 
     public static void addCastingTableRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume,
-        int delay) {
+            int delay) {
         LiquidCasting basinCasting = TConstructRegistry.getBasinCasting();
         basinCasting.addCastingRecipe(output, metal, cast, consume, delay);
     }
@@ -66,16 +66,13 @@ public class TinkersUtils {
         for (CastingRecipe recipe : getTableCastingRecipes()) {
             CastingRecipeHandler newRecipe = new CastingRecipeHandler(recipe);
             if (newRecipe.castingMetal.getFluid() == aMoltenIron && newRecipe.cast != null
-                && newRecipe.cast.getItem() instanceof IPattern
-                && newRecipe.getResult()
-                    .getItem() instanceof DynamicToolPart) {
-                ItemStack output = newRecipe.getResult()
-                    .copy();
+                    && newRecipe.cast.getItem() instanceof IPattern
+                    && newRecipe.getResult().getItem() instanceof DynamicToolPart) {
+                ItemStack output = newRecipe.getResult().copy();
                 output.setItemDamage(aID);
                 FluidStack liquid = new FluidStack(
-                    aMaterial.getFluidStack(0)
-                        .getFluid(),
-                    newRecipe.castingMetal.amount);
+                        aMaterial.getFluidStack(0).getFluid(),
+                        newRecipe.castingMetal.amount);
                 addCastingTableRecipe(output, liquid, newRecipe.cast, newRecipe.consumeCast, newRecipe.coolTime);
                 addMelting(fluidType, output, 0, liquid.amount / 2);
             }

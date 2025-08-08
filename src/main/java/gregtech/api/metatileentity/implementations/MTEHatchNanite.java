@@ -50,28 +50,18 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH).extFacing().build(),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW).extFacing().glow()
+                        .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        return new ITexture[] { aBaseTexture,
+                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH).extFacing().build(),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW).extFacing().glow()
+                        .build() };
     }
 
     @Override

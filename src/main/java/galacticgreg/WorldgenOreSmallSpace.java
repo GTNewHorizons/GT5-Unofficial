@@ -39,8 +39,8 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
             for (ModDimensionDef mdd : mc.getDimensionList()) {
                 String tDimIdentifier = mdd.getDimIdentifier();
                 if (allowedDims.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
-                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
-                    tDimIdentifier);
+                        "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                        tDimIdentifier);
                 else {
                     boolean tFlag = ore.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
                     allowedDims.put(tDimIdentifier, tFlag);
@@ -63,18 +63,21 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
 
     @Override
     public boolean executeWorldgen(World pWorld, Random pRandom, String pBiome, int pDimensionType, int pChunkX,
-        int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
+            int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
         GalacticGreg.Logger.trace("Entering executeWorldgen for [%s]", mWorldGenName);
         ModDimensionDef tMDD = GalacticGregRegistry.getDimensionTypeByChunkGenerator(pChunkGenerator);
         if (tMDD == null) {
-            GalacticGreg.Logger
-                .trace("Can't find dimension definition for ChunkProvider %s, skipping", pChunkGenerator.toString());
+            GalacticGreg.Logger.trace(
+                    "Can't find dimension definition for ChunkProvider %s, skipping",
+                    pChunkGenerator.toString());
             return false;
         }
 
         if (!isEnabledForDim(tMDD)) {
-            GalacticGreg.Logger
-                .trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
+            GalacticGreg.Logger.trace(
+                    "OreGen for %s is disallowed in dimension %s, skipping",
+                    mWorldGenName,
+                    tMDD.getDimensionName());
             return false;
         }
 
@@ -85,12 +88,12 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + pRandom.nextInt(this.mAmount) / 2); i < j; i++) {
                 TileEntitySpaceOres.setOuterSpaceOreBlock(
-                    tMDD,
-                    pWorld,
-                    pChunkX + pRandom.nextInt(16),
-                    this.mMinY + pRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
-                    pChunkZ + pRandom.nextInt(16),
-                    this.mMeta + 16000);
+                        tMDD,
+                        pWorld,
+                        pChunkX + pRandom.nextInt(16),
+                        this.mMinY + pRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
+                        pChunkZ + pRandom.nextInt(16),
+                        this.mMeta + 16000);
             }
         }
         // ---------------------------
@@ -100,9 +103,9 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
                 long tTotalTime = mProfilingEnd - mProfilingStart;
                 GalacticGreg.Profiler.AddTimeToList(tMDD, tTotalTime);
                 GalacticGreg.Logger.debug(
-                    "Done with SmallOre-Worldgen in DimensionType %s. Generation took %d ms",
-                    tMDD.getDimensionName(),
-                    tTotalTime);
+                        "Done with SmallOre-Worldgen in DimensionType %s. Generation took %d ms",
+                        tMDD.getDimensionName(),
+                        tTotalTime);
             } catch (Exception ignored) {} // Silently ignore errors
         }
 

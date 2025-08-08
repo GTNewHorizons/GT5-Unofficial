@@ -29,8 +29,8 @@ public class ProfilingCommand extends GTBaseCommand {
                 if (tTime == -1) tInfo = "N/A";
                 else tInfo = String.format("%d ms", tTime);
                 sendChatToPlayer(
-                    sender,
-                    String.format("%s (%s): %s", mdd.getDimIdentifier(), mdd.getDimensionName(), tInfo));
+                        sender,
+                        String.format("%s (%s): %s", mdd.getDimIdentifier(), mdd.getDimensionName(), tInfo));
             }
         }
     }

@@ -13,11 +13,11 @@ public class SnifferEntryListSyncHandler extends GenericListSyncHandler<ItemReds
 
     public SnifferEntryListSyncHandler(@NotNull Supplier<List<ItemRedstoneSniffer.SnifferEntry>> getter) {
         super(
-            getter,
-            null,
-            ItemRedstoneSniffer.SnifferEntry::deserialize,
-            ItemRedstoneSniffer.SnifferEntry::serialize,
-            ItemRedstoneSniffer.SnifferEntry::areEqual,
-            null);
+                getter,
+                null,
+                ItemRedstoneSniffer.SnifferEntry::deserialize,
+                ItemRedstoneSniffer.SnifferEntry::serialize,
+                ItemRedstoneSniffer.SnifferEntry::areEqual,
+                null);
     }
 }

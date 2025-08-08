@@ -77,7 +77,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWashPlant>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
 
@@ -109,24 +109,16 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
-            .addInfo("400% faster than using single block machines of the same voltage")
-            .addInfo("Processes four item per voltage tier")
-            .addInfo("Always requires an Input Hatch full of water to refill structure")
-            .addInfo("Need to be filled with water.")
-            .addInfo("Will automatically fill water from input hatch.")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 3, 7, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Wash Plant Casings", 40, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+                .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
+                .addInfo("400% faster than using single block machines of the same voltage")
+                .addInfo("Processes four item per voltage tier")
+                .addInfo("Always requires an Input Hatch full of water to refill structure")
+                .addInfo("Need to be filled with water.").addInfo("Will automatically fill water from input hatch.")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(5, 3, 7, true)
+                .addController("Front Center").addCasingInfoMin("Wash Plant Casings", 40, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
         return tt;
     }
 
@@ -134,21 +126,21 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     public IStructureDefinition<MTEIndustrialWashPlant> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWashPlant>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCCCC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
-                            { "CC~CC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
-                            { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialWashPlant.class)
-                        .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(getCasingTextureIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('w', ofChain(isAir(), ofAnyWater(true)))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "CCCCC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
+                                            { "CC~CC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
+                                            { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEIndustrialWashPlant.class)
+                                    .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement('w', ofChain(isAir(), ofAnyWater(true))).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -219,8 +211,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays
-            .asList(RecipeMaps.oreWasherRecipes, GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.chemicalBathRecipes);
+        return Arrays.asList(
+                RecipeMaps.oreWasherRecipes,
+                GTPPRecipeMaps.simpleWasherRecipes,
+                RecipeMaps.chemicalBathRecipes);
     }
 
     @Override
@@ -240,9 +234,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
-        }.noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching().setSpeedBonus(1F / 5F).setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -318,8 +310,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                                         if (tBlock == Blocks.water) {
                                             fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
                                         }
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
+                                        aBaseMetaTileEntity.getWorld().setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
@@ -375,21 +366,21 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+                translateToLocal("GT5U.machines.oreprocessor1") + " "
+                        + EnumChatFormatting.WHITE
+                        + translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
+                        + EnumChatFormatting.RESET);
     }
 
     @Override
@@ -400,8 +391,9 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility.sendChatToPlayer(
+                aPlayer,
+                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override

@@ -43,11 +43,11 @@ public class GTOreDictUnificator {
 
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
     private static final Map<ItemStack, ItemData> sItemStack2DataMap = new Object2ObjectOpenCustomHashMap<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+            GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Map<ItemStack, List<ItemStack>> sUnificationTable = new Object2ObjectOpenCustomHashMap<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+            GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Set<ItemStack> sNoUnificationList = new ObjectOpenCustomHashSet<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+            GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
 
@@ -78,22 +78,17 @@ public class GTOreDictUnificator {
     }
 
     public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aOverwrite,
-        boolean aAlreadyRegistered) {
+            boolean aAlreadyRegistered) {
         if (aMaterial == null || aPrefix == null
-            || GTUtility.isStackInvalid(aStack)
-            || Items.feather.getDamage(aStack) == WILDCARD) return;
+                || GTUtility.isStackInvalid(aStack)
+                || Items.feather.getDamage(aStack) == WILDCARD)
+            return;
         isAddingOre++;
         aStack = GTUtility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite || GTUtility.isStackInvalid(
-            sName2StackMap.get(
-                aPrefix.get(aMaterial)
-                    .toString())))
-            sName2StackMap.put(
-                aPrefix.get(aMaterial)
-                    .toString(),
-                aStack);
+        if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(aPrefix.get(aMaterial).toString())))
+            sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
         isAddingOre--;
     }
 
@@ -129,7 +124,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos,
-        boolean aNoInvalidAmounts) {
+            boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && aAmount < 1) return null;
         final ItemStack stackFromName = sName2StackMap.get(aName.toString());
         if (stackFromName != null) return GTUtility.copyAmount(aAmount, stackFromName);
@@ -190,7 +185,8 @@ public class GTOreDictUnificator {
         if (GTUtility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
         if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData()
-            || (aUseBlackList && tPrefixMaterial.mBlackListed)) return GTUtility.copyOrNull(aStack);
+                || (aUseBlackList && tPrefixMaterial.mBlackListed))
+            return GTUtility.copyOrNull(aStack);
         if (aUseBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
             tPrefixMaterial.mBlackListed = true;
             return GTUtility.copyOrNull(aStack);
@@ -226,7 +222,8 @@ public class GTOreDictUnificator {
         if (GTUtility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
         if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData()
-            || (aUseBlackList && tPrefixMaterial.mBlackListed)) return aStack;
+                || (aUseBlackList && tPrefixMaterial.mBlackListed))
+            return aStack;
         if (aUseBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
             tPrefixMaterial.mBlackListed = true;
             return aStack;
@@ -368,20 +365,20 @@ public class GTOreDictUnificator {
             sItemStack2DataMap.put(aStack, aData);
             if (aData.hasValidMaterialData()) {
                 long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0
-                    : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
+                        : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
                     tValidMaterialAmount += tMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0
-                        : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
+                            : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
                 if (tValidMaterialAmount < M) GTModHandler.addToRecyclerBlackList(aStack);
             }
             if (mRunThroughTheList) {
                 if (GregTechAPI.sLoadStarted) {
                     mRunThroughTheList = false;
-                    for (Entry<ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet()) if (!tEntry.getValue()
-                        .hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
-                        GTRecipeRegistrator.registerMaterialRecycling(
-                            GTItemStack.internalCopyStack(tEntry.getKey()),
-                            tEntry.getValue());
+                    for (Entry<ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet())
+                        if (!tEntry.getValue().hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
+                            GTRecipeRegistrator.registerMaterialRecycling(
+                                    GTItemStack.internalCopyStack(tEntry.getKey()),
+                                    tEntry.getValue());
                 }
             } else {
                 if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)
@@ -401,7 +398,7 @@ public class GTOreDictUnificator {
     }
 
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
-        boolean aBlackListed) {
+            boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GTUtility.isStackInvalid(aStack)) return;
         if (Items.feather.getDamage(aStack) == WILDCARD) for (byte i = 0; i < 16; i++)
             setItemData(GTUtility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
@@ -582,7 +579,7 @@ public class GTOreDictUnificator {
         String aName = aOreName == null ? E : aOreName.toString();
 
         return GTUtility.isStringValid(aName) ? Collections.unmodifiableList(OreDictionary.getOres(aName))
-            : Collections.emptyList();
+                : Collections.emptyList();
     }
 
     public static Map<String, ItemStack> getName2StackMap() {

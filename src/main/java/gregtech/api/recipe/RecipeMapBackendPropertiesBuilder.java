@@ -36,12 +36,12 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     RecipeMapBackendProperties build() {
         return new RecipeMapBackendProperties(
-            minItemInputs,
-            minFluidInputs,
-            specialSlotSensitive,
-            recipeEmitter,
-            builderTransformer,
-            recipeTransformer);
+                minItemInputs,
+                minFluidInputs,
+                specialSlotSensitive,
+                recipeEmitter,
+                builderTransformer,
+                recipeTransformer);
     }
 
     public RecipeMapBackendPropertiesBuilder minItemInputs(int minItemInputs) {
@@ -60,13 +60,13 @@ public final class RecipeMapBackendPropertiesBuilder {
     }
 
     public RecipeMapBackendPropertiesBuilder recipeEmitter(
-        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
+            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         this.recipeEmitter = recipeEmitter;
         return this;
     }
 
     public RecipeMapBackendPropertiesBuilder combineRecipeEmitter(
-        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> func) {
+            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> func) {
         // move recipeEmitter to local variable, so lambda capture the function itself instead of this
         Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> cur = this.recipeEmitter;
         return recipeEmitter(b -> Iterables.concat(cur.apply(b), func.apply(b)));

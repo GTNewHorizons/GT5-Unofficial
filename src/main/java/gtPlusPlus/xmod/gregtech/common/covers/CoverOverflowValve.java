@@ -152,10 +152,7 @@ public class CoverOverflowValve extends Cover {
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        byteBuf.writeInt(overflowPoint)
-            .writeInt(voidingRate)
-            .writeBoolean(canFluidInput)
-            .writeBoolean(canFluidOutput);
+        byteBuf.writeInt(overflowPoint).writeInt(voidingRate).writeBoolean(canFluidInput).writeBoolean(canFluidOutput);
     }
 
     private FluidStack doOverflowThing(FluidStack fluid) {
@@ -246,9 +243,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+                aPlayer,
+                StatCollector.translateToLocalFormatted(
+                        "GTPP.chat.text.cover_overflow_valve_overflow_point",
+                        overflowPoint));
     }
 
     @Override
@@ -264,9 +262,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+                aPlayer,
+                StatCollector.translateToLocalFormatted(
+                        "GTPP.chat.text.cover_overflow_valve_overflow_point",
+                        overflowPoint));
         return true;
     }
     // GUI

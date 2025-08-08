@@ -32,16 +32,15 @@ import tectech.thing.gui.TecTechUITextures;
 public class GodforgeExoticFrontend extends RecipeMapFrontend {
 
     public GodforgeExoticFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
         builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
-                .setSize(18, 18)
-                .setPos(new Pos2d(151, 63).add(windowOffset)));
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO).setSize(18, 18)
+                        .setPos(new Pos2d(151, 63).add(windowOffset)));
     }
 
     @Override

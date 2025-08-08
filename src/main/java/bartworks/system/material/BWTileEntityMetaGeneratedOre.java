@@ -52,11 +52,11 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if (aMaterial != null) {
             ITexture aIconSet = TextureFactory
-                .of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
+                    .of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
             return new ITexture[] { TextureFactory.of(Blocks.stone), aIconSet };
         }
         return new ITexture[] { TextureFactory.of(Blocks.stone),
-            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex]) };
+                TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex]) };
     }
 
     @Override
@@ -71,8 +71,7 @@ public class BWTileEntityMetaGeneratedOre extends TileEntityMetaGeneratedBlock {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
-        Materials aOreMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData)
-            .getBridgeMaterial();
+        Materials aOreMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData).getBridgeMaterial();
         if (shouldSilkTouch) {
             rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         } else {

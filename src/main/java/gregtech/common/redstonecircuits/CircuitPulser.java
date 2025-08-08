@@ -37,7 +37,7 @@ public class CircuitPulser extends CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte redstoneSignal = aCircuitData[1] == 0 ? getWeakestNonZeroRedstone(aRedstoneCircuitBlock)
-            : getStrongestRedstone(aRedstoneCircuitBlock);
+                : getStrongestRedstone(aRedstoneCircuitBlock);
         if (aCircuitData[4] == 0) {
             aCircuitData[5] = redstoneSignal;
         }
@@ -50,9 +50,9 @@ public class CircuitPulser extends CircuitryBehavior {
             }
         }
         aRedstoneCircuitBlock.setRedstone(
-            (aCircuitData[4] > 0) && (aCircuitData[4] <= aCircuitData[0]) ? (byte) aCircuitData[1]
-                : (aCircuitData[1] <= 0) || (aCircuitData[1] > 15) ? (byte) aCircuitData[5] : 0,
-            aRedstoneCircuitBlock.getOutputFacing());
+                (aCircuitData[4] > 0) && (aCircuitData[4] <= aCircuitData[0]) ? (byte) aCircuitData[1]
+                        : (aCircuitData[1] <= 0) || (aCircuitData[1] > 15) ? (byte) aCircuitData[5] : 0,
+                aRedstoneCircuitBlock.getOutputFacing());
     }
 
     @Override

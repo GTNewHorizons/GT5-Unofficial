@@ -33,7 +33,7 @@ import gtPlusPlus.core.util.Utils;
 public enum GTPPBeeDefinition implements IBeeDefinition {
 
     SILICON(GTBranchDefinition.ORGANIC, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75),
-        Utils.rgbtoHexValue(125, 125, 125)) {
+            Utils.rgbtoHexValue(125, 125, 125)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -51,14 +51,14 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTBeeDefinition.SLIMEBALL.getSpecies(),
-                GTBeeDefinition.STICKYRESIN.getSpecies(),
-                10);
+                    GTBeeDefinition.SLIMEBALL.getSpecies(),
+                    GTBeeDefinition.STICKYRESIN.getSpecies(),
+                    10);
         }
     },
 
     RUBBER(GTBranchDefinition.ORGANIC, "Rubber", true, Utils.rgbtoHexValue(55, 55, 55),
-        Utils.rgbtoHexValue(75, 75, 75)) {
+            Utils.rgbtoHexValue(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -76,14 +76,14 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTBeeDefinition.SLIMEBALL.getSpecies(),
-                GTBeeDefinition.STICKYRESIN.getSpecies(),
-                10);
+                    GTBeeDefinition.SLIMEBALL.getSpecies(),
+                    GTBeeDefinition.STICKYRESIN.getSpecies(),
+                    10);
         }
     },
 
     PLASTIC(GTBranchDefinition.ORGANIC, "Plastic", true, Utils.rgbtoHexValue(245, 245, 245),
-        Utils.rgbtoHexValue(175, 175, 175)) {
+            Utils.rgbtoHexValue(175, 175, 175)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -101,14 +101,14 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTPPBeeDefinition.RUBBER.species,
-                GTBeeDefinition.OIL.getSpecies(),
-                10);
+                    GTPPBeeDefinition.RUBBER.species,
+                    GTBeeDefinition.OIL.getSpecies(),
+                    10);
         }
     },
 
     PTFE(GTBranchDefinition.ORGANIC, "Ptfe", true, Utils.rgbtoHexValue(150, 150, 150),
-        Utils.rgbtoHexValue(75, 75, 75)) {
+            Utils.rgbtoHexValue(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -154,7 +154,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
      * Fuels
      */
     BIOMASS(GTBranchDefinition.ORGANIC, "Biomass", true, Utils.rgbtoHexValue(33, 225, 24),
-        Utils.rgbtoHexValue(23, 175, 14)) {
+            Utils.rgbtoHexValue(23, 175, 14)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -177,7 +177,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     },
 
     ETHANOL(GTBranchDefinition.ORGANIC, "Ethanol", true, Utils.rgbtoHexValue(255, 128, 0),
-        Utils.rgbtoHexValue(220, 156, 32)) {
+            Utils.rgbtoHexValue(220, 156, 32)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -203,7 +203,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
      * Materials
      */
     FLUORINE(GTBranchDefinition.ORGANIC, "Fluorine", true, Utils.rgbtoHexValue(30, 230, 230),
-        Utils.rgbtoHexValue(10, 150, 150)) {
+            Utils.rgbtoHexValue(10, 150, 150)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -221,9 +221,9 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTBeeDefinition.LAPIS.getSpecies(),
-                GTBeeDefinition.SAPPHIRE.getSpecies(),
-                5);
+                    GTBeeDefinition.LAPIS.getSpecies(),
+                    GTBeeDefinition.SAPPHIRE.getSpecies(),
+                    5);
             tMutation.restrictBiomeType(Type.COLD);
         }
     },
@@ -232,7 +232,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
 
     // Force
     FORCE(GTBranchDefinition.METAL, "Force", true, Utils.rgbtoHexValue(250, 250, 20),
-        Utils.rgbtoHexValue(200, 200, 5)) {
+            Utils.rgbtoHexValue(200, 200, 5)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -252,16 +252,16 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTBeeDefinition.STEEL.getSpecies(),
-                GTBeeDefinition.GOLD.getSpecies(),
-                10);
+                    GTBeeDefinition.STEEL.getSpecies(),
+                    GTBeeDefinition.GOLD.getSpecies(),
+                    10);
             tMutation.restrictBiomeType(Type.HOT);
         }
     },
 
     // Nikolite
     NIKOLITE(GTBranchDefinition.METAL, "Nikolite", true, Utils.rgbtoHexValue(60, 180, 200),
-        Utils.rgbtoHexValue(40, 150, 170)) {
+            Utils.rgbtoHexValue(40, 150, 170)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -279,9 +279,9 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                GTBeeDefinition.ALUMINIUM.getSpecies(),
-                GTBeeDefinition.SILVER.getSpecies(),
-                8);
+                    GTBeeDefinition.ALUMINIUM.getSpecies(),
+                    GTBeeDefinition.SILVER.getSpecies(),
+                    8);
             tMutation.restrictBiomeType(Type.HOT);
         }
     },
@@ -295,8 +295,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     private IBeeGenome genome;
 
     GTPPBeeDefinition(GTBranchDefinition branch, String binomial, boolean dominant, int primary, int secondary) {
-        String lowercaseName = this.toString()
-            .toLowerCase(Locale.ENGLISH);
+        String lowercaseName = this.toString().toLowerCase(Locale.ENGLISH);
         String species = "species" + WordUtils.capitalize(lowercaseName);
 
         String uid = "forestry." + species;
@@ -305,15 +304,15 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
 
         this.branch = branch;
         this.species = BeeManager.beeFactory.createSpecies(
-            uid,
-            dominant,
-            "Sengir",
-            name,
-            description,
-            branch.getBranch(),
-            binomial,
-            primary,
-            secondary);
+                uid,
+                dominant,
+                "Sengir",
+                name,
+                description,
+                branch.getBranch(),
+                binomial,
+                primary,
+                secondary);
     }
 
     public static void initBees() {
@@ -348,7 +347,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     }
 
     protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2,
-        int chance) {
+            int chance) {
         IAllele[] template = getTemplate();
         Logger.DEBUG_BEES("parent1: " + (parent1 != null));
         Logger.DEBUG_BEES("parent2: " + (parent2 != null));

@@ -88,12 +88,12 @@ public class TileAntimatter extends TileEntity {
     public AxisAlignedBB getRenderBoundingBox() {
         if (boundingBox == null) {
             boundingBox = AxisAlignedBB.getBoundingBox(
-                xCoord - maximalRadius - 1,
-                yCoord - maximalRadius - 1,
-                zCoord - maximalRadius - 1,
-                xCoord + maximalRadius + 1,
-                yCoord + maximalRadius + 1,
-                zCoord + maximalRadius + 1);
+                    xCoord - maximalRadius - 1,
+                    yCoord - maximalRadius - 1,
+                    zCoord - maximalRadius - 1,
+                    xCoord + maximalRadius + 1,
+                    yCoord + maximalRadius + 1,
+                    zCoord + maximalRadius + 1);
         }
         return boundingBox;
     }
@@ -116,9 +116,7 @@ public class TileAntimatter extends TileEntity {
     public void setCoreSize(float diameter) {
         coreScaleSnapshot = coreScale;
         coreScale = diameter;
-        timeSnapshot = this.getWorldObj()
-            .getWorldInfo()
-            .getWorldTotalTime();
+        timeSnapshot = this.getWorldObj().getWorldInfo().getWorldTotalTime();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

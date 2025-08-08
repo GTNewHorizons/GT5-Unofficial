@@ -34,9 +34,9 @@ public class GTPPCore {
     // Tooltips;
     public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
     public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
-        .translateToLocal("GTPP.core.GT_Tooltip_Builder");
+            .translateToLocal("GTPP.core.GT_Tooltip_Builder");
     public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
-        .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
+            .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
 
     /**
      * Lists/Maps

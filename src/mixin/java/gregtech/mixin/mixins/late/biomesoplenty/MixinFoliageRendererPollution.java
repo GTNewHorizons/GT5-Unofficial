@@ -16,14 +16,14 @@ import gregtech.common.pollution.Pollution;
 public class MixinFoliageRendererPollution {
 
     @ModifyExpressionValue(
-        method = "renderCrossedSquares",
-        remap = false,
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;func_149720_d(Lnet/minecraft/world/IBlockAccess;III)I",
-            remap = false))
+            method = "renderCrossedSquares",
+            remap = false,
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;func_149720_d(Lnet/minecraft/world/IBlockAccess;III)I",
+                    remap = false))
     private int gt5u$pollutionCrossedSquares(int color, Block block, int blockX, int blockY, int blockZ,
-        RenderBlocks renderer) {
+            RenderBlocks renderer) {
         ColorOverrideType type = Pollution.blockVine.matchesID(block);
         if (type == null) return color;
         return type.getColor(color, blockX, blockZ);

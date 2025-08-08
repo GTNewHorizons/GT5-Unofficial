@@ -130,49 +130,49 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = "gregtech",
-    name = "GregTech",
-    version = "MC1710",
-    guiFactory = "gregtech.client.GTGuiFactory",
-    dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.6.35,);"
-        + " required-after:modularui@[1.1.12,);"
-        + " required-after:appliedenergistics2@[rv3-beta-258,);"
-        + " after:dreamcraft;"
-        + " after:Forestry;"
-        + " after:PFAAGeologica;"
-        + " after:Thaumcraft;"
-        + " after:Railcraft;"
-        + " after:ThermalExpansion;"
-        + " after:TwilightForest;"
-        + " after:harvestcraft;"
-        + " after:magicalcrops;"
-        + " after:Botania;"
-        + " after:BuildCraft|Transport;"
-        + " after:BuildCraft|Silicon;"
-        + " after:BuildCraft|Factory;"
-        + " after:BuildCraft|Energy;"
-        + " after:BuildCraft|Core;"
-        + " after:BuildCraft|Builders;"
-        + " after:GalacticraftCore;"
-        + " after:GalacticraftMars;"
-        + " after:GalacticraftPlanets;"
-        + " after:ThermalExpansion|Transport;"
-        + " after:ThermalExpansion|Energy;"
-        + " after:ThermalExpansion|Factory;"
-        + " after:RedPowerCore;"
-        + " after:RedPowerBase;"
-        + " after:RedPowerMachine;"
-        + " after:RedPowerCompat;"
-        + " after:RedPowerWiring;"
-        + " after:RedPowerLogic;"
-        + " after:RedPowerLighting;"
-        + " after:RedPowerWorld;"
-        + " after:RedPowerControl;"
-        + " after:UndergroundBiomes;"
-        + " after:TConstruct;"
-        + " after:Translocator;"
-        + " after:gendustry;")
+        modid = "gregtech",
+        name = "GregTech",
+        version = "MC1710",
+        guiFactory = "gregtech.client.GTGuiFactory",
+        dependencies = " required-after:IC2;" + " required-after:structurelib;"
+                + " required-after:gtnhlib@[0.6.35,);"
+                + " required-after:modularui@[1.1.12,);"
+                + " required-after:appliedenergistics2@[rv3-beta-258,);"
+                + " after:dreamcraft;"
+                + " after:Forestry;"
+                + " after:PFAAGeologica;"
+                + " after:Thaumcraft;"
+                + " after:Railcraft;"
+                + " after:ThermalExpansion;"
+                + " after:TwilightForest;"
+                + " after:harvestcraft;"
+                + " after:magicalcrops;"
+                + " after:Botania;"
+                + " after:BuildCraft|Transport;"
+                + " after:BuildCraft|Silicon;"
+                + " after:BuildCraft|Factory;"
+                + " after:BuildCraft|Energy;"
+                + " after:BuildCraft|Core;"
+                + " after:BuildCraft|Builders;"
+                + " after:GalacticraftCore;"
+                + " after:GalacticraftMars;"
+                + " after:GalacticraftPlanets;"
+                + " after:ThermalExpansion|Transport;"
+                + " after:ThermalExpansion|Energy;"
+                + " after:ThermalExpansion|Factory;"
+                + " after:RedPowerCore;"
+                + " after:RedPowerBase;"
+                + " after:RedPowerMachine;"
+                + " after:RedPowerCompat;"
+                + " after:RedPowerWiring;"
+                + " after:RedPowerLogic;"
+                + " after:RedPowerLighting;"
+                + " after:RedPowerWorld;"
+                + " after:RedPowerControl;"
+                + " after:UndergroundBiomes;"
+                + " after:TConstruct;"
+                + " after:Translocator;"
+                + " after:gendustry;")
 public class GTMod {
 
     static {
@@ -270,9 +270,7 @@ public class GTMod {
         }
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
-        GTPreLoad.createLogFiles(
-            event.getModConfigurationDirectory()
-                .getParentFile());
+        GTPreLoad.createLogFiles(event.getModConfigurationDirectory().getParentFile());
 
         PowerGogglesConfigHandler.init(new File(event.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
@@ -294,9 +292,7 @@ public class GTMod {
 
         Materials.init();
 
-        GTPreLoad.initLocalization(
-            event.getModConfigurationDirectory()
-                .getParentFile());
+        GTPreLoad.initLocalization(event.getModConfigurationDirectory().getParentFile());
         GTPreLoad.adjustScrap();
 
         AE2Compat.onPreInit();
@@ -328,9 +324,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isServer()) AssemblyLineServer.fillMap(event);
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) AssemblyLineServer.fillMap(event);
     }
 
     @Mod.EventHandler
@@ -421,39 +415,39 @@ public class GTMod {
         new CoverLoader().run();
 
         GTRecipeRegistrator.registerUsagesForMaterials(
-            null,
-            false,
-            new ItemStack(Blocks.planks, 1),
-            new ItemStack(Blocks.cobblestone, 1),
-            new ItemStack(Blocks.stone, 1),
-            new ItemStack(Items.leather, 1));
+                null,
+                false,
+                new ItemStack(Blocks.planks, 1),
+                new ItemStack(Blocks.cobblestone, 1),
+                new ItemStack(Blocks.stone, 1),
+                new ItemStack(Items.leather, 1));
 
         GTOreDictUnificator.addItemData(
-            GTModHandler.getRecipeOutput(
-                null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
-                null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
-                null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
-                null,
-                null,
-                null),
-            new ItemData(Materials.Tin, 10886400L));
+                GTModHandler.getRecipeOutput(
+                        null,
+                        GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                        null,
+                        GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                        null,
+                        GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                        null,
+                        null,
+                        null),
+                new ItemData(Materials.Tin, 10886400L));
         GTModHandler.removeRecipe(
-            new ItemStack(Items.glowstone_dust, 1),
-            new ItemStack(Items.glowstone_dust, 1),
-            null,
-            new ItemStack(Items.glowstone_dust, 1),
-            new ItemStack(Items.glowstone_dust, 1));
+                new ItemStack(Items.glowstone_dust, 1),
+                new ItemStack(Items.glowstone_dust, 1),
+                null,
+                new ItemStack(Items.glowstone_dust, 1),
+                new ItemStack(Items.glowstone_dust, 1));
         GTModHandler.removeRecipeDelayed(
-            new ItemStack(Blocks.wooden_slab, 1, 0),
-            new ItemStack(Blocks.wooden_slab, 1, 1),
-            new ItemStack(Blocks.wooden_slab, 1, 2));
+                new ItemStack(Blocks.wooden_slab, 1, 0),
+                new ItemStack(Blocks.wooden_slab, 1, 1),
+                new ItemStack(Blocks.wooden_slab, 1, 2));
         GTModHandler.addCraftingRecipe(
-            new ItemStack(Blocks.wooden_slab, 6, 0),
-            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "WWW", 'W', new ItemStack(Blocks.planks, 1, 0) });
+                new ItemStack(Blocks.wooden_slab, 6, 0),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "WWW", 'W', new ItemStack(Blocks.planks, 1, 0) });
 
         // Save a copy of these list before activateOreDictHandler(), then loop over them.
         Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList = GTModHandler.getMaceratorRecipeList();
@@ -463,33 +457,31 @@ public class GTMod {
         Map<IRecipeInput, RecipeOutput> aThermalCentrifugeRecipeList = GTModHandler.getThermalCentrifugeRecipeList();
 
         GTLog.out.println(
-            "GTMod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
+                "GTMod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
         GT_FML_LOGGER.info(
-            "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
+                "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
 
         GTPostLoad.activateOreDictHandler();
         GTPostLoad.replaceVanillaMaterials();
         GTPostLoad.removeIc2Recipes(
-            aMaceratorRecipeList,
-            aCompressorRecipeList,
-            aExtractorRecipeList,
-            aOreWashingRecipeList,
-            aThermalCentrifugeRecipeList);
+                aMaceratorRecipeList,
+                aCompressorRecipeList,
+                aExtractorRecipeList,
+                aOreWashingRecipeList,
+                aThermalCentrifugeRecipeList);
 
         if (GTValues.D1) {
-            GTModHandler.sSingleNonBlockDamagableRecipeList.forEach(
-                iRecipe -> GTLog.out.println(
-                    "=> " + iRecipe.getRecipeOutput()
-                        .getDisplayName()));
+            GTModHandler.sSingleNonBlockDamagableRecipeList
+                    .forEach(iRecipe -> GTLog.out.println("=> " + iRecipe.getRecipeOutput().getDisplayName()));
         }
         new CraftingRecipeLoader().run();
         GTModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         GTModHandler.removeRecipeByOutput(GTModHandler.getIC2Item("machine", 1L));
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("machine", 1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
+                GTModHandler.getIC2Item("machine", 1L),
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                        | GTModHandler.RecipeBits.REVERSIBLE,
+                new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
@@ -500,13 +492,11 @@ public class GTMod {
 
         AE2Compat.onPostInit();
 
-        Arrays
-            .stream(
+        Arrays.stream(
                 new String[] { "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill",
-                    "solarPanel", "centrifuge", "electrolyzer", "compressor", "electroFurnace", "extractor",
-                    "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator", })
-            .map(tName -> GTModHandler.getIC2Item(tName, 1L))
-            .forEach(GTModHandler::removeRecipeByOutputDelayed);
+                        "solarPanel", "centrifuge", "electrolyzer", "compressor", "electroFurnace", "extractor",
+                        "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator", })
+                .map(tName -> GTModHandler.getIC2Item(tName, 1L)).forEach(GTModHandler::removeRecipeByOutputDelayed);
 
         GTPostLoad.changeWoodenVanillaTools();
 
@@ -588,110 +578,61 @@ public class GTMod {
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
         GTLog.out.println("GTMod: IC2 Machines");
 
-        ic2.api.recipe.Recipes.cannerBottle.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.centrifuge.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.compressor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.extractor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.macerator.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerCutting.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerExtruding.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerRolling.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.matterAmplifier.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.oreWashing.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.cannerBottle.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.centrifuge.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.compressor.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.extractor.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.macerator.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.metalformerCutting.getRecipes().values().stream().map(t -> t.items)
+                .forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.metalformerExtruding.getRecipes().values().stream().map(t -> t.items)
+                .forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.metalformerRolling.getRecipes().values().stream().map(t -> t.items)
+                .forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.matterAmplifier.getRecipes().values().stream().map(t -> t.items)
+                .forEach(tStacks::addAll);
+        ic2.api.recipe.Recipes.oreWashing.getRecipes().values().stream().map(t -> t.items).forEach(tStacks::addAll);
 
         GTLog.out.println("GTMod: Dungeon Loot");
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("bonusChest")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("bonusChest").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("villageBlacksmith")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("villageBlacksmith").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCrossing")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCrossing").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdLibrary")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdLibrary").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCorridor")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCorridor").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
         for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleDispenser")
-            .getItems(new XSTR())) {
+                .getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleChest")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleChest").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidDesertyChest")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidDesertyChest").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("mineshaftCorridor")
-            .getItems(new XSTR())) {
+        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("mineshaftCorridor").getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
         GTLog.out.println("GTMod: Smelting");
 
         // Deal with legacy Minecraft raw types
-        tStacks.addAll(
-            FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .values());
+        tStacks.addAll(FurnaceRecipes.smelting().getSmeltingList().values());
 
         if (proxy.mCraftingUnification) {
             GTLog.out.println("GTMod: Crafting Recipes");
-            for (IRecipe tRecipe : CraftingManager.getInstance()
-                .getRecipeList()) {
+            for (IRecipe tRecipe : CraftingManager.getInstance().getRecipeList()) {
                 if ((tRecipe instanceof IRecipe)) {
                     tStacks.add(tRecipe.getRecipeOutput());
                 }
@@ -770,9 +711,9 @@ public class GTMod {
     private static String[] generateGTErr01Message(ItemStack stack) {
         // The message is presented on a per-line basis to make possible formatting in the future easier.
         return new String[] { "GT-ERR-01 at " + stack.getUnlocalizedName() + "   " + stack.getDisplayName(),
-            "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
-            "The said item will be renamed to make the invalid recipe visible.",
-            "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
+                "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
+                "The said item will be renamed to make the invalid recipe visible.",
+                "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
     }
 
     @SuppressWarnings("SameParameterValue") // The method is used with one logger, but that might change in the future.

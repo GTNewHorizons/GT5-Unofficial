@@ -58,7 +58,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustrialCuttingMachine>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
     private static final int MACHINEMODE_CUTTER = 0;
@@ -87,41 +87,31 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes four items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Cutting Factory Frames", 14, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("200% faster than using single block machines of the same voltage")
+                .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 5, true)
+                .addController("Front Center").addCasingInfoMin("Cutting Factory Frames", 14, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialCuttingMachine> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCuttingMachine>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCuttingMachine>builder().addShape(
                     mName,
                     transpose(
-                        new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "C-C", "CCC" },
-                            { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialCuttingMachine.class)
-                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(getCasingTextureIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13))))
-                .build();
+                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
+                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTEIndustrialCuttingMachine.class)
+                                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13))))
+                    .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -186,9 +176,8 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F).setEuModifier(0.75F)
+                .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -226,8 +215,9 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility.sendChatToPlayer(
+                aPlayer,
+                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -253,21 +243,21 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+            int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
+                translateToLocal("GT5U.machines.oreprocessor1") + " "
+                        + EnumChatFormatting.WHITE
+                        + translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + tag.getInteger("mode"))
+                        + EnumChatFormatting.RESET);
     }
 
     @SideOnly(Side.CLIENT)

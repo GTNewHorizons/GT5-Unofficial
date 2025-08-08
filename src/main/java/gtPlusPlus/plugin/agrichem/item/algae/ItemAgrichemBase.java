@@ -55,7 +55,7 @@ public class ItemAgrichemBase extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-        boolean p_77663_5_) {
+            boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 
@@ -136,8 +136,7 @@ public class ItemAgrichemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -157,8 +156,8 @@ public class ItemAgrichemBase extends Item {
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
         if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
-                EnumChatFormatting.GRAY
-                    + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
+                    EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
             aMaxDamage = getCatalystMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getCatalystDamage(aStack);

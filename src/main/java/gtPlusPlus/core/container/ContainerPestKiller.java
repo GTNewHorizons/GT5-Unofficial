@@ -68,8 +68,7 @@ public class ContainerPestKiller extends Container {
     public FluidStack getFluidOfStoredTank() {
         if (tile_entity != null) {
             if (tile_entity.getTank() != null) {
-                return tile_entity.getTank()
-                    .getFluid();
+                return tile_entity.getTank().getFluid();
             }
         }
         return null;
@@ -82,7 +81,7 @@ public class ContainerPestKiller extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-        final EntityPlayer aPlayer) {
+            final EntityPlayer aPlayer) {
         boolean fluid = aSlotIndex == 2;
         if (!fluid) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -157,7 +156,7 @@ public class ContainerPestKiller extends Container {
         }
 
         public GT_Slot_Render(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem,
-            boolean aCanStackItem, int aMaxStacksize) {
+                boolean aCanStackItem, int aMaxStacksize) {
             super(inventory, slotIndex, xPos, yPos);
             mCanInsertItem = aCanInsertItem;
             mCanStackItem = aCanStackItem;

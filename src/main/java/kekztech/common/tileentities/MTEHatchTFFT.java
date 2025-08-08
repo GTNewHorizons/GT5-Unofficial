@@ -35,22 +35,22 @@ import gregtech.api.render.TextureFactory;
 public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> {
 
     @Optional.Interface(
-        iface = "appeng.api.storage.IExternalStorageHandler",
-        modid = Mods.ModIDs.APPLIED_ENERGISTICS2,
-        striprefs = true)
+            iface = "appeng.api.storage.IExternalStorageHandler",
+            modid = Mods.ModIDs.APPLIED_ENERGISTICS2,
+            striprefs = true)
     private static class AE2TFFTHatchHandler implements IExternalStorageHandler {
 
         @Override
         @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
         public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
             return channel == StorageChannel.FLUIDS && te instanceof BaseMetaTileEntity
-                && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof MTEHatchTFFT;
+                    && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof MTEHatchTFFT;
         }
 
         @Override
         @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
         public IMEInventory getInventory(TileEntity te, ForgeDirection d, StorageChannel channel,
-            BaseActionSource src) {
+                BaseActionSource src) {
             if (channel == StorageChannel.FLUIDS) {
                 return ((MTEHatchTFFT) (((BaseMetaTileEntity) te).getMetaTileEntity()));
             }
@@ -59,7 +59,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     private static final Textures.BlockIcons.CustomIcon TEXTURE_TFFT_HATCH = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_HATCH");
+            "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;
@@ -79,26 +79,20 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+            int colorIndex, boolean aActive, boolean aRedstone) {
         return super.getTexture(aBaseMetaTileEntity, side, facing, colorIndex, aActive, aRedstone);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
-            TextureFactory.builder()
-                .addIcon(TEXTURE_TFFT_HATCH)
-                .extFacing()
-                .build() };
+                TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN),
-            TextureFactory.builder()
-                .addIcon(TEXTURE_TFFT_HATCH)
-                .extFacing()
-                .build() };
+                TextureFactory.builder().addIcon(TEXTURE_TFFT_HATCH).extFacing().build() };
     }
 
     @Override
@@ -147,10 +141,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public static void registerAEIntegration() {
-        AEApi.instance()
-            .registries()
-            .externalStorage()
-            .addExternalStorageInterface(new AE2TFFTHatchHandler());
+        AEApi.instance().registries().externalStorage().addExternalStorageInterface(new AE2TFFTHatchHandler());
     }
 
     @Override

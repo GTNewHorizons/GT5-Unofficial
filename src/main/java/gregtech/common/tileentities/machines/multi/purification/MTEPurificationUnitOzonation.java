@@ -46,13 +46,13 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPurificationUnitOzonation>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final String[][] structure = new String[][] {
-        // spotless:off
+            // spotless:off
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     A A ", "     A A ", "     A A ", "     A~A " },
         { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   A D A", "E   A D A", "E   AAAAA" },
         { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "O  BA   A", "BBBBA   A", "  C A   A", "  CCA   A", "    AAAAA" },
@@ -75,36 +75,32 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     private static final int MIN_CASING = 96;
 
     private static final IStructureDefinition<MTEPurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEPurificationUnitOzonation>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Inert Filtration Casing
-        .addElement(
-            'A',
-            ofChain(
-                lazy(
-                    t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
-                        .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
-                        .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 10))
-                        .dot(1)
-                        .build()),
-                onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 10))))
-        // High Pressure Resistant Casing (possibly placeholder name)
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 9))
-        // PTFE pipe casing
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        // Any tinted industrial glass
-        .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
-        .addElement('E', ofFrame(Materials.TungstenSteel))
-        // Ozone input hatch
-        .addElement(
-            'O',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
-                    .atLeast(InputHatch)
-                    .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 9))
-                    .dot(2)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 9))))
-        .build();
+            .<MTEPurificationUnitOzonation>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
+            // Inert Filtration Casing
+            .addElement(
+                    'A',
+                    ofChain(
+                            lazy(
+                                    t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
+                                            .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
+                                            .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 10)).dot(1)
+                                            .build()),
+                            onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 10))))
+            // High Pressure Resistant Casing (possibly placeholder name)
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 9))
+            // PTFE pipe casing
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 1))
+            // Any tinted industrial glass
+            .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
+            .addElement('E', ofFrame(Materials.TungstenSteel))
+            // Ozone input hatch
+            .addElement(
+                    'O',
+                    lazy(
+                            t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder().atLeast(InputHatch)
+                                    .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 9)).dot(2)
+                                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 9))))
+            .build();
 
     public MTEPurificationUnitOzonation(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -121,28 +117,16 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+            int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
+                            .glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
+                            .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX) };
     }
@@ -155,14 +139,14 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            OFFSET_X,
-            OFFSET_Y,
-            OFFSET_Z,
-            elementBudget,
-            env,
-            true);
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                elementBudget,
+                env,
+                true);
     }
 
     @Override
@@ -174,81 +158,84 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
-            .addSeparator()
-            .addInfo(
-                "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
-                    + MAX_OZONE_GAS_FOR_EXPLOSION
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo(
-                "Receives a " + EnumChatFormatting.RED
-                    + "20%"
-                    + EnumChatFormatting.GRAY
-                    + " bonus to success chance for every doubling of "
-                    + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The second step in water purification is ozonation, which involves injecting large quantities of small")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "bubbles of highly reactive ozone gas into the water. This removes trace element contaminants like")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
-            .beginStructureBlock(9, 10, 5, false)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Inert Filtration Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                102,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reactive Gas Containment Casing",
-                EnumChatFormatting.GRAY,
-                28,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Any Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungstensteel Frame Box",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
-                EnumChatFormatting.GOLD + "1",
-                2)
-            .toolTipFinisher(AuthorNotAPenguin);
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.BOLD
+                                + "Water Tier: "
+                                + EnumChatFormatting.WHITE
+                                + GTUtility.formatNumbers(getWaterTier())
+                                + EnumChatFormatting.RESET)
+                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
+                .addInfo(
+                        "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
+                                + MAX_OZONE_GAS_FOR_EXPLOSION
+                                + "L "
+                                + EnumChatFormatting.WHITE
+                                + "Ozone Gas"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addInfo(
+                        "Receives a " + EnumChatFormatting.RED
+                                + "20%"
+                                + EnumChatFormatting.GRAY
+                                + " bonus to success chance for every doubling of "
+                                + EnumChatFormatting.WHITE
+                                + "Ozone Gas"
+                                + EnumChatFormatting.GRAY
+                                + ".")
+                .addSeparator()
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "The second step in water purification is ozonation, which involves injecting large quantities of small")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "bubbles of highly reactive ozone gas into the water. This removes trace element contaminants like")
+                .addInfo(
+                        EnumChatFormatting.AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
+                .beginStructureBlock(9, 10, 5, false).addController("Front center")
+                .addCasingInfoRangeColored(
+                        "Inert Filtration Casing",
+                        EnumChatFormatting.GRAY,
+                        MIN_CASING,
+                        102,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Reactive Gas Containment Casing",
+                        EnumChatFormatting.GRAY,
+                        28,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Any Tinted Industrial Glass",
+                        EnumChatFormatting.GRAY,
+                        9,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "Tungstensteel Frame Box",
+                        EnumChatFormatting.GRAY,
+                        6,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addCasingInfoExactlyColored(
+                        "PTFE Pipe Casing",
+                        EnumChatFormatting.GRAY,
+                        3,
+                        EnumChatFormatting.GOLD,
+                        false)
+                .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addOtherStructurePart(
+                        StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
+                        EnumChatFormatting.GOLD + "1",
+                        2)
+                .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

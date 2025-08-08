@@ -34,15 +34,14 @@ public class GalacticGregRegistry {
 
         if (modContainers.containsKey(modContainer.getModName())) {
             GalacticGreg.Logger
-                .warn("There is already a mod registered with that name: [%s]", modContainer.getModName());
+                    .warn("There is already a mod registered with that name: [%s]", modContainer.getModName());
             return;
         }
 
         GalacticGreg.Logger.info(
-            "Registered new mod to generate ores: [%s] Dimensions provided: [%d]",
-            modContainer.getModName(),
-            modContainer.getDimensionList()
-                .size());
+                "Registered new mod to generate ores: [%s] Dimensions provided: [%d]",
+                modContainer.getModName(),
+                modContainer.getDimensionList().size());
         modContainers.put(modContainer.getModName(), modContainer);
     }
 
@@ -54,14 +53,12 @@ public class GalacticGregRegistry {
         try {
             if (!initializationDone) return null;
 
-            String tFQCPN = chunkProvider.toString()
-                .split("@")[0];
+            String tFQCPN = chunkProvider.toString().split("@")[0];
             ModDimensionDef tReturnMDD = null;
 
             for (ModContainer mc : modContainers.values()) {
                 for (ModDimensionDef mdd : mc.getDimensionList()) {
-                    if (mdd.getChunkProviderName()
-                        .equals(tFQCPN)) {
+                    if (mdd.getChunkProviderName().equals(tFQCPN)) {
                         tReturnMDD = mdd;
                         break;
                     }
@@ -105,8 +102,8 @@ public class GalacticGregRegistry {
             // todo: rename Vanilla mod container name from "Vanilla" to "minecraft"
             if (!mc.isModLoaded()) {
                 GalacticGreg.Logger.warn(
-                    "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
-                    mc.getModName());
+                        "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
+                        mc.getModName());
                 continue;
             }
 
@@ -114,26 +111,22 @@ public class GalacticGregRegistry {
 
             for (ModDimensionDef md : mc.getDimensionList()) {
                 GalacticGreg.Logger.info(
-                    "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
-                    mc.getModName(),
-                    md.getDimensionName(),
-                    md.getReplaceableBlocks()
-                        .size(),
-                    md.getDimIdentifier(),
-                    md.getSpaceObjectGenerators()
-                        .size());
+                        "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
+                        mc.getModName(),
+                        md.getDimensionName(),
+                        md.getReplaceableBlocks().size(),
+                        md.getDimIdentifier(),
+                        md.getSpaceObjectGenerators().size());
 
                 // Register default generator if dimension is asteroid and no generator was added
                 if (md.getDimensionType() == DimensionType.Asteroid) {
-                    if (md.getSpaceObjectGenerators()
-                        .isEmpty()) {
+                    if (md.getSpaceObjectGenerators().isEmpty()) {
                         GalacticGreg.Logger.debug("No generators found, adding built-in ellipsoid generator");
                         md.registerSpaceObjectGenerator(new GenEllipsoid());
                     }
                     GalacticGreg.Logger.info(
-                        "Asteroid-Enabled dimension. Registered Generators: [%d]",
-                        md.getSpaceObjectGenerators()
-                            .size());
+                            "Asteroid-Enabled dimension. Registered Generators: [%d]",
+                            md.getSpaceObjectGenerators().size());
                 }
 
                 md.finalizeReplaceableBlocks(mc.getModName());

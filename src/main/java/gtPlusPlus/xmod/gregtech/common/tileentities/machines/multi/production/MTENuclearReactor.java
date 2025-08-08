@@ -96,28 +96,22 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
-            .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
-            .addInfo("Input LFTB and a molten salt as fuel, and match the 4 Buffered Dynamo Hatches:")
-            .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")
-            .addInfo("If using better hatches for a worse fuel, only 1 hatch will output EU")
-            .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
-            .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 4, 7, true)
-            .addController("Bottom Center")
-            .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
-            .addCasingInfoMin("Zeron-100 Reactor Shielding", 26, false)
-            .addInputHatch("Top or bottom layer edges", 1)
-            .addOutputHatch("Top or bottom layer edges", 1)
-            .addDynamoHatch("Top or bottom layer edges", 1)
-            .addMufflerHatch("Top 3x3", 2)
-            .addStructureInfo("All dynamos must be between EV and LuV tier.")
-            .addStructureInfo("All other hatches must be IV+ tier.")
-            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
-            .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
-            .toolTipFinisher();
+        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
+                .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
+                .addInfo("Input LFTB and a molten salt as fuel, and match the 4 Buffered Dynamo Hatches:")
+                .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")
+                .addInfo("If using better hatches for a worse fuel, only 1 hatch will output EU")
+                .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
+                .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(7, 4, 7, true)
+                .addController("Bottom Center").addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
+                .addCasingInfoMin("Zeron-100 Reactor Shielding", 26, false)
+                .addInputHatch("Top or bottom layer edges", 1).addOutputHatch("Top or bottom layer edges", 1)
+                .addDynamoHatch("Top or bottom layer edges", 1).addMufflerHatch("Top 3x3", 2)
+                .addStructureInfo("All dynamos must be between EV and LuV tier.")
+                .addStructureInfo("All other hatches must be IV+ tier.")
+                .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
+                .addStructureInfo("4x Dynamo Hatches, 4x Mufflers").toolTipFinisher();
         return tt;
     }
 
@@ -125,44 +119,34 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public String[] getExtraInfoData() {
         final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
         final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
-            : "Needs Maintainance");
+                : "Needs Maintainance");
 
         return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency." };
+                "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
+                "Current Efficiency: " + (this.mEfficiency / 5) + "%",
+                "Current Efficiency (Raw): " + (this.mEfficiency), "It requires you to have 100% Efficiency." };
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         boolean aWarmedUp = this.mEfficiency == this.getMaxEfficiency(null);
         if (!aBaseMetaTileEntity.isActive() || !aWarmedUp) {
             if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
-                        .extFacing()
-                        .build() };
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR)
-                        .extFacing()
-                        .build() };
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
+                                .extFacing().build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)), TextureFactory
+                        .builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR).extFacing().build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)) };
         } else if (aBaseMetaTileEntity.isActive() && aWarmedUp) {
             if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
-                        .extFacing()
-                        .build() };
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR)
-                        .extFacing()
-                        .build() };
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR_ACTIVE)
+                                .extFacing().build() };
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)), TextureFactory
+                        .builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_NUCLEAR_REACTOR).extFacing().build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)) };
         }
@@ -177,9 +161,10 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             if (aMetaTileEntity instanceof MTEHatchMaintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else if (aMetaTileEntity instanceof MTEHatchDynamo dynamo && dynamo.getTierForStructure() >= 4
-                && dynamo.getTierForStructure() <= 6) {
-                    return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (aMetaTileEntity instanceof MTEHatchInput hatch && hatch.getTierForStructure() >= 5) {
+                    && dynamo.getTierForStructure() <= 6) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    } else
+                if (aMetaTileEntity instanceof MTEHatchInput hatch && hatch.getTierForStructure() >= 5) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
                 } else if (aMetaTileEntity instanceof MTEHatchOutput hatch && hatch.getTierForStructure() >= 5) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
@@ -203,46 +188,37 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     @Override
     public IStructureDefinition<MTENuclearReactor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTENuclearReactor>builder()
-                .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTENuclearReactor>builder().addShape(
                     mName,
                     transpose(
-                        new String[][] {
-                            { "CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC" },
-                            { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
-                            { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
-                            { "CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC" }, }))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(MTENuclearReactor.class).atLeast(Maintenance)
-                            .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(MTENuclearReactor.class).atLeast(InputHatch, OutputHatch)
-                            .adder(MTENuclearReactor::addNuclearReactorEdgeList)
-                            .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
-                            .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(MTENuclearReactor.class).atLeast(Dynamo)
-                            .adder(MTENuclearReactor::addNuclearReactorEdgeList)
-                            .hatchItemFilterAnd(t -> filterByMTETier(4, 6))
-                            .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
-                            .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
-                .addElement(
-                    'X',
-                    buildHatchAdder(MTENuclearReactor.class).atLeast(Muffler)
-                        .adder(MTENuclearReactor::addNuclearReactorTopList)
-                        .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
-                        .casingIndex(TAE.GTPP_INDEX(12))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
-                .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
-                .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13))
-                .build();
+                            new String[][] {
+                                    { "CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC" },
+                                    { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
+                                    { "GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG" },
+                                    { "CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC" }, }))
+                    .addElement(
+                            'C',
+                            ofChain(
+                                    buildHatchAdder(MTENuclearReactor.class).atLeast(Maintenance)
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
+                                    buildHatchAdder(MTENuclearReactor.class).atLeast(InputHatch, OutputHatch)
+                                            .adder(MTENuclearReactor::addNuclearReactorEdgeList)
+                                            .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
+                                    buildHatchAdder(MTENuclearReactor.class).atLeast(Dynamo)
+                                            .adder(MTENuclearReactor::addNuclearReactorEdgeList)
+                                            .hatchItemFilterAnd(t -> filterByMTETier(4, 6))
+                                            .casingIndex(TAE.GTPP_INDEX(12)).dot(1).build(),
+                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
+                    .addElement(
+                            'X',
+                            buildHatchAdder(MTENuclearReactor.class).atLeast(Muffler)
+                                    .adder(MTENuclearReactor::addNuclearReactorTopList)
+                                    .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
+                                    .casingIndex(TAE.GTPP_INDEX(12)).dot(1).buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
+                    .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
+                    .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -263,8 +239,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         mCasing = 0;
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
             if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && !mInputHatches.isEmpty()
-                && mDynamoHatches.size() == 4
-                && mMufflerHatches.size() == 4) {
+                    && mDynamoHatches.size() == 4
+                    && mMufflerHatches.size() == 4) {
                 this.turnCasingActive(false);
                 return true;
             }
@@ -337,7 +313,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator
-                    .ofNoOverclock(recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0) * 4L, recipe.mDuration);
+                        .ofNoOverclock(recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0) * 4L, recipe.mDuration);
             }
 
             @NotNull
@@ -357,8 +333,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 int li2bef4 = 0;
                 FluidStack aFuelFluid = null;
                 for (FluidStack aFluidInput : recipe.mFluidInputs) {
-                    if (!aFluidInput.getFluid()
-                        .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
+                    if (!aFluidInput.getFluid().equals(MaterialsNuclides.Li2BeF4.getFluid())) {
                         aFuelFluid = aFluidInput;
                         break;
                     }
@@ -367,10 +342,9 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                     for (FluidStack fluidStack : inputFluids) {
                         if (fluidStack.isFluidEqual(aFuelFluid)) {
                             mFuelRemaining += fluidStack.amount;
-                        } else if (fluidStack.getFluid()
-                            .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
-                                li2bef4 += fluidStack.amount;
-                            }
+                        } else if (fluidStack.getFluid().equals(MaterialsNuclides.Li2BeF4.getFluid())) {
+                            li2bef4 += fluidStack.amount;
+                        }
                     }
                 }
                 if (mFuelRemaining < 100) {
@@ -415,47 +389,38 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         long explodevalue;
         for (final MetaTileEntity tTileEntity : this.mInputBusses) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mOutputBusses) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mInputHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mOutputHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mDynamoHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mMufflerHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mEnergyHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         for (final MetaTileEntity tTileEntity : this.mMaintenanceHatches) {
             explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+            tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
         }
         explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
-        this.getBaseMetaTileEntity()
-            .doExplosion(explodevalue);
+        this.getBaseMetaTileEntity().doExplosion(explodevalue);
     }
 
     @Override

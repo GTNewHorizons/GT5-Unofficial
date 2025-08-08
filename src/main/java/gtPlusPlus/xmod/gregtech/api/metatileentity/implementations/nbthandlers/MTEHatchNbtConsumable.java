@@ -29,7 +29,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     private final boolean mAllowDuplicateUsageTypes;
 
     public MTEHatchNbtConsumable(int aID, String aName, String aNameRegional, int aTier, int aInputSlots,
-        String aDescription, boolean aAllowDuplicateTypes) {
+            String aDescription, boolean aAllowDuplicateTypes) {
         super(aID, aName, aNameRegional, aTier, aInputSlots * 2, aDescription);
         mInputslotCount = getInputSlotCount();
         mTotalSlotCount = getInputSlotCount() * 2;
@@ -37,7 +37,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     public MTEHatchNbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
-        boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
+            boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
         mInputslotCount = getInputSlotCount();
         mTotalSlotCount = getInputSlotCount() * 2;
@@ -113,16 +113,16 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
         for (int i = 0; i <= getSlotID_LastInput(); i++) {
             for (int j = i + 1; j <= getSlotID_LastInput(); j++) {
                 if (mInventory[j] != null
-                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
                     GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
+                            getBaseMetaTileEntity(),
+                            getBaseMetaTileEntity(),
+                            j,
+                            i,
+                            (byte) 64,
+                            (byte) 1,
+                            (byte) 64,
+                            (byte) 1);
                 }
             }
         }
@@ -227,15 +227,15 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
 
     @Override
     public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack)
-            && aIndex < mInputslotCount;
+                && aIndex < mInputslotCount;
     }
 
     /**
@@ -268,13 +268,11 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     public void addGregTechLogo(ModularWindow.Builder builder) {
         switch (mTotalSlotCount) {
             case 8, 18 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 63));
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                            .setPos(152, 63));
             case 32 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(79, 35));
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                            .setPos(79, 35));
         }
     }
 
@@ -283,66 +281,39 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
         switch (mTotalSlotCount) {
             case 8 -> {
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(0)
-                        .endAtSlot(3)
-                        .build()
-                        .setPos(25, 25));
+                        SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3).build()
+                                .setPos(25, 25));
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(4)
-                        .endAtSlot(7)
-                        .canInsert(false)
-                        .build()
-                        .setPos(115, 25));
-                builder
-                    .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(4).endAtSlot(7).canInsert(false)
+                                .build().setPos(115, 25));
+                builder.widget(
                         new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(25, 16))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(115, 16));
+                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 16))
+                        .widget(
+                                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
+                                        .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(115, 16));
             }
             case 18 -> {
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(0)
-                        .endAtSlot(8)
-                        .build()
-                        .setPos(25, 19));
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).build()
+                                .setPos(25, 19));
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(9)
-                        .endAtSlot(17)
-                        .canInsert(false)
-                        .build()
-                        .setPos(97, 19));
-                builder
-                    .widget(
+                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(9).endAtSlot(17).canInsert(false)
+                                .build().setPos(97, 19));
+                builder.widget(
                         new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(25, 14))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(15, 14));
+                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 14))
+                        .widget(
+                                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
+                                        .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(15, 14));
             }
             case 32 -> {
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(0)
-                        .endAtSlot(15)
-                        .build()
-                        .setPos(7, 7));
+                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).build()
+                                .setPos(7, 7));
                 builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(16)
-                        .endAtSlot(31)
-                        .canInsert(false)
-                        .build()
-                        .setPos(96, 7));
+                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(16).endAtSlot(31).canInsert(false)
+                                .build().setPos(96, 7));
             }
         }
     }

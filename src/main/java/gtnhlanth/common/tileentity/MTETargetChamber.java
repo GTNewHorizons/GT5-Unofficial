@@ -158,27 +158,16 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+            int colorIndex, boolean active, boolean redstoneLevel) {
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (active) return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
+                            .build() };
+            return new ITexture[] { casingTexturePages[0][47],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { casingTexturePages[0][47] };
     }
@@ -186,27 +175,20 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Collision Chamber")
-            .addInfo("Hitting things with other things")
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Grate Machine Casing", 29, false)
-            .addCasingInfoExactly("Shielded Accelerator Casing", 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, false)
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart("Focus Input Bus", addDotText(1))
-            .addMaintenanceHatch(addDotText(2))
-            .addEnergyHatch(addDotText(2))
-            .addInputBus(addDotText(3))
-            .addOutputBus(addDotText(4))
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+        tt.addMachineType("Collision Chamber").addInfo("Hitting things with other things")
+                .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO).beginStructureBlock(5, 5, 6, true)
+                .addController("Front bottom").addCasingInfoExactly("Grate Machine Casing", 29, false)
+                .addCasingInfoExactly("Shielded Accelerator Casing", 28, false)
+                .addCasingInfoExactly("Any Tiered Glass", 16, false)
+                .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
+                .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
+                .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
+                .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
+                .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
+                .addOtherStructurePart("Focus Input Bus", addDotText(1)).addMaintenanceHatch(addDotText(2))
+                .addEnergyHatch(addDotText(2)).addInputBus(addDotText(3)).addOutputBus(addDotText(4))
+                .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
+                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher();
         return tt;
     }
 
@@ -240,8 +222,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         ItemStack tFocusItemZeroDamage;
         ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
         if (tFocusItemArray != null) {
-            tFocusItemZeroDamage = tFocusItemArray.get(0)
-                .copy();
+            tFocusItemZeroDamage = tFocusItemArray.get(0).copy();
             tFocusItemZeroDamage.setItemDamage(0);
             tItemsWithFocusItem.add(tFocusItemZeroDamage);
         }
@@ -250,25 +231,22 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        GTRecipe tRecipe = LanthanidesRecipeMaps.targetChamberRecipes.findRecipeQuery()
-            .items(tItemsWithFocusItemArray)
-            .voltage(tVoltageActual)
-            .filter((GTRecipe recipe) -> {
-                TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
-                if (metadata == null) return false;
+        GTRecipe tRecipe = LanthanidesRecipeMaps.targetChamberRecipes.findRecipeQuery().items(tItemsWithFocusItemArray)
+                .voltage(tVoltageActual).filter((GTRecipe recipe) -> {
+                    TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
+                    if (metadata == null) return false;
 
-                BeamInformation recipeInInfo = this.getInputInformation();
-                int particle = metadata.particleID;
+                    BeamInformation recipeInInfo = this.getInputInformation();
+                    int particle = metadata.particleID;
 
-                if (recipeInInfo != null) {
-                    return (particle == recipeInInfo.getParticleId() && !(recipeInInfo.getEnergy() < metadata.minEnergy
-                        || recipeInInfo.getEnergy() > metadata.maxEnergy));
-                }
+                    if (recipeInInfo != null) {
+                        return (particle == recipeInInfo.getParticleId()
+                                && !(recipeInInfo.getEnergy() < metadata.minEnergy
+                                        || recipeInInfo.getEnergy() > metadata.maxEnergy));
+                    }
 
-                return false;
-            })
-            .cachedRecipe(this.lastRecipe)
-            .find();
+                    return false;
+                }).cachedRecipe(this.lastRecipe).find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         TargetChamberMetadata metadata = tRecipe.getMetadata(TARGET_CHAMBER_METADATA);
@@ -287,8 +265,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
         if (metadata.focusItem != null) {
             if (tFocusItemArray != null) {
-                if (tFocusItemArray.get(0) != null && metadata.focusItem.getItem() != tFocusItemArray.get(0)
-                    .getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
+                if (tFocusItemArray.get(0) != null && metadata.focusItem.getItem() != tFocusItemArray.get(0).getItem())
+                    return CheckRecipeResultRegistry.NO_RECIPE;
             }
         }
 
@@ -328,7 +306,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
-            .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
+                .maxParallelCalculatedByInputs(batchAmount, GTValues.emptyFluidStackArray, tItemsWithFocusItemArray);
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
@@ -375,11 +353,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Nullable
     private ArrayList<ItemStack> getFocusItemStack() {
         if (this.mInputFocus.isEmpty()) return null;
-        if (this.mInputFocus.get(0)
-            .getContentUsageSlots()
-            .isEmpty()) return null;
-        return this.mInputFocus.get(0)
-            .getContentUsageSlots();
+        if (this.mInputFocus.get(0).getContentUsageSlots().isEmpty()) return null;
+        return this.mInputFocus.get(0).getContentUsageSlots();
     }
 
     @Override
@@ -391,9 +366,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (!checkPiece("base", 2, 4, 0)) return false;
 
         return this.mInputBeamline.size() == 1 && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() == 1
-            && this.mOutputBusses.size() == 1
-            && this.mInputFocus.size() == 1;
+                && this.mInputBusses.size() == 1
+                && this.mOutputBusses.size() == 1
+                && this.mInputFocus.size() == 1;
     }
 
     @Override
@@ -408,10 +383,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         for (MTEHatchEnergy tHatch : mEnergyHatches) {
             if (tHatch.isValid()) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
 
@@ -421,74 +394,74 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         }
 
         return new String[] {
-            // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 Pollution not included */
-            // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron (e-)"
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + information.getEnergy() * 1000 // In line with the synchrotron's output
-                + EnumChatFormatting.RESET
-                + " eV", // e.g. "10240 eV"
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + information.getFocus()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + information.getRate() };
+                // from super()
+                /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(mProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                        + EnumChatFormatting.RESET
+                        + " s",
+                /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(storedEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(maxEnergy)
+                        + EnumChatFormatting.RESET
+                        + " EU",
+                /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GTUtility.formatNumbers(getActualEnergyUsage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t",
+                /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GTUtility.formatNumbers(getMaxInputVoltage())
+                        + EnumChatFormatting.RESET
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GTUtility.getTier(getMaxInputVoltage())]
+                        + EnumChatFormatting.RESET,
+                /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                        + EnumChatFormatting.RED
+                        + (getIdealStatus() - getRepairStatus())
+                        + EnumChatFormatting.RESET
+                        + " "
+                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + mEfficiency / 100.0F
+                        + EnumChatFormatting.RESET
+                        + " %",
+                /* 6 Pollution not included */
+                // Beamline-specific
+                EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+                        + ": "
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
+                        + EnumChatFormatting.GOLD
+                        + Particle.getParticleFromId(information.getParticleId()).getLocalisedName() // e.g. "Electron
+                                                                                                     // (e-)"
+                        + " "
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+                        + EnumChatFormatting.DARK_RED
+                        + information.getEnergy() * 1000 // In line with the synchrotron's output
+                        + EnumChatFormatting.RESET
+                        + " eV", // e.g. "10240 eV"
+                StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+                        + EnumChatFormatting.BLUE
+                        + information.getFocus()
+                        + " "
+                        + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + information.getRate() };
     }
 }

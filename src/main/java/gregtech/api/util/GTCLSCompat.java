@@ -38,7 +38,7 @@ public class GTCLSCompat {
     private GTCLSCompat() {}
 
     private static <T> void registerAndReportProgression(String materialsType, Collection<T> materials,
-        ProgressManager.ProgressBar progressBar, Function<T, Object> getName, Consumer<T> action) {
+            ProgressManager.ProgressBar progressBar, Function<T, Object> getName, Consumer<T> action) {
         int sizeStep = materials.size();
         final long progressionReportsEvery = 100;
         final long bakingMsgEvery = 1000;
@@ -51,8 +51,7 @@ public class GTCLSCompat {
 
             if (nextProgressionReportAt < now) {
                 nextProgressionReportAt = now + progressionReportsEvery;
-                String materialName = getName.apply(m)
-                    .toString();
+                String materialName = getName.apply(m).toString();
                 try {
                     ProgressDisplayer.displayProgress(materialName, (float) currentStep / sizeStep);
                 } catch (IOException e) {
@@ -68,7 +67,7 @@ public class GTCLSCompat {
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
                 GTMod.GT_FML_LOGGER
-                    .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
+                        .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
             }
             action.accept(m);
             currentStep += 1;
@@ -82,34 +81,34 @@ public class GTCLSCompat {
     }
 
     public static void stepMaterialsCLS(Collection<OreDictEventContainer> mEvents,
-        ProgressManager.ProgressBar progressBar) {
+            ProgressManager.ProgressBar progressBar) {
         MinecraftDisplayer.isRegisteringGTmaterials = true;
         registerAndReportProgression(
-            "GregTech materials",
-            mEvents,
-            progressBar,
-            m -> m.mMaterial,
-            OreDictEventContainer::registerRecipes);
+                "GregTech materials",
+                mEvents,
+                progressBar,
+                m -> m.mMaterial,
+                OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
         MinecraftDisplayer.isRegisteringGTmaterials = false;
     }
 
     public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar,
-        Set<Materials> replacedVanillaItemsSet) {
+            Set<Materials> replacedVanillaItemsSet) {
         MinecraftDisplayer.isReplacingVanillaMaterials = true;
         registerAndReportProgression(
-            "Vanilla materials",
-            replacedVanillaItemsSet,
-            progressBar,
-            m -> m.mDefaultLocalName,
-            GTPostLoad::doActualRegistration);
+                "Vanilla materials",
+                replacedVanillaItemsSet,
+                progressBar,
+                m -> m.mDefaultLocalName,
+                GTPostLoad::doActualRegistration);
     }
 
     public static void pushToDisplayProgress() {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
             ProgressDisplayer
-                .displayProgress("Post Initialization: loading GregTech", MinecraftDisplayer.getLastPercent());
+                    .displayProgress("Post Initialization: loading GregTech", MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
             GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
         }

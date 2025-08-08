@@ -29,41 +29,31 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
-            new Grid().marginLeft(WIDGET_MARGIN)
-                .coverChildren()
-                .minElementMarginRight(WIDGET_MARGIN)
-                .minElementMarginBottom(2)
-                .minElementMarginTop(0)
-                .minElementMarginLeft(0)
-                .alignment(Alignment.CenterLeft)
-                .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getRedstonePass, cover::setRedstonePass))
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("128", "Redstone"))
-                        .asWidget())
-                .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass))
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("129", "Energy"))
-                        .asWidget())
-                .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass))
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("130", "Fluids"))
-                        .asWidget())
-                .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass))
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                        .size(16),
-                    IKey.str(GTUtility.trans("131", "Items"))
-                        .asWidget()));
+                new Grid().marginLeft(WIDGET_MARGIN).coverChildren().minElementMarginRight(WIDGET_MARGIN)
+                        .minElementMarginBottom(2).minElementMarginTop(0).minElementMarginLeft(0)
+                        .alignment(Alignment.CenterLeft)
+                        .row(
+                                new ToggleButton()
+                                        .value(new BooleanSyncValue(cover::getRedstonePass, cover::setRedstonePass))
+                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("128", "Redstone")).asWidget())
+                        .row(
+                                new ToggleButton()
+                                        .value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass))
+                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("129", "Energy")).asWidget())
+                        .row(
+                                new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass))
+                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("130", "Fluids")).asWidget())
+                        .row(
+                                new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass))
+                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS).size(16),
+                                IKey.str(GTUtility.trans("131", "Items")).asWidget()));
     }
 
     @Override
@@ -71,13 +61,10 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
         ItemStack coverItem = cover.getStack();
         if (coverItem == null) return;
         column.child(
-            Flow.row()
-                .coverChildren()
-                .marginBottom(4)
-                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
-                .child(
-                    new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+                Flow.row().coverChildren().marginBottom(4)
+                        .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget()).child(
+                                new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName())
+                                        .marginLeft(4).widgetTheme(GTWidgetThemes.TEXT_TITLE)));
     }
 
 }

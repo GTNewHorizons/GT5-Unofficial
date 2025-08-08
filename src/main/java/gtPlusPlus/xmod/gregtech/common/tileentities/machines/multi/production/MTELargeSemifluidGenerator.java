@@ -44,7 +44,7 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<MTELargeSemifluidGenerator> STRUCTURE_DEFINITION = null;
@@ -66,22 +66,17 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
-            .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
-            .addInfo("Default: Produces 2048EU/t at 100% efficiency")
-            .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
-            .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
-            .addCasingInfoMin("Engine Intake Machine Casing", 8, false)
-            .addInputHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addDynamoHatch("Back Center", 2)
-            .toolTipFinisher();
+                .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
+                .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
+                .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
+                .addInfo("Default: Produces 2048EU/t at 100% efficiency")
+                .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 4, false)
+                .addController("Front Center").addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
+                .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
+                .addCasingInfoMin("Engine Intake Machine Casing", 8, false).addInputHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).addDynamoHatch("Back Center", 2)
+                .toolTipFinisher();
         return tt;
     }
 
@@ -143,8 +138,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         }
 
         for (FluidStack hatchFluid : tFluids) { // Loops through hatches
-            GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend()
-                .findFuel(hatchFluid);
+            GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend().findFuel(hatchFluid);
             if (aFuel == null) {
                 // Not a valid semi-fluid fuel.
                 continue;
@@ -187,24 +181,21 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     public IStructureDefinition<MTELargeSemifluidGenerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTELargeSemifluidGenerator>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "III", "CCC", "CCC", "CCC" }, { "I~I", "CGC", "CGC", "CMC" },
-                            { "III", "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTELargeSemifluidGenerator.class).atLeast(Muffler, InputHatch, Maintenance)
-                        .casingIndex(getCasingTextureIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
-                .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                .addElement(
-                    'M',
-                    Dynamo.or(TTDynamo)
-                        .newAny(getCasingTextureIndex(), 2))
-                .build();
+                    .addShape(
+                            mName,
+                            transpose(
+                                    new String[][] { { "III", "CCC", "CCC", "CCC" }, { "I~I", "CGC", "CGC", "CMC" },
+                                            { "III", "CCC", "CCC", "CCC" }, }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(MTELargeSemifluidGenerator.class).atLeast(Muffler, InputHatch, Maintenance)
+                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                            onElementPass(
+                                                    x -> ++x.mCasing,
+                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
+                    .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))
+                    .addElement('M', Dynamo.or(TTDynamo).newAny(getCasingTextureIndex(), 2)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -321,9 +312,9 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     @Override
     public String[] getExtraInfoData() {
         return new String[] { "Large Semifluid Generator", "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
-            "Fuel Consumption: " + fuelConsumption + "L/t", "Fuel Value: " + fuelValue + " EU/L",
-            "Fuel Remaining: " + fuelRemaining + " Litres", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
+                "Fuel Consumption: " + fuelConsumption + "L/t", "Fuel Value: " + fuelValue + " EU/L",
+                "Fuel Remaining: " + fuelRemaining + " Litres", "Current Efficiency: " + (mEfficiency / 100) + "%",
+                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override

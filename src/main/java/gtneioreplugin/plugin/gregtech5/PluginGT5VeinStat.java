@@ -29,8 +29,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
+        if (stack.getUnlocalizedName().startsWith("gt.blockores")) {
             loadMatchingVeins((short) (stack.getItemDamage() % 1000));
         } else super.loadCraftingRecipes(stack);
     }
@@ -51,8 +50,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         }
 
         for (OreLayerWrapper oreVein : getAllVeins()) {
-            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName))
-                .contains(dimension)) {
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName)).contains(dimension)) {
                 addVeinWithLayers(oreVein, getMaximumMaterialIndex((short) (stack.getItemDamage() % 1000), false));
             }
         }
@@ -60,12 +58,12 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private void addVeinWithLayers(OreLayerWrapper oreVein, int maximumMaterialIndex) {
         this.arecipes.add(
-            new CachedVeinStatRecipe(
-                oreVein.veinName,
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_PRIMARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SECONDARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_BETWEEN),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SPORADIC)));
+                new CachedVeinStatRecipe(
+                        oreVein.veinName,
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_PRIMARY),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SECONDARY),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_BETWEEN),
+                        oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SPORADIC)));
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
@@ -107,10 +105,10 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
         drawLine(
-            OreVeinLayer.getOreVeinLayerName(veinLayer),
-            getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
-            2,
-            height);
+                OreVeinLayer.getOreVeinLayerName(veinLayer),
+                getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
+                2,
+                height);
     }
 
     private static void drawVeinInfo(OreLayerWrapper oreLayer) {
@@ -130,14 +128,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
-        String[] dims = (GT5OreLayerHelper.bufferedDims.get(oreLayer)
-            .keySet()
-            .toArray(new String[0]));
-        Arrays.sort(
-            dims,
-            Comparator.comparingInt(
-                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                    .indexOf(s)));
+        String[] dims = (GT5OreLayerHelper.bufferedDims.get(oreLayer).keySet().toArray(new String[0]));
+        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(s)));
         return dims;
     }
 
@@ -151,7 +143,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedVeinStatRecipe(String veinName, List<ItemStack> stackListPrimary,
-            List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween, List<ItemStack> stackListSporadic) {
+                List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween,
+                List<ItemStack> stackListSporadic) {
             this.veinName = veinName;
             positionedStackPrimary = new PositionedStack(stackListPrimary, 2, 0);
             positionedStackSecondary = new PositionedStack(stackListSecondary, 22, 0);

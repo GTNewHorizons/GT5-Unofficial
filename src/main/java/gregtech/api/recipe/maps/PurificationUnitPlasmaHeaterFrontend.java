@@ -23,12 +23,12 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipeMapFrontend {
 
     public PurificationUnitPlasmaHeaterFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-            120,
-            uiPropertiesBuilder.logoPos(new Pos2d(152, 90))
-                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_PLASMA_HEATER)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+                120,
+                uiPropertiesBuilder.logoPos(new Pos2d(152, 90))
+                        .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_PLASMA_HEATER)),
+                neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override
@@ -49,17 +49,17 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mInputs.size() == 1) {
             neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true),
-                    26,
-                    53,
-                    false));
+                    new PositionedStack(
+                            GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true),
+                            26,
+                            53,
+                            false));
             neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
-                    107,
-                    52,
-                    false));
+                    new PositionedStack(
+                            GTUtility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
+                            107,
+                            52,
+                            false));
         }
     }
 }

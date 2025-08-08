@@ -54,18 +54,18 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
             }
         }
         throw new IllegalStateException(
-            String.format(
-                "TileEntity at (%s, %s, %s) is not a valid MetaTileEntity!",
-                data.getX(),
-                data.getY(),
-                data.getZ()));
+                String.format(
+                        "TileEntity at (%s, %s, %s) is not a valid MetaTileEntity!",
+                        data.getX(),
+                        data.getY(),
+                        data.getZ()));
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer player, PosGuiData guiData) {
         return super.canInteractWith(player, guiData) && guiData.getTileEntity() instanceof IGregTechTileEntity baseTE
-            && baseTE.canAccessData()
-            && guiData.getSquaredDistance(player) <= MAX_INTERACTION_DISTANCE;
+                && baseTE.canAccessData()
+                && guiData.getSquaredDistance(player) <= MAX_INTERACTION_DISTANCE;
     }
 
     @Override
@@ -78,9 +78,9 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
     @Override
     public @NotNull PosGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
         return new PosGuiData(
-            player,
-            buffer.readVarIntFromBuffer(),
-            buffer.readVarIntFromBuffer(),
-            buffer.readVarIntFromBuffer());
+                player,
+                buffer.readVarIntFromBuffer(),
+                buffer.readVarIntFromBuffer(),
+                buffer.readVarIntFromBuffer());
     }
 }

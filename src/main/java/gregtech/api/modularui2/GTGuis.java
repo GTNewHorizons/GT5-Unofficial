@@ -33,7 +33,7 @@ public final class GTGuis {
      * @see GTBaseGuiBuilder
      */
     public static GTBaseGuiBuilder mteTemplatePanelBuilder(IMetaTileEntity mte, PosGuiData data,
-        PanelSyncManager syncManager, UISettings uiSettings) {
+            PanelSyncManager syncManager, UISettings uiSettings) {
         return new GTBaseGuiBuilder(mte, data, syncManager, uiSettings);
     }
 
@@ -48,7 +48,7 @@ public final class GTGuis {
      * Creates popup panel with GT style.
      */
     public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
-        boolean closeOnOutOfBoundsClick) {
+            boolean closeOnOutOfBoundsClick) {
         return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
     }
 

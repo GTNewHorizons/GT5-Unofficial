@@ -14,7 +14,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase implements ISecondaryDescribable {
 
     private static final AtomicReferenceArray<MultiblockTooltipBuilder> tooltips = new AtomicReferenceArray<>(
-        GregTechAPI.METATILEENTITIES.length);
+            GregTechAPI.METATILEENTITIES.length);
 
     public MTETooltipMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -71,7 +71,7 @@ public class BlockSuperJukebox extends BlockJukebox {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-        final int side, final float lx, final float ly, final float lz) {
+            final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         }
@@ -140,7 +140,7 @@ public class BlockSuperJukebox extends BlockJukebox {
 
     @Override
     public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
-        int p_149749_6_) {
+            int p_149749_6_) {
         this.func_149925_e(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_);
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
@@ -150,16 +150,16 @@ public class BlockSuperJukebox extends BlockJukebox {
      */
     @Override
     public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_,
-        int p_149690_5_, float p_149690_6_, int p_149690_7_) {
+            int p_149690_5_, float p_149690_6_, int p_149690_7_) {
         if (!p_149690_1_.isRemote) {
             super.dropBlockAsItemWithChance(
-                p_149690_1_,
-                p_149690_2_,
-                p_149690_3_,
-                p_149690_4_,
-                p_149690_5_,
-                p_149690_6_,
-                0);
+                    p_149690_1_,
+                    p_149690_2_,
+                    p_149690_3_,
+                    p_149690_4_,
+                    p_149690_5_,
+                    p_149690_6_,
+                    0);
         }
     }
 
@@ -229,15 +229,8 @@ public class BlockSuperJukebox extends BlockJukebox {
             super.writeToNBT(aNBT);
 
             if (this.getCurrentRecord() != null) {
-                aNBT.setTag(
-                    "RecordItem",
-                    this.func_145856_a()
-                        .writeToNBT(new NBTTagCompound()));
-                aNBT.setInteger(
-                    "Record",
-                    Item.getIdFromItem(
-                        this.func_145856_a()
-                            .getItem()));
+                aNBT.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
+                aNBT.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
             }
 
             final NBTTagCompound chestData = new NBTTagCompound();
@@ -316,8 +309,7 @@ public class BlockSuperJukebox extends BlockJukebox {
         // Determine which record to play
         public boolean selectRecordToPlayFromInventoryAndSetViaVanillaHandler() {
             ArrayList<ItemStack> mValidRecords = new ArrayList<>();
-            for (ItemStack g : this.getInventory()
-                .getInventory()) {
+            for (ItemStack g : this.getInventory().getInventory()) {
                 if (g != null) {
                     if (g.getItem() instanceof ItemRecord) {
                         mValidRecords.add(g);
@@ -337,8 +329,7 @@ public class BlockSuperJukebox extends BlockJukebox {
             Logger.INFO("b2 - " + aRecordToPlay.getDisplayName());
 
             int aSlotCounter = 0;
-            for (ItemStack g : this.getInventory()
-                .getInventory()) {
+            for (ItemStack g : this.getInventory().getInventory()) {
                 if (g != null && aSlotCounter <= 17) {
                     Logger.INFO("b3 - " + g.getDisplayName());
                     if (GTUtility.areStacksEqual(g, aRecordToPlay, true)) {
@@ -348,14 +339,14 @@ public class BlockSuperJukebox extends BlockJukebox {
                         }
 
                         GTUtility.moveStackFromSlotAToSlotB(
-                            aThisInv,
-                            aThisInv,
-                            aSlotCounter,
-                            20,
-                            (byte) 1,
-                            (byte) 1,
-                            (byte) 1,
-                            (byte) 1);
+                                aThisInv,
+                                aThisInv,
+                                aSlotCounter,
+                                20,
+                                (byte) 1,
+                                (byte) 1,
+                                (byte) 1,
+                                (byte) 1);
                         setCurrentRecord(aThisInv.getStackInSlot(20));
 
                         World aWorld = this.worldObj;
@@ -413,12 +404,18 @@ public class BlockSuperJukebox extends BlockJukebox {
             ItemStack g;
 
             for (int i = aSlotCounter; i >= 0; i--) {
-                g = this.getInventory()
-                    .getInventory()[i];
+                g = this.getInventory().getInventory()[i];
                 if (g == null) {
                     IInventory aThisInv = this.getInventory();
-                    GTUtility
-                        .moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20, i, (byte) 1, (byte) 1, (byte) 1, (byte) 1);
+                    GTUtility.moveStackFromSlotAToSlotB(
+                            aThisInv,
+                            aThisInv,
+                            20,
+                            i,
+                            (byte) 1,
+                            (byte) 1,
+                            (byte) 1,
+                            (byte) 1);
                     vanillaStopJukebox();
                     Logger.INFO("b++");
                     this.markDirty();
@@ -438,7 +435,7 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         public boolean anyPlayerInRange() {
             return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32)
-                != null;
+                    != null;
         }
 
         public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
@@ -450,32 +447,27 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         @Override
         public int getSizeInventory() {
-            return this.getInventory()
-                .getSizeInventory() - 3;
+            return this.getInventory().getSizeInventory() - 3;
         }
 
         @Override
         public ItemStack getStackInSlot(final int slot) {
-            return this.getInventory()
-                .getStackInSlot(slot);
+            return this.getInventory().getStackInSlot(slot);
         }
 
         @Override
         public ItemStack decrStackSize(final int slot, final int count) {
-            return this.getInventory()
-                .decrStackSize(slot, count);
+            return this.getInventory().decrStackSize(slot, count);
         }
 
         @Override
         public ItemStack getStackInSlotOnClosing(final int slot) {
-            return this.getInventory()
-                .getStackInSlotOnClosing(slot);
+            return this.getInventory().getStackInSlotOnClosing(slot);
         }
 
         @Override
         public void setInventorySlotContents(final int slot, final ItemStack stack) {
-            this.getInventory()
-                .setInventorySlotContents(slot, stack);
+            this.getInventory().setInventorySlotContents(slot, stack);
         }
 
         @Override
@@ -485,8 +477,7 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         @Override
         public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-            return this.getInventory()
-                .isUseableByPlayer(entityplayer);
+            return this.getInventory().isUseableByPlayer(entityplayer);
         }
 
         @Override
@@ -498,11 +489,10 @@ public class BlockSuperJukebox extends BlockJukebox {
                 this.numPlayersUsing++;
             }
             this.worldObj
-                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+                    .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-            this.getInventory()
-                .openInventory();
+            this.getInventory().openInventory();
         }
 
         @Override
@@ -511,11 +501,10 @@ public class BlockSuperJukebox extends BlockJukebox {
                 this.numPlayersUsing--;
             }
             this.worldObj
-                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+                    .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-            this.getInventory()
-                .closeInventory();
+            this.getInventory().closeInventory();
         }
 
         @Override
@@ -523,12 +512,11 @@ public class BlockSuperJukebox extends BlockJukebox {
             if (slot >= 18) {
                 return false;
             }
-            return this.getInventory()
-                .isItemValidForSlot(slot, itemstack);
+            return this.getInventory().isItemValidForSlot(slot, itemstack);
         }
 
         private static final int[] SIDED_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-            17 };
+                17 };
 
         @Override
         public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
@@ -540,8 +528,7 @@ public class BlockSuperJukebox extends BlockJukebox {
             if (p_102007_1_ >= 18) {
                 return false;
             }
-            return this.getInventory()
-                .isItemValidForSlot(p_102007_1_, p_102007_2_);
+            return this.getInventory().isItemValidForSlot(p_102007_1_, p_102007_2_);
         }
 
         @Override
@@ -549,8 +536,7 @@ public class BlockSuperJukebox extends BlockJukebox {
             if (p_102008_1_ >= 18) {
                 return false;
             }
-            return this.getInventory()
-                .isItemValidForSlot(p_102008_1_, p_102008_2_);
+            return this.getInventory().isItemValidForSlot(p_102008_1_, p_102008_2_);
         }
 
         public String getCustomName() {

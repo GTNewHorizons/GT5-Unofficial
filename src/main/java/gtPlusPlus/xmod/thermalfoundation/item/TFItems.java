@@ -16,14 +16,14 @@ public class TFItems {
 
     public static void preInit() {
         ItemBucket bucket = (ItemBucket) new ItemBucket("MiscUtils").setUnlocalizedName("bucket")
-            .setCreativeTab(AddToCreativeTab.tabMisc);
+                .setCreativeTab(AddToCreativeTab.tabMisc);
 
         GregtechItemList.PyrotheumBucket.set(bucket.addOreDictItem(1, "bucketPyrotheum"));
         GregtechItemList.CryotheumBucket.set(bucket.addOreDictItem(2, "bucketCryotheum"));
         GregtechItemList.EnderBucket.set(bucket.addOreDictItem(3, "bucketEnder", 1));
 
         ItemBase material = (ItemBase) new ItemBase("MiscUtils").setUnlocalizedName("material")
-            .setCreativeTab(AddToCreativeTab.tabMisc);
+                .setCreativeTab(AddToCreativeTab.tabMisc);
 
         GregtechItemList.BlizzRod.set(material.addOreDictItem(1, "rodBlizz"));
         GregtechItemList.BlizzPowder.set(material.addOreDictItem(2, "dustBlizz"));
@@ -40,16 +40,16 @@ public class TFItems {
         BucketHandler.registerBucket(TFBlocks.blockFluidCryotheum, 0, GregtechItemList.CryotheumBucket.get(1));
         BucketHandler.registerBucket(TFBlocks.blockFluidEnder, 0, GregtechItemList.EnderBucket.get(1));
         FluidContainerRegistry.registerFluidContainer(
-            TFFluids.fluidPyrotheum,
-            GregtechItemList.PyrotheumBucket.get(1),
-            FluidContainerRegistry.EMPTY_BUCKET);
+                TFFluids.fluidPyrotheum,
+                GregtechItemList.PyrotheumBucket.get(1),
+                FluidContainerRegistry.EMPTY_BUCKET);
         FluidContainerRegistry.registerFluidContainer(
-            TFFluids.fluidCryotheum,
-            GregtechItemList.CryotheumBucket.get(1),
-            FluidContainerRegistry.EMPTY_BUCKET);
+                TFFluids.fluidCryotheum,
+                GregtechItemList.CryotheumBucket.get(1),
+                FluidContainerRegistry.EMPTY_BUCKET);
         FluidContainerRegistry.registerFluidContainer(
-            TFFluids.fluidEnder,
-            GregtechItemList.EnderBucket.get(1),
-            FluidContainerRegistry.EMPTY_BUCKET);
+                TFFluids.fluidEnder,
+                GregtechItemList.EnderBucket.get(1),
+                FluidContainerRegistry.EMPTY_BUCKET);
     }
 }

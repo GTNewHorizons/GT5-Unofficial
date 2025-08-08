@@ -15,17 +15,17 @@ import gtPlusPlus.core.lib.GTPPCore;
 public abstract class MTERedstoneBase extends MTETieredMachineBlock {
 
     public MTERedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String aDescription, ITexture... aTextures) {
+            String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTERedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String[] aDescription, ITexture... aTextures) {
+            String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTERedstoneBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-        ITexture[][][] aTextures) {
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -69,13 +69,13 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+            ItemStack aStack) {
         return false;
     }
 

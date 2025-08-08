@@ -29,8 +29,6 @@ public class Scanning {
     }
 
     public String toString() {
-        return new ToStringBuilder(this).append("time", time)
-            .append("voltage", voltage)
-            .toString();
+        return new ToStringBuilder(this).append("time", time).append("voltage", voltage).toString();
     }
 }

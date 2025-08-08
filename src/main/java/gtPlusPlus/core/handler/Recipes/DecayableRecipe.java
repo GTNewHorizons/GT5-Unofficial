@@ -23,21 +23,16 @@ public class DecayableRecipe {
         mOutput = output;
         mRecipes.add(this);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(input)
-            .itemOutputs(output)
-            .eut(1)
-            .duration(1)
-            .metadata(GTRecipeConstants.HALF_LIFE, time / 40d)
-            .metadata(GTRecipeConstants.DECAY_TYPE, decayType)
-            .addTo(RecipeMaps.isotopeDecay);
+        GTValues.RA.stdBuilder().itemInputs(input).itemOutputs(output).eut(1).duration(1)
+                .metadata(GTRecipeConstants.HALF_LIFE, time / 40d).metadata(GTRecipeConstants.DECAY_TYPE, decayType)
+                .addTo(RecipeMaps.isotopeDecay);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof DecayableRecipe i) {
             return i.mTime == this.mTime && GTUtility.areStacksEqual(mInput, i.mInput)
-                && GTUtility.areStacksEqual(mOutput, i.mOutput);
+                    && GTUtility.areStacksEqual(mOutput, i.mOutput);
         }
         return false;
     }
