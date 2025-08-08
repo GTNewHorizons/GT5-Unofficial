@@ -243,9 +243,9 @@ public class MaterialsInit1 {
         Materials.Greenstone = loadGreenstone();
         Materials.Greywacke = loadGreywacke();
         Materials.Haderoth = loadHaderoth();
+        Materials.Hematite = loadHematite();
 
         // spotless:off
-        Materials.Hematite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Hematite"                ,   "Hematite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Hepatizon               = new Materials( 957, TextureSet.SET_METALLIC          ,  12.0F,    128,  2, 1|2  |8      |64          , 117,  94, 117,   0,   "Hepatizon"               ,   "Hepatizon"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.HSLA                    = new Materials( 322, TextureSet.SET_METALLIC          ,   6.0F,    500,  3, 1|2          |64|128      , 128, 128, 128,   0,   "HSLA"                    ,   "HSLA Steel"                    ,    0,       0,       1811, 1000,  true, false,   3,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Ignatius                = new Materials( 950, TextureSet.SET_METALLIC          ,  12.0F,    512,  2, 1|2                       , 255, 169,  83,   0,   "Ignatius"                ,   "Ignatius"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4137,6 +4137,16 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHematite() {
+        return new MaterialBuilder().setName("Hematite")
+            .setDefaultLocalName("Hematite")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
