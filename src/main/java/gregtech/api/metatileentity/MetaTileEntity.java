@@ -58,8 +58,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * Extend this Class to add a new MetaMachine Call the Constructor with the desired ID at the load-phase (not preload
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
@@ -91,11 +91,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     private String playerLang;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -552,9 +551,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * Called when a slot is changed.
-     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
-     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
      */
     protected void onContentsChanged(int slot) {
 

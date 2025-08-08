@@ -67,8 +67,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * While this is set to false, lag caused by this block won't be reported to console. Use it while the block is
-     * intentionally doing something that lags, such as scanning multiple chunks or file IO.
-     * Don't forget to set it back to true on the next tick.
+     * intentionally doing something that lags, such as scanning multiple chunks or file IO. Don't forget to set it back
+     * to true on the next tick.
      */
     public boolean doTickProfilingInThisTick = true;
 
@@ -568,9 +568,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2.
-     * We're gradually migrating to MUI2. However, since cover panel is not supported for the time being,
-     * leave support for MUI1 ({@link IAddUIWidgets#addUIWidgets}) as well.
+     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2. We're gradually
+     * migrating to MUI2. However, since cover panel is not supported for the time being, leave support for MUI1
+     * ({@link IAddUIWidgets#addUIWidgets}) as well.
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
