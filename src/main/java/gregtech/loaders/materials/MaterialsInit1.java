@@ -200,9 +200,9 @@ public class MaterialsInit1 {
         Materials.CertusQuartz = loadCertusQuartz();
         Materials.CertusQuartzCharged = loadCertusQuartzCharged();
         Materials.Ceruclase = loadCeruclase();
+        Materials.Citrine = loadCitrine();
 
         // spotless:off;
-        Materials.Citrine                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Citrine"                 ,   "Citrine"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.CobaltHexahydrate       = new Materials( 853, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1      |16                ,  80,  80, 250,   0,   "CobaltHexahydrate"       ,   "Cobalt Hexahydrate"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        );
         Materials.ConstructionFoam        = new Materials( 854, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1      |16   |64|128      , 128, 128, 128,   0,   "ConstructionFoam"        ,   "Construction Foam"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
         Materials.Chert                   = new Materials( 857, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chert"                   ,   "Chert"                         ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
@@ -3556,6 +3556,14 @@ public class MaterialsInit1 {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial()
             .setTurbineMultipliers(1, 22, 1);
+    }
+
+    private static Materials loadCitrine() {
+        return new MaterialBuilder().setName("Citrine")
+            .setDefaultLocalName("Citrine")
+            .addDustItems()
+            .setOreValue(3)
+            .constructMaterial();
     }
 
     private static Materials loadPotassiumNitrade() {
