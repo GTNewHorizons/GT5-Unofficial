@@ -1125,8 +1125,9 @@ public class Material implements IOreMaterial {
      */
     public final ItemStack getOre(final int stacksize) {
         if (ore == null) {
-            ore = ItemUtils
-                .getItemStackOfAmountFromOreDictNoBroken("ore" + StringUtils.sanitizeString(this.getUnlocalizedName()), 1);
+            ore = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
+                1);
         }
 
         return GTUtility.copyAmount(stacksize, ore);

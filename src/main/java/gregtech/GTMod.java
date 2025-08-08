@@ -27,12 +27,12 @@ import net.minecraftforge.common.ChestGenHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bwcrossmod.galacticgreg.VoidMinerLoader;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+import bwcrossmod.galacticgreg.VoidMinerLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;

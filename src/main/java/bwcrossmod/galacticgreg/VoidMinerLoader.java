@@ -38,7 +38,10 @@ public class VoidMinerLoader {
 
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
 
-            VoidMinerUtility.addMaterialToDimensionList(DimensionDef.DimNames.DEEPDARK, mat, weights.getFloat(mat.getInternalName()));
+            VoidMinerUtility.addMaterialToDimensionList(
+                DimensionDef.DimNames.DEEPDARK,
+                mat,
+                weights.getFloat(mat.getInternalName()));
         }
 
         info.release();
@@ -56,7 +59,10 @@ public class VoidMinerLoader {
 
             if (!BWOreAdapter.INSTANCE.supports(info)) continue;
 
-            VoidMinerUtility.addMaterialToDimensionList(DimensionDef.DimNames.DEEPDARK, mat, weights.getFloat(mat.getInternalName()));
+            VoidMinerUtility.addMaterialToDimensionList(
+                DimensionDef.DimNames.DEEPDARK,
+                mat,
+                weights.getFloat(mat.getInternalName()));
         }
 
         info.release();
@@ -74,7 +80,10 @@ public class VoidMinerLoader {
 
             if (!GTPPOreAdapter.INSTANCE.supports(info)) continue;
 
-            VoidMinerUtility.addMaterialToDimensionList(DimensionDef.DimNames.DEEPDARK, mat, weights.getFloat(mat.getInternalName()));
+            VoidMinerUtility.addMaterialToDimensionList(
+                DimensionDef.DimNames.DEEPDARK,
+                mat,
+                weights.getFloat(mat.getInternalName()));
         }
 
         info.release();

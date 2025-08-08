@@ -16,7 +16,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.ModIDs.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     public final GTBlockOre blockOre;
