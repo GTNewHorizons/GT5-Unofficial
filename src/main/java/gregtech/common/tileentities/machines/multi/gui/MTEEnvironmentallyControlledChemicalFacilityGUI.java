@@ -88,6 +88,17 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .size(18, 18);
     }
 
+    protected Flow renderProgressBars() {
+        return new Row().child(
+            GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
+                .left(5)
+                .size(54, 48))
+            .child(
+                GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
+                    .right(5)
+                    .size(54, 48));
+    }
+
     private String valueConverter(double value, boolean changeFormat, String unit) {
         EnumChatFormatting format = EnumChatFormatting.RESET;
         String plus = (changeFormat && (value > 0.1)) ? "+" : "";
@@ -102,11 +113,10 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
     }
 
     private Flow createValueRow(IKey tempValue, IKey presValue, String label) {
-        return new Row().marginTop(10)
-            .child(
-                new TextWidget(tempValue).marginRight(5)
-                    .size(54, 10)
-                    .alignment(Alignment.Center))
+        return new Row().child(
+            new TextWidget(tempValue).marginRight(5)
+                .size(54, 10)
+                .alignment(Alignment.Center))
             .child(
                 new TextWidget(presValue).marginLeft(5)
                     .size(54, 10)
@@ -132,6 +142,46 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         return presModule.getValue() + lossPres.getValue() + deltaPres.getValue() + leakPres.getValue();
     }
 
+    private IWidget getLeftIndicatorTexture(PanelSyncManager syncManager) {
+        IntSyncValue coolCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
+        IntSyncValue heatCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
+        IntSyncValue leftParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
+        return new DynamicDrawable(() -> {
+            if (coolCoilSyncer.getValue() >= 0) {
+                return GTGuiTextures.COOLING_ECCF_INDICATOR;
+            }
+            if (heatCoilSyncer.getValue() >= 0) {
+                return GTGuiTextures.HEATING_ECCF_INDICATOR;
+            }
+            if (leftParallelSyncer.getValue() >= 0) {
+                return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
+            }
+            return GTGuiTextures.EMPTY_ECCF_INDICATOR_L;
+        }).asWidget()
+            .size(48, 48)
+            .horizontalCenter();
+    }
+
+    private IWidget getRightIndicatorTexture(PanelSyncManager syncManager) {
+        IntSyncValue compressCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
+        IntSyncValue vacuumCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
+        IntSyncValue rightParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
+        return new DynamicDrawable(() -> {
+            if (compressCoilSyncer.getValue() >= 0) {
+                return GTGuiTextures.PRESSURE_ECCF_INDICATOR;
+            }
+            if (vacuumCoilSyncer.getValue() >= 0) {
+                return GTGuiTextures.VACUUM_ECCF_INDICATOR;
+            }
+            if (rightParallelSyncer.getValue() >= 0) {
+                return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
+            }
+            return GTGuiTextures.EMPTY_ECCF_INDICATOR_R;
+        }).asWidget()
+            .size(48, 48)
+            .horizontalCenter();
+    }
+
     private Flow createInfoColumn(PanelSyncManager syncManager) {
         DoubleSyncValue tempSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Temperature:0");
         DoubleSyncValue pressureSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Pressure:0");
@@ -145,7 +195,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         DoubleSyncValue tempModule = (DoubleSyncValue) syncManager.getSyncHandler("TempModule:0");
         DoubleSyncValue presModule = (DoubleSyncValue) syncManager.getSyncHandler("PresModule:0");
 
-        return new Column().marginTop(43)
+        return new Column().marginTop(48)
             .child(
                 createValueRow(
                     IKey.dynamic(() -> valueConverter(tempSyncer.getValue(), false, "K")),
@@ -190,56 +240,14 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
     }
 
     public ModularPanel createECCFPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        int eccfPanelWidth = 176;
-        int eccfPanelHeight = 136;
         ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
-            .size(eccfPanelWidth, eccfPanelHeight)
+            .size(176, 136)
             .background(GTGuiTextures.BACKGROUND_STANDARD);
 
-        IntSyncValue heatCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Heat:0");
-        IntSyncValue coolCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Cool:0");
-        IntSyncValue vacuumCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Vacuum:0");
-        IntSyncValue compressCoilSyncer = (IntSyncValue) syncManager.getSyncHandler("Compress:0");
-        IntSyncValue leftParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Left:0");
-        IntSyncValue rightParallelSyncer = (IntSyncValue) syncManager.getSyncHandler("Parallel_Right:0");
-
         ParentWidget<?> infoPage = new ParentWidget<>().top(5)
-            .child(
-                GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
-                    .left(5)
-                    .size(54, 48))
-            .child(
-                GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
-                    .right(5)
-                    .size(54, 48))
-            .child(new DynamicDrawable(() -> {
-                if (coolCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.COOLING_ECCF_INDICATOR;
-                }
-                if (heatCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.HEATING_ECCF_INDICATOR;
-                }
-                if (leftParallelSyncer.getValue() >= 0) {
-                    return GTGuiTextures.PARALLEL_ECCF_INDICATOR_L;
-                }
-                return GTGuiTextures.EMPTY_ECCF_INDICATOR_L;
-            }).asWidget()
-                .size(48, 48)
-                .horizontalCenter())
-            .child(new DynamicDrawable(() -> {
-                if (compressCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.PRESSURE_ECCF_INDICATOR;
-                }
-                if (vacuumCoilSyncer.getValue() >= 0) {
-                    return GTGuiTextures.VACUUM_ECCF_INDICATOR;
-                }
-                if (rightParallelSyncer.getValue() >= 0) {
-                    return GTGuiTextures.PARALLEL_ECCF_INDICATOR_R;
-                }
-                return GTGuiTextures.EMPTY_ECCF_INDICATOR_R;
-            }).asWidget()
-                .size(48, 48)
-                .horizontalCenter())
+            .child(renderProgressBars())
+            .child(getLeftIndicatorTexture(syncManager))
+            .child(getRightIndicatorTexture(syncManager))
             .child(createInfoColumn(syncManager));
 
         infoPage.sizeRel(1.0f);

@@ -1392,6 +1392,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 if ((Math.abs(currentTemp - requiredTemp) > tempThreshold)
                     || (Math.abs(currentPressure - requiredPressure) > pressureThreshold)) {
                     stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
+                    deltaPressure = 0;
+                    deltaTemp = 0;
                 }
             }
         }
