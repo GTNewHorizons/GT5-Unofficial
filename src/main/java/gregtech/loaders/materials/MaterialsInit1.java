@@ -247,9 +247,9 @@ public class MaterialsInit1 {
         Materials.Hepatizon = loadHepatizon();
         Materials.HSLA = loadHSLA();
         Materials.Ignatius = loadIgnatius();
+        Materials.Infernal = loadInfernal();
 
         // spotless:off
-        Materials.Infernal                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Infernal"                ,   "Infernal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infuscolium             = new Materials( 490, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 146,  33,  86,   0,   "Infuscolium"             ,   "Infuscolium"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.InfusedGold             = new Materials( 323, TextureSet.SET_SHINY             ,  12.0F,     64,  3, 1|2  |8      |64|128      , 255, 200,  60,   0,   "InfusedGold"             ,   "Infused Gold"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
         Materials.InfusedAir              = new Materials( 540, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255, 255,   0,   0,   "InfusedAir"              ,   "Aer"                           ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
@@ -4199,6 +4199,12 @@ public class MaterialsInit1 {
             .setToolQuality(2)
             .addDustItems()
             .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInfernal() {
+        return new MaterialBuilder().setName("Infernal")
+            .setDefaultLocalName("Infernal")
             .constructMaterial();
     }
 
