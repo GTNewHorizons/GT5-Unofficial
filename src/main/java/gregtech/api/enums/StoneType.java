@@ -1,11 +1,11 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,13 +22,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
 import com.gtnewhorizon.gtnhlib.util.data.LazyItem;
-
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -133,12 +133,23 @@ public enum StoneType implements IStoneType {
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.SETH)),
     SethClay(new StoneBuilder()
-        .setStoneNoCobble(() -> Blocks.hardened_clay, W)
+        .setStoneNoCobble(() -> Blocks.hardened_clay, WILDCARD)
         .addOtherStone(Mods.Minecraft, () -> Blocks.clay, 0)
         .setDust(Materials.Clay)
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.SETH)),
 
+    Deepslate(new StoneBuilder()
+        .setStoneNoCobble(Mods.EtFuturumRequiem, "deepslate", WILDCARD)
+        .setDust(NewHorizonsCoreMod, "item.DeepslateDust")
+        .setCategory(StoneCategory.Stone)
+        .addAllowedDimensions(DimNames.OW)),
+
+    Tuff(new StoneBuilder()
+        .setStoneNoCobble(Mods.EtFuturumRequiem, "tuff", 0)
+        .setDust(NewHorizonsCoreMod, "item.TuffDust")
+        .setCategory(StoneCategory.Stone)
+        .addAllowedDimensions(DimNames.OW)),
     ;
     // spotless:on
 
@@ -160,7 +171,7 @@ public enum StoneType implements IStoneType {
 
     private final StoneBuilder builder;
 
-    private StoneType(StoneBuilder builder) {
+    StoneType(StoneBuilder builder) {
         this.builder = builder;
     }
 
@@ -210,36 +221,55 @@ public enum StoneType implements IStoneType {
         return builder.mainStone;
     }
 
+    private volatile ITexture[] textures;
+
+    private void populateTextures() {
+        // This might be called in a render thread in Angelica, but there shouldn't be any side effects from that as
+        // long as the textures field is always valid and never partially initialized.
+        ITexture[] texturesTemp = new ITexture[6];
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IIconContainer container = switch (this) {
+                case BlackGranite -> BlockIcons.GRANITE_BLACK_STONE;
+                case RedGranite -> BlockIcons.GRANITE_RED_STONE;
+                case Marble -> BlockIcons.MARBLE_STONE;
+                case Basalt -> BlockIcons.BASALT_STONE;
+                default -> new IIconContainer() {
+
+                    @Override
+                    public IIcon getIcon() {
+                        return StoneType.this.getIcon(side.ordinal());
+                    }
+
+                    @Override
+                    public IIcon getOverlayIcon() {
+                        return null;
+                    }
+
+                    @Override
+                    public ResourceLocation getTextureFile() {
+                        return TextureMap.locationBlocksTexture;
+                    }
+                };
+            };
+
+            texturesTemp[side.ordinal()] = TextureFactory.builder()
+                .addIcon(container)
+                .stdOrient()
+                .build();
+        }
+
+        // Atomically initialize the field to prevent race conditions
+        textures = texturesTemp;
+    }
+
     @Override
     public ITexture getTexture(int side) {
-        IIconContainer container = switch (this) {
-            case BlackGranite -> BlockIcons.GRANITE_BLACK_STONE;
-            case RedGranite -> BlockIcons.GRANITE_RED_STONE;
-            case Marble -> BlockIcons.MARBLE_STONE;
-            case Basalt -> BlockIcons.BASALT_STONE;
-            default -> new IIconContainer() {
+        if (textures == null) populateTextures();
 
-                @Override
-                public IIcon getIcon() {
-                    return StoneType.this.getIcon(side);
-                }
-
-                @Override
-                public IIcon getOverlayIcon() {
-                    return null;
-                }
-
-                @Override
-                public ResourceLocation getTextureFile() {
-                    return TextureMap.locationBlocksTexture;
-                }
-            };
-        };
-
-        return TextureFactory.builder()
-            .addIcon(container)
-            .stdOrient()
-            .build();
+        // Multithreaded reads here are fine because the field will always be valid by this point, regardless of the
+        // thread
+        return textures[side];
     }
 
     @Override
@@ -284,12 +314,14 @@ public enum StoneType implements IStoneType {
 
     @Override
     public boolean isExtraneous() {
-        if (this == Stone) return false;
-        if (this == Netherrack) return false;
-        if (this == Endstone) return false;
-        if (this == PackedIce) return false;
+        return switch (this) {
+            case Stone -> false;
+            case Netherrack -> false;
+            case Endstone -> false;
+            case PackedIce -> false;
+            default -> true;
+        };
 
-        return true;
     }
 
     @Override
@@ -323,7 +355,10 @@ public enum StoneType implements IStoneType {
 
     @Nullable
     public static StoneType findStoneType(Block block, int meta) {
-        for (StoneType stoneType : STONE_TYPES) {
+        if (block == Blocks.air) return null;
+
+        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
+            StoneType stoneType = STONE_TYPES.get(i);
             if (stoneType.builder.enabled && stoneType.contains(block, meta)) {
                 return stoneType;
             }
@@ -441,6 +476,14 @@ public enum StoneType implements IStoneType {
         public StoneBuilder setCoremodDust(String name) {
             if (NewHorizonsCoreMod.isModLoaded()) {
                 pureDust = impureDust = new LazyItem(NewHorizonsCoreMod, "item." + name + "StoneDust");
+            }
+
+            return this;
+        }
+
+        public StoneBuilder setDust(Mods mod, String name) {
+            if (mod.isModLoaded()) {
+                pureDust = impureDust = new LazyItem(mod, name);
             }
 
             return this;

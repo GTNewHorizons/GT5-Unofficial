@@ -65,7 +65,9 @@ public class GTWorldgenerator implements IWorldGenerator {
     public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
     public GTWorldgenerator() {
-        GameRegistry.registerWorldGenerator(this, 1073741823);
+        // The weight here is irrelevant since the code in GameRegistryMixin forces GTWorldgenerator to the end of the
+        // list.
+        GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
         if (debugWorldGen) {
             GTLog.out.println("GTWorldgenerator created");
         }

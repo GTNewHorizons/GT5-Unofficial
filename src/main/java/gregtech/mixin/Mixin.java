@@ -68,6 +68,11 @@ public enum Mixin implements IMixins {
             .addCommonMixins("minecraft.ItemToolMaterialMixin")
             .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
             .setPhase(Phase.EARLY)),
+
+    GTWorldgenSortingFix(new MixinBuilder("Forces GTWorldgenerator to the end of the world gen list")
+        .addCommonMixins("forge.GameRegistryMixin")
+        .setPhase(Phase.EARLY)),
+
     ForgeHooksMixin(new MixinBuilder("Adds missing hooks in ForgeHooks")
         .addCommonMixins("forge.ForgeHooksMixin")
         .setPhase(Phase.EARLY)),
