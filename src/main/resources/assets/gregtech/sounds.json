@@ -387,7 +387,15 @@
     "sounds": [
       {
         "name": "MaintenanceAutoHatch",
-        "stream": false
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/NinjaSharkStudios/sounds/566206/",
+          "sound_name": "DeWalt Drill_1.wav",
+          "author_url": "https://freesound.org/people/NinjaSharkStudios/",
+          "author_names": "NinjaSharkStudios",
+          "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "CC0 1.0 Universal"
+        }
       }
     ]
   },
@@ -396,7 +404,27 @@
     "sounds": [
       {
         "name": "MaintenanceCreativeHatch",
-        "stream": false
+        "stream": false,
+        "licensing": {
+          "sound_urls": [
+            "https://freesound.org/people/IENBA/sounds/697379/",
+            "https://opengameart.org/content/202-more-sound-effects"
+          ],
+          "sound_names": [
+            "697379__ienba__electric-scooter.wav",
+            "Stationery_31.wav"
+          ],
+          "author_urls": [
+            "https://freesound.org/people/IENBA/",
+            "https://opengameart.org/users/owlishmedia"
+          ],
+          "author_names": [
+            "IENBA",
+            "OwlishMedia"
+          ],
+          "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "CC0 1.0 Universal"
+        }
       }
     ]
   },
@@ -405,16 +433,27 @@
     "sounds": [
       {
         "name": "MaintenanceDroneDownlinkHatch",
-        "stream": false
-      }
-    ]
-  },
-  "maintenance.MaintenanceToolbox": {
-    "category": "block",
-    "sounds": [
-      {
-        "name": "MaintenanceToolbox",
-        "stream": false
+        "stream": false,
+        "licensing": {
+          "sound_urls": [
+            "https://freesound.org/people/bruno.auzet/sounds/578270/",
+            "https://freesound.org/people/NinjaSharkStudios/sounds/566206/"
+          ],
+          "sound_names": [
+            "drone DJI.wav",
+            "DeWalt Drill_1.wav"
+          ],
+          "author_urls": [
+            "https://freesound.org/people/bruno.auzet/",
+            "https://freesound.org/people/NinjaSharkStudios/"
+          ],
+          "author_names": [
+            "bruno.auzet",
+            "NinjaSharkStudios"
+          ],
+          "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "license_name": "CC0 1.0 Universal"
+        }
       }
     ]
   },
@@ -425,6 +464,34 @@
         "name": "MaintenanceDuctTape",
         "stream": false
       }
-    ]
+    ],
+    "licensing": {
+      "sound_url": "https://opengameart.org/content/202-more-sound-effects",
+      "sound_name": "Stationery_31.wav",
+      "author_url": "https://opengameart.org/users/owlishmedia",
+      "author_name": "OwlishMedia",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_name": "CC0 1.0 Universal"
+    }
+  },
+  "maintenance.MaintenanceToolbox": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MaintenanceToolbox",
+        "stream": false
+      }
+    ],
+    "licensing": {
+      "sound_url": "https://opengameart.org/content/68-workshop-sounds",
+      "sound_names": [
+        "workshop - rummaging through nails.wav",
+        "workshop - ratchet2.wav"
+      ],
+      "author_url": "https://opengameart.org/users/bart",
+      "author_name": "bart",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_name": "CC0 1.0 Universal"
+    }
   }
 }
