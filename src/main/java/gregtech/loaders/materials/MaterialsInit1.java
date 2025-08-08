@@ -217,9 +217,9 @@ public class MaterialsInit1 {
         Materials.Desh = loadDesh();
         Materials.Desichalkos = loadDesichalkos();
         Materials.Dilithium = loadDilithium();
+        Materials.Draconic = loadDraconic();
 
         // spotless:off
-        Materials.Draconic                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Draconic"                ,   "Draconic"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Drulloy                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|16                      , 255, 255, 255,   0,   "Drulloy"                 ,   "Drulloy"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
         Materials.Duranium                = new Materials( 328, TextureSet.SET_METALLIC          ,  32.0F,  40960, 11, 1|2          |64          , 255, 255, 255,   0,   "Duranium"                ,   "Duranium"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   ).setTurbineMultipliers(16, 16, 1);
         Materials.Eclogite                = new Materials( 860, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Eclogite"                ,   "Eclogite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -3755,6 +3755,14 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadDraconic() {
+        return new MaterialBuilder().setName("Draconic")
+            .setDefaultLocalName("Draconic")
+            .setColor(Dyes.dyeRed)
+            .addDustItems()
             .constructMaterial();
     }
 
