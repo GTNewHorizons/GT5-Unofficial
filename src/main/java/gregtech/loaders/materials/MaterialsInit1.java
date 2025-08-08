@@ -238,9 +238,9 @@ public class MaterialsInit1 {
         Materials.Glowstone = loadGlowstone();
         Materials.Gneiss = loadGneiss();
         Materials.Graphite = loadGraphite();
+        Materials.Graphene = loadGraphene();
 
         // spotless:off
-        Materials.Graphene                = new Materials( 819, TextureSet.SET_DULL              ,   6.0F,     32,  1, 1            |64          , 128, 128, 128,   0,   "Graphene"                ,   "Graphene"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGray        , 0, Collections.singletonList(new MaterialStack(Carbon, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2), new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1)));
         Materials.Greenschist             = new Materials( 866, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenschist"             ,   "Green Schist"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Greenstone              = new Materials( 867, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenstone"              ,   "Greenstone"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Greywacke               = new Materials( 897, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greywacke"               ,   "Greywacke"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
@@ -4072,6 +4072,25 @@ public class MaterialsInit1 {
             .addMaterial(new MaterialStack(Carbon, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadGraphene() {
+        return new MaterialBuilder().setName("Graphene")
+            .setDefaultLocalName("Graphene")
+            .setMetaItemSubID(819)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .setToolSpeed(6.0f)
+            .setDurability(32)
+            .setToolQuality(1)
+            .addDustItems()
+            .addToolHeadItems()
+            .setOreValue(3)
+            .addMaterial(new MaterialStack(Carbon, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
             .constructMaterial();
     }
 
