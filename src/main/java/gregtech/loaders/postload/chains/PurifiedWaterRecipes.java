@@ -234,7 +234,8 @@ public class PurifiedWaterRecipes {
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
-                // Not sure how I feel about it being in the laser engraver, but I don't see a better multi for it right
+                // Not sure how I feel about it being in the laser engraver, but I don't see a better multi for it
+                // right
                 // now,
                 // and we can't really add a new one specifically for this (... for now)
                 .addTo(laserEngraverRecipes);

@@ -35,11 +35,10 @@ import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 
 /**
- * A wrapper that helps reduce structure check boilerplate.
- * This should only be created in the prototype MTE, then shared among the instance MTEs.
+ * A wrapper that helps reduce structure check boilerplate. This should only be created in the prototype MTE, then
+ * shared among the instance MTEs.
  *
- * Definitions:
- * Prototype MTE: An MTE that does not exist in the world and whose main purpose is to make instance MTEs
+ * Definitions: Prototype MTE: An MTE that does not exist in the world and whose main purpose is to make instance MTEs
  * Instance MTE: An MTE that exists in the world
  */
 public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStructureProvider<MTE>> {
@@ -173,8 +172,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Checks if the given piece exists at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Checks if the given piece exists at the given offset. The offset's coordinate system is in multi space, not world
+     * space.
      */
     public boolean checkStructure(MTE instance, String piece, Vec3Impl pieceOffset) {
         ensureStructureLoaded();
@@ -215,8 +214,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Creatively constructs the given piece at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Creatively constructs the given piece at the given offset. The offset's coordinate system is in multi space, not
+     * world space.
      */
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly, String piece, Vec3Impl pieceOffset) {
         ensureStructureLoaded();
@@ -258,8 +257,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Survival constructs the given piece at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Survival constructs the given piece at the given offset. The offset's coordinate system is in multi space, not
+     * world space.
      */
     public int survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env,
         String piece, Vec3Impl pieceOffset) {

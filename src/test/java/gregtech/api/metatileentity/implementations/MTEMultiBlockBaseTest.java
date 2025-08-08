@@ -13,8 +13,8 @@ import org.mockito.Mockito;
  * Tests some functions of {@link MTEMultiBlockBase}.
  * <p>
  * The classes and tests are non-public because JUnit5
- * <a href="https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-classes-and-methods">recommends</a>
- * to omit the {@code public} modifier.
+ * <a href="https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-classes-and-methods">recommends</a> to omit
+ * the {@code public} modifier.
  */
 class MTEMultiBlockBaseTest {
 
