@@ -4,19 +4,18 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
@@ -56,11 +55,24 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         // spotless:on
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel ui = super.build(data, syncManager, uiSettings);
-        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createECCFPanel(syncManager), true);
+    @Override
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+        return new Row().widthRel(1)
+            .paddingRight(6)
+            .paddingLeft(4)
+            .height(textBoxToInventoryGap)
+            .child(createVoidExcessButton(syncManager))
+            .child(createInputSeparationButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
+            .child(createBatchModeButton(syncManager))
+            .child(createLockToSingleRecipeButton(syncManager))
+            .child(createConditionControlButton(parent, syncManager))
+            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+    }
 
-        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+    private IWidget createConditionControlButton(ModularPanel parent, PanelSyncManager syncManager) {
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createECCFPanel(parent, syncManager), true);
+        return new ButtonWidget<>().onMousePressed(mouseButton -> {
             if (!popupPanel.isPanelOpen()) {
                 popupPanel.openPanel();
             } else {
@@ -71,8 +83,9 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_THERMOMETER)
             .disableHoverBackground()
             .tooltip(tooltip -> tooltip.add("Condition Control"))
-            .pos(156, 102)
-            .size(18, 18));
+            .marginTop(4)
+            .rightRel(0, 6 + 18 + 4, 0)
+            .size(18, 18);
     }
 
     private String valueConverter(double value, boolean changeFormat, String unit) {
@@ -88,7 +101,7 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         return format + plus + String.format("%.1f %s", value, unit);
     }
 
-    public ModularPanel createECCFPanel(PanelSyncManager syncManager) {
+    public ModularPanel createECCFPanel(ModularPanel parent, PanelSyncManager syncManager) {
         int eccfPanelWidth = 176;
         int eccfPanelHeight = 136;
         ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
@@ -112,9 +125,6 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
         DoubleSyncValue leakPres = (DoubleSyncValue) syncManager.getSyncHandler("LeakPres:0");
         DoubleSyncValue tempModule = (DoubleSyncValue) syncManager.getSyncHandler("TempModule:0");
         DoubleSyncValue presModule = (DoubleSyncValue) syncManager.getSyncHandler("PresModule:0");
-
-        PagedWidget.Controller tabController = new PagedWidget.Controller();
-        PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
 
         ParentWidget<?> infoPage = new ParentWidget<>().top(5)
             .child(
@@ -303,9 +313,9 @@ public class MTEEnvironmentallyControlledChemicalFacilityGUI extends MTEMultiBlo
             .coverChildrenHeight();
 
         infoPage.sizeRel(1.0f);
-        return ui.child(
-            pagedWidget.addPage(infoPage)
-                .sizeRel(1.0f))
-            .posRel(0.5f, 0.5f);
+        return ui.child(infoPage.sizeRel(1.0f))
+            .relative(parent)
+            .leftRel(0, -4, 1)
+            .topRel(0, -4, 0);
     }
 }
