@@ -428,11 +428,11 @@
       }
     ]
   },
-  "maintenance.MaintenanceDroneDownlinkHatch": {
+  "maintenance.MaintenanceDroneDownLinkHatch": {
     "category": "block",
     "sounds": [
       {
-        "name": "MaintenanceDroneDownlinkHatch",
+        "name": "MaintenanceDroneDownLinkHatch",
         "stream": false,
         "licensing": {
           "sound_urls": [
