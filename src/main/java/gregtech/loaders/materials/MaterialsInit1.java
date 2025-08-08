@@ -203,9 +203,9 @@ public class MaterialsInit1 {
         Materials.Citrine = loadCitrine();
         Materials.CobaltHexahydrate = loadCobaltHexahydrate();
         Materials.ConstructionFoam = loadConstructionFoam();
+        Materials.Chert = loadChert();
 
         // spotless:off;
-        Materials.Chert                   = new Materials( 857, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chert"                   ,   "Chert"                         ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
         Materials.Chimerite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chimerite"               ,   "Chimerite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Coral                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 128, 255,   0,   "Coral"                   ,   "Coral"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.CrudeOil                = new Materials( 858, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         ,  10,  10,  10,   0,   "CrudeOil"                ,   "Crude Oil"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -3589,6 +3589,16 @@ public class MaterialsInit1 {
             .addCell()
             .addToolHeadItems()
             .addGearItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChert() {
+        return new MaterialBuilder().setName("Chert")
+            .setDefaultLocalName("Chert")
+            .setMetaItemSubID(857)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setOreValue(0)
             .constructMaterial();
     }
 
