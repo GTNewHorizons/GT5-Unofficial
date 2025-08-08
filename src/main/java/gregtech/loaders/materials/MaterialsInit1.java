@@ -202,9 +202,9 @@ public class MaterialsInit1 {
         Materials.Ceruclase = loadCeruclase();
         Materials.Citrine = loadCitrine();
         Materials.CobaltHexahydrate = loadCobaltHexahydrate();
+        Materials.ConstructionFoam = loadConstructionFoam();
 
         // spotless:off;
-        Materials.ConstructionFoam        = new Materials( 854, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1      |16   |64|128      , 128, 128, 128,   0,   "ConstructionFoam"        ,   "Construction Foam"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
         Materials.Chert                   = new Materials( 857, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chert"                   ,   "Chert"                         ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes._NULL          );
         Materials.Chimerite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Chimerite"               ,   "Chimerite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Coral                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1                         , 255, 128, 255,   0,   "Coral"                   ,   "Coral"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -3575,6 +3575,20 @@ public class MaterialsInit1 {
             .setRGB(0x5050fa)
             .addDustItems()
             .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadConstructionFoam() {
+        return new MaterialBuilder().setName("ConstructionFoam")
+            .setDefaultLocalName("Construction Foam")
+            .setMetaItemSubID(854)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setRGB(0x808080)
+            .addDustItems()
+            .addCell()
+            .addToolHeadItems()
+            .addGearItems()
             .constructMaterial();
     }
 
