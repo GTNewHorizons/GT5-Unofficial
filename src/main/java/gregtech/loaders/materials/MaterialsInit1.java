@@ -258,9 +258,9 @@ public class MaterialsInit1 {
         Materials.InfusedOrder = loadInfusedOrder();
         Materials.InfusedVis = loadInfusedVis();
         Materials.InfusedDull = loadInfusedDull();
+        Materials.Inolashite = loadInolashite();
 
         // spotless:off
-        Materials.Inolashite              = new Materials( 954, TextureSet.SET_NONE              ,   8.0F,   2304,  3, 1|2  |8      |64          , 148, 216, 187,   0,   "Inolashite"              ,   "Inolashite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Invisium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Invisium"                ,   "Invisium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Jade                    = new Materials( 537, TextureSet.SET_SHINY             ,   1.0F,     16,  2, 1  |4|8      |64          ,   0, 100,   0,   0,   "Jade"                    ,   "Jade"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeGreen       ,0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Kalendrite              = new Materials( 953, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2                       , 170,  91, 189,   0,   "Kalendrite"              ,   "Kalendrite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4424,6 +4424,22 @@ public class MaterialsInit1 {
             .setFuelPower(160)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2))
+            .constructMaterial();
+    }
+
+    private static Materials loadInolashite() {
+        return new MaterialBuilder().setName("Inolashite")
+            .setDefaultLocalName("Inolashite")
+            .setMetaItemSubID(954)
+            .setColor(Dyes.dyeGreen)
+            .setRGB(0x94d8bb)
+            .setToolSpeed(8.0f)
+            .setDurability(2304)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
             .constructMaterial();
     }
 
