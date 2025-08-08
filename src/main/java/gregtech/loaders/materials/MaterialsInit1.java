@@ -246,9 +246,9 @@ public class MaterialsInit1 {
         Materials.Hematite = loadHematite();
         Materials.Hepatizon = loadHepatizon();
         Materials.HSLA = loadHSLA();
+        Materials.Ignatius = loadIgnatius();
 
         // spotless:off
-        Materials.Ignatius                = new Materials( 950, TextureSet.SET_METALLIC          ,  12.0F,    512,  2, 1|2                       , 255, 169,  83,   0,   "Ignatius"                ,   "Ignatius"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infernal                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Infernal"                ,   "Infernal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infuscolium             = new Materials( 490, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 146,  33,  86,   0,   "Infuscolium"             ,   "Infuscolium"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.InfusedGold             = new Materials( 323, TextureSet.SET_SHINY             ,  12.0F,     64,  3, 1|2  |8      |64|128      , 255, 200,  60,   0,   "InfusedGold"             ,   "Infused Gold"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
@@ -4185,6 +4185,20 @@ public class MaterialsInit1 {
             .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadIgnatius() {
+        return new MaterialBuilder().setName("Ignatius")
+            .setDefaultLocalName("Ignatius")
+            .setMetaItemSubID(950)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0xffa953)
+            .setToolSpeed(12.0f)
+            .setDurability(512)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
             .constructMaterial();
     }
 
