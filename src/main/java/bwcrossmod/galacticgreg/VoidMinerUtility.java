@@ -27,6 +27,7 @@ import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
 public class VoidMinerUtility {
 
@@ -38,12 +39,12 @@ public class VoidMinerUtility {
     public static class DropMap {
 
         private float totalWeight;
-        private final Map<GTUtility.ItemId, Float> internalMap;
+        private final Object2FloatOpenHashMap<GTUtility.ItemId> internalMap;
 
         private final Set<String> voidMinerBlacklistedDrops;
 
         public DropMap() {
-            internalMap = new HashMap<>();
+            internalMap = new Object2FloatOpenHashMap<>();
             totalWeight = 0;
             voidMinerBlacklistedDrops = Collections
                 .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
@@ -52,8 +53,8 @@ public class VoidMinerUtility {
         /**
          * Method used to add an ore to the DropMap
          *
+         * @param material the material
          * @param weight   the non normalised weight
-         * @param isBWOres true for BW ores, false for GT ores
          */
         public void addDrop(IOreMaterial material, float weight) {
             try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
@@ -107,7 +108,7 @@ public class VoidMinerUtility {
 
         private void addDrop(Item item, int meta, float weight) {
             GTUtility.ItemId ore = GTUtility.ItemId.createNoCopy(item, meta, null);
-            internalMap.merge(ore, weight, Float::sum);
+            internalMap.addTo(ore, weight);
             totalWeight += weight;
         }
 

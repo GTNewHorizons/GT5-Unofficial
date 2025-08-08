@@ -1,7 +1,6 @@
 package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
-
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
@@ -26,6 +25,9 @@ public class Gregtech {
 
     @Config.Comment("Ore drop behavior section")
     public static final OreDropBehavior oreDropBehavior = new OreDropBehavior();
+
+    @Config.Comment("Void miners")
+    public static final VoidMiners voidMiners = new VoidMiners();
 
     @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
@@ -562,5 +564,21 @@ public class Gregtech {
         @Config.DefaultEnum("FortuneItem")
         @Config.RequiresMcRestart
         public GTProxy.OreDropSystem setting = GTProxy.OreDropSystem.FortuneItem;
+    }
+
+    @Config.LangKey("GT5U.gui.config.gregtech.void_miners")
+    public static class VoidMiners {
+
+        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.Materials")
+        @Config.Name("Deep Dark GT Ore Weights")
+        public String[] gregtechWeightsDD;
+
+        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: bartworks.system.material.Werkstoff")
+        @Config.Name("Deep Dark BW Ore Weights")
+        public String[] bartworksWeightsDD;
+
+        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gtPlusPlus.core.material.ORES")
+        @Config.Name("Deep Dark GT++ Ore Weights")
+        public String[] gtppWeightsDD;
     }
 }

@@ -27,6 +27,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import bwcrossmod.galacticgreg.VoidMinerLoader;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -549,6 +550,8 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         GTPostLoad.identifyAnySteam();
+
+        VoidMinerLoader.init();
 
         achievements = new GTAchievements();
 
