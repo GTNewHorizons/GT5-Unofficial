@@ -139,7 +139,7 @@ public class SaplingBase extends BlockSapling {
     public void registerBlockIcons(IIconRegister iIcon) {
         for (int i = 0; i < saplingTextures.length; ++i) {
             saplingTextures[i] = iIcon
-                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
+                .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
         }
     }
 }

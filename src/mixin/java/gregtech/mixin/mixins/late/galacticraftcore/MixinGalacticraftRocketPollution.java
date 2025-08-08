@@ -24,7 +24,7 @@ public abstract class MixinGalacticraftRocketPollution extends EntityAutoRocket 
     @Inject(method = "onUpdate", at = @At("HEAD"))
     private void gt5u$addRocketPollution(CallbackInfo ci) {
         if (this.worldObj.isRemote || !(launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()
-                || launchPhase == EnumLaunchPhase.IGNITED.ordinal())) {
+            || launchPhase == EnumLaunchPhase.IGNITED.ordinal())) {
             return;
         }
 

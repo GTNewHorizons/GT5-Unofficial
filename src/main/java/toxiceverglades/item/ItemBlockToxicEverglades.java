@@ -21,7 +21,7 @@ public class ItemBlockToxicEverglades extends ItemBlock {
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
-            final boolean bool) {
+        final boolean bool) {
         if (this.mID == 0) { // blockDarkWorldPortalFrame
             list.add(StatCollector.translateToLocal("gtpp.tooltip.dark_world_portal.frame.0"));
             list.add(StatCollector.translateToLocal("gtpp.tooltip.dark_world_portal.frame.1"));

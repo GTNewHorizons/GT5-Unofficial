@@ -39,7 +39,8 @@ public class ModDBMDef {
     public Enums.@NotNull ReplaceState blockEquals(@Nullable Block pBlock) {
         if (pBlock == null) return Enums.ReplaceState.Unknown;
 
-        if (Block.blockRegistry.getNameForObject(pBlock).equals(_targetBlockName)) return Enums.ReplaceState.CanReplace;
+        if (Block.blockRegistry.getNameForObject(pBlock)
+            .equals(_targetBlockName)) return Enums.ReplaceState.CanReplace;
         else return Enums.ReplaceState.CannotReplace;
     }
 

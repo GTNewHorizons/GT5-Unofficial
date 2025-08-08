@@ -89,7 +89,7 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
         if (o == null || getClass() != o.getClass()) return false;
         SimpleCheckRecipeResult that = (SimpleCheckRecipeResult) o;
         return success == that.success && Objects.equals(key, that.key)
-                && persistsOnShutdown == that.persistsOnShutdown;
+            && persistsOnShutdown == that.persistsOnShutdown;
     }
 
     /**

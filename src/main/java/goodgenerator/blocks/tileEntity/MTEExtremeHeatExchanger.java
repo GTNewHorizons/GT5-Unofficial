@@ -54,7 +54,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
 
@@ -78,11 +78,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     public IStructureDefinition<MTEExtremeHeatExchanger> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<MTEExtremeHeatExchanger>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            // spotless:off
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            // spotless:off
                                             { " CCC ", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", " CCC " },
                                             { " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC " },
                                             { " CFC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CEC " },
@@ -90,36 +90,44 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                                             { " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC " },
                                             { " C~C ", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", " CCC " },
                                         //spotless:on
-                                    }))
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    buildHatchAdder(MTEExtremeHeatExchanger.class)
-                                            .atLeast(
-                                                    gregtech.api.enums.HatchElement.InputHatch,
-                                                    gregtech.api.enums.HatchElement.Maintenance)
-                                            .casingIndex(48).dot(1).build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
-                    .addElement(
-                            'T',
-                            ofChain(
-                                    buildHatchAdder(MTEExtremeHeatExchanger.class)
-                                            .atLeast(
-                                                    gregtech.api.enums.HatchElement.OutputHatch,
-                                                    gregtech.api.enums.HatchElement.Maintenance)
-                                            .casingIndex(48).dot(2).build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
-                    .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
-                    .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(MTEExtremeHeatExchanger.class)
-                                            .atLeast(gregtech.api.enums.HatchElement.Maintenance).casingIndex(48).dot(5)
-                                            .build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
-                    .addElement('G', chainAllGlasses()).addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
-                    .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0)).build();
+                        }))
+                .addElement(
+                    'B',
+                    ofChain(
+                        buildHatchAdder(MTEExtremeHeatExchanger.class)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.InputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
+                .addElement(
+                    'T',
+                    ofChain(
+                        buildHatchAdder(MTEExtremeHeatExchanger.class)
+                            .atLeast(
+                                gregtech.api.enums.HatchElement.OutputHatch,
+                                gregtech.api.enums.HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
+                .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
+                .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(MTEExtremeHeatExchanger.class)
+                            .atLeast(gregtech.api.enums.HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(5)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
+                .addElement('G', chainAllGlasses())
+                .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
+                .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0))
+                .build();
         }
         return multiDefinition;
     }
@@ -162,7 +170,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             if (hotFluid != null) {
                 hotName = loadedHotName;
                 tRunningRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
-                        .getBackend().findFuel(hotFluid);
+                    .getBackend()
+                    .findFuel(hotFluid);
             }
         } else {
             hotName = null;
@@ -199,32 +208,34 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, EHE").addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
-                .addInfo("Supplying more hot fluid than the threshold causes overheating,")
-                .addInfo("producing SC steam instead.").addInfo("Plasma always produces SC steam.")
-                .addInfo("Maximum input and output values per second are shown in NEI.")
-                .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
-                .addInfo("Explodes if it runs out of water.").addController("Front bottom")
-                .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-                .addCasingInfoExactly("EV+ Glass", 72, false).addCasingInfoExactly("Pressure Resistant Wall", 48, false)
-                .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                        "Distilled water",
-                        1)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                        "SC Steam/SH Steam",
-                        2)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                        "Hot fluid or plasma",
-                        3)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                        "Cold fluid",
-                        4)
-                .addMaintenanceHatch("Any Casing", 1, 2, 5).toolTipFinisher();
+        tt.addMachineType("Heat Exchanger, EHE")
+            .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
+            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
+            .addInfo("producing SC steam instead.")
+            .addInfo("Plasma always produces SC steam.")
+            .addInfo("Maximum input and output values per second are shown in NEI.")
+            .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
+            .addInfo("Explodes if it runs out of water.")
+            .addController("Front bottom")
+            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
+            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Distilled water",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
+                "SC Steam/SH Steam",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Hot fluid or plasma",
+                3)
+            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
+            .addMaintenanceHatch("Any Casing", 1, 2, 5)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -242,10 +253,12 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         }
         if (hotFluid == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         ExtremeHeatExchangerRecipe tRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
-                .getBackend().findFuel(hotFluid);
+            .getBackend()
+            .findFuel(hotFluid);
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
-        this.hotName = hotFluid.getFluid().getName();
+        this.hotName = hotFluid.getFluid()
+            .getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
         int transformed_threshold = tRecipe.mSpecialValue;
         int tRealConsume = Math.min(tMaxConsume, hotFluid.amount);
@@ -253,7 +266,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         double efficiency = 1d;
         int shs_reduction_per_config = 150;
 
-        if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
+        if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 penalty = (circuit_config - 1) * penalty_per_config;
@@ -287,7 +301,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             boolean isDepleteSuccess = depleteInput(GTModHandler.getDistilledWater(waterAmount));
             endRecipeProcessing();
             if (isDepleteSuccess) {
-                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName().contains("plasma")) {
+                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
+                    .contains("plasma")) {
                     steamToOutput = waterAmount * 160 / 1000;
                 } else {
                     steamToOutput = waterAmount * 160;
@@ -295,7 +310,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.exp.println(this.mName + " had no more Distilled water!");
-                mHotFluidHatch.getBaseMetaTileEntity().doExplosion(V[8]);
+                mHotFluidHatch.getBaseMetaTileEntity()
+                    .doExplosion(V[8]);
                 return false;
             }
         }
@@ -329,49 +345,60 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                        + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                        + GTUtility.formatNumbers(this.mEUt)
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                        + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tThreshold)
-                        + EnumChatFormatting.RESET
-                        + " L/s" };
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
+                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                + GTUtility.formatNumbers(this.mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(tThreshold)
+                + EnumChatFormatting.RESET
+                + " L/s" };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][48] };
     }

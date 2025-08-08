@@ -25,7 +25,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         int aMultiplier = 1;
         switch (aPrefix) {
             case oreSmall:
@@ -47,24 +47,30 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 return;
             }
 
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier)).duration(10)
-                    .eut(16).addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
+                .duration(10)
+                .eut(16)
+                .addTo(hammerRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
-                            GTOreDictUnificator.get(
-                                    OrePrefixes.dustTiny,
-                                    GTUtility.selectItemInList(0, aMaterial, aMaterial.mOreByProducts),
-                                    1L),
-                            GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
-                    .outputChances(10000, 100 * 5 * aMultiplier, 10000).duration(20 * SECONDS).eut(2)
-                    .addTo(maceratorRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.dustTiny,
+                        GTUtility.selectItemInList(0, aMaterial, aMaterial.mOreByProducts),
+                        1L),
+                    GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
+                .outputChances(10000, 100 * 5 * aMultiplier, 10000)
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(maceratorRecipes);
 
             if (aMaterial.contains(SubTag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
+                GTUtility.copyAmount(1, aStack),
+                GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }
     }
 }

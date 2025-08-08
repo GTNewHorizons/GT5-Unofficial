@@ -67,14 +67,13 @@ public class StaticRecipeChangeLoaders {
                         for (ItemStack toReplace : ores) {
                             ItemStack replacement = werkstoff.get(prefixes);
                             if (toReplace == null || GTUtility.areStacksEqual(toReplace, replacement)
-                                    || replacement == null
-                                    || replacement.getItem() == null)
-                                continue;
+                                || replacement == null
+                                || replacement.getItem() == null) continue;
                             for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
                                 toRemove.clear();
                                 nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
                                     boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
-                                            || map.equals(RecipeMaps.fluidSolidifierRecipes);
+                                        || map.equals(RecipeMaps.fluidSolidifierRecipes);
                                     for (int i = 0; i < recipe.mInputs.length; i++) {
                                         if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
                                         if (removal) {
@@ -82,7 +81,7 @@ public class StaticRecipeChangeLoaders {
                                             continue nextRecipe;
                                         }
                                         recipe.mInputs[i] = GTUtility
-                                                .copyAmount(recipe.mInputs[i].stackSize, replacement);
+                                            .copyAmount(recipe.mInputs[i].stackSize, replacement);
                                     }
                                     for (int i = 0; i < recipe.mOutputs.length; i++) {
                                         if (!GTUtility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
@@ -91,7 +90,7 @@ public class StaticRecipeChangeLoaders {
                                             continue nextRecipe;
                                         }
                                         recipe.mOutputs[i] = GTUtility
-                                                .copyAmount(recipe.mOutputs[i].stackSize, replacement);
+                                            .copyAmount(recipe.mOutputs[i].stackSize, replacement);
                                     }
                                     if (recipe.mSpecialItems instanceof ItemStack specialItemStack) {
                                         if (!GTUtility.areStacksEqual(specialItemStack, toReplace)) continue;
@@ -100,10 +99,11 @@ public class StaticRecipeChangeLoaders {
                                             continue nextRecipe;
                                         }
                                         recipe.mSpecialItems = GTUtility
-                                                .copyAmount(specialItemStack.stackSize, replacement);
+                                            .copyAmount(specialItemStack.stackSize, replacement);
                                     }
                                 }
-                                map.getBackend().removeRecipes(toRemove);
+                                map.getBackend()
+                                    .removeRecipes(toRemove);
                             }
                         }
                     }
@@ -115,18 +115,20 @@ public class StaticRecipeChangeLoaders {
     private static void runMoltenUnificationEnforcement(Werkstoff werkstoff) {
         if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.hasItemType(OrePrefixes.cellMolten)) {
             FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
-                    new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
-                    werkstoff.get(OrePrefixes.cellMolten),
-                    Materials.Empty.getCells(1));
+                new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
+                werkstoff.get(OrePrefixes.cellMolten),
+                Materials.Empty.getCells(1));
             ItemStack toReplace = null;
             Iterator<Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData>> iterator = GTUtility
-                    .getFilledContainerToData().entrySet().iterator();
+                .getFilledContainerToData()
+                .entrySet()
+                .iterator();
             while (iterator.hasNext()) {
                 Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData> entry = iterator.next();
                 final String MODID = GameRegistry.findUniqueIdentifierFor(data.filledContainer.getItem()).modId;
                 if (MainMod.MOD_ID.equals(MODID) || BartWorksCrossmod.MOD_ID.equals(MODID)) continue;
                 if (entry.getValue().fluid.equals(data.fluid)
-                        && !entry.getValue().filledContainer.equals(data.filledContainer)) {
+                    && !entry.getValue().filledContainer.equals(data.filledContainer)) {
                     toReplace = entry.getValue().filledContainer;
                     iterator.remove();
                 }
@@ -147,20 +149,21 @@ public class StaticRecipeChangeLoaders {
                                 toremRecipeList.add(recipe);
                                 // recipe.mOutputs[i] = data.filledContainer;
                                 if (map == RecipeMaps.fluidCannerRecipes
-                                        && GTUtility.areStacksEqual(mOutput, data.filledContainer)
-                                        && !recipe.mFluidInputs[0].equals(data.fluid)) {
+                                    && GTUtility.areStacksEqual(mOutput, data.filledContainer)
+                                    && !recipe.mFluidInputs[0].equals(data.fluid)) {
                                     toremRecipeList.add(recipe);
                                     // recipe.mOutputs[i] = data.filledContainer;
                                 }
                             }
                         }
                         if (recipe.mSpecialItems instanceof ItemStack
-                                && GTUtility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
+                            && GTUtility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
                             toremRecipeList.add(recipe);
                             // recipe.mSpecialItems = data.filledContainer;
                         }
                     }
-                    map.getBackend().removeRecipes(toremRecipeList);
+                    map.getBackend()
+                        .removeRecipes(toremRecipeList);
                 }
             }
             GTUtility.addFluidContainerData(data);
@@ -169,7 +172,7 @@ public class StaticRecipeChangeLoaders {
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-                && Element.get(werkstoff.getToolTip()) != Element._NULL) {
+            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
             werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
             Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
             Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
@@ -186,7 +189,7 @@ public class StaticRecipeChangeLoaders {
 
     private static void runMaterialLinker(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-                && Element.get(werkstoff.getToolTip()) != Element._NULL) {
+            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
             werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
             Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
             Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());

@@ -11,6 +11,6 @@ public class GregtechRedstoneStrengthScale {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Strength Scale.");
         GregtechItemList.RedstoneStrengthScale
-                .set(new MTERedstoneStrengthScale(RedstoneStrengthScale.ID).getStackForm(1L));
+            .set(new MTERedstoneStrengthScale(RedstoneStrengthScale.ID).getStackForm(1L));
     }
 }

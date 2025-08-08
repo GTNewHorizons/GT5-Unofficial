@@ -156,12 +156,13 @@ public enum GTApiaryUpgrade {
         SIEVE_UPGRADE,;
 
         void apply(Consumer<GTApiaryUpgrade> fn) {
-            UNIQUE_UPGRADE_LIST.get(this).forEach(fn);
+            UNIQUE_UPGRADE_LIST.get(this)
+                .forEach(fn);
         }
     }
 
     private static final EnumMap<UNIQUE_INDEX, ArrayList<GTApiaryUpgrade>> UNIQUE_UPGRADE_LIST = new EnumMap<>(
-            UNIQUE_INDEX.class);
+        UNIQUE_INDEX.class);
 
     private int meta = 0;
     private int maxnumber = 1;
@@ -224,7 +225,8 @@ public enum GTApiaryUpgrade {
     private static final HashMap<Integer, GTApiaryUpgrade> quickLookup = new HashMap<>();
 
     static {
-        EnumSet.allOf(GTApiaryUpgrade.class).forEach(GTApiaryUpgrade::setup_static_variables);
+        EnumSet.allOf(GTApiaryUpgrade.class)
+            .forEach(GTApiaryUpgrade::setup_static_variables);
         speed8upgraded.blacklistedUpgrades.add(production.id);
         production.blacklistedUpgrades.add(speed8upgraded.id);
     }

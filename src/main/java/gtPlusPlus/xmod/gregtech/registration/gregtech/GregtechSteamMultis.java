@@ -29,48 +29,45 @@ public class GregtechSteamMultis {
         Logger.INFO("Gregtech5u Content | Registering Steam Multiblocks.");
 
         GregtechItemList.Controller_SteamMaceratorMulti.set(
-                new MTESteamMacerator(
-                        Controller_SteamMaceratorMulti.ID,
-                        "gtpp.multimachine.steam.macerator",
-                        "Steam Grinder").getStackForm(1L));
+            new MTESteamMacerator(
+                Controller_SteamMaceratorMulti.ID,
+                "gtpp.multimachine.steam.macerator",
+                "Steam Grinder").getStackForm(1L));
         GregtechItemList.Controller_SteamCompressorMulti.set(
-                new MTESteamCompressor(
-                        Controller_SteamCompressorMulti.ID,
-                        "gtpp.multimachine.steam.compressor",
-                        "Steam Squasher").getStackForm(1L));
+            new MTESteamCompressor(
+                Controller_SteamCompressorMulti.ID,
+                "gtpp.multimachine.steam.compressor",
+                "Steam Squasher").getStackForm(1L));
         GregtechItemList.Controller_SteamCentrifugeMulti.set(
-                new MTESteamCentrifuge(
-                        Controller_SteamCentrifugeMulti.ID,
-                        "gtpp.multimachine.steam.centrifuge",
-                        "Steam Separator").getStackForm(1));
+            new MTESteamCentrifuge(
+                Controller_SteamCentrifugeMulti.ID,
+                "gtpp.multimachine.steam.centrifuge",
+                "Steam Separator").getStackForm(1));
         GregtechItemList.Controller_SteamWasherMulti.set(
-                new MTESteamWasher(Controller_SteamWasherMulti.ID, "gtpp.multimachine.steam.washer", "Steam Purifier")
-                        .getStackForm(1));
+            new MTESteamWasher(Controller_SteamWasherMulti.ID, "gtpp.multimachine.steam.washer", "Steam Purifier")
+                .getStackForm(1));
         GregtechItemList.Controller_SteamForgeHammerMulti.set(
-                new MTESteamForgeHammer(
-                        Controller_SteamForgeHammer.ID,
-                        "gtpp.multimachine.steam.forge.hammer",
-                        "Steam Presser").getStackForm(1));
+            new MTESteamForgeHammer(
+                Controller_SteamForgeHammer.ID,
+                "gtpp.multimachine.steam.forge.hammer",
+                "Steam Presser").getStackForm(1));
         GregtechItemList.Controller_SteamMixerMulti.set(
-                new MTESteamMixer(Controller_SteamMixerMulti.ID, "gtpp.multimachine.steam.mixer", "Steam Blender")
-                        .getStackForm(1));
+            new MTESteamMixer(Controller_SteamMixerMulti.ID, "gtpp.multimachine.steam.mixer", "Steam Blender")
+                .getStackForm(1));
         GregtechItemList.Controller_SteamAlloySmelterMulti.set(
-                new MTESteamAlloySmelter(
-                        Controller_SteamAlloySmelterMulti.ID,
-                        "gtpp.multimachine.steam.alloysmelter",
-                        "Steam Fuser").getStackForm(1));
+            new MTESteamAlloySmelter(
+                Controller_SteamAlloySmelterMulti.ID,
+                "gtpp.multimachine.steam.alloysmelter",
+                "Steam Fuser").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
-                new MTEHatchSteamBusInput(
-                        Hatch_Input_Bus_Steam.ID,
-                        "hatch.input_bus.tier.steam",
-                        "Input Bus (Steam)",
-                        0).getStackForm(1L));
+            new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Output_Bus_Steam.set(
-                new MTEHatchSteamBusOutput(
-                        Hatch_Output_Bus_Steam.ID,
-                        "hatch.output_bus.tier.steam",
-                        "Output Bus (Steam)",
-                        0).getStackForm(1L));
+            new MTEHatchSteamBusOutput(
+                Hatch_Output_Bus_Steam.ID,
+                "hatch.output_bus.tier.steam",
+                "Output Bus (Steam)",
+                0).getStackForm(1L));
     }
 }

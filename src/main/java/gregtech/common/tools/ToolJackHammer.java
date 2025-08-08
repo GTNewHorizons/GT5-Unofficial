@@ -65,25 +65,29 @@ public class ToolJackHammer extends ToolDrillLV {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe") //
-                || GTToolHarvestHelper.isAppropriateMaterial(
-                        aBlock, //
-                        Material.rock, //
-                        Material.glass, //
-                        Material.ice, //
-                        Material.packedIce //
-                );
+            || GTToolHarvestHelper.isAppropriateMaterial(
+                aBlock, //
+                Material.rock, //
+                Material.glass, //
+                Material.ice, //
+                Material.packedIce //
+            );
     }
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-            int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery().items(new ItemStack(aBlock, 1, aMetaData))
-                .notUnificated(true).find();
+        GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
+            .items(new ItemStack(aBlock, 1, aMetaData))
+            .notUnificated(true)
+            .find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery().items(GTUtility.copyAmount(1, tDrop))
-                        .notUnificated(true).find();
+                tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
+                    .items(GTUtility.copyAmount(1, tDrop))
+                    .notUnificated(true)
+                    .find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {
@@ -118,11 +122,11 @@ public class ToolJackHammer extends ToolDrillLV {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has been jackhammered into pieces by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has been jackhammered into pieces by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

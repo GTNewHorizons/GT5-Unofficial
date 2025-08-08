@@ -57,7 +57,8 @@ public class ModContainer {
      */
     public boolean addDimensionDef(@NotNull ModDimensionDef pDimDef) {
         for (ModDimensionDef mdd : _mDimensionLookup) {
-            if (mdd.getChunkProviderName().equals(pDimDef.getChunkProviderName())) {
+            if (mdd.getChunkProviderName()
+                .equals(pDimDef.getChunkProviderName())) {
                 // Cannot add DimensionDefinition; The Given chunk-provider name is already taken!
                 return false;
             }

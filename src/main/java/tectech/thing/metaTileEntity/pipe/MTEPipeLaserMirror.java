@@ -55,18 +55,18 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-            int colorIndex, boolean aConnected, boolean aRedstone) {
+        int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-                .of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            .of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energymirror.desc.0"),
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energymirror.desc.1") };
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energymirror.desc.1") };
     }
 
     @Override
@@ -75,12 +75,12 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
             if ((aTick & 31) == 31) {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
-                            new PipeActivityMessage.PipeActivityData(this),
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256);
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
                 }
                 if (active) {
                     active = false;
@@ -104,26 +104,27 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                             }
                         }
                         if (tTileEntity instanceof IConnectsToEnergyTunnel
-                                && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
+                            && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
                             connectedSides[connectionCount] = side;
                             connectionCount++;
                         } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
-                                .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                                    if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity)
-                                            .getMetaTileEntity()).canConnect(oppositeSide)) {
-                                        mConnections |= 1 << side.ordinal();
-                                        connectedSides[connectionCount] = side;
-                                        connectionCount++;
-                                    }
+                            .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
+                                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                    .canConnect(oppositeSide)) {
+                                    mConnections |= 1 << side.ordinal();
+                                    connectedSides[connectionCount] = side;
+                                    connectionCount++;
                                 }
+                            }
                     }
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy().changeDetected() == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
@@ -165,7 +166,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
             for (short dist = 1; dist < 1000; dist++) {
 
                 IGregTechTileEntity tGTTileEntity = getBaseMetaTileEntity()
-                        .getIGregTechTileEntityAtSideAndDistance(direction, dist);
+                    .getIGregTechTileEntityAtSideAndDistance(direction, dist);
                 if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                     IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                     if (aMetaTileEntity != null) {
@@ -182,7 +183,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                         }
 
                         if (aMetaTileEntity instanceof MTEHatchEnergyTunnel
-                                && opposite == tGTTileEntity.getFrontFacing()) {
+                            && opposite == tGTTileEntity.getFrontFacing()) {
                             return tGTTileEntity;
                         } else if (aMetaTileEntity instanceof MTEPipeLaser) {
                             if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {

@@ -21,7 +21,7 @@ class MTEMultiBlockBaseTest {
     @ParameterizedTest
     @CsvSource({ "0,0,false", "2,0,false", "1,0,true", "1,1,false", "0,1,true", "0,2,true", "0,3,false" })
     void checkExoticAndNormalEnergyHatches_parametrizedTest(int exoticEnergyHatchesCount, int normalEnergyHatchesCount,
-            boolean expectedResult) {
+        boolean expectedResult) {
         MTEMultiBlockBase testedClassInstance = Mockito.mock(MTEMultiBlockBase.class, Answers.CALLS_REAL_METHODS);
 
         testedClassInstance.setEnergyHatches(fillList(MTEHatchEnergy.class, normalEnergyHatchesCount));

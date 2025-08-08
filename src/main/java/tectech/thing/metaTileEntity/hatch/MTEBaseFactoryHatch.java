@@ -33,20 +33,18 @@ public abstract class MTEBaseFactoryHatch extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
-        return new ITexture[] { baseTexture,
-                TextureFactory.builder().addIcon(EM_D_ACTIVE)
-                        .setRGBA(Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()))
-                        .build(),
-                TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { baseTexture, TextureFactory.builder()
+            .addIcon(EM_D_ACTIVE)
+            .setRGBA(Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()))
+            .build(), TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return new ITexture[] { baseTexture,
-                TextureFactory.builder().addIcon(EM_D_SIDES)
-                        .setRGBA(Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()))
-                        .build(),
-                TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { baseTexture, TextureFactory.builder()
+            .addIcon(EM_D_SIDES)
+            .setRGBA(Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()))
+            .build(), TextureFactory.of(EM_D_CONN) };
     }
 
     @Override

@@ -15,9 +15,9 @@ public class GregtechIndustrialForgeHammer {
 
     private static void run1() {
         GregtechItemList.Controller_IndustrialForgeHammer.set(
-                new MTEIndustrialForgeHammer(
-                        Controller_IndustrialForgeHammer.ID,
-                        "industrialhammer.controller.tier.single",
-                        "Industrial Sledgehammer").getStackForm(1L));
+            new MTEIndustrialForgeHammer(
+                Controller_IndustrialForgeHammer.ID,
+                "industrialhammer.controller.tier.single",
+                "Industrial Sledgehammer").getStackForm(1L));
     }
 }

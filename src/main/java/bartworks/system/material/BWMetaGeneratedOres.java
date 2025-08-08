@@ -39,15 +39,15 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + OrePrefixes.ore,
-                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+            "bw.blocktype." + OrePrefixes.ore,
+            OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
     }
 
     @Override
     protected void doRegistrationStuff(Werkstoff w) {}
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block,
-            int[] aBlockMeta) {
+        int[] aBlockMeta) {
         if (!air) {
             aY = MathUtils.clamp(aY, 1, aWorld.getActualHeight());
         }
@@ -55,11 +55,12 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         Block tOreBlock = WerkstoffLoader.BWOres;
         if (aMetaData < 0 || tBlock == Blocks.air && !air
-                || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
+            || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
             return false;
         }
         final int aaY = aY;
-        if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
+        if (Arrays.stream(aBlockMeta)
+            .noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
             return false;
         }
 
@@ -97,7 +98,7 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
             if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
-                    && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
+                && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
                 aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
         }

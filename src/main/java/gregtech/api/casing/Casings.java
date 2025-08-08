@@ -397,7 +397,7 @@ public enum Casings implements ICasing {
     public int getTextureId() {
         if (textureId == -1) {
             throw new UnsupportedOperationException(
-                    "Casing " + name() + " does not have a casing texture; The result of getTextureId() is undefined.");
+                "Casing " + name() + " does not have a casing texture; The result of getTextureId() is undefined.");
         }
 
         return textureId;

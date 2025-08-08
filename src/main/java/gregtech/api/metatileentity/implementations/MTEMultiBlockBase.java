@@ -155,16 +155,16 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
-        IAddGregtechLogo, IGuiHolder<PosGuiData>, IAddUIWidgets, IBindPlayerInventoryUI {
+    IAddGregtechLogo, IGuiHolder<PosGuiData>, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
-            mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
+        mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-            mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
@@ -255,7 +255,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
@@ -366,7 +366,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
             CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID)
-                    .newInstance();
+                .newInstance();
             result.readFromNBT(aNBT.getCompoundTag("checkRecipeResult"));
             checkRecipeResult = result;
         }
@@ -444,8 +444,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (GTUtil.loadMultiblockInputConfiguration(this, aPlayer)) {
                     aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD"));
                 } else {
-                    aPlayer.addChatComponentMessage(
-                            new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL"));
+                    aPlayer
+                        .addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL"));
                 }
             }
             return true;
@@ -546,7 +546,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * @param lines   Add text to this. These lines will be shown in the controller GUI.
      */
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-            List<String> lines) {
+        List<String> lines) {
 
     }
 
@@ -602,13 +602,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
             }
             setErrorDisplayID(
-                    (getErrorDisplayID() & ~127) | (mWrench ? 0 : 1)
-                            | (mScrewdriver ? 0 : 2)
-                            | (mSoftMallet ? 0 : 4)
-                            | (mHardHammer ? 0 : 8)
-                            | (mSolderingTool ? 0 : 16)
-                            | (mCrowbar ? 0 : 32)
-                            | (mMachine ? 0 : 64));
+                (getErrorDisplayID() & ~127) | (mWrench ? 0 : 1)
+                    | (mScrewdriver ? 0 : 2)
+                    | (mSoftMallet ? 0 : 4)
+                    | (mHardHammer ? 0 : 8)
+                    | (mSolderingTool ? 0 : 16)
+                    | (mCrowbar ? 0 : 32)
+                    | (mMachine ? 0 : 64));
 
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
@@ -705,12 +705,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
-                    || timeElapsed == 20
-                    || timeElapsed == 30
-                    || timeElapsed == 40
-                    || timeElapsed == 55
-                    || timeElapsed == 70
-                    || timeElapsed == 85;
+                || timeElapsed == 20
+                || timeElapsed == 30
+                || timeElapsed == 40
+                || timeElapsed == 55
+                || timeElapsed == 70
+                || timeElapsed == 85;
         }
         return false;
     }
@@ -737,11 +737,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     }
                     outputAfterRecipe();
                     mEfficiency = Math.max(
-                            0,
-                            Math.min(
-                                    mEfficiency + mEfficiencyIncrease,
-                                    getMaxEfficiency(getControllerSlot())
-                                            - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                        0,
+                        Math.min(
+                            mEfficiency + mEfficiencyIncrease,
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                     mOutputItems = null;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
@@ -757,7 +756,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
                 if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                        || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                    || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                     if (checkRecipe()) {
                         markDirty();
                     }
@@ -856,7 +855,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
             case INTERRUPT_SOUND_INDEX -> GTUtility
-                    .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -874,11 +873,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (getBaseMetaTileEntity().isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
-                        activitySound.resourceLocation,
-                        getBaseMetaTileEntity(),
-                        false,
-                        true);
-                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
             }
         } else {
             if (activitySoundLoop != null) {
@@ -959,7 +960,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         // If no logic is found, try legacy checkRecipe
         if (processingLogic == null) {
             return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
+                : CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         setupProcessingLogic(processingLogic);
@@ -1163,7 +1164,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      */
     @Nonnull
     protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
-            @Nonnull ProcessingLogic processingLogic) {
+        @Nonnull ProcessingLogic processingLogic) {
         if (result.wasSuccessful() && processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
@@ -1290,10 +1291,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public int getRepairStatus() {
         return (mWrench ? 1 : 0) + (mScrewdriver ? 1 : 0)
-                + (mSoftMallet ? 1 : 0)
-                + (mHardHammer ? 1 : 0)
-                + (mSolderingTool ? 1 : 0)
-                + (mCrowbar ? 1 : 0);
+            + (mSoftMallet ? 1 : 0)
+            + (mHardHammer ? 1 : 0)
+            + (mSolderingTool ? 1 : 0)
+            + (mCrowbar ? 1 : 0);
     }
 
     public int getIdealStatus() {
@@ -1320,13 +1321,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 causeMaintenanceIssue();
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
-                    && !mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
+                && !mInventory[1].getUnlocalizedName()
+                    .startsWith("gt.blockmachines.basicmachine.")) {
                 if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
                     metaGeneratedTool.doDamage(
-                            mInventory[1],
-                            (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
-                                    Math.abs(mEUt) / this.damageFactorLow,
-                                    Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
+                        mInventory[1],
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(mEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -1348,30 +1350,35 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void explodeMultiblock() {
 
         GTLog.exp.println(
-                "MultiBlockExplosion at: " + this.getBaseMetaTileEntity().getXCoord()
-                        + " | "
-                        + this.getBaseMetaTileEntity().getYCoord()
-                        + " | "
-                        + this.getBaseMetaTileEntity().getZCoord()
-                        + " DIMID: "
-                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId
-                        + ".");
+            "MultiBlockExplosion at: " + this.getBaseMetaTileEntity()
+                .getXCoord()
+                + " | "
+                + this.getBaseMetaTileEntity()
+                    .getYCoord()
+                + " | "
+                + this.getBaseMetaTileEntity()
+                    .getZCoord()
+                + " DIMID: "
+                + this.getBaseMetaTileEntity()
+                    .getWorld().provider.dimensionId
+                + ".");
 
         Pollution.addPollution(getBaseMetaTileEntity(), GTMod.proxy.mPollutionOnExplosion);
         mInventory[1] = null;
         // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
-                mInputBusses,
-                mOutputBusses,
-                mInputHatches,
-                mOutputHatches,
-                mDynamoHatches,
-                mMufflerHatches,
-                mEnergyHatches,
-                mMaintenanceHatches);
+            mInputBusses,
+            mOutputBusses,
+            mInputHatches,
+            mOutputHatches,
+            mDynamoHatches,
+            mMufflerHatches,
+            mEnergyHatches,
+            mMaintenanceHatches);
         for (MetaTileEntity tTileEntity : allHatches) {
             if (tTileEntity != null && tTileEntity.getBaseMetaTileEntity() != null) {
-                tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
+                tTileEntity.getBaseMetaTileEntity()
+                    .doExplosion(V[8]);
             }
         }
         getBaseMetaTileEntity().doExplosion(V[8]);
@@ -1423,11 +1430,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
             ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
             for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aVoltage, false);
             }
             injected += aVoltage * ampsOnCurrentHatch;
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
-                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aRemainder, false);
                 injected += aRemainder;
             }
         }
@@ -1439,8 +1448,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      */
     public long getMaxInputVoltage() {
         long rVoltage = 0;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches))
-            rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage();
         return rVoltage;
     }
 
@@ -1474,9 +1483,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public long getInputVoltageTier() {
         long rTier = 0;
         if (!mEnergyHatches.isEmpty()) {
-            rTier = mEnergyHatches.get(0).getInputTier();
+            rTier = mEnergyHatches.get(0)
+                .getInputTier();
             for (int i = 1; i < mEnergyHatches.size(); i++) {
-                if (mEnergyHatches.get(i).getInputTier() != rTier) return 0;
+                if (mEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
             }
         }
 
@@ -1487,11 +1498,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aEU <= 0) return true;
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            long tDrain = Math.min(tHatch.getBaseMetaTileEntity().getStoredEU(), aEU);
-            tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tDrain, false);// basicly copied from
-                                                                                    // ExoticEnergyInputHelper, makes
-                                                                                    // machine
-                                                                                    // use all hatches for power
+            long tDrain = Math.min(
+                tHatch.getBaseMetaTileEntity()
+                    .getStoredEU(),
+                aEU);
+            tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(tDrain, false);// basicly copied from
+                                                          // ExoticEnergyInputHelper, makes
+                                                          // machine
+                                                          // use all hatches for power
             aEU -= tDrain;
 
             if (aEU <= 0) return true;
@@ -1501,7 +1516,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     protected static boolean dumpFluid(List<MTEHatchOutput> aOutputHatches, FluidStack copiedFluidStack,
-            boolean restrictiveHatchesOnly) {
+        boolean restrictiveHatchesOnly) {
         for (MTEHatchOutput tHatch : validMTEList(aOutputHatches)) {
             if (restrictiveHatchesOnly && tHatch.mMode == 0) {
                 continue;
@@ -1575,7 +1590,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             ItemStack single = aStack.splitStack(1);
             for (MTEHatchOutput tHatch : filteredHatches) {
                 if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, single)) outputSuccess = true;
+                    if (tHatch.getBaseMetaTileEntity()
+                        .addStackToSlot(1, single)) outputSuccess = true;
                 }
             }
         }
@@ -1607,7 +1623,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     protected boolean dumpItem(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
-            boolean restrictiveBusesOnly, boolean simulate) {
+        boolean restrictiveBusesOnly, boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
                 continue;
@@ -1712,7 +1728,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsCraftingMEBuffer() && hatch instanceof IDualInputHatch tHatch && tHatch.supportsFluids()) {
             Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
             if (inventory.isPresent()) {
-                for (FluidStack storedFluid : Lists.newArrayList(inventory.get().getFluidInputs())) {
+                for (FluidStack storedFluid : Lists.newArrayList(
+                    inventory.get()
+                        .getFluidInputs())) {
                     if (fluid.isFluidEqual(storedFluid)) {
                         if (doDrain) storedFluid.amount = Math.max(storedFluid.amount - fluid.amount, 0);
                         return storedFluid.amount >= fluid.amount;
@@ -1766,8 +1784,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
 
         ItemStack stackInSlot1 = getStackInSlot(1);
-        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName().startsWith("gt.integrated_circuit"))
-            rList.add(stackInSlot1);
+        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) rList.add(stackInSlot1);
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
@@ -1810,8 +1828,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
 
         ItemStack stackInSlot1 = getStackInSlot(1);
-        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName().startsWith("gt.integrated_circuit"))
-            rList.add(stackInSlot1);
+        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) rList.add(stackInSlot1);
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
@@ -2029,12 +2047,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         return addInputBusToMachineList(aTileEntity, aBaseCasingIndex)
-                || addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+            || addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         return addOutputBusToMachineList(aTileEntity, aBaseCasingIndex)
-                || addOutputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+            || addOutputHatchToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -2129,55 +2147,55 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
 
         return new String[] {
-                /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + formatNumbers(storedEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(maxEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                        + EnumChatFormatting.RED
-                        + formatNumbers(getActualEnergyUsage())
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(getMaxInputVoltage())
-                        + EnumChatFormatting.RESET
-                        + " EU/t(*2A) "
-                        + translateToLocal("GT5U.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[GTUtility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET,
-                /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
-                        + EnumChatFormatting.GREEN
-                        + getAveragePollutionPercentage()
-                        + EnumChatFormatting.RESET
-                        + " %" };
+            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + formatNumbers(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(getMaxInputVoltage())
+                + EnumChatFormatting.RESET
+                + " EU/t(*2A) "
+                + translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GTUtility.getTier(getMaxInputVoltage())]
+                + EnumChatFormatting.RESET,
+            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + getAveragePollutionPercentage()
+                + EnumChatFormatting.RESET
+                + " %" };
     }
 
     @Override
@@ -2211,26 +2229,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return supportsSlotAutomation(aIndex);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return supportsSlotAutomation(aIndex);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
         String efficiency = RESET
-                + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
             currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
@@ -2245,32 +2263,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (energyTier > 0) {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                            translateToLocalFormatted(
-                                    "GT5U.waila.energy.use_with_amperage",
-                                    formatNumbers(actualEnergyUsage),
-                                    GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
-                                    GTUtility.getColoredTierNameFromTier((byte) energyTier)));
+                        translateToLocalFormatted(
+                            "GT5U.waila.energy.use_with_amperage",
+                            formatNumbers(actualEnergyUsage),
+                            GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                            translateToLocalFormatted(
-                                    "GT5U.waila.energy.produce_with_amperage",
-                                    formatNumbers(-actualEnergyUsage),
-                                    GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
-                                    GTUtility.getColoredTierNameFromTier((byte) energyTier)));
+                        translateToLocalFormatted(
+                            "GT5U.waila.energy.produce_with_amperage",
+                            formatNumbers(-actualEnergyUsage),
+                            GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
                 }
             } else {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                            translateToLocalFormatted(
-                                    "GT5U.waila.energy.use",
-                                    formatNumbers(actualEnergyUsage),
-                                    GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
+                        translateToLocalFormatted(
+                            "GT5U.waila.energy.use",
+                            formatNumbers(actualEnergyUsage),
+                            GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                            translateToLocalFormatted(
-                                    "GT5U.waila.energy.produce",
-                                    formatNumbers(-actualEnergyUsage),
-                                    GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+                        translateToLocalFormatted(
+                            "GT5U.waila.energy.produce",
+                            formatNumbers(-actualEnergyUsage),
+                            GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
             }
         }
@@ -2295,49 +2313,47 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
-                            "  " + tag.getString("outputItem" + i)
-                                    + " x "
-                                    + formatNumbers(tag.getInteger("outputItemCount" + i)));
+                        "  " + tag.getString("outputItem" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                            "  " + tag.getString("outputFluid" + i)
-                                    + " x "
-                                    + formatNumbers(tag.getInteger("outputFluidCount" + i))
-                                    + "L");
+                        "  " + tag.getString("outputFluid" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputFluidCount" + i))
+                            + "L");
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
-                            translateToLocalFormatted(
-                                    "GT5U.waila.producing.andmore",
-                                    formatNumbers((totalOutputs - 3))));
+                        translateToLocalFormatted("GT5U.waila.producing.andmore", formatNumbers((totalOutputs - 3))));
                 }
             }
         }
         currentTip.add(
-                GTWaila.getMachineProgressString(
-                        isActive,
-                        tag.getBoolean("isAllowedToWork"),
-                        tag.getInteger("maxProgress"),
-                        tag.getInteger("progress")));
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add(
-                    translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
+            currentTip
+                .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     public final void getMTEWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
@@ -2348,8 +2364,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
         SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
         tag.setString(
-                "lockedRecipeName",
-                lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
+            "lockedRecipeName",
+            lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
 
         if (mOutputItems != null) {
             int index = 0;
@@ -2388,7 +2404,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             getBaseMetaTileEntity().startTimeStatistics();
             int tAverageTime = 0;
             int amountOfZero = 0;
-            for (int tTime : this.getBaseMetaTileEntity().getTimeStatistics()) {
+            for (int tTime : this.getBaseMetaTileEntity()
+                .getTimeStatistics()) {
                 tAverageTime += tTime;
                 if (tTime == 0) {
                     amountOfZero += 1;
@@ -2501,8 +2518,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             return true;
         }
 
-        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(this).setItemOutputs(items)
-                .setFluidOutputs(fluids).build();
+        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(this)
+            .setItemOutputs(items)
+            .setFluidOutputs(fluids)
+            .build();
         return voidProtectionHelper.getMaxParallel() > 0;
     }
 
@@ -2590,7 +2609,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         // void protection. We can use a fake item stack here without creating weirdness in the output
                         // bus' actual inventory.
                         assert lockable.getLockedItem() != null;
-                        ItemStack fakeItemStack = lockable.getLockedItem().copy();
+                        ItemStack fakeItemStack = lockable.getLockedItem()
+                            .copy();
                         fakeItemStack.stackSize = 0;
                         ret.add(fakeItemStack);
                     } else {
@@ -2635,7 +2655,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * Util method for DT-like structure to collect list of output hatches.
      */
     protected <T extends MTEHatchOutput> List<? extends IFluidStore> getFluidOutputSlotsByLayer(FluidStack[] toOutput,
-            List<List<T>> hatchesByLayer) {
+        List<List<T>> hatchesByLayer) {
         List<IFluidStore> ret = new ArrayList<>();
         for (int i = 0; i < toOutput.length; i++) {
             if (i >= hatchesByLayer.size()) {
@@ -2703,8 +2723,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      */
     public final int getTrueParallel() {
         return Math.max(
-                1,
-                alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
+            1,
+            alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
     @Override
@@ -2847,19 +2867,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(4, 4)
+                .setSize(190, 85));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        builder.widget(inventorySlot.setPos(173, 167).setBackground(GTUITextures.SLOT_DARK_GRAY));
+        builder.widget(
+            inventorySlot.setPos(173, 167)
+                .setBackground(GTUITextures.SLOT_DARK_GRAY));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
-        builder.widget(new Scrollable().setVerticalScroll().widget(screenElements).setPos(10, 7).setSize(182, 79));
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, 79));
 
         setMachineModeIcons();
-        builder.widget(createPowerSwitchButton(builder)).widget(createVoidExcessButton(builder))
-                .widget(createInputSeparationButton(builder)).widget(createModeSwitchButton(builder))
-                .widget(createBatchModeButton(builder)).widget(createLockToSingleRecipeButton(builder))
-                .widget(createStructureUpdateButton(builder));
+        builder.widget(createPowerSwitchButton(builder))
+            .widget(createVoidExcessButton(builder))
+            .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
+            .widget(createBatchModeButton(builder))
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
         if (supportsPowerPanel()) {
             builder.widget(createPowerPanelButton(builder));
             buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
@@ -2893,41 +2924,52 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH)).add(
-                        Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h)).add(w - 3, 0)));
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
 
         // Window header
         builder.widget(
-                new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.power_panel"))
-                        .setPos(0, 2).setSize(120, 18));
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.power_panel")).setPos(0, 2)
+                .setSize(120, 18));
 
         // Syncing widgets
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
-        builder.widget(
-                new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+        builder
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
 
         // "Max parallel" header text
-        builder.widget(TextWidget.localised("GTPP.CC.parallel").setPos(0, 24).setSize(120, 18));
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(0, 24)
+                .setSize(120, 18));
 
         // Max parallel setter text box
         NumericWidget textField = (NumericWidget) new NumericWidget()
-                .setSetter(val -> powerPanelMaxParallel = (int) val).setGetter(() -> powerPanelMaxParallel)
-                .setValidator(val -> {
-                    // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds
-                    // are
-                    // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
-                    powerPanelMaxParallel = (int) Math
-                            .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
-                    return powerPanelMaxParallel;
-                }).setDefaultValue(powerPanelMaxParallel).setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.normal)
-                .dynamicTooltip(
-                        () -> Collections.singletonList(
-                                alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
-                                        : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(70, 18).setPos(12, 40)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+            .setSetter(val -> powerPanelMaxParallel = (int) val)
+            .setGetter(() -> powerPanelMaxParallel)
+            .setValidator(val -> {
+                // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds
+                // are
+                // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
+                powerPanelMaxParallel = (int) Math
+                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                return powerPanelMaxParallel;
+            })
+            .setDefaultValue(powerPanelMaxParallel)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(70, 18)
+            .setPos(12, 40)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(textField));
@@ -2940,18 +2982,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = !alwaysMaxParallel;
-        }).setPlayClickSound(true).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            if (alwaysMaxParallel) {
-                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
-            } else {
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).addTooltip(translateToLocal("GT5U.gui.button.max_parallel")).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(88, 41).setSize(16, 16);
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (alwaysMaxParallel) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(88, 41)
+            .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -3009,8 +3056,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return ret.toString();
                 }
                 lines++;
-                ret.append(EnumChatFormatting.AQUA).append(entry.getKey()).append(EnumChatFormatting.WHITE)
-                        .append(" x ").append(EnumChatFormatting.GOLD);
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
                 numberFormat.format(entry.getValue(), ret);
                 ret.append(EnumChatFormatting.WHITE);
                 appendRate.accept(entry.getValue());
@@ -3029,10 +3079,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return ret.toString();
                 }
                 lines++;
-                ret.append(EnumChatFormatting.AQUA).append(entry.getKey()).append(EnumChatFormatting.WHITE)
-                        .append(" x ").append(EnumChatFormatting.GOLD);
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
                 numberFormat.format(entry.getValue(), ret);
-                ret.append("L").append(EnumChatFormatting.WHITE);
+                ret.append("L")
+                    .append(EnumChatFormatting.WHITE);
                 appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
@@ -3051,27 +3105,37 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 nameToAmount.merge(item, (long) item.stackSize, Long::sum);
             }
 
-            final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet().stream()
-                    .sorted(Map.Entry.<ItemStack, Long>comparingByValue().reversed()).collect(Collectors.toList());
+            final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<ItemStack, Long>comparingByValue()
+                        .reversed())
+                .collect(Collectors.toList());
 
             for (Map.Entry<ItemStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
-                String itemName = entry.getKey().getDisplayName();
+                String itemName = entry.getKey()
+                    .getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
-                        + EnumChatFormatting.GOLD
-                        + formatShortenedLong(itemCount)
-                        + EnumChatFormatting.WHITE
-                        + appendRate(false, itemCount, true);
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                        + itemAmountString;
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                        new MultiChildWidget()
-                                .addChild(new ItemDrawable(entry.getKey().copy()).asWidget().setSize(8, 8).setPos(0, 0))
-                                .addChild(
-                                        new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                                                .addTooltip(lineTooltip).setPos(10, 1)));
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            entry.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
             }
         }
         if (mOutputFluids != null) {
@@ -3082,31 +3146,39 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
             }
 
-            final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet().stream()
-                    .sorted(Map.Entry.<FluidStack, Long>comparingByValue().reversed()).collect(Collectors.toList());
+            final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<FluidStack, Long>comparingByValue()
+                        .reversed())
+                .collect(Collectors.toList());
 
             for (Map.Entry<FluidStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
-                String itemName = entry.getKey().getLocalizedName();
+                String itemName = entry.getKey()
+                    .getLocalizedName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
-                        + EnumChatFormatting.GOLD
-                        + formatShortenedLong(itemCount)
-                        + "L"
-                        + EnumChatFormatting.WHITE
-                        + appendRate(false, itemCount, true);
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + "L"
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                        + itemAmountString;
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
-                processingDetails
-                        .widget(
-                                new MultiChildWidget()
-                                        .addChild(
-                                                new FluidDrawable().setFluid(entry.getKey().getFluid()).asWidget()
-                                                        .setSize(8, 8).setPos(0, 0))
-                                        .addChild(
-                                                new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                                                        .addTooltip(lineTooltip).setPos(10, 1)));
+                processingDetails.widget(
+                    new MultiChildWidget().addChild(
+                        new FluidDrawable().setFluid(
+                            entry.getKey()
+                                .getFluid())
+                            .asWidget()
+                            .setSize(8, 8)
+                            .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
 
             }
         }
@@ -3146,62 +3218,62 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
-                    amountText + EnumChatFormatting.GOLD
-                            + formatNumbers(amount)
-                            + (isLiquid ? "L" : "")
-                            + EnumChatFormatting.RESET);
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
-                    perSecondText + EnumChatFormatting.GOLD
-                            + formatNumbers(roundNumber.apply(perSecond))
-                            + (isLiquid ? "L" : "")
-                            + (perSecond > 1_000_000
-                                    ? EnumChatFormatting.WHITE + " ["
-                                            + EnumChatFormatting.GRAY
-                                            + formatShortenedLong((long) perSecond)
-                                            + EnumChatFormatting.WHITE
-                                            + "]"
-                                    : "")
-                            + EnumChatFormatting.RESET);
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
-                    perMinuteText + EnumChatFormatting.GOLD
-                            + formatNumbers(roundNumber.apply(perMinute))
-                            + (isLiquid ? "L" : "")
-                            + (perMinute > 1_000_000
-                                    ? EnumChatFormatting.WHITE + " ["
-                                            + EnumChatFormatting.GRAY
-                                            + formatShortenedLong((long) perMinute)
-                                            + EnumChatFormatting.WHITE
-                                            + "]"
-                                    : "")
-                            + EnumChatFormatting.RESET);
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
-                    perHourText + EnumChatFormatting.GOLD
-                            + formatNumbers(roundNumber.apply(perHour))
-                            + (isLiquid ? "L" : "")
-                            + (perHour > 1_000_000
-                                    ? EnumChatFormatting.WHITE + " ["
-                                            + EnumChatFormatting.GRAY
-                                            + formatShortenedLong((long) perHour)
-                                            + EnumChatFormatting.WHITE
-                                            + "]"
-                                    : "")
-                            + EnumChatFormatting.RESET);
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
-                    perDayText + EnumChatFormatting.GOLD
-                            + formatNumbers(roundNumber.apply(perDay))
-                            + (isLiquid ? "L" : "")
-                            + (perDay > 1_000_000
-                                    ? EnumChatFormatting.WHITE + " ["
-                                            + EnumChatFormatting.GRAY
-                                            + formatShortenedLong((long) perDay)
-                                            + EnumChatFormatting.WHITE
-                                            + "]"
-                                    : "")
-                            + EnumChatFormatting.RESET);
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
         }
         return ret.toString();
     }
@@ -3238,193 +3310,220 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false).setSpace(0);
+        screenElements.setSynced(false)
+            .setSpace(0);
 
         screenElements.widget(new StructureErrorSyncer(() -> structureErrors, value -> structureErrors = value));
 
         screenElements.widget(
-                new FakeSyncWidget<>(
-                        () -> structureErrorContext,
-                        data -> structureErrorContext = data,
-                        ByteBufUtils::writeTag,
-                        ByteBufUtils::readTag));
+            new FakeSyncWidget<>(
+                () -> structureErrorContext,
+                data -> structureErrorContext = data,
+                ByteBufUtils::writeTag,
+                ByteBufUtils::readTag));
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             ArrayList<String> lines = new ArrayList<>();
             localizeStructureErrors(structureErrors, structureErrorContext, lines);
             return String.join("\n", lines);
-        }).setSynced(false).setTextAlignment(Alignment.CenterLeft).setDefaultColor(EnumChatFormatting.DARK_RED)
-                .setEnabled(w -> hasStructureErrors()));
+        })
+            .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.DARK_RED)
+            .setEnabled(w -> hasStructureErrors()));
 
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
-                    TextWidget
-                            .dynamicString(
-                                    () -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
-                            .setTextAlignment(Alignment.CenterLeft));
+                TextWidget
+                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
+                    .setTextAlignment(Alignment.CenterLeft));
         }
-        screenElements.widget(
+        screenElements
+            .widget(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mWrench && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mWrench && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
-                .widget(
-                        new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mScrewdriver && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+            .widget(
+                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mScrewdriver && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
-                .widget(
-                        new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mSoftMallet && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
+            .widget(
+                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSoftMallet && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
-                .widget(
-                        new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mHardHammer && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+            .widget(
+                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mHardHammer && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
-                .widget(
-                        new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mSolderingTool && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+            .widget(
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSolderingTool && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
-                .widget(
-                        new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mCrowbar && mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements
-                .widget(
-                        new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> !mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+            .widget(
+                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mCrowbar && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements.widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
+            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters"))
-                        .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
+            new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
+        screenElements.widget(
+            new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements.widget(
+        screenElements
+            .widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID)).widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)));
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
             return translateToLocalFormatted(
-                    "GT5U.gui.text.shutdown_duration",
-                    time.toHours(),
-                    time.toMinutes() % 60,
-                    time.getSeconds() % 60);
-        }).setSynced(false).setTextAlignment(Alignment.CenterLeft).setEnabled(
+                "GT5U.gui.text.shutdown_duration",
+                time.toHours(),
+                time.toMinutes() % 60,
+                time.getSeconds() % 60);
+        })
+            .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                        && getBaseMetaTileEntity().wasShutdown()))
-                .widget(new FakeSyncWidget.LongSyncer(() -> mTotalRunTime, time -> mTotalRunTime = time))
-                .widget(new FakeSyncWidget.LongSyncer(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
+                    && getBaseMetaTileEntity().wasShutdown()))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mTotalRunTime, time -> mTotalRunTime = time))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
         screenElements.widget(
-                TextWidget.dynamicString(() -> getBaseMetaTileEntity().getLastShutDownReason().getDisplayString())
-                        .setSynced(false).setTextAlignment(Alignment.CenterLeft).setEnabled(
-                                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                                        && GTUtility.isStringValid(
-                                                getBaseMetaTileEntity().getLastShutDownReason().getDisplayString())
-                                        && getBaseMetaTileEntity().wasShutdown()))
-                .widget(
-                        new ShutDownReasonSyncer(
-                                () -> getBaseMetaTileEntity().getLastShutDownReason(),
-                                reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().wasShutdown(),
-                                wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+            TextWidget.dynamicString(
+                () -> getBaseMetaTileEntity().getLastShutDownReason()
+                    .getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                        && GTUtility.isStringValid(
+                            getBaseMetaTileEntity().getLastShutDownReason()
+                                .getDisplayString())
+                        && getBaseMetaTileEntity().wasShutdown()))
+            .widget(
+                new ShutDownReasonSyncer(
+                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
+                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().wasShutdown(),
+                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
 
-        screenElements
-                .widget(
-                        TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString()).setSynced(false)
-                                .setTextAlignment(Alignment.CenterLeft).setEnabled(
-                                        widget -> shouldDisplayCheckRecipeResult()
-                                                && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
-                                                && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
-                                                        || checkRecipeResult.persistsOnShutdown())))
-                .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
+        screenElements.widget(
+            TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayCheckRecipeResult()
+                        && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
+                        && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
+                            || checkRecipeResult.persistsOnShutdown())))
+            .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         if (showRecipeTextInGUI()) {
             screenElements.widget(
-                    TextWidget.dynamicString(this::generateCurrentProgress).setSynced(false)
-                            .setTextAlignment(new Alignment(-1, -1)).setSize(180, 12).setEnabled(
-                                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                                            || (mOutputItems != null && mOutputItems.length > 0)
-                                            || (mMaxProgresstime > 0)));
+                TextWidget.dynamicString(this::generateCurrentProgress)
+                    .setSynced(false)
+                    .setTextAlignment(new Alignment(-1, -1))
+                    .setSize(180, 12)
+                    .setEnabled(
+                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                            || (mOutputItems != null && mOutputItems.length > 0)
+                            || (mMaxProgresstime > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
-                    this::generateCurrentRecipeInfoWidget);
+                this::generateCurrentRecipeInfoWidget);
             // Display current recipe
             screenElements.widget(
-                    new FakeSyncWidget.ListSyncer<>(
-                            () -> mOutputFluids != null ? Arrays.stream(mOutputFluids).map(fluidStack -> {
-                                if (fluidStack == null) return null;
-                                return new FluidStack(fluidStack, fluidStack.amount) {
+                new FakeSyncWidget.ListSyncer<>(
+                    () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                        .map(fluidStack -> {
+                            if (fluidStack == null) return null;
+                            return new FluidStack(fluidStack, fluidStack.amount) {
 
-                                    @Override
-                                    public boolean isFluidEqual(FluidStack other) {
-                                        return super.isFluidEqual(other) && amount == other.amount;
-                                    }
-                                };
-                            }).collect(Collectors.toList()) : Collections.emptyList(),
-                            val -> {
-                                mOutputFluids = val.toArray(new FluidStack[0]);
-                                recipeOutputItemsWidget.notifyChangeNoSync();
-                            },
-                            NetworkUtils::writeFluidStack,
-                            NetworkUtils::readFluidStack))
-                    .widget(
-                            new FakeSyncWidget.ListSyncer<>(
-                                    () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                                    val -> {
-                                        mOutputItems = val.toArray(new ItemStack[0]);
-                                        recipeOutputItemsWidget.notifyChangeNoSync();
-                                    },
-                                    NetworkUtils::writeItemStack,
-                                    NetworkUtils::readItemStack))
-                    .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-                    .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> {
-                        mMaxProgresstime = val;
+                                @Override
+                                public boolean isFluidEqual(FluidStack other) {
+                                    return super.isFluidEqual(other) && amount == other.amount;
+                                }
+                            };
+                        })
+                        .collect(Collectors.toList()) : Collections.emptyList(),
+                    val -> {
+                        mOutputFluids = val.toArray(new FluidStack[0]);
                         recipeOutputItemsWidget.notifyChangeNoSync();
-                    }));
+                    },
+                    NetworkUtils::writeFluidStack,
+                    NetworkUtils::readFluidStack))
+                .widget(
+                    new FakeSyncWidget.ListSyncer<>(
+                        () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
+                        val -> {
+                            mOutputItems = val.toArray(new ItemStack[0]);
+                            recipeOutputItemsWidget.notifyChangeNoSync();
+                        },
+                        NetworkUtils::writeItemStack,
+                        NetworkUtils::readItemStack))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> {
+                    mMaxProgresstime = val;
+                    recipeOutputItemsWidget.notifyChangeNoSync();
+                }));
             screenElements.widget(recipeOutputItemsWidget);
         }
 
         screenElements.widget(
-                new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> {
-                            if (getBaseMetaTileEntity().isAllowedToWork()) return false;
-                            if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {
-                                final ItemStack tItem = inventorySlot.getMcSlot().getStack();
-                                return tItem == null || !(tItem.getItem() == MetaGeneratedTool01.INSTANCE
-                                        && tItem.getItemDamage() >= 170
-                                        && tItem.getItemDamage() <= 177);
-                            }
-                            return false;
-                        }));
+            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> {
+                    if (getBaseMetaTileEntity().isAllowedToWork()) return false;
+                    if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {
+                        final ItemStack tItem = inventorySlot.getMcSlot()
+                            .getStack();
+                        return tItem == null
+                            || !(tItem.getItem() == MetaGeneratedTool01.INSTANCE && tItem.getItemDamage() >= 170
+                                && tItem.getItemDamage() <= 177);
+                    }
+                    return false;
+                }));
     }
 
     public boolean showRecipeTextInGUI() {

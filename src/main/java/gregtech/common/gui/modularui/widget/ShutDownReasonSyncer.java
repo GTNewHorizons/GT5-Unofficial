@@ -17,7 +17,8 @@ public class ShutDownReasonSyncer extends FakeSyncWidget<ShutDownReason> {
             result.encode(buffer);
         }, buffer -> {
             String id = NetworkUtils.readStringSafe(buffer);
-            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id).newInstance();
+            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
+                .newInstance();
             result.decode(buffer);
             return result;
         });

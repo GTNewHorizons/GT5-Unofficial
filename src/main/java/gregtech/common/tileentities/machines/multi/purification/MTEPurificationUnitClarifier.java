@@ -51,7 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPurificationUnitClarifier>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
@@ -66,7 +66,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTechAPI.sBlockCasings9, 5);
 
     private static final String[][] structure =
-            // spotless:off
+        // spotless:off
         new String[][] {
             { "           ", "           ", "           ", "           " },
             { "           ", "   AAAAA   ", "   AH~HA   ", "   AAAAA   " },
@@ -83,29 +83,38 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     // spotless:on
 
     private static final IStructureDefinition<MTEPurificationUnitClarifier> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEPurificationUnitClarifier>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
-            .addShape(
-                    STRUCTURE_PIECE_MAIN_SURVIVAL,
-                    Arrays.stream(structure)
-                            .map(sa -> Arrays.stream(sa).map(s -> s.replaceAll("W", " ")).toArray(String[]::new))
-                            .toArray(String[][]::new))
-            // Hatches
-            .addElement(
-                    'H',
-                    ofChain(
-                            lazy(
-                                    t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
-                                            .atLeastList(t.getAllowedHatches()).casingIndex(CASING_TEXTURE_INDEX).dot(1)
-                                            .build()),
-                            // Reinforced Sterile Water Plant Casing
-                            ofBlock(GregTechAPI.sBlockCasings9, 5)))
-            // Reinforced Sterile Water Plant Casing
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 5))
-            // PTFE pipe casing
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1)).addElement('C', ofFrame(Materials.Iridium))
-            .addElement('D', ofFrame(Materials.DamascusSteel)).addElement('W', ofAnyWater(false))
-            // Filter machine casing
-            .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11)).build();
+        .<MTEPurificationUnitClarifier>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            Arrays.stream(structure)
+                .map(
+                    sa -> Arrays.stream(sa)
+                        .map(s -> s.replaceAll("W", " "))
+                        .toArray(String[]::new))
+                .toArray(String[][]::new))
+        // Hatches
+        .addElement(
+            'H',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
+                        .atLeastList(t.getAllowedHatches())
+                        .casingIndex(CASING_TEXTURE_INDEX)
+                        .dot(1)
+                        .build()),
+                // Reinforced Sterile Water Plant Casing
+                ofBlock(GregTechAPI.sBlockCasings9, 5)))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 5))
+        // PTFE pipe casing
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement('C', ofFrame(Materials.Iridium))
+        .addElement('D', ofFrame(Materials.DamascusSteel))
+        .addElement('W', ofAnyWater(false))
+        // Filter machine casing
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
+        .build();
 
     public MTEPurificationUnitClarifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -135,8 +144,9 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     public CheckRecipeResult overrideRecipeCheck() {
         // Clarifier needs to check item inputs from recipe as well to find filter item
         return findRecipeForInputs(
-                this.storedFluids.toArray(new FluidStack[] {}),
-                this.getStoredInputs().toArray(new ItemStack[] {}));
+            this.storedFluids.toArray(new FluidStack[] {}),
+            this.getStoredInputs()
+                .toArray(new ItemStack[] {}));
     }
 
     @Override
@@ -166,100 +176,98 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.BOLD
-                                + "Water Tier: "
-                                + EnumChatFormatting.WHITE
-                                + GTUtility.formatNumbers(getWaterTier())
-                                + EnumChatFormatting.RESET)
-                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
-                .addInfo("Requires a filter made of Activated Carbon to work.")
-                .addInfo(
-                        "Every cycle, has a " + EnumChatFormatting.RED
-                                + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
-                                + "%"
-                                + EnumChatFormatting.GRAY
-                                + " chance to destroy the filter.")
-                .addSeparator()
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
-                .beginStructureBlock(11, 4, 11, false).addController("Front center")
-                .addCasingInfoRangeColored(
-                        "Reinforced Sterile Water Plant Casing",
-                        EnumChatFormatting.GRAY,
-                        123,
-                        131,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Filter Machine Casing",
-                        EnumChatFormatting.GRAY,
-                        21,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Iridium Frame Box",
-                        EnumChatFormatting.GRAY,
-                        12,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Damascus Steel Frame Box",
-                        EnumChatFormatting.GRAY,
-                        12,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "PTFE Pipe Casing",
-                        EnumChatFormatting.GRAY,
-                        3,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addStructureInfo("Requires water to be placed in the structure.").toolTipFinisher(AuthorNotAPenguin);
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GTUtility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addSeparator()
+            .addInfo("Requires a filter made of Activated Carbon to work.")
+            .addInfo(
+                "Every cycle, has a " + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " chance to destroy the filter.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
+            .beginStructureBlock(11, 4, 11, false)
+            .addController("Front center")
+            .addCasingInfoRangeColored(
+                "Reinforced Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                123,
+                131,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Filter Machine Casing",
+                EnumChatFormatting.GRAY,
+                21,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Iridium Frame Box",
+                EnumChatFormatting.GRAY,
+                12,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Damascus Steel Frame Box",
+                EnumChatFormatting.GRAY,
+                12,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
+            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addStructureInfo("Requires water to be placed in the structure.")
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                hintsOnly,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN_SURVIVAL,
-                stackSize,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET,
-                elementBudget,
-                env,
-                true);
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            stackSize,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET,
+            elementBudget,
+            env,
+            true);
         if (built == -1) {
             GTUtility.sendChatToPlayer(
-                    env.getActor(),
-                    EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
             return 0;
         }
         return built;
@@ -276,16 +284,28 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }

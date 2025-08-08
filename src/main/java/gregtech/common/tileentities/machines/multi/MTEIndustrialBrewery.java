@@ -41,13 +41,14 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBrewery>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialBrewery> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEIndustrialBrewery>builder().addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    // spotless:off
+        .<MTEIndustrialBrewery>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            // spotless:off
             new String[][]{{
                 "BBB",
                 "BBB",
@@ -68,16 +69,17 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
                 "C C"
             }})
         //spotless:on
-            .addElement(
-                    'B',
-                    buildHatchAdder(MTEIndustrialBrewery.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                            .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15)).dot(1)
-                            .buildAndChain(
-                                    onElementPass(
-                                            MTEIndustrialBrewery::onCasingAdded,
-                                            ofBlock(GregTechAPI.sBlockCasings10, 15))))
-            .addElement('A', chainAllGlasses()).addElement('C', ofFrame(Materials.Steel)).build();
+        .addElement(
+            'B',
+            buildHatchAdder(MTEIndustrialBrewery.class)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(MTEIndustrialBrewery::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
+        .addElement('A', chainAllGlasses())
+        .addElement('C', ofFrame(Materials.Steel))
+        .build();
 
     public MTEIndustrialBrewery(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -99,26 +101,39 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons.getCasingTextureForId(
-                                GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW).extFacing().glow()
-                                .build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons.getCasingTextureForId(
-                                GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_BREWERY).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW).extFacing().glow().build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
         }
         return rTexture;
     }
@@ -126,14 +141,22 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery").addInfo("50% faster than singleblock machines of the same voltage")
-                .addInfo("Gains 4 parallels per voltage tier").beginStructureBlock(3, 5, 3, true)
-                .addController("Front Center").addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-                .addCasingInfoExactly("Any Tiered Glass", 6, false).addCasingInfoExactly("Steel Frame Box", 4, false)
-                .addInputBus("Any Wooden Casing", 1).addOutputBus("Any Wooden Casing", 1)
-                .addInputHatch("Any Wooden Casing", 1).addOutputHatch("Any Wooden Casing", 1)
-                .addEnergyHatch("Any Wooden Casing", 1).addMaintenanceHatch("Any Wooden Casing", 1)
-                .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher();
+        tt.addMachineType("Brewery")
+            .addInfo("50% faster than singleblock machines of the same voltage")
+            .addInfo("Gains 4 parallels per voltage tier")
+            .beginStructureBlock(3, 5, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
+            .addCasingInfoExactly("Any Tiered Glass", 6, false)
+            .addCasingInfoExactly("Steel Frame Box", 4, false)
+            .addInputBus("Any Wooden Casing", 1)
+            .addOutputBus("Any Wooden Casing", 1)
+            .addInputHatch("Any Wooden Casing", 1)
+            .addOutputHatch("Any Wooden Casing", 1)
+            .addEnergyHatch("Any Wooden Casing", 1)
+            .addMaintenanceHatch("Any Wooden Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -162,7 +185,8 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F).setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

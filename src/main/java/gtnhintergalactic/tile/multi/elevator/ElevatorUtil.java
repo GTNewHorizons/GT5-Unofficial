@@ -54,15 +54,17 @@ public class ElevatorUtil {
         if (neededProject != null && !neededProject.isEmpty()) {
             if (neededLocation != null && !neededLocation.isEmpty()) {
                 ISpaceProject project = SpaceProjectManager
-                        .getTeamProject(machineOwner, SpaceProjectManager.getLocation(neededLocation), neededProject);
+                    .getTeamProject(machineOwner, SpaceProjectManager.getLocation(neededLocation), neededProject);
                 return project != null && project.isFinished();
             } else {
                 ArrayList<ISpaceProject> projects = new ArrayList<>(
-                        SpaceProjectManager.getTeamSpaceProjects(machineOwner));
+                    SpaceProjectManager.getTeamSpaceProjects(machineOwner));
                 for (ISpaceProject project : projects) {
                     if (project != null && project.isFinished()
-                            && neededLocation != null
-                            && neededLocation.equals(project.getProjectLocation().getName())) {
+                        && neededLocation != null
+                        && neededLocation.equals(
+                            project.getProjectLocation()
+                                .getName())) {
                         return true;
                     }
                 }
@@ -125,7 +127,7 @@ public class ElevatorUtil {
      * @return Structure element
      */
     public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, Block defaultBlock,
-            int defaultMeta) {
+        int defaultMeta) {
         if (iBlockAdder == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -152,31 +154,31 @@ public class ElevatorUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                        IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     return survivalPlaceBlock(
-                            t,
-                            world,
-                            x,
-                            y,
-                            z,
-                            trigger,
-                            AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+                        t,
+                        world,
+                        x,
+                        y,
+                        z,
+                        trigger,
+                        AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
                 }
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                        AutoPlaceEnvironment env) {
+                    AutoPlaceEnvironment env) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                     return StructureUtility.survivalPlaceBlock(
-                            defaultBlock,
-                            defaultMeta,
-                            world,
-                            x,
-                            y,
-                            z,
-                            env.getSource(),
-                            env.getActor(),
-                            env.getChatter());
+                        defaultBlock,
+                        defaultMeta,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
                 }
             };
         } else {
@@ -202,31 +204,31 @@ public class ElevatorUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                        IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     return survivalPlaceBlock(
-                            t,
-                            world,
-                            x,
-                            y,
-                            z,
-                            trigger,
-                            AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+                        t,
+                        world,
+                        x,
+                        y,
+                        z,
+                        trigger,
+                        AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
                 }
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                        AutoPlaceEnvironment env) {
+                    AutoPlaceEnvironment env) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                     return StructureUtility.survivalPlaceBlock(
-                            defaultBlock,
-                            defaultMeta,
-                            world,
-                            x,
-                            y,
-                            z,
-                            env.getSource(),
-                            env.getActor(),
-                            env.getChatter());
+                        defaultBlock,
+                        defaultMeta,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
                 }
             };
         }
@@ -239,11 +241,11 @@ public class ElevatorUtil {
      */
     public static List<Pair<Block, Integer>> getMotorTiers() {
         return ImmutableList.of(
-                Pair.of(GregTechAPI.sBlockCasingsSEMotor, 0),
-                Pair.of(GregTechAPI.sBlockCasingsSEMotor, 1),
-                Pair.of(GregTechAPI.sBlockCasingsSEMotor, 2),
-                Pair.of(GregTechAPI.sBlockCasingsSEMotor, 3),
-                Pair.of(GregTechAPI.sBlockCasingsSEMotor, 4));
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 0),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 1),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 2),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 3),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 4));
     }
 
     /**
@@ -282,7 +284,7 @@ public class ElevatorUtil {
 
         @SafeVarargs
         ProjectModuleElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
-                Class<? extends IMetaTileEntity>... mteClasses) {
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

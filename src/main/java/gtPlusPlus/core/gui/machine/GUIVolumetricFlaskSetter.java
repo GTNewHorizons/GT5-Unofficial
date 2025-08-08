@@ -22,8 +22,8 @@ import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 public class GUIVolumetricFlaskSetter extends GuiContainer {
 
     private static final ResourceLocation mGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/VolumetricFlaskSetter.png");
+        GTPlusPlus.ID,
+        "textures/gui/VolumetricFlaskSetter.png");
     private final ContainerVolumetricFlaskSetter mContainer;
     private boolean mIsOpen = false;
     private GuiValueField mText;
@@ -76,14 +76,14 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         // Keyboard.enableRepeatEvents(true);
         mIsOpen = true;
         this.mText = new GuiValueField(
-                this.fontRendererObj,
-                26,
-                31,
-                this.width / 2 - 62,
-                this.height / 2 - 52,
-                106,
-                14,
-                this);
+            this.fontRendererObj,
+            26,
+            31,
+            this.width / 2 - 62,
+            this.height / 2 - 52,
+            106,
+            14,
+            this);
         mText.setMaxStringLength(10);
         mText.setEnableBackgroundDrawing(true);
         mText.setText("0");

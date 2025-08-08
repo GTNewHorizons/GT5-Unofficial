@@ -62,7 +62,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * make sure to call super.loadNBTData() and super.saveNBTData() if you override these methods, or linking will break.
  */
 public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-        extends MTEExtendedPowerMultiBlockBase<T> {
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     /**
      * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost". Must be in [0, 1].
@@ -198,10 +198,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         // Grab a stream of recipes and find the one with the highest success chance
-        Stream<GTRecipe> recipes = recipeMap.findRecipeQuery().fluids(fluidInputs).items(itemInputs).findAll();
+        Stream<GTRecipe> recipes = recipeMap.findRecipeQuery()
+            .fluids(fluidInputs)
+            .items(itemInputs)
+            .findAll();
         GTRecipe recipe = recipes
-                .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
-                .orElse(null);
+            .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
+            .orElse(null);
 
         if (recipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -548,7 +551,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             return LinkResult.TOO_FAR;
 
         // Find the block at the requested coordinated and check if it is a purification plant controller.
-        var tileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
+        var tileEntity = getBaseMetaTileEntity().getWorld()
+            .getTileEntity(x, y, z);
         if (tileEntity == null) return LinkResult.NO_VALID_PLANT;
         if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_PLANT;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
@@ -580,7 +584,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type").equals("PurificationPlant")) {
+        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+            .equals("PurificationPlant")) {
             return false;
         }
 
@@ -647,46 +652,46 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.infodata.purification_unit_base.linked_at",
-                            controllerX,
-                            controllerY,
-                            controllerZ));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_base.linked_at",
+                    controllerX,
+                    controllerY,
+                    controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                        StatCollector.translateToLocalFormatted(
-                                "GT5U.infodata.purification_unit_base.success_chance",
-                                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
-                                        + "%"
-                                        + EnumChatFormatting.RESET));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.purification_unit_base.success_chance",
+                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                            + "%"
+                            + EnumChatFormatting.RESET));
             }
 
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
         ret.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.parallel.current",
-                        "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.parallel.current",
+                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                    EnumChatFormatting.AQUA + "Linked to Purification Plant at "
-                            + EnumChatFormatting.WHITE
-                            + tag.getInteger("controllerX")
-                            + ", "
-                            + tag.getInteger("controllerY")
-                            + ", "
-                            + tag.getInteger("controllerZ")
-                            + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
+                    + EnumChatFormatting.WHITE
+                    + tag.getInteger("controllerX")
+                    + ", "
+                    + tag.getInteger("controllerY")
+                    + ", "
+                    + tag.getInteger("controllerZ")
+                    + EnumChatFormatting.RESET);
         } else {
             currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
         }
@@ -696,7 +701,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
 
         tag.setBoolean("linked", getController() != null);
         if (getController() != null) {
@@ -723,8 +728,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
      */
     public Widget makeSyncerWidgets() {
         return new MultiChildWidget()
-                .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
-                .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
+            .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
+            .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
 
     private static final int PARALLEL_WINDOW_ID = 10;
@@ -734,15 +739,21 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                widget.getContext().openSyncedWindow(PARALLEL_WINDOW_ID);
+                widget.getContext()
+                    .openSyncedWindow(PARALLEL_WINDOW_ID);
             }
-        }).setPlayClickSound(true).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(GTUITextures.BUTTON_STANDARD);
-            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-            return ret.toArray(new IDrawable[0]);
-        }).addTooltip(translateToLocal("GT5U.tpm.parallelwindow")).setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 112)
-                .setSize(16, 16));
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 112)
+            .setSize(16, 16));
         super.addUIWidgets(builder, buildContext);
     }
 
@@ -756,17 +767,29 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
-                        Alignment.BottomRight
-                                .getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                                .add(WIDTH - 3, 0).subtract(0, 10)));
-        builder.widget(TextWidget.localised("GTPP.CC.parallel").setPos(3, 4).setSize(150, 20)).widget(
-                new NumericWidget().setSetter(val -> maxParallel = (int) val).setGetter(() -> maxParallel)
-                        .setBounds(1, Integer.MAX_VALUE).setDefaultValue(1).setScrollValues(1, 4, 64)
-                        .setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setSize(150, 18)
-                        .setPos(4, 25).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD).attachSyncer(
-                                new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
-                                builder));
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> maxParallel = (int) val)
+                    .setGetter(() -> maxParallel)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setDefaultValue(1)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
+                        builder));
         return builder.build();
     }
 

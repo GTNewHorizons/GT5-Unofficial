@@ -52,38 +52,62 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     public MTERockBreaker(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                MachineType.ROCKBREAKER.tooltipDescription(),
-                1,
-                1,
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            MachineType.ROCKBREAKER.tooltipDescription(),
+            1,
+            1,
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public MTERockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -102,9 +126,9 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-                && getRecipeMap().containsInput(aStack);
+            && getRecipeMap().containsInput(aStack);
     }
 
     @Override
@@ -119,8 +143,8 @@ public class MTERockBreaker extends MTEBasicMachine {
         Block topBlock = aBaseMetaTileEntity.getBlockOffset(0, 1, 0);
         Block bottomBlock = aBaseMetaTileEntity.getBlockOffset(0, -1, 0);
         Block[] sideBlocks = new Block[] { aBaseMetaTileEntity.getBlockOffset(0, 0, 1),
-                aBaseMetaTileEntity.getBlockOffset(0, 0, -1), aBaseMetaTileEntity.getBlockOffset(-1, 0, 0),
-                aBaseMetaTileEntity.getBlockOffset(1, 0, 0) };
+            aBaseMetaTileEntity.getBlockOffset(0, 0, -1), aBaseMetaTileEntity.getBlockOffset(-1, 0, 0),
+            aBaseMetaTileEntity.getBlockOffset(1, 0, 0) };
 
         // Lock to only recipes with the specified circuit. Prevents "collisions" when a recipe
         // has the same in-world requirements but a differentiating item.
@@ -154,9 +178,11 @@ public class MTERockBreaker extends MTEBasicMachine {
     }
 
     public static void addRockBreakerRecipe(UnaryOperator<RockBreakerRecipe.Builder> u) {
-        RockBreakerRecipe recipe = u.apply(new RockBreakerRecipe.Builder()).build();
+        RockBreakerRecipe recipe = u.apply(new RockBreakerRecipe.Builder())
+            .build();
         // Organize by circuit for recipe differentiation
-        ROCK_BREAKER_RECIPES.computeIfAbsent(recipe.circuit, $ -> new HashSet<>()).add(recipe);
+        ROCK_BREAKER_RECIPES.computeIfAbsent(recipe.circuit, $ -> new HashSet<>())
+            .add(recipe);
     }
 
     public static class RockBreakerRecipe {
@@ -170,7 +196,7 @@ public class MTERockBreaker extends MTEBasicMachine {
         private final ItemStack outputItem;
 
         private RockBreakerRecipe(Block topBlock, Block bottomBlock, Block[] sideBlocks, Block[] anywhereBlocks,
-                int circuit, int duration, ItemStack inputItem, boolean inputConsumed, ItemStack outputItem) {
+            int circuit, int duration, ItemStack inputItem, boolean inputConsumed, ItemStack outputItem) {
             this.topBlock = topBlock;
             this.bottomBlock = bottomBlock;
             this.sideBlocks = sideBlocks;
@@ -316,20 +342,24 @@ public class MTERockBreaker extends MTEBasicMachine {
                 addFakeRecipe();
 
                 return new RockBreakerRecipe(
-                        topBlock,
-                        bottomBlock,
-                        sideBlocks,
-                        anywhereBlocks,
-                        circuit,
-                        duration,
-                        inputItem,
-                        inputConsumed,
-                        outputItem);
+                    topBlock,
+                    bottomBlock,
+                    sideBlocks,
+                    anywhereBlocks,
+                    circuit,
+                    duration,
+                    inputItem,
+                    inputConsumed,
+                    outputItem);
             }
 
             private void addFakeRecipe() {
-                GTRecipeBuilder b = GTValues.RA.stdBuilder().itemOutputs(this.outputItem.copy()).duration(this.duration)
-                        .eut(TierEU.RECIPE_LV).ignoreCollision().fake();
+                GTRecipeBuilder b = GTValues.RA.stdBuilder()
+                    .itemOutputs(this.outputItem.copy())
+                    .duration(this.duration)
+                    .eut(TierEU.RECIPE_LV)
+                    .ignoreCollision()
+                    .fake();
 
                 List<ItemStack> inputs = new ArrayList<>();
                 if (this.inputItem != null) {

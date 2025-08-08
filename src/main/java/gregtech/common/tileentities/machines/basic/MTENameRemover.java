@@ -27,46 +27,62 @@ public class MTENameRemover extends MTEBasicMachine {
 
     public MTENameRemover(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Can fix GT items with broken NBT data, will erase everything!",
-                2,
-                1,
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_GLOW).glow()
-                                .build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_GLOW).glow()
-                                .build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_GLOW).glow()
-                                .build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW)
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_GLOW).glow()
-                                .build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Can fix GT items with broken NBT data, will erase everything!",
+            2,
+            1,
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_DISASSEMBLER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DISASSEMBLER_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public MTENameRemover(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -131,8 +147,10 @@ public class MTENameRemover extends MTEBasicMachine {
                     removeMuffler = true;
             }
             if (removeName && nbt.hasKey("display")) {
-                nbt.getCompoundTag("display").removeTag("Name");
-                if (nbt.getCompoundTag("display").hasNoTags()) {
+                nbt.getCompoundTag("display")
+                    .removeTag("Name");
+                if (nbt.getCompoundTag("display")
+                    .hasNoTags()) {
                     nbt.removeTag("display");
                 }
             }
@@ -140,8 +158,10 @@ public class MTENameRemover extends MTEBasicMachine {
             if (removeColor) removeTag(nbt, "color");
             if (removeRepair) removeTag(nbt, "RepairCost");
             if (removeDye && nbt.hasKey("display")) {
-                nbt.getCompoundTag("display").removeTag("color");
-                if (nbt.getCompoundTag("display").hasNoTags()) {
+                nbt.getCompoundTag("display")
+                    .removeTag("color");
+                if (nbt.getCompoundTag("display")
+                    .hasNoTags()) {
                     nbt.removeTag("display");
                 }
             }
@@ -204,9 +224,9 @@ public class MTENameRemover extends MTEBasicMachine {
         description.add(BOLD + "Circuit 6:" + RESET + "  Remove Spray color from GT items");
         description.add(BOLD + "Circuit 7:" + RESET + "  Remove Muffler Upgrade from GT machines");
         description.add(
-                BOLD + "Circuit 24:"
-                        + RESET
-                        + "  Remove everything including covers. Be careful you won't recover the covers!");
+            BOLD + "Circuit 24:"
+                + RESET
+                + "  Remove everything including covers. Be careful you won't recover the covers!");
         description.add(" ");
         description.add(BOLD + "No Circuit:" + RESET + " Remove everything except covers");
         return description.toArray(new String[0]);
@@ -240,6 +260,7 @@ public class MTENameRemover extends MTEBasicMachine {
     @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
-                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_NAME_REMOVER)).build();
+            .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_NAME_REMOVER))
+            .build();
     }
 }

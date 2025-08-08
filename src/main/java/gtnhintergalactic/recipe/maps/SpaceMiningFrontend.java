@@ -24,10 +24,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public class SpaceMiningFrontend extends RecipeMapFrontend {
 
     public SpaceMiningFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                uiPropertiesBuilder,
-                neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceMiningSpecialValueFormatter()));
+            uiPropertiesBuilder,
+            neiPropertiesBuilder.neiSpecialInfoFormatter(new SpaceMiningSpecialValueFormatter()));
     }
 
     @Override
@@ -60,15 +60,15 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
             SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             if (data != null) {
                 result.add(
-                        GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
-                                + data.minDistance
-                                + "-"
-                                + data.maxDistance);
+                    GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
+                        + data.minDistance
+                        + "-"
+                        + data.maxDistance);
                 result.add(GCCoreUtil.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
                 result.add(
-                        GCCoreUtil.translateWithFormat(
-                                "tt.nei.research.min_computation",
-                                GTUtility.formatNumbers(data.computation)));
+                    GCCoreUtil.translateWithFormat(
+                        "tt.nei.research.min_computation",
+                        GTUtility.formatNumbers(data.computation)));
                 result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;

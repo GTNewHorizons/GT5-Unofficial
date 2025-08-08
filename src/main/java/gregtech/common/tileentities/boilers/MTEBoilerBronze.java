@@ -44,11 +44,11 @@ public class MTEBoilerBronze extends MTEBoiler {
 
     public MTEBoilerBronze(int aID, String aName, String aNameRegional) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                new String[] { "An early way to get Steam Power", "Produces 120L of Steam per second",
-                        "Causes " + GTMod.proxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
+            aID,
+            aName,
+            aNameRegional,
+            new String[] { "An early way to get Steam Power", "Produces 120L of Steam per second",
+                "Causes " + GTMod.proxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
     }
 
     public MTEBoilerBronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -63,12 +63,18 @@ public class MTEBoilerBronze extends MTEBoiler {
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[5][17][];
         final ITexture[] texBottom = { TextureFactory.of(MACHINE_BRONZEBRICKS_BOTTOM) },
-                texTop = { TextureFactory.of(MACHINE_BRONZEBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE) },
-                texSide = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE) },
-                texFront = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(BOILER_FRONT),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_GLOW).glow().build() },
-                texFrontActive = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(BOILER_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_ACTIVE_GLOW).glow().build() };
+            texTop = { TextureFactory.of(MACHINE_BRONZEBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE) },
+            texSide = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE) },
+            texFront = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(BOILER_FRONT),
+                TextureFactory.builder()
+                    .addIcon(BOILER_FRONT_GLOW)
+                    .glow()
+                    .build() },
+            texFrontActive = { TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(BOILER_FRONT_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(BOILER_FRONT_ACTIVE_GLOW)
+                    .glow()
+                    .build() };
         for (int i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;
@@ -97,8 +103,8 @@ public class MTEBoilerBronze extends MTEBoiler {
             final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
             if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                    && !aBaseMetaTileEntity.hasCoverAtSide(frontFacing)
-                    && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
+                && !aBaseMetaTileEntity.hasCoverAtSide(frontFacing)
+                && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
                 final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
@@ -126,9 +132,12 @@ public class MTEBoilerBronze extends MTEBoiler {
                 }
 
                 ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(0D, 0D, 0D)
-                        .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
-                particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
-                particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+                    .setPosition(x, y, z)
+                    .setWorld(getBaseMetaTileEntity().getWorld());
+                particleEventBuilder.setIdentifier(ParticleFX.SMOKE)
+                    .run();
+                particleEventBuilder.setIdentifier(ParticleFX.FLAME)
+                    .run();
             }
         }
     }
@@ -137,8 +146,8 @@ public class MTEBoilerBronze extends MTEBoiler {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)
-                && this.mProcessingEnergy > 0
-                && (aTick % 20L == 0L)) {
+            && this.mProcessingEnergy > 0
+            && (aTick % 20L == 0L)) {
             Pollution.addPollution(getBaseMetaTileEntity(), getPollution());
         }
     }
@@ -175,9 +184,10 @@ public class MTEBoilerBronze extends MTEBoiler {
         getCombustionPotential(fuel, burnTime).ifPresent(ashMaterial -> {
             aBaseMetaTileEntity.decrStackSize(2, 1);
             this.mProcessingEnergy += burnTime / 10;
-            boolean isABlock = !Block.getBlockFromItem(fuel.getItem()).equals(Blocks.air);
+            boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
+                .equals(Blocks.air);
             combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))
-                    .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
+                .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
         });
     }
 
@@ -185,7 +195,9 @@ public class MTEBoilerBronze extends MTEBoiler {
         if (burnTime / 10 <= 0 || FluidContainerRegistry.isFilledContainer(fuel)) {
             return Optional.empty();
         }
-        String lowerCaseBlockName = Block.getBlockFromItem(fuel.getItem()).getUnlocalizedName().toLowerCase();
+        String lowerCaseBlockName = Block.getBlockFromItem(fuel.getItem())
+            .getUnlocalizedName()
+            .toLowerCase();
         if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
             return Optional.of(Materials.DarkAsh);
         }
@@ -197,17 +209,17 @@ public class MTEBoilerBronze extends MTEBoiler {
 
     private static boolean couldProduceDarkAshes(ItemStack fuel, String lowerCaseBlockName) {
         return GTUtility.isPartOfMaterials(fuel, Materials.Coal) || GTUtility.isPartOfMaterials(fuel, Materials.Lignite)
-                || lowerCaseBlockName.matches("tile\\..+compressedcoal");
+            || lowerCaseBlockName.matches("tile\\..+compressedcoal");
     }
 
     private static boolean couldProduceRegularAshes(ItemStack fuel, String lowerCaseBlockName, int burnTime) {
         return GTUtility.isPartOfMaterials(fuel, Materials.Charcoal)
-                || GTUtility.isPartOfMaterials(fuel, Materials.Diamond)
-                || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
-                        .anyMatch(lowerCaseBlockName::matches))
-                || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
-                        .anyMatch(name -> GTOreDictUnificator.isItemStackInstanceOf(fuel, name))
-                || burnTime >= 2000;
+            || GTUtility.isPartOfMaterials(fuel, Materials.Diamond)
+            || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
+                .anyMatch(lowerCaseBlockName::matches))
+            || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
+                .anyMatch(name -> GTOreDictUnificator.isItemStackInstanceOf(fuel, name))
+            || burnTime >= 2000;
     }
 
     private static Optional<OrePrefixes> combustFuel(int burnTime, boolean isABlock) {

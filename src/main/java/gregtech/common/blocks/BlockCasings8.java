@@ -36,13 +36,13 @@ public class BlockCasings8 extends BlockCasingsAbstract {
         register(10, ItemList.RadiantNaquadahAlloyCasing, "Radiant Naquadah Alloy Casing");
         register(11, ItemList.BasicPhotolithographicFrameworkCasing, "Basic Photolithographic Framework Casing");
         register(
-                12,
-                ItemList.ReinforcedPhotolithographicFrameworkCasing,
-                "Reinforced Photolithographic Framework Casing");
+            12,
+            ItemList.ReinforcedPhotolithographicFrameworkCasing,
+            "Reinforced Photolithographic Framework Casing");
         register(
-                13,
-                ItemList.RadiationProofPhotolithographicFrameworkCasing,
-                "Radiation Proof Photolithographic Framework Casing");
+            13,
+            ItemList.RadiationProofPhotolithographicFrameworkCasing,
+            "Radiation Proof Photolithographic Framework Casing");
         register(14, ItemList.InfinityCooledCasing, "Infinity Cooled Casing");
     }
 

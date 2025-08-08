@@ -22,7 +22,8 @@ public class FakeItemQGP extends Item {
     public static void run() {
         INSTANCE = new FakeItemQGP();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
-        CustomItemList.Godforge_FakeItemQGP.set(INSTANCE).hidden();
+        CustomItemList.Godforge_FakeItemQGP.set(INSTANCE)
+            .hidden();
     }
 
     @Override

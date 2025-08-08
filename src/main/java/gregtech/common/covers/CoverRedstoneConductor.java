@@ -30,8 +30,8 @@ public class CoverRedstoneConductor extends CoverLegacyData {
             coverable.setOutputRedstoneSignal(coverSide, coverable.getStrongestRedstone());
         } else if (this.coverData < 7) {
             coverable.setOutputRedstoneSignal(
-                    coverSide,
-                    coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((this.coverData - 1))));
+                coverSide,
+                coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((this.coverData - 1))));
         }
     }
 

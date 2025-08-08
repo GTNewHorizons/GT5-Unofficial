@@ -35,7 +35,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
  * @param <T> type of this
  */
 public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockBase<T>> extends MTETooltipMultiBlockBase
-        implements IAlignment, IConstructable {
+    implements IAlignment, IConstructable {
 
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
@@ -63,15 +63,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             mUpdated = false;
             mUpdate = 50;
             if (getBaseMetaTileEntity().isServerSide()
-                    && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
+                && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
-                        (IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(
-                                base.getWorld().provider.dimensionId,
-                                base.getXCoord(),
-                                base.getYCoord(),
-                                base.getZCoord(),
-                                512));
+                    (IAlignmentProvider) base,
+                    new NetworkRegistry.TargetPoint(
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(),
+                        base.getYCoord(),
+                        base.getZCoord(),
+                        512));
             } else {
                 base.issueTextureUpdate();
             }
@@ -85,7 +85,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         if (entityPlayer.isSneaking()) {
@@ -140,17 +140,23 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("eRotation", (byte) mExtendedFacing.getRotation().getIndex());
-        aNBT.setByte("eFlip", (byte) mExtendedFacing.getFlip().getIndex());
+        aNBT.setByte(
+            "eRotation",
+            (byte) mExtendedFacing.getRotation()
+                .getIndex());
+        aNBT.setByte(
+            "eFlip",
+            (byte) mExtendedFacing.getFlip()
+                .getIndex());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mExtendedFacing = ExtendedFacing.of(
-                getBaseMetaTileEntity().getFrontFacing(),
-                Rotation.byIndex(aNBT.getByte("eRotation")),
-                Flip.byIndex(aNBT.getByte("eFlip")));
+            getBaseMetaTileEntity().getFrontFacing(),
+            Rotation.byIndex(aNBT.getByte("eRotation")),
+            Flip.byIndex(aNBT.getByte("eFlip")));
         if (!getAlignmentLimits().isNewExtendedFacingValid(mExtendedFacing)) {
             mExtendedFacing = getCorrectedAlignment(mExtendedFacing);
         }
@@ -169,7 +175,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             return ExtendedFacing.DEFAULT;
         }
         for (ExtendedFacing facing : ExtendedFacing.VALUES) {
-            if (facing.getFlip().isVerticallyFliped()) {
+            if (facing.getFlip()
+                .isVerticallyFliped()) {
                 continue;
             }
             if (isNewExtendedFacingValid(facing)) {
@@ -199,108 +206,108 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().check(
-                this,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                !mMachine);
+            this,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            !mMachine);
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
-            int verticalOffset, int depthOffset) {
+        int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().buildOrHints(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                hintOnly);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            hintOnly);
     }
 
     @Deprecated
     protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
     }
 
     protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
     }
 
     @Deprecated
     protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
-            boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
+        boolean checkIfPlaced) {
         int built = survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }
 
     protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
         int built = survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }
@@ -314,17 +321,17 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         return survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
     }
 
     /**
@@ -336,16 +343,16 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         return survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
     }
 
     /**
@@ -357,19 +364,19 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
-            boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
+        boolean checkIfPlaced) {
         return survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check,
-                checkIfPlaced);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check,
+            checkIfPlaced);
     }
 
     /**
@@ -381,17 +388,17 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
         return survivalBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check,
-                checkIfPlaced);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check,
+            checkIfPlaced);
     }
 
     @Override

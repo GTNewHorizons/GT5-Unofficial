@@ -67,7 +67,7 @@ public class BaseItemComponent extends Item {
         // if (componentType != ComponentTypes.DUST)
 
         GTOreDictUnificator
-                .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
+            .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
         if (componentType == ComponentTypes.GEAR) {
             GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }
@@ -91,7 +91,9 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = getFluidName("fluid." + this.materialName.toLowerCase().replace(" ", ""));
+        this.translatedMaterialName = getFluidName(
+            "fluid." + this.materialName.toLowerCase()
+                .replace(" ", ""));
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -102,16 +104,17 @@ public class BaseItemComponent extends Item {
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
         GTOreDictUnificator.registerOre(
-                ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
-                new ItemStack(this));
+            ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
+            new ItemStack(this));
         registerComponent();
 
         GTLanguageManager
-                .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
+            .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
     }
 
     private String getFormattedLangName() {
-        return componentType.getName().replace("@", "%material");
+        return componentType.getName()
+            .replace("@", "%material");
     }
 
     public boolean registerComponent() {
@@ -123,30 +126,27 @@ public class BaseItemComponent extends Item {
         if (aMap == null) {
             aMap = new HashMap<>();
         }
-        String aKey = componentType.getGtOrePrefix().name();
+        String aKey = componentType.getGtOrePrefix()
+            .name();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
-                    "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                            + "] Map: ["
-                            + aKey
-                            + "]");
+                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
+                    + "] Map: ["
+                    + aKey
+                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
-                        componentMaterial.getPlate(1),
-                        TextureFactory.of(
-                                componentMaterial.getTextureSet().mTextures[71],
-                                componentMaterial.getRGBA(),
-                                false));
+                    componentMaterial.getPlate(1),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
                 CoverRegistry.registerDecorativeCover(
-                        componentMaterial.getPlateDouble(1),
-                        TextureFactory.of(
-                                componentMaterial.getTextureSet().mTextures[72],
-                                componentMaterial.getRGBA(),
-                                false));
+                    componentMaterial.getPlateDouble(1),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
             }
             return true;
         } else {
@@ -192,20 +192,23 @@ public class BaseItemComponent extends Item {
         trans = GTLanguageManager.getTranslation(aKey);
         if (!trans.equals(aKey)) return trans;
         return GTLanguageManager.addStringLocalization(
-                "gtplusplus.fluid." + this.materialName.toLowerCase().replace(" ", ""),
-                this.materialName);
+            "gtplusplus.fluid." + this.materialName.toLowerCase()
+                .replace(" ", ""),
+            this.materialName);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name").replace("%s", "%temp")
-                .replace("%material", translatedMaterialName).replace("%temp", "%s");
+        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
+            .replace("%s", "%temp")
+            .replace("%material", translatedMaterialName)
+            .replace("%temp", "%s");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-            final boolean bool) {
+        final boolean bool) {
 
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
@@ -221,7 +224,8 @@ public class BaseItemComponent extends Item {
                 }
 
                 if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                    if (this.unlocalName.toLowerCase().contains("hot")) {
+                    if (this.unlocalName.toLowerCase()
+                        .contains("hot")) {
                         list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                     }
                 }
@@ -229,18 +233,20 @@ public class BaseItemComponent extends Item {
                 // Hidden Tooltip
                 if (KeyboardUtils.isCtrlKeyDown()) {
                     String type = this.componentMaterial.getTextureSet().mSetName;
-                    String output = type.substring(0, 1).toUpperCase() + type.substring(1);
+                    String output = type.substring(0, 1)
+                        .toUpperCase() + type.substring(1);
                     list.add(
-                            EnumChatFormatting.GRAY
-                                    + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
+                        EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
                     list.add(
-                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                    "GTPP.tooltip.material.state",
-                                    this.componentMaterial.getState().name()));
+                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                            "GTPP.tooltip.material.state",
+                            this.componentMaterial.getState()
+                                .name()));
                     list.add(
-                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                    "GTPP.tooltip.material.radioactivity",
-                                    this.componentMaterial.vRadiationLevel));
+                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                            "GTPP.tooltip.material.radioactivity",
+                            this.componentMaterial.vRadiationLevel));
                 } else {
                     list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
@@ -252,13 +258,13 @@ public class BaseItemComponent extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
-                    iStack.stackSize,
-                    this.componentMaterial.vRadiationLevel,
-                    world,
-                    entityHolding);
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 
@@ -299,11 +305,11 @@ public class BaseItemComponent extends Item {
                     // 4 sec cycle, 200 control point. 20ms interval.
                     int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
                     int value = currentFrame < 50 ? currentFrame + 1
-                            : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
+                        : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
                     return Utils.rgbtoHexValue(
-                            Math.min(255, Math.max(componentMaterial.getRGBA()[0] + value, 0)),
-                            Math.min(255, Math.max(componentMaterial.getRGBA()[1] + value, 0)),
-                            Math.min(255, Math.max(componentMaterial.getRGBA()[2] + value, 0)));
+                        Math.min(255, Math.max(componentMaterial.getRGBA()[0] + value, 0)),
+                        Math.min(255, Math.max(componentMaterial.getRGBA()[1] + value, 0)),
+                        Math.min(255, Math.max(componentMaterial.getRGBA()[2] + value, 0)));
                 }
 
                 // Rainbow Hue Cycle
@@ -374,7 +380,7 @@ public class BaseItemComponent extends Item {
         private final OrePrefixes a_GT_EQUAL;
 
         ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName,
-                final OrePrefixes aPrefix) {
+            final OrePrefixes aPrefix) {
             this.COMPONENT_NAME = LocalName;
             this.DISPLAY_NAME = DisplayName;
             this.OREDICT_NAME = OreDictName;

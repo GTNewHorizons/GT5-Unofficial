@@ -45,12 +45,12 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 
 @Mod(
-        modid = GGConstants.MODID,
-        version = GGConstants.VERSION,
-        name = GGConstants.MODNAME,
-        guiFactory = "ggfab.GGFabGUIFactory",
-        acceptedMinecraftVersions = "[1.7.10]",
-        dependencies = "required-after:IC2;required-before:gregtech")
+    modid = GGConstants.MODID,
+    version = GGConstants.VERSION,
+    name = GGConstants.MODNAME,
+    guiFactory = "ggfab.GGFabGUIFactory",
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
 
     static {
@@ -72,86 +72,83 @@ public class GigaGramFab {
     public void preInit(FMLPreInitializationEvent event) {
         GregTechAPI.sAfterGTPreload.add(() -> {
             GGItemList.AdvAssLine.set(
-                    new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
-                            .getStackForm(1));
+                new MTEAdvAssLine(AdvancedAssline.ID, "ggfab.machine.adv_assline", "Advanced Assembly Line")
+                    .getStackForm(1));
             GGItemList.LinkedInputBus.set(
-                    new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
-                            .getStackForm(1));
+                new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
+                    .getStackForm(1));
 
             GGItemList.ToolCast_MV.set(
-                    new MTEBasicMachineWithRecipe(
-                            ToolCast_MV.ID,
-                            "ggfab.toolcast.tier.mv",
-                            "Basic Tool Casting Machine",
-                            2,
-                            new String[] {
-                                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                                    EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                            GGFabRecipeMaps.toolCastRecipes,
-                            1,
-                            4,
-                            32000,
-                            SoundResource.NONE,
-                            MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                            "TOOL_CAST").getStackForm(1L));
+                new MTEBasicMachineWithRecipe(
+                    ToolCast_MV.ID,
+                    "ggfab.toolcast.tier.mv",
+                    "Basic Tool Casting Machine",
+                    2,
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
+                    GGFabRecipeMaps.toolCastRecipes,
+                    1,
+                    4,
+                    32000,
+                    SoundResource.NONE,
+                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                    "TOOL_CAST").getStackForm(1L));
 
             GGItemList.ToolCast_HV.set(
-                    new MTEBasicMachineWithRecipe(
-                            ToolCast_HV.ID,
-                            "ggfab.toolcast.tier.hv",
-                            "Advanced Tool Casting Machine",
-                            3,
-                            new String[] {
-                                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                                    EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                            GGFabRecipeMaps.toolCastRecipes,
-                            1,
-                            4,
-                            64000,
-                            SoundResource.NONE,
-                            MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                            "TOOL_CAST").getStackForm(1L));
+                new MTEBasicMachineWithRecipe(
+                    ToolCast_HV.ID,
+                    "ggfab.toolcast.tier.hv",
+                    "Advanced Tool Casting Machine",
+                    3,
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
+                    GGFabRecipeMaps.toolCastRecipes,
+                    1,
+                    4,
+                    64000,
+                    SoundResource.NONE,
+                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                    "TOOL_CAST").getStackForm(1L));
 
             GGItemList.ToolCast_EV.set(
-                    new MTEBasicMachineWithRecipe(
-                            ToolCast_EV.ID,
-                            "ggfab.toolcast.tier.ev",
-                            "Master Tool Casting Machine",
-                            4,
-                            new String[] {
-                                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                                    EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                            GGFabRecipeMaps.toolCastRecipes,
-                            1,
-                            4,
-                            128000,
-                            SoundResource.NONE,
-                            MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                            "TOOL_CAST").getStackForm(1L));
+                new MTEBasicMachineWithRecipe(
+                    ToolCast_EV.ID,
+                    "ggfab.toolcast.tier.ev",
+                    "Master Tool Casting Machine",
+                    4,
+                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
+                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
+                    GGFabRecipeMaps.toolCastRecipes,
+                    1,
+                    4,
+                    128000,
+                    SoundResource.NONE,
+                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                    "TOOL_CAST").getStackForm(1L));
 
             long plate = OrePrefixes.plate.mMaterialAmount, ingot = OrePrefixes.ingot.mMaterialAmount,
-                    screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
+                screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
             GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
             GigaGramFabAPI
-                    .addSingleUseToolType(craftingToolWrench, INSTANCE.mToolStats.get((short) WRENCH.ID), 6 * ingot);
+                .addSingleUseToolType(craftingToolWrench, INSTANCE.mToolStats.get((short) WRENCH.ID), 6 * ingot);
             GigaGramFabAPI
-                    .addSingleUseToolType(craftingToolCrowbar, INSTANCE.mToolStats.get((short) CROWBAR.ID), 3 * rod);
+                .addSingleUseToolType(craftingToolCrowbar, INSTANCE.mToolStats.get((short) CROWBAR.ID), 3 * rod);
             GigaGramFabAPI.addSingleUseToolType(
-                    craftingToolWireCutter,
-                    INSTANCE.mToolStats.get((short) WIRECUTTER.ID),
-                    3 * plate + 2 * rod + screw);
+                craftingToolWireCutter,
+                INSTANCE.mToolStats.get((short) WIRECUTTER.ID),
+                3 * plate + 2 * rod + screw);
             GigaGramFabAPI.addSingleUseToolType(
-                    craftingToolHardHammer,
-                    INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
-                    6 * ingot);
+                craftingToolHardHammer,
+                INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
+                6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
-                    craftingToolSoftMallet,
-                    INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
-                    6 * ingot);
+                craftingToolSoftMallet,
+                INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
+                6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
-                    craftingToolScrewdriver,
-                    INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),
-                    2 * rod);
+                craftingToolScrewdriver,
+                INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),
+                2 * rod);
             GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
 
         });
@@ -172,12 +169,12 @@ public class GigaGramFab {
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {
             GGItemList tool = singleUseTool.tool;
             tool.set(
-                    i1.addItem(
-                            singleUseTool.toolID,
-                            GGUtils.processSentence(tool.name(), ' ', true, true),
-                            null,
-                            tool,
-                            singleUseTool.toolDictName.name()));
+                i1.addItem(
+                    singleUseTool.toolID,
+                    GGUtils.processSentence(tool.name(), ' ', true, true),
+                    null,
+                    tool,
+                    singleUseTool.toolDictName.name()));
 
             GGItemList mold = singleUseTool.mold;
             String moldLabel = "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true);

@@ -24,7 +24,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     }
 
     public MTERocketFuelGenerator(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.mEfficiency = getEfficiency();
     }
@@ -66,60 +66,60 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], this.getCasingTexture(),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent) };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-                TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_Off) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_Off) };
     }
 
     @Override
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal) };
     }
 
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], this.getCasingTexture(),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast) };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-                TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-                TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_On) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_On) };
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active) };
     }
 }

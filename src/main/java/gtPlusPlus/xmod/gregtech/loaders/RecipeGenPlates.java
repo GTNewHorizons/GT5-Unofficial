@@ -57,87 +57,118 @@ public class RecipeGenPlates extends RecipeGenBase {
 
         // Forge Hammer
         if (ingotStackTwo != null && plate_Single != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackThree).itemOutputs(plate_SingleTwo)
-                    .duration(Math.max(material.getMass(), 1L)).eut(material.vVoltageMultiplier).addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackThree)
+                .itemOutputs(plate_SingleTwo)
+                .duration(Math.max(material.getMass(), 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(hammerRecipes);
 
             Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Bender
         if (ingotStackOne != null && plate_Single != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(1))
-                    .itemOutputs(plate_Single).duration(Math.max(material.getMass() * 1L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(plate_Single)
+                .duration(Math.max(material.getMass() * 1L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (ingotStackOne != null && foil_SingleFour != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(10))
-                    .itemOutputs(foil_SingleFour).duration(Math.max(material.getMass() * 2L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(10))
+                .itemOutputs(foil_SingleFour)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Alloy Smelter
         if (ingotStackTwo != null && plate_Single != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackTwo, shape_Mold).itemOutputs(plate_Single)
-                    .duration(Math.max(material.getMass() * 2L, 1L)).eut(material.vVoltageMultiplier)
-                    .addTo(alloySmelterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackTwo, shape_Mold)
+                .itemOutputs(plate_Single)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(alloySmelterRecipes);
 
             Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
         }
         // Cutting Machine
         if (block != null && plate_Single != null) {
-            GTValues.RA.stdBuilder().itemInputs(block).itemOutputs(plate_SingleNine)
-                    .duration(Math.max(material.getMass() * 10L, 1L)).eut(material.vVoltageMultiplier)
-                    .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(block)
+                .itemOutputs(plate_SingleNine)
+                .duration(Math.max(material.getMass() * 10L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(cutterRecipes);
 
             Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Making Double Plates
         if (ingotStackTwo != null && plate_Double != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackTwo, GTUtility.getIntegratedCircuit(2))
-                    .itemOutputs(plate_Double).duration(Math.max(material.getMass() * 2L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackTwo, GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(plate_Double)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (plate_SingleTwo != null && plate_Double != null) {
-            GTValues.RA.stdBuilder().itemInputs(plate_SingleTwo, GTUtility.getIntegratedCircuit(2))
-                    .itemOutputs(plate_Double).duration(Math.max(material.getMass() * 2L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(plate_SingleTwo, GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(plate_Double)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Bender
         if (material.getPlate(1) != null && material.getFoil(1) != null) {
-            GTValues.RA.stdBuilder().itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
-                    .itemOutputs(material.getFoil(4)).duration(Math.max(material.getMass(), 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(material.getFoil(4))
+                .duration(Math.max(material.getMass(), 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(
-                    material.getFoil(1),
-                    TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA(), false));
+                material.getFoil(1),
+                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA(), false));
             Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Making Dense Plates
         if (ingotStackNine != null && plate_Dense != null) {
-            GTValues.RA.stdBuilder().itemInputs(ingotStackNine, GTUtility.getIntegratedCircuit(9))
-                    .itemOutputs(plate_Dense).duration(Math.max(material.getMass() * 2L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ingotStackNine, GTUtility.getIntegratedCircuit(9))
+                .itemOutputs(plate_Dense)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (plate_SingleNine != null && plate_Dense != null) {
-            GTValues.RA.stdBuilder().itemInputs(plate_SingleNine, GTUtility.getIntegratedCircuit(9))
-                    .itemOutputs(plate_Dense).duration(Math.max(material.getMass() * 2L, 1L))
-                    .eut(material.vVoltageMultiplier).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(plate_SingleNine, GTUtility.getIntegratedCircuit(9))
+                .itemOutputs(plate_Dense)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }

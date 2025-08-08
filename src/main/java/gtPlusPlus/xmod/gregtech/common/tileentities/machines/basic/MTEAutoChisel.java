@@ -31,39 +31,62 @@ public class MTEAutoChisel extends MTEBasicMachine {
 
     public MTEAutoChisel(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Chisels things, Gregtech style",
-                1,
-                1,
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_SIDE_MASSFAB_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW).glow()
-                                .build()),
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active),
-                        TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_MatterFab_Active_Glow).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(TexturesGtBlock.Overlay_MatterFab),
-                        TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_MatterFab_Glow).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB),
-                        TextureFactory.builder().addIcon(BlockIcons.OVERLAY_BOTTOM_MASSFAB_GLOW).glow().build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Chisels things, Gregtech style",
+            1,
+            1,
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_SIDE_MASSFAB_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active_Glow)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(TexturesGtBlock.Overlay_MatterFab),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Glow)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(BlockIcons.OVERLAY_BOTTOM_MASSFAB_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public MTEAutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -78,10 +101,10 @@ public class MTEAutoChisel extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "What you want to chisel goes in slot 1",
-                "What you want to get goes in the special slot (bottom right)",
-                "If special slot is empty, first chisel result is used");
+            this.mDescriptionArray,
+            "What you want to chisel goes in slot 1",
+            "What you want to get goes in the special slot (bottom right)",
+            "If special slot is empty, first chisel result is used");
     }
 
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
@@ -105,9 +128,9 @@ public class MTEAutoChisel extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return hasValidCache(aStack, this.getSpecialSlot(), false)
-                || super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
+            || super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
@@ -177,22 +200,24 @@ public class MTEAutoChisel extends MTEBasicMachine {
     }
 
     private static final FallbackableUITexture progressBarTexture = GTUITextures
-            .fallbackableProgressbar("auto_chisel", GTUITextures.PROGRESSBAR_COMPRESS);
+        .fallbackableProgressbar("auto_chisel", GTUITextures.PROGRESSBAR_COMPRESS);
 
     @Override
     protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder().progressBarTexture(progressBarTexture).build();
+        return super.getUIProperties().toBuilder()
+            .progressBarTexture(progressBarTexture)
+            .build();
     }
 
     @Override
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
-                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_COMPRESSOR);
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_COMPRESSOR);
     }
 
     @Override
     protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
         return (SlotWidget) super.createSpecialSlot(backgrounds, pos, uiProperties)
-                .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
+            .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
     }
 }

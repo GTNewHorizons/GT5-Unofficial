@@ -56,36 +56,34 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeChemicalReactor>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTELargeChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTELargeChemicalReactor>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] {
-                                    { "ccc", "cxc", "ccc" }, { "c~c", "xPx", "cxc" }, { "ccc", "cxc", "ccc" }, }))
-            .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
-            .addElement(
-                    'c',
-                    buildHatchAdder(MTELargeChemicalReactor.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
-                                    onElementPass(
-                                            MTELargeChemicalReactor::onCasingAdded,
-                                            ofBlock(GregTechAPI.sBlockCasings8, 0))))
-            .addElement(
-                    'x',
-                    buildHatchAdder(MTELargeChemicalReactor.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
-                                    activeCoils(CoilStructureElement.INSTANCE),
-                                    onElementPass(
-                                            MTELargeChemicalReactor::onCasingAdded,
-                                            ofBlock(GregTechAPI.sBlockCasings8, 0))))
-            .build();
+        .<MTELargeChemicalReactor>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(new String[][] { { "ccc", "cxc", "ccc" }, { "c~c", "xPx", "cxc" }, { "ccc", "cxc", "ccc" }, }))
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement(
+            'c',
+            buildHatchAdder(MTELargeChemicalReactor.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
+        .addElement(
+            'x',
+            buildHatchAdder(MTELargeChemicalReactor.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(
+                    activeCoils(CoilStructureElement.INSTANCE),
+                    onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
+        .build();
 
     private int mCasingAmount;
     private int mCoilAmount;
@@ -106,33 +104,50 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, LCR").addInfo("Accepts fluids instead of fluid cells").addPerfectOCInfo()
-                .beginStructureBlock(3, 3, 3, false).addController("Front center")
-                .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
-                .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
-                        "Adjacent to the PTFE Pipe Machine Casing",
-                        1)
-                .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2)
-                .addInputBus("Any casing", 1, 2).addInputHatch("Any casing", 1, 2).addOutputBus("Any casing", 1, 2)
-                .addOutputHatch("Any casing", 1, 2).addStructureInfo("You can have multiple hatches/buses")
-                .toolTipFinisher();
+        tt.addMachineType("Chemical Reactor, LCR")
+            .addInfo("Accepts fluids instead of fluid cells")
+            .addPerfectOCInfo()
+            .beginStructureBlock(3, 3, 3, false)
+            .addController("Front center")
+            .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
+            .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
+                "Adjacent to the PTFE Pipe Machine Casing",
+                1)
+            .addEnergyHatch("Any casing", 1, 2)
+            .addMaintenanceHatch("Any casing", 1, 2)
+            .addInputBus("Any casing", 1, 2)
+            .addInputHatch("Any casing", 1, 2)
+            .addOutputBus("Any casing", 1, 2)
+            .addOutputHatch("Any casing", 1, 2)
+            .addStructureInfo("You can have multiple hatches/buses")
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
-            return new ITexture[] { casingTexturePages[1][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[1][48] };
     }
@@ -166,9 +181,9 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         mCasingAmount = 0;
         mCoilAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 8
-                && mCoilAmount == 1
-                && !mEnergyHatches.isEmpty()
-                && mMaintenanceHatches.size() == 1;
+            && mCoilAmount == 1
+            && !mEnergyHatches.isEmpty()
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -197,7 +212,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         public boolean check(MTELargeChemicalReactor t, World world, int x, int y, int z) {
             Block block = world.getBlock(x, y, z);
             if (block instanceof IHeatingCoil
-                    && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None) {
+                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None) {
                 return t.mCoilAmount++ == 0;
             } else {
                 return false;
@@ -208,7 +223,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         public boolean couldBeValid(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
             Block block = world.getBlock(x, y, z);
             return block instanceof IHeatingCoil
-                    && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None;
+                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None;
         }
 
         @Override
@@ -227,38 +242,40 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
 
         @Override
         public PlaceResult survivalPlaceBlock(MTELargeChemicalReactor t, World world, int x, int y, int z,
-                ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
             return survivalPlaceBlock(t, world, x, y, z, trigger, AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
         }
 
         @Override
         public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor largeChemicalReactor, World world, int x, int y,
-                int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            int z, ItemStack trigger, AutoPlaceEnvironment env) {
             return BlocksToPlace.create(
-                    IntStream.range(0, 8).mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))
-                            .collect(Collectors.toList()));
+                IntStream.range(0, 8)
+                    .mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))
+                    .collect(Collectors.toList()));
         }
 
         @Override
         public PlaceResult survivalPlaceBlock(MTELargeChemicalReactor t, World world, int x, int y, int z,
-                ItemStack trigger, AutoPlaceEnvironment env) {
+            ItemStack trigger, AutoPlaceEnvironment env) {
             if (t.mCoilAmount > 0) return PlaceResult.SKIP;
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
-            ItemStack result = env.getSource().takeOne(ItemStackPredicate.from(GregTechAPI.sBlockCasings5), true);
+            ItemStack result = env.getSource()
+                .takeOne(ItemStackPredicate.from(GregTechAPI.sBlockCasings5), true);
             if (result == null) return PlaceResult.REJECT;
             PlaceResult ret = StructureUtility.survivalPlaceBlock(
-                    result,
-                    ItemStackPredicate.NBTMode.EXACT,
-                    null,
-                    true,
-                    world,
-                    x,
-                    y,
-                    z,
-                    env.getSource(),
-                    env.getActor(),
-                    env.getChatter());
+                result,
+                ItemStackPredicate.NBTMode.EXACT,
+                null,
+                true,
+                world,
+                x,
+                y,
+                z,
+                env.getSource(),
+                env.getActor(),
+                env.getChatter());
             if (ret == PlaceResult.ACCEPT) t.mCoilAmount++;
             return ret;
         }
@@ -271,7 +288,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

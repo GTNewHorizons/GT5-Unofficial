@@ -51,7 +51,7 @@ public class BorosilicateGlass {
     }
 
     private static void doRegister(byte level, @NotNull Block block, int meta,
-            @NotNull SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
+        @NotNull SetMultimap<Byte, Pair<Block, Integer>> allLevels) {
         allLevels.put(level, Pair.of(block, meta));
         allLevelsReverse.put(block, meta, level);
     }
@@ -85,7 +85,10 @@ public class BorosilicateGlass {
             SetMultimap<Byte, Pair<Block, Integer>> allLevels = getAllLevels();
             ArrayList<Pair<Block, Integer>> ret = new ArrayList<>();
             for (Byte level : new PriorityQueue<>(allLevels.keySet())) {
-                ret.add(allLevels.get(level).iterator().next());
+                ret.add(
+                    allLevels.get(level)
+                        .iterator()
+                        .next());
             }
             representatives = ret;
         }
@@ -112,10 +115,10 @@ public class BorosilicateGlass {
      * Can only be called at INIT stage.
      */
     public static void registerGlass(@NotNull Block block, int meta, byte tier) {
-        if (Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
-            throw new IllegalStateException("register too late!");
-        if (!Loader.instance().hasReachedState(LoaderState.INITIALIZATION))
-            throw new IllegalStateException("register too early!");
+        if (Loader.instance()
+            .hasReachedState(LoaderState.POSTINITIALIZATION)) throw new IllegalStateException("register too late!");
+        if (!Loader.instance()
+            .hasReachedState(LoaderState.INITIALIZATION)) throw new IllegalStateException("register too early!");
         if (!isValidTier(tier)) throw new IllegalArgumentException("not a valid tier: " + tier);
         doRegister(tier, block, meta, getAllLevels());
     }
@@ -167,9 +170,9 @@ public class BorosilicateGlass {
      */
     @Deprecated
     public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, @NotNull BiConsumer<T, Byte> setter,
-            @NotNull Function<T, Byte> getter) {
+        @NotNull Function<T, Byte> getter) {
         return lazy(
-                t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
+            t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
     }
 
     /**
@@ -181,16 +184,18 @@ public class BorosilicateGlass {
      * @param maxTier      maximal accepted tier. inclusive.
      */
     public static <T> @NotNull IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier,
-            @NotNull BiConsumer<T, Byte> setter, @NotNull Function<T, Byte> getter) {
+        @NotNull BiConsumer<T, Byte> setter, @NotNull Function<T, Byte> getter) {
         if (minTier > maxTier || minTier < 0) throw new IllegalArgumentException();
         return lazy(
-                t -> ofBlocksTiered(
-                        (block1, meta) -> checkWithinBound(getTier(block1, meta), minTier, maxTier),
-                        getRepresentatives().stream().skip(Math.max(minTier - 3, 0)).limit(maxTier - minTier + 1)
-                                .collect(Collectors.toList()),
-                        initialValue,
-                        setter,
-                        getter));
+            t -> ofBlocksTiered(
+                (block1, meta) -> checkWithinBound(getTier(block1, meta), minTier, maxTier),
+                getRepresentatives().stream()
+                    .skip(Math.max(minTier - 3, 0))
+                    .limit(maxTier - minTier + 1)
+                    .collect(Collectors.toList()),
+                initialValue,
+                setter,
+                getter));
     }
 
     /**

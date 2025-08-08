@@ -33,8 +33,8 @@ public class BaseItemColourable extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
      */
     public BaseItemColourable(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-            final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
-            final boolean Effect, int rgb) {
+        final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
+        final boolean Effect, int rgb) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -54,8 +54,8 @@ public class BaseItemColourable extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
      */
     public BaseItemColourable(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab,
-            final int stackSize, final int maxDmg, final String description, final EnumRarity regRarity,
-            final EnumChatFormatting colour, final boolean Effect, int rgb) {
+        final int stackSize, final int maxDmg, final String description, final EnumRarity regRarity,
+        final EnumChatFormatting colour, final boolean Effect, int rgb) {
         this.setUnlocalizedName(unlocalizedName);
         GTLanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".name", displayName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
@@ -74,8 +74,7 @@ public class BaseItemColourable extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
-                this.descColour
-                        + GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip"));
+            this.descColour + GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip"));
         // super.addInformation(stack, aPlayer, list, bool);
     }
 
@@ -93,7 +92,7 @@ public class BaseItemColourable extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         if (!("gtplusplus." + this.getUnlocalizedName() + ".name")
-                .equals(GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".name"))) {
+            .equals(GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".name"))) {
             return GTLanguageManager.getTranslation("gtplusplus." + this.getUnlocalizedName() + ".name");
         } else return super.getItemStackDisplayName(tItem);
     }

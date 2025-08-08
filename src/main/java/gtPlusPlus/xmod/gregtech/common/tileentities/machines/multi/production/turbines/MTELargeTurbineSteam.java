@@ -73,7 +73,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = getSpeedMultiplier()
-                * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
+            * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to
         // use up to
@@ -86,7 +86,9 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
                                                                         // track totals.
-            String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
+            String fluidName = aFluids.get(i)
+                .getFluid()
+                .getUnlocalizedName(aFluids.get(i));
             switch (fluidName) {
                 case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> {
                     if (!hasConsumedSteam) {
@@ -102,9 +104,12 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
                     totalFlow += flow; // track total input used
                     if (!achievement) {
                         GTMod.achievements.issueAchievement(
-                                this.getBaseMetaTileEntity().getWorld()
-                                        .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
-                                "muchsteam");
+                            this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .getPlayerEntityByName(
+                                    this.getBaseMetaTileEntity()
+                                        .getOwnerName()),
+                            "muchsteam");
                         achievement = true;
                     }
                 }
@@ -143,13 +148,12 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
             tEU = Math.max(
-                    1,
-                    MathUtils.safeInt(
-                            (long) (tEU
-                                    * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
+                1,
+                MathUtils.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         } else {
-            tEU = MathUtils.safeInt(
-                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
+            tEU = MathUtils
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
 
         return tEU;

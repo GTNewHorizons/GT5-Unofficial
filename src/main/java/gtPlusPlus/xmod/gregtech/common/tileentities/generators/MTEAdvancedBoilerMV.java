@@ -29,19 +29,19 @@ public class MTEAdvancedBoilerMV extends MTEAdvancedBoilerBase {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(Textures.BlockIcons.BOILER_FRONT) };
+            TextureFactory.of(Textures.BlockIcons.BOILER_FRONT) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(Textures.BlockIcons.MACHINE_MV_TOP) };
+            TextureFactory.of(Textures.BlockIcons.MACHINE_MV_TOP) };
     }
 
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], this.getCasingTexture(),
-                TextureFactory.of(Textures.BlockIcons.BOILER_FRONT_ACTIVE) };
+            TextureFactory.of(Textures.BlockIcons.BOILER_FRONT_ACTIVE) };
     }
 
     @Override

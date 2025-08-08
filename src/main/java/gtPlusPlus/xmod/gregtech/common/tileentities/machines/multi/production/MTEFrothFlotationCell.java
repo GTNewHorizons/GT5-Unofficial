@@ -75,13 +75,21 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Process that milled ore!")
-                .addInfo("You can only ever process one type of material per controller").addPerfectOCInfo()
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(7, 9, 7, true)
-                .addController("Front Center").addCasingInfoMin("Inconel Reinforced Casing", 68, false)
-                .addCasingInfoMin("Flotation Casing", 52, false).addInputBus("Bottom Casing", 1)
-                .addInputHatch("Bottom Casing", 1).addOutputHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Bottom Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Process that milled ore!")
+            .addInfo("You can only ever process one type of material per controller")
+            .addPerfectOCInfo()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 9, 7, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
+            .addCasingInfoMin("Flotation Casing", 52, false)
+            .addInputBus("Bottom Casing", 1)
+            .addInputHatch("Bottom Casing", 1)
+            .addOutputHatch("Bottom Casing", 1)
+            .addEnergyHatch("Bottom Casing", 1)
+            .addMaintenanceHatch("Bottom Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -123,25 +131,28 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     @Override
     public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder()
+                .addShape(
                     mName,
                     new String[][] { { "       ", "       ", "   X   ", "  X~X  ", "   X   ", "       ", "       " },
-                            { "       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " },
-                            { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " }, })
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEFrothFlotationCell.class)
-                                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                                    .casingIndex(getCasingTextureId()).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
-                    .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
-                    .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1)).build();
+                        { "       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " },
+                        { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " }, })
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEFrothFlotationCell.class)
+                        .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                        .casingIndex(getCasingTextureId())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
+                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
+                .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -249,10 +260,13 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("lockedMaterialName")) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("lockedMaterialName")) {
             tooltip.add(
-                    StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
-                            + StatCollector.translateToLocal(stack.getTagCompound().getString("lockedMaterialName")));
+                StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
+                    + StatCollector.translateToLocal(
+                        stack.getTagCompound()
+                            .getString("lockedMaterialName")));
         }
     }
 

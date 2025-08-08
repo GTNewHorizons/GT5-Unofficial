@@ -53,25 +53,26 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
-        implements ISurvivalConstructable, ISecondaryDescribable {
+    implements ISurvivalConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
-            .<MTEDissolutionTank>builder()
-            .addShape(
-                    mName,
-                    transpose(
-                            new String[][] { { " sss ", "sssss", "sssss", "sssss", " sss " },
-                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
-                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
-                                    { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" },
-                                    { "s   s", "     ", "     ", "     ", "s   s" } }))
-            .addElement(
-                    's',
-                    buildHatchAdder(MTEDissolutionTank.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy).casingIndex(49)
-                            .dot(1).buildAndChain(GregTechAPI.sBlockCasings4, 1))
-            .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
-            .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1)).build();
+        .<MTEDissolutionTank>builder()
+        .addShape(
+            mName,
+            transpose(
+                new String[][] { { " sss ", "sssss", "sssss", "sssss", " sss " },
+                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" }, { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
+                    { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" }, { "s   s", "     ", "     ", "     ", "s   s" } }))
+        .addElement(
+            's',
+            buildHatchAdder(MTEDissolutionTank.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(49)
+                .dot(1)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+        .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .build();
 
     public MTEDissolutionTank(String name) {
         super(name);
@@ -147,8 +148,10 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         FluidStack fluidInputOne = tFluidInputs.get(0);
         FluidStack fluidInputTwo = tFluidInputs.get(1);
 
-        if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+        if (fluidInputOne.getUnlocalizedName()
+            .equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputTwo.getUnlocalizedName()
+                .equals(minorGenericFluid.getUnlocalizedName())) {
                 // majorInput = fluidInputOne;
                 majorAmount = fluidInputOne.amount;
                 // minorInput = fluidInputTwo;
@@ -156,16 +159,18 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
                 // GTLog.out.print("in first IF");
             } else return false; // No valid other input
 
-        } else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
-                // majorInput = fluidInputTwo;
-                majorAmount = fluidInputTwo.amount;
-                // minorInput = fluidInputOne;
-                minorAmount = fluidInputOne.amount;
-                // GTLog.out.print("in second if");
-            } else return false;
+        } else if (fluidInputTwo.getUnlocalizedName()
+            .equals(majorGenericFluid.getUnlocalizedName())) {
+                if (fluidInputOne.getUnlocalizedName()
+                    .equals(minorGenericFluid.getUnlocalizedName())) {
+                    // majorInput = fluidInputTwo;
+                    majorAmount = fluidInputTwo.amount;
+                    // minorInput = fluidInputOne;
+                    minorAmount = fluidInputOne.amount;
+                    // GTLog.out.print("in second if");
+                } else return false;
 
-        } else return false;
+            } else return false;
 
         return majorAmount / tRecipe.mSpecialValue == minorAmount;
     }
@@ -193,16 +198,27 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
-            boolean active, boolean redstone) {
+        boolean active, boolean redstone) {
 
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][49],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][49],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
+            if (active) return new ITexture[] { casingTexturePages[0][49], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][49], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][49] };
     }
@@ -210,13 +226,20 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Dissolution Tank").addInfo("Input Water and Fluid, output Fluid")
-                .addInfo("You must input the Fluids at the correct Ratio").beginStructureBlock(5, 5, 5, true)
-                .addController("Front bottom").addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
-                .addCasingInfoExactly("Titanium Reinforced Borosilicate Glass", 24, false)
-                .addCasingInfoExactly("Heat Proof Machine Casing", 9, false).addInputHatch("Hint block with dot 1")
-                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
-                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1").toolTipFinisher();
+        tt.addMachineType("Dissolution Tank")
+            .addInfo("Input Water and Fluid, output Fluid")
+            .addInfo("You must input the Fluids at the correct Ratio")
+            .beginStructureBlock(5, 5, 5, true)
+            .addController("Front bottom")
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
+            .addCasingInfoExactly("Titanium Reinforced Borosilicate Glass", 24, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)
+            .addInputHatch("Hint block with dot 1")
+            .addInputBus("Hint block with dot 1")
+            .addOutputHatch("Hint block with dot 1")
+            .addOutputBus("Hint block with dot 1")
+            .addMaintenanceHatch("Hint block with dot 1")
+            .toolTipFinisher();
 
         return tt;
     }

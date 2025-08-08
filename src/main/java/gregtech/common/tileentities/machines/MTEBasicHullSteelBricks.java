@@ -28,12 +28,12 @@ public class MTEBasicHullSteelBricks extends MTEBasicHullNonElectric {
         ITexture[][][] rTextures = new ITexture[3][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             ITexture[] tmp0 = {
-                    TextureFactory.of(Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM, Dyes.getModulation(i)) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM, Dyes.getModulation(i)) };
             rTextures[0][(i + 1)] = tmp0;
             ITexture[] tmp1 = { TextureFactory.of(Textures.BlockIcons.MACHINE_STEELBRICKS_TOP, Dyes.getModulation(i)) };
             rTextures[1][(i + 1)] = tmp1;
             ITexture[] tmp2 = {
-                    TextureFactory.of(Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE, Dyes.getModulation(i)) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE, Dyes.getModulation(i)) };
             rTextures[2][(i + 1)] = tmp2;
         }
         return rTextures;

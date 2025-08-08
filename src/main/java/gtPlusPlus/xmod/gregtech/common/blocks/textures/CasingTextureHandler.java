@@ -49,7 +49,7 @@ public class CasingTextureHandler {
     }
 
     public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         final int ordinalSide = side.ordinal();
         if (tMeta != 0) {

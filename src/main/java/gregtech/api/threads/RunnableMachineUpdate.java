@@ -79,8 +79,13 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     public static void initExecutorService() {
-        EXECUTOR_SERVICE = Executors
-                .newFixedThreadPool(Math.max(1, (Runtime.getRuntime().availableProcessors() * 2 / 3)), THREAD_FACTORY);
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(
+            Math.max(
+                1,
+                (Runtime.getRuntime()
+                    .availableProcessors() * 2
+                    / 3)),
+            THREAD_FACTORY);
     }
 
     public static void shutdownExecutorService() {
@@ -93,7 +98,7 @@ public class RunnableMachineUpdate implements Runnable {
                 // Wait a while for tasks to respond to being cancelled
                 if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
                     GTMod.GT_FML_LOGGER
-                            .error("Well this didn't terminated well... RunnableMachineUpdate.shutdownExecutorService");
+                        .error("Well this didn't terminated well... RunnableMachineUpdate.shutdownExecutorService");
                 }
             }
         } catch (InterruptedException ie) {
@@ -101,7 +106,8 @@ public class RunnableMachineUpdate implements Runnable {
             // (Re-)Cancel if current thread also interrupted
             EXECUTOR_SERVICE.shutdownNow();
             // Preserve interrupt status
-            Thread.currentThread().interrupt();
+            Thread.currentThread()
+                .interrupt();
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
             // (Re-)Cancel in case
@@ -132,7 +138,7 @@ public class RunnableMachineUpdate implements Runnable {
                 try {
                     tTileEntity = world.getTileEntity(posX, posY, posZ);
                     isMachineBlock = GregTechAPI
-                            .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
+                        .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
                 } finally {
                     GTMod.proxy.TICK_LOCK.unlock();
                 }
@@ -146,13 +152,13 @@ public class RunnableMachineUpdate implements Runnable {
                 // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
                 if (visited.size() < 5
-                        || (tTileEntity instanceof IMachineBlockUpdateable
-                                && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
-                        || isMachineBlock) {
+                    || (tTileEntity instanceof IMachineBlockUpdateable
+                        && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
+                    || isMachineBlock) {
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         final long tCoords = CoordinatePacker
-                                .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+                            .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
                         if (visited.add(tCoords)) {
                             tQueue.enqueue(tCoords);
                         }
@@ -161,17 +167,17 @@ public class RunnableMachineUpdate implements Runnable {
             }
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + initialX
-                            + ", "
-                            + initialY
-                            + ", "
-                            + initialZ
-                            + ", mWorld={"
-                            + world.getProviderName()
-                            + " @dimId "
-                            + world.provider.dimensionId
-                            + "}",
-                    e);
+                "Well this update was broken... " + initialX
+                    + ", "
+                    + initialY
+                    + ", "
+                    + initialZ
+                    + ", mWorld={"
+                    + world.getProviderName()
+                    + " @dimId "
+                    + world.provider.dimensionId
+                    + "}",
+                e);
         }
     }
 }

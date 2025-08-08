@@ -75,38 +75,47 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Auto Chisel")
-                .addInfo("Target block goes in Controller slot for common Input Buses")
-                .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-                .addInfo("If no target is provided for common buses, the result of the first chisel is used")
-                .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Sturdy Printer Casing", 6, false)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Auto Chisel")
+            .addInfo("Target block goes in Controller slot for common Input Buses")
+            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
+            .addInfo("If no target is provided for common buses, the result of the first chisel is used")
+            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin("Sturdy Printer Casing", 6, false)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialChisel> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChisel>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChisel>builder()
+                .addShape(
                     mName,
                     transpose(
-                            // spotless:off
+                        // spotless:off
                                     new String[][] {
                                             { "CCC", "CCC", "CCC" },
                                             { "C~C", "C-C", "CCC" },
                                             { "CCC", "CCC", "CCC" },
                                     }))
                                     // spotless:on
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialChisel.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler).casingIndex(90).dot(1)
-                                    .buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
-                    .build();
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialChisel.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(90)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -213,21 +222,21 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
                 if (mCachedRecipe != null && GTUtility.areStacksEqual(aInput, mInputCache)
-                        && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
+                    && GTUtility.areStacksEqual(tOutput, mOutputCache)) {
                     return mCachedRecipe;
                 }
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
-                        false,
-                        new ItemStack[] { GTUtility.copyAmount(1, aInput) },
-                        new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
-                        null,
-                        new int[] { 10000 },
-                        GTValues.emptyFluidStackArray,
-                        GTValues.emptyFluidStackArray,
-                        20,
-                        16,
-                        0);
+                    false,
+                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
+                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
+                    null,
+                    new int[] { 10000 },
+                    GTValues.emptyFluidStackArray,
+                    GTValues.emptyFluidStackArray,
+                    20,
+                    16,
+                    0);
 
                 // Cache it
                 cacheItem(aInput, tOutput, aRecipe);
@@ -278,7 +287,10 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 return GTStreamUtil.ofNullable(getRecipe());
             }
-        }.noRecipeCaching().setSpeedBonus(1F / 3F).setEuModifier(0.75F).setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setSpeedBonus(1F / 3F)
+            .setEuModifier(0.75F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -304,9 +316,9 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         switch (aIndex) {
             case PROCESS_START_SOUND_INDEX -> GTUtility
-                    .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
             case INTERRUPT_SOUND_INDEX -> GTUtility
-                    .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 

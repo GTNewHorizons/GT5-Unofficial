@@ -80,9 +80,9 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         try {
             beamProgram = new ShaderProgram(
-                    Reference.MODID,
-                    "shaders/gorgeBeam.vert.glsl",
-                    "shaders/gorgeBeam.frag.glsl");
+                Reference.MODID,
+                "shaders/gorgeBeam.vert.glsl",
+                "shaders/gorgeBeam.frag.glsl");
 
             u_BeamModelMatrix = beamProgram.getUniformLocation("u_ModelMatrix");
             u_CameraPosition = beamProgram.getUniformLocation("u_CameraPosition");
@@ -131,25 +131,31 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     private void initRings() {
         StructureVBO ringStructure = (new StructureVBO()).addMapping('H', BlockGodforgeGlass.INSTANCE, 0)
-                .addMapping('B', GodforgeCasings, 0).addMapping('C', GodforgeCasings, 1)
-                .addMapping('D', GodforgeCasings, 2).addMapping('E', GodforgeCasings, 3)
-                .addMapping('G', GodforgeCasings, 5).addMapping('K', GodforgeCasings, 6)
-                .addMapping('I', GodforgeCasings, 7);
+            .addMapping('B', GodforgeCasings, 0)
+            .addMapping('C', GodforgeCasings, 1)
+            .addMapping('D', GodforgeCasings, 2)
+            .addMapping('E', GodforgeCasings, 3)
+            .addMapping('G', GodforgeCasings, 5)
+            .addMapping('K', GodforgeCasings, 6)
+            .addMapping('I', GodforgeCasings, 7);
 
-        ringOne = ringStructure.assignStructure(ForgeOfGodsStructureString.FIRST_RING).build();
-        ringTwo = ringStructure.assignStructure(ForgeOfGodsRingsStructureString.SECOND_RING).build();
-        ringThree = ringStructure.assignStructure(ForgeOfGodsRingsStructureString.THIRD_RING).build();
+        ringOne = ringStructure.assignStructure(ForgeOfGodsStructureString.FIRST_RING)
+            .build();
+        ringTwo = ringStructure.assignStructure(ForgeOfGodsRingsStructureString.SECOND_RING)
+            .build();
+        ringThree = ringStructure.assignStructure(ForgeOfGodsRingsStructureString.THIRD_RING)
+            .build();
 
         fadeBypassProgram = new ShaderProgram(
-                Reference.MODID,
-                "shaders/fadebypass.vert.glsl",
-                "shaders/fadebypass.frag.glsl");
+            Reference.MODID,
+            "shaders/fadebypass.vert.glsl",
+            "shaders/fadebypass.frag.glsl");
 
         textureUpdater = ringStructure.getTextureUpdateRequestor();
     }
 
     public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
-            float degrees) {
+        float degrees) {
         starModelMatrix.pushMatrix();
         starModelMatrix.rotate((degrees / 180f * ((float) Math.PI)), rotationAxis.x, rotationAxis.y, rotationAxis.z);
         starModelMatrix.scale(size, size, size);
@@ -194,23 +200,23 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float r = tile.getColorR(), g = tile.getColorG(), b = tile.getColorB();
         GL20.glUniform1f(u_Gamma, tile.getGamma());
         RenderStarLayer(
-                new Vector4f(r, g, b, 1f),
-                STAR_LAYER_0,
-                size,
-                new Vector3f(0F, 1F, 1).normalize(),
-                130 + (timer) % 360000);
+            new Vector4f(r, g, b, 1f),
+            STAR_LAYER_0,
+            size,
+            new Vector3f(0F, 1F, 1).normalize(),
+            130 + (timer) % 360000);
         RenderStarLayer(
-                new Vector4f(r, g, b, 0.4f),
-                STAR_LAYER_1,
-                size * 1.02f,
-                new Vector3f(1F, 1F, 0F).normalize(),
-                -49 + (timer) % 360000);
+            new Vector4f(r, g, b, 0.4f),
+            STAR_LAYER_1,
+            size * 1.02f,
+            new Vector3f(1F, 1F, 0F).normalize(),
+            -49 + (timer) % 360000);
         RenderStarLayer(
-                new Vector4f(r, g, b, 0.2f),
-                STAR_LAYER_2,
-                size * 1.04f,
-                new Vector3f(1F, 0F, 1F).normalize(),
-                67 + (timer) % 360000);
+            new Vector4f(r, g, b, 0.2f),
+            STAR_LAYER_2,
+            size * 1.04f,
+            new Vector3f(1F, 0F, 1F).normalize(),
+            67 + (timer) % 360000);
 
         ShaderProgram.clear();
         GL11.glPopAttrib();
@@ -307,10 +313,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         beamModelMatrix.translate(cx, cy, cz);
 
         beamModelMatrix.rotate(
-                tile.getRotAngle() / 180 * ((float) Math.PI),
-                tile.getRotAxisX(),
-                tile.getRotAxisY(),
-                tile.getRotAxisZ());
+            tile.getRotAngle() / 180 * ((float) Math.PI),
+            tile.getRotAxisX(),
+            tile.getRotAxisY(),
+            tile.getRotAxisZ());
         beamModelMatrix.rotate((float) Math.PI / 2f, 0, 1, 0);
 
         beamProgram.use();
@@ -329,10 +335,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         beamModelMatrix.invert();
 
         Vector4f cameraPosition = new Vector4f(
-                ActiveRenderInfo.objectX,
-                ActiveRenderInfo.objectY,
-                ActiveRenderInfo.objectZ,
-                1);
+            ActiveRenderInfo.objectX,
+            ActiveRenderInfo.objectY,
+            ActiveRenderInfo.objectZ,
+            1);
         cameraPosition = beamModelMatrix.transform(cameraPosition);
         GL20.glUniform3f(u_CameraPosition, cameraPosition.x, cameraPosition.y, cameraPosition.z);
         GL20.glUniform3f(u_BeamColor, tile.getColorR(), tile.getColorG(), tile.getColorB());

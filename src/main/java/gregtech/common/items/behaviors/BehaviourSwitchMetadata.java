@@ -42,7 +42,7 @@ public class BehaviourSwitchMetadata extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
+        int aY, int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
             if (mCheckTarget) {
                 Block aBlock = aWorld.blockExists(aX, aY, aZ) ? aWorld.getBlock(aX, aY, aZ) : Blocks.air;

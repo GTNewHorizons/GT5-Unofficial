@@ -65,7 +65,7 @@ public class GTDamageSources {
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
             return new ChatComponentText(
-                    EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
         }
     }
 
@@ -80,9 +80,9 @@ public class GTDamageSources {
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
             return new ChatComponentText(
-                    EnumChatFormatting.RED + aTarget.getCommandSenderName()
-                            + EnumChatFormatting.WHITE
-                            + " was boiled alive");
+                EnumChatFormatting.RED + aTarget.getCommandSenderName()
+                    + EnumChatFormatting.WHITE
+                    + " was boiled alive");
         }
     }
 
@@ -113,7 +113,7 @@ public class GTDamageSources {
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
             return new ChatComponentText(
-                    EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
+                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
         }
     }
 }

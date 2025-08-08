@@ -68,7 +68,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * @return New builder object.
      */
     public static <B extends RecipeMapBackend> RecipeMapBuilder<B> of(String unlocalizedName,
-            RecipeMapBackend.BackendCreator<B> backendCreator) {
+        RecipeMapBackend.BackendCreator<B> backendCreator) {
         return new RecipeMapBuilder<>(unlocalizedName, backendCreator);
     }
 
@@ -87,9 +87,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         this.unlocalizedName = unlocalizedName;
         this.backendCreator = backendCreator;
         this.uiPropertiesBuilder = BasicUIProperties.builder()
-                .progressBarTexture(
-                        GTUITextures.fallbackableProgressbar(unlocalizedName, GTUITextures.PROGRESSBAR_ARROW))
-                .neiTransferRectId(unlocalizedName);
+            .progressBarTexture(GTUITextures.fallbackableProgressbar(unlocalizedName, GTUITextures.PROGRESSBAR_ARROW))
+            .neiTransferRectId(unlocalizedName);
     }
 
     // region backend
@@ -98,7 +97,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Sets minimum amount of inputs required for the recipes.
      */
     public RecipeMapBuilder<B> minInputs(int minItemInputs, int minFluidInputs) {
-        backendPropertiesBuilder.minItemInputs(minItemInputs).minFluidInputs(minFluidInputs);
+        backendPropertiesBuilder.minItemInputs(minItemInputs)
+            .minFluidInputs(minFluidInputs);
         return this;
     }
 
@@ -123,7 +123,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Changes how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
      */
     public RecipeMapBuilder<B> recipeEmitter(
-            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
+        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         backendPropertiesBuilder.recipeEmitter(recipeEmitter);
         return this;
     }
@@ -134,7 +134,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      */
     public RecipeMapBuilder<B> recipeEmitterSingle(
-            Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
+        Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
         return recipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -146,7 +146,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitter(
-            Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
+        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         backendPropertiesBuilder.combineRecipeEmitter(recipeEmitter);
         return this;
     }
@@ -160,7 +160,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unlike {@link #recipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
      */
     public RecipeMapBuilder<B> combineRecipeEmitterSingle(
-            Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
+        Function<? super GTRecipeBuilder, ? extends GTRecipe> recipeEmitter) {
         return combineRecipeEmitter(recipeEmitter.andThen(Collections::singletonList));
     }
 
@@ -183,8 +183,10 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * the number of items that can be used in recipes.
      */
     public RecipeMapBuilder<B> maxIO(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs) {
-        uiPropertiesBuilder.maxItemInputs(maxItemInputs).maxItemOutputs(maxItemOutputs).maxFluidInputs(maxFluidInputs)
-                .maxFluidOutputs(maxFluidOutputs);
+        uiPropertiesBuilder.maxItemInputs(maxItemInputs)
+            .maxItemOutputs(maxItemOutputs)
+            .maxFluidInputs(maxFluidInputs)
+            .maxFluidOutputs(maxFluidOutputs);
         return this;
     }
 
@@ -231,8 +233,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * unique textures, yet other packs don't need to make textures for every recipemap.
      */
     private RecipeMapBuilder<B> progressBarWithFallback(FallbackableUITexture texture,
-            ProgressBar.Direction direction) {
-        uiPropertiesBuilder.progressBarTexture(texture).progressBarDirection(direction);
+        ProgressBar.Direction direction) {
+        uiPropertiesBuilder.progressBarTexture(texture)
+            .progressBarDirection(direction);
         return this;
     }
 
@@ -244,9 +247,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> progressBarSteam(SteamTexture texture) {
         return progressBarSteamWithFallback(
-                new FallbackableSteamTexture(
-                        SteamTexture.fullImage(GregTech.ID, "gui/progressbar/" + unlocalizedName + "_%s"),
-                        texture));
+            new FallbackableSteamTexture(
+                SteamTexture.fullImage(GregTech.ID, "gui/progressbar/" + unlocalizedName + "_%s"),
+                texture));
     }
 
     private RecipeMapBuilder<B> progressBarSteamWithFallback(FallbackableSteamTexture texture) {
@@ -494,9 +497,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMap<B> build() {
         return new RecipeMap<>(
-                unlocalizedName,
-                backendCreator.create(backendPropertiesBuilder),
-                frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
+            unlocalizedName,
+            backendCreator.create(backendPropertiesBuilder),
+            frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
     }
 
     private static <T> Function<? super T, ? extends T> withIdentityReturn(Consumer<T> func) {

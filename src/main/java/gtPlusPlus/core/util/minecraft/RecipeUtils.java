@@ -33,32 +33,31 @@ public class RecipeUtils {
     public static int mInvalidID = 1;
 
     public static void recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4,
-            final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9,
-            ItemStack resultItem) {
+        final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9,
+        ItemStack resultItem) {
 
         if (resultItem == null) {
             Logger.RECIPE(
-                    "[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+                "[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
             resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
             resultItem.setItemDamage(mInvalidID++);
             RegistrationHandler.recipesFailed++;
 
         } else if ((slot_1 == null) && (slot_2 == null)
-                && (slot_3 == null)
-                && (slot_4 == null)
-                && (slot_5 == null)
-                && (slot_6 == null)
-                && (slot_7 == null)
-                && (slot_8 == null)
-                && (slot_9 == null)) {
-                    Logger.RECIPE("[Fix] Found a recipe with 0 inputs, yet had a valid output.");
-                    Logger.RECIPE(
-                            "[Fix] Error found while adding a recipe for: " + resultItem != null
-                                    ? resultItem.getDisplayName()
-                                    : "Bad Output Item" + " | Please report this issue on Github.");
-                    RegistrationHandler.recipesFailed++;
-                    return;
-                }
+            && (slot_3 == null)
+            && (slot_4 == null)
+            && (slot_5 == null)
+            && (slot_6 == null)
+            && (slot_7 == null)
+            && (slot_8 == null)
+            && (slot_9 == null)) {
+                Logger.RECIPE("[Fix] Found a recipe with 0 inputs, yet had a valid output.");
+                Logger.RECIPE(
+                    "[Fix] Error found while adding a recipe for: " + resultItem != null ? resultItem.getDisplayName()
+                        : "Bad Output Item" + " | Please report this issue on Github.");
+                RegistrationHandler.recipesFailed++;
+                return;
+            }
 
         Object[] o = new Object[] { slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9 };
 
@@ -75,8 +74,8 @@ public class RecipeUtils {
             }
         } catch (RuntimeException k) {
             Logger.RECIPE(
-                    "[Fix] Invalid Recipe detected for: " + resultItem != null ? resultItem.getUnlocalizedName()
-                            : "INVALID OUTPUT ITEM");
+                "[Fix] Invalid Recipe detected for: " + resultItem != null ? resultItem.getUnlocalizedName()
+                    : "INVALID OUTPUT ITEM");
             if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesFailed++;
             } else {
@@ -86,18 +85,18 @@ public class RecipeUtils {
     }
 
     public static boolean addShapedGregtechRecipe(final Object InputItem1, final Object InputItem2,
-            final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
-            final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
+        final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
+        final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
 
         Object[] o = { InputItem1, InputItem2, InputItem3, InputItem4, InputItem5, InputItem6, InputItem7, InputItem8,
-                InputItem9 };
+            InputItem9 };
 
         if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
             Logger.ERROR(
-                    "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
-                            + " should be "
-                            + GTplusplus.INIT_PHASE.POST_INIT
-                            + ". Unable to register recipe.");
+                "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
+                    + " should be "
+                    + GTplusplus.INIT_PHASE.POST_INIT
+                    + ". Unable to register recipe.");
             throw new IllegalStateException();
         }
 
@@ -120,8 +119,8 @@ public class RecipeUtils {
         if (inputItems.length > 9 || inputItems.length < 1) {
             if (OutputItem != null) {
                 Logger.RECIPE(
-                        "[Fix] Invalid input array for shapeless recipe, which should output "
-                                + OutputItem.getDisplayName());
+                    "[Fix] Invalid input array for shapeless recipe, which should output "
+                        + OutputItem.getDisplayName());
             }
             return false;
         }
@@ -152,7 +151,9 @@ public class RecipeUtils {
                 } else if (o == null) {
                     aFiltered[aValid++] = null;
                 } else {
-                    Logger.RECIPE("Cleaned a " + o.getClass().getSimpleName() + " from recipe input.");
+                    Logger.RECIPE(
+                        "Cleaned a " + o.getClass()
+                            .getSimpleName() + " from recipe input.");
                 }
             }
 
@@ -185,8 +186,8 @@ public class RecipeUtils {
                 GameRegistry.addRecipe(mRecipe);
             } else {
                 Logger.RECIPE(
-                        "[Fix] Invalid shapped recipe outputting "
-                                + (mOutput != null ? mOutput.getDisplayName() : "Bad Output Item"));
+                    "[Fix] Invalid shapped recipe outputting "
+                        + (mOutput != null ? mOutput.getDisplayName() : "Bad Output Item"));
             }
         }
 
@@ -204,26 +205,31 @@ public class RecipeUtils {
     }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput, boolean aIgnoreNBT,
-            boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
+        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
         if (aOutput == null) {
             return false;
         } else {
             boolean rReturn = false;
-            ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance().getRecipeList();
+            ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
+                .getRecipeList();
             aOutput = GTOreDictUnificator.get(aOutput);
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
                 IRecipe tRecipe = tList.get(i);
                 if (!aNotRemoveShapelessRecipes
-                        || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
+                    || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
-                        if (!GTModHandler.sNativeRecipeClasses.contains(tRecipe.getClass().getName())) {
+                        if (!GTModHandler.sNativeRecipeClasses.contains(
+                            tRecipe.getClass()
+                                .getName())) {
                             continue;
                         }
-                    } else if (GTModHandler.sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) {
-                        continue;
-                    }
+                    } else if (GTModHandler.sSpecialRecipeClasses.contains(
+                        tRecipe.getClass()
+                            .getName())) {
+                                continue;
+                            }
 
                     ItemStack tStack = tRecipe.getRecipeOutput();
                     if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
@@ -244,10 +250,10 @@ public class RecipeUtils {
     }
 
     public static boolean addShapedRecipe(Object Input_1, Object Input_2, Object Input_3, Object Input_4,
-            Object Input_5, Object Input_6, Object Input_7, Object Input_8, Object Input_9, ItemStack aOutputStack) {
+        Object Input_5, Object Input_6, Object Input_7, Object Input_8, Object Input_9, ItemStack aOutputStack) {
         return addShapedRecipe(
-                new Object[] { Input_1, Input_2, Input_3, Input_4, Input_5, Input_6, Input_7, Input_8, Input_9 },
-                aOutputStack);
+            new Object[] { Input_1, Input_2, Input_3, Input_4, Input_5, Input_6, Input_7, Input_8, Input_9 },
+            aOutputStack);
     }
 
     private static boolean addShapedRecipe(Object[] Inputs, ItemStack aOutputStack) {
@@ -280,7 +286,9 @@ public class RecipeUtils {
                 aFullString.append(" ");
             } else {
                 Slots[i] = null;
-                Logger.INFO("Cleaned a " + o.getClass().getSimpleName() + " from recipe input.");
+                Logger.INFO(
+                    "Cleaned a " + o.getClass()
+                        .getSimpleName() + " from recipe input.");
                 Logger.INFO("ERROR");
             }
         }
@@ -306,12 +314,12 @@ public class RecipeUtils {
                 aDataObject[u] = aFullString.charAt(aIndex);
                 aDataObject[u + 1] = Slots[aIndex];
                 Logger.INFO(
-                        "(" + aIndex
-                                + ") "
-                                + aFullString.charAt(aIndex)
-                                + " | "
-                                + (Slots[aIndex] instanceof ItemStack ? ItemUtils.getItemName((ItemStack) Slots[aIndex])
-                                        : Slots[aIndex] instanceof String ? (String) Slots[aIndex] : "Unknown"));
+                    "(" + aIndex
+                        + ") "
+                        + aFullString.charAt(aIndex)
+                        + " | "
+                        + (Slots[aIndex] instanceof ItemStack ? ItemUtils.getItemName((ItemStack) Slots[aIndex])
+                            : Slots[aIndex] instanceof String ? (String) Slots[aIndex] : "Unknown"));
             }
             aIndex++;
         }
@@ -356,8 +364,8 @@ public class RecipeUtils {
                 GameRegistry.addRecipe(mRecipe);
             } else {
                 Logger.INFO(
-                        "[Fix] Invalid shapped recipe outputting " + mOutput != null ? mOutput.getDisplayName()
-                                : "Bad Output Item");
+                    "[Fix] Invalid shapped recipe outputting " + mOutput != null ? mOutput.getDisplayName()
+                        : "Bad Output Item");
             }
         }
 

@@ -32,7 +32,9 @@ public class TetherLineRenderer {
     public static void addTetherLineRenderer(int x, int y, int z) {
         if (!Client.render.renderMagLevTethers) return;
         TetherLineRenderer handler = new TetherLineRenderer(x, y, z);
-        FMLCommonHandler.instance().bus().register(handler);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(handler);
         MinecraftForge.EVENT_BUS.register(handler);
     }
 
@@ -41,7 +43,9 @@ public class TetherLineRenderer {
         if (e.phase == TickEvent.Phase.END) {
             this.ticks++;
             if (this.ticks > MAX_LINE_TICKS) {
-                FMLCommonHandler.instance().bus().unregister(this);
+                FMLCommonHandler.instance()
+                    .bus()
+                    .unregister(this);
                 MinecraftForge.EVENT_BUS.unregister(this);
             }
         }

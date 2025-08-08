@@ -107,7 +107,7 @@ import tectech.util.CommonValues;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
-        implements IAlignment, IBindPlayerInventoryUI {
+    implements IAlignment, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
@@ -231,35 +231,35 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public final boolean structureCheck_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         return getStructure_EM_Internal().check(
-                this,
-                piece,
-                baseMetaTileEntity.getWorld(),
-                getExtendedFacing(),
-                baseMetaTileEntity.getXCoord(),
-                baseMetaTileEntity.getYCoord(),
-                baseMetaTileEntity.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                !mMachine);
+            this,
+            piece,
+            baseMetaTileEntity.getWorld(),
+            getExtendedFacing(),
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            !mMachine);
     }
 
     public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-            ItemStack trigger, boolean hintsOnly) {
+        ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         return getStructure_EM_Internal().buildOrHints(
-                this,
-                trigger,
-                piece,
-                baseMetaTileEntity.getWorld(),
-                getExtendedFacing(),
-                baseMetaTileEntity.getXCoord(),
-                baseMetaTileEntity.getYCoord(),
-                baseMetaTileEntity.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                hintsOnly);
+            this,
+            trigger,
+            piece,
+            baseMetaTileEntity.getWorld(),
+            getExtendedFacing(),
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            hintsOnly);
     }
     // endregion
 
@@ -295,7 +295,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected CheckRecipeResult checkProcessing_EM() {
         if (processingLogic == null) {
             return checkRecipe_EM(getControllerSlot()) ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
+                : CheckRecipeResultRegistry.NO_RECIPE;
         }
         return super.checkProcessing();
     }
@@ -315,15 +315,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                        "tt.gui.tooltip.full_led_desc.in.id",
-                        "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
-                        "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
-                        parametrization.getStatusIn(hatchNo, paramID).name.get()));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.in.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusIn(hatchNo, paramID).name.get()));
         list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                        "tt.gui.tooltip.full_led_desc.value",
-                        EnumChatFormatting.AQUA + numberFormat.format(parametrization.getIn(hatchNo, paramID))));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getIn(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -335,15 +335,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                        "tt.gui.tooltip.full_led_desc.out.id",
-                        "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
-                        "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
-                        parametrization.getStatusOut(hatchNo, paramID).name.get()));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.out.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusOut(hatchNo, paramID).name.get()));
         list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                        "tt.gui.tooltip.full_led_desc.value",
-                        EnumChatFormatting.AQUA + numberFormat.format(parametrization.getOut(hatchNo, paramID))));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getOut(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -354,7 +354,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo("MISSING TOOLTIP").toolTipFinisher();
+        return new MultiblockTooltipBuilder().addInfo("MISSING TOOLTIP")
+            .toolTipFinisher();
     }
 
     /**
@@ -365,61 +366,64 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
 
-        return new String[] { StatCollector.translateToLocalFormatted(
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        "tt.infodata.multi.energy_hatches",
-                        EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
-                                : "tt.infodata.multi.currently_generates",
-                        EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow()))
-                                + EnumChatFormatting.RESET,
-                        EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
-                StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[getMaxEnergyInputTier_EM()]
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.GREEN
-                        + VN[getMinEnergyInputTier_EM()]
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
-                        + " "
-                        + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(eMaxAmpereFlow)
-                        + EnumChatFormatting.RESET
-                        + " A",
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.problems_efficiency",
-                        "" + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET,
-                        "" + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %"),
-                StatCollector.translateToLocalFormatted("tt.keyword.PowerPass") + ": "
-                        + EnumChatFormatting.BLUE
-                        + ePowerPass
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToFallback("tt.keyword.SafeVoid")
-                        + ": "
-                        + EnumChatFormatting.BLUE
-                        + eSafeVoid,
-                StatCollector.translateToLocalFormatted(
-                        "tt.infodata.multi.computation",
-                        EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData)
-                                + EnumChatFormatting.RESET) };
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.energy_hatches",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
+                    : "tt.infodata.multi.currently_generates",
+                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[getMaxEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.GREEN
+                + VN[getMinEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
+                + " "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(eMaxAmpereFlow)
+                + EnumChatFormatting.RESET
+                + " A",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.problems_efficiency",
+                "" + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET,
+                "" + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %"),
+            StatCollector.translateToLocalFormatted("tt.keyword.PowerPass") + ": "
+                + EnumChatFormatting.BLUE
+                + ePowerPass
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToFallback("tt.keyword.SafeVoid")
+                + ": "
+                + EnumChatFormatting.BLUE
+                + eSafeVoid,
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.computation",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET) };
     }
 
     /**
@@ -450,10 +454,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4],
-                    new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4] };
     }
@@ -474,7 +478,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public void onRemoval() {
         try {
             if (ePowerPass && getEUVar() > V[3]
-                    || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
+                || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
             }
         } catch (Exception e) {
@@ -490,7 +494,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected boolean areChunksAroundLoaded_EM() {
         if (this.isValid() && getBaseMetaTileEntity().isServerSide()) {
             IGregTechTileEntity base = getBaseMetaTileEntity();
-            return base.getWorld().doChunksNearChunkExist(base.getXCoord(), base.getYCoord(), base.getZCoord(), 3);
+            return base.getWorld()
+                .doChunksNearChunkExist(base.getXCoord(), base.getYCoord(), base.getZCoord(), 3);
             // todo check if it is actually checking if chunks are loaded
         } else {
             return false;
@@ -557,9 +562,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         long result = 0;
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         Vec3Impl pos = new Vec3Impl(
-                baseMetaTileEntity.getXCoord(),
-                baseMetaTileEntity.getYCoord(),
-                baseMetaTileEntity.getZCoord());
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord());
         for (MTEHatchDataInput in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -967,8 +972,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
 
             if (--mUpdate == 0 || --mStartUpCheck == 0
-                    || cyclicUpdate()
-                    || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
+                || cyclicUpdate()
+                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 clearHatches_EM();
 
                 if (aBaseMetaTileEntity instanceof BaseTileEntity) {
@@ -981,7 +986,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]
-                            || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
+                        || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                         explodeMultiblock();
                     }
                 }
@@ -1045,11 +1050,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe()) {
                                             mEfficiency = Math.max(
-                                                    0,
-                                                    min(
-                                                            mEfficiency + mEfficiencyIncrease,
-                                                            getMaxEfficiency(mInventory[1])
-                                                                    - (getIdealStatus() - getRepairStatus()) * 1000));
+                                                0,
+                                                min(
+                                                    mEfficiency + mEfficiencyIncrease,
+                                                    getMaxEfficiency(mInventory[1])
+                                                        - (getIdealStatus() - getRepairStatus()) * 1000));
                                         } else {
                                             afterRecipeCheckFailed();
                                         }
@@ -1065,11 +1070,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe()) {
                                     mEfficiency = Math.max(
-                                            0,
-                                            min(
-                                                    mEfficiency + mEfficiencyIncrease,
-                                                    getMaxEfficiency(mInventory[1])
-                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                        0,
+                                        min(
+                                            mEfficiency + mEfficiencyIncrease,
+                                            getMaxEfficiency(mInventory[1])
+                                                - (getIdealStatus() - getRepairStatus()) * 1000));
                                 } else {
                                     afterRecipeCheckFailed();
                                 }
@@ -1085,15 +1090,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
 
             setErrorDisplayID(
-                    getErrorDisplayID() & -512 | (mWrench ? 0 : 1)
-                            | (mScrewdriver ? 0 : 2)
-                            | (mSoftMallet ? 0 : 4)
-                            | (mHardHammer ? 0 : 8)
-                            | (mSolderingTool ? 0 : 16)
-                            | (mCrowbar ? 0 : 32)
-                            | (mMachine ? 0 : 64)
-                            | (eCertainStatus == 0 ? 0 : 128)
-                            | (eParameters ? 0 : 256));
+                getErrorDisplayID() & -512 | (mWrench ? 0 : 1)
+                    | (mScrewdriver ? 0 : 2)
+                    | (mSoftMallet ? 0 : 4)
+                    | (mHardHammer ? 0 : 8)
+                    | (mSolderingTool ? 0 : 16)
+                    | (mCrowbar ? 0 : 32)
+                    | (mMachine ? 0 : 64)
+                    | (eCertainStatus == 0 ? 0 : 128)
+                    | (eParameters ? 0 : 256));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
@@ -1145,7 +1150,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
 
         for (MTEHatchUncertainty hatch : validMTEList(eUncertainHatches)) {
-            hatch.getBaseMetaTileEntity().setActive(false);
+            hatch.getBaseMetaTileEntity()
+                .setActive(false);
         }
 
         eUncertainHatches.clear();
@@ -1167,14 +1173,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
 
         for (MTEHatchUncertainty hatch : validMTEList(eUncertainHatches)) {
-            hatch.getBaseMetaTileEntity().setActive(true);
+            hatch.getBaseMetaTileEntity()
+                .setActive(true);
         }
     }
 
     protected void setupEnergyHatchesVariables_EM() {
         if (!mEnergyHatches.isEmpty() || !eEnergyMulti.isEmpty()
-                || !mDynamoHatches.isEmpty()
-                || !eDynamoMulti.isEmpty()) {
+            || !mDynamoHatches.isEmpty()
+            || !eDynamoMulti.isEmpty()) {
             maxEUinputMin = V[15];
             maxEUinputMax = V[0];
             maxEUoutputMin = V[15];
@@ -1246,16 +1253,24 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         long euVar;
         for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar && aBaseMetaTileEntity
+            if (tHatch.getBaseMetaTileEntity()
+                .getStoredEU() <= tHatch.maxEUStore() - euVar
+                && aBaseMetaTileEntity
                     .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                tHatch.setEUVar(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStoredEU() + euVar);
             }
         }
         for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar && aBaseMetaTileEntity
+            if (tHatch.getBaseMetaTileEntity()
+                .getStoredEU() <= tHatch.maxEUStore() - euVar
+                && aBaseMetaTileEntity
                     .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                tHatch.setEUVar(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStoredEU() + euVar);
             }
         }
     }
@@ -1264,16 +1279,23 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         long euVar;
         for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput();
-            if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar
-                    && aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
-                tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+            if (tHatch.getBaseMetaTileEntity()
+                .getStoredEU() <= tHatch.maxEUStore() - euVar
+                && aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
+                tHatch.setEUVar(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStoredEU() + euVar);
             }
         }
         for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
             euVar = tHatch.maxEUOutput() * tHatch.Amperes;
-            if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar && aBaseMetaTileEntity
+            if (tHatch.getBaseMetaTileEntity()
+                .getStoredEU() <= tHatch.maxEUStore() - euVar
+                && aBaseMetaTileEntity
                     .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.Amperes), false)) {
-                tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                tHatch.setEUVar(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStoredEU() + euVar);
             }
         }
     }
@@ -1289,7 +1311,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
-            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
+            if (tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
             }
         }
@@ -1298,7 +1321,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
-            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
+            if (tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
             }
         }
@@ -1311,7 +1335,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = tHatch.maxEUInput();
-            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
+            if (tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
             }
         }
@@ -1320,7 +1345,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = tHatch.maxEUInput() * tHatch.Amperes;
-            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
+            if (tHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
             }
         }
@@ -1351,9 +1377,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput_EM(
-                    getPowerFlow(),
-                    getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
-                    eAmpereFlow)) {
+                getPowerFlow(),
+                getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                eAmpereFlow)) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
@@ -1367,8 +1393,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput(
-                    getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
-                    eAmpereFlow)) {
+                getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                eAmpereFlow)) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
@@ -1415,13 +1441,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }
-            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity().getStoredEU();
+            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
             if (diff > 0) {
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
                 } else if (euVar <= diff) {
-                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                    tHatch.setEUVar(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + euVar);
                     return true;
                 }
             }
@@ -1430,13 +1459,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }
-            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity().getStoredEU();
+            diff = tHatch.maxEUStore() - tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
             if (diff > 0) {
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
                 } else if (euVar <= diff) {
-                    tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                    tHatch.setEUVar(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + euVar);
                     return true;
                 }
             }
@@ -1464,20 +1496,20 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (EUuse > getEUVar() || // not enough power
         // TIER IS BASED ON BEST HATCH! not total EUtEffective input
-                (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) ||
-                // EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1!
-                        (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {
+            (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) ||
+            // EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1!
+                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {
             // not too much A
             if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
                 TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
                 TecTech.LOGGER.debug("L3 " + Amperes + ' ' + getMaxInputEnergy());
                 TecTech.LOGGER.debug(
-                        "L4 " + ((EUuse - 1) / maxEUinputMin + 1)
-                                + ' '
-                                + eMaxAmpereFlow
-                                + ' '
-                                + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
+                    "L4 " + ((EUuse - 1) / maxEUinputMin + 1)
+                        + ' '
+                        + eMaxAmpereFlow
+                        + ' '
+                        + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
             return false;
         }
@@ -2001,39 +2033,43 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // endregion
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> classicHatches(int casingIndex, int dot,
-            Block casingBlock, int casingMeta) {
+        Block casingBlock, int casingMeta) {
         return HatchElementBuilder.<T>builder()
-                .atLeast(
-                        InputBus,
-                        InputHatch,
-                        OutputHatch,
-                        OutputBus,
-                        Maintenance,
-                        Muffler,
-                        HatchElement.EnergyMulti,
-                        HatchElement.DynamoMulti,
-                        HatchElement.InputData,
-                        HatchElement.OutputData,
-                        HatchElement.Uncertainty)
-                .casingIndex(casingIndex).dot(dot).buildAndChain(casingBlock, casingMeta);
+            .atLeast(
+                InputBus,
+                InputHatch,
+                OutputHatch,
+                OutputBus,
+                Maintenance,
+                Muffler,
+                HatchElement.EnergyMulti,
+                HatchElement.DynamoMulti,
+                HatchElement.InputData,
+                HatchElement.OutputData,
+                HatchElement.Uncertainty)
+            .casingIndex(casingIndex)
+            .dot(dot)
+            .buildAndChain(casingBlock, casingMeta);
     }
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> allHatches(int casingIndex, int dot,
-            Block casingBlock, int casingMeta) {
+        Block casingBlock, int casingMeta) {
         return HatchElementBuilder.<T>builder()
-                .atLeast(
-                        InputBus,
-                        InputHatch,
-                        OutputHatch,
-                        OutputBus,
-                        Maintenance,
-                        Muffler,
-                        HatchElement.EnergyMulti,
-                        HatchElement.DynamoMulti,
-                        HatchElement.InputData,
-                        HatchElement.OutputData,
-                        HatchElement.Uncertainty)
-                .casingIndex(casingIndex).dot(dot).buildAndChain(casingBlock, casingMeta);
+            .atLeast(
+                InputBus,
+                InputHatch,
+                OutputHatch,
+                OutputBus,
+                Maintenance,
+                Muffler,
+                HatchElement.EnergyMulti,
+                HatchElement.DynamoMulti,
+                HatchElement.InputData,
+                HatchElement.OutputData,
+                HatchElement.Uncertainty)
+            .casingIndex(casingIndex)
+            .dot(dot)
+            .buildAndChain(casingBlock, casingMeta);
     }
 
     public enum HatchElement implements IHatchElement<TTMultiblockBase> {
@@ -2046,7 +2082,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         },
         EnergyMulti("GT5U.MBTT.ExoticEnergyHatch", TTMultiblockBase::addEnergyInputToMachineList,
-                MTEHatchEnergyMulti.class) {
+            MTEHatchEnergyMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
@@ -2054,7 +2090,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         },
         DynamoMulti("GT5U.MBTT.ExoticEnergyDynamo", TTMultiblockBase::addDynamoToMachineList,
-                MTEHatchDynamoMulti.class) {
+            MTEHatchDynamoMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
@@ -2082,7 +2118,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         @SafeVarargs
         HatchElement(String name, IGTHatchAdder<TTMultiblockBase> adder,
-                Class<? extends IMetaTileEntity>... mteClasses) {
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
@@ -2137,8 +2173,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK).setSize(18, 18)
-                        .setPos(173, 74));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(173, 74));
     }
 
     private static byte LEDCounter = 0;
@@ -2147,12 +2184,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (doesBindPlayerInventory()) {
             builder.widget(
-                    new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE).setPos(4, 4)
-                            .setSize(190, 91));
+                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                    .setPos(4, 4)
+                    .setSize(190, 91));
         } else {
             builder.widget(
-                    new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY).setPos(4, 4)
-                            .setSize(190, 171));
+                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
+                    .setPos(4, 4)
+                    .setSize(190, 171));
         }
         final SlotWidget inventorySlot = new SlotWidget(new BaseSlot(inventoryHandler, 1) {
 
@@ -2162,33 +2201,37 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         });
         if (doesBindPlayerInventory()) {
-            builder.widget(
+            builder
+                .widget(
                     inventorySlot.setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH)
-                            .setPos(173, 167))
-                    .widget(
-                            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL).setPos(173, 185)
-                                    .setSize(18, 6));
+                        .setPos(173, 167))
+                .widget(
+                    new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                        .setPos(173, 185)
+                        .setSize(18, 6));
         }
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
         builder.widget(
-                new Scrollable().setVerticalScroll().widget(screenElements).setPos(10, 7)
-                        .setSize(182, doesBindPlayerInventory() ? 79 : 165));
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, doesBindPlayerInventory() ? 79 : 165));
 
         Widget powerPassButton = createPowerPassButton();
         builder.widget(powerPassButton)
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPass, val -> ePowerPass = val))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPassCover, val -> ePowerPassCover = val));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPass, val -> ePowerPass = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPassCover, val -> ePowerPassCover = val));
         Widget safeVoidButton = createSafeVoidButton();
         builder.widget(safeVoidButton)
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> eSafeVoid, val -> eSafeVoid = val));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> eSafeVoid, val -> eSafeVoid = val));
         Widget powerSwitchButton = createPowerSwitchButton();
         builder.widget(powerSwitchButton)
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
-                    if (val) getBaseMetaTileEntity().enableWorking();
-                    else getBaseMetaTileEntity().disableWorking();
-                }));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
+                if (val) getBaseMetaTileEntity().enableWorking();
+                else getBaseMetaTileEntity().disableWorking();
+            }));
 
         builder.widget(new DrawableWidget() {
 
@@ -2197,13 +2240,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 super.draw(partialTicks);
                 LEDCounter = (byte) ((1 + LEDCounter) % 6);
             }
-        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK).setPos(5, doesBindPlayerInventory() ? 96 : 176)
-                .setSize(166, 12));
+        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
+            .setPos(5, doesBindPlayerInventory() ? 96 : 176)
+            .setSize(166, 12));
         for (int hatch = 0; hatch < 10; hatch++) {
             for (int param = 0; param < 2; param++) {
                 int ledID = hatch + param * 10;
                 buildContext
-                        .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
+                    .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
                 addParameterLED(builder, hatch, param, true);
                 addParameterLED(builder, hatch, param, false);
             }
@@ -2211,8 +2255,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         if (doesBindPlayerInventory()) {
             builder.widget(
-                    new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
-                            .setPos(173, 96).setSize(18, 18));
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
+                    .setPos(173, 96)
+                    .setSize(18, 18));
             for (int i = 0; i < 9; i++) {
                 final int index = i;
                 builder.widget(new DrawableWidget().setDrawable(() -> {
@@ -2247,10 +2292,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                             break;
                     }
                     return null;
-                }).setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6).setSize(4, 4));
+                })
+                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
+                    .setSize(4, 4));
             }
             builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
-                    .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
+                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
         }
     }
 
@@ -2267,23 +2314,27 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     }
                 }
             }
-        }).setPlayClickSound(false).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-            if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
-            } else {
-                if (ePowerPass) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
                 } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_OFF);
+                    if (ePowerPass) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_OFF);
+                    }
                 }
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).setPos(174, doesBindPlayerInventory() ? 116 : 140).setSize(16, 16);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
+            .setSize(16, 16);
         if (isPowerPassButtonEnabled()) {
             button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY);
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
     }
@@ -2294,23 +2345,27 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 eSafeVoid = !eSafeVoid;
             }
-        }).setPlayClickSound(false).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-            if (!isSafeVoidButtonEnabled()) {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
-            } else {
-                if (eSafeVoid) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isSafeVoidButtonEnabled()) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
                 } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                    if (eSafeVoid) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                    }
                 }
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16);
         if (isSafeVoidButtonEnabled()) {
             button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.safe_void"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY);
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
     }
@@ -2325,45 +2380,57 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     getBaseMetaTileEntity().enableWorking();
                 }
             }
-        }).setPlayClickSound(false).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-            if (!isAllowedToWorkButtonEnabled()) {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
-            } else {
-                if (getBaseMetaTileEntity().isAllowedToWork()) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isAllowedToWorkButtonEnabled()) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
                 } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    if (getBaseMetaTileEntity().isAllowedToWork()) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    }
                 }
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).setPos(174, doesBindPlayerInventory() ? 148 : 172).setSize(16, 16);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 148 : 172)
+            .setSize(16, 16);
         if (isAllowedToWorkButtonEnabled()) {
             button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY);
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
     }
 
     private ModularWindow createLEDConfigurationWindow(int ledID) {
-        return ModularWindow.builder(100, 40).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .setPos(
-                        (screenSize, mainWindow) -> new Pos2d(
-                                (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
-                                (screenSize.height / 2 - mainWindow.getSize().height / 2)))
-                .widget(ButtonWidget.closeWindowButton(true).setPos(85, 3))
-                .widget(
-                        new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
-                                .setSetter(val -> parametrization.iParamsIn[ledID] = val).setIntegerOnly(false)
-                                .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
-                                .setTextColor(Color.LIGHT_BLUE.normal).setTextAlignment(Alignment.CenterLeft)
-                                .setFocusOnGuiOpen(true).setBackground(GTUITextures.BACKGROUND_TEXT_FIELD).setPos(5, 20)
-                                .setSize(90, 15))
-                .widget(
-                        new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)
-                                .setTextAlignment(Alignment.Center).setPos(5, 5))
-                .build();
+        return ModularWindow.builder(100, 40)
+            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+            .setPos(
+                (screenSize, mainWindow) -> new Pos2d(
+                    (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
+                    (screenSize.height / 2 - mainWindow.getSize().height / 2)))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(85, 3))
+            .widget(
+                new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
+                    .setSetter(val -> parametrization.iParamsIn[ledID] = val)
+                    .setIntegerOnly(false)
+                    .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
+                    .setTextColor(Color.LIGHT_BLUE.normal)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .setPos(5, 20)
+                    .setSize(90, 15))
+            .widget(
+                new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(5, 5))
+            .build();
     }
 
     private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
@@ -2375,7 +2442,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             public void draw(float partialTicks) {
                 IDrawable texture = null;
                 final LedStatus status = input ? parametrization.eParamsInStatus[parameterIndex]
-                        : parametrization.eParamsOutStatus[parameterIndex];
+                    : parametrization.eParamsOutStatus[parameterIndex];
                 switch (status) {
                     case STATUS_WTF: {
                         int c = LEDCounter;
@@ -2454,14 +2521,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }.setOnClick((clickData, widget) -> {
             if (!widget.isClient() && input
-                    && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
+                && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
                 // We don't use CloseAllButMain here in case MB implementation adds their own window
                 for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
-                    if (widget.getContext().isWindowOpen(LED_WINDOW_BASE_ID + i)) {
-                        widget.getContext().closeWindow(LED_WINDOW_BASE_ID + i);
+                    if (widget.getContext()
+                        .isWindowOpen(LED_WINDOW_BASE_ID + i)) {
+                        widget.getContext()
+                            .closeWindow(LED_WINDOW_BASE_ID + i);
                     }
                 }
-                widget.getContext().openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
+                widget.getContext()
+                    .openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
             }
         });
         builder.widget(ledWidget.dynamicTooltip(() -> {
@@ -2470,29 +2540,33 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             } else {
                 return getFullLedDescriptionOut(hatch, param);
             }
-        }).setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6).setSize(6, 4));
+        })
+            .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
+            .setSize(6, 4));
         if (input) {
-            builder.widget(
+            builder
+                .widget(
                     new FakeSyncWidget.ByteSyncer(
-                            () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
-                            val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
-                                    .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
-                    .widget(
-                            new FakeSyncWidget.DoubleSyncer(
-                                    () -> parametrization.iParamsIn[parameterIndex],
-                                    val -> parametrization.iParamsIn[parameterIndex] = val)
-                                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
+                        () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsIn[parameterIndex],
+                        val -> parametrization.iParamsIn[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         } else {
-            builder.widget(
+            builder
+                .widget(
                     new FakeSyncWidget.ByteSyncer(
-                            () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
-                            val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
-                                    .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
-                    .widget(
-                            new FakeSyncWidget.DoubleSyncer(
-                                    () -> parametrization.iParamsOut[parameterIndex],
-                                    val -> parametrization.iParamsOut[parameterIndex] = val)
-                                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
+                        () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsOut[parameterIndex],
+                        val -> parametrization.iParamsOut[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         }
     }
 

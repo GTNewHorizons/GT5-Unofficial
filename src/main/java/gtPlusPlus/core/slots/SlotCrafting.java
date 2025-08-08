@@ -28,7 +28,7 @@ public class SlotCrafting extends Slot {
     private int amountCrafted;
 
     public SlotCrafting(final EntityPlayer p_i1823_1_, final IInventory p_i1823_2_, final IInventory p_i1823_3_,
-            final int p_i1823_4_, final int p_i1823_5_, final int p_i1823_6_) {
+        final int p_i1823_4_, final int p_i1823_5_, final int p_i1823_6_) {
         super(p_i1823_3_, p_i1823_4_, p_i1823_5_, p_i1823_6_);
         this.thePlayer = p_i1823_1_;
         this.craftMatrix = p_i1823_2_;
@@ -98,7 +98,7 @@ public class SlotCrafting extends Slot {
         }
 
         if ((p_75208_1_.getItem() instanceof ItemPickaxe)
-                && (((ItemPickaxe) p_75208_1_.getItem()).func_150913_i() != Item.ToolMaterial.WOOD)) {
+            && (((ItemPickaxe) p_75208_1_.getItem()).func_150913_i() != Item.ToolMaterial.WOOD)) {
             this.thePlayer.addStat(AchievementList.buildBetterPickaxe, 1);
         }
 
@@ -117,7 +117,8 @@ public class SlotCrafting extends Slot {
 
     @Override
     public void onPickupFromSlot(final EntityPlayer p_82870_1_, final ItemStack p_82870_2_) {
-        FMLCommonHandler.instance().firePlayerCraftingEvent(p_82870_1_, p_82870_2_, this.craftMatrix);
+        FMLCommonHandler.instance()
+            .firePlayerCraftingEvent(p_82870_1_, p_82870_2_, this.craftMatrix);
         this.onCrafting(p_82870_2_);
 
         for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i) {
@@ -126,17 +127,20 @@ public class SlotCrafting extends Slot {
             if (itemstack1 != null) {
                 this.craftMatrix.decrStackSize(i, 1);
 
-                if (itemstack1.getItem().hasContainerItem(itemstack1)) {
-                    final ItemStack itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
+                if (itemstack1.getItem()
+                    .hasContainerItem(itemstack1)) {
+                    final ItemStack itemstack2 = itemstack1.getItem()
+                        .getContainerItem(itemstack1);
 
                     if ((itemstack2 != null) && itemstack2.isItemStackDamageable()
-                            && (itemstack2.getItemDamage() > itemstack2.getMaxDamage())) {
+                        && (itemstack2.getItemDamage() > itemstack2.getMaxDamage())) {
                         MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this.thePlayer, itemstack2));
                         continue;
                     }
 
-                    if (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1)
-                            || !this.thePlayer.inventory.addItemStackToInventory(itemstack2)) {
+                    if (!itemstack1.getItem()
+                        .doesContainerItemLeaveCraftingGrid(itemstack1)
+                        || !this.thePlayer.inventory.addItemStackToInventory(itemstack2)) {
                         if (this.craftMatrix.getStackInSlot(i) == null) {
                             this.craftMatrix.setInventorySlotContents(i, itemstack2);
                         } else {

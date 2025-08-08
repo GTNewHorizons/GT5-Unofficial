@@ -93,7 +93,8 @@ public class UpgradeStorage {
         ForgeOfGodsUpgrade[] prereqs = upgrade.getPrerequisites();
         if (prereqs.length == 0) return true;
 
-        Stream<UpgradeData> prereqStream = Arrays.stream(prereqs).map(unlockedUpgrades::get);
+        Stream<UpgradeData> prereqStream = Arrays.stream(prereqs)
+            .map(unlockedUpgrades::get);
 
         if (upgrade.requiresAllPrerequisites()) {
             return prereqStream.allMatch(UpgradeData::isActive);
@@ -103,8 +104,10 @@ public class UpgradeStorage {
 
     public boolean checkSplit(ForgeOfGodsUpgrade upgrade, int maxSplitUpgrades) {
         if (ForgeOfGodsUpgrade.SPLIT_UPGRADES.contains(upgrade)) {
-            return ForgeOfGodsUpgrade.SPLIT_UPGRADES.stream().map(unlockedUpgrades::get).filter(UpgradeData::isActive)
-                    .count() < maxSplitUpgrades;
+            return ForgeOfGodsUpgrade.SPLIT_UPGRADES.stream()
+                .map(unlockedUpgrades::get)
+                .filter(UpgradeData::isActive)
+                .count() < maxSplitUpgrades;
         }
         return true;
     }
@@ -124,8 +127,10 @@ public class UpgradeStorage {
 
             // Check for some other prerequisite upgrade of the dependent to make sure that
             // if the passed upgrade is removed, that upgrade is still valid
-            if (Arrays.stream(dependent.getPrerequisites()).map(unlockedUpgrades::get).filter(UpgradeData::isActive)
-                    .count() <= 1) {
+            if (Arrays.stream(dependent.getPrerequisites())
+                .map(unlockedUpgrades::get)
+                .filter(UpgradeData::isActive)
+                .count() <= 1) {
                 return false;
             }
         }
@@ -155,7 +160,10 @@ public class UpgradeStorage {
     }
 
     public int getTotalActiveUpgrades() {
-        return (int) unlockedUpgrades.values().stream().filter(UpgradeData::isActive).count();
+        return (int) unlockedUpgrades.values()
+            .stream()
+            .filter(UpgradeData::isActive)
+            .count();
     }
 
     public Collection<ForgeOfGodsUpgrade> getAllUpgrades() {
@@ -215,10 +223,10 @@ public class UpgradeStorage {
     /** Sync widget to sync a single upgrade. */
     public FakeSyncWidget<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
         return new FakeSyncWidget<>(
-                () -> unlockedUpgrades.get(upgrade),
-                val -> unlockedUpgrades.put(upgrade, val),
-                UpgradeData::writeToBuffer,
-                UpgradeData::readFromBuffer);
+            () -> unlockedUpgrades.get(upgrade),
+            val -> unlockedUpgrades.put(upgrade, val),
+            UpgradeData::writeToBuffer,
+            UpgradeData::readFromBuffer);
     }
 
     /** Sync widget to sync the full upgrade tree. */

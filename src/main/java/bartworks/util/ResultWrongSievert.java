@@ -37,11 +37,10 @@ public class ResultWrongSievert implements CheckRecipeResult {
     public @NotNull String getDisplayString() {
         return switch (this.type) {
             case EXACTLY -> StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.wrong_sievert_exactly",
-                    GTUtility.formatNumbers(this.required));
-            case MINIMUM -> StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.wrong_sievert_min",
-                    GTUtility.formatNumbers(this.required));
+                "GT5U.gui.text.wrong_sievert_exactly",
+                GTUtility.formatNumbers(this.required));
+            case MINIMUM -> StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_min", GTUtility.formatNumbers(this.required));
         };
     }
 

@@ -112,8 +112,8 @@ public class PollutionConfig {
 
     // reading double as strings, not perfect, but better than nothing
     @Config.Comment({
-            "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
-            "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
+        "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
     @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8 })
     @Config.RequiresMcRestart
     public static double[] pollutionDieselGeneratorReleasedByTier;
@@ -125,8 +125,8 @@ public class PollutionConfig {
 
     // reading double as strings, not perfect, but better than nothing
     @Config.Comment({
-            "Pollution released by tier, with the following formula: PollutionBaseGasTurbinePerSecond * PollutionGasTurbineReleasedByTier[Tier]",
-            "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
+        "Pollution released by tier, with the following formula: PollutionBaseGasTurbinePerSecond * PollutionGasTurbineReleasedByTier[Tier]",
+        "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
     @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 })
     @Config.RequiresMcRestart
     public static double[] pollutionGasTurbineReleasedByTier;
@@ -214,16 +214,16 @@ public class PollutionConfig {
 
     @Config.Comment("Crossed Squares - Recolor Block List")
     @Config.DefaultStringList({ "net.minecraft.block.BlockTallGrass:FLOWER", "net.minecraft.block.BlockFlower:FLOWER",
-            "biomesoplenty.common.blocks.BlockBOPFlower:FLOWER", "biomesoplenty.common.blocks.BlockBOPFlower2:FLOWER",
-            "biomesoplenty.common.blocks.BlockBOPFoliage:FLOWER", })
+        "biomesoplenty.common.blocks.BlockBOPFlower:FLOWER", "biomesoplenty.common.blocks.BlockBOPFlower2:FLOWER",
+        "biomesoplenty.common.blocks.BlockBOPFoliage:FLOWER", })
     @Config.RequiresMcRestart
     public static String[] renderCrossedSquares;
 
     @Config.Comment("Standard Blocks - Recolor Block List")
     @Config.DefaultStringList({ "net.minecraft.block.BlockGrass:GRASS", "net.minecraft.block.BlockLeavesBase:LEAVES",
-            "biomesoplenty.common.blocks.BlockOriginGrass:GRASS", "biomesoplenty.common.blocks.BlockLongGrass:GRASS",
-            "biomesoplenty.common.blocks.BlockNewGrass:GRASS", "tconstruct.blocks.slime.SlimeGrass:GRASS",
-            "thaumcraft.common.blocks.BlockMagicalLeaves:LEAVES", })
+        "biomesoplenty.common.blocks.BlockOriginGrass:GRASS", "biomesoplenty.common.blocks.BlockLongGrass:GRASS",
+        "biomesoplenty.common.blocks.BlockNewGrass:GRASS", "tconstruct.blocks.slime.SlimeGrass:GRASS",
+        "thaumcraft.common.blocks.BlockMagicalLeaves:LEAVES", })
     @Config.RequiresMcRestart
     public static String[] renderStandardBlock;
 

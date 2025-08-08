@@ -23,7 +23,7 @@ public final class TTUtility {
         String strNum = abs.toString();
         int exponent = strNum.length() - 1;
         return (number.signum() == -1 ? "-" : "") + strNum
-                .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
+            .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
     }
 
     public static String toExponentForm(long number) {
@@ -31,7 +31,7 @@ public final class TTUtility {
         String strNum = Long.toString(abs);
         int exponent = strNum.length() - 1;
         return (Long.signum(number) == -1 ? "-" : "") + strNum
-                .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
+            .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
     }
 
     private static String getExponentFormDecimalPart(String strNum) {
@@ -51,8 +51,8 @@ public final class TTUtility {
         // TODO why is it using reflection to change a final field from GREGTECH ?
         if (!(o instanceof MTETieredMachineBlock)) {
             GTMod.GT_FML_LOGGER.error(
-                    "Could not set tier as object " + o.getClass().getName()
-                            + " isn't instance of MTETieredMachineBlock");
+                "Could not set tier as object " + o.getClass()
+                    .getName() + " isn't instance of MTETieredMachineBlock");
             return;
         }
         try {
@@ -60,7 +60,10 @@ public final class TTUtility {
             field.setAccessible(true);
             field.set(o, (byte) tier);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Could not set tier of " + o.getClass().getName(), e);
+            GTMod.GT_FML_LOGGER.error(
+                "Could not set tier of " + o.getClass()
+                    .getName(),
+                e);
         }
     }
 

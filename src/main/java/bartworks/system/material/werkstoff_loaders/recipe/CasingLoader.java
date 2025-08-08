@@ -40,11 +40,10 @@ public class CasingLoader implements IWerkstoffRunnable {
             addCasingRecipes(werkstoff, plank);
         } else {
             if (!werkstoff.hasGenerationFeature(blockCasing) || !werkstoff.doesOreDictedItemExists(plate)
-                    || !werkstoff.doesOreDictedItemExists(screw)
-                    || !werkstoff.doesOreDictedItemExists(gearGtSmall)
-                    || !werkstoff.doesOreDictedItemExists(gearGt)
-                    || !werkstoff.doesOreDictedItemExists(plateDouble))
-                return;
+                || !werkstoff.doesOreDictedItemExists(screw)
+                || !werkstoff.doesOreDictedItemExists(gearGtSmall)
+                || !werkstoff.doesOreDictedItemExists(gearGt)
+                || !werkstoff.doesOreDictedItemExists(plateDouble)) return;
 
             addCasingRecipes(werkstoff, plateDouble);
         }
@@ -52,23 +51,27 @@ public class CasingLoader implements IWerkstoffRunnable {
 
     private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff) {
         GTModHandler.addCraftingRecipe(
-                werkstoff.get(blockCasing),
-                new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(plate), 'S', werkstoff.get(screw), 'G',
-                        werkstoff.get(gearGtSmall) });
+            werkstoff.get(blockCasing),
+            new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(plate), 'S', werkstoff.get(screw), 'G',
+                werkstoff.get(gearGtSmall) });
 
         GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
-                .itemOutputs(werkstoff.get(blockCasing)).duration(10 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
+            .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
+            .itemOutputs(werkstoff.get(blockCasing))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
-                werkstoff.get(blockCasingAdvanced),
-                new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(reboltedCasingsOuterStuff), 'S',
-                        werkstoff.get(screw), 'G', werkstoff.get(gearGt) });
+            werkstoff.get(blockCasingAdvanced),
+            new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(reboltedCasingsOuterStuff), 'S',
+                werkstoff.get(screw), 'G', werkstoff.get(gearGt) });
 
         GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
-                .itemOutputs(werkstoff.get(blockCasingAdvanced)).duration(10 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
+            .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
+            .itemOutputs(werkstoff.get(blockCasingAdvanced))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
     }
 }

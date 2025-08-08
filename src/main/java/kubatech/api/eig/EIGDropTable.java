@@ -50,9 +50,9 @@ public class EIGDropTable {
         for (int i = 0; i < nbt.tagCount(); i++) {
             NBTTagCompound drop = nbt.getCompoundTagAt(i);
             dropTable.merge(
-                    readItemStackFromNBT(drop.getCompoundTag(NBT_DROP_TABLE_ITEM_KEY)),
-                    drop.getDouble(NBT_DROP_TABLE_COUNT_KEY),
-                    Double::sum);
+                readItemStackFromNBT(drop.getCompoundTag(NBT_DROP_TABLE_ITEM_KEY)),
+                drop.getDouble(NBT_DROP_TABLE_COUNT_KEY),
+                Double::sum);
         }
     }
 
@@ -202,7 +202,10 @@ public class EIGDropTable {
      */
     public ItemStack @NotNull [] getDrops() {
         // doesn't need to filter for less than 0 so that the EIG displays the progress of incomplete items.
-        return this.dropTable.entrySet().parallelStream().map(EIGDropTable::computeDrops).toArray(ItemStack[]::new);
+        return this.dropTable.entrySet()
+            .parallelStream()
+            .map(EIGDropTable::computeDrops)
+            .toArray(ItemStack[]::new);
     }
 
     /**
@@ -212,7 +215,8 @@ public class EIGDropTable {
      * @return The item tha twas removed.
      */
     private static @NotNull ItemStack computeDrops(Map.@NotNull Entry<ItemStack, Double> entry) {
-        ItemStack copied = entry.getKey().copy();
+        ItemStack copied = entry.getKey()
+            .copy();
         copied.stackSize = (int) Math.floor(entry.getValue());
         if (entry.getValue() >= 1.0d) {
             entry.setValue(entry.getValue() % 1);

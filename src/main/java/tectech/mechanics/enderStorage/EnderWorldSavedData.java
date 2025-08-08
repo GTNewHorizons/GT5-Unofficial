@@ -53,7 +53,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TAG_LINK);
 
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                            ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
                         EnderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
@@ -64,7 +64,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                 try {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TANK_LINK);
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                            ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
                         EnderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
@@ -188,7 +188,8 @@ public class EnderWorldSavedData extends WorldSavedData {
         EnderLinkTag oldTag = getEnderLiquidTankLink().remove(tank);
 
         if (oldTag != null) {
-            boolean isReferenced = getEnderLiquidTankLink().values().contains(oldTag);
+            boolean isReferenced = getEnderLiquidTankLink().values()
+                .contains(oldTag);
 
             if (!isReferenced) {
                 getEnderLiquidLink().remove(oldTag);
@@ -217,7 +218,7 @@ public class EnderWorldSavedData extends WorldSavedData {
 
             if (className.startsWith("com.github.technus.")) {
                 resultClassDescriptor = ObjectStreamClass
-                        .lookup(Class.forName(className.replace("com.github.technus.", "")));
+                    .lookup(Class.forName(className.replace("com.github.technus.", "")));
             }
 
             return resultClassDescriptor;

@@ -46,11 +46,11 @@ public class ForestryTreeHandler {
             }
 
             MTETreeFarm.registerForestryTree(
-                    speciesUID,
-                    sapling == null ? null : sapling.copy(),
-                    log == null ? null : log.copy(),
-                    leaves.copy(),
-                    fruit == null ? null : fruit.copy());
+                speciesUID,
+                sapling == null ? null : sapling.copy(),
+                log == null ? null : log.copy(),
+                leaves.copy(),
+                fruit == null ? null : fruit.copy());
         }
     }
 
@@ -64,7 +64,8 @@ public class ForestryTreeHandler {
 
             ItemStack log = null;
             if (species.getLog() != null) {
-                log = species.getLog().getItemStack();
+                log = species.getLog()
+                    .getItemStack();
             }
 
             ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
@@ -82,11 +83,11 @@ public class ForestryTreeHandler {
             }
 
             MTETreeFarm.registerForestryTree(
-                    speciesUID,
-                    sapling == null ? null : sapling.copy(),
-                    log == null ? null : log.copy(),
-                    leaves.copy(),
-                    fruit == null ? null : fruit.copy());
+                speciesUID,
+                sapling == null ? null : sapling.copy(),
+                log == null ? null : log.copy(),
+                leaves.copy(),
+                fruit == null ? null : fruit.copy());
         }
     }
 }

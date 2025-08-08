@@ -74,7 +74,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
 public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse>
-        implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor {
+    implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor {
 
     private static final int MODE_NORMAL = 0, MODE_EXPORT = 1;
     public static final double EPSILON = 0.00001;
@@ -142,11 +142,12 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
     @Override
     public IStructureDefinition<MTEDecayWarehouse> compile(String[][] def) {
-        structure.addCasing('A', Casings.SuperChest).withChannel(GTStructureChannels.SUPER_CHEST);
+        structure.addCasing('A', Casings.SuperChest)
+            .withChannel(GTStructureChannels.SUPER_CHEST);
         structure.addCasing('B', RadiationProofMachineCasing)
-                .withHatches(1, 8, Arrays.asList(Maintenance, Energy, InputBus, OutputBus));
+            .withHatches(1, 8, Arrays.asList(Maintenance, Energy, InputBus, OutputBus));
         structure.addCasing('C', ICasing.ofBlock(new BlockMeta(Blocks.water, 0)))
-                .wrapElement(GTStructureUtility::noSurvivalAutoplace);
+            .wrapElement(GTStructureUtility::noSurvivalAutoplace);
 
         return structure.buildStructure(def);
     }
@@ -167,7 +168,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
     @Override
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-            List<String> lines) {
+        List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
         structureInstanceInfo.localizeStructureErrors(errors, context, lines);
@@ -202,8 +203,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         if (built == -1) {
             GTUtility.sendChatToPlayer(
-                    env.getActor(),
-                    EnumChatFormatting.GREEN + "Auto placing done! Now go place the water yourself!");
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done! Now go place the water yourself!");
         }
 
         return built;
@@ -219,28 +220,31 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         StructureWrapperTooltipBuilder<MTEDecayWarehouse> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("Decay Warehouse")
-                .addInfo("Stores a single type of radioactive isotope and allows it to decay over time.")
-                .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster).")
-                .addInfo("Isotopes decay regardless of whether the warehouse is on or powered.").addSeparator()
-                .addInfo(
-                        "The warehouse's capacity equals the super chest's capacity divided by " + BLUE
-                                + CAPACITY_DIVISOR
-                                + GRAY
-                                + ".")
-                .addInfo("The warehouse will pull in up to " + BLUE + "N / " + EU_PER_IO + GRAY + " items per second,")
-                .addInfo("where " + BLUE + "N" + GRAY + " is the warehouse's EU input (standard energy hatch rules).")
-                .addSeparator()
-                .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus.")
-                .addInfo("Right click the controller with a plunger to empty it.").addInfo(
-                        "The warehouse's contents are " + RED
-                                + UNDERLINE
-                                + "voided"
-                                + GRAY
-                                + " when the controller is broken.");
+            .addInfo("Stores a single type of radioactive isotope and allows it to decay over time.")
+            .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster).")
+            .addInfo("Isotopes decay regardless of whether the warehouse is on or powered.")
+            .addSeparator()
+            .addInfo(
+                "The warehouse's capacity equals the super chest's capacity divided by " + BLUE
+                    + CAPACITY_DIVISOR
+                    + GRAY
+                    + ".")
+            .addInfo("The warehouse will pull in up to " + BLUE + "N / " + EU_PER_IO + GRAY + " items per second,")
+            .addInfo("where " + BLUE + "N" + GRAY + " is the warehouse's EU input (standard energy hatch rules).")
+            .addSeparator()
+            .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus.")
+            .addInfo("Right click the controller with a plunger to empty it.")
+            .addInfo(
+                "The warehouse's contents are " + RED
+                    + UNDERLINE
+                    + "voided"
+                    + GRAY
+                    + " when the controller is broken.");
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 
-        tt.beginStructureBlock(true).addAllCasingInfo();
+        tt.beginStructureBlock(true)
+            .addAllCasingInfo();
 
         tt.toolTipFinisher();
 
@@ -269,20 +273,25 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity igte, ForgeDirection side, ForgeDirection facing, int colorIndex,
-            boolean active, boolean redstoneLevel) {
+        boolean active, boolean redstoneLevel) {
         List<ITexture> textures = new ArrayList<>();
 
         textures.add(RadiationProofMachineCasing.getCasingTexture());
 
         if (side == facing) {
             textures.add(
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND).extFacing()
-                            .build());
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND)
+                    .extFacing()
+                    .build());
 
             if (active) {
                 textures.add(
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_GLOW).extFacing().glow()
-                                .build());
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build());
             }
         }
 
@@ -378,12 +387,13 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
     @Override
     public boolean onRightclick(IGregTechTileEntity base, EntityPlayer player, ForgeDirection side, float aX, float aY,
-            float aZ) {
+        float aZ) {
         ItemStack tCurrentItem = player.inventory.getCurrentItem();
         if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaGeneratedTool) {
             int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
             for (int id : aOreID) {
-                if (OreDictionary.getOreName(id).equals("craftingToolPlunger")) {
+                if (OreDictionary.getOreName(id)
+                    .equals("craftingToolPlunger")) {
                     if (base.isServerSide()) {
                         isotope = null;
                         storedIsotope = 0;
@@ -394,13 +404,13 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     }
 
                     GTUtility.sendSoundToPlayers(
-                            player.worldObj,
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                            1.0F,
-                            -1.0F,
-                            base.getXCoord(),
-                            base.getYCoord(),
-                            base.getZCoord());
+                        player.worldObj,
+                        SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                        1.0F,
+                        -1.0F,
+                        base.getXCoord(),
+                        base.getYCoord(),
+                        base.getZCoord());
 
                     return true;
                 }
@@ -485,7 +495,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
             if (isotope == null) {
                 for (ItemStack input : inputs) {
-                    GTRecipe recipe = getRecipeMap().findRecipeQuery().caching(false).items(input).find();
+                    GTRecipe recipe = getRecipeMap().findRecipeQuery()
+                        .caching(false)
+                        .items(input)
+                        .find();
 
                     if (recipe != null) {
                         if (product != null && !GTUtility.areStacksEqual(product, recipe.mOutputs[0])) continue;
@@ -503,7 +516,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     ItemStack toConsume = input.copy();
 
                     toConsume.stackSize = Math
-                            .min(toConsume.stackSize, Math.min(getAvailableCapacity(), remainingIOQuota));
+                        .min(toConsume.stackSize, Math.min(getAvailableCapacity(), remainingIOQuota));
 
                     if (depleteInput(toConsume)) {
                         pendingInputs.add(toConsume);
@@ -547,7 +560,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         pendingInputs.addAll(GTUtility.loadItemList(aNBT.getTagList("pendingInputs", Constants.NBT.TAG_COMPOUND)));
 
-        GTRecipe recipe = getRecipeMap().findRecipeQuery().caching(false).items(isotope).find();
+        GTRecipe recipe = getRecipeMap().findRecipeQuery()
+            .caching(false)
+            .items(isotope)
+            .find();
 
         if (recipe != null && areStacksEqual(recipe.mOutputs[0], product)) {
             currentRecipe = recipe;
@@ -564,9 +580,11 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         sb.append(" (");
         if (decayRate > 1) {
-            sb.append(formatNumbers(decayRate)).append("/s)");
+            sb.append(formatNumbers(decayRate))
+                .append("/s)");
         } else {
-            sb.append(formatNumbers(1d / decayRate)).append("s/ea)");
+            sb.append(formatNumbers(1d / decayRate))
+                .append("s/ea)");
         }
 
         return sb.toString();
@@ -585,28 +603,37 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         screenElements.widget(TextWidget.localised("GT5U.gui.text.contents"));
 
         screenElements.widget(
-                TextWidget
-                        .dynamicString(
-                                () -> GTUtility.translate(
-                                        "GT5U.gui.text.content-entry",
-                                        isotope == null ? "" : isotope.getDisplayName(),
-                                        formatNumbers(storedIsotope)))
-                        .setTextAlignment(Alignment.CenterLeft).setEnabled(w -> isotope != null).setSize(179, 10));
+            TextWidget
+                .dynamicString(
+                    () -> GTUtility.translate(
+                        "GT5U.gui.text.content-entry",
+                        isotope == null ? "" : isotope.getDisplayName(),
+                        formatNumbers(storedIsotope)))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> isotope != null)
+                .setSize(179, 10));
         screenElements.widget(
-                TextWidget
-                        .dynamicString(
-                                () -> GTUtility.translate(
-                                        "GT5U.gui.text.content-entry",
-                                        product == null ? "" : product.getDisplayName(),
-                                        formatNumbers(storedProduct)))
-                        .setTextAlignment(Alignment.CenterLeft).setEnabled(w -> product != null).setSize(179, 10));
+            TextWidget
+                .dynamicString(
+                    () -> GTUtility.translate(
+                        "GT5U.gui.text.content-entry",
+                        product == null ? "" : product.getDisplayName(),
+                        formatNumbers(storedProduct)))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> product != null)
+                .setSize(179, 10));
         screenElements.widget(
-                TextWidget.dynamicString(
-                        () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumbers(decayRate), getDecayRate()))
-                        .setTextAlignment(Alignment.CenterLeft).setEnabled(w -> decayRate > 0).setSize(179, 10));
+            TextWidget
+                .dynamicString(
+                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumbers(decayRate), getDecayRate()))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> decayRate > 0)
+                .setSize(179, 10));
         screenElements.widget(
-                TextWidget.localised("GT5U.gui.text.nothing").setTextAlignment(Alignment.CenterLeft)
-                        .setEnabled(w -> isotope == null && product == null).setSize(170, 10));
+            TextWidget.localised("GT5U.gui.text.nothing")
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> isotope == null && product == null)
+                .setSize(170, 10));
     }
 
     @Override

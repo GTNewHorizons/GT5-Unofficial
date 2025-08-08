@@ -9,9 +9,9 @@ public class GregtechIndustrialWiremill {
 
     public static void run() {
         GregtechItemList.Industrial_WireFactory.set(
-                new MTEIndustrialWireMill(
-                        Industrial_WireFactory.ID,
-                        "industrialwiremill.controller.tier.single",
-                        "Industrial Wire Factory").getStackForm(1L));
+            new MTEIndustrialWireMill(
+                Industrial_WireFactory.ID,
+                "industrialwiremill.controller.tier.single",
+                "Industrial Wire Factory").getStackForm(1L));
     }
 }

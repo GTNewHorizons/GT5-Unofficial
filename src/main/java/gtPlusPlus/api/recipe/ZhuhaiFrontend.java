@@ -15,7 +15,7 @@ import gregtech.common.gui.modularui.UIHelper;
 public class ZhuhaiFrontend extends RecipeMapFrontend {
 
     public ZhuhaiFrontend(@NotNull BasicUIPropertiesBuilder uiPropertiesBuilder,
-            @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 100)));
     }
 

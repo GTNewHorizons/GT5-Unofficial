@@ -26,8 +26,8 @@ public class SpaceSchematicFactory {
 
     public static StructureInformation createStructureInfo(int pX, int pY, int pZ, Block pBlock, int pMeta) {
         return new StructureInformation(
-                Vec3.createVectorHelper(pX, pY, pZ),
-                TargetBlockPosition.Invalid,
-                new SpecialBlockComb(pBlock, pMeta, AllowedBlockPosition.AsteroidCoreAndShell));
+            Vec3.createVectorHelper(pX, pY, pZ),
+            TargetBlockPosition.Invalid,
+            new SpecialBlockComb(pBlock, pMeta, AllowedBlockPosition.AsteroidCoreAndShell));
     }
 }

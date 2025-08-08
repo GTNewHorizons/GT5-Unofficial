@@ -25,50 +25,44 @@ public class GregtechPowerSubStation {
     private static void run1() {
         // Steam Condensors
         GregtechItemList.PowerSubStation.set(
-                new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
-                        .getStackForm(1L));
+            new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
+                .getStackForm(1L));
         int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
-                new MTEHatchInputBattery(
-                        Hatch_Input_Battery_MV.ID,
-                        "hatch.input_battery.tier.00",
-                        "Charging Bus (MV)",
-                        2).getStackForm(1L));
+            new MTEHatchInputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Input_Battery_EV.set(
-                new MTEHatchInputBattery(
-                        Hatch_Input_Battery_EV.ID,
-                        "hatch.input_battery.tier.01",
-                        "Charging Bus (EV)",
-                        4).getStackForm(1L));
+            new MTEHatchInputBattery(Hatch_Input_Battery_EV.ID, "hatch.input_battery.tier.01", "Charging Bus (EV)", 4)
+                .getStackForm(1L));
 
         GregtechItemList.Hatch_Output_Battery_MV.set(
-                new MTEHatchOutputBattery(
-                        Hatch_Output_Battery_MV.ID,
-                        "hatch.output_battery.tier.00",
-                        "Discharging Bus (MV)",
-                        2).getStackForm(1L));
+            new MTEHatchOutputBattery(
+                Hatch_Output_Battery_MV.ID,
+                "hatch.output_battery.tier.00",
+                "Discharging Bus (MV)",
+                2).getStackForm(1L));
         GregtechItemList.Hatch_Output_Battery_EV.set(
-                new MTEHatchOutputBattery(
-                        Hatch_Output_Battery_EV.ID,
-                        "hatch.output_battery.tier.01",
-                        "Discharging Bus (EV)",
-                        4).getStackForm(1L));
+            new MTEHatchOutputBattery(
+                Hatch_Output_Battery_EV.ID,
+                "hatch.output_battery.tier.01",
+                "Discharging Bus (EV)",
+                4).getStackForm(1L));
 
         GTModHandler.addCraftingRecipe(
-                GregtechItemList.Hatch_Input_Battery_MV.get(1L),
-                CI.bitsd,
-                new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
+            GregtechItemList.Hatch_Input_Battery_MV.get(1L),
+            CI.bitsd,
+            new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
-                GregtechItemList.Hatch_Input_Battery_EV.get(1L),
-                CI.bitsd,
-                new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
+            GregtechItemList.Hatch_Input_Battery_EV.get(1L),
+            CI.bitsd,
+            new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
         GTModHandler.addCraftingRecipe(
-                GregtechItemList.Hatch_Output_Battery_MV.get(1L),
-                CI.bitsd,
-                new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
+            GregtechItemList.Hatch_Output_Battery_MV.get(1L),
+            CI.bitsd,
+            new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
-                GregtechItemList.Hatch_Output_Battery_EV.get(1L),
-                CI.bitsd,
-                new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
+            GregtechItemList.Hatch_Output_Battery_EV.get(1L),
+            CI.bitsd,
+            new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
     }
 }

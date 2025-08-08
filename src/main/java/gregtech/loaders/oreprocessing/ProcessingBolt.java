@@ -17,7 +17,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV) {
             return;
         }
@@ -35,9 +35,9 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
         }
 
         GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, aStack),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
+            GTUtility.copyAmount(2, aStack),
+            GTModHandler.RecipeBits.BITS_STD,
+            new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
 
     }
 }

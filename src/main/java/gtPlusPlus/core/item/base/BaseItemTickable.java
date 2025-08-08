@@ -37,22 +37,22 @@ public class BaseItemTickable extends CoreItem {
     }
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
-            final int maxTicks) {
+        final int maxTicks) {
         this(containerTick, twoPass, unlocalName, colour, maxTicks, GTValues.emptyStringArray);
     }
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
-            final int maxTicks, final String[] Description) {
+        final int maxTicks, final String[] Description) {
         super(
-                unlocalName,
-                AddToCreativeTab.tabMisc,
-                1,
-                999999999,
-                Description,
-                EnumRarity.epic,
-                EnumChatFormatting.DARK_RED,
-                true,
-                null);
+            unlocalName,
+            AddToCreativeTab.tabMisc,
+            1,
+            999999999,
+            Description,
+            EnumRarity.epic,
+            EnumChatFormatting.DARK_RED,
+            true,
+            null);
         this.itemColour = colour;
         this.descriptionString = Description;
         this.maxTicks = maxTicks;
@@ -64,7 +64,7 @@ public class BaseItemTickable extends CoreItem {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (world == null || iStack == null) {
             return;
         }
@@ -288,7 +288,7 @@ public class BaseItemTickable extends CoreItem {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
-            boolean bool) {
+        boolean bool) {
         World world = player.getEntityWorld();
         if (this.descriptionString.length > 0) {
             list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);
@@ -311,8 +311,8 @@ public class BaseItemTickable extends CoreItem {
             durability = EnumChatFormatting.RED;
         }
         list.add(
-                durability + StatCollector
-                        .translateToLocalFormatted("gtpp.tooltip.tickable.decay_seconds", (maxTicks - ticks) / 20));
+            durability + StatCollector
+                .translateToLocalFormatted("gtpp.tooltip.tickable.decay_seconds", (maxTicks - ticks) / 20));
 
         if (this.descriptionString.length > 1) {
             for (int h = 1; h < this.descriptionString.length; h++) {

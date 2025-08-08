@@ -45,13 +45,13 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
 
     public MTEHatchDataOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
     }
 
     public MTEHatchDataOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -140,34 +140,34 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
             ((MTEPipeData) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof MTEHatchDataInput && ((MTEHatchDataInput) meta).getColorization() == color
-                && ((MTEHatchDataInput) meta).canConnectData(base.getFrontFacing().getOpposite())) {
-                    return (IConnectsToDataPipe) meta;
-                }
+            && ((MTEHatchDataInput) meta).canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
         return null;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("computation", history);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-                translate(
-                        "tt.keyphrase.Computation_Transmitting",
-                        GTUtility.formatNumbers(tag.getLong("computation"))));
+            translate("tt.keyphrase.Computation_Transmitting", GTUtility.formatNumbers(tag.getLong("computation"))));
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
 
         if (allowComputationConfiguring) {
             openGui(aPlayer);
@@ -184,12 +184,19 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(TextWidget.localised("GT5U.machines.computation_hatch.computation").setPos(x, y).setSize(74, 14))
-                .widget(
-                        new NumericWidget().setSetter(val -> requestedComputation = (long) val)
-                                .setGetter(() -> requestedComputation).setBounds(1, Long.MAX_VALUE)
-                                .setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                                .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(x, y + 16)
-                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.computation_hatch.computation")
+                .setPos(x, y)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> requestedComputation = (long) val)
+                    .setGetter(() -> requestedComputation)
+                    .setBounds(1, Long.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(x, y + 16)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

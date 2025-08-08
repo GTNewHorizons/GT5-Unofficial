@@ -16,7 +16,7 @@ public class ItemCoolantCellIC extends ItemCoolantCell implements IReactorCompon
 
     @Override
     public boolean acceptUraniumPulse(IReactor aReactor, ItemStack aStack, ItemStack pulsingStack, int youX, int youY,
-            int pulseX, int pulseY, boolean aHeatRun) {
+        int pulseX, int pulseY, boolean aHeatRun) {
         return false;
     }
 

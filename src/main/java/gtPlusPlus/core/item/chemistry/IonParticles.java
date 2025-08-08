@@ -110,21 +110,17 @@ public class IonParticles extends BaseItemParticle {
         // State not set
         if (aCharge == 0) {
             list.add(
-                    EnumChatFormatting.GRAY + StatCollector
-                            .translateToLocalFormatted("gtpp.tooltip.ion_particles.state_not_set", ionName));
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.ion_particles.state_not_set", ionName));
         } else {
             if (aCharge > 0) {
                 list.add(
-                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                "gtpp.tooltip.ion_particles.charge_positive",
-                                ionName,
-                                aCharge));
+                    EnumChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_positive", ionName, aCharge));
             } else {
                 list.add(
-                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                "gtpp.tooltip.ion_particles.charge_negative",
-                                ionName,
-                                aCharge));
+                    EnumChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_negative", ionName, aCharge));
             }
         }
         super.addInformation(stack, player, list, bool);

@@ -1072,8 +1072,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Collection<SubTag> mSubTags = new LinkedHashSet<>();
     public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
     public boolean mUnificatable, mBlastFurnaceRequired = false, mAutoGenerateBlastFurnaceRecipes = true,
-            mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mTransparent = false,
-            mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
+        mAutoGenerateVacuumFreezerRecipes = true, mAutoGenerateRecycleRecipes = true, mTransparent = false,
+        mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0, mToolQuality = 0;
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
@@ -1103,13 +1103,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public int processingMaterialTierEU = 0;
     public long mDensity = M;
     public float mToolSpeed = 1.0F, mHeatDamage = 0.0F, mSteamMultiplier = 1.0F, mGasMultiplier = 1.0F,
-            mPlasmaMultiplier = 1.0F;
+        mPlasmaMultiplier = 1.0F;
     public String mChemicalFormula = "?", mName, mDefaultLocalName, mCustomID = "null", mConfigSection = "null",
-            mLocalizedName = "null";
+        mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
     public Materials mDirectSmelting = this, mOreReplacement = this, mMacerateInto = this, mSmeltInto = this,
-            mArcSmeltInto = this, mHandleMaterial = this, mMaterialInto;
+        mArcSmeltInto = this, mHandleMaterial = this, mMaterialInto;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material
@@ -1121,24 +1121,24 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            boolean aUnificatable, String aName, String aDefaultLocalName) {
+        boolean aUnificatable, String aName, String aDefaultLocalName) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aUnificatable,
-                aName,
-                aDefaultLocalName,
-                "ore",
-                false,
-                "null");
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aUnificatable,
+            aName,
+            aDefaultLocalName,
+            "ore",
+            false,
+            "null");
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
-            String aCustomID) {
+        boolean aUnificatable, String aName, String aDefaultLocalName, String aConfigSection, boolean aCustomOre,
+        String aCustomID) {
         mMetaItemSubID = aMetaItemSubID;
         mDefaultLocalName = aDefaultLocalName;
         mName = aName;
@@ -1166,68 +1166,67 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor,
-                "ore",
-                false,
-                "null");
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor,
+            "ore",
+            false,
+            "null");
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            String aConfigSection) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor,
-                aConfigSection,
-                false,
-                "null");
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor,
+            aConfigSection,
+            false,
+            "null");
     }
 
     /**
@@ -1251,22 +1250,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * @param aColor                Vanilla MC Wool Color which comes the closest to this.
      */
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            String aConfigSection, boolean aCustomOre, String aCustomID) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection,
+        boolean aCustomOre, String aCustomID) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                true,
-                aName,
-                aDefaultLocalName,
-                aConfigSection,
-                aCustomOre,
-                aCustomID);
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            true,
+            aName,
+            aDefaultLocalName,
+            aConfigSection,
+            aCustomOre,
+            aCustomID);
         mMeltingPoint = aMeltingPoint;
         mBlastFurnaceRequired = aBlastFurnaceRequired;
         mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
@@ -1289,64 +1288,64 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            List<TCAspects.TC_AspectStack> aAspects) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
+        List<TCAspects.TC_AspectStack> aAspects) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor);
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor);
         mAspects.addAll(aAspects);
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            Element aElement, List<TCAspects.TC_AspectStack> aAspects) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, Element aElement,
+        List<TCAspects.TC_AspectStack> aAspects) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor);
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor);
         mElement = aElement;
         mElement.mLinkedMaterials.add(this);
         if (aElement == Element._NULL) {
@@ -1359,71 +1358,74 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            int aExtraData, List<MaterialStack> aMaterialList) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
+        List<MaterialStack> aMaterialList) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor,
-                aExtraData,
-                aMaterialList,
-                null);
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor,
+            aExtraData,
+            aMaterialList,
+            null);
     }
 
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality,
-            int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
-            int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired,
-            boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor,
-            int aExtraData, List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
+        int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType,
+        int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent,
+        int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData,
+        List<MaterialStack> aMaterialList, List<TCAspects.TC_AspectStack> aAspects) {
         this(
-                aMetaItemSubID,
-                aIconSet,
-                aToolSpeed,
-                aDurability,
-                aToolQuality,
-                aTypes,
-                aR,
-                aG,
-                aB,
-                aA,
-                aName,
-                aDefaultLocalName,
-                aFuelType,
-                aFuelPower,
-                aMeltingPoint,
-                aBlastFurnaceTemp,
-                aBlastFurnaceRequired,
-                aTransparent,
-                aOreValue,
-                aDensityMultiplier,
-                aDensityDivider,
-                aColor);
+            aMetaItemSubID,
+            aIconSet,
+            aToolSpeed,
+            aDurability,
+            aToolQuality,
+            aTypes,
+            aR,
+            aG,
+            aB,
+            aA,
+            aName,
+            aDefaultLocalName,
+            aFuelType,
+            aFuelPower,
+            aMeltingPoint,
+            aBlastFurnaceTemp,
+            aBlastFurnaceRequired,
+            aTransparent,
+            aOreValue,
+            aDensityMultiplier,
+            aDensityDivider,
+            aColor);
         mExtraData = aExtraData;
         mMaterialList.addAll(aMaterialList);
-        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0).toString(true);
-        else mChemicalFormula = mMaterialList.stream().map(MaterialStack::toString).collect(Collectors.joining())
-                .replaceAll("_", "-");
+        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0)
+            .toString(true);
+        else mChemicalFormula = mMaterialList.stream()
+            .map(MaterialStack::toString)
+            .collect(Collectors.joining())
+            .replaceAll("_", "-");
 
         int tAmountOfComponents = 0, tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1444,25 +1446,47 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setSmeltingInto() {
-        SamariumMagnetic.setSmeltingInto(Samarium).setMaceratingInto(Samarium).setArcSmeltingInto(Samarium);
-        NeodymiumMagnetic.setSmeltingInto(Neodymium).setMaceratingInto(Neodymium).setArcSmeltingInto(Neodymium);
-        SteelMagnetic.setSmeltingInto(Steel).setMaceratingInto(Steel).setArcSmeltingInto(Steel);
-        Iron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
-        AnyIron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
-        PigIron.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
-        WroughtIron.setSmeltingInto(WroughtIron).setMaceratingInto(WroughtIron).setArcSmeltingInto(WroughtIron);
-        IronMagnetic.setSmeltingInto(Iron).setMaceratingInto(Iron).setArcSmeltingInto(WroughtIron);
-        Copper.setSmeltingInto(Copper).setMaceratingInto(Copper).setArcSmeltingInto(AnnealedCopper);
-        AnyCopper.setSmeltingInto(Copper).setMaceratingInto(Copper).setArcSmeltingInto(AnnealedCopper);
-        AnnealedCopper.setSmeltingInto(AnnealedCopper).setMaceratingInto(AnnealedCopper)
-                .setArcSmeltingInto(AnnealedCopper);
+        SamariumMagnetic.setSmeltingInto(Samarium)
+            .setMaceratingInto(Samarium)
+            .setArcSmeltingInto(Samarium);
+        NeodymiumMagnetic.setSmeltingInto(Neodymium)
+            .setMaceratingInto(Neodymium)
+            .setArcSmeltingInto(Neodymium);
+        SteelMagnetic.setSmeltingInto(Steel)
+            .setMaceratingInto(Steel)
+            .setArcSmeltingInto(Steel);
+        Iron.setSmeltingInto(Iron)
+            .setMaceratingInto(Iron)
+            .setArcSmeltingInto(WroughtIron);
+        AnyIron.setSmeltingInto(Iron)
+            .setMaceratingInto(Iron)
+            .setArcSmeltingInto(WroughtIron);
+        PigIron.setSmeltingInto(Iron)
+            .setMaceratingInto(Iron)
+            .setArcSmeltingInto(WroughtIron);
+        WroughtIron.setSmeltingInto(WroughtIron)
+            .setMaceratingInto(WroughtIron)
+            .setArcSmeltingInto(WroughtIron);
+        IronMagnetic.setSmeltingInto(Iron)
+            .setMaceratingInto(Iron)
+            .setArcSmeltingInto(WroughtIron);
+        Copper.setSmeltingInto(Copper)
+            .setMaceratingInto(Copper)
+            .setArcSmeltingInto(AnnealedCopper);
+        AnyCopper.setSmeltingInto(Copper)
+            .setMaceratingInto(Copper)
+            .setArcSmeltingInto(AnnealedCopper);
+        AnnealedCopper.setSmeltingInto(AnnealedCopper)
+            .setMaceratingInto(AnnealedCopper)
+            .setArcSmeltingInto(AnnealedCopper);
         Netherrack.setSmeltingInto(NetherBrick);
         MeatRaw.setSmeltingInto(MeatCooked);
         Sand.setSmeltingInto(Glass);
         Ice.setSmeltingInto(Water);
         Snow.setSmeltingInto(Water);
-        TengamAttuned.setSmeltingInto(TengamPurified).setMaceratingInto(TengamPurified)
-                .setArcSmeltingInto(TengamPurified);
+        TengamAttuned.setSmeltingInto(TengamPurified)
+            .setMaceratingInto(TengamPurified)
+            .setArcSmeltingInto(TengamPurified);
     }
 
     private static void setOthers() {
@@ -1472,18 +1496,29 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setDirectSmelting() {
-        Cinnabar.setDirectSmelting(Mercury).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT).add(SubTag.SMELTING_TO_GEM);
-        Tetrahedrite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
-                .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
-        Chalcopyrite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
-                .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
-        Malachite.setDirectSmelting(Copper).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Pentlandite.setDirectSmelting(Nickel).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Sphalerite.setDirectSmelting(Zinc).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        Pyrite.setDirectSmelting(Iron).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        BasalticMineralSand.setDirectSmelting(Iron).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        GraniticMineralSand.setDirectSmelting(Iron).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
-        YellowLimonite.setDirectSmelting(Iron).add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Cinnabar.setDirectSmelting(Mercury)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+            .add(SubTag.SMELTING_TO_GEM);
+        Tetrahedrite.setDirectSmelting(Copper)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Chalcopyrite.setDirectSmelting(Copper)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT)
+            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Malachite.setDirectSmelting(Copper)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Pentlandite.setDirectSmelting(Nickel)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Sphalerite.setDirectSmelting(Zinc)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        Pyrite.setDirectSmelting(Iron)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        BasalticMineralSand.setDirectSmelting(Iron)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        GraniticMineralSand.setDirectSmelting(Iron)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
+        YellowLimonite.setDirectSmelting(Iron)
+            .add(SubTag.INDUCTIONSMELTING_LOW_OUTPUT);
         BrownLimonite.setDirectSmelting(Iron);
         BandedIron.setDirectSmelting(Iron);
         Magnetite.setDirectSmelting(Iron);
@@ -1493,8 +1528,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Garnierite.setDirectSmelting(Nickel);
         Cobaltite.setDirectSmelting(Cobalt);
         Stibnite.setDirectSmelting(Antimony);
-        Cooperite.setDirectSmelting(Platinum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
-        Molybdenite.setDirectSmelting(Molybdenum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Cooperite.setDirectSmelting(Platinum)
+            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Molybdenite.setDirectSmelting(Molybdenum)
+            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Galena.setDirectSmelting(Lead);
         RoastedIron.setDirectSmelting(Iron);
         RoastedAntimony.setDirectSmelting(Antimony);
@@ -1507,37 +1544,73 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setMultipliers() {
-        Amber.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedAir.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedFire.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedEarth.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedWater.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedEntropy.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedOrder.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedVis.setOreMultiplier(2).setSmeltingMultiplier(2);
-        InfusedDull.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Salt.setOreMultiplier(2).setSmeltingMultiplier(2);
-        RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
-        NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CertusQuartzCharged.setOreMultiplier(2).setSmeltingMultiplier(2);
-        TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
-        Saltpeter.setOreMultiplier(4).setSmeltingMultiplier(4);
-        Apatite.setOreMultiplier(4).setSmeltingMultiplier(4).setByProductMultiplier(2);
-        Electrotine.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Teslatite.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Redstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Glowstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Lapis.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Sodalite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Lazurite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Monazite.setOreMultiplier(8).setSmeltingMultiplier(8).setByProductMultiplier(2);
-        Cryolite.setOreMultiplier(4).setByProductMultiplier(4);
-        Coal.setOreMultiplier(2).setByProductMultiplier(2);
+        Amber.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedAir.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedFire.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedEarth.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedWater.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedEntropy.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedOrder.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedVis.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        InfusedDull.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        Salt.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        RockSalt.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        Scheelite.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        Tungstate.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        Cassiterite.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        CassiteriteSand.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        NetherQuartz.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        CertusQuartz.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        CertusQuartzCharged.setOreMultiplier(2)
+            .setSmeltingMultiplier(2);
+        TricalciumPhosphate.setOreMultiplier(3)
+            .setSmeltingMultiplier(3);
+        Saltpeter.setOreMultiplier(4)
+            .setSmeltingMultiplier(4);
+        Apatite.setOreMultiplier(4)
+            .setSmeltingMultiplier(4)
+            .setByProductMultiplier(2);
+        Electrotine.setOreMultiplier(5)
+            .setSmeltingMultiplier(5);
+        Teslatite.setOreMultiplier(5)
+            .setSmeltingMultiplier(5);
+        Redstone.setOreMultiplier(5)
+            .setSmeltingMultiplier(5);
+        Glowstone.setOreMultiplier(5)
+            .setSmeltingMultiplier(5);
+        Lapis.setOreMultiplier(6)
+            .setSmeltingMultiplier(6)
+            .setByProductMultiplier(4);
+        Sodalite.setOreMultiplier(6)
+            .setSmeltingMultiplier(6)
+            .setByProductMultiplier(4);
+        Lazurite.setOreMultiplier(6)
+            .setSmeltingMultiplier(6)
+            .setByProductMultiplier(4);
+        Monazite.setOreMultiplier(8)
+            .setSmeltingMultiplier(8)
+            .setByProductMultiplier(2);
+        Cryolite.setOreMultiplier(4)
+            .setByProductMultiplier(4);
+        Coal.setOreMultiplier(2)
+            .setByProductMultiplier(2);
     }
 
     private static void setEnchantmentKnockbackTools() {
@@ -1726,7 +1799,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
         Lepidolite.addOreByProducts(Lithium, Caesium);
         Andradite.addOreByProducts(GarnetYellow, Iron);
-        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium)
+            .add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         TricalciumPhosphate.addOreByProducts(Apatite, Phosphate, Pyrochlore);
         Apatite.addOreByProducts(TricalciumPhosphate, Phosphate, Pyrochlore);
         Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);
@@ -1876,13 +1950,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         HeeEndium.mChemicalFormula = "Em";
         Alduorite.mChemicalFormula = "SpAl";
         PlatinumGroupSludge.mChemicalFormula = "(SiO\u2082)" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "Au"
-                + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "Pt"
-                + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "Pd"
-                + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "??";
+            + "Au"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "Pt"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "Pd"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "??";
         Ceruclase.mChemicalFormula = "SpAg";
         Orichalcum.mChemicalFormula = "SpBi";
         Rubracium.mChemicalFormula = "SpRb";
@@ -1906,9 +1980,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.MAGNET;
         SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.MAGNET;
         MetalMixture.mChemicalFormula = "Fe" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "O"
-                + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
-                + "??";
+            + "O"
+            + CustomGlyphs.SUBSCRIPT_QUESTION_MARK
+            + "??";
         Void.mChemicalFormula = "ShFeMa\u2083";
         Shadow.mChemicalFormula = "Sh\u2086(FeMa\u2083)\u2082";
         BloodInfusedIron.mChemicalFormula = CustomGlyphs.BRIMSTONE + "Fe";
@@ -1936,15 +2010,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.WhiteDwarfMatter.mChemicalFormula = "\u2205";
         MysteriousCrystal.mChemicalFormula = CustomGlyphs.CIRCLE_STAR;
         Cryotheum.mChemicalFormula = "(KNO\u2083)(" + Redstone.mChemicalFormula
-                + ")(H\u2082O)("
-                + Blizz.mChemicalFormula
-                + ")";
+            + ")(H\u2082O)("
+            + Blizz.mChemicalFormula
+            + ")";
         Uranium235.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT3
-                + CustomGlyphs.SUPERSCRIPT5
-                + "U";
+            + CustomGlyphs.SUPERSCRIPT5
+            + "U";
         Plutonium241.mChemicalFormula = CustomGlyphs.SUPERSCRIPT2 + CustomGlyphs.SUPERSCRIPT4
-                + CustomGlyphs.SUPERSCRIPT1
-                + "Pu";
+            + CustomGlyphs.SUPERSCRIPT1
+            + "Pu";
 
         Electrotine.mChemicalFormula = "Rp";
         Trinium.mChemicalFormula = "Ke";
@@ -1997,19 +2071,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
         MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
         MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "\u21F2"
-                + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
-                + CustomGlyphs.GALAXY
-                + CustomGlyphs.ARROW_CORNER_NORTH_WEST
-                + "\u21F1";
+            + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
+            + CustomGlyphs.GALAXY
+            + CustomGlyphs.ARROW_CORNER_NORTH_WEST
+            + "\u21F1";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7Ni4Ti6)";
         SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083"
-                + CustomGlyphs.FIRE
-                + CustomGlyphs.EARTH
-                + CustomGlyphs.CHAOS
-                + ")\u2085\u06DE\u2082";
+            + CustomGlyphs.FIRE
+            + CustomGlyphs.EARTH
+            + CustomGlyphs.CHAOS
+            + ")\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
         Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
@@ -2027,43 +2101,43 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
         MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
-                + CustomGlyphs.EMPTY_SET;
+            + CustomGlyphs.EMPTY_SET;
         PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
         MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.GRAY
-                + "g"
-                + EnumChatFormatting.OBFUSCATED
-                + "X";
+            + EnumChatFormatting.RESET
+            + EnumChatFormatting.GRAY
+            + "g"
+            + EnumChatFormatting.OBFUSCATED
+            + "X";
         MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
         MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085"
-                + CustomGlyphs.SUBSCRIPT0
-                + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
-                + CustomGlyphs.SUBSCRIPT0
-                + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
+            + CustomGlyphs.SUBSCRIPT0
+            + "C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081"
+            + CustomGlyphs.SUBSCRIPT0
+            + "(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
         MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081("
-                + FierySteel.mChemicalFormula
-                + ")\u2087"
-                + Firestone.mChemicalFormula
-                + "\u2081\u2083?\u2081\u2083";
+            + FierySteel.mChemicalFormula
+            + ")\u2087"
+            + Firestone.mChemicalFormula
+            + "\u2081\u2083?\u2081\u2083";
         MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
         Tartarite.mChemicalFormula = "Tt";
         MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
         // I hate this
         MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula = "("
-                + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
-                + ")\u2082"
-                + "(W\u2088Nq*\u2087("
-                + Materials.Bedrockium.mChemicalFormula
-                + ")\u2084C\u2084V\u2083SpPu)\u2082"
-                + Tartarite.mChemicalFormula
-                + "\u2082"
-                + "((CW)\u2087Ti\u2083)\u2083"
-                + CustomGlyphs.FIRE
-                + CustomGlyphs.EARTH
-                + CustomGlyphs.CHAOS
-                + "If*";
+            + MaterialsUEVplus.TranscendentMetal.mChemicalFormula
+            + ")\u2082"
+            + "(W\u2088Nq*\u2087("
+            + Materials.Bedrockium.mChemicalFormula
+            + ")\u2084C\u2084V\u2083SpPu)\u2082"
+            + Tartarite.mChemicalFormula
+            + "\u2082"
+            + "((CW)\u2087Ti\u2083)\u2083"
+            + CustomGlyphs.FIRE
+            + CustomGlyphs.EARTH
+            + CustomGlyphs.CHAOS
+            + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         Materials.HellishMetal.mChemicalFormula = "RhMa";
@@ -2074,7 +2148,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM.addTo(Bastnasite, Monazite, Forcicium, Forcillium);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_GOLD
-                .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
+            .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -2096,25 +2170,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
-                YellowLimonite,
-                BrownLimonite,
-                Pyrite,
-                BandedIron,
-                Nickel,
-                Vermiculite,
-                Glauconite,
-                GlauconiteSand,
-                Pentlandite,
-                Tin,
-                Antimony,
-                Ilmenite,
-                Manganese,
-                Chrome,
-                Chromite,
-                Andradite);
+            YellowLimonite,
+            BrownLimonite,
+            Pyrite,
+            BandedIron,
+            Nickel,
+            Vermiculite,
+            Glauconite,
+            GlauconiteSand,
+            Pentlandite,
+            Tin,
+            Antimony,
+            Ilmenite,
+            Manganese,
+            Chrome,
+            Chromite,
+            Andradite);
 
         SubTag.BLASTFURNACE_CALCITE_DOUBLE
-                .addTo(Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
+            .addTo(Pyrite, BrownLimonite, YellowLimonite, BasalticMineralSand, GraniticMineralSand, Magnetite);
 
         SubTag.BLASTFURNACE_CALCITE_TRIPLE.addTo(Iron, PigIron, DeepIron, ShadowIron, WroughtIron, MeteoricIron);
 
@@ -2124,327 +2198,327 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         SubTag.WASHING_SODIUMPERSULFATE.addTo(Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite);
         SubTag.METAL.addTo(
-                AnyIron,
-                AnyCopper,
-                AnyBronze,
-                Metal,
-                Aluminium,
-                Americium,
-                Antimony,
-                Beryllium,
-                Bismuth,
-                Caesium,
-                Cerium,
-                Chrome,
-                Cobalt,
-                Copper,
-                Dysprosium,
-                Erbium,
-                Europium,
-                Gadolinium,
-                Gallium,
-                Gold,
-                Holmium,
-                Indium,
-                Iridium,
-                Iron,
-                Lanthanum,
-                Lead,
-                Lutetium,
-                Magnesium,
-                Manganese,
-                Mercury,
-                Niobium,
-                Molybdenum,
-                Neodymium,
-                Neutronium,
-                Nickel,
-                Osmium,
-                Palladium,
-                Platinum,
-                Plutonium,
-                Plutonium241,
-                Praseodymium,
-                Promethium,
-                Rubidium,
-                Samarium,
-                Scandium,
-                Silicon,
-                Silver,
-                Tantalum,
-                Tellurium,
-                Terbium,
-                Thorium,
-                Thulium,
-                Tin,
-                Titanium,
-                Tungsten,
-                Uranium,
-                Uranium235,
-                Vanadium,
-                Ytterbium,
-                Yttrium,
-                Zinc,
-                Flerovium,
-                PhasedIron,
-                PhasedGold,
-                DarkSteel,
-                TinAlloy,
-                ConductiveIron,
-                ElectricalSteel,
-                EnergeticAlloy,
-                VibrantAlloy,
-                MelodicAlloy,
-                StellarAlloy,
-                VividAlloy,
-                EnergeticSilver,
-                CrystallinePinkSlime,
-                CrystallineAlloy,
-                CrudeSteel,
-                EndSteel,
-                PulsatingIron,
-                DarkThaumium,
-                Adamantium,
-                Amordrine,
-                Angmallen,
-                Ardite,
-                Aredrite,
-                Atlarus,
-                Carmot,
-                Celenegil,
-                Ceruclase,
-                DarkIron,
-                Desh,
-                Desichalkos,
-                Duranium,
-                ElectrumFlux,
-                Enderium,
-                EnderiumBase,
-                Eximite,
-                FierySteel,
-                Force,
-                Haderoth,
-                Hematite,
-                Hepatizon,
-                HSLA,
-                Infuscolium,
-                InfusedGold,
-                Inolashite,
-                Mercassium,
-                MeteoricIron,
-                BloodInfusedIron,
-                MaterialsUEVplus.Universium,
-                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
-                MeteoricSteel,
-                Naquadah,
-                NaquadahAlloy,
-                NaquadahEnriched,
-                Naquadria,
-                ObsidianFlux,
-                Orichalcum,
-                Osmonium,
-                Oureclase,
-                Phoenixite,
-                Prometheum,
-                Sanguinite,
-                CosmicNeutronium,
-                Tartarite,
-                Ichorium,
-                Tritanium,
-                Vulcanite,
-                Vyroxeres,
-                Yellorium,
-                Zectium,
-                AluminiumBrass,
-                Osmiridium,
-                Sunnarium,
-                AnnealedCopper,
-                BatteryAlloy,
-                Brass,
-                Bronze,
-                ChromiumDioxide,
-                Cupronickel,
-                DeepIron,
-                Electrum,
-                Invar,
-                Kanthal,
-                Magnalium,
-                Nichrome,
-                NiobiumNitride,
-                NiobiumTitanium,
-                PigIron,
-                SolderingAlloy,
-                StainlessSteel,
-                Steel,
-                Ultimet,
-                VanadiumGallium,
-                WroughtIron,
-                YttriumBariumCuprate,
-                IronWood,
-                Alumite,
-                Manyullyn,
-                ShadowIron,
-                Shadow,
-                ShadowSteel,
-                Steeleaf,
-                SterlingSilver,
-                RoseGold,
-                BlackBronze,
-                BismuthBronze,
-                BlackSteel,
-                RedSteel,
-                BlueSteel,
-                DamascusSteel,
-                TungstenSteel,
-                TPV,
-                AstralSilver,
-                Mithril,
-                BlueAlloy,
-                RedAlloy,
-                CobaltBrass,
-                Thaumium,
-                Void,
-                IronMagnetic,
-                SteelMagnetic,
-                NeodymiumMagnetic,
-                SamariumMagnetic,
-                Knightmetal,
-                HSSG,
-                HSSE,
-                HSSS,
-                TungstenCarbide,
-                HeeEndium,
-                VanadiumSteel,
-                Kalendrite,
-                Ignatius,
-                Trinium,
-                Infinity,
-                InfinityCatalyst,
-                Realgar,
-                Chrysotile,
-                BlackPlutonium,
-                Alduorite,
-                Adluorite,
-                Vinteum,
-                Rubracium,
-                Draconium,
-                DraconiumAwakened,
-                Pentacadmiummagnesiumhexaoxid,
-                Titaniumonabariumdecacoppereikosaoxid,
-                Uraniumtriplatinid,
-                Vanadiumtriindinid,
-                Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                Tetranaquadahdiindiumhexaplatiumosminid,
-                Longasssuperconductornameforuvwire,
-                Longasssuperconductornameforuhvwire,
-                SuperconductorUEVBase,
-                SuperconductorUIVBase,
-                SuperconductorUMVBase,
-                Quantium,
-                RedstoneAlloy,
-                Bedrockium,
-                EnrichedHolmium,
-                TengamPurified,
-                TengamAttuned,
-                MaterialsUEVplus.Eternity,
-                MaterialsUEVplus.MagMatter,
-                MaterialsUEVplus.Creon,
-                MaterialsUEVplus.Mellion,
-                MaterialsUEVplus.HotProtoHalkonite,
-                MaterialsUEVplus.ProtoHalkonite,
-                MaterialsUEVplus.HotExoHalkonite,
-                MaterialsUEVplus.ExoHalkonite);
+            AnyIron,
+            AnyCopper,
+            AnyBronze,
+            Metal,
+            Aluminium,
+            Americium,
+            Antimony,
+            Beryllium,
+            Bismuth,
+            Caesium,
+            Cerium,
+            Chrome,
+            Cobalt,
+            Copper,
+            Dysprosium,
+            Erbium,
+            Europium,
+            Gadolinium,
+            Gallium,
+            Gold,
+            Holmium,
+            Indium,
+            Iridium,
+            Iron,
+            Lanthanum,
+            Lead,
+            Lutetium,
+            Magnesium,
+            Manganese,
+            Mercury,
+            Niobium,
+            Molybdenum,
+            Neodymium,
+            Neutronium,
+            Nickel,
+            Osmium,
+            Palladium,
+            Platinum,
+            Plutonium,
+            Plutonium241,
+            Praseodymium,
+            Promethium,
+            Rubidium,
+            Samarium,
+            Scandium,
+            Silicon,
+            Silver,
+            Tantalum,
+            Tellurium,
+            Terbium,
+            Thorium,
+            Thulium,
+            Tin,
+            Titanium,
+            Tungsten,
+            Uranium,
+            Uranium235,
+            Vanadium,
+            Ytterbium,
+            Yttrium,
+            Zinc,
+            Flerovium,
+            PhasedIron,
+            PhasedGold,
+            DarkSteel,
+            TinAlloy,
+            ConductiveIron,
+            ElectricalSteel,
+            EnergeticAlloy,
+            VibrantAlloy,
+            MelodicAlloy,
+            StellarAlloy,
+            VividAlloy,
+            EnergeticSilver,
+            CrystallinePinkSlime,
+            CrystallineAlloy,
+            CrudeSteel,
+            EndSteel,
+            PulsatingIron,
+            DarkThaumium,
+            Adamantium,
+            Amordrine,
+            Angmallen,
+            Ardite,
+            Aredrite,
+            Atlarus,
+            Carmot,
+            Celenegil,
+            Ceruclase,
+            DarkIron,
+            Desh,
+            Desichalkos,
+            Duranium,
+            ElectrumFlux,
+            Enderium,
+            EnderiumBase,
+            Eximite,
+            FierySteel,
+            Force,
+            Haderoth,
+            Hematite,
+            Hepatizon,
+            HSLA,
+            Infuscolium,
+            InfusedGold,
+            Inolashite,
+            Mercassium,
+            MeteoricIron,
+            BloodInfusedIron,
+            MaterialsUEVplus.Universium,
+            MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+            MeteoricSteel,
+            Naquadah,
+            NaquadahAlloy,
+            NaquadahEnriched,
+            Naquadria,
+            ObsidianFlux,
+            Orichalcum,
+            Osmonium,
+            Oureclase,
+            Phoenixite,
+            Prometheum,
+            Sanguinite,
+            CosmicNeutronium,
+            Tartarite,
+            Ichorium,
+            Tritanium,
+            Vulcanite,
+            Vyroxeres,
+            Yellorium,
+            Zectium,
+            AluminiumBrass,
+            Osmiridium,
+            Sunnarium,
+            AnnealedCopper,
+            BatteryAlloy,
+            Brass,
+            Bronze,
+            ChromiumDioxide,
+            Cupronickel,
+            DeepIron,
+            Electrum,
+            Invar,
+            Kanthal,
+            Magnalium,
+            Nichrome,
+            NiobiumNitride,
+            NiobiumTitanium,
+            PigIron,
+            SolderingAlloy,
+            StainlessSteel,
+            Steel,
+            Ultimet,
+            VanadiumGallium,
+            WroughtIron,
+            YttriumBariumCuprate,
+            IronWood,
+            Alumite,
+            Manyullyn,
+            ShadowIron,
+            Shadow,
+            ShadowSteel,
+            Steeleaf,
+            SterlingSilver,
+            RoseGold,
+            BlackBronze,
+            BismuthBronze,
+            BlackSteel,
+            RedSteel,
+            BlueSteel,
+            DamascusSteel,
+            TungstenSteel,
+            TPV,
+            AstralSilver,
+            Mithril,
+            BlueAlloy,
+            RedAlloy,
+            CobaltBrass,
+            Thaumium,
+            Void,
+            IronMagnetic,
+            SteelMagnetic,
+            NeodymiumMagnetic,
+            SamariumMagnetic,
+            Knightmetal,
+            HSSG,
+            HSSE,
+            HSSS,
+            TungstenCarbide,
+            HeeEndium,
+            VanadiumSteel,
+            Kalendrite,
+            Ignatius,
+            Trinium,
+            Infinity,
+            InfinityCatalyst,
+            Realgar,
+            Chrysotile,
+            BlackPlutonium,
+            Alduorite,
+            Adluorite,
+            Vinteum,
+            Rubracium,
+            Draconium,
+            DraconiumAwakened,
+            Pentacadmiummagnesiumhexaoxid,
+            Titaniumonabariumdecacoppereikosaoxid,
+            Uraniumtriplatinid,
+            Vanadiumtriindinid,
+            Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+            Tetranaquadahdiindiumhexaplatiumosminid,
+            Longasssuperconductornameforuvwire,
+            Longasssuperconductornameforuhvwire,
+            SuperconductorUEVBase,
+            SuperconductorUIVBase,
+            SuperconductorUMVBase,
+            Quantium,
+            RedstoneAlloy,
+            Bedrockium,
+            EnrichedHolmium,
+            TengamPurified,
+            TengamAttuned,
+            MaterialsUEVplus.Eternity,
+            MaterialsUEVplus.MagMatter,
+            MaterialsUEVplus.Creon,
+            MaterialsUEVplus.Mellion,
+            MaterialsUEVplus.HotProtoHalkonite,
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.HotExoHalkonite,
+            MaterialsUEVplus.ExoHalkonite);
 
         SubTag.MULTI_PLATE.addTo(
-                Adamantium,
-                Aluminium,
-                Americium,
-                BlackPlutonium,
-                BlackSteel,
-                Bronze,
-                CallistoIce,
-                Cobalt,
-                Copper,
-                CosmicNeutronium,
-                CrystallinePinkSlime,
-                Desh,
-                Duralumin,
-                Europium,
-                Gold,
-                HSSG,
-                HSSS,
-                Infinity,
-                InfinityCatalyst,
-                Iridium,
-                Iron,
-                Lead,
-                Ledox,
-                Magnesium,
-                MaterialsKevlar.Kevlar,
-                MelodicAlloy,
-                MeteoricIron,
-                Mithril,
-                MysteriousCrystal,
-                Mytryl,
-                Naquadah,
-                Naquadria,
-                Neutronium,
-                Nickel,
-                Oriharukon,
-                Osmiridium,
-                Osmium,
-                Paper,
-                Platinum,
-                Plutonium,
-                Polybenzimidazole,
-                Polycaprolactam,
-                Polytetrafluoroethylene,
-                Quantium,
-                Shadow,
-                SiliconSG,
-                Silver,
-                StainlessSteel,
-                Steel,
-                Sunnarium,
-                Thaumium,
-                Tin,
-                Titanium,
-                Trinium,
-                Tungsten,
-                TungstenSteel);
+            Adamantium,
+            Aluminium,
+            Americium,
+            BlackPlutonium,
+            BlackSteel,
+            Bronze,
+            CallistoIce,
+            Cobalt,
+            Copper,
+            CosmicNeutronium,
+            CrystallinePinkSlime,
+            Desh,
+            Duralumin,
+            Europium,
+            Gold,
+            HSSG,
+            HSSS,
+            Infinity,
+            InfinityCatalyst,
+            Iridium,
+            Iron,
+            Lead,
+            Ledox,
+            Magnesium,
+            MaterialsKevlar.Kevlar,
+            MelodicAlloy,
+            MeteoricIron,
+            Mithril,
+            MysteriousCrystal,
+            Mytryl,
+            Naquadah,
+            Naquadria,
+            Neutronium,
+            Nickel,
+            Oriharukon,
+            Osmiridium,
+            Osmium,
+            Paper,
+            Platinum,
+            Plutonium,
+            Polybenzimidazole,
+            Polycaprolactam,
+            Polytetrafluoroethylene,
+            Quantium,
+            Shadow,
+            SiliconSG,
+            Silver,
+            StainlessSteel,
+            Steel,
+            Sunnarium,
+            Thaumium,
+            Tin,
+            Titanium,
+            Trinium,
+            Tungsten,
+            TungstenSteel);
 
         SubTag.FOOD.addTo(
-                MeatRaw,
-                MeatCooked,
-                Ice,
-                Water,
-                Salt,
-                Chili,
-                Cocoa,
-                Cheese,
-                Coffee,
-                Chocolate,
-                Milk,
-                Honey,
-                FryingOilHot,
-                FishOil,
-                SeedOil,
-                SeedOilLin,
-                SeedOilHemp,
-                Wheat,
-                Sugar,
-                FreshWater);
+            MeatRaw,
+            MeatCooked,
+            Ice,
+            Water,
+            Salt,
+            Chili,
+            Cocoa,
+            Cheese,
+            Coffee,
+            Chocolate,
+            Milk,
+            Honey,
+            FryingOilHot,
+            FishOil,
+            SeedOil,
+            SeedOilLin,
+            SeedOilHemp,
+            Wheat,
+            Sugar,
+            FreshWater);
 
         Wood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
         Peanutwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         LiveRoot.add(
-                SubTag.WOOD,
-                SubTag.FLAMMABLE,
-                SubTag.NO_SMELTING,
-                SubTag.NO_SMASHING,
-                SubTag.MAGICAL,
-                SubTag.MORTAR_GRINDABLE);
+            SubTag.WOOD,
+            SubTag.FLAMMABLE,
+            SubTag.NO_SMELTING,
+            SubTag.NO_SMASHING,
+            SubTag.MAGICAL,
+            SubTag.MORTAR_GRINDABLE);
         IronWood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
         Steeleaf.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING);
 
@@ -2494,11 +2568,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
 
         Redstone.add(
-                SubTag.STONE,
-                SubTag.NO_SMASHING,
-                SubTag.UNBURNABLE,
-                SubTag.SMELTING_TO_FLUID,
-                SubTag.PULVERIZING_CINNABAR);
+            SubTag.STONE,
+            SubTag.NO_SMASHING,
+            SubTag.UNBURNABLE,
+            SubTag.SMELTING_TO_FLUID,
+            SubTag.PULVERIZING_CINNABAR);
         Glowstone.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
         Electrotine.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
         Teslatite.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.UNBURNABLE, SubTag.SMELTING_TO_FLUID);
@@ -2567,15 +2641,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Quartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         SiliconDioxide
-                .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+            .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Dilithium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         NetherQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         CertusQuartz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         CertusQuartzCharged
-                .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
+            .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         Fluix.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.QUARTZ);
         TricalciumPhosphate
-                .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
+            .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
         Phosphate.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.EXPLOSIVE);
         InfusedAir.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
         InfusedFire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.UNBURNABLE);
@@ -2589,14 +2663,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         EnderPearl.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
         EnderEye.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.MAGICAL, SubTag.PEARL);
         Firestone.add(
-                SubTag.CRYSTAL,
-                SubTag.NO_SMASHING,
-                SubTag.NO_SMELTING,
-                SubTag.CRYSTALLISABLE,
-                SubTag.MAGICAL,
-                SubTag.QUARTZ,
-                SubTag.UNBURNABLE,
-                SubTag.BURNING);
+            SubTag.CRYSTAL,
+            SubTag.NO_SMASHING,
+            SubTag.NO_SMELTING,
+            SubTag.CRYSTALLISABLE,
+            SubTag.MAGICAL,
+            SubTag.QUARTZ,
+            SubTag.UNBURNABLE,
+            SubTag.BURNING);
         Forcicium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
@@ -2644,7 +2718,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mMaterialHandlers.forEach(IMaterialHandler::onMaterialsInit); // This is where addon mods can add/manipulate
         // materials
         initMaterialProperties(); // No more material addition or manipulation should be done past this point!
-        MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[0]); // Generate standard object array. This is a
+        MATERIALS_ARRAY = MATERIALS_MAP.values()
+            .toArray(new Materials[0]); // Generate standard object array. This is a
         // lot faster to loop over.
         VALUES = Arrays.asList(MATERIALS_ARRAY);
 
@@ -2654,9 +2729,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void disableUnusedHotIngots() {
         OrePrefixes.ingotHot.mDisabledItems.addAll(
-                Arrays.stream(Materials.values()).parallel().filter(OrePrefixes.ingotHot::doGenerateItem)
-                        .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
-                        .collect(Collectors.toSet()));
+            Arrays.stream(Materials.values())
+                .parallel()
+                .filter(OrePrefixes.ingotHot::doGenerateItem)
+                .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
+                .collect(Collectors.toSet()));
         OrePrefixes.ingotHot.disableComponent(Materials.Reinforced);
         OrePrefixes.ingotHot.disableComponent(Materials.ConductiveIron);
         OrePrefixes.ingotHot.disableComponent(Materials.FierySteel);
@@ -2707,16 +2784,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                         if (GregTechAPI.sGeneratedMaterials[aMaterial.mMetaItemSubID] == null) {
                             GregTechAPI.sGeneratedMaterials[aMaterial.mMetaItemSubID] = aMaterial;
                         } else throw new IllegalArgumentException(
-                                "The Material Index " + aMaterial.mMetaItemSubID
-                                        + " for "
-                                        + aMaterial.mName
-                                        + " is already used!");
-                    }
-                } else throw new IllegalArgumentException(
-                        "The Material Index " + aMaterial.mMetaItemSubID
+                            "The Material Index " + aMaterial.mMetaItemSubID
                                 + " for "
                                 + aMaterial.mName
-                                + " is/over the maximum of 1000");
+                                + " is already used!");
+                    }
+                } else throw new IllegalArgumentException(
+                    "The Material Index " + aMaterial.mMetaItemSubID
+                        + " for "
+                        + aMaterial.mName
+                        + " is/over the maximum of 1000");
             }
         }
     }
@@ -2724,12 +2801,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void addToolValues(Materials aMaterial) {
         // Moved from GTProxy? (Not sure)
         aMaterial.mHandleMaterial = (aMaterial == Desh ? aMaterial.mHandleMaterial
-                : aMaterial == Diamond || aMaterial == Thaumium ? Wood
-                        : aMaterial.contains(SubTag.BURNING) ? Blaze
-                                : aMaterial.contains(SubTag.MAGICAL) && aMaterial.contains(SubTag.CRYSTAL)
-                                        && Thaumcraft.isModLoaded() ? Thaumium
-                                                : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
-                                                        : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
+            : aMaterial == Diamond || aMaterial == Thaumium ? Wood
+                : aMaterial.contains(SubTag.BURNING) ? Blaze
+                    : aMaterial.contains(SubTag.MAGICAL) && aMaterial.contains(SubTag.CRYSTAL)
+                        && Thaumcraft.isModLoaded() ? Thaumium
+                            : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
+                                : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
 
         if (aMaterial == MaterialsUEVplus.SpaceTime) {
             aMaterial.mHandleMaterial = Materials.Infinity;
@@ -2752,8 +2829,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         String aEnchantmentName = aMaterial.mEnchantmentTools != null ? aMaterial.mEnchantmentTools.getName() : "";
         if (aMaterial.mEnchantmentTools != null && !aEnchantmentName.equals(aMaterial.mEnchantmentTools.getName()))
             IntStream.range(0, Enchantment.enchantmentsList.length)
-                    .filter(i -> aEnchantmentName.equals(Enchantment.enchantmentsList[i].getName()))
-                    .forEach(i -> aMaterial.mEnchantmentTools = Enchantment.enchantmentsList[i]);
+                .filter(i -> aEnchantmentName.equals(Enchantment.enchantmentsList[i].getName()))
+                .forEach(i -> aMaterial.mEnchantmentTools = Enchantment.enchantmentsList[i]);
     }
 
     private static void addHasGasFluid(Materials aMaterial) {
@@ -2763,7 +2840,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         if (aMaterial.mHasGas) {
             GTFluidFactory
-                    .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
+                .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
         }
     }
 
@@ -2775,8 +2852,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void addHarvestLevelNerfs(Materials aMaterial) {
         /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
         if (GTMod.proxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-                && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
-                && aMaterial.mMetaItemSubID >= 0) {
+            && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
+            && aMaterial.mMetaItemSubID >= 0) {
             GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
         }
     }
@@ -2897,7 +2974,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean isRadioactive() {
         if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
 
-        return mMaterialList.stream().map(stack -> stack.mMaterial).anyMatch(Materials::isRadioactive);
+        return mMaterialList.stream()
+            .map(stack -> stack.mMaterial)
+            .anyMatch(Materials::isRadioactive);
     }
 
     public long getProtons() {
@@ -2953,8 +3032,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
             return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
-                    ? mChemicalFormula
-                    : "(" + mChemicalFormula + ")") + aMultiplier;
+                ? mChemicalFormula
+                : "(" + mChemicalFormula + ")") + aMultiplier;
         }
         return mChemicalFormula;
     }
@@ -2972,9 +3051,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public boolean contains(ItemStack... aStacks) {
         if (aStacks == null || aStacks.length == 0) return false;
-        return mMaterialItems.stream().anyMatch(
+        return mMaterialItems.stream()
+            .anyMatch(
                 tStack -> Arrays.stream(aStacks)
-                        .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+                    .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
     }
 
     /**
@@ -3164,13 +3244,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
-        return formatStringSafe(aFormat.replace("%s", "%temp").replace("%material", "%s"), this.mDefaultLocalName)
-                .replace("%temp", "%s");
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mDefaultLocalName).replace("%temp", "%s");
     }
 
     public String getLocalizedNameForItem(String aFormat) {
-        return formatStringSafe(aFormat.replace("%s", "%temp").replace("%material", "%s"), this.mLocalizedName)
-                .replace("%temp", "%s");
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mLocalizedName).replace("%temp", "%s");
     }
 
     public boolean hasCorrespondingFluid() {
@@ -3282,7 +3366,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public boolean isProperSolderingFluid() {
         return mStandardMoltenFluid != null && contains(SubTag.SOLDERING_MATERIAL)
-                && !(GregTechAPI.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
+            && !(GregTechAPI.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
     }
 
     public ItemStack getCells(int amount) {

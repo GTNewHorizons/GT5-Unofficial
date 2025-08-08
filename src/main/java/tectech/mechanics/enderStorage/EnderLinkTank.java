@@ -71,9 +71,9 @@ public class EnderLinkTank implements Serializable {
         int dim = data.getInteger("dim");
 
         return new EnderLinkTank(
-                CoordinatePacker.unpackX(coords),
-                CoordinatePacker.unpackY(coords),
-                CoordinatePacker.unpackZ(coords),
-                dim);
+            CoordinatePacker.unpackX(coords),
+            CoordinatePacker.unpackY(coords),
+            CoordinatePacker.unpackZ(coords),
+            dim);
     }
 }

@@ -123,10 +123,10 @@ public class ItemAirFilter extends Item {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.air_filter.0"));
         long maxDamage = getFilterMaxDamage(stack);
         list.add(
-                EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                        "GTPP.tooltip.air_filter.1",
-                        (maxDamage - getFilterDamage(stack)),
-                        maxDamage));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "GTPP.tooltip.air_filter.1",
+                (maxDamage - getFilterDamage(stack)),
+                maxDamage));
         super.addInformation(stack, player, list, bool);
     }
 

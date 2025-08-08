@@ -23,20 +23,20 @@ import tectech.recipe.EyeOfHarmonyRecipeStorage;
 import tectech.recipe.TecTechRecipeMaps;
 
 @Mod(
-        modid = Reference.MODID,
-        name = Reference.NAME,
-        version = Reference.VERSION,
-        guiFactory = "tectech.loader.gui.TecTechGUIFactory",
-        dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
-                + "required-after:structurelib;"
-                + "after:ComputerCraft;"
-                + "after:OpenComputers;"
-                + "required-after:gtneioreplugin;"
-                + "required-after:gregtech;"
-                + "after:dreamcraft;"
-                + "after:appliedenergistics2;"
-                + "after:CoFHCore;"
-                + "after:Thaumcraft;")
+    modid = Reference.MODID,
+    name = Reference.NAME,
+    version = Reference.VERSION,
+    guiFactory = "tectech.loader.gui.TecTechGUIFactory",
+    dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
+        + "required-after:structurelib;"
+        + "after:ComputerCraft;"
+        + "after:OpenComputers;"
+        + "required-after:gtneioreplugin;"
+        + "required-after:gregtech;"
+        + "after:dreamcraft;"
+        + "after:appliedenergistics2;"
+        + "after:CoFHCore;"
+        + "after:Thaumcraft;")
 public class TecTech {
 
     static {
@@ -66,7 +66,9 @@ public class TecTech {
         LOGGER.setDebugOutput(true);
 
         enderWorldSavedData = new EnderWorldSavedData();
-        FMLCommonHandler.instance().bus().register(enderWorldSavedData);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(enderWorldSavedData);
         MinecraftForge.EVENT_BUS.register(enderWorldSavedData);
         TecTechEventHandlers.init();
 

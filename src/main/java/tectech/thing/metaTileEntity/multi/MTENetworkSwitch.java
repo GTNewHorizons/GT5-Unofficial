@@ -50,7 +50,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  */
 public class MTENetworkSwitch extends TTMultiblockBase
-        implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
+    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
 
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
@@ -99,9 +99,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitch> compile(String[][] definition) {
         structure.addCasing('A', Casings.AdvancedComputerCasing)
-                .withUnlimitedHatches(1, Arrays.asList(Energy.or(EnergyMulti), Maintenance, InputData, OutputData));
+            .withUnlimitedHatches(1, Arrays.asList(Energy.or(EnergyMulti), Maintenance, InputData, OutputData));
         structure.addCasing('B', Casings.ComputerCasing)
-                .withUnlimitedHatches(2, Arrays.asList(Energy.or(EnergyMulti), Maintenance, OutputData));
+            .withUnlimitedHatches(2, Arrays.asList(Energy.or(EnergyMulti), Maintenance, OutputData));
 
         return structure.buildStructure(definition);
     }
@@ -167,11 +167,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1],
-                    new TTRenderedExtendedFacingTexture(
-                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
+                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1] };
     }
@@ -254,9 +253,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
             }
 
             Vec3Impl pos = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
 
             QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
             if (pack == null) {

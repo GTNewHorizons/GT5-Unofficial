@@ -116,23 +116,33 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Farms and harvests trees using EU")
-                .addInfo("Place a sapling in the controller slot").addInfo("Place a tool in an input bus")
-                .addInfo("Different tools are required for different outputs")
-                .addInfo("Advanced tools multiply output amount")
-                .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
-                .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
-                .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)").addInfo("  Fruit: Knife (1x)")
-                .addInfo("Multiple tools can be used at the same time").addSeparator()
-                .addInfo("Work time is fixed at 5 seconds").addInfo("Energy input tier multiplies output further")
-                .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin(mCasingName, 8, false).addInputBus("Any casing", 1)
-                .addStructureInfo(
-                        EnumChatFormatting.YELLOW
-                                + "Stocking Input Buses and Crafting Input Buses/Buffers are not allowed!")
-                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Farms and harvests trees using EU")
+            .addInfo("Place a sapling in the controller slot")
+            .addInfo("Place a tool in an input bus")
+            .addInfo("Different tools are required for different outputs")
+            .addInfo("Advanced tools multiply output amount")
+            .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
+            .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
+            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)")
+            .addInfo("  Fruit: Knife (1x)")
+            .addInfo("Multiple tools can be used at the same time")
+            .addSeparator()
+            .addInfo("Work time is fixed at 5 seconds")
+            .addInfo("Energy input tier multiplies output further")
+            .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin(mCasingName, 8, false)
+            .addInputBus("Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.YELLOW + "Stocking Input Buses and Crafting Input Buses/Buffers are not allowed!")
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -193,23 +203,25 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     public IStructureDefinition<MTETreeFarm> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTETreeFarm>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTETreeFarm.class).atLeast(
-                                    InputHatch,
-                                    OutputHatch,
-                                    InputBus,
-                                    OutputBus,
-                                    Maintenance,
-                                    Energy.or(TTEnergy),
-                                    Muffler).casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTETreeFarm.class)
+                        .atLeast(
+                            InputHatch,
+                            OutputHatch,
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy.or(TTEnergy),
+                            Muffler)
+                        .casingIndex(CASING_TEXTURE_ID)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -340,7 +352,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 outputItems = outputs.toArray(new ItemStack[0]);
 
                 VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(machine)
-                        .setItemOutputs(outputItems).build();
+                    .setItemOutputs(outputItems)
+                    .build();
                 if (voidProtection.isItemFull()) {
                     return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 }
@@ -377,12 +390,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 continue;
             }
             boolean canDamage = shouldDamage
-                    ? GTModHandler
-                            .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null)
-                    : GTModHandler.damageOrDechargeItem(stack, 0, 0, null);
+                ? GTModHandler.damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null)
+                : GTModHandler.damageOrDechargeItem(stack, 0, 0, null);
             if (shouldDamage) {
                 if (!canDamage || GTModHandler.isElectricItem(stack)
-                        && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
+                    && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
                     depleteInput(stack);
                     addOutput(stack);
                 }
@@ -425,8 +437,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
             case SAPLING:
                 if (tool instanceof MetaGeneratedTool01
-                        && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
-                                || damage == POCKET_MULTITOOL.ID)) {
+                    && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
+                        || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
                 if (Forestry.isModLoaded() && tool instanceof IToolGrafter && tool.isDamageable()) {
@@ -456,7 +468,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
             case FRUIT:
                 if (tool instanceof MetaGeneratedTool01
-                        && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
+                    && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
                 break;
@@ -537,7 +549,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         if (stack == null) return false;
         String registryName = Item.itemRegistry.getNameForObject(stack.getItem());
         return treeProductsMap.containsKey(registryName + ":" + stack.getItemDamage())
-                || "Forestry:sapling".equals(registryName);
+            || "Forestry:sapling".equals(registryName);
     }
 
     /**
@@ -585,8 +597,12 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         ItemStack log = defaultMap.get(Mode.LOG);
         if (log != null) {
-            double height = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
-            double girth = tree.getGenome().getGirth();
+            double height = Math.max(
+                3 * (tree.getGenome()
+                    .getHeight() - 1),
+                0) + 1;
+            double girth = tree.getGenome()
+                .getGirth();
 
             log = log.copy();
             log.stackSize = (int) (log.stackSize * height * girth);
@@ -596,7 +612,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         ItemStack saplingOut = defaultMap.get(Mode.SAPLING);
         if (saplingOut != null) {
             // Lowest = 0.01 ... Average = 0.05 ... Highest = 0.3
-            double fertility = tree.getGenome().getFertility() * 10;
+            double fertility = tree.getGenome()
+                .getFertility() * 10;
 
             // Return a copy of the *input* sapling, retaining its genetics.
             int stackSize = Math.max(1, (int) (saplingOut.stackSize * fertility));
@@ -613,7 +630,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         ItemStack fruit = defaultMap.get(Mode.FRUIT);
         if (fruit != null) {
             // Lowest = 0.025 ... Average = 0.2 ... Highest = 0.4
-            double yield = tree.getGenome().getYield() * 10;
+            double yield = tree.getGenome()
+                .getYield() * 10;
 
             fruit = fruit.copy();
             fruit.stackSize = (int) (fruit.stackSize * yield);
@@ -650,7 +668,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      * @param fruit      ItemStack to output in mode FRUIT.
      */
     public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
-            ItemStack fruit) {
+        ItemStack fruit) {
         if (saplingIn == null) {
             Logger.ERROR("Null sapling passed for registerTreeProducts()");
             return;
@@ -674,7 +692,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      * to the stats of the real sapling that is in the controller slot.
      */
     public static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
-            ItemStack fruit) {
+        ItemStack fruit) {
         String key = "Forestry:sapling:" + speciesUID;
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
         map.put(Mode.LOG, log);
@@ -691,11 +709,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             return;
         }
         addFakeRecipeToNEI(
-                sapling,
-                map.get(Mode.LOG),
-                map.get(Mode.SAPLING),
-                map.get(Mode.LEAVES),
-                map.get(Mode.FRUIT));
+            sapling,
+            map.get(Mode.LOG),
+            map.get(Mode.SAPLING),
+            map.get(Mode.LEAVES),
+            map.get(Mode.FRUIT));
     }
 
     /**
@@ -705,28 +723,28 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     static {
         MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
-                // Mode.LOG
-                { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
-                // Mode.SAPLING
-                { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
-                        GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
-                // Mode.LEAVES
-                { new ItemStack(Items.shears),
-                        toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null),
-                        MetaGeneratedGregtechTools.getInstance()
-                                .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
-                // Mode.FRUIT
-                { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
-                        toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
+            // Mode.LOG
+            { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
+            // Mode.SAPLING
+            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
+                GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
+            // Mode.LEAVES
+            { new ItemStack(Items.shears),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null),
+                MetaGeneratedGregtechTools.getInstance()
+                    .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
+            // Mode.FRUIT
+            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
     }
 
     /**
@@ -735,8 +753,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      * @return True if the recipe was added successfully.
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
-            ItemStack fruit) {
-        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size();
+        ItemStack fruit) {
+        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+            .size();
 
         // Sapling goes into the "special" slot.
         ItemStack specialStack = saplingIn.copy();
@@ -767,25 +786,26 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         }
 
         Logger.INFO(
-                "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
-                        + " -> "
-                        + ItemUtils.getArrayStackNames(outputStacks));
+            "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
+                + " -> "
+                + ItemUtils.getArrayStackNames(outputStacks));
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+            false,
+            new GTRecipe.GTRecipe_WithAlt(
                 false,
-                new GTRecipe.GTRecipe_WithAlt(
-                        false,
-                        null, // All inputs are taken from aAtl argument.
-                        outputStacks,
-                        specialStack,
-                        null,
-                        null,
-                        null,
-                        TICKS_PER_OPERATION,
-                        0,
-                        recipeCount, // special value, also sorts recipes correctly in order of addition.
-                        inputStacks));
+                null, // All inputs are taken from aAtl argument.
+                outputStacks,
+                specialStack,
+                null,
+                null,
+                null,
+                TICKS_PER_OPERATION,
+                0,
+                recipeCount, // special value, also sorts recipes correctly in order of addition.
+                inputStacks));
 
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size() > recipeCount;
+        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+            .size() > recipeCount;
     }
 }

@@ -43,38 +43,39 @@ public final class RecipeCategory {
      * @param handlerInfoCreator Supplier of handler info for the NEI handler this category belongs to.
      */
     public RecipeCategory(String unlocalizedName, RecipeMap<?> recipeMap,
-            Supplier<RecipeCategorySetting> settingSupplier,
-            @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
+        Supplier<RecipeCategorySetting> settingSupplier,
+        @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
         this.unlocalizedName = unlocalizedName;
         this.recipeMap = recipeMap;
-        this.ownerMod = Loader.instance().activeModContainer();
+        this.ownerMod = Loader.instance()
+            .activeModContainer();
         this.settingSupplier = settingSupplier;
         this.handlerInfoCreator = handlerInfoCreator;
         if (ALL_RECIPE_CATEGORIES.containsKey(unlocalizedName)) {
             throw new IllegalArgumentException(
-                    "Cannot register recipe category with duplicated unlocalized name: " + unlocalizedName);
+                "Cannot register recipe category with duplicated unlocalized name: " + unlocalizedName);
         }
         ALL_RECIPE_CATEGORIES.put(unlocalizedName, this);
     }
 
     RecipeCategory(RecipeMap<?> recipeMap) {
         this(
-                recipeMap.unlocalizedName,
-                recipeMap,
-                RecipeCategorySetting::getDefault,
-                recipeMap.getFrontend().neiProperties.handlerInfoCreator);
+            recipeMap.unlocalizedName,
+            recipeMap,
+            RecipeCategorySetting::getDefault,
+            recipeMap.getFrontend().neiProperties.handlerInfoCreator);
     }
 
     @Override
     public String toString() {
         return "RecipeCategory{" + "unlocalizedName='"
-                + unlocalizedName
-                + '\''
-                + ", recipeMap="
-                + recipeMap.unlocalizedName
-                + ", ownerMod="
-                + ownerMod.getModId()
-                + '}';
+            + unlocalizedName
+            + '\''
+            + ", recipeMap="
+            + recipeMap.unlocalizedName
+            + ", ownerMod="
+            + ownerMod.getModId()
+            + '}';
     }
 
     /**
@@ -82,7 +83,9 @@ public final class RecipeCategory {
      */
     public static DrawableResource createIcon(String resourceLocation) {
         return new DrawableBuilder(resourceLocation, 0, 0, 16, 16)
-                // GuiRecipeTab#drawForeground draws icon with 1px offset to make fuel icon (14px) prettier
-                .addPadding(-1, 0, -1, 0).setTextureSize(16, 16).build();
+            // GuiRecipeTab#drawForeground draws icon with 1px offset to make fuel icon (14px) prettier
+            .addPadding(-1, 0, -1, 0)
+            .setTextureSize(16, 16)
+            .build();
     }
 }

@@ -99,8 +99,10 @@ public class OreMixBuilder {
     public OreMixBuilder localize(Materials... materials) {
         if (materials.length > 1) {
             String localizedName = String.join(
-                    ", ",
-                    Arrays.stream(materials).map(material -> material.mLocalizedName).toArray(String[]::new));
+                ", ",
+                Arrays.stream(materials)
+                    .map(material -> material.mLocalizedName)
+                    .toArray(String[]::new));
             int index = localizedName.lastIndexOf(", ");
             if (index != -1) {
                 localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);

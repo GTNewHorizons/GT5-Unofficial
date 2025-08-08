@@ -68,7 +68,9 @@ public class SlotLikeButtonWidget extends ButtonWidget<SlotLikeButtonWidget> imp
         if (widgetTheme instanceof WidgetSlotTheme slotTheme) {
             return slotTheme.getSlotHoverColor();
         }
-        return ITheme.getDefault().getItemSlotTheme().getSlotHoverColor();
+        return ITheme.getDefault()
+            .getItemSlotTheme()
+            .getSlotHoverColor();
     }
 
     @Nullable

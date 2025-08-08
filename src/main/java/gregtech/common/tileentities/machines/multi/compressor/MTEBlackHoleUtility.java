@@ -59,13 +59,13 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -76,7 +76,7 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
     }
@@ -86,10 +86,10 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Optional hatch for Pseudostable Black Hole Containment Field.",
-                "Static Mode: Emit a constant redstone signal when a black hole is open",
-                "Pulse Mode: Emit a pulse every second while a black hole is open",
-                "Pulse is perfectly synced to the internal timing of the machine",
-                "Right click to open the GUI and change settings." };
+            "Static Mode: Emit a constant redstone signal when a black hole is open",
+            "Pulse Mode: Emit a pulse every second while a black hole is open",
+            "Pulse is perfectly synced to the internal timing of the machine",
+            "Right click to open the GUI and change settings." };
     }
 
     @Override
@@ -143,8 +143,10 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+            .addIcon(textureFont_Glow)
+            .glow()
+            .build() };
     }
 
     @Override
@@ -154,21 +156,22 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> mode = (mode == 1) ? 2 : 1).setPlayClickSound(true)
-                        .setBackground(() -> {
-                            List<UITexture> ret = new ArrayList<>();
-                            ret.add(GTUITextures.BUTTON_STANDARD);
-                            ret.add(
-                                    (mode == 1) ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                                            : GTUITextures.OVERLAY_BUTTON_ANALOG);
-                            return ret.toArray(new IDrawable[0]);
-                        }).attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> mode, (val) -> mode = val), builder)
-                        .setPos(10, 8).setSize(16, 16))
-                .widget(
-                        new DynamicTextWidget(
-                                () -> new Text(
-                                        StatCollector.translateToLocal(
-                                                (mode == 1) ? "GT5U.gui.text.static_mode"
-                                                        : "GT5U.gui.text.pulse_mode"))).setPos(31, 13));
+            new ButtonWidget().setOnClick((clickData, widget) -> mode = (mode == 1) ? 2 : 1)
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add((mode == 1) ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON : GTUITextures.OVERLAY_BUTTON_ANALOG);
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> mode, (val) -> mode = val), builder)
+                .setPos(10, 8)
+                .setSize(16, 16))
+            .widget(
+                new DynamicTextWidget(
+                    () -> new Text(
+                        StatCollector
+                            .translateToLocal((mode == 1) ? "GT5U.gui.text.static_mode" : "GT5U.gui.text.pulse_mode")))
+                                .setPos(31, 13));
     }
 }

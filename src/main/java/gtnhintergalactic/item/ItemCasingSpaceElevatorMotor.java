@@ -38,14 +38,14 @@ public class ItemCasingSpaceElevatorMotor extends ItemCasings {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
-            boolean f3_h) {
+        boolean f3_h) {
         tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig.motor.desc0"));
         tooltip.add(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
+            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                + GCCoreUtil.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
         tooltip.add(
-                String.format(
-                        GCCoreUtil.translate("gt.blockcasings.ig.motor.desc2"),
-                        ElevatorUtil.getModuleSlotsUnlocked(stack.getItemDamage() + 1)));
+            String.format(
+                GCCoreUtil.translate("gt.blockcasings.ig.motor.desc2"),
+                ElevatorUtil.getModuleSlotsUnlocked(stack.getItemDamage() + 1)));
     }
 }

@@ -73,10 +73,12 @@ public class GTPPPollen extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int colour = GTPPPollenType.get(stack.getItemDamage()).getColours()[0];
+        int colour = GTPPPollenType.get(stack.getItemDamage())
+            .getColours()[0];
 
         if (pass >= 1) {
-            colour = GTPPPollenType.get(stack.getItemDamage()).getColours()[1];
+            colour = GTPPPollenType.get(stack.getItemDamage())
+                .getColours()[1];
         }
 
         return colour;
@@ -84,6 +86,7 @@ public class GTPPPollen extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTPPPollenType.get(stack.getItemDamage()).getName();
+        return GTPPPollenType.get(stack.getItemDamage())
+            .getName();
     }
 }

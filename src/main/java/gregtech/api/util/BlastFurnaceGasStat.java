@@ -21,7 +21,7 @@ public enum BlastFurnaceGasStat {
     Oganesson(WerkstoffLoader.Oganesson.getFluidOrGas(1), 0.3, 0.1);
 
     public static final List<BlastFurnaceGasStat> BlastFurnaceGasStats = Arrays
-            .asList(Nitrogen, Helium, Argon, Radon, Neon, Krypton, Xenon, Oganesson);
+        .asList(Nitrogen, Helium, Argon, Radon, Neon, Krypton, Xenon, Oganesson);
     public final FluidStack gas;
     public final double recipeTimeMultiplier;
     public final double recipeConsumedAmountMultiplier;

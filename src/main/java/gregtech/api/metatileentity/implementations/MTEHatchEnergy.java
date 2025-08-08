@@ -14,17 +14,17 @@ public class MTEHatchEnergy extends MTEHatch {
 
     public MTEHatchEnergy(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
     }
 
     @SuppressWarnings("unused") // needed in an addon
     public MTEHatchEnergy(int aID, String aName, String aNameRegional, int aTier, int aInventorySize,
-            String[] aDescriptionArray) {
+        String[] aDescriptionArray) {
         super(aID, aName, aNameRegional, aTier, aInventorySize, aDescriptionArray);
     }
 
@@ -88,13 +88,13 @@ public class MTEHatchEnergy extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 }

@@ -55,7 +55,7 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
 public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFishingPond>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     public static final int FISH_MODE = 14;
     public static final int JUNK_MODE = 15;
@@ -91,15 +91,25 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Can process (Tier + 1) * 2 recipes")
-                .addInfo("Put a numbered circuit into the input bus.").addInfo("Circuit " + FISH_MODE + " for Fish")
-                .addInfo("Circuit " + JUNK_MODE + " for Junk").addInfo("Circuit " + TREASURE_MODE + " for Treasure")
-                .addInfo("Needs to be filled with water.").addInfo("Will automatically fill water from input hatch.")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(9, 3, 9, true)
-                .addController("Front Center").addCasingInfoMin("Aquatic Casings", 64, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Can process (Tier + 1) * 2 recipes")
+            .addInfo("Put a numbered circuit into the input bus.")
+            .addInfo("Circuit " + FISH_MODE + " for Fish")
+            .addInfo("Circuit " + JUNK_MODE + " for Junk")
+            .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
+            .addInfo("Needs to be filled with water.")
+            .addInfo("Will automatically fill water from input hatch.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(9, 3, 9, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Aquatic Casings", 64, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -112,25 +122,24 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     public IStructureDefinition<MTEIndustrialFishingPond> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialFishingPond>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "XXXX~XXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX",
-                                                    "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX" }, }))
-                    .addElement(
-                            'X',
-                            buildHatchAdder(MTEIndustrialFishingPond.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "XXXX~XXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX",
+                                "XXXXXXXXX", "XXXXXXXXX" }, }))
+                .addElement(
+                    'X',
+                    buildHatchAdder(MTEIndustrialFishingPond.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -164,13 +173,12 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-            List<String> lines) {
+        List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
             lines.add(
-                    StatCollector
-                            .translateToLocalFormatted("GT5U.gui.missing_casings", 64, context.getInteger("casings")));
+                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 64, context.getInteger("casings")));
         }
     }
 
@@ -269,7 +277,8 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                                     if (stored.amount >= 1000) {
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
-                                        aBaseMetaTileEntity.getWorld().setBlock(
+                                        aBaseMetaTileEntity.getWorld()
+                                            .setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
@@ -296,7 +305,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     private boolean isNotStaticWater(Block block, int meta) {
         return block == Blocks.air || block == Blocks.flowing_water
-                || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
-                || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 }

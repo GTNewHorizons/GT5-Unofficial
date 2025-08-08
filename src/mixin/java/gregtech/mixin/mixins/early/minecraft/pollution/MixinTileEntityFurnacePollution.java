@@ -17,17 +17,17 @@ import gregtech.common.pollution.PollutionConfig;
 public abstract class MixinTileEntityFurnacePollution extends TileEntity {
 
     @Inject(
-            method = "updateEntity",
-            at = @At(
-                    value = "FIELD",
-                    target = "net/minecraft/tileentity/TileEntityFurnace.furnaceBurnTime:I",
-                    opcode = Opcodes.GETFIELD,
-                    ordinal = 2))
+        method = "updateEntity",
+        at = @At(
+            value = "FIELD",
+            target = "net/minecraft/tileentity/TileEntityFurnace.furnaceBurnTime:I",
+            opcode = Opcodes.GETFIELD,
+            ordinal = 2))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (!this.worldObj.isRemote && (this.worldObj.getTotalWorldTime() % 20) == 0) {
             Pollution.addPollution(
-                    this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord),
-                    PollutionConfig.furnacePollutionAmount);
+                this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord),
+                PollutionConfig.furnacePollutionAmount);
         }
     }
 }

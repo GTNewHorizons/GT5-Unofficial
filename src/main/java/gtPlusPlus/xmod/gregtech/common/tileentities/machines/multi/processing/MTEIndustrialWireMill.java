@@ -63,32 +63,40 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("200% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfoMin("Wire Factory Casings", 14, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("200% faster than using single block machines of the same voltage")
+            .addInfo("Only uses 75% of the EU/t normally required")
+            .addInfo("Processes four items per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 5, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Wire Factory Casings", 14, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTEIndustrialWireMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMill>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMill>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
-                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialWireMill.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .build();
+                        new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "C-C", "CCC" },
+                            { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialWireMill.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -152,17 +160,17 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F).setEuModifier(0.75F)
-                .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F)
+            .setEuModifier(0.75F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        inputSeparation ? "interaction.separateBusses.enabled"
-                                : "interaction.separateBusses.disabled"));
+            new ChatComponentTranslation(
+                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
     }
 
     @Override

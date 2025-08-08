@@ -158,7 +158,7 @@ public class ProcessingLogic {
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
         Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+            .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -406,7 +406,8 @@ public class ProcessingLogic {
             }
 
             return validateAndCalculateRecipe(
-                    recipeLockableMachine.getSingleRecipeCheck().getRecipe()).checkRecipeResult;
+                recipeLockableMachine.getSingleRecipeCheck()
+                    .getRecipe()).checkRecipeResult;
         }
         Stream<GTRecipe> matchedRecipes = findRecipeMatches(recipeMap);
         Iterable<GTRecipe> recipeIterable = matchedRecipes::iterator;
@@ -443,7 +444,8 @@ public class ProcessingLogic {
         helper.setCalculator(calculator);
         helper.build();
 
-        if (!helper.getResult().wasSuccessful()) {
+        if (!helper.getResult()
+            .wasSuccessful()) {
             return CalculationResult.ofFailure(helper.getResult());
         }
 
@@ -456,7 +458,7 @@ public class ProcessingLogic {
      */
     @Nonnull
     protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
-            @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
+        @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -494,7 +496,7 @@ public class ProcessingLogic {
      * Override to tweak final duration that will be set as a result of this logic class.
      */
     protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
-            @Nonnull OverclockCalculator calculator) {
+        @Nonnull OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
 
@@ -510,8 +512,13 @@ public class ProcessingLogic {
         if (map == null) {
             return Stream.empty();
         }
-        return map.findRecipeQuery().caching(recipeCaching).items(inputItems).fluids(inputFluids)
-                .specialSlot(specialSlotItem).cachedRecipe(lastRecipe).findAll();
+        return map.findRecipeQuery()
+            .caching(recipeCaching)
+            .items(inputItems)
+            .fluids(inputFluids)
+            .specialSlot(specialSlotItem)
+            .cachedRecipe(lastRecipe)
+            .findAll();
     }
 
     /**
@@ -527,10 +534,17 @@ public class ProcessingLogic {
      */
     @Nonnull
     protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-        return new ParallelHelper().setRecipe(recipe).setItemInputs(inputItems).setFluidInputs(inputFluids)
-                .setAvailableEUt(availableVoltage * availableAmperage).setMachine(machine, protectItems, protectFluids)
-                .setRecipeLocked(recipeLockableMachine, isRecipeLocked).setMaxParallel(maxParallel)
-                .setEUtModifier(euModifier).enableBatchMode(batchSize).setConsumption(true).setOutputCalculation(true);
+        return new ParallelHelper().setRecipe(recipe)
+            .setItemInputs(inputItems)
+            .setFluidInputs(inputFluids)
+            .setAvailableEUt(availableVoltage * availableAmperage)
+            .setMachine(machine, protectItems, protectFluids)
+            .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
+            .setMaxParallel(maxParallel)
+            .setEUtModifier(euModifier)
+            .enableBatchMode(batchSize)
+            .setConsumption(true)
+            .setOutputCalculation(true);
     }
 
     /**
@@ -538,10 +552,16 @@ public class ProcessingLogic {
      */
     @Nonnull
     protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-        return new OverclockCalculator().setRecipeEUt(recipe.mEUt).setAmperage(availableAmperage)
-                .setEUt(availableVoltage).setMaxTierSkips(maxTierSkips).setDuration(recipe.mDuration)
-                .setDurationModifier(speedBoost).setEUtDiscount(euModifier).setAmperageOC(amperageOC)
-                .setDurationDecreasePerOC(overClockTimeReduction).setEUtIncreasePerOC(overClockPowerIncrease);
+        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setAmperage(availableAmperage)
+            .setEUt(availableVoltage)
+            .setMaxTierSkips(maxTierSkips)
+            .setDuration(recipe.mDuration)
+            .setDurationModifier(speedBoost)
+            .setEUtDiscount(euModifier)
+            .setAmperageOC(amperageOC)
+            .setDurationDecreasePerOC(overClockTimeReduction)
+            .setEUtIncreasePerOC(overClockPowerIncrease);
     }
 
     /**

@@ -57,7 +57,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     private static ItemStack[] sAutoMaintenanceInputs;
     public boolean mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
-            mSolderingTool = false, mCrowbar = false, mAuto;
+        mSolderingTool = false, mCrowbar = false, mAuto;
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "For maintaining multiblocks");
@@ -70,16 +70,16 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     }
 
     public MTEHatchMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            boolean aAuto) {
+        boolean aAuto) {
         super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
         mAuto = aAuto;
     }
 
     private static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
+            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
+            GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
+            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
         return sAutoMaintenanceInputs;
     }
 
@@ -102,20 +102,40 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[] { aBaseTexture,
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_IDLE).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW).extFacing().glow().build() };
-        return new ITexture[] { aBaseTexture,
-                TextureFactory.builder().addIcon(OVERLAY_MAINTENANCE).extFacing().build() };
+        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_AUTOMAINTENANCE_IDLE)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_MAINTENANCE)
+            .extFacing()
+            .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[] { aBaseTexture,
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_GLOW).extFacing().glow().build() };
-        return new ITexture[] { aBaseTexture, TextureFactory.builder().addIcon(OVERLAY_MAINTENANCE).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_DUCTTAPE).extFacing().build() };
+        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_AUTOMAINTENANCE)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_AUTOMAINTENANCE_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_MAINTENANCE)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_DUCTTAPE)
+                .extFacing()
+                .build() };
     }
 
     @Override
@@ -142,11 +162,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aBaseMetaTileEntity.isClientSide()) return true;
             // only allow OC robot fake player
-            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile().getName().endsWith(".robot")) return false;
+            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
+                .getName()
+                .endsWith(".robot")) return false;
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
@@ -188,9 +210,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing() && !entityPlayer.isSneaking()
-                && isRotationChangeAllowed()) {
+            && isRotationChangeAllowed()) {
             toolSetRotation(null);
             return true;
         }
@@ -212,7 +234,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 boolean temp = true;
                 for (ItemStack aStack : mInventory) {
                     if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
-                            || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                        || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
                         amt -= aStack.stackSize;
                         if (amt < 1) {
                             temp = false;
@@ -229,8 +251,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 if (tStack != null) {
                     amt = tStack.stackSize;
                     for (ItemStack aStack : mInventory) {
-                        if ((GTUtility.areUnificationsEqual(aStack, tStack, true) || GTUtility
-                                .areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                        if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
+                            || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
                             if (aStack.stackSize < amt) {
                                 amt -= aStack.stackSize;
                                 aStack.stackSize = 0;
@@ -263,20 +285,15 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         }
 
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
-                && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
-            mWrench = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mWrench = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
-                && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
-            mScrewdriver = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mScrewdriver = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
-                && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
-            mSoftMallet = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftMallet = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
-                && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
-            mHardHammer = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mHardHammer = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
-                && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
-            mCrowbar = true;
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mCrowbar = true;
         if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) mSolderingTool = true;
         if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
@@ -308,21 +325,19 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return mAuto && GTMod.proxy.mAMHInteraction;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (mAuto && GTMod.proxy.mAMHInteraction) {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(false, aStack),
-                    GTOreDictUnificator.get(false, getStackInSlot(i))))
-                return i == aIndex;
+                GTOreDictUnificator.get(false, aStack),
+                GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
             for (ItemStack tInput : getAutoMaintenanceInputs()) if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                    || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true))
-                return true;
+                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
         }
         return false;
     }
@@ -333,35 +348,41 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             getBaseMetaTileEntity().add2by2Slots(builder);
         } else {
             builder.widget(
-                    new DrawableWidget().setDrawable(GTUITextures.SLOT_MAINTENANCE).setPos(78, 33).setSize(20, 20))
-                    .widget(new SlotWidget(BaseSlot.empty()) {
+                new DrawableWidget().setDrawable(GTUITextures.SLOT_MAINTENANCE)
+                    .setPos(78, 33)
+                    .setSize(20, 20))
+                .widget(new SlotWidget(BaseSlot.empty()) {
 
-                        @Override
-                        public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
-                            return false;
-                        }
+                    @Override
+                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
+                        return false;
+                    }
 
-                        @Override
-                        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                            if (cursorStack == null) return;
-                            onToolClick(cursorStack, getContext().getPlayer());
-                            if (cursorStack.stackSize < 1) {
-                                getContext().getPlayer().inventory.setItemStack(null);
-                            }
-                            if (getContext().getPlayer() instanceof EntityPlayerMP) {
-                                ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
-                            }
+                    @Override
+                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                        if (cursorStack == null) return;
+                        onToolClick(cursorStack, getContext().getPlayer());
+                        if (cursorStack.stackSize < 1) {
+                            getContext().getPlayer().inventory.setItemStack(null);
                         }
-                    }.disableShiftInsert().setBackground(GTUITextures.TRANSPARENT).setPos(79, 34))
-                    .widget(
-                            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(8, 12))
-                    .widget(
-                            new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION).addTooltips(
-                                    Arrays.asList(
-                                            GTUtility.breakLines(
-                                                    StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
-                                    .setPos(163, 5).setSize(7, 18));
+                        if (getContext().getPlayer() instanceof EntityPlayerMP) {
+                            ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
+                        }
+                    }
+                }.disableShiftInsert()
+                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setPos(79, 34))
+                .widget(
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(8, 12))
+                .widget(
+                    new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
+                        .addTooltips(
+                            Arrays.asList(
+                                GTUtility.breakLines(StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
+                        .setPos(163, 5)
+                        .setSize(7, 18));
         }
     }
 
@@ -397,13 +418,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (changed) {
             if (base.isServerSide() && !GregTechAPI.isDummyWorld(base.getWorld())) {
                 StructureLibAPI.sendAlignment(
-                        (IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(
-                                base.getWorld().provider.dimensionId,
-                                base.getXCoord(),
-                                base.getYCoord(),
-                                base.getZCoord(),
-                                512));
+                    (IAlignmentProvider) base,
+                    new NetworkRegistry.TargetPoint(
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(),
+                        base.getYCoord(),
+                        base.getZCoord(),
+                        512));
             } else {
                 base.issueTextureUpdate();
             }

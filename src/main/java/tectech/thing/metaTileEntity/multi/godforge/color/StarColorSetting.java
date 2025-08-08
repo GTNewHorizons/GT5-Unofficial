@@ -80,6 +80,10 @@ public class StarColorSetting {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("r", r).append("g", g).append("b", b).append("gamma", gamma).build();
+        return new ToStringBuilder(this).append("r", r)
+            .append("g", g)
+            .append("b", b)
+            .append("gamma", gamma)
+            .build();
     }
 }

@@ -10,7 +10,7 @@ import gregtech.common.covers.Cover;
  * Determines button state with cover data.
  */
 public class CoverDataFollowerCycleButtonWidget<T extends Cover> extends CoverCycleButtonWidget
-        implements ICoverDataFollowerWidget<T, Integer> {
+    implements ICoverDataFollowerWidget<T, Integer> {
 
     private Function<T, Integer> dataToStateGetter;
 

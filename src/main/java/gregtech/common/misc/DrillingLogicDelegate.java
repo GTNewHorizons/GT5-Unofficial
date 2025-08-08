@@ -25,7 +25,7 @@ public class DrillingLogicDelegate {
     public static final ItemStack MINING_PIPE_STACK = GTModHandler.getIC2Item("miningPipe", 0);
     public static final Block MINING_PIPE_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE_STACK);
     public static final Block MINING_PIPE_TIP_BLOCK = GTUtility
-            .getBlockFromStack(GTModHandler.getIC2Item("miningPipeTip", 0));
+        .getBlockFromStack(GTModHandler.getIC2Item("miningPipeTip", 0));
 
     /** The owner machine pointer */
     private final IDrillingLogicDelegateOwner owner;
@@ -76,7 +76,8 @@ public class DrillingLogicDelegate {
 
         // Replace the tip onto pipe
         if (te.getBlockOffset(0, tipDepth, 0) == MINING_PIPE_TIP_BLOCK) {
-            te.getWorld().setBlock(xCoord, yCoord + tipDepth, zCoord, MINING_PIPE_BLOCK);
+            te.getWorld()
+                .setBlock(xCoord, yCoord + tipDepth, zCoord, MINING_PIPE_BLOCK);
         }
         // Get and decrease pipe from the machine
         boolean pipeTaken = owner.pullInputs(MINING_PIPE_STACK.getItem(), 1, false);
@@ -93,7 +94,8 @@ public class DrillingLogicDelegate {
         }
 
         // Descent the pipe tip
-        te.getWorld().setBlock(xCoord, yCoord + tipDepth - 1, zCoord, MINING_PIPE_TIP_BLOCK);
+        te.getWorld()
+            .setBlock(xCoord, yCoord + tipDepth - 1, zCoord, MINING_PIPE_TIP_BLOCK);
         tipDepth--;
         return true;
     }
@@ -146,16 +148,13 @@ public class DrillingLogicDelegate {
         int actualDrillY = yCoord + tipDepth;
         // Move the pipe tip position
         if (actualDrillY < yCoord - 1) {
-            owner.getBaseMetaTileEntity().getWorld().setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
+            owner.getBaseMetaTileEntity()
+                .getWorld()
+                .setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
         }
         // Remove the old pipe tip
-        aBaseMetaTileEntity.getWorld().setBlock(
-                xCoord,
-                actualDrillY,
-                zCoord,
-                Blocks.air,
-                0,
-                /* send to client without neighbour updates */ 2);
+        aBaseMetaTileEntity.getWorld()
+            .setBlock(xCoord, actualDrillY, zCoord, Blocks.air, 0, /* send to client without neighbour updates */ 2);
 
         tipDepth++;
     }
@@ -189,13 +188,15 @@ public class DrillingLogicDelegate {
         }
 
         short metaData = 0;
-        TileEntity tTileEntity = owner.getBaseMetaTileEntity().getTileEntity(x, y, z);
+        TileEntity tTileEntity = owner.getBaseMetaTileEntity()
+            .getTileEntity(x, y, z);
         if (tTileEntity instanceof TileEntityOres) {
             metaData = ((TileEntityOres) tTileEntity).mMetaData;
         }
 
         ItemStack cobble = GTUtility.getCobbleForOre(block, metaData);
-        te.getWorld().setBlock(
+        te.getWorld()
+            .setBlock(
                 x,
                 y,
                 z,
@@ -244,18 +245,20 @@ public class DrillingLogicDelegate {
 
     public boolean canFakePlayerInteract(IGregTechTileEntity te, int xCoord, int yCoord, int zCoord) {
         return GTUtility
-                .setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+            .setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
     }
 
     /** Get target block drops. We need to encapsulate everyting of mining in this class. */
     private List<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
         return oreBlock.getDrops(
-                owner.getBaseMetaTileEntity().getWorld(),
-                posX,
-                posY,
-                posZ,
-                owner.getBaseMetaTileEntity().getMetaID(posX, posY, posZ),
-                owner.getMachineTier());
+            owner.getBaseMetaTileEntity()
+                .getWorld(),
+            posX,
+            posY,
+            posZ,
+            owner.getBaseMetaTileEntity()
+                .getMetaID(posX, posY, posZ),
+            owner.getMachineTier());
     }
 
     /** Can the owner continue doing its work? If we await new pipes - it cannot. */

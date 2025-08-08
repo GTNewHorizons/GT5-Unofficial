@@ -62,20 +62,20 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-            int colorIndex, boolean aConnected, boolean aRedstone) {
+        int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-                .of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            .of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -104,13 +104,13 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced
                                                                                                                      // data
                                                                                                                      // transmission
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be
-                                                                                                       // painted to
-                                                                                                       // work
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or
-                                                                                                      // split
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be
+                                                                                                   // painted to
+                                                                                                   // work
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or
+                                                                                                  // split
         };
     }
 
@@ -183,7 +183,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
             if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor
-                    && neighbor.isConnectedAtSide(side.getOpposite())) {
+                && neighbor.isConnectedAtSide(side.getOpposite())) {
                 neighbor.mConnections &= ~side.getOpposite().flag;
                 neighbor.connectionCount--;
             }
@@ -204,17 +204,18 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
             if ((aTick & 31) == 31) {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
-                            new PipeActivityMessage.PipeActivityData(this),
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256);
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy().changeDetected() == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override

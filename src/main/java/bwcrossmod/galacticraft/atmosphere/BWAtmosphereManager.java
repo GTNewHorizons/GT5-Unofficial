@@ -50,7 +50,7 @@ public final class BWAtmosphereManager {
     public static final BWAtmosphereManager INSTANCE = new BWAtmosphereManager();
 
     private static final ArrayListMultimap<Integer, Pair<ISubTagContainer, Integer>> gasConcentration = ArrayListMultimap
-            .create();
+        .create();
 
     public static List<Pair<ISubTagContainer, Integer>> getGasFromWorldID(int worldID) {
         return BWAtmosphereManager.gasConcentration.get(worldID);
@@ -58,8 +58,10 @@ public final class BWAtmosphereManager {
 
     public static void removeGasFromWorld(int worldID, ISubTagContainer gas) {
         for (Pair<ISubTagContainer, Integer> pair : BWAtmosphereManager.gasConcentration.get(worldID)) {
-            if (pair.getKey().equals(gas)) {
-                BWAtmosphereManager.gasConcentration.get(worldID).remove(pair);
+            if (pair.getKey()
+                .equals(gas)) {
+                BWAtmosphereManager.gasConcentration.get(worldID)
+                    .remove(pair);
                 return;
             }
         }
@@ -76,19 +78,21 @@ public final class BWAtmosphereManager {
 
     @SafeVarargs
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer>... toPut) {
-        Arrays.stream(toPut).forEach(toadd -> BWAtmosphereManager.gasConcentration.put(worldID, toadd));
+        Arrays.stream(toPut)
+            .forEach(toadd -> BWAtmosphereManager.gasConcentration.put(worldID, toadd));
     }
 
     private static boolean addGCGasToWorld(int worldID, IAtmosphericGas gas, int aNumber, int aMaxNumber) {
         if (IAtmosphericGas.CO2.equals(gas)) {
             BWAtmosphereManager.addGasToWorld(
-                    worldID,
-                    Materials.CarbonDioxide,
-                    BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
+                worldID,
+                Materials.CarbonDioxide,
+                BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
             return true;
         }
         String name = gas.toString();
-        name = name.charAt(0) + name.substring(1).toLowerCase(Locale.US);
+        name = name.charAt(0) + name.substring(1)
+            .toLowerCase(Locale.US);
         ISubTagContainer mat = Materials.get(name);
         if (mat == Materials._NULL) {
             mat = WerkstoffLoader.getWerkstoff(name);
@@ -102,14 +106,15 @@ public final class BWAtmosphereManager {
 
     @SubscribeEvent
     public void gcAutoRegister(GalaxyRegistry.PlanetRegisterEvent event) {
-        CelestialBody planet = GalaxyRegistry.getRegisteredPlanets().get(event.planetName);
+        CelestialBody planet = GalaxyRegistry.getRegisteredPlanets()
+            .get(event.planetName);
         for (int i = 0; i < planet.atmosphere.size(); i++) {
             if (!BWAtmosphereManager
-                    .addGCGasToWorld(planet.getDimensionID(), planet.atmosphere.get(i), i, planet.atmosphere.size()))
+                .addGCGasToWorld(planet.getDimensionID(), planet.atmosphere.get(i), i, planet.atmosphere.size()))
                 BartWorksCrossmod.LOGGER.warn(
-                        "Unidentified Fluid (" + planet.atmosphere.get(i)
-                                + ") in the Atmosphere of: "
-                                + planet.getLocalizedName());
+                    "Unidentified Fluid (" + planet.atmosphere.get(i)
+                        + ") in the Atmosphere of: "
+                        + planet.getLocalizedName());
         }
     }
 }

@@ -120,7 +120,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             ItemStack rStack = new ItemStack(this, 1, mOffset + aID);
             if (mEnabledItems.get(aID)) {
                 throw new IllegalArgumentException(
-                        String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
+                    String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
             }
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
@@ -145,12 +145,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
                         int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
                         if (tFoodValue > 0) {
-                            GTValues.RA.stdBuilder().itemInputs(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue))
-                                    .itemOutputs(
-                                            ((IFoodStat) tRandomData).isRotten(this, rStack, null)
-                                                    ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
-                                                    : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
-                                    .duration(tFoodValue * 5 * SECONDS).eut(1).addTo(cannerRecipes);
+                            GTValues.RA.stdBuilder()
+                                .itemInputs(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue))
+                                .itemOutputs(
+                                    ((IFoodStat) tRandomData).isRotten(this, rStack, null)
+                                        ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
+                                        : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
+                                .duration(tFoodValue * 5 * SECONDS)
+                                .eut(1)
+                                .addTo(cannerRecipes);
                         }
                     }
                     tUseOreDict = false;
@@ -228,15 +231,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
      * @return the Item itself for convenience in constructing.
      */
     public final MetaGeneratedItem setElectricStats(int aMetaValue, long aMaxCharge, long aTransferLimit, long aTier,
-            long aSpecialData, boolean aUseAnimations) {
+        long aSpecialData, boolean aUseAnimations) {
         if (aMetaValue < 0 || aMetaValue >= mOffset + mEnabledItems.length()) return this;
         if (aMaxCharge == 0) mElectricStats.remove((short) aMetaValue);
         else {
             mElectricStats.put(
-                    (short) aMetaValue,
-                    new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
+                (short) aMetaValue,
+                new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
             if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays
-                    .copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+                .copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
         }
         return this;
     }
@@ -333,11 +336,11 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
-                aPlayer.getFoodStats().func_151686_a(getFoodProxy(this), aStack);
+                aPlayer.getFoodStats()
+                    .func_151686_a(getFoodProxy(this), aStack);
             } else {
-                aPlayer.getFoodStats().addStats(
-                        tStat.getFoodLevel(this, aStack, aPlayer),
-                        tStat.getSaturation(this, aStack, aPlayer));
+                aPlayer.getFoodStats()
+                    .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
             }
             tStat.onEaten(this, aStack, aPlayer);
         }
@@ -354,7 +357,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         return tStat == null ? null
-                : new FoodValues(tStat.getFoodLevel(this, aStack, null), tStat.getSaturation(this, aStack, null));
+            : new FoodValues(tStat.getFoodLevel(this, aStack, null), tStat.getSaturation(this, aStack, null));
     }
 
     @Override
@@ -384,10 +387,10 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         for (short i = 0; i < j; i++) if (mEnabledItems.get(i)) {
             for (byte k = 1; k < mIconList[i].length; k++) {
                 mIconList[i][k] = aIconRegister.registerIcon(
-                        GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
+                    GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
             mIconList[i][0] = aIconRegister
-                    .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
     }
 

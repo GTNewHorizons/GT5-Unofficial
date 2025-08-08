@@ -17,17 +17,17 @@ public class MTENeutronAccelerator extends MTEHatch {
 
     public MTENeutronAccelerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { "Uses Energy to Accelerate the Neutrons!",
-                        "Max consumption: " + EnumChatFormatting.YELLOW
-                                + formatNumbers(getMaxEUConsume(aTier))
-                                + EnumChatFormatting.WHITE
-                                + " EU/t",
-                        "Every EU gets converted into 10-20 eV Neutron Kinetic Energy." });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { "Uses Energy to Accelerate the Neutrons!",
+                "Max consumption: " + EnumChatFormatting.YELLOW
+                    + formatNumbers(getMaxEUConsume(aTier))
+                    + EnumChatFormatting.WHITE
+                    + " EU/t",
+                "Every EU gets converted into 10-20 eV Neutron Kinetic Energy." });
     }
 
     public MTENeutronAccelerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -107,13 +107,13 @@ public class MTENeutronAccelerator extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 }

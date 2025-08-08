@@ -20,15 +20,19 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         column.child(
-                makeRowLayout().child(positionRow(Rows.makeInvertRedstoneRow(cover)))
-                        .child(positionRow(makeFluidThresholdRow(cover))));
+            makeRowLayout().child(positionRow(Rows.makeInvertRedstoneRow(cover)))
+                .child(positionRow(makeFluidThresholdRow(cover))));
     }
 
     private Flow makeFluidThresholdRow(CoverLiquidMeter cover) {
-        return Flow.row().debugName("fluid_threshold")
-                .child(
-                        makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold))
-                                .setNumbers(0, maxCapacity).setFocusOnGuiOpen(true))
-                .child(IKey.str(GTUtility.trans("222", "Fluid threshold")).asWidget());
+        return Flow.row()
+            .debugName("fluid_threshold")
+            .child(
+                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold))
+                    .setNumbers(0, maxCapacity)
+                    .setFocusOnGuiOpen(true))
+            .child(
+                IKey.str(GTUtility.trans("222", "Fluid threshold"))
+                    .asWidget());
     }
 }

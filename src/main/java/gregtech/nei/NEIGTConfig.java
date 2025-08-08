@@ -51,11 +51,13 @@ public class NEIGTConfig implements IConfigureNEI {
      * will be assigned a value of 0. Negative values are fine.
      */
     private static final ImmutableMap<RecipeMap<?>, Integer> RECIPE_MAP_ORDERING = ImmutableMap
-            .<RecipeMap<?>, Integer>builder().put(RecipeMaps.assemblylineVisualRecipes, 1)
-            .put(RecipeMaps.scannerFakeRecipes, 2).build();
+        .<RecipeMap<?>, Integer>builder()
+        .put(RecipeMaps.assemblylineVisualRecipes, 1)
+        .put(RecipeMaps.scannerFakeRecipes, 2)
+        .build();
 
     private static final Comparator<GTNEIDefaultHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
-            .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+        .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
 
@@ -65,10 +67,10 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
-                GTMod.GT,
-                "NEIPlugins",
-                "register-crafting-handler",
-                "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
+            GTMod.GT,
+            "NEIPlugins",
+            "register-crafting-handler",
+            "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
         GuiCraftingRecipe.craftinghandlers.add(handler);
         GuiUsageRecipe.usagehandlers.add(handler);
     }
@@ -84,9 +86,14 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     private void registerHandlers() {
-        RecipeCategory.ALL_RECIPE_CATEGORIES.values().stream()
-                .filter(recipeCategory -> recipeCategory.recipeMap.getFrontend().getNEIProperties().registerNEI)
-                .map(GTNEIDefaultHandler::new).sorted(RECIPE_MAP_HANDLER_COMPARATOR).forEach(NEIGTConfig::addHandler);
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .stream()
+            .filter(
+                recipeCategory -> recipeCategory.recipeMap.getFrontend()
+                    .getNEIProperties().registerNEI)
+            .map(GTNEIDefaultHandler::new)
+            .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
+            .forEach(NEIGTConfig::addHandler);
 
         GuiCraftingRecipe.craftinghandlers.add(CAL_IMPRINT_HANDLER);
         GuiUsageRecipe.usagehandlers.add(CAL_IMPRINT_HANDLER);
@@ -94,22 +101,23 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private void registerCatalysts() {
         for (Map.Entry<RecipeCategory, Collection<RecipeMapWorkable>> entry : RECIPE_CATALYST_INDEX.asMap()
-                .entrySet()) {
-            entry.getValue().forEach(
+            .entrySet()) {
+            entry.getValue()
+                .forEach(
                     recipeMapWorkable -> API.addRecipeCatalyst(
-                            recipeMapWorkable.getStackForm(1),
-                            entry.getKey().unlocalizedName,
-                            recipeMapWorkable.getRecipeCatalystPriority()));
+                        recipeMapWorkable.getStackForm(1),
+                        entry.getKey().unlocalizedName,
+                        recipeMapWorkable.getRecipeCatalystPriority()));
         }
         API.addRecipeCatalyst(
-                GTModHandler.getIC2Item("nuclearReactor", 1, null),
-                RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
+            GTModHandler.getIC2Item("nuclearReactor", 1, null),
+            RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
 
         // Remove the ones already registered by NEI assets
         // Bronze Blast Furnace
         API.removeRecipeCatalyst(
-                new ItemStack(GregTechAPI.sBlockMachines, 1, 108),
-                RecipeMaps.primitiveBlastRecipes.unlocalizedName);
+            new ItemStack(GregTechAPI.sBlockMachines, 1, 108),
+            RecipeMaps.primitiveBlastRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
@@ -134,36 +142,46 @@ public class NEIGTConfig implements IConfigureNEI {
             // This method will be called earlier than #loadConfig
             generateRecipeCatalystIndex();
         }
-        RecipeCategory.ALL_RECIPE_CATEGORIES.values().forEach(recipeCategory -> {
-            HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
-            HandlerInfo handlerInfo;
-            if (recipeCategory.handlerInfoCreator != null) {
-                handlerInfo = recipeCategory.handlerInfoCreator.apply(builder).build();
-            } else {
-                // Infer icon from recipe catalysts
-                RECIPE_CATALYST_INDEX.get(recipeCategory).stream().findFirst()
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .forEach(recipeCategory -> {
+                HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
+                HandlerInfo handlerInfo;
+                if (recipeCategory.handlerInfoCreator != null) {
+                    handlerInfo = recipeCategory.handlerInfoCreator.apply(builder)
+                        .build();
+                } else {
+                    // Infer icon from recipe catalysts
+                    RECIPE_CATALYST_INDEX.get(recipeCategory)
+                        .stream()
+                        .findFirst()
                         .ifPresent(catalyst -> builder.setDisplayStack(catalyst.getStackForm(1)));
-                handlerInfo = builder.build();
-            }
-            event.registerHandlerInfo(handlerInfo);
-        });
+                    handlerInfo = builder.build();
+                }
+                event.registerHandlerInfo(handlerInfo);
+            });
 
         event.registerHandlerInfo(
-                new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
-                        .setMaxRecipesPerPage(100).setDisplayStack(BWMetaItems.getCircuitParts().getStack(0)).build());
+            new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
+                .setMaxRecipesPerPage(100)
+                .setDisplayStack(
+                    BWMetaItems.getCircuitParts()
+                        .getStack(0))
+                .build());
     }
 
     private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
         return new HandlerInfo.Builder(
-                recipeCategory.unlocalizedName,
-                recipeCategory.ownerMod.getName(),
-                recipeCategory.ownerMod.getModId()).setShiftY(6).setHeight(135).setMaxRecipesPerPage(2);
+            recipeCategory.unlocalizedName,
+            recipeCategory.ownerMod.getName(),
+            recipeCategory.ownerMod.getModId()).setShiftY(6)
+                .setHeight(135)
+                .setMaxRecipesPerPage(2);
     }
 
     private static void generateRecipeCatalystIndex() {
         ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> builder = new ImmutableListMultimap.Builder<>();
-        builder.orderValuesBy(
-                Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
+        builder
+            .orderValuesBy(Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
             IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[i];
             if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;

@@ -25,8 +25,8 @@ public class ItemData {
         mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.mMaterialAmount);
         mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
-                ? EMPTY_MATERIALSTACK_ARRAY
-                : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
+            ? EMPTY_MATERIALSTACK_ARRAY
+            : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
     public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
@@ -41,7 +41,7 @@ public class ItemData {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
             MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
-                    : new MaterialStack[aByProducts.length];
+                : new MaterialStack[aByProducts.length];
             int j = 0;
             for (MaterialStack aByProduct : aByProducts)
                 if (aByProduct != null && aByProduct.mMaterial != null) tByProducts[j++] = aByProduct.clone();

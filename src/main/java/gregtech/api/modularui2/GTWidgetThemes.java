@@ -59,9 +59,9 @@ public final class GTWidgetThemes {
         IThemeApi themeApi = IThemeApi.get();
 
         themeApi.registerWidgetTheme(
-                TEXT_TITLE,
-                new WidgetTheme(null, null, Color.WHITE.main, 0x404040, false),
-                WidgetTheme::new);
+            TEXT_TITLE,
+            new WidgetTheme(null, null, Color.WHITE.main, 0x404040, false),
+            WidgetTheme::new);
 
         registerThemedTexture(BACKGROUND_POPUP);
         registerThemedTexture(BACKGROUND_TITLE);
@@ -77,17 +77,17 @@ public final class GTWidgetThemes {
         registerThemedFluidSlot(OVERLAY_FLUID_SLOT_IN);
 
         themeApi.registerWidgetTheme(
-                PROGRESSBAR_BOILER_HEAT,
-                new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54),
-                ProgressbarWidgetTheme::new);
+            PROGRESSBAR_BOILER_HEAT,
+            new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54),
+            ProgressbarWidgetTheme::new);
         themeApi.registerWidgetTheme(
-                PROGRESSBAR_FUEL,
-                new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
-                ProgressbarWidgetTheme::new);
+            PROGRESSBAR_FUEL,
+            new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
+            ProgressbarWidgetTheme::new);
         themeApi.registerWidgetTheme(
-                BACKGROUND_TERMINAL,
-                new WidgetTheme(GTGuiTextures.BACKGROUND_TEXT_FIELD, null, Color.WHITE.main, 0xFAFAFA, false),
-                WidgetTheme::new);
+            BACKGROUND_TERMINAL,
+            new WidgetTheme(GTGuiTextures.BACKGROUND_TEXT_FIELD, null, Color.WHITE.main, 0xFAFAFA, false),
+            WidgetTheme::new);
 
         registerThemedButton(BUTTON_COVER_TAB_ENABLED);
         registerThemedButton(BUTTON_COVER_TAB_DISABLED);
@@ -99,32 +99,32 @@ public final class GTWidgetThemes {
     private static void registerThemedTexture(String textureThemeId) {
         IThemeApi themeApi = IThemeApi.get();
         themeApi.registerWidgetTheme(
-                textureThemeId,
-                new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
-                WidgetTheme::new);
+            textureThemeId,
+            new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
+            WidgetTheme::new);
     }
 
     private static void registerThemedItemSlot(String textureThemeId) {
         IThemeApi themeApi = IThemeApi.get();
         themeApi.registerWidgetTheme(
-                textureThemeId,
-                new WidgetSlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60)),
-                WidgetSlotTheme::new);
+            textureThemeId,
+            new WidgetSlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60)),
+            WidgetSlotTheme::new);
     }
 
     private static void registerThemedFluidSlot(String textureThemeId) {
         IThemeApi themeApi = IThemeApi.get();
         themeApi.registerWidgetTheme(
-                textureThemeId,
-                new WidgetSlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)),
-                WidgetSlotTheme::new);
+            textureThemeId,
+            new WidgetSlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)),
+            WidgetSlotTheme::new);
     }
 
     private static void registerThemedButton(String textureThemeId) {
         IThemeApi themeApi = IThemeApi.get();
         themeApi.registerWidgetTheme(
-                textureThemeId,
-                new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
-                WidgetTheme::new);
+            textureThemeId,
+            new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
+            WidgetTheme::new);
     }
 }

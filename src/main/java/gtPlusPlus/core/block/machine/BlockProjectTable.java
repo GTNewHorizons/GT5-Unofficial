@@ -59,8 +59,8 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int ordinalSide, final int meta) {
         return ordinalSide == 1 ? this.textureTop
-                : (ordinalSide == 0 ? this.textureBottom
-                        : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
+            : (ordinalSide == 0 ? this.textureBottom
+                : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
      */
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly,
-            float lz) {
+        float lz) {
         if (world.isRemote) return true;
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityProjectTable) {

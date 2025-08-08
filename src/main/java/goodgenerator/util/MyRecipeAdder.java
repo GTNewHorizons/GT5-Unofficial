@@ -20,11 +20,11 @@ public class MyRecipeAdder {
     // todo: understand why it needs a custom recipe class and migrate it on RA2
     @Deprecated
     public void addExtremeHeatExchangerRecipe(FluidStack HotFluid, FluidStack ColdFluid, FluidStack WorkFluid,
-            FluidStack HeatedWorkFluid, FluidStack OverHeatedWorkFluid, int Threshold) {
+        FluidStack HeatedWorkFluid, FluidStack OverHeatedWorkFluid, int Threshold) {
         GoodGeneratorRecipeMaps.extremeHeatExchangerFuels.addRecipe(
-                new ExtremeHeatExchangerRecipe(
-                        new FluidStack[] { HotFluid, WorkFluid },
-                        new FluidStack[] { HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid },
-                        Threshold));
+            new ExtremeHeatExchangerRecipe(
+                new FluidStack[] { HotFluid, WorkFluid },
+                new FluidStack[] { HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid },
+                Threshold));
     }
 }

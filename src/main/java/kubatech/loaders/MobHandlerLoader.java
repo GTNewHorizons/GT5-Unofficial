@@ -84,21 +84,24 @@ public class MobHandlerLoader {
             try {
                 this.entityCopy = this.recipe.createEntityCopy();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
-                    | IllegalAccessException e) {
+                | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
         }
 
         public ItemStack[] generateOutputs(Random rnd, MTEExtremeEntityCrusher MTE, double attackDamage,
-                int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
+            int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
             this.entityCopy.setPosition(
-                    MTE.getBaseMetaTileEntity().getXCoord(),
-                    MTE.getBaseMetaTileEntity().getYCoord(),
-                    MTE.getBaseMetaTileEntity().getZCoord());
+                MTE.getBaseMetaTileEntity()
+                    .getXCoord(),
+                MTE.getBaseMetaTileEntity()
+                    .getYCoord(),
+                MTE.getBaseMetaTileEntity()
+                    .getZCoord());
             for (MobDrop o : this.mOutputs) {
                 if (voidAllDamagedAndEnchantedItems && (o.damages != null || o.enchantable != null)) continue;
                 int chance = o.chance;
@@ -106,11 +109,12 @@ public class MobHandlerLoader {
                 double dChance = (double) chance / 100d;
                 for (IChanceModifier chanceModifier : o.chanceModifiers) {
                     dChance = chanceModifier.apply(
-                            dChance,
-                            MTE.getBaseMetaTileEntity().getWorld(),
-                            stacks,
-                            MTE.EECPlayer,
-                            this.entityCopy);
+                        dChance,
+                        MTE.getBaseMetaTileEntity()
+                            .getWorld(),
+                        stacks,
+                        MTE.EECPlayer,
+                        this.entityCopy);
                 }
 
                 chance = (int) (dChance * 100d);
@@ -151,12 +155,14 @@ public class MobHandlerLoader {
             if (InfernalMobs.isModLoaded()) {
                 InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
                 if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
-                        && !infernalMobsCore.getDimensionBlackList()
-                                .contains(MTE.getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+                    && !infernalMobsCore.getDimensionBlackList()
+                        .contains(
+                            MTE.getBaseMetaTileEntity()
+                                .getWorld().provider.dimensionId)) {
                     int p = 0;
                     int mods = 0;
                     if (recipe.alwaysinfernal
-                            || (preferInfernalDrops && rnd.nextInt(infernalMobsCore.getEliteRarity()) == 0)) {
+                        || (preferInfernalDrops && rnd.nextInt(infernalMobsCore.getEliteRarity()) == 0)) {
                         p = 1;
                         if (rnd.nextInt(infernalMobsCore.getUltraRarity()) == 0) {
                             p = 2;
@@ -175,14 +181,17 @@ public class MobHandlerLoader {
                         mods = infernalMobsCore.getMinInfernoModifiers();
                     }
                     if (infernalstacks != null) {
-                        ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size())).copy();
+                        ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size()))
+                            .copy();
                         EnchantmentHelper.addRandomEnchantment(
-                                rnd,
-                                infernalstack,
-                                infernalstack.getItem().getItemEnchantability());
+                            rnd,
+                            infernalstack,
+                            infernalstack.getItem()
+                                .getItemEnchantability());
                         stacks.add(infernalstack);
                         MTE.lEUt *= 8L;
-                        MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance().getMobModHealthFactor();
+                        MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance()
+                            .getMobModHealthFactor();
                     }
                 }
             }
@@ -205,9 +214,9 @@ public class MobHandlerLoader {
             for (MobDrop drop : event.drops) {
                 if (drop.playerOnly) {
                     drop.additionalInfo.add(
-                            StatCollector.translateToLocalFormatted(
-                                    "kubatech.mobhandler.eec_chance",
-                                    (((double) drop.chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                        StatCollector.translateToLocalFormatted(
+                            "kubatech.mobhandler.eec_chance",
+                            (((double) drop.chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
                 }
             }
             @SuppressWarnings("unchecked")
@@ -224,10 +233,9 @@ public class MobHandlerLoader {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
             event.additionalInformation.addAll(
-                    Arrays.asList(
-                            GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                            GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d)
-                                    + " secs"));
+                Arrays.asList(
+                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
+                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
         }
     }
 }

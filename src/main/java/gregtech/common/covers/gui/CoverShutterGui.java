@@ -28,32 +28,43 @@ public class CoverShutterGui extends CoverGui<CoverShutter> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<ShutterMode> modeSyncValue = new EnumSyncValue<>(
-                ShutterMode.class,
-                cover::getShutterMode,
-                cover::setShutterMode);
+            ShutterMode.class,
+            cover::getShutterMode,
+            cover::setShutterMode);
         syncManager.syncValue("mode", modeSyncValue);
 
         column.child(
-                new Grid().marginLeft(WIDGET_MARGIN).coverChildren().minElementMarginRight(WIDGET_MARGIN)
-                        .minElementMarginBottom(2).minElementMarginTop(0).minElementMarginLeft(0)
-                        .alignment(Alignment.CenterLeft)
-                        .row(
-                                new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_ENABLED))
-                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK).size(16),
-                                IKey.str(GTUtility.trans("082", "Open if work enabled")).asWidget())
-                        .row(
-                                new SelectButton()
-                                        .value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_DISABLED))
-                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK).size(16),
-                                IKey.str(GTUtility.trans("083", "Open if work disabled")).asWidget())
-                        .row(
-                                new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_OUTPUT))
-                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK).size(16),
-                                IKey.str(GTUtility.trans("084", "Only Output allowed")).asWidget())
-                        .row(
-                                new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_INPUT))
-                                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK).size(16),
-                                IKey.str(GTUtility.trans("085", "Only Input allowed")).asWidget()));
+            new Grid().marginLeft(WIDGET_MARGIN)
+                .coverChildren()
+                .minElementMarginRight(WIDGET_MARGIN)
+                .minElementMarginBottom(2)
+                .minElementMarginTop(0)
+                .minElementMarginLeft(0)
+                .alignment(Alignment.CenterLeft)
+                .row(
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_ENABLED))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("082", "Open if work enabled"))
+                        .asWidget())
+                .row(
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_DISABLED))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("083", "Open if work disabled"))
+                        .asWidget())
+                .row(
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_OUTPUT))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("084", "Only Output allowed"))
+                        .asWidget())
+                .row(
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_INPUT))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("085", "Only Input allowed"))
+                        .asWidget()));
     }
 
 }

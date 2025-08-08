@@ -20,30 +20,42 @@ public class SifterRecipes implements Runnable {
 
     @Override
     public void run() {
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(Blocks.gravel, 1, 0))
-                .itemOutputs(
-                        new ItemStack(Items.flint, 1, 0),
-                        new ItemStack(Items.flint, 1, 0),
-                        new ItemStack(Items.flint, 1, 0),
-                        new ItemStack(Items.flint, 1, 0),
-                        new ItemStack(Items.flint, 1, 0),
-                        new ItemStack(Items.flint, 1, 0))
-                .outputChances(10000, 9000, 8000, 6000, 3300, 2500).duration(30 * SECONDS).eut(16).addTo(sifterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.gravel, 1, 0))
+            .itemOutputs(
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0))
+            .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sifterRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
-                .itemOutputs(
-                        new ItemStack(Items.coal, 1, 0),
-                        new ItemStack(Items.coal, 1, 0),
-                        new ItemStack(Items.coal, 1, 0),
-                        new ItemStack(Items.coal, 1, 0),
-                        new ItemStack(Items.coal, 1, 0),
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
-                .outputChances(10000, 9000, 8000, 7000, 6000, 5000).duration(30 * SECONDS).eut(16).addTo(sifterRecipes);
-        GTValues.RA.stdBuilder().itemInputs(ItemList.ElectronicsLump.get(1))
-                .itemOutputs(
-                        ItemList.Electric_Motor_LV.get(1),
-                        getModItem(Forestry.ID, "thermionicTubes", 1L, 5),
-                        getModItem(EnderIO.ID, "itemPowerConduit", 1L, 0))
-                .outputChances(25 * 100, 25 * 100, 25 * 100).duration(30 * SECONDS).eut(16).addTo(sifterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
+            .itemOutputs(
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
+            .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sifterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.ElectronicsLump.get(1))
+            .itemOutputs(
+                ItemList.Electric_Motor_LV.get(1),
+                getModItem(Forestry.ID, "thermionicTubes", 1L, 5),
+                getModItem(EnderIO.ID, "itemPowerConduit", 1L, 0))
+            .outputChances(25 * 100, 25 * 100, 25 * 100)
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sifterRecipes);
     }
 }

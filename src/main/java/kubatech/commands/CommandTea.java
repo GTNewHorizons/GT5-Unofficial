@@ -52,7 +52,8 @@ public class CommandTea extends CommandBase {
         final String key;
 
         Translations() {
-            key = "kubatech.command.tea." + this.name().toLowerCase();
+            key = "kubatech.command.tea." + this.name()
+                .toLowerCase();
         }
 
         public String get() {

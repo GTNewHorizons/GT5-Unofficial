@@ -22,7 +22,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 public class RadioHatchFrontend extends RecipeMapFrontend {
 
     public RadioHatchFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder.neiSpecialInfoFormatter(new RadioHatchSpecialInfoFormatter()));
     }
 
@@ -41,9 +41,9 @@ public class RadioHatchFrontend extends RecipeMapFrontend {
             int mass = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0);
             long time = MTERadioHatch.calcDecayTicks(radioLevel);
             return Arrays.asList(
-                    StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel),
-                    StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", mass),
-                    StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.2", time * mass / 20.0));
+                StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel),
+                StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", mass),
+                StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.2", time * mass / 20.0));
         }
     }
 }

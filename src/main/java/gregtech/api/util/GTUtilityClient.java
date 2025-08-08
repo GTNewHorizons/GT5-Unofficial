@@ -26,13 +26,12 @@ public class GTUtilityClient {
     public static List<String> getTooltip(ItemStack aStack, boolean aGuiStyle) {
         try {
             List<String> tooltip = aStack.getTooltip(
-                    Minecraft.getMinecraft().thePlayer,
-                    Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+                Minecraft.getMinecraft().thePlayer,
+                Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
             if (aGuiStyle) {
                 tooltip.set(
-                        0,
-                        (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor
-                                + tooltip.get(0));
+                    0,
+                    (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor + tooltip.get(0));
                 for (int i = 1; i < tooltip.size(); i++) {
                     tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
                 }
@@ -41,8 +40,8 @@ public class GTUtilityClient {
         } catch (RuntimeException e) {
             // Collections.singletonList() can not be added to. we don't want that
             if (aGuiStyle) return Lists.newArrayList(
-                    (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor
-                            + aStack.getDisplayName());
+                (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor
+                    + aStack.getDisplayName());
             return Lists.newArrayList(aStack.getDisplayName());
         }
     }
@@ -53,7 +52,7 @@ public class GTUtilityClient {
     }
 
     public static void setTurbineOverlay(World aWorld, int aX, int aY, int aZ, ExtendedFacing tExtendedFacing,
-            IIconContainer[] tTextures, List<RenderOverlay.OverlayTicket> ticketContainer) {
+        IIconContainer[] tTextures, List<RenderOverlay.OverlayTicket> ticketContainer) {
         clearTurbineOverlay(ticketContainer);
 
         int[] tABCCoord = new int[] { -1, -1, 0 };
@@ -78,7 +77,7 @@ public class GTUtilityClient {
     }
 
     public static void renderTurbineOverlay(SBRContext ctx, ExtendedFacing tExtendedFacing, Block tBlockOverride,
-            IIconContainer[] tTextures) {
+        IIconContainer[] tTextures) {
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
         final ForgeDirection tDirection = tExtendedFacing.getDirection();
@@ -96,27 +95,28 @@ public class GTUtilityClient {
             Block tBlock;
             if (tBlockOverride == null) {
                 tBlock = ctx.world
-                        .getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
+                    .getBlock(ctx.x + tDirection.offsetX, tY + tDirection.offsetY, ctx.z + tDirection.offsetZ);
             } else {
                 tBlock = tBlockOverride;
             }
             // we skip the occlusion test, as we always require a working turbine to have a block of air before it
             // so the front face cannot be occluded whatsoever in the most cases.
             Tessellator.instance.setBrightness(
-                    tBlock.getMixedBrightnessForBlock(
-                            ctx.world,
-                            ctx.x + tDirection.offsetX,
-                            tY + tDirection.offsetY,
-                            ctx.z + tDirection.offsetZ));
-            ctx.setupLighting(tBlock, tX, tY, tZ, tDirection).setupColor(tDirection, Dyes._NULL.getRGBA());
+                tBlock.getMixedBrightnessForBlock(
+                    ctx.world,
+                    ctx.x + tDirection.offsetX,
+                    tY + tDirection.offsetY,
+                    ctx.z + tDirection.offsetZ));
+            ctx.setupLighting(tBlock, tX, tY, tZ, tDirection)
+                .setupColor(tDirection, Dyes._NULL.getRGBA());
             GTRenderUtil.renderBlockIcon(
-                    ctx.renderer,
-                    tBlock,
-                    tX + tDirection.offsetX * 0.001,
-                    tY + tDirection.offsetY * 0.001,
-                    tZ + tDirection.offsetZ * 0.001,
-                    tTextures[i].getIcon(),
-                    tDirection);
+                ctx.renderer,
+                tBlock,
+                tX + tDirection.offsetX * 0.001,
+                tY + tDirection.offsetY * 0.001,
+                tZ + tDirection.offsetZ * 0.001,
+                tTextures[i].getIcon(),
+                tDirection);
             if (++tABCCoord[0] == 2) {
                 tABCCoord[0] = -1;
                 tABCCoord[1]++;

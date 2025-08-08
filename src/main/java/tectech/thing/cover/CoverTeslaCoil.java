@@ -25,9 +25,9 @@ public class CoverTeslaCoil extends Cover {
         if (coverable != null && coverSide == ForgeDirection.UP || coverable.getEUCapacity() > 0) {
             // Makes sure we're on the list
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
-                    new TeslaCoverConnection(
-                            coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                            getTeslaReceptionCapability()));
+                new TeslaCoverConnection(
+                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
+                    getTeslaReceptionCapability()));
         }
     }
 
@@ -36,9 +36,9 @@ public class CoverTeslaCoil extends Cover {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && !coverable.isClientSide()) {
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-                    new TeslaCoverConnection(
-                            coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                            getTeslaReceptionCapability()));
+                new TeslaCoverConnection(
+                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
+                    getTeslaReceptionCapability()));
         }
     }
 
@@ -46,18 +46,14 @@ public class CoverTeslaCoil extends Cover {
     public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-                new TeslaCoverConnection(
-                        coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                        getTeslaReceptionCapability()));
+            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
     }
 
     @Override
     public void onBaseTEDestroyed() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-                new TeslaCoverConnection(
-                        coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                        getTeslaReceptionCapability()));
+            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
     }
 
     @Override

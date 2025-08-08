@@ -30,10 +30,10 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
         register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
         register(
-                4,
-                ItemList.Hawking_Glass,
-                "Hawking Radiation Realignment Focus",
-                translatedText("gt.casing.hawking-focus"));
+            4,
+            ItemList.Hawking_Glass,
+            "Hawking Radiation Realignment Focus",
+            translatedText("gt.casing.hawking-focus"));
         register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
 
     }
@@ -89,9 +89,9 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         Block block = worldIn.getBlock(x, y, z);
 
         if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
-                x - Facing.offsetsXForSide[side],
-                y - Facing.offsetsYForSide[side],
-                z - Facing.offsetsZForSide[side])) {
+            x - Facing.offsetsXForSide[side],
+            y - Facing.offsetsYForSide[side],
+            z - Facing.offsetsZForSide[side])) {
             return true;
         }
 

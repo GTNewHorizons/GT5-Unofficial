@@ -60,7 +60,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             if (!world.isRemote) {
                 if (this.tickCounter < this.tickCounterMax) {

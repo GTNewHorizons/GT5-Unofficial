@@ -50,96 +50,162 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
         if (werkstoff.hasItemType(plate)) {
             if (werkstoff.hasItemType(gem)) {
 
-                GTValues.RA.stdBuilder().itemInputs(werkstoff.get(gem))
-                        .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
-                        .duration((int) Math.max(werkstoff.getStats().getMass() * 5L, 1L)).eut(16).addTo(latheRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gem))
+                    .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass() * 5L,
+                            1L))
+                    .eut(16)
+                    .addTo(latheRecipes);
 
                 GTModHandler.addCraftingRecipe(
-                        werkstoff.get(stick, 2),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
+                    werkstoff.get(stick, 2),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
                 GTModHandler.addCraftingRecipe(
-                        werkstoff.get(stick),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
+                    werkstoff.get(stick),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
 
-                GTValues.RA.stdBuilder().itemInputs(werkstoff.get(stick, 2)).itemOutputs(werkstoff.get(stickLong))
-                        .duration((int) Math.max(werkstoff.getStats().getMass(), 1L)).eut(16).addTo(hammerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(stick, 2))
+                    .itemOutputs(werkstoff.get(stickLong))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass(),
+                            1L))
+                    .eut(16)
+                    .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
-                ITexture texture = SideReference.Side.Client
-                        ? TextureFactory.of(
-                                texSet.mTextures[PrefixTextureLinker.blockTexMap
-                                        .getOrDefault(texSet, block.mTextureIndex)],
-                                werkstoff.getRGBA(),
-                                false)
-                        : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
+                ITexture texture = SideReference.Side.Client ? TextureFactory.of(
+                    texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
+                    werkstoff.getRGBA(),
+                    false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
                 CoverRegistry.registerDecorativeCover(werkstoff.get(plate), texture);
 
                 return;
             }
 
             GTModHandler.addCraftingRecipe(
-                    werkstoff.get(stick, 2),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
+                werkstoff.get(stick, 2),
+                GTModHandler.RecipeBits.BITS_STD,
+                new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
             GTModHandler.addCraftingRecipe(
-                    werkstoff.get(stick),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
+                werkstoff.get(stick),
+                GTModHandler.RecipeBits.BITS_STD,
+                new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
             GTModHandler.addCraftingRecipe(
-                    werkstoff.get(plate),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
+                werkstoff.get(plate),
+                GTModHandler.RecipeBits.BITS_STD,
+                new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
             GTModHandler.addCraftingRecipe(
-                    werkstoff.get(foil, 2),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "hX", 'X', werkstoff.get(plate) });
+                werkstoff.get(foil, 2),
+                GTModHandler.RecipeBits.BITS_STD,
+                new Object[] { "hX", 'X', werkstoff.get(plate) });
 
             benderRecipes.add(
-                    new GTRecipe(
-                            true,
-                            new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
-                            new ItemStack[] { werkstoff.get(plate) },
-                            null,
-                            null,
-                            null,
-                            null,
-                            (int) Math.max(werkstoff.getStats().getMass(), 1L),
-                            24,
-                            0));
+                new GTRecipe(
+                    true,
+                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
+                    new ItemStack[] { werkstoff.get(plate) },
+                    null,
+                    null,
+                    null,
+                    null,
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L),
+                    24,
+                    0));
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 3)).itemOutputs(werkstoff.get(plate, 2))
-                    .duration((int) Math.max(werkstoff.getStats().getMass(), 1L)).eut(16).addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 3))
+                .itemOutputs(werkstoff.get(plate, 2))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(16)
+                .addTo(hammerRecipes);
 
             CoverRegistry.registerDecorativeCover(
-                    werkstoff.get(plate),
-                    TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false));
+                werkstoff.get(plate),
+                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false));
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot))
-                    .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 5L, 1L)).eut(16).addTo(latheRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot))
+                .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 5L,
+                        1L))
+                .eut(16)
+                .addTo(latheRecipes);
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
-                GTValues.RA.stdBuilder().itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
-                        .itemOutputs(werkstoff.get(foil, 4))
-                        .duration((int) Math.max(werkstoff.getStats().getMass(), 1L)).eut(24).addTo(benderRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                    .itemOutputs(werkstoff.get(foil, 4))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass(),
+                            1L))
+                    .eut(24)
+                    .addTo(benderRecipes);
             }
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
-                    .itemOutputs(werkstoff.get(foil, 4))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1L)).eut(24).addTo(benderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
+                .itemOutputs(werkstoff.get(foil, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1L))
+                .eut(24)
+                .addTo(benderRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(stick, 2)).itemOutputs(werkstoff.get(stickLong))
-                    .duration((int) Math.max(werkstoff.getStats().getMass(), 1L)).eut(16).addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(stick, 2))
+                .itemOutputs(werkstoff.get(stickLong))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(16)
+                .addTo(hammerRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
-                    .itemOutputs(werkstoff.get(plate)).duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1L))
-                    .eut(45).addTo(extruderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
+                .itemOutputs(werkstoff.get(plate))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1L))
+                .eut(45)
+                .addTo(extruderRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Rod.get(0))
-                    .itemOutputs(werkstoff.get(stick, 2))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1L)).eut(45).addTo(extruderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Rod.get(0))
+                .itemOutputs(werkstoff.get(stick, 2))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1L))
+                .eut(45)
+                .addTo(extruderRecipes);
         }
     }
 }

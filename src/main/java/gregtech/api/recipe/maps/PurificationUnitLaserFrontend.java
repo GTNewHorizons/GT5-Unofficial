@@ -21,12 +21,12 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class PurificationUnitLaserFrontend extends PurificationUnitRecipeMapFrontend {
 
     public PurificationUnitLaserFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                120,
-                uiPropertiesBuilder.logoPos(new Pos2d(147, 102))
-                        .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_UV_TREATMENT)),
-                neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+            120,
+            uiPropertiesBuilder.logoPos(new Pos2d(147, 102))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_UV_TREATMENT)),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override
@@ -43,15 +43,15 @@ public class PurificationUnitLaserFrontend extends PurificationUnitRecipeMapFron
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         final int numLenses = MTEPurificationUnitUVTreatment.LENS_ITEMS.size();
         List<Pos2d> positions = ImmutableList.of(
-                new Pos2d(62, -6),
-                new Pos2d(40, -1),
-                new Pos2d(32, 20),
-                new Pos2d(52, 27),
-                new Pos2d(75, 29),
-                new Pos2d(98, 27),
-                new Pos2d(118, 20),
-                new Pos2d(110, -1),
-                new Pos2d(88, -6));
+            new Pos2d(62, -6),
+            new Pos2d(40, -1),
+            new Pos2d(32, 20),
+            new Pos2d(52, 27),
+            new Pos2d(75, 29),
+            new Pos2d(98, 27),
+            new Pos2d(118, 20),
+            new Pos2d(110, -1),
+            new Pos2d(88, -6));
 
         if (neiCachedRecipe.mInputs.size() < numLenses) {
             // Put in lens items

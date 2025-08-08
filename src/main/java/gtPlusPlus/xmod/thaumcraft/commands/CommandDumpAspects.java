@@ -28,14 +28,14 @@ public class CommandDumpAspects extends GTBaseCommand {
             Thread t = createNewThread();
             sendChatToPlayer(sender, "Beginning to dump information about all items/blocks & their aspects to file.");
             sendChatToPlayer(
-                    sender,
-                    "Please do not close your game during this process, you will be notified upon completion.");
+                sender,
+                "Please do not close your game during this process, you will be notified upon completion.");
             t.start();
         } else {
             sendChatToPlayer(
-                    sender,
-                    "Your last run of DA was less than 30 seconds ago, please wait " + (30 - Z)
-                            + " seconds before trying again.");
+                sender,
+                "Your last run of DA was less than 30 seconds ago, please wait " + (30 - Z)
+                    + " seconds before trying again.");
         }
     }
 

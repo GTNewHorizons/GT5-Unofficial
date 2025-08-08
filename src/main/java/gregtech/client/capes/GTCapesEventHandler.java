@@ -27,7 +27,9 @@ public class GTCapesEventHandler {
             if (event.entity instanceof AbstractClientPlayerAccessor accessor) {
                 ResourceLocation cape = uuidCapeMap.get(player.getUniqueID());
                 if (cape == null) {
-                    cape = nameCapeMap.get(player.getCommandSenderName().toLowerCase());
+                    cape = nameCapeMap.get(
+                        player.getCommandSenderName()
+                            .toLowerCase());
                 }
                 accessor.gt5u$setCape(cape);
             } else {

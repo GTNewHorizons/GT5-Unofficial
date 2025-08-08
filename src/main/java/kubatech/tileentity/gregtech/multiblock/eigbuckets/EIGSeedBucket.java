@@ -121,7 +121,8 @@ public class EIGSeedBucket extends EIGBucket {
 
         // Pre-Generate drops.
         EIGDropTable drops = new EIGDropTable();
-        World world = greenhouse.getBaseMetaTileEntity().getWorld();
+        World world = greenhouse.getBaseMetaTileEntity()
+            .getWorld();
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
             ArrayList<ItemStack> blockDrops = block.getDrops(world, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
             for (ItemStack drop : blockDrops) {
@@ -133,7 +134,8 @@ public class EIGSeedBucket extends EIGBucket {
         if (!removeSeedFromDrops(world, drops, this.seed, NUMBER_OF_DROPS_TO_SIMULATE)) return;
 
         // reduce drop count to account for the number of simulations
-        drops.entrySet().forEach(x -> x.setValue(x.getValue() / NUMBER_OF_DROPS_TO_SIMULATE));
+        drops.entrySet()
+            .forEach(x -> x.setValue(x.getValue() / NUMBER_OF_DROPS_TO_SIMULATE));
 
         // make sure we actually got a drop
         if (drops.isEmpty()) return;
@@ -159,18 +161,22 @@ public class EIGSeedBucket extends EIGBucket {
 
         // else try to find items that can be crafted into the seed
         int seedsToCraft = -inputSeedDropCountAfterRemoval;
-        IRecipe[] validRecipes = CraftingManager.getInstance().getRecipeList().parallelStream()
-                .filter(recipe -> GTUtility.areStacksEqual(recipe.getRecipeOutput(), seed)).toArray(IRecipe[]::new);
+        IRecipe[] validRecipes = CraftingManager.getInstance()
+            .getRecipeList()
+            .parallelStream()
+            .filter(recipe -> GTUtility.areStacksEqual(recipe.getRecipeOutput(), seed))
+            .toArray(IRecipe[]::new);
 
         // if no recipes outputs the input seed, abort.
         if (validRecipes.length == 0) return false;
 
         // check the recipes we found for one that can consume our seed
-        for (Iterator<Map.Entry<ItemStack, Double>> dropIterator = drops.entrySet().iterator(); dropIterator
-                .hasNext();) {
+        for (Iterator<Map.Entry<ItemStack, Double>> dropIterator = drops.entrySet()
+            .iterator(); dropIterator.hasNext();) {
             Map.Entry<ItemStack, Double> entry = dropIterator.next();
             int inputCount = (int) Math.round(entry.getValue());
-            ItemStack input = entry.getKey().copy();
+            ItemStack input = entry.getKey()
+                .copy();
             input.stackSize = 1;
             EIGCraftingSeedFinder seedFinder = new EIGCraftingSeedFinder(input);
             for (IRecipe recipe : validRecipes) {

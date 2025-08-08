@@ -87,44 +87,32 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         @Override
         protected IStructureDefinition<MTEAirFilterBase> computeValue(Class<?> type) {
             return StructureDefinition.<MTEAirFilterBase>builder()
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            transpose(
-                                    new String[][] { { "xxx", "xxx", "xxx" }, { "vmv", "m-m", "vmv" },
-                                            { "vmv", "m-m", "vmv" }, { "c~c", "ccc", "ccc" }, }))
-                    .addElement(
-                            'c',
-                            lazy(
-                                    x -> ofChain(
-                                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta()),
-                                            ofHatchAdder(
-                                                    MTEAirFilterBase::addMaintenanceToMachineList,
-                                                    x.getCasingIndex(),
-                                                    1),
-                                            ofHatchAdder(
-                                                    MTEAirFilterBase::addInputToMachineList,
-                                                    x.getCasingIndex(),
-                                                    1),
-                                            ofHatchAdder(
-                                                    MTEAirFilterBase::addOutputToMachineList,
-                                                    x.getCasingIndex(),
-                                                    1),
-                                            ofHatchAdder(
-                                                    MTEAirFilterBase::addEnergyInputToMachineList,
-                                                    x.getCasingIndex(),
-                                                    1))))
-                    .addElement('x', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))
-                    .addElement('v', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getPipeMeta())))
-                    .addElement(
-                            'm',
-                            lazy(
-                                    x -> ofHatchAdderOptional(
-                                            MTEAirFilterBase::addMufflerToMachineList,
-                                            x.getCasingIndex(),
-                                            2,
-                                            GregTechAPI.sBlockCasingsNH,
-                                            x.getCasingMeta())))
-                    .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "xxx", "xxx", "xxx" }, { "vmv", "m-m", "vmv" }, { "vmv", "m-m", "vmv" },
+                            { "c~c", "ccc", "ccc" }, }))
+                .addElement(
+                    'c',
+                    lazy(
+                        x -> ofChain(
+                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta()),
+                            ofHatchAdder(MTEAirFilterBase::addMaintenanceToMachineList, x.getCasingIndex(), 1),
+                            ofHatchAdder(MTEAirFilterBase::addInputToMachineList, x.getCasingIndex(), 1),
+                            ofHatchAdder(MTEAirFilterBase::addOutputToMachineList, x.getCasingIndex(), 1),
+                            ofHatchAdder(MTEAirFilterBase::addEnergyInputToMachineList, x.getCasingIndex(), 1))))
+                .addElement('x', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))
+                .addElement('v', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getPipeMeta())))
+                .addElement(
+                    'm',
+                    lazy(
+                        x -> ofHatchAdderOptional(
+                            MTEAirFilterBase::addMufflerToMachineList,
+                            x.getCasingIndex(),
+                            2,
+                            GregTechAPI.sBlockCasingsNH,
+                            x.getCasingMeta())))
+                .build();
         }
     };
 
@@ -141,7 +129,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0) && !mMufflerHatches.isEmpty()
-                && mMaintenanceHatches.size() == 1;
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -180,44 +168,55 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Air Filter").addInfo("Needs a Turbine in the controller")
-                .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
-                .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
-                .addInfo(
-                        "  " + EnumChatFormatting.WHITE
-                                + GLOBAL_MULTIPLIER
-                                + " * multiTierBonus * turbineEff * FLOOR("
-                                + SCALING_FACTOR
-                                + "^mufflerTier)")
-                .addInfo("every second").addInfo("- multiTierBonus for this controller is " + getBonusByTier())
-                .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
-                .addInfo("- Effective muffler tier is limited by energy input tier")
-                .addInfo("- Uses " + getEUt() + " EU/t while working").addSeparator()
-                .addInfo("Insert Absorption Filter in an input bus")
-                .addInfo("  to double pollution cleaning amount (30 uses per item)")
-                .addInfo("Each maintenance issue reduces cleaning amount by 10%").beginStructureBlock(3, 4, 3, true)
-                .addController("Front bottom").addOtherStructurePart(getCasingString(), "Top and bottom layers")
-                .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-                .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
-                .addEnergyHatch("Any bottom layer casing", 1).addMaintenanceHatch("Any bottom layer casing", 1)
-                .addInputBus("Any bottom layer casing", 1).addOutputBus("Any bottom layer casing", 1).toolTipFinisher();
+        tt.addMachineType("Air Filter")
+            .addInfo("Needs a Turbine in the controller")
+            .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
+            .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
+            .addInfo(
+                "  " + EnumChatFormatting.WHITE
+                    + GLOBAL_MULTIPLIER
+                    + " * multiTierBonus * turbineEff * FLOOR("
+                    + SCALING_FACTOR
+                    + "^mufflerTier)")
+            .addInfo("every second")
+            .addInfo("- multiTierBonus for this controller is " + getBonusByTier())
+            .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
+            .addInfo("- Effective muffler tier is limited by energy input tier")
+            .addInfo("- Uses " + getEUt() + " EU/t while working")
+            .addSeparator()
+            .addInfo("Insert Absorption Filter in an input bus")
+            .addInfo("  to double pollution cleaning amount (30 uses per item)")
+            .addInfo("Each maintenance issue reduces cleaning amount by 10%")
+            .beginStructureBlock(3, 4, 3, true)
+            .addController("Front bottom")
+            .addOtherStructurePart(getCasingString(), "Top and bottom layers")
+            .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
+            .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addInputBus("Any bottom layer casing", 1)
+            .addOutputBus("Any bottom layer casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         ITexture casingTexture = Textures.BlockIcons.getCasingTextureForId(getCasingIndex());
         if (side == facing) {
             if (aActive) {
                 return new ITexture[] { casingTexture,
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
-                                .glow().build() };
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE), TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
+                        .glow()
+                        .build() };
             }
             return new ITexture[] { casingTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW).glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexture };
     }
@@ -404,7 +403,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public void cleanPollution() {
         int cleaningRate = getPollutionCleaningRatePerSecond(baseEff, mEfficiency / 10000f, isFilterLoaded);
         if (cleaningRate > 0) {
-            World world = this.getBaseMetaTileEntity().getWorld();
+            World world = this.getBaseMetaTileEntity()
+                .getWorld();
             if (mode == 0) { // processing chunk normally
                 removePollutionFromChunk(cleaningRate, world, chunkIndex);
                 chunkIndex += 1;
@@ -429,16 +429,20 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     protected final int getPollutionInChunk(World world, int chunkIndexIn) {
-        final int xCoordMulti = this.getBaseMetaTileEntity().getXCoord();
-        final int zCoordMulti = this.getBaseMetaTileEntity().getZCoord();
+        final int xCoordMulti = this.getBaseMetaTileEntity()
+            .getXCoord();
+        final int zCoordMulti = this.getBaseMetaTileEntity()
+            .getZCoord();
         final int chunkX = xCoordMulti - 16 * (size / 2 - chunkIndexIn % size) >> 4;
         final int chunkZ = zCoordMulti + 16 * (size / 2 - chunkIndexIn / size) >> 4;
         return Pollution.getPollution(world, chunkX, chunkZ);
     }
 
     protected final void removePollutionFromChunk(int amount, World world, int chunkIndexIn) {
-        final int xCoordMulti = this.getBaseMetaTileEntity().getXCoord();
-        final int zCoordMulti = this.getBaseMetaTileEntity().getZCoord();
+        final int xCoordMulti = this.getBaseMetaTileEntity()
+            .getXCoord();
+        final int zCoordMulti = this.getBaseMetaTileEntity()
+            .getZCoord();
         final int chunkX = xCoordMulti - 16 * (size / 2 - chunkIndexIn % size) >> 4;
         final int chunkZ = zCoordMulti + 16 * (size / 2 - chunkIndexIn / size) >> 4;
         Pollution.addPollution(world, chunkX, chunkZ, -amount);
@@ -458,7 +462,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public int getTotalPollution() {
         int pollutionAmount = 0;
-        World world = this.getBaseMetaTileEntity().getWorld();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         for (int i = 0; i < size * size; i++) {
             pollutionAmount += getPollutionInChunk(world, i);
 
@@ -475,7 +480,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             int Zpos = aBaseMetaTileEntity.getZCoord() + aBaseMetaTileEntity.getBackFacing().offsetZ;
             try {
                 aBaseMetaTileEntity.getWorld()
-                        .markBlockRangeForRenderUpdate(Xpos - 1, Ypos, Zpos - 1, Xpos + 1, Ypos, Zpos + 1);
+                    .markBlockRangeForRenderUpdate(Xpos - 1, Ypos, Zpos - 1, Xpos + 1, Ypos, Zpos + 1);
             } catch (Exception ignored) {}
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -514,13 +519,13 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         ExtendedFacing ext = getExtendedFacing();
         ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
         GTUtilityClient.setTurbineOverlay(
-                tile.getWorld(),
-                xyz[0] + tile.getXCoord(),
-                xyz[1] + tile.getYCoord(),
-                xyz[2] + tile.getZCoord(),
-                getExtendedFacing(),
-                tTextures,
-                overlayTickets);
+            tile.getWorld(),
+            xyz[0] + tile.getXCoord(),
+            xyz[1] + tile.getYCoord(),
+            xyz[2] + tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
     }
 
     @Override
@@ -553,7 +558,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) { // change mode
             mode = mode == 1 ? 0 : 1;
             if (mode == 0) {
@@ -570,47 +575,43 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             }
             chunkIndex = 0;
             aPlayer.addChatMessage(
-                    new ChatComponentText("Electric air filter is now working in a " + size + "x" + size + " area"));
+                new ChatComponentText("Electric air filter is now working in a " + size + "x" + size + " area"));
         }
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] {
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.progress",
-                        EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.energy",
-                        EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
-                                + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + Long.toString(getBaseMetaTileEntity().getEUCapacity())
-                                + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.probably_uses",
-                        // negative EU triggers special EU consumption behavior. however it does not produce power.
-                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.max_energy_income_tier",
-                        EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())]
-                                + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.problems_efficiency",
-                        EnumChatFormatting.RED + Integer.toString(getIdealStatus() - getRepairStatus())
-                                + EnumChatFormatting.RESET,
-                        EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F)
-                                + EnumChatFormatting.RESET
-                                + " %"),
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.air_filter.pollution_reduction",
-                        EnumChatFormatting.GREEN
-                                + Integer.toString(
-                                        getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
-                                + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
-                StatCollector
-                        .translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.progress",
+                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.energy",
+                EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Long.toString(getBaseMetaTileEntity().getEUCapacity())
+                    + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.probably_uses",
+                // negative EU triggers special EU consumption behavior. however it does not produce power.
+                EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.max_energy_income_tier",
+                EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.problems_efficiency",
+                EnumChatFormatting.RED + Integer.toString(getIdealStatus() - getRepairStatus())
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.air_filter.pollution_reduction",
+                EnumChatFormatting.GREEN
+                    + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
+                    + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
     }
 }

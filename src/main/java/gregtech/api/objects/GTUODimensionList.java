@@ -85,8 +85,10 @@ public class GTUODimensionList {
         if (fDimensionList.containsKey(Integer.toString(aDimension)))
             return fDimensionList.get(Integer.toString(aDimension));
         for (BiMap.Entry<String, GTUODimension> dl : fDimensionList.entrySet())
-            if (DimensionManager.getProvider(aDimension).getClass().getName().contains(dl.getValue().Dimension))
-                return dl.getValue();
+            if (DimensionManager.getProvider(aDimension)
+                .getClass()
+                .getName()
+                .contains(dl.getValue().Dimension)) return dl.getValue();
         return fDimensionList.get("Default");
     }
 
@@ -104,205 +106,450 @@ public class GTUODimensionList {
     }
 
     public void SetConfigValues(String aDimensionName, String aDimension, String aName, String aRegistry,
-            int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
+        int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
         String Category = fCategory + "." + aDimensionName;
-        fConfig.get(Category, "Dimension", aDimension).getString();
+        fConfig.get(Category, "Dimension", aDimension)
+            .getString();
         Category += "." + aName;
-        fConfig.get(Category, "Registry", aRegistry).getString();
-        fConfig.get(Category, "MinAmount", aMinAmount).getInt(aMinAmount);
-        fConfig.get(Category, "MaxAmount", aMaxAmount).getInt(aMaxAmount);
-        fConfig.get(Category, "Chance", aChance).getInt(aChance);
+        fConfig.get(Category, "Registry", aRegistry)
+            .getString();
+        fConfig.get(Category, "MinAmount", aMinAmount)
+            .getInt(aMinAmount);
+        fConfig.get(Category, "MaxAmount", aMaxAmount)
+            .getInt(aMaxAmount);
+        fConfig.get(Category, "Chance", aChance)
+            .getInt(aChance);
         fConfig.get(Category, "DecreasePerOperationAmount", aDecreasePerOperationAmount)
-                .getInt(aDecreasePerOperationAmount);
+            .getInt(aDecreasePerOperationAmount);
         // IT IS IN BUCKETS!!!
     }
 
     private void setOverworldValues() {
-        new ConfigSetter().dimension(Overworld).fluid(naturalGas).chance(20).decreaseAmount(5).maxAmount(350)
-                .minAmount(10).writeToConfig();
+        new ConfigSetter().dimension(Overworld)
+            .fluid(naturalGas)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(350)
+            .minAmount(10)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Overworld).fluid(lightOil).chance(20).decreaseAmount(5).maxAmount(350)
-                .minAmount(10).writeToConfig();
+        new ConfigSetter().dimension(Overworld)
+            .fluid(lightOil)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(350)
+            .minAmount(10)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Overworld).fluid(mediumOil).chance(20).decreaseAmount(5).maxAmount(625)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Overworld)
+            .fluid(mediumOil)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(625)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Overworld).fluid(heavyOil).chance(20).decreaseAmount(5).maxAmount(625).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Overworld)
+            .fluid(heavyOil)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(625)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Overworld).fluid(oil).chance(20).decreaseAmount(5).maxAmount(625).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Overworld)
+            .fluid(oil)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(625)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setMoonValues() {
-        new ConfigSetter().dimension(Moon).fluid(helium3).chance(100).decreaseAmount(5).maxAmount(425).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Moon)
+            .fluid(helium3)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(425)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Moon).fluid(saltWater).chance(20).decreaseAmount(5).maxAmount(200).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Moon)
+            .fluid(saltWater)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setMercuryValues() {
-        new ConfigSetter().dimension(Mercury).fluid(helium3).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Mercury)
+            .fluid(helium3)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Mercury).fluid(moltenIron).chance(30).decreaseAmount(5).maxAmount(400).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Mercury)
+            .fluid(moltenIron)
+            .chance(30)
+            .decreaseAmount(5)
+            .maxAmount(400)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setVenusValues() {
-        new ConfigSetter().dimension(Venus).fluid(moltenLead).chance(100).decreaseAmount(5).maxAmount(1600).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Venus)
+            .fluid(moltenLead)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(1600)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Venus).fluid(sulfuricAcid).chance(100).decreaseAmount(5).maxAmount(250)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Venus)
+            .fluid(sulfuricAcid)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(250)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Venus).fluid(carbonDioxide).chance(100).decreaseAmount(5).maxAmount(1500)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Venus)
+            .fluid(carbonDioxide)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(1500)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setMarsValues() {
-        new ConfigSetter().dimension(Mars).fluid(saltWater).chance(100).decreaseAmount(5).maxAmount(400).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Mars)
+            .fluid(saltWater)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(400)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Mars).fluid(chlorobenzene).chance(100).decreaseAmount(5).maxAmount(400)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Mars)
+            .fluid(chlorobenzene)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(400)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setIoValues() {
-        new ConfigSetter().dimension(Io).fluid(moltenLead).chance(20).decreaseAmount(5).maxAmount(650).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Io)
+            .fluid(moltenLead)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(650)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Io).fluid(sulfuricAcid).chance(80).decreaseAmount(5).maxAmount(350).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Io)
+            .fluid(sulfuricAcid)
+            .chance(80)
+            .decreaseAmount(5)
+            .maxAmount(350)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Io).fluid(carbonDioxide).chance(80).decreaseAmount(5).maxAmount(750).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Io)
+            .fluid(carbonDioxide)
+            .chance(80)
+            .decreaseAmount(5)
+            .maxAmount(750)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setEuropaValues() {
-        new ConfigSetter().dimension(Europa).fluid(saltWater).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Europa)
+            .fluid(saltWater)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Europa).fluid(veryHeavyOil).chance(20).decreaseAmount(5).maxAmount(200)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Europa)
+            .fluid(veryHeavyOil)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Europa).fluid(distilledWater).chance(80).decreaseAmount(5).maxAmount(3500)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Europa)
+            .fluid(distilledWater)
+            .chance(80)
+            .decreaseAmount(5)
+            .maxAmount(3500)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setCallistoValues() {
-        new ConfigSetter().dimension(Callisto).fluid(oxygen).chance(100).decreaseAmount(5).maxAmount(200).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Callisto)
+            .fluid(oxygen)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Callisto).fluid(liquidAir).chance(100).decreaseAmount(5).maxAmount(200)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Callisto)
+            .fluid(liquidAir)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setTitanValues() {
-        new ConfigSetter().dimension(Titan).fluid(methane).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Titan)
+            .fluid(methane)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Titan).fluid(ethane).chance(100).decreaseAmount(5).maxAmount(200).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Titan)
+            .fluid(ethane)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setMirandaValues() {
-        new ConfigSetter().dimension(Miranda).fluid(hydrogenSulfide).chance(100).decreaseAmount(5).maxAmount(900)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Miranda)
+            .fluid(hydrogenSulfide)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(900)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setOberonValues() {
-        new ConfigSetter().dimension(Oberon).fluid(carbonMonoxide).chance(100).decreaseAmount(5).maxAmount(2000)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Oberon)
+            .fluid(carbonMonoxide)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(2000)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setTritonValues() {
-        new ConfigSetter().dimension(Triton).fluid(nitrogen).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Triton)
+            .fluid(nitrogen)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Triton).fluid(ethylene).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Triton)
+            .fluid(ethylene)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setProteusValues() {
-        new ConfigSetter().dimension(Proteus).fluid(deuterium).chance(100).decreaseAmount(5).maxAmount(700).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Proteus)
+            .fluid(deuterium)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(700)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setPlutoValues() {
-        new ConfigSetter().dimension(Pluto).fluid(nitrogen).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Pluto)
+            .fluid(nitrogen)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Pluto).fluid(oxygen).chance(100).decreaseAmount(5).maxAmount(800).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Pluto)
+            .fluid(oxygen)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Pluto).fluid(liquidAir).chance(40).decreaseAmount(5).maxAmount(300).minAmount(4)
-                .writeToConfig();
+        new ConfigSetter().dimension(Pluto)
+            .fluid(liquidAir)
+            .chance(40)
+            .decreaseAmount(5)
+            .maxAmount(300)
+            .minAmount(4)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Pluto).fluid(fluorine).chance(80).decreaseAmount(5).maxAmount(800).minAmount(4)
-                .writeToConfig();
+        new ConfigSetter().dimension(Pluto)
+            .fluid(fluorine)
+            .chance(80)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(4)
+            .writeToConfig();
     }
 
     private void setMakeMakeValues() {
-        new ConfigSetter().dimension(Makemake).fluid(hydrofluoricAcid).chance(80).decreaseAmount(5).maxAmount(300)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Makemake)
+            .fluid(hydrofluoricAcid)
+            .chance(80)
+            .decreaseAmount(5)
+            .maxAmount(300)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setAlphaCentauriBBValues() {
-        new ConfigSetter().dimension(AlphaCentauriBb).fluid(moltenCopper).chance(10).decreaseAmount(5).maxAmount(300)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(AlphaCentauriBb)
+            .fluid(moltenCopper)
+            .chance(10)
+            .decreaseAmount(5)
+            .maxAmount(300)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setBarnardaCValues() {
-        new ConfigSetter().dimension(BarnardaC).fluid(veryHeavyOil).chance(100).decreaseAmount(5).maxAmount(800)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(BarnardaC)
+            .fluid(veryHeavyOil)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(800)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(BarnardaC).fluid(unknownWater).chance(100).decreaseAmount(5).maxAmount(300)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(BarnardaC)
+            .fluid(unknownWater)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(300)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setBarnardaEValues() {
-        new ConfigSetter().dimension(BarnardaE).fluid(liquidAir).chance(20).decreaseAmount(5).maxAmount(400)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(BarnardaE)
+            .fluid(liquidAir)
+            .chance(20)
+            .decreaseAmount(5)
+            .maxAmount(400)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setBarnardaFValues() {
-        new ConfigSetter().dimension(BarnardaF).fluid(moltenTin).chance(15).decreaseAmount(5).maxAmount(400)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(BarnardaF)
+            .fluid(moltenTin)
+            .chance(15)
+            .decreaseAmount(5)
+            .maxAmount(400)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setTcetiEValues() {
-        new ConfigSetter().dimension(TCetiE).fluid(veryHeavyOil).chance(100).decreaseAmount(5).maxAmount(200)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(TCetiE)
+            .fluid(veryHeavyOil)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(200)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(TCetiE).fluid(hydrogen).chance(50).decreaseAmount(5).maxAmount(700).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(TCetiE)
+            .fluid(hydrogen)
+            .chance(50)
+            .decreaseAmount(5)
+            .maxAmount(700)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(TCetiE).fluid(distilledWater).chance(100).decreaseAmount(5).maxAmount(10_000)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(TCetiE)
+            .fluid(distilledWater)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(10_000)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setRoss128bValues() {
-        new ConfigSetter().dimension(Ross128b).fluid(veryHeavyOil).chance(40).decreaseAmount(5).maxAmount(625)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Ross128b)
+            .fluid(veryHeavyOil)
+            .chance(40)
+            .decreaseAmount(5)
+            .maxAmount(625)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Ross128b).fluid(lava).chance(5).decreaseAmount(5).maxAmount(820).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Ross128b)
+            .fluid(lava)
+            .chance(5)
+            .decreaseAmount(5)
+            .maxAmount(820)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Ross128b).fluid(naturalGas).chance(65).decreaseAmount(5).maxAmount(625)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Ross128b)
+            .fluid(naturalGas)
+            .chance(65)
+            .decreaseAmount(5)
+            .maxAmount(625)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Ross128b).fluid(distilledWater).chance(100).decreaseAmount(5).maxAmount(5000)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Ross128b)
+            .fluid(distilledWater)
+            .chance(100)
+            .decreaseAmount(5)
+            .maxAmount(5000)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     private void setRoss128baValues() {
-        new ConfigSetter().dimension(Ross128ba).fluid(saltWater).chance(40).decreaseAmount(5).maxAmount(1250)
-                .minAmount(0).writeToConfig();
+        new ConfigSetter().dimension(Ross128ba)
+            .fluid(saltWater)
+            .chance(40)
+            .decreaseAmount(5)
+            .maxAmount(1250)
+            .minAmount(0)
+            .writeToConfig();
 
-        new ConfigSetter().dimension(Ross128ba).fluid(helium3).chance(60).decreaseAmount(5).maxAmount(1250).minAmount(0)
-                .writeToConfig();
+        new ConfigSetter().dimension(Ross128ba)
+            .fluid(helium3)
+            .chance(60)
+            .decreaseAmount(5)
+            .maxAmount(1250)
+            .minAmount(0)
+            .writeToConfig();
     }
 
     public void setDefaultValues() {
@@ -336,12 +583,17 @@ public class GTUODimensionList {
         if (!fConfig.hasCategory(fCategory)) setDefaultValues();
 
         blackList = new int[] { -1, 1 };
-        blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List").getIntList();
+        blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List")
+            .getIntList();
         java.util.Arrays.sort(blackList);
 
-        for (int i = 0; i < fConfig.getCategory(fCategory).getChildren().size(); i++) {
+        for (int i = 0; i < fConfig.getCategory(fCategory)
+            .getChildren()
+            .size(); i++) {
             GTUODimension Dimension = new GTUODimension(
-                    (ConfigCategory) fConfig.getCategory(fCategory).getChildren().toArray()[i]);
+                (ConfigCategory) fConfig.getCategory(fCategory)
+                    .getChildren()
+                    .toArray()[i]);
             fDimensionList.put(Dimension.Dimension, Dimension);
         }
         save();
@@ -388,14 +640,14 @@ public class GTUODimensionList {
 
         public void writeToConfig() {
             SetConfigValues(
-                    dim.toString(),
-                    dim.id,
-                    fluid.toString(),
-                    fluid.name,
-                    minAmount,
-                    maxAmount,
-                    chance,
-                    decreaseAmount);
+                dim.toString(),
+                dim.id,
+                fluid.toString(),
+                fluid.name,
+                minAmount,
+                maxAmount,
+                chance,
+                decreaseAmount);
         }
     }
 }

@@ -19,12 +19,12 @@ public class GregtechThaumcraftDevices {
     private static void run1() {
         // 956-960
         GregtechItemList.Thaumcraft_Researcher.set(
-                new MTEPollutionCreator(
-                        Thaumcraft_Researcher.ID,
-                        "thaumcraft.gtpp.machine.01",
-                        "Arcane Researcher",
-                        5,
-                        "Thinking for you.",
-                        0).getStackForm(1L));
+            new MTEPollutionCreator(
+                Thaumcraft_Researcher.ID,
+                "thaumcraft.gtpp.machine.01",
+                "Arcane Researcher",
+                5,
+                "Thinking for you.",
+                0).getStackForm(1L));
     }
 }

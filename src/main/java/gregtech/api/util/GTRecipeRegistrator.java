@@ -78,82 +78,81 @@ public class GTRecipeRegistrator {
     private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
     private static final RecipeShape[] sShapes = new RecipeShape[] {
-            new RecipeShape(sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1, null),
-            new RecipeShape(sMt1, null, sMt1, sMt1, null, sMt1, sMt1, sMt1, sMt1),
-            new RecipeShape(null, sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1),
-            new RecipeShape(sMt1, sMt1, sMt1, sMt1, null, sMt1, null, null, null),
-            new RecipeShape(sMt1, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1),
-            new RecipeShape(sMt1, sMt1, sMt1, sMt1, null, sMt1, sMt1, null, sMt1),
-            new RecipeShape(null, null, null, sMt1, null, sMt1, sMt1, null, sMt1),
-            new RecipeShape(null, sMt1, null, null, sMt1, null, null, sMt2, null),
-            new RecipeShape(sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2, null),
-            new RecipeShape(null, sMt1, null, null, sMt2, null, null, sMt2, null),
-            new RecipeShape(sMt1, sMt1, null, sMt1, sMt2, null, null, sMt2, null),
-            new RecipeShape(null, sMt1, sMt1, null, sMt2, sMt1, null, sMt2, null),
-            new RecipeShape(sMt1, sMt1, null, null, sMt2, null, null, sMt2, null),
-            new RecipeShape(null, sMt1, sMt1, null, sMt2, null, null, sMt2, null),
-            new RecipeShape(null, sMt1, null, sMt1, null, null, null, sMt1, sMt2),
-            new RecipeShape(null, sMt1, null, null, null, sMt1, sMt2, sMt1, null),
-            new RecipeShape(null, sMt1, null, sMt1, null, sMt1, null, null, sMt2),
-            new RecipeShape(null, sMt1, null, sMt1, null, sMt1, sMt2, null, null),
-            new RecipeShape(null, sMt2, null, null, sMt1, null, null, sMt1, null),
-            new RecipeShape(null, sMt2, null, null, sMt2, null, sMt1, sMt1, sMt1),
-            new RecipeShape(null, sMt2, null, null, sMt2, null, null, sMt1, null),
-            new RecipeShape(null, sMt2, null, sMt1, sMt2, null, sMt1, sMt1, null),
-            new RecipeShape(null, sMt2, null, null, sMt2, sMt1, null, sMt1, sMt1),
-            new RecipeShape(null, sMt2, null, null, sMt2, null, sMt1, sMt1, null),
-            new RecipeShape(sMt1, null, null, null, sMt2, null, null, null, sMt2),
-            new RecipeShape(null, null, sMt1, null, sMt2, null, sMt2, null, null),
-            new RecipeShape(sMt1, null, null, null, sMt2, null, null, null, null),
-            new RecipeShape(null, null, sMt1, null, sMt2, null, null, null, null),
-            new RecipeShape(sMt1, sMt2, null, null, null, null, null, null, null),
-            new RecipeShape(sMt2, sMt1, null, null, null, null, null, null, null),
-            new RecipeShape(sMt1, null, null, sMt2, null, null, null, null, null),
-            new RecipeShape(sMt2, null, null, sMt1, null, null, null, null, null),
-            new RecipeShape(sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, null, sMt2, null),
-            new RecipeShape(sMt1, sMt1, null, sMt1, sMt1, sMt2, sMt1, sMt1, null),
-            new RecipeShape(null, sMt1, sMt1, sMt2, sMt1, sMt1, null, sMt1, sMt1),
-            new RecipeShape(null, sMt2, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1),
-            new RecipeShape(sMt1, sMt1, sMt1, sMt1, sMt2, sMt1, null, sMt2, null),
-            new RecipeShape(sMt1, sMt1, null, sMt1, sMt2, sMt2, sMt1, sMt1, null),
-            new RecipeShape(null, sMt1, sMt1, sMt2, sMt2, sMt1, null, sMt1, sMt1),
-            new RecipeShape(null, sMt2, null, sMt1, sMt2, sMt1, sMt1, sMt1, sMt1),
-            new RecipeShape(sMt1, null, null, null, sMt1, null, null, null, null),
-            new RecipeShape(null, sMt1, null, sMt1, null, null, null, null, null),
-            new RecipeShape(sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null),
-            new RecipeShape(null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2) };
+        new RecipeShape(sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1, null),
+        new RecipeShape(sMt1, null, sMt1, sMt1, null, sMt1, sMt1, sMt1, sMt1),
+        new RecipeShape(null, sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1),
+        new RecipeShape(sMt1, sMt1, sMt1, sMt1, null, sMt1, null, null, null),
+        new RecipeShape(sMt1, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1),
+        new RecipeShape(sMt1, sMt1, sMt1, sMt1, null, sMt1, sMt1, null, sMt1),
+        new RecipeShape(null, null, null, sMt1, null, sMt1, sMt1, null, sMt1),
+        new RecipeShape(null, sMt1, null, null, sMt1, null, null, sMt2, null),
+        new RecipeShape(sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2, null),
+        new RecipeShape(null, sMt1, null, null, sMt2, null, null, sMt2, null),
+        new RecipeShape(sMt1, sMt1, null, sMt1, sMt2, null, null, sMt2, null),
+        new RecipeShape(null, sMt1, sMt1, null, sMt2, sMt1, null, sMt2, null),
+        new RecipeShape(sMt1, sMt1, null, null, sMt2, null, null, sMt2, null),
+        new RecipeShape(null, sMt1, sMt1, null, sMt2, null, null, sMt2, null),
+        new RecipeShape(null, sMt1, null, sMt1, null, null, null, sMt1, sMt2),
+        new RecipeShape(null, sMt1, null, null, null, sMt1, sMt2, sMt1, null),
+        new RecipeShape(null, sMt1, null, sMt1, null, sMt1, null, null, sMt2),
+        new RecipeShape(null, sMt1, null, sMt1, null, sMt1, sMt2, null, null),
+        new RecipeShape(null, sMt2, null, null, sMt1, null, null, sMt1, null),
+        new RecipeShape(null, sMt2, null, null, sMt2, null, sMt1, sMt1, sMt1),
+        new RecipeShape(null, sMt2, null, null, sMt2, null, null, sMt1, null),
+        new RecipeShape(null, sMt2, null, sMt1, sMt2, null, sMt1, sMt1, null),
+        new RecipeShape(null, sMt2, null, null, sMt2, sMt1, null, sMt1, sMt1),
+        new RecipeShape(null, sMt2, null, null, sMt2, null, sMt1, sMt1, null),
+        new RecipeShape(sMt1, null, null, null, sMt2, null, null, null, sMt2),
+        new RecipeShape(null, null, sMt1, null, sMt2, null, sMt2, null, null),
+        new RecipeShape(sMt1, null, null, null, sMt2, null, null, null, null),
+        new RecipeShape(null, null, sMt1, null, sMt2, null, null, null, null),
+        new RecipeShape(sMt1, sMt2, null, null, null, null, null, null, null),
+        new RecipeShape(sMt2, sMt1, null, null, null, null, null, null, null),
+        new RecipeShape(sMt1, null, null, sMt2, null, null, null, null, null),
+        new RecipeShape(sMt2, null, null, sMt1, null, null, null, null, null),
+        new RecipeShape(sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, null, sMt2, null),
+        new RecipeShape(sMt1, sMt1, null, sMt1, sMt1, sMt2, sMt1, sMt1, null),
+        new RecipeShape(null, sMt1, sMt1, sMt2, sMt1, sMt1, null, sMt1, sMt1),
+        new RecipeShape(null, sMt2, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1),
+        new RecipeShape(sMt1, sMt1, sMt1, sMt1, sMt2, sMt1, null, sMt2, null),
+        new RecipeShape(sMt1, sMt1, null, sMt1, sMt2, sMt2, sMt1, sMt1, null),
+        new RecipeShape(null, sMt1, sMt1, sMt2, sMt2, sMt1, null, sMt1, sMt1),
+        new RecipeShape(null, sMt2, null, sMt1, sMt2, sMt1, sMt1, sMt1, sMt1),
+        new RecipeShape(sMt1, null, null, null, sMt1, null, null, null, null),
+        new RecipeShape(null, sMt1, null, sMt1, null, null, null, null, null),
+        new RecipeShape(sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null),
+        new RecipeShape(null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2) };
     private static volatile Map<RecipeShape, List<IRecipe>> indexedRecipeListCache;
     private static final String[][] sShapesA = new String[][] { null, null, null,
-            { "Helmet", s_P + s_P + s_P, s_P + s_H + s_P },
-            { "ChestPlate", s_P + s_H + s_P, s_P + s_P + s_P, s_P + s_P + s_P },
-            { "Pants", s_P + s_P + s_P, s_P + s_H + s_P, s_P + " " + s_P },
-            { "Boots", s_P + " " + s_P, s_P + s_H + s_P },
-            { "Sword", " " + s_P + " ", s_F + s_P + s_H, " " + s_R + " " },
-            { "Pickaxe", s_P + s_I + s_I, s_F + s_R + s_H, " " + s_R + " " },
-            { "Shovel", s_F + s_P + s_H, " " + s_R + " ", " " + s_R + " " },
-            { "Axe", s_P + s_I + s_H, s_P + s_R + " ", s_F + s_R + " " },
-            { "Axe", s_P + s_I + s_H, s_P + s_R + " ", s_F + s_R + " " },
-            { "Hoe", s_P + s_I + s_H, s_F + s_R + " ", " " + s_R + " " },
-            { "Hoe", s_P + s_I + s_H, s_F + s_R + " ", " " + s_R + " " },
-            { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
-            { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
-            { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
-            { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
-            { "Sword", " " + s_R + " ", s_F + s_P + s_H, " " + s_P + " " },
-            { "Pickaxe", " " + s_R + " ", s_F + s_R + s_H, s_P + s_I + s_I },
-            { "Shovel", " " + s_R + " ", " " + s_R + " ", s_F + s_P + s_H },
-            { "Axe", s_F + s_R + " ", s_P + s_R + " ", s_P + s_I + s_H },
-            { "Axe", s_F + s_R + " ", s_P + s_R + " ", s_P + s_I + s_H },
-            { "Hoe", " " + s_R + " ", s_F + s_R + " ", s_P + s_I + s_H },
-            { "Hoe", " " + s_R + " ", s_F + s_R + " ", s_P + s_I + s_H },
-            { "Spear", s_P + s_H + " ", s_F + s_R + " ", " " + " " + s_R },
-            { "Spear", s_P + s_H + " ", s_F + s_R + " ", " " + " " + s_R }, { "Knive", s_H + s_P, s_R + s_F },
-            { "Knive", s_F + s_H, s_P + s_R }, { "Knive", s_F + s_H, s_P + s_R }, { "Knive", s_P + s_F, s_R + s_H },
-            { "Knive", s_P + s_F, s_R + s_H }, null, null, null, null,
-            { "WarAxe", s_P + s_P + s_P, s_P + s_R + s_P, s_F + s_R + s_H }, null, null, null,
-            { "Shears", s_H + s_P, s_P + s_F }, { "Shears", s_H + s_P, s_P + s_F },
-            { "Scythe", s_I + s_P + s_H, s_R + s_F + s_P, s_R + " " + " " },
-            { "Scythe", s_H + s_P + s_I, s_P + s_F + s_R, " " + " " + s_R } };
+        { "Helmet", s_P + s_P + s_P, s_P + s_H + s_P },
+        { "ChestPlate", s_P + s_H + s_P, s_P + s_P + s_P, s_P + s_P + s_P },
+        { "Pants", s_P + s_P + s_P, s_P + s_H + s_P, s_P + " " + s_P }, { "Boots", s_P + " " + s_P, s_P + s_H + s_P },
+        { "Sword", " " + s_P + " ", s_F + s_P + s_H, " " + s_R + " " },
+        { "Pickaxe", s_P + s_I + s_I, s_F + s_R + s_H, " " + s_R + " " },
+        { "Shovel", s_F + s_P + s_H, " " + s_R + " ", " " + s_R + " " },
+        { "Axe", s_P + s_I + s_H, s_P + s_R + " ", s_F + s_R + " " },
+        { "Axe", s_P + s_I + s_H, s_P + s_R + " ", s_F + s_R + " " },
+        { "Hoe", s_P + s_I + s_H, s_F + s_R + " ", " " + s_R + " " },
+        { "Hoe", s_P + s_I + s_H, s_F + s_R + " ", " " + s_R + " " },
+        { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
+        { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
+        { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
+        { "Sickle", " " + s_P + " ", s_P + s_F + " ", s_H + s_P + s_R },
+        { "Sword", " " + s_R + " ", s_F + s_P + s_H, " " + s_P + " " },
+        { "Pickaxe", " " + s_R + " ", s_F + s_R + s_H, s_P + s_I + s_I },
+        { "Shovel", " " + s_R + " ", " " + s_R + " ", s_F + s_P + s_H },
+        { "Axe", s_F + s_R + " ", s_P + s_R + " ", s_P + s_I + s_H },
+        { "Axe", s_F + s_R + " ", s_P + s_R + " ", s_P + s_I + s_H },
+        { "Hoe", " " + s_R + " ", s_F + s_R + " ", s_P + s_I + s_H },
+        { "Hoe", " " + s_R + " ", s_F + s_R + " ", s_P + s_I + s_H },
+        { "Spear", s_P + s_H + " ", s_F + s_R + " ", " " + " " + s_R },
+        { "Spear", s_P + s_H + " ", s_F + s_R + " ", " " + " " + s_R }, { "Knive", s_H + s_P, s_R + s_F },
+        { "Knive", s_F + s_H, s_P + s_R }, { "Knive", s_F + s_H, s_P + s_R }, { "Knive", s_P + s_F, s_R + s_H },
+        { "Knive", s_P + s_F, s_R + s_H }, null, null, null, null,
+        { "WarAxe", s_P + s_P + s_P, s_P + s_R + s_P, s_F + s_R + s_H }, null, null, null,
+        { "Shears", s_H + s_P, s_P + s_F }, { "Shears", s_H + s_P, s_P + s_F },
+        { "Scythe", s_I + s_P + s_H, s_R + s_F + s_P, s_R + " " + " " },
+        { "Scythe", s_H + s_P + s_I, s_P + s_F + s_R, " " + " " + s_R } };
 
     static {
         // flush the cache on post load finish
@@ -161,42 +160,41 @@ public class GTRecipeRegistrator {
     }
 
     public static void registerMaterialRecycling(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-            MaterialStack aByproduct) {
+        MaterialStack aByproduct) {
         if (GTUtility.isStackInvalid(aStack)) return;
         if (aByproduct != null) {
             aByproduct = aByproduct.clone();
             aByproduct.mAmount /= aStack.stackSize;
         }
         GTOreDictUnificator.addItemData(
-                GTUtility.copyAmount(1, aStack),
-                new ItemData(aMaterial, aMaterialAmount / aStack.stackSize, aByproduct));
+            GTUtility.copyAmount(1, aStack),
+            new ItemData(aMaterial, aMaterialAmount / aStack.stackSize, aByproduct));
     }
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GTUtility.isStackInvalid(aStack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
-                || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
-                || aData == null
-                || !aData.hasValidMaterialData()
-                || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
-                || aData.mMaterial.mAmount <= 0
-                || GTUtility.getFluidForFilledItem(aStack, false) != null)
-            return;
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
+            || aData == null
+            || !aData.hasValidMaterialData()
+            || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
+            || aData.mMaterial.mAmount <= 0
+            || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
         // Prevents registering a quartz block -> 9x quartz dust recipe
         if (!GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)) {
             registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
         }
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
-                    GTUtility.copyAmount(1, aStack),
-                    aData.mMaterial.mMaterial,
-                    aData.mMaterial.mAmount,
-                    true);
+                GTUtility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                true);
             registerReverseFluidSmelting(
-                    GTUtility.copyAmount(1, aStack),
-                    aData.mMaterial.mMaterial,
-                    aData.mMaterial.mAmount,
-                    aData.getByProduct(0),
-                    true);
+                GTUtility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                aData.getByProduct(0),
+                true);
             registerReverseArcSmelting(GTUtility.copyAmount(1, aStack), aData);
         }
     }
@@ -208,24 +206,23 @@ public class GTRecipeRegistrator {
      * @param isRecycling     whether to put in recycling tab.
      */
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-            MaterialStack aByproduct, boolean isRecycling) {
+        MaterialStack aByproduct, boolean isRecycling) {
         if (aStack == null || aMaterial == null
-                || aMaterial.mSmeltInto.mStandardMoltenFluid == null
-                || !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
-                || (aMaterialAmount * INGOTS) / (M * aStack.stackSize) <= 0)
-            return;
+            || aMaterial.mSmeltInto.mStandardMoltenFluid == null
+            || !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
+            || (aMaterialAmount * INGOTS) / (M * aStack.stackSize) <= 0) return;
 
         ItemStack recipeOutput = aByproduct == null ? null
-                : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
-                        ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
-                                ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
-                                : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
-                                        ? GTOreDictUnificator
-                                                .getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
-                                        : null
-                        : GTOreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
+            : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
+                ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
+                    ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
+                    : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
+                        ? GTOreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
+                        : null
+                : GTOreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
 
-        GTRecipeBuilder builder = RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack));
+        GTRecipeBuilder builder = RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack));
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
@@ -236,7 +233,8 @@ public class GTRecipeRegistrator {
             powerUsage = VP[powerTier];
         }
         builder.fluidOutputs(aMaterial.mSmeltInto.getMolten((aMaterialAmount * INGOTS) / (M * aStack.stackSize)))
-                .duration((int) Math.max(1, (24 * aMaterialAmount) / M)).eut(powerUsage);
+            .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
+            .eut(powerUsage);
         if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
         builder.addTo(fluidExtractionRecipes);
     }
@@ -248,35 +246,34 @@ public class GTRecipeRegistrator {
      * @param aAllowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
      */
     public static void registerReverseSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-            boolean aAllowAlloySmelter) {
+        boolean aAllowAlloySmelter) {
         if (aStack == null || aMaterial == null
-                || aMaterialAmount <= 0
-                || aMaterial.contains(SubTag.NO_SMELTING)
-                || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
-                || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV))
-            return;
+            || aMaterialAmount <= 0
+            || aMaterial.contains(SubTag.NO_SMELTING)
+            || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
+            || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
 
         aMaterialAmount /= aStack.stackSize;
 
         if (aAllowAlloySmelter) GTModHandler.addSmeltingAndAlloySmeltingRecipe(
-                GTUtility.copyAmount(1, aStack),
-                GTOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount),
-                false);
+            GTUtility.copyAmount(1, aStack),
+            GTOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount),
+            false);
         else GTModHandler.addSmeltingRecipe(
-                GTUtility.copyAmount(1, aStack),
-                GTOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
+            GTUtility.copyAmount(1, aStack),
+            GTOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-            MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
+        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
         registerReverseArcSmelting(
-                aStack,
-                new ItemData(
-                        aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
-                        aByProduct01,
-                        aByProduct02,
-                        aByProduct03));
+            aStack,
+            new ItemData(
+                aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
+                aByProduct01,
+                aByProduct02,
+                aByProduct03));
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, ItemData aData) {
@@ -291,11 +288,11 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
-                    || tMaterial.mMaterial == Materials.WroughtIron
-                    || tMaterial.mMaterial == Materials.AnnealedCopper) {
+                || tMaterial.mMaterial == Materials.WroughtIron
+                || tMaterial.mMaterial == Materials.AnnealedCopper) {
                 ItemData stackData = GTOreDictUnificator.getItemData(aStack);
                 if (stackData != null
-                        && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
+                    && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
                     // iron ingot/dust -> wrought iron, copper ingot/dust -> annealed copper
                     isRecycle = false;
                 }
@@ -351,30 +348,33 @@ public class GTRecipeRegistrator {
         }
         if (!outputs.isEmpty()) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-            recipeBuilder.itemInputs(aStack).itemOutputs(outputs.toArray(new ItemStack[0]))
-                    .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
-                    .duration(((int) Math.max(16, tAmount / M)) * TICKS).eut(90).metadata(RECYCLE, isRecycle)
-                    .addTo(UniversalArcFurnace);
+            recipeBuilder.itemInputs(aStack)
+                .itemOutputs(outputs.toArray(new ItemStack[0]))
+                .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
+                .duration(((int) Math.max(16, tAmount / M)) * TICKS)
+                .eut(90)
+                .metadata(RECYCLE, isRecycle)
+                .addTo(UniversalArcFurnace);
         }
 
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-            MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer,
-            boolean isRecycling) {
+        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer,
+        boolean isRecycling) {
         registerReverseMacerating(
-                aStack,
-                new ItemData(
-                        aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
-                        aByProduct01,
-                        aByProduct02,
-                        aByProduct03),
-                aAllowHammer,
-                isRecycling);
+            aStack,
+            new ItemData(
+                aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
+                aByProduct01,
+                aByProduct02,
+                aByProduct03),
+            aAllowHammer,
+            isRecycling);
     }
 
     public static void registerReverseMacerating(ItemStack aStack, ItemData aData, boolean aAllowHammer,
-            boolean isRecycling) {
+        boolean isRecycling) {
         if (aStack == null || aData == null) return;
         aData = new ItemData(aData);
 
@@ -405,9 +405,11 @@ public class GTRecipeRegistrator {
             if (!outputs.isEmpty()) {
                 ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
                 GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                recipeBuilder.itemInputs(aStack).itemOutputs(outputsArray).duration(
+                recipeBuilder.itemInputs(aStack)
+                    .itemOutputs(outputsArray)
+                    .duration(
                         (aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
-                        .eut(4);
+                    .eut(4);
                 if (isRecycling) recipeBuilder.recipeCategory(RecipeCategories.maceratorRecycling);
                 recipeBuilder.addTo(maceratorRecipes);
             }
@@ -419,12 +421,15 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
-                    && tMaterial.mMaterial != Materials.Glass
-                    && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(GTOreDictUnificator.getDust(aData.mMaterial)).duration(10 * SECONDS)
-                        .eut(TierEU.RECIPE_LV).recipeCategory(RecipeCategories.forgeHammerRecycling)
-                        .addTo(hammerRecipes);
+                && tMaterial.mMaterial != Materials.Glass
+                && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.getDust(aData.mMaterial))
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .recipeCategory(RecipeCategories.forgeHammerRecycling)
+                    .addTo(hammerRecipes);
                 break;
             }
         }
@@ -435,7 +440,7 @@ public class GTRecipeRegistrator {
      * Place Materials which you want to replace in Non-GT-Recipes here (warning HUGHE impact on loading times!)
      */
     private static final Materials[] VANILLA_MATS = { Cobalt, Gold, Iron, Lead, FierySteel, Void, Bronze, Diamond, Ruby,
-            Sapphire, Steel, IronWood, Steeleaf, Knightmetal, Thaumium, DarkSteel, };
+        Sapphire, Steel, IronWood, Steeleaf, Knightmetal, Thaumium, DarkSteel, };
 
     /**
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing
@@ -446,7 +451,7 @@ public class GTRecipeRegistrator {
      * @param aRecipeReplacing allows to replace the Recipe with a Plate variant
      */
     public static synchronized void registerUsagesForMaterials(String aPlate, boolean aRecipeReplacing,
-            ItemStack... aMats) {
+        ItemStack... aMats) {
         for (ItemStack aMat : aMats) {
             aMat = GTUtility.copyOrNull(aMat);
 
@@ -468,10 +473,8 @@ public class GTRecipeRegistrator {
                 for (RecipeShape tRecipe : sShapes) {
                     for (ItemStack tCrafted : GTModHandler.getRecipeOutputsBuffered(tRecipe.shape)) {
                         GTOreDictUnificator.addItemData(
-                                tCrafted,
-                                new ItemData(
-                                        aItemData.mMaterial.mMaterial,
-                                        aItemData.mMaterial.mAmount * tRecipe.amount1));
+                            tCrafted,
+                            new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tRecipe.amount1));
                         //
                         // GTLog.out.println("###################################################################################");
                         // GTLog.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
@@ -502,7 +505,8 @@ public class GTRecipeRegistrator {
 
     private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
-        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+            .getRecipeList();
         // filter using the empty slots in the shape.
         // if the empty slots doesn't match, the recipe will definitely fail
         SetMultimap<List<Integer>, RecipeShape> filter = HashMultimap.create();
@@ -520,36 +524,39 @@ public class GTRecipeRegistrator {
             buffer.clear();
             ItemStack tStack = tRecipe.getRecipeOutput();
             if (GTUtility.isStackValid(tStack) && tStack.getMaxStackSize() == 1
-                    && tStack.getMaxDamage() > 0
-                    && !(tStack.getItem() instanceof ItemBlock)
-                    && !(tStack.getItem() instanceof IReactorComponent)
-                    && !GTModHandler.isElectricItem(tStack)
-                    && !GTUtility.isStackInList(tStack, GTModHandler.sNonReplaceableItems)) {
+                && tStack.getMaxDamage() > 0
+                && !(tStack.getItem() instanceof ItemBlock)
+                && !(tStack.getItem() instanceof IReactorComponent)
+                && !GTModHandler.isElectricItem(tStack)
+                && !GTUtility.isStackInList(tStack, GTModHandler.sNonReplaceableItems)) {
                 if (tRecipe instanceof ShapedOreRecipe tShapedRecipe) {
                     if (checkRecipeShape(
-                            buffer,
-                            tShapedRecipe.getInput(),
-                            getRecipeWidth(tShapedRecipe),
-                            getRecipeHeight(tShapedRecipe))) {
+                        buffer,
+                        tShapedRecipe.getInput(),
+                        getRecipeWidth(tShapedRecipe),
+                        getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                .add(tRecipe);
                         }
                     }
                 } else if (tRecipe instanceof ShapedRecipes tShapedRecipe) {
                     if (checkRecipeShape(
-                            buffer,
-                            tShapedRecipe.recipeItems,
-                            getRecipeWidth(tShapedRecipe),
-                            getRecipeHeight(tShapedRecipe))) {
+                        buffer,
+                        tShapedRecipe.recipeItems,
+                        getRecipeWidth(tShapedRecipe),
+                        getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                .add(tRecipe);
                         }
                     }
                 } else {
                     for (RecipeShape s : sShapes) {
                         // unknown recipe type. cannot determine empty slots. we choose to add to the recipe list for
                         // all shapes
-                        result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                        result.computeIfAbsent(s, k -> new ArrayList<>())
+                            .add(tRecipe);
                     }
                 }
             }
@@ -558,7 +565,7 @@ public class GTRecipeRegistrator {
     }
 
     private static boolean checkRecipeShape(List<Integer> emptySlotIndexesBuffer, Object[] input, int tRecipeWidth,
-            int tRecipeHeight) {
+        int tRecipeHeight) {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
                 if (x >= tRecipeWidth || y >= tRecipeHeight) {
@@ -571,9 +578,9 @@ public class GTRecipeRegistrator {
                     continue;
                 }
                 if (tObject instanceof ItemStack
-                        && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2
-                                || ((ItemStack) tObject).getMaxDamage() > 0
-                                || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                    && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2
+                        || ((ItemStack) tObject).getMaxDamage() > 0
+                        || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
                     return false;
                 }
                 if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
@@ -597,16 +604,14 @@ public class GTRecipeRegistrator {
                     RecipeShape tRecipe = sShapes[i];
 
                     for (ItemStack tCrafted : GTModHandler
-                            .getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
+                        .getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
                         if (aItemData != null && aItemData.hasValidPrefixMaterialData())
                             GTOreDictUnificator.addItemData(
-                                    tCrafted,
-                                    new ItemData(
-                                            aItemData.mMaterial.mMaterial,
-                                            aItemData.mMaterial.mAmount * tRecipe.amount1,
-                                            new MaterialStack(
-                                                    tMaterial,
-                                                    OrePrefixes.stick.mMaterialAmount * tRecipe.amount2)));
+                                tCrafted,
+                                new ItemData(
+                                    aItemData.mMaterial.mMaterial,
+                                    aItemData.mMaterial.mAmount * tRecipe.amount1,
+                                    new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tRecipe.amount2)));
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;
@@ -614,22 +619,22 @@ public class GTRecipeRegistrator {
                             if (null != (tStack = GTModHandler.removeRecipe(tRecipe.shape))) {
                                 switch (sShapesA[i].length) {
                                     case 2 -> GTModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GTModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                    OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                        tStack,
+                                        GTModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
                                     case 3 -> GTModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GTModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
-                                                    s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                    aItemData });
+                                        tStack,
+                                        GTModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
+                                            s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
                                     default -> GTModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GTModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
-                                                    s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                    OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                        tStack,
+                                        GTModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0),
+                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
                                 }
                             }
                         }
@@ -649,12 +654,12 @@ public class GTRecipeRegistrator {
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
         registerWiremillRecipes(
-                aMaterial,
-                baseDuration,
-                calculateRecipeEU(aMaterial, aEUt),
-                OrePrefixes.ingot,
-                OrePrefixes.stick,
-                2);
+            aMaterial,
+            baseDuration,
+            calculateRecipeEU(aMaterial, aEUt),
+            OrePrefixes.ingot,
+            OrePrefixes.stick,
+            2);
     }
 
     /**
@@ -668,100 +673,129 @@ public class GTRecipeRegistrator {
      * @param multiplier   amount of wires created from 1 ingot
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt, OrePrefixes prefix1,
-            OrePrefixes prefix2, int multiplier) {
+        OrePrefixes prefix2, int multiplier) {
         if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
-                && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier))
-                    .duration(baseDuration * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier))
+                .duration(baseDuration * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier),
-                            GTUtility.getIntegratedCircuit(2))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
-                    .duration(((int) (baseDuration * 1.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier),
+                    GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
+                .duration(((int) (baseDuration * 1.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier),
-                            GTUtility.getIntegratedCircuit(4))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
-                    .duration(baseDuration * 2 * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier),
+                    GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
+                .duration(baseDuration * 2 * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier),
-                            GTUtility.getIntegratedCircuit(8))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
-                    .duration(((int) (baseDuration * 2.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
+                .duration(((int) (baseDuration * 2.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier),
-                            GTUtility.getIntegratedCircuit(12))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
-                    .duration(baseDuration * 3 * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
+                .duration(baseDuration * 3 * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier),
-                            GTUtility.getIntegratedCircuit(16))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
-                    .duration(((int) (baseDuration * 3.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier),
+                    GTUtility.getIntegratedCircuit(16))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
+                .duration(((int) (baseDuration * 3.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
         }
 
         if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
-                && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L / multiplier))
-                    .duration(((int) (baseDuration * 0.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L / multiplier))
+                .duration(((int) (baseDuration * 0.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier),
-                            GTUtility.getIntegratedCircuit(2))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
-                    .duration(baseDuration * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier),
+                    GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
+                .duration(baseDuration * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier),
-                            GTUtility.getIntegratedCircuit(4))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
-                    .duration(((int) (baseDuration * 1.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier),
+                    GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
+                .duration(((int) (baseDuration * 1.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier),
-                            GTUtility.getIntegratedCircuit(8))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
-                    .duration(baseDuration * 2 * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
+                .duration(baseDuration * 2 * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier),
-                            GTUtility.getIntegratedCircuit(12))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
-                    .duration(((int) (baseDuration * 2.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
+                .duration(((int) (baseDuration * 2.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                    .itemInputs(
-                            GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier),
-                            GTUtility.getIntegratedCircuit(16))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
-                    .duration(baseDuration * 3 * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier),
+                    GTUtility.getIntegratedCircuit(16))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
+                .duration(baseDuration * 3 * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
         }
         if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
-                && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier))
-                    .duration(baseDuration * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier))
+                .duration(baseDuration * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
         }
         if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
-                && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier))
-                    .duration(((int) (baseDuration * 0.5f)) * TICKS).eut(aEUt).addTo(wiremillRecipes);
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L), GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier))
+                .duration(((int) (baseDuration * 0.5f)) * TICKS)
+                .eut(aEUt)
+                .addTo(wiremillRecipes);
         }
     }
 
     public static boolean hasVanillaRecipes(Materials materials) {
-        return Arrays.stream(VANILLA_MATS).anyMatch(mat -> mat == materials);
+        return Arrays.stream(VANILLA_MATS)
+            .anyMatch(mat -> mat == materials);
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

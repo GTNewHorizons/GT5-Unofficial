@@ -16,8 +16,12 @@ public class PyrolyseOven implements Runnable {
 
     @Override
     public void run() {
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(10), Materials.Wood.getDust(10))
-                .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1_000)).fluidOutputs(Materials.Oil.getFluid(1_000))
-                .duration(5 * SECONDS + 5 * TICKS).eut(TierEU.RECIPE_HV).addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(10), Materials.Wood.getDust(10))
+            .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1_000))
+            .fluidOutputs(Materials.Oil.getFluid(1_000))
+            .duration(5 * SECONDS + 5 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(pyrolyseRecipes);
     }
 }

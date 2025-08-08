@@ -43,10 +43,10 @@ public class GTPacketLinkPowerGoggles extends GTPacket {
     public GTPacket decode(ByteArrayDataInput buffer) {
         if (buffer.readBoolean()) return new GTPacketLinkPowerGoggles(null);
         DimensionalCoord coords = new DimensionalCoord(
-                buffer.readInt(),
-                buffer.readInt(),
-                buffer.readInt(),
-                buffer.readInt());
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt());
         return new GTPacketLinkPowerGoggles(coords);
     }
 

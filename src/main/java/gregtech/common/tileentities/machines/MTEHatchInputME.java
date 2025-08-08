@@ -88,7 +88,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
-        IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
+    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
@@ -125,7 +125,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     public MTEHatchInputME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, 1, aTier, aDescription, aTextures);
         this.autoPullAvailable = autoPullAvailable;
     }
@@ -185,7 +185,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
         }
         if (proxy.getNode() != null) {
-            proxy.getNode().updateState();
+            proxy.getNode()
+                .updateState();
         }
     }
 
@@ -196,8 +197,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage().getFluidInventory();
-            Iterator<IAEFluidStack> iterator = sg.getStorageList().iterator();
+            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
+                .getFluidInventory();
+            Iterator<IAEFluidStack> iterator = sg.getStorageList()
+                .iterator();
 
             int index = 0;
             while (iterator.hasNext() && index < SLOT_COUNT) {
@@ -297,22 +300,24 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (toExtract <= 0) continue;
 
             try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage().getFluidInventory();
+                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
+                    .getFluidInventory();
 
                 IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
                 request.setStackSize(toExtract);
                 IAEFluidStack extractionResult = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                proxy.getEnergy().extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                proxy.getEnergy()
+                    .extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
 
                 if (extractionResult == null || extractionResult.getStackSize() != toExtract) {
                     controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                     checkRecipeResult = SimpleCheckRecipeResult
-                            .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                        .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
             } catch (GridAccessException ignored) {
                 controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                 checkRecipeResult = SimpleCheckRecipeResult
-                        .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                    .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
             setSavedFluid(i, null);
             if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
@@ -350,11 +355,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
-                new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
     }
 
@@ -374,15 +379,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                        (IGridProxyable) getBaseMetaTileEntity(),
-                        "proxy",
-                        autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
-                        true);
+                    (IGridProxyable) getBaseMetaTileEntity(),
+                    "proxy",
+                    autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
+                    true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                        getBaseMetaTileEntity().getWorld()
-                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                    getBaseMetaTileEntity().getWorld()
+                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -445,7 +450,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage().getFluidInventory();
+            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
+                .getFluidInventory();
             IAEFluidStack request = AEFluidStack.create(fluidStack);
             request.setStackSize(Integer.MAX_VALUE);
             IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
@@ -536,7 +542,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             fluidStack = getShadowFluidStack(slotToCheck);
             slotToCheck++;
         } while ((fluidStack == null || !(hasToMatchGhost && lockedSlot.getFluid() == fluidStack.getFluid()))
-                && slotToCheck < getShadowStoredFluidsSize());
+            && slotToCheck < getShadowStoredFluidsSize());
         return fluidStack;
     }
 
@@ -636,16 +642,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
 
         setAutoPullFluidList(!autoPullFluidList);
         aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        "GT5U.machines.stocking_hatch.auto_pull_toggle."
-                                + (autoPullFluidList ? "enabled" : "disabled")));
+            new ChatComponentTranslation(
+                "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled")));
     }
 
     @Override
@@ -673,7 +678,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
         updateValidGridProxySides();
         byte color = nbt.getByte("color");
-        this.getBaseMetaTileEntity().setColorization(color);
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
 
         return true;
     }
@@ -704,7 +710,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (!(aPlayer instanceof EntityPlayerMP))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
@@ -750,140 +756,159 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         builder.widget(
-                SlotGroup
-                        .ofFluidTanks(
-                                IntStream.range(0, SLOT_COUNT)
-                                        .mapToObj(index -> createTankForFluidStack(storedFluids, index, 1))
-                                        .collect(Collectors.toList()),
-                                4)
-                        .phantom(true).widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
+            SlotGroup.ofFluidTanks(
+                IntStream.range(0, SLOT_COUNT)
+                    .mapToObj(index -> createTankForFluidStack(storedFluids, index, 1))
+                    .collect(Collectors.toList()),
+                4)
+                .phantom(true)
+                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
-                            @Override
-                            protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
-                                if (clickData.mouseButton != 0 || autoPullFluidList) return;
+                    @Override
+                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
+                        if (clickData.mouseButton != 0 || autoPullFluidList) return;
 
-                                FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
-                                if (cursorStack == null) {
-                                    storedFluids[slotIndex] = null;
-                                } else {
-                                    if (containsSuchStack(heldFluid)) return;
-                                    storedFluids[slotIndex] = heldFluid;
-                                }
-                                if (getBaseMetaTileEntity().isServerSide()) {
-                                    updateInformationSlot(slotIndex);
-                                    detectAndSendChanges(false);
-                                }
+                        FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
+                        if (cursorStack == null) {
+                            storedFluids[slotIndex] = null;
+                        } else {
+                            if (containsSuchStack(heldFluid)) return;
+                            storedFluids[slotIndex] = heldFluid;
+                        }
+                        if (getBaseMetaTileEntity().isServerSide()) {
+                            updateInformationSlot(slotIndex);
+                            detectAndSendChanges(false);
+                        }
+                    }
+
+                    @Override
+                    protected void tryScrollPhantom(int direction) {}
+
+                    @Override
+                    public IDrawable[] getBackground() {
+                        IDrawable slot;
+                        if (autoPullFluidList) {
+                            slot = GTUITextures.SLOT_DARK_GRAY;
+                        } else {
+                            slot = ModularUITextures.FLUID_SLOT;
+                        }
+                        return new IDrawable[] { slot, GTUITextures.OVERLAY_SLOT_ARROW_ME };
+                    }
+
+                    @Override
+                    public void buildTooltip(List<Text> tooltip) {
+                        FluidStack fluid = getContent();
+                        if (fluid != null) {
+                            addFluidNameInfo(tooltip, fluid);
+
+                            if (!autoPullFluidList) {
+                                tooltip.add(Text.localised("modularui.phantom.single.clear"));
                             }
+                        } else {
+                            tooltip.add(
+                                Text.localised("modularui.fluid.empty")
+                                    .format(EnumChatFormatting.WHITE));
+                        }
 
-                            @Override
-                            protected void tryScrollPhantom(int direction) {}
-
-                            @Override
-                            public IDrawable[] getBackground() {
-                                IDrawable slot;
-                                if (autoPullFluidList) {
-                                    slot = GTUITextures.SLOT_DARK_GRAY;
-                                } else {
-                                    slot = ModularUITextures.FLUID_SLOT;
-                                }
-                                return new IDrawable[] { slot, GTUITextures.OVERLAY_SLOT_ARROW_ME };
-                            }
-
-                            @Override
-                            public void buildTooltip(List<Text> tooltip) {
-                                FluidStack fluid = getContent();
-                                if (fluid != null) {
-                                    addFluidNameInfo(tooltip, fluid);
-
-                                    if (!autoPullFluidList) {
-                                        tooltip.add(Text.localised("modularui.phantom.single.clear"));
-                                    }
-                                } else {
-                                    tooltip.add(
-                                            Text.localised("modularui.fluid.empty").format(EnumChatFormatting.WHITE));
-                                }
-
-                                if (autoPullFluidList) {
-                                    tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
-                                }
-                            }
-                        }.setUpdateTooltipEveryTick(true)).build().setPos(new Pos2d(7, 9)));
+                        if (autoPullFluidList) {
+                            tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
+                        }
+                    }
+                }.setUpdateTooltipEveryTick(true))
+                .build()
+                .setPos(new Pos2d(7, 9)));
 
         builder.widget(
-                SlotGroup.ofFluidTanks(
-                        IntStream.range(0, SLOT_COUNT).mapToObj(
-                                index -> createTankForFluidStack(storedInformationFluids, index, Integer.MAX_VALUE))
-                                .collect(Collectors.toList()),
-                        4).phantom(true).widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
+            SlotGroup.ofFluidTanks(
+                IntStream.range(0, SLOT_COUNT)
+                    .mapToObj(index -> createTankForFluidStack(storedInformationFluids, index, Integer.MAX_VALUE))
+                    .collect(Collectors.toList()),
+                4)
+                .phantom(true)
+                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
-                            @Override
-                            protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
+                    @Override
+                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
 
-                            @Override
-                            protected void tryScrollPhantom(int direction) {}
+                    @Override
+                    protected void tryScrollPhantom(int direction) {}
 
-                            @Override
-                            public void buildTooltip(List<Text> tooltip) {
-                                FluidStack fluid = getContent();
-                                if (fluid != null) {
-                                    addFluidNameInfo(tooltip, fluid);
-                                    tooltip.add(Text.localised("modularui.fluid.phantom.amount", fluid.amount));
-                                    addAdditionalFluidInfo(tooltip, fluid);
-                                    if (!Interactable.hasShiftDown()) {
-                                        tooltip.add(Text.EMPTY);
-                                        tooltip.add(Text.localised("modularui.tooltip.shift"));
-                                    }
-                                } else {
-                                    tooltip.add(
-                                            Text.localised("modularui.fluid.empty").format(EnumChatFormatting.WHITE));
-                                }
+                    @Override
+                    public void buildTooltip(List<Text> tooltip) {
+                        FluidStack fluid = getContent();
+                        if (fluid != null) {
+                            addFluidNameInfo(tooltip, fluid);
+                            tooltip.add(Text.localised("modularui.fluid.phantom.amount", fluid.amount));
+                            addAdditionalFluidInfo(tooltip, fluid);
+                            if (!Interactable.hasShiftDown()) {
+                                tooltip.add(Text.EMPTY);
+                                tooltip.add(Text.localised("modularui.tooltip.shift"));
                             }
-                        }.setUpdateTooltipEveryTick(true)).background(GTUITextures.SLOT_DARK_GRAY).controlsAmount(true)
-                        .build().setPos(new Pos2d(97, 9)));
+                        } else {
+                            tooltip.add(
+                                Text.localised("modularui.fluid.empty")
+                                    .format(EnumChatFormatting.WHITE));
+                        }
+                    }
+                }.setUpdateTooltipEveryTick(true))
+                .background(GTUITextures.SLOT_DARK_GRAY)
+                .controlsAmount(true)
+                .build()
+                .setPos(new Pos2d(97, 9)));
 
         if (autoPullAvailable) {
             builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     setAutoPullFluidList(!autoPullFluidList);
                 } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                    widget.getContext().openSyncedWindow(CONFIG_WINDOW_ID);
+                    widget.getContext()
+                        .openSyncedWindow(CONFIG_WINDOW_ID);
                 }
-            }).setPlayClickSound(true).setBackground(() -> {
-                if (autoPullFluidList) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+            })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (autoPullFluidList) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
                             GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME };
-                } else {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                    } else {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
                             GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
-                }
-            }).addTooltips(
+                    }
+                })
+                .addTooltips(
                     Arrays.asList(
-                            StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.1"),
-                            StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.2")))
-                    .setSize(16, 16).setPos(80, 10))
-                    .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
+                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.1"),
+                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.2")))
+                .setSize(16, 16)
+                .setPos(80, 10))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
         }
 
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_DOUBLE).setPos(82, 30).setSize(12, 12))
-                .widget(TextWidget.dynamicString(() -> {
-                    boolean isActive = isActive();
-                    boolean isPowered = isPowered();
-                    boolean isBooting = isBooting();
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_DOUBLE)
+                .setPos(82, 30)
+                .setSize(12, 12))
+            .widget(TextWidget.dynamicString(() -> {
+                boolean isActive = isActive();
+                boolean isPowered = isPowered();
+                boolean isBooting = isBooting();
 
-                    String state = WailaText.getPowerState(isActive, isPowered, isBooting);
+                String state = WailaText.getPowerState(isActive, isPowered, isBooting);
 
-                    if (isActive && isPowered) {
-                        return MessageFormat.format(
-                                "{0}{1}§f ({2})",
-                                EnumChatFormatting.GREEN,
-                                state,
-                                StatCollector.translateToLocal(
-                                        isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
-                    } else {
-                        return EnumChatFormatting.DARK_RED + state;
-                    }
-                }).setTextAlignment(Alignment.Center).setSize(130, 9).setPos(23, 84));
+                if (isActive && isPowered) {
+                    return MessageFormat.format(
+                        "{0}{1}§f ({2})",
+                        EnumChatFormatting.GREEN,
+                        state,
+                        StatCollector
+                            .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
+                } else {
+                    return EnumChatFormatting.DARK_RED + state;
+                }
+            })
+                .setTextAlignment(Alignment.Center)
+                .setSize(130, 9)
+                .setPos(23, 84));
     }
 
     private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {
@@ -906,43 +931,65 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
-                        Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                                .add(WIDTH - 3, 0)));
-        builder.widget(TextWidget.localised("GT5U.machines.stocking_hatch.min_amount").setPos(3, 2).setSize(74, 14))
-                .widget(
-                        new NumericWidget().setSetter(val -> minAutoPullAmount = (int) val)
-                                .setGetter(() -> minAutoPullAmount).setBounds(1, Integer.MAX_VALUE)
-                                .setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                                .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(3, 18)
-                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(TextWidget.localised("GT5U.machines.stocking_bus.refresh_time").setPos(3, 42).setSize(74, 14))
-                .widget(
-                        new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
-                                .setGetter(() -> autoPullRefreshTime).setBounds(1, Integer.MAX_VALUE)
-                                .setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                                .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(3, 58)
-                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(TextWidget.localised("GT5U.machines.stocking_bus.force_check").setPos(3, 88).setSize(50, 14))
-                .widget(
-                        new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
-                                .setTextureGetter(
-                                        state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
-                                                : GTUITextures.OVERLAY_BUTTON_CROSS)
-                                .setBackground(GTUITextures.BUTTON_STANDARD).setPos(53, 87).setSize(16, 16).addTooltip(
-                                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_hatch.min_amount")
+                .setPos(3, 2)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> minAutoPullAmount = (int) val)
+                    .setGetter(() -> minAutoPullAmount)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(3, 18)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
+                .setPos(3, 42)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
+                    .setGetter(() -> autoPullRefreshTime)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(3, 58)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.force_check")
+                .setPos(3, 88)
+                .setSize(50, 14))
+            .widget(
+                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
+                    .setTextureGetter(
+                        state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
+                            : GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setBackground(GTUITextures.BUTTON_STANDARD)
+                    .setPos(53, 87)
+                    .setSize(16, 16)
+                    .addTooltip(StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));
         return builder.build();
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(80, 63));
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(80, 63));
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         if (!autoPullAvailable) {
             super.getWailaBody(itemStack, currenttip, accessor, config);
             return;
@@ -952,20 +999,19 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         boolean autopull = tag.getBoolean("autoPull");
         int minSize = tag.getInteger("minAmount");
         currenttip.add(
-                StatCollector
-                        .translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
+            StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.stocking_hatch.min_amount",
-                            GTUtility.formatNumbers(minSize)));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.stocking_hatch.min_amount",
+                    GTUtility.formatNumbers(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         if (!autoPullAvailable) {
             super.getWailaNBTData(player, tile, tag, world, x, y, z);
             return;
@@ -985,10 +1031,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (autoPullAvailable) {
             strings.add(
-                    "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
+                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
             strings.add(
-                    "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
+                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
             strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
         }
 

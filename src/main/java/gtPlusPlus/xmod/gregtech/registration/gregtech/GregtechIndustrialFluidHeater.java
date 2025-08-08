@@ -15,9 +15,9 @@ public class GregtechIndustrialFluidHeater {
 
     private static void run1() {
         GregtechItemList.Controller_IndustrialFluidHeater.set(
-                new MTEIndustrialFluidHeater(
-                        Controller_IndustrialFluidHeater.ID,
-                        "industrialfluidheater.controller.tier.single",
-                        "Thermic Heating Device").getStackForm(1L));
+            new MTEIndustrialFluidHeater(
+                Controller_IndustrialFluidHeater.ID,
+                "industrialfluidheater.controller.tier.single",
+                "Thermic Heating Device").getStackForm(1L));
     }
 }

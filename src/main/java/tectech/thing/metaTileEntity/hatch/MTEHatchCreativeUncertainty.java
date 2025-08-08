@@ -30,9 +30,9 @@ public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
                                                                                                                       // certain,
                                                                                                                       // for
                                                                                                                       // sure
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") // Schrödinger's cat escaped the
-                                                                                       // box
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") // Schrödinger's cat escaped the
+                                                                               // box
         };
     }
 

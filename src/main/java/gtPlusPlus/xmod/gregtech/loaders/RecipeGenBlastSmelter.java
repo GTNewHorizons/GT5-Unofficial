@@ -57,8 +57,8 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         }
 
         final Material[] badMaterials = { MaterialsFluorides.THORIUM_HEXAFLUORIDE,
-                MaterialsFluorides.THORIUM_TETRAFLUORIDE, MaterialsAlloy.BLOODSTEEL, MaterialsNuclides.LiFBeF2ThF4UF4,
-                MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235, MaterialsAlloy.NITINOL_60 };
+            MaterialsFluorides.THORIUM_TETRAFLUORIDE, MaterialsAlloy.BLOODSTEEL, MaterialsNuclides.LiFBeF2ThF4UF4,
+            MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235, MaterialsAlloy.NITINOL_60 };
         for (final Material R : badMaterials) {
             if (M == R) {
                 return;
@@ -108,20 +108,20 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         inputStackCount = 1;
         fluidAmount = 144 * inputStackCount;
         Logger.WARNING(
-                "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
-                        + ". Gives "
-                        + fluidAmount
-                        + "L of molten metal.");
+            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
+                + ". Gives "
+                + fluidAmount
+                + "L of molten metal.");
         for (int das = 0; das < tItemStackTest.length; das++) {
             if (tItemStackTest[das] != null) {
                 Logger.WARNING(
-                        "[BAS] tMaterial[" + das
-                                + "]: "
-                                + tItemStackTest[das].getDisplayName()
-                                + " Meta: "
-                                + tItemStackTest[das].getItemDamage()
-                                + ", Amount: "
-                                + tItemStackTest[das].stackSize);
+                    "[BAS] tMaterial[" + das
+                        + "]: "
+                        + tItemStackTest[das].getDisplayName()
+                        + " Meta: "
+                        + tItemStackTest[das].getItemDamage()
+                        + ", Amount: "
+                        + tItemStackTest[das].stackSize);
             }
         }
 
@@ -130,20 +130,32 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         // Generate Recipes for all singular materials that can be made molten.
         if (hasMoreInputThanACircuit) {
             if (M.requiresBlastFurnace()) {
-                GTValues.RA.stdBuilder().itemInputs(tItemStackTest).fluidOutputs(M.getFluidStack(fluidAmount))
-                        .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)).eut(aVoltage)
-                        .recipeCategory(RecipeCategories.absNonAlloyRecipes).addTo(alloyBlastSmelterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(tItemStackTest)
+                    .fluidOutputs(M.getFluidStack(fluidAmount))
+                    .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
+                    .eut(aVoltage)
+                    .recipeCategory(RecipeCategories.absNonAlloyRecipes)
+                    .addTo(alloyBlastSmelterRecipes);
             } else {
                 Logger.WARNING("[BAS] Failed.");
             }
         } else {
-            GTValues.RA.stdBuilder().itemInputs(tItemStackTest).fluidOutputs(M.getFluidStack(fluidAmount)).eut(aVoltage)
-                    .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
-                    .addTo(alloyBlastSmelterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(tItemStackTest)
+                .fluidOutputs(M.getFluidStack(fluidAmount))
+                .eut(aVoltage)
+                .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
+                .addTo(alloyBlastSmelterRecipes);
 
             Logger.WARNING("[BAS] Success.");
-            GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Ingot.get(0)).itemOutputs(M.getIngot(1))
-                    .fluidInputs(M.getFluidStack(144)).duration(duration / 2).eut(60).addTo(fluidSolidifierRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
+                .itemOutputs(M.getIngot(1))
+                .fluidInputs(M.getFluidStack(144))
+                .duration(duration / 2)
+                .eut(60)
+                .addTo(fluidSolidifierRecipes);
 
             Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
 
@@ -179,8 +191,12 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                 continue;
             }
 
-            Logger.WARNING("[BAS] FOUND: " + xMaterial.getStackMaterial().getLocalizedName());
-            Logger.WARNING("[BAS] ADDING: " + xMaterial.getStackMaterial().getLocalizedName());
+            Logger.WARNING(
+                "[BAS] FOUND: " + xMaterial.getStackMaterial()
+                    .getLocalizedName());
+            Logger.WARNING(
+                "[BAS] ADDING: " + xMaterial.getStackMaterial()
+                    .getLocalizedName());
             tempStack[ooo] = xMaterial;
             ooo++;
         }
@@ -190,23 +206,35 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         components = new ItemStack[9];
         inputStackCount = 0;
         FluidStack componentsFluid = null;
-        for (int irc = 0; irc < M.getComposites().size(); irc++) {
-            if (M.getComposites().get(irc) == null) {
+        for (int irc = 0; irc < M.getComposites()
+            .size(); irc++) {
+            if (M.getComposites()
+                .get(irc) == null) {
                 continue;
             }
 
             final int r = (int) M.vSmallestRatio[irc];
             inputStackCount = inputStackCount + r;
-            if ((M.getComposites().get(irc).getStackMaterial().getState() != MaterialState.SOLID)
-                    || (M.getComposites().get(irc).getDustStack(r)) == null) {
+            if ((M.getComposites()
+                .get(irc)
+                .getStackMaterial()
+                .getState() != MaterialState.SOLID)
+                || (M.getComposites()
+                    .get(irc)
+                    .getDustStack(r)) == null) {
                 if (r > 0 && r <= 100) {
                     final int mathmatics = (r * 1000);
                     componentsFluid = FluidUtils.getFluidStack(
-                            M.getComposites().get(irc).getStackMaterial().getFluidStack(mathmatics),
-                            mathmatics);
+                        M.getComposites()
+                            .get(irc)
+                            .getStackMaterial()
+                            .getFluidStack(mathmatics),
+                        mathmatics);
                 }
             } else {
-                components[irc] = M.getComposites().get(irc).getUnificatedDustStack(r);
+                components[irc] = M.getComposites()
+                    .get(irc)
+                    .getUnificatedDustStack(r);
             }
         }
 
@@ -223,9 +251,9 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                 }
             }
             Logger.WARNING(
-                    "[BAS] Should have added a circuit. mMaterialListSize: " + mMaterialListSize
-                            + " | circuit: "
-                            + components[0].getDisplayName());
+                "[BAS] Should have added a circuit. mMaterialListSize: " + mMaterialListSize
+                    + " | circuit: "
+                    + components[0].getDisplayName());
         } else {
             Logger.WARNING("[BAS] Did not add a circuit. mMaterialListSize: " + mMaterialListSize);
         }
@@ -234,23 +262,23 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         fluidAmount = 144 * inputStackCount;
 
         Logger.WARNING(
-                "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
-                        + " using it's compound dusts. This material has "
-                        + inputStackCount
-                        + " parts. Gives "
-                        + fluidAmount
-                        + "L of molten metal.");
+            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
+                + " using it's compound dusts. This material has "
+                + inputStackCount
+                + " parts. Gives "
+                + fluidAmount
+                + "L of molten metal.");
         Logger.WARNING("[BAS] tMaterial.length: " + components.length + ".");
         for (int das = 0; das < components.length; das++) {
             if (components[das] != null) {
                 Logger.WARNING(
-                        "[BAS] tMaterial[" + das
-                                + "]: "
-                                + components[das].getDisplayName()
-                                + " Meta: "
-                                + components[das].getItemDamage()
-                                + ", Amount: "
-                                + components[das].stackSize);
+                    "[BAS] tMaterial[" + das
+                        + "]: "
+                        + components[das].getDisplayName()
+                        + " Meta: "
+                        + components[das].getItemDamage()
+                        + ", Amount: "
+                        + components[das].stackSize);
             }
         }
 
@@ -271,7 +299,8 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         } else {
             builder.eut(aVoltage / 2);
         }
-        builder.duration(duration).addTo(alloyBlastSmelterRecipes);
+        builder.duration(duration)
+            .addTo(alloyBlastSmelterRecipes);
         Logger.WARNING("[BAS] Success.");
     }
 }

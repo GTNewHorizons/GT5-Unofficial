@@ -79,9 +79,9 @@ interface MagicalEnergyBBListener {
 public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements MagicalEnergyBBListener {
 
     private static final ConcurrentHashMap<UUID, MTEMagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
-            4);
+        4);
     private static final List<Aspect> sPrimalAspects = (Thaumcraft.isModLoaded()) ? Aspect.getPrimalAspects()
-            : new ArrayList<>();
+        : new ArrayList<>();
     private static final Map<Aspect, Integer> sAspectsEnergy = new HashMap<>();
     private static boolean sAllowMultipleEggs = false;
     private static MTEMagicalEnergyAbsorber sActiveSiphon = null;
@@ -115,9 +115,12 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             for (Aspect tAspect : Aspect.aspects.values()) {
                 // noinspection UnstableApiUsage
                 sAspectsEnergy.put(
-                        tAspect,
-                        Enums.getIfPresent(TCAspects.class, tAspect.getTag().toUpperCase(Locale.ENGLISH))
-                                .or(TCAspects.AER).mValue * sEnergyPerEssentia);
+                    tAspect,
+                    Enums.getIfPresent(
+                        TCAspects.class,
+                        tAspect.getTag()
+                            .toUpperCase(Locale.ENGLISH))
+                        .or(TCAspects.AER).mValue * sEnergyPerEssentia);
             }
         }
     }
@@ -136,17 +139,17 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                        GTLanguageManager.addStringLocalization(
-                                "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
-                                "Absorption range: %s blocks"),
-                        mMagicalEnergyBB.getRange(),
-                        true));
+            aPlayer,
+            String.format(
+                GTLanguageManager.addStringLocalization(
+                    "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
+                    "Absorption range: %s blocks"),
+                mMagicalEnergyBB.getRange(),
+                true));
         mMagicalEnergyBB.update();
     }
 
@@ -198,43 +201,43 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         final String LI = "- %%%";
         final String EU_PER = "%%%EU per ";
         List<String> description = new ArrayList<>();
+        description
+            .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
         description.add(
-                UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
-        description.add(
-                "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
-                        + GRAY
-                        + " "
-                        + LIGHT_PURPLE
-                        + "Dragon Egg"
-                        + GRAY
-                        + " atop");
+            "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
+                + GRAY
+                + " "
+                + LIGHT_PURPLE
+                + "Dragon Egg"
+                + GRAY
+                + " atop");
         if (sEnergyPerEndercrystal > 0) {
             description.add(LI + sEnergyPerEndercrystal + EU_PER + LIGHT_PURPLE + "Ender Crystal" + GRAY + " in range");
         }
         if (Thaumcraft.isModLoaded()) {
             description.add(LI + mMaxVisPerDrain + "%%%CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
             description.add(
-                    LI + (sEnergyPerEssentia * getEfficiency()) / 100
-                            + EU_PER
-                            + LIGHT_PURPLE
-                            + "Essentia"
-                            + GRAY
-                            + " Aspect-Value from containers in range");
+                LI + (sEnergyPerEssentia * getEfficiency()) / 100
+                    + EU_PER
+                    + LIGHT_PURPLE
+                    + "Essentia"
+                    + GRAY
+                    + " Aspect-Value from containers in range");
         }
         description.add(" ");
         description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
         description.add("Default: %%%" + GREEN + mMagicalEnergyBB.getDefaultRange());
         description.add("Max: %%%" + GREEN + mMagicalEnergyBB.getMaxRange());
         description.add(" ");
+        description
+            .add(UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
         description.add(
-                UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
-        description.add(
-                "- Item: %%%" + (10000 * getEfficiency()) / 100
-                        + EU_PER
-                        + LIGHT_PURPLE
-                        + "enchant"
-                        + GRAY
-                        + " weight × level / max");
+            "- Item: %%%" + (10000 * getEfficiency()) / 100
+                + EU_PER
+                + LIGHT_PURPLE
+                + "enchant"
+                + GRAY
+                + " weight × level / max");
         description.add("- Book: %%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
         description.add(" ");
         description.add("Efficiency: %%%" + GREEN + getEfficiency() + "%");
@@ -244,20 +247,29 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build(),
-                OVERLAYS_ENERGY_OUT[mTier] };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                .glow()
+                .build(),
+            OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -268,38 +280,56 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build(),
-                OVERLAYS_ENERGY_OUT[mTier] };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                .glow()
+                .build(),
+            OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(MACHINE_CASING_DRAGONEGG),
-                TextureFactory.builder().addIcon(MACHINE_CASING_DRAGONEGG_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_DRAGONEGG_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -342,8 +372,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             }
             aBaseMetaTileEntity.increaseStoredEnergyUnits(tGeneratedEU, true);
             aBaseMetaTileEntity.setActive(
-                    aBaseMetaTileEntity.isAllowedToWork()
-                            && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
+                aBaseMetaTileEntity.isAllowedToWork()
+                    && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
         }
     }
 
@@ -365,7 +395,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 final double oZ = aBaseMetaTileEntity.getZCoord() + 8D / 16D;
 
                 final ParticleEventBuilder particleEventBuilder = new ParticleEventBuilder()
-                        .setWorld(getBaseMetaTileEntity().getWorld()).setIdentifier(ParticleFX.PORTAL);
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .setIdentifier(ParticleFX.PORTAL);
 
                 for (int i = 0; i < 9; i++) {
                     final double dX = (XSTR_INSTANCE.nextFloat() - 0.5D) / 2D;
@@ -381,7 +412,9 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                     final double mY = -(dXZ * dY) / 4D;
                     final double mZ = dZ * 4D;
 
-                    particleEventBuilder.setMotion(mX, mY, mZ).setPosition(x, y, z).run();
+                    particleEventBuilder.setMotion(mX, mY, mZ)
+                        .setPosition(x, y, z)
+                        .run();
                 }
             }
         }
@@ -404,13 +437,14 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         // Restrict input to disenchantable items or enchanted books
         return (isDisenchantableItem(aStack) || isEnchantedBook(aStack));
     }
 
     private boolean isDisenchantableItem(ItemStack aStack) {
-        return ((aStack.isItemEnchanted()) && (aStack.getItem().getItemEnchantability() > 0));
+        return ((aStack.isItemEnchanted()) && (aStack.getItem()
+            .getItemEnchantability() > 0));
     }
 
     private boolean isEnchantedBook(ItemStack aStack) {
@@ -458,7 +492,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
         // Only consume input when it can store EU and push output
         if ((getBaseMetaTileEntity().getStoredEU() + tEU) < getBaseMetaTileEntity().getEUCapacity()
-                && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tOutputStack)) {
+            && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tOutputStack)) {
             decrStackSize(getInputSlot(), 1);
         } else {
             tEU = 0;
@@ -475,10 +509,11 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         if (!hasEgg()) return 0;
         if (!sAllowMultipleEggs) {
             if (sActiveSiphon != null && sActiveSiphon != this
-                    && sActiveSiphon.getBaseMetaTileEntity() != null
-                    && !sActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()
-                    && sActiveSiphon.isChunkLoaded()
-                    && sActiveSiphon.hasEgg()) {
+                && sActiveSiphon.getBaseMetaTileEntity() != null
+                && !sActiveSiphon.getBaseMetaTileEntity()
+                    .isInvalidTileEntity()
+                && sActiveSiphon.isChunkLoaded()
+                && sActiveSiphon.hasEgg()) {
                 getBaseMetaTileEntity().doExplosion(Integer.MAX_VALUE);
             } else {
                 setActiveSiphon(this);
@@ -487,9 +522,10 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         Block egg = getBaseMetaTileEntity().getBlockOffset(0, 1, 0);
         if (egg == Blocks.dragon_egg) {
             return sDragonEggEnergyPerTick;
-        } else if (egg.getUnlocalizedName().contains("creeperEgg")) {
-            return sCreeperEggEnergyPerTick;
-        }
+        } else if (egg.getUnlocalizedName()
+            .contains("creeperEgg")) {
+                return sCreeperEggEnergyPerTick;
+            }
         return 0;
     }
 
@@ -540,10 +576,10 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             Aspect aspect = mAvailableEssentiaAspects.get(i);
             long tAspectEU = ((long) sAspectsEnergy.get(aspect) * getEfficiency()) / 100;
             if (tAspectEU <= tEUtoGen && AspectSourceHelper.drainEssentia(
-                    (TileEntity) getBaseMetaTileEntity(),
-                    aspect,
-                    ForgeDirection.UNKNOWN,
-                    mMagicalEnergyBB.getRange())) {
+                (TileEntity) getBaseMetaTileEntity(),
+                aspect,
+                ForgeDirection.UNKNOWN,
+                mMagicalEnergyBB.getRange())) {
                 tEUtoGen -= tAspectEU;
                 tEU += tAspectEU;
             }
@@ -556,7 +592,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         if (aBlock == Blocks.air) return false;
         if (aBlock == Blocks.dragon_egg) return true;
         if (aBlock instanceof BlockDragonEgg) return true;
-        return (aBlock.getUnlocalizedName().equals("tile.dragonEgg"));
+        return (aBlock.getUnlocalizedName()
+            .equals("tile.dragonEgg"));
     }
 
     private boolean isChunkLoaded() {
@@ -662,11 +699,12 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             double tY = tBaseMetaTileEntity.getYCoord();
             double tZ = tBaseMetaTileEntity.getZCoord();
             return AxisAlignedBB
-                    .getBoundingBox(tX - tRange, tY - tRange, tZ - tRange, tX + tRange, tY + tRange, tZ + tRange);
+                .getBoundingBox(tX - tRange, tY - tRange, tZ - tRange, tX + tRange, tY + tRange, tZ + tRange);
         }
 
         private void scanLivingCrystals() {
-            World tWorld = mAbsorber.getBaseMetaTileEntity().getWorld();
+            World tWorld = mAbsorber.getBaseMetaTileEntity()
+                .getWorld();
             mLivingCrystalIDs.clear();
             for (EntityEnderCrystal o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
                 if (o.isEntityAlive()) {
@@ -681,7 +719,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             if (tBaseMetaTileEntity.isInvalidTileEntity()) return;
             int tRange = getRange();
             int tY = tBaseMetaTileEntity.getYCoord();
-            int tMaxY = tBaseMetaTileEntity.getWorld().getHeight() - 1;
+            int tMaxY = tBaseMetaTileEntity.getWorld()
+                .getHeight() - 1;
             // Make sure relative Y range stays between 0 and world max Y
             int rYMin = (tY - tRange >= 0) ? -tRange : -(tY);
             int rYMax = (((tY + tRange) <= tMaxY) ? tRange : tMaxY - tY);
@@ -722,8 +761,10 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         void update() {
             if (mAbsorber == null) return;
             if (mAbsorber.getBaseMetaTileEntity() == null) return;
-            if (mAbsorber.getBaseMetaTileEntity().isInvalidTileEntity()) return;
-            if (mAbsorber.getBaseMetaTileEntity().getWorld() == null) return;
+            if (mAbsorber.getBaseMetaTileEntity()
+                .isInvalidTileEntity()) return;
+            if (mAbsorber.getBaseMetaTileEntity()
+                .getWorld() == null) return;
             scanLivingCrystals();
             scanAvailableAspects();
             if (mListener != null) {

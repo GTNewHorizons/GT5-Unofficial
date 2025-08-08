@@ -58,9 +58,9 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
     @Override
     public String getDisplayString() {
         return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.missing_project",
-                StatCollector.translateToLocal(neededProject),
-                StatCollector.translateToLocal(neededLocation));
+            "GT5U.gui.text.missing_project",
+            StatCollector.translateToLocal(neededProject),
+            StatCollector.translateToLocal(neededLocation));
     }
 
     @Override

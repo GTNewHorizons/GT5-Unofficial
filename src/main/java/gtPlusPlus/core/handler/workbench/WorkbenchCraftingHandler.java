@@ -79,7 +79,8 @@ public class WorkbenchCraftingHandler {
             final char c = s.charAt(i1);
 
             if (hashmap.containsKey(c)) {
-                aitemstack[i1] = hashmap.get(c).copy();
+                aitemstack[i1] = hashmap.get(c)
+                    .copy();
             } else {
                 aitemstack[i1] = null;
             }

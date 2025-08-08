@@ -35,8 +35,8 @@ public class MetaItemDumper extends GregTechIDDumper {
                 list.add(new String[] { String.valueOf(i), "", String.valueOf(metaID), });
             } else if (mode == Mode.USED && generated) {
                 list.add(
-                        new String[] { String.valueOf(i), new ItemStack(item, 1, metaID).getDisplayName(),
-                                String.valueOf(metaID), });
+                    new String[] { String.valueOf(i), new ItemStack(item, 1, metaID).getDisplayName(),
+                        String.valueOf(metaID), });
             }
         }
         return list;
@@ -46,7 +46,7 @@ public class MetaItemDumper extends GregTechIDDumper {
     public void dumpFile() {
         super.super$dumpFile();
         NEIClientUtils.printChatMessage(
-                new ChatComponentText(String.format("mOffset: %s, mItemAmount: %s", item.mOffset, item.mItemAmount)));
+            new ChatComponentText(String.format("mOffset: %s, mItemAmount: %s", item.mOffset, item.mItemAmount)));
         logWarn();
     }
 

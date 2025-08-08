@@ -32,20 +32,20 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
 
     public MTEHatchEnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                                + EnumChatFormatting.YELLOW
-                                + GTUtility.formatNumbers(aAmp * V[aTier])
-                                + EnumChatFormatting.RESET
-                                + " EU/t", },
-                aAmp); // Energy injecting terminal for Multiblocks
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + EnumChatFormatting.RESET
+                    + " EU/t", },
+            aAmp); // Energy injecting terminal for Multiblocks
     }
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -111,7 +111,7 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -122,11 +122,20 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(TextWidget.localised("GT5U.machines.laser_hatch.amperage").setPos(x, y).setSize(74, 14)).widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val).setGetter(() -> Amperes)
-                        .setBounds(1, maxAmperes).setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                        .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(x, y + 16)
-                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
+                .setPos(x, y)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> Amperes = (int) val)
+                    .setGetter(() -> Amperes)
+                    .setBounds(1, maxAmperes)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(x, y + 16)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 
     @Override

@@ -27,12 +27,13 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 public class ToolAngleGrinder extends GTTool {
 
     public static final List<String> mEffectiveList = Arrays
-            .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
+        .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
     public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,
-            final EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
+        final EntityPlayer aPlayer) {
+        String tName = aEntity.getClass()
+            .getName();
         tName = tName.substring(tName.lastIndexOf(".") + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -110,12 +111,12 @@ public class ToolAngleGrinder extends GTTool {
     @Override
     public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has been Ground out of existence by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has been Ground out of existence by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 
     @Override

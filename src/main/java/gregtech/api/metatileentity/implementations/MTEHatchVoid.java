@@ -29,13 +29,13 @@ public class MTEHatchVoid extends MTEHatchOutput {
 
     public MTEHatchVoid(int aID, String aName, String aNameRegional) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                1,
-                new String[] { "Voids fluids from Multiblocks", "Must be configured to work",
-                        "Mimics behavior of restricted hatches" },
-                1);
+            aID,
+            aName,
+            aNameRegional,
+            1,
+            new String[] { "Voids fluids from Multiblocks", "Must be configured to work",
+                "Mimics behavior of restricted hatches" },
+            1);
     }
 
     public MTEHatchVoid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -79,13 +79,13 @@ public class MTEHatchVoid extends MTEHatchOutput {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aindex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aindex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -96,11 +96,11 @@ public class MTEHatchVoid extends MTEHatchOutput {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {}
+        ItemStack aTool) {}
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
@@ -130,7 +130,9 @@ public class MTEHatchVoid extends MTEHatchOutput {
             if (lockedFluidName == null) {
                 return false;
             }
-            return lockedFluidName.equals(fluidStack.getFluid().getName());
+            return lockedFluidName.equals(
+                fluidStack.getFluid()
+                    .getName());
         }
         return false;
     }
@@ -141,17 +143,23 @@ public class MTEHatchVoid extends MTEHatchOutput {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(new FluidLockWidget(this).setPos(58, 41))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.label"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
-                .widget(TextWidget.dynamicString(() -> {
-                    FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                    return fluidStack != null ? fluidStack.getLocalizedName()
-                            : StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty");
-                }).setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.CenterLeft).setMaxWidth(65)
-                        .setPos(10, 30))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 16)
+                .setSize(71, 45))
+            .widget(new FluidLockWidget(this).setPos(58, 41))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.label"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(TextWidget.dynamicString(() -> {
+                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
+                return fluidStack != null ? fluidStack.getLocalizedName()
+                    : StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty");
+            })
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setTextAlignment(Alignment.CenterLeft)
+                .setMaxWidth(65)
+                .setPos(10, 30))
+            .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }
 }

@@ -163,12 +163,12 @@ public class Parameters {
         }
 
         public ParameterIn makeInParameter(int paramID, double defaultValue, INameFunction<?> name,
-                IStatusFunction<?> status) {
+            IStatusFunction<?> status) {
             return new ParameterIn(paramID, defaultValue, name, status);
         }
 
         public ParameterOut makeOutParameter(int paramID, double defaultValue, INameFunction<?> name,
-                IStatusFunction<?> status) {
+            IStatusFunction<?> status) {
             return new ParameterOut(paramID, defaultValue, name, status);
         }
 

@@ -21,7 +21,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.util.GTUtility;
 
 public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInventory>
-        implements IMEMonitor<IAEItemStack> {
+    implements IMEMonitor<IAEItemStack> {
 
     private final T machine;
 
@@ -130,13 +130,15 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
                 machine.setItemStack(inputStack.copy());
             }
             machine.setItemCount(newCount);
-            machine.getBaseMetaTileEntity().markDirty();
+            machine.getBaseMetaTileEntity()
+                .markDirty();
         }
 
         if (notAdded <= 0) {
             return null;
         } else {
-            return input.copy().setStackSize(notAdded);
+            return input.copy()
+                .setStackSize(notAdded);
         }
     }
 
@@ -147,7 +149,8 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
         if (request.isSameType(machine.getItemStack())) {
             // Internal inv content is queried
             if (mode != Actionable.SIMULATE) {
-                machine.getBaseMetaTileEntity().markDirty();
+                machine.getBaseMetaTileEntity()
+                    .markDirty();
             }
             final ItemStack storedItemStack = machine.getItemStack();
             final ItemStack storedExtraItemStack = machine.getExtraItemStack();
@@ -189,7 +192,8 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
             // Requested specifically for extra inv
             ItemStack extraItemStack = machine.getExtraItemStack();
             if (mode != Actionable.SIMULATE) {
-                machine.getBaseMetaTileEntity().markDirty();
+                machine.getBaseMetaTileEntity()
+                    .markDirty();
             }
             if (request.getStackSize() >= extraItemStack.stackSize) {
                 // Cannot provide all the items required

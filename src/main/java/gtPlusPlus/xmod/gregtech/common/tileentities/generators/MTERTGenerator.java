@@ -87,7 +87,9 @@ public class MTERTGenerator extends MTEBasicGenerator {
         final NBTTagCompound data = list.getCompoundTagAt(0);
         ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
         if (lastUsedFuel != null) {
-            this.mCurrentRecipe = getRecipeMap().findRecipeQuery().items(lastUsedFuel).find();
+            this.mCurrentRecipe = getRecipeMap().findRecipeQuery()
+                .items(lastUsedFuel)
+                .find();
         }
     }
 
@@ -111,20 +113,20 @@ public class MTERTGenerator extends MTEBasicGenerator {
                     if (this.mInventory[getStackDisplaySlot()] == null)
                         this.mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     this.mInventory[getStackDisplaySlot()].setStackDisplayName(
-                            "Generating: "
-                                    + GTUtility.formatNumbers(
-                                            aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
-                                    + " EU");
+                        "Generating: "
+                            + GTUtility.formatNumbers(
+                                aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
+                            + " EU");
                 }
             } else {
                 int tFuelValue = getFuelValue(this.mFluid);
                 int tConsumed = consumedFluidPerOperation(this.mFluid);
                 if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount > tConsumed)) {
                     long tFluidAmountToUse = Math.min(
-                            this.mFluid.amount / tConsumed,
-                            (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
+                        this.mFluid.amount / tConsumed,
+                        (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
                     if ((tFluidAmountToUse > 0L)
-                            && (aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))) {
+                        && (aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))) {
                         tProducedEU = tFluidAmountToUse * tFuelValue;
                         FluidStack tmp260_257 = this.mFluid;
                         tmp260_257.amount = (int) (tmp260_257.amount - (tFluidAmountToUse * tConsumed));
@@ -132,8 +134,8 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 }
             }
             if ((this.mInventory[getInputSlot()] != null)
-                    && (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() * 20L + getMinimumStoredEU())
-                    && (GTUtility.getFluidForFilledItem(this.mInventory[getInputSlot()], true) == null)) {
+                && (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() * 20L + getMinimumStoredEU())
+                && (GTUtility.getFluidForFilledItem(this.mInventory[getInputSlot()], true) == null)) {
                 int tFuelValue = getFuelValue(this.mInventory[getInputSlot()]);
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(this.mInventory[getInputSlot()]);
@@ -145,26 +147,25 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 }
             }
             if ((tProducedEU > 0L) && (getPollution() > 0)) {
-                Pollution.addPollution(
-                        aBaseMetaTileEntity,
-                        (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
+                Pollution
+                    .addPollution(aBaseMetaTileEntity, (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
             }
         }
 
         if (aBaseMetaTileEntity.isServerSide()) aBaseMetaTileEntity.setActive(
-                (aBaseMetaTileEntity.isAllowedToWork())
-                        && (aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU()));
+            (aBaseMetaTileEntity.isAllowedToWork())
+                && (aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU()));
     }
 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "Fuel is measured in minecraft days (Check with Scanner)",
-                "RTG changes output voltage depending on fuel",
-                "Generates power at " + GTUtility.formatNumbers(this.getEfficiency()) + "% Efficiency per tick",
-                "Output Voltage: " + GTUtility.formatNumbers(this.getOutputTier()) + " EU/t",
-                GTPPCore.GT_Tooltip.get());
+            this.mDescriptionArray,
+            "Fuel is measured in minecraft days (Check with Scanner)",
+            "RTG changes output voltage depending on fuel",
+            "Generates power at " + GTUtility.formatNumbers(this.getEfficiency()) + "% Efficiency per tick",
+            "Output Voltage: " + GTUtility.formatNumbers(this.getOutputTier()) + " EU/t",
+            GTPPCore.GT_Tooltip.get());
     }
 
     public MTERTGenerator(int aID, String aName, String aNameRegional, int aTier) {
@@ -192,7 +193,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return ((side.offsetY == 0) && (side != getBaseMetaTileEntity().getFrontFacing())
-                && (side != getBaseMetaTileEntity().getBackFacing()));
+            && (side != getBaseMetaTileEntity().getBackFacing()));
     }
 
     @Override
@@ -238,38 +239,47 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW).glow().build(),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
@@ -280,7 +290,9 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public int getFuelValue(ItemStack aStack) {
         if ((GTUtility.isStackInvalid(aStack)) || (getRecipeMap() == null)) return 0;
-        GTRecipe tFuel = getRecipeMap().findRecipeQuery().items(aStack).find();
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) {
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;
@@ -341,17 +353,19 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public String[] getInfoData() {
         return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
-                StatCollector
-                        .translateToLocalFormatted("gtpp.infodata.rtg.active", this.getBaseMetaTileEntity().isActive()),
-                StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", GTUtility.formatNumbers(mVoltage)),
-                StatCollector.translateToLocalFormatted(
-                        "gtpp.infodata.rtg.remaining.days",
-                        GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20)),
-                StatCollector.translateToLocalFormatted(
-                        "gtpp.infodata.rtg.remaining.hours",
-                        GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60)),
-                StatCollector
-                        .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
-                this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.active",
+                this.getBaseMetaTileEntity()
+                    .isActive()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", GTUtility.formatNumbers(mVoltage)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.days",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.hours",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60)),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
+            this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

@@ -51,49 +51,46 @@ import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 
     DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
-            Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
-                beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
-                beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        GTBeeDefinition.DRAGONESSENCE.getSpecies(),
-                        GTBeeDefinition.NEUTRONIUM.getSpecies(),
-                        2,
-                        1f);
-                tMutation.restrictHumidity(ARID);
-                tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
-                tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
-            }),
+        Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
+            beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
+            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(
+                GTBeeDefinition.DRAGONESSENCE.getSpecies(),
+                GTBeeDefinition.NEUTRONIUM.getSpecies(),
+                2,
+                1f);
+            tMutation.restrictHumidity(ARID);
+            tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
+        }),
     FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", STANDALONE.FORCE, true, Utils.rgbtoHexValue(250, 250, 20),
-            Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
-                beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
-                beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);
-                beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.FORCE), 0.10f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.HOT);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        GTBeeDefinition.STEEL.getSpecies(),
-                        GTBeeDefinition.GOLD.getSpecies(),
-                        10,
-                        1f);
-                tMutation.restrictHumidity(ARID);
-                tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
-            }),;
+        Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);
+            beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.FORCE), 0.10f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.HOT);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(GTBeeDefinition.STEEL.getSpecies(), GTBeeDefinition.GOLD.getSpecies(), 10, 1f);
+            tMutation.restrictHumidity(ARID);
+            tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
+        }),;
 
     private final GTPP_BranchDefinition branch;
     private final GTPPAlleleBeeSpecies species;
@@ -104,44 +101,48 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     private IBeeGenome genome;
 
     GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Materials aMat, boolean dominant, int primary,
-            int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
-            Consumer<GTPP_BeeDefinition> aMutations) {
+        int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        Consumer<GTPP_BeeDefinition> aMutations) {
         this(
-                branch,
-                binomial,
-                MaterialUtils.generateMaterialFromGtENUM(aMat),
-                dominant,
-                primary,
-                secondary,
-                aSpeciesProperties,
-                aAlleles,
-                aMutations);
+            branch,
+            binomial,
+            MaterialUtils.generateMaterialFromGtENUM(aMat),
+            dominant,
+            primary,
+            secondary,
+            aSpeciesProperties,
+            aAlleles,
+            aMutations);
     }
 
     GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Material aMat, boolean dominant, int primary,
-            int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
-            Consumer<GTPP_BeeDefinition> aMutations) {
+        int secondary, Consumer<GTPPAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        Consumer<GTPP_BeeDefinition> aMutations) {
         this.mAlleles = aAlleles;
         this.mMutations = aMutations;
         this.mSpeciesProperties = aSpeciesProperties;
-        String lowercaseName = this.toString().toLowerCase(Locale.ENGLISH);
+        String lowercaseName = this.toString()
+            .toLowerCase(Locale.ENGLISH);
         String species = WordUtils.capitalize(binomial);
         String uid = "gtpp.bee.species" + species;
         String description = "for.description." + species;
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
-        GTPP_Bees.sMaterialMappings.put(binomial.toLowerCase().replaceAll(" ", ""), aMat);
+        GTPP_Bees.sMaterialMappings.put(
+            binomial.toLowerCase()
+                .replaceAll(" ", ""),
+            aMat);
         this.branch = branch;
         this.species = new GTPPAlleleBeeSpecies(
-                uid,
-                dominant,
-                name,
-                "GT++",
-                description,
-                branch.getBranch(),
-                binomial,
-                primary,
-                secondary);
+            uid,
+            dominant,
+            name,
+            "GT++",
+            description,
+            branch.getBranch(),
+            binomial,
+            primary,
+            secondary);
     }
 
     public static void initBees() {
@@ -232,22 +233,22 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
      * chancedivider
      */
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
-            float chancedivider) {
+        float chancedivider) {
         return new GTPPBeeMutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
     }
 
     private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,
-            float chancedivider) {
+        float chancedivider) {
         return registerMutation(parent1.species, parent2, chance, chancedivider);
     }
 
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance,
-            float chancedivider) {
+        float chancedivider) {
         return registerMutation(parent1, parent2.species, chance, chancedivider);
     }
 
     private IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance,
-            float chancedivider) {
+        float chancedivider) {
         return registerMutation(parent1.species, parent2, chance, chancedivider);
     }
 

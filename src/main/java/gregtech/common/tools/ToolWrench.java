@@ -44,12 +44,13 @@ public class ToolWrench extends GTTool {
     public static final float INSTANT_BREAK_THRESHOLD = 0.99F;
 
     public static final List<String> mEffectiveList = Arrays
-            .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
+        .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
+        EntityPlayer aPlayer) {
+        String tName = aEntity.getClass()
+            .getName();
         tName = tName.substring(tName.lastIndexOf('.') + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -87,11 +88,11 @@ public class ToolWrench extends GTTool {
     @Override
     public boolean isMinableBlock(Block block, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(block, aMetaData, "wrench")
-                || GTToolHarvestHelper.isAppropriateMaterial(block, Material.piston)
-                || block instanceof AEBaseTileBlock
-                || GTToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
-                || BehaviourWrench.isVanillaRotatable(block)
-                || GTToolHarvestHelper.isIC2Wrenchable(block);
+            || GTToolHarvestHelper.isAppropriateMaterial(block, Material.piston)
+            || block instanceof AEBaseTileBlock
+            || GTToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
+            || BehaviourWrench.isVanillaRotatable(block)
+            || GTToolHarvestHelper.isIC2Wrenchable(block);
     }
 
     @Override
@@ -113,12 +114,12 @@ public class ToolWrench extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " threw a Monkey Wrench into the Plans of "
-                        + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " threw a Monkey Wrench into the Plans of "
+                + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 
     /**
@@ -149,7 +150,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public float getBlockStrength(ItemStack tool, Block block, EntityPlayer player, World world, int x, int y, int z,
-            float defaultBlockStrength) {
+        float defaultBlockStrength) {
         if (getToolMode(tool) == 2) { // Precise Mode
             return Math.min(INSTANT_BREAK_THRESHOLD, defaultBlockStrength);
         }
@@ -158,7 +159,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, int metadata,
-            TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
+        TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
         if (tile instanceof IWrenchable wrenchable) {
             if (!wrenchable.wrenchCanRemove(player)) {
                 event.setCanceled(true);
@@ -184,15 +185,15 @@ public class ToolWrench extends GTTool {
                 final int sideHit = movObjPosition.sideHit;
                 if (tile instanceof IPartHost) {
                     if (sneak && PartPlacement.place(
-                            player.getHeldItem(),
-                            x,
-                            y,
-                            z,
-                            sideHit,
-                            player,
-                            player.worldObj,
-                            PartPlacement.PlaceType.INTERACT_FIRST_PASS,
-                            0)) {
+                        player.getHeldItem(),
+                        x,
+                        y,
+                        z,
+                        sideHit,
+                        player,
+                        player.worldObj,
+                        PartPlacement.PlaceType.INTERACT_FIRST_PASS,
+                        0)) {
                         event.setCanceled(true);
                     }
                     return;
@@ -209,7 +210,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> drops, ItemStack Stack, EntityPlayer player, Block block, int x, int y,
-            int z, int metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
+        int z, int metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
         ItemStack drop = null;
         int modified = 0;
         if (wrenchableDrop != null) {

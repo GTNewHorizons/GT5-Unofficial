@@ -19,13 +19,13 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstract {
 
     public GregtechMetaCasingBlocksAbstract(final Class<? extends ItemBlock> aItemClass, final String aName,
-            final Material aMaterial) {
+        final Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         this.setStepSound(soundTypeMetal);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GregTechAPI.registerMachineBlock(this, -1);
         GTLanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
+            .addStringLocalization(this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
     @Override

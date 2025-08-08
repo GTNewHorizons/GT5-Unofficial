@@ -120,13 +120,13 @@ public class GTGenericItem extends Item implements IProjectileItem {
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-            double aZ) {
+        double aZ) {
         return null;
     }
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-            float aSpeed) {
+        float aSpeed) {
         return null;
     }
 

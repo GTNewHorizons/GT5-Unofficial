@@ -8,82 +8,78 @@ public class TextureSet {
     private static final String aTextVoidDir = "/void";
 
     private static final TextureType[] IS_BLOCK_TEXTURE = new TextureType[] { TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-            TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-            TextureType.ITEM, };
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, };
     private static final String[] SUFFIXES = new String[] { "/dustTiny", "/dustSmall", "/dust", "/dustImpure",
-            "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall",
-            "/ingot", "/ingotHot", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plate", "/plateDouble",
-            "/plateTriple", "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt",
-            "/screw", "/ring", "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-            aTextVoidDir, "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw",
-            "/toolHeadWrench", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver",
-            "/toolHeadBuzzSaw", "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong",
-            "/springSmall", "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless",
-            "/gemExquisite", "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil",
-            "/block1", "/block2", "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall",
-            "/pipeMedium", "/pipeLarge", "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir,
-            aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-            aTextVoidDir, aTextVoidDir, "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate",
-            "/turbineBlade", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-            aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-            aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-            aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense", "/handleMallet",
-            "/toolHeadMallet", };
+        "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall", "/ingot",
+        "/ingotHot", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plate", "/plateDouble", "/plateTriple",
+        "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt", "/screw", "/ring",
+        "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw", "/toolHeadWrench",
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver", "/toolHeadBuzzSaw",
+        "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong", "/springSmall",
+        "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
+        "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
+        "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
+        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
+        "/handleMallet", "/toolHeadMallet", };
 
     public boolean is_custom = false;
 
     public String aTextCustomAutogenerated = "autogenerated";
 
     public static final TextureSet SET_NONE = new TextureSet("NONE"), SET_DULL = new TextureSet("DULL"),
-            SET_RUBY = new TextureSet("RUBY"), SET_OPAL = new TextureSet("OPAL"), SET_LEAF = new TextureSet("LEAF"),
-            SET_WOOD = new TextureSet("WOOD"), SET_SAND = new TextureSet("SAND"), SET_FINE = new TextureSet("FINE"),
-            SET_FIERY = new TextureSet("FIERY"), SET_FLUID = new TextureSet("FLUID"),
-            SET_ROUGH = new TextureSet("ROUGH"), SET_PAPER = new TextureSet("PAPER"),
-            SET_GLASS = new TextureSet("GLASS"), SET_FLINT = new TextureSet("FLINT"),
-            SET_LAPIS = new TextureSet("LAPIS"), SET_SHINY = new TextureSet("SHINY"),
-            SET_SHARDS = new TextureSet("SHARDS"), SET_POWDER = new TextureSet("POWDER"),
-            SET_QUARTZ = new TextureSet("QUARTZ"), SET_EMERALD = new TextureSet("EMERALD"),
-            SET_DIAMOND = new TextureSet("DIAMOND"), SET_LIGNITE = new TextureSet("LIGNITE"),
-            SET_MAGNETIC = new TextureSet("MAGNETIC"), SET_METALLIC = new TextureSet("METALLIC"),
-            SET_NETHERSTAR = new TextureSet("NETHERSTAR"), SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"),
-            SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL");
+        SET_RUBY = new TextureSet("RUBY"), SET_OPAL = new TextureSet("OPAL"), SET_LEAF = new TextureSet("LEAF"),
+        SET_WOOD = new TextureSet("WOOD"), SET_SAND = new TextureSet("SAND"), SET_FINE = new TextureSet("FINE"),
+        SET_FIERY = new TextureSet("FIERY"), SET_FLUID = new TextureSet("FLUID"), SET_ROUGH = new TextureSet("ROUGH"),
+        SET_PAPER = new TextureSet("PAPER"), SET_GLASS = new TextureSet("GLASS"), SET_FLINT = new TextureSet("FLINT"),
+        SET_LAPIS = new TextureSet("LAPIS"), SET_SHINY = new TextureSet("SHINY"), SET_SHARDS = new TextureSet("SHARDS"),
+        SET_POWDER = new TextureSet("POWDER"), SET_QUARTZ = new TextureSet("QUARTZ"),
+        SET_EMERALD = new TextureSet("EMERALD"), SET_DIAMOND = new TextureSet("DIAMOND"),
+        SET_LIGNITE = new TextureSet("LIGNITE"), SET_MAGNETIC = new TextureSet("MAGNETIC"),
+        SET_METALLIC = new TextureSet("METALLIC"), SET_NETHERSTAR = new TextureSet("NETHERSTAR"),
+        SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"), SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL");
 
     /**
      * Custom Texture Sets for more clean code
      */
     public static final TextureSet SET_DARKSTEEL = new TextureSet("darksteel", true),
-            SET_ENERGETIC = new TextureSet("energetic", true), SET_VIBRANT = new TextureSet("vibrant", true),
-            SET_CRYSTALLINE = new TextureSet("crystalline", true), SET_MELODIC = new TextureSet("melodic", true),
-            SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
-            SET_DRACONIUM = new TextureSet("draconium", false),
-            SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false);;
+        SET_ENERGETIC = new TextureSet("energetic", true), SET_VIBRANT = new TextureSet("vibrant", true),
+        SET_CRYSTALLINE = new TextureSet("crystalline", true), SET_MELODIC = new TextureSet("melodic", true),
+        SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
+        SET_DRACONIUM = new TextureSet("draconium", false),
+        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false);;
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
      */
     public static final short INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73,
-            INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
+        INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
 
     public final IIconContainer[] mTextures = new IIconContainer[128];
     public final String mSetName;
@@ -94,9 +90,9 @@ public class TextureSet {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 switch (SUFFIXES[i]) {
                     case "/frameGt", "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
-                            aTextMatIconDir + aSetName + SUFFIXES[i]);
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
                     default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
-                            aTextMatIconDir + aSetName + SUFFIXES[i]);
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
                 }
             } else {
                 // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.

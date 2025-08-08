@@ -9,10 +9,10 @@ public class GregtechIndustrialCuttingFactory {
 
     public static void run() {
         GregtechItemList.Industrial_CuttingFactoryController.set(
-                new MTEIndustrialCuttingMachine(
-                        Industrial_CuttingFactoryController.ID,
-                        "industrialcuttingmachine.controller.tier.01",
-                        "Industrial Cutting Factory").getStackForm(1L));
+            new MTEIndustrialCuttingMachine(
+                Industrial_CuttingFactoryController.ID,
+                "industrialcuttingmachine.controller.tier.01",
+                "Industrial Cutting Factory").getStackForm(1L));
     }
 
 }

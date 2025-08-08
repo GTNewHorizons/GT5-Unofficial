@@ -93,21 +93,27 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     private FluidStack[] getWater() {
         return new FluidStack[] { Materials.Water.getFluid(
-                calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
+            calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
     }
 
     private int mCountCasing;
 
     private boolean isMinWaterAllowedDim() {
-        return !(getBaseMetaTileEntity().getWorld().provider.getDimensionName().equals("Venus")
-                || getBaseMetaTileEntity().getWorld().provider.getDimensionName().equals("Mercury")
-                || getBaseMetaTileEntity().getWorld().provider.getDimensionName().equals("Mars")
-                || getBaseMetaTileEntity().getWorld().provider.getDimensionName().equals("Moon")
-                || getBaseMetaTileEntity().getWorld().provider.getDimensionName().equals("Nether"));
+        return !(getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+            .equals("Venus")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Mercury")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Mars")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Moon")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Nether"));
     }
 
     private float getHumidity() {
-        return this.getBaseMetaTileEntity().getBiome().rainfall;
+        return this.getBaseMetaTileEntity()
+            .getBiome().rainfall;
     }
 
     private int calculateFinalWaterOutput() {
@@ -167,27 +173,27 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                hintsOnly,
-                HORIZONTAL_OFF_SET,
-                VERTICAL_OFF_SET,
-                DEPTH_OFF_SET);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return this.survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                HORIZONTAL_OFF_SET,
-                VERTICAL_OFF_SET,
-                DEPTH_OFF_SET,
-                elementBudget,
-                env,
-                false,
-                true);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -206,15 +212,15 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                    Textures.BlockIcons
-                            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 2)),
-                    aActive ? getFrontOverlayActive() : getFrontOverlay() };
+                Textures.BlockIcons
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 2)),
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
         }
-        return new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 2)) };
+        return new ITexture[] {
+            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 2)) };
     }
 
     @Override
@@ -230,42 +236,44 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Pumps Water based on humidity")
-                .addInfo("Has 2 tiers: Bronze and Steel").addInfo("Steel tier extracts 2x Water")
-                .addInfo(
-                        EnumChatFormatting.AQUA + "Generates: "
-                                + EnumChatFormatting.WHITE
-                                + "tier * humidity * "
-                                + BASE_WATER_PER_SECOND
-                                + " L/s"
-                                + EnumChatFormatting.AQUA
-                                + " of Water, to a minimum of 250L/s."
-                                + EnumChatFormatting.RESET)
-                .addInfo(
-                        EnumChatFormatting.RED + "Consumes: "
-                                + EnumChatFormatting.WHITE
-                                + BASE_STEAM_PER_SECOND
-                                + " L/s"
-                                + EnumChatFormatting.RED
-                                + " of Steam."
-                                + EnumChatFormatting.RESET)
-                .beginStructureBlock(3, 3, 4, false)
-                .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-                .addStructureInfo(
-                        EnumChatFormatting.WHITE + "Steam Input Hatch "
-                                + EnumChatFormatting.GOLD
-                                + "1"
-                                + EnumChatFormatting.GRAY
-                                + " Any casing")
-                .addStructureInfo("")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-                .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
-                .addStructureInfo("")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
-                .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
-                .toolTipFinisher(GTValues.AuthorEvgenWarGold);
+        tt.addMachineType(getMachineType())
+            .addInfo("Pumps Water based on humidity")
+            .addInfo("Has 2 tiers: Bronze and Steel")
+            .addInfo("Steel tier extracts 2x Water")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Generates: "
+                    + EnumChatFormatting.WHITE
+                    + "tier * humidity * "
+                    + BASE_WATER_PER_SECOND
+                    + " L/s"
+                    + EnumChatFormatting.AQUA
+                    + " of Water, to a minimum of 250L/s."
+                    + EnumChatFormatting.RESET)
+            .addInfo(
+                EnumChatFormatting.RED + "Consumes: "
+                    + EnumChatFormatting.WHITE
+                    + BASE_STEAM_PER_SECOND
+                    + " L/s"
+                    + EnumChatFormatting.RED
+                    + " of Steam."
+                    + EnumChatFormatting.RESET)
+            .beginStructureBlock(3, 3, 4, false)
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 
@@ -273,8 +281,9 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     @NotNull
     public CheckRecipeResult checkProcessing() {
 
-        VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this).setFluidOutputs(getWater())
-                .build();
+        VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this)
+            .setFluidOutputs(getWater())
+            .build();
 
         if (voidProtection.isFluidFull()) {
             mOutputFluids = null;
@@ -308,7 +317,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
@@ -323,21 +332,21 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         }
 
         currenttip.add(
-                StatCollector.translateToLocal("GTPP.machines.tier") + ": "
-                        + EnumChatFormatting.BLUE
-                        + tierMachineText
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
+                + EnumChatFormatting.BLUE
+                + tierMachineText
+                + EnumChatFormatting.RESET);
         currenttip.add(
-                StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
-                        + EnumChatFormatting.BLUE
-                        + tag.getFloat("humidity")
-                        + " %"
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
+                + EnumChatFormatting.BLUE
+                + tag.getFloat("humidity")
+                + " %"
+                + EnumChatFormatting.RESET);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("humidity", currentHumidity * 100);
         tag.setInteger("mSetTier", mSetTier);

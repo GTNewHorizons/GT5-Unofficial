@@ -15,9 +15,9 @@ public class GregtechIndustrialFishPond {
 
     private static void run1() {
         GregtechItemList.Industrial_FishingPond.set(
-                new MTEIndustrialFishingPond(
-                        Industrial_FishingPond.ID,
-                        "industrial.fishpond.controller.tier.single",
-                        "Zhuhai - Fishing Port").getStackForm(1L));
+            new MTEIndustrialFishingPond(
+                Industrial_FishingPond.ID,
+                "industrial.fishpond.controller.tier.single",
+                "Zhuhai - Fishing Port").getStackForm(1L));
     }
 }

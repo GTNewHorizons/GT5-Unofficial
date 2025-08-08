@@ -41,7 +41,8 @@ public interface IDualInputHatch {
         }
         Iterator<? extends IDualInputInventory> inventoryIterator = this.inventories();
         while (inventoryIterator.hasNext()) {
-            ItemStack[] items = inventoryIterator.next().getItemInputs();
+            ItemStack[] items = inventoryIterator.next()
+                .getItemInputs();
             if (items == null) {
                 continue;
             }
@@ -58,7 +59,8 @@ public interface IDualInputHatch {
         ArrayList<FluidStack> rList = new ArrayList<>();
         Iterator<? extends IDualInputInventory> inventoryIterator = this.inventories();
         while (inventoryIterator.hasNext()) {
-            FluidStack[] fluids = inventoryIterator.next().getFluidInputs();
+            FluidStack[] fluids = inventoryIterator.next()
+                .getFluidInputs();
             if (fluids == null) {
                 continue;
             }

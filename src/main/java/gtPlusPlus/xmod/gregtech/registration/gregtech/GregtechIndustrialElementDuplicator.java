@@ -15,15 +15,15 @@ public class GregtechIndustrialElementDuplicator {
         Logger.INFO("Gregtech5u Content | Registering Elemental Duplicator Multiblock.");
 
         GregtechItemList.Controller_ElementalDuplicator.set(
-                new MTEElementalDuplicator(
-                        Controller_ElementalDuplicator.ID,
-                        "gtpp.multimachine.replicator",
-                        "Elemental Duplicator").getStackForm(1L));
+            new MTEElementalDuplicator(
+                Controller_ElementalDuplicator.ID,
+                "gtpp.multimachine.replicator",
+                "Elemental Duplicator").getStackForm(1L));
         GregtechItemList.Hatch_Input_Elemental_Duplicator.set(
-                new MTEHatchElementalDataOrbHolder(
-                        Hatch_Input_Elemental_Duplicator.ID,
-                        "hatch.input_bus.elementalorbholder",
-                        "Data Orb Repository",
-                        7).getStackForm(1L));
+            new MTEHatchElementalDataOrbHolder(
+                Hatch_Input_Elemental_Duplicator.ID,
+                "hatch.input_bus.elementalorbholder",
+                "Data Orb Repository",
+                7).getStackForm(1L));
     }
 }

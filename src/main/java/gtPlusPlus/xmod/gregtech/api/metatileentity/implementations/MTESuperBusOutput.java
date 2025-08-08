@@ -59,16 +59,16 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
         for (int i = 0; i < this.mInventory.length; ++i) {
             for (int j = i + 1; j < this.mInventory.length; ++j) {
                 if (this.mInventory[j] != null && (this.mInventory[i] == null
-                        || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
+                    || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
                     GTUtility.moveStackFromSlotAToSlotB(
-                            this.getBaseMetaTileEntity(),
-                            this.getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
+                        this.getBaseMetaTileEntity(),
+                        this.getBaseMetaTileEntity(),
+                        j,
+                        i,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
                 }
             }
         }
@@ -77,8 +77,8 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
     @Override
     public String[] getDescription() {
         return new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
-                "Left click with data stick to save filter config", "Right click with data stick to load filter config",
-                GTPPCore.GT_Tooltip.get() };
+            "Left click with data stick to save filter config", "Right click with data stick to load filter config",
+            GTPPCore.GT_Tooltip.get() };
     }
 
     @Override
@@ -88,16 +88,18 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                        new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
-                                .setSize(18, 18));
+                    new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
+                        .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(
+            scrollable.setSize(18 * 4 + 4, 18 * 4)
+                .setPos(52, 7));
 
         if (acceptsItemLock()) {
             builder.widget(
-                    new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
-                            .setBackground(PhantomItemButton.FILTER_BACKGROUND));
+                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
 }

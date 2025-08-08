@@ -52,16 +52,47 @@ public class GTUtil {
         for (Tuple t : tags) {
             if (t.getSecond() == null) continue;
 
-            if (t.getSecond() instanceof Boolean) nbt.setBoolean(t.getFirst().toString(), (Boolean) t.getSecond());
-            else if (t.getSecond() instanceof Byte) nbt.setByte(t.getFirst().toString(), (Byte) t.getSecond());
-            else if (t.getSecond() instanceof Short) nbt.setShort(t.getFirst().toString(), (Short) t.getSecond());
-            else if (t.getSecond() instanceof Integer) nbt.setInteger(t.getFirst().toString(), (Integer) t.getSecond());
-            else if (t.getSecond() instanceof Long) nbt.setLong(t.getFirst().toString(), (Long) t.getSecond());
-            else if (t.getSecond() instanceof Float) nbt.setFloat(t.getFirst().toString(), (Float) t.getSecond());
-            else if (t.getSecond() instanceof Double) nbt.setDouble(t.getFirst().toString(), (Double) t.getSecond());
-            else if (t.getSecond() instanceof String) nbt.setString(t.getFirst().toString(), (String) t.getSecond());
-            else if (t.getSecond() instanceof NBTBase) nbt.setTag(t.getFirst().toString(), (NBTBase) t.getSecond());
-            else nbt.setString(t.getFirst().toString(), t.getSecond().toString());
+            if (t.getSecond() instanceof Boolean) nbt.setBoolean(
+                t.getFirst()
+                    .toString(),
+                (Boolean) t.getSecond());
+            else if (t.getSecond() instanceof Byte) nbt.setByte(
+                t.getFirst()
+                    .toString(),
+                (Byte) t.getSecond());
+            else if (t.getSecond() instanceof Short) nbt.setShort(
+                t.getFirst()
+                    .toString(),
+                (Short) t.getSecond());
+            else if (t.getSecond() instanceof Integer) nbt.setInteger(
+                t.getFirst()
+                    .toString(),
+                (Integer) t.getSecond());
+            else if (t.getSecond() instanceof Long) nbt.setLong(
+                t.getFirst()
+                    .toString(),
+                (Long) t.getSecond());
+            else if (t.getSecond() instanceof Float) nbt.setFloat(
+                t.getFirst()
+                    .toString(),
+                (Float) t.getSecond());
+            else if (t.getSecond() instanceof Double) nbt.setDouble(
+                t.getFirst()
+                    .toString(),
+                (Double) t.getSecond());
+            else if (t.getSecond() instanceof String) nbt.setString(
+                t.getFirst()
+                    .toString(),
+                (String) t.getSecond());
+            else if (t.getSecond() instanceof NBTBase) nbt.setTag(
+                t.getFirst()
+                    .toString(),
+                (NBTBase) t.getSecond());
+            else nbt.setString(
+                t.getFirst()
+                    .toString(),
+                t.getSecond()
+                    .toString());
         }
 
         return nbt;
@@ -81,7 +112,7 @@ public class GTUtil {
      * Sets the TileEntity at the passed position, with the option of turning adjacent TileEntity updates off.
      */
     public static TileEntity setTileEntity(World world, int x, int y, int z, TileEntity aTileEntity,
-            boolean aCauseTileEntityUpdates) {
+        boolean aCauseTileEntityUpdates) {
         if (aCauseTileEntityUpdates) world.setTileEntity(x, y, z, aTileEntity);
         else {
             final Chunk tChunk = world.getChunkFromChunkCoords(x >> 4, z >> 4);
@@ -95,7 +126,7 @@ public class GTUtil {
     }
 
     public static boolean setBlock(World world, int x, int y, int z, Block block, short aMeta, long aFlags,
-            boolean aRemoveGrassBelow) {
+        boolean aRemoveGrassBelow) {
         if (aRemoveGrassBelow) {
             final Block blockBelow = world.getBlock(x, y - 1, z);
             if (blockBelow == Blocks.grass || blockBelow == Blocks.mycelium)
@@ -119,7 +150,7 @@ public class GTUtil {
             aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
                 GTLog.err.println(
-                        "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
+                    "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
                 return false;
             }
         }
@@ -132,7 +163,7 @@ public class GTUtil {
      */
     public static boolean markChunkDirty(Object maybeTile) {
         return maybeTile instanceof TileEntity tileEntity
-                && markChunkDirty(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord);
+            && markChunkDirty(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord);
     }
 
     public static String toHexString(short[] aColors) {
@@ -141,7 +172,7 @@ public class GTUtil {
 
     public static short[] getRGBaArray(int aColors) {
         return new short[] { (short) ((aColors >>> 16) & 255), (short) ((aColors >>> 8) & 255), (short) (aColors & 255),
-                (short) ((aColors >>> 24) & 255) };
+            (short) ((aColors >>> 24) & 255) };
     }
 
     public static boolean saveMultiblockInputConfiguration(MTEMultiBlockBase controller, EntityPlayer player) {
@@ -201,8 +232,10 @@ public class GTUtil {
 
     public static boolean hasMultiblockInputConfiguration(ItemStack dataOrb) {
         return !GTUtility.isStackInvalid(dataOrb) && ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)
-                && dataOrb.getTagCompound() != null
-                && "MultiblockConfiguration".equals(dataOrb.getTagCompound().getString("type"));
+            && dataOrb.getTagCompound() != null
+            && "MultiblockConfiguration".equals(
+                dataOrb.getTagCompound()
+                    .getString("type"));
     }
 
     public static boolean loadMultiblockInputConfiguration(MTEMultiBlockBase controller, EntityPlayer player) {
@@ -215,34 +248,31 @@ public class GTUtil {
         }
         NBTTagCompound tag = dataOrb.getTagCompound();
         if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mInputBusses", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mInputBusses)) {
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mInputBusses", Constants.NBT.TAG_COMPOUND),
                 player,
-                controller.mInputBusses)) {
-            if (!loadConfigurationFromDataStick(
-                    tag.getTagList("mInputBusses", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    controller.mInputBusses))
-                return false;
+                controller.mInputBusses)) return false;
         }
         if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mInputHatches", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mInputHatches)) {
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mInputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                controller.mInputHatches)) {
-            if (!loadConfigurationFromDataStick(
-                    tag.getTagList("mInputHatches", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    controller.mInputHatches))
-                return false;
+                controller.mInputHatches)) return false;
         }
         if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mOutputBusses", Constants.NBT.TAG_COMPOUND),
+            player,
+            controller.mOutputBusses)) {
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mOutputBusses", Constants.NBT.TAG_COMPOUND),
                 player,
-                controller.mOutputBusses)) {
-            if (!loadConfigurationFromDataStick(
-                    tag.getTagList("mOutputBusses", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    controller.mOutputBusses))
-                return false;
+                controller.mOutputBusses)) return false;
         }
 
         // for ME output hatches (normal output hatches are not implemented)
@@ -253,14 +283,13 @@ public class GTUtil {
             }
         }
         if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+            player,
+            meOutputHatches)) {
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                meOutputHatches)) {
-            if (!loadConfigurationFromDataStick(
-                    tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    meOutputHatches))
-                return false;
+                meOutputHatches)) return false;
         }
 
         // For Crafting Input Proxy
@@ -271,14 +300,13 @@ public class GTUtil {
             }
         }
         if (checkCanLoadConfigurationFromDataStick(
+            tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
+            player,
+            dualInputHatches)) {
+            if (!loadConfigurationFromDataStick(
                 tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                dualInputHatches)) {
-            if (!loadConfigurationFromDataStick(
-                    tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    dualInputHatches))
-                return false;
+                dualInputHatches)) return false;
         }
 
         return true;
@@ -299,7 +327,7 @@ public class GTUtil {
     }
 
     private static boolean loadConfigurationFromDataStick(NBTTagList list, EntityPlayer player,
-            List<? extends MTEHatch> hatches) {
+        List<? extends MTEHatch> hatches) {
         if (list == null || list.tagList.isEmpty()) return false;
         List<? extends MTEHatch> validMTEs = filterValidMTEs(hatches);
         int end = Math.min(validMTEs.size(), list.tagCount());
@@ -317,7 +345,7 @@ public class GTUtil {
     }
 
     private static boolean checkCanLoadConfigurationFromDataStick(NBTTagList list, EntityPlayer player,
-            List<? extends MTEHatch> hatches) {
+        List<? extends MTEHatch> hatches) {
         if (list == null || list.tagList.isEmpty()) return false;
         List<? extends MTEHatch> validMTEs = filterValidMTEs(hatches);
         int end = Math.min(validMTEs.size(), list.tagCount());
@@ -325,9 +353,8 @@ public class GTUtil {
             MTEHatch tHatch = validMTEs.get(i);
             NBTTagCompound tag = list.getCompoundTagAt(i);
             if (tag.hasNoTags()) continue;
-            if (!(tHatch instanceof IDataCopyable copyable)
-                    || !copyable.getCopiedDataIdentifier(player).equals(tag.getString("type")))
-                return false;
+            if (!(tHatch instanceof IDataCopyable copyable) || !copyable.getCopiedDataIdentifier(player)
+                .equals(tag.getString("type"))) return false;
         }
         return true;
     }

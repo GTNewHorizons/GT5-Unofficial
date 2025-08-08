@@ -111,25 +111,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final HashMultimap<Integer, MTEDroneCentre> droneMap = HashMultimap.create();
     // spotless off
     private static final IStructureDefinition<MTEDroneCentre> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEDroneCentre>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] {
-                                    { "     ", "     ", "     ", "     ", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                                    { "CC~CC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
-                                    { "CCCCC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ",
-                                            "C   C" } }))
-            .addElement(
-                    'C',
-                    buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus).casingIndex(CASING_INDEX).dot(1)
-                            .buildAndChain(
-                                    onElementPass(
-                                            MTEDroneCentre::onCasingAdded,
-                                            ofBlock(GregTechAPI.sBlockCasings4, 2))))
-            .addElement('A', chainAllGlasses()).addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))
-            .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 0)).build();
+        .<MTEDroneCentre>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "     ", "     ", "     ", "     ", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                    { "CC~CC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
+                    { "CCCCC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" } }))
+        .addElement(
+            'C',
+            buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTEDroneCentre::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
+        .addElement('A', chainAllGlasses())
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        .build();
 
     // spotless on
     public MTEDroneCentre(String name) {
@@ -147,18 +146,26 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (getBaseMetaTileEntity().isActive()) {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                        TextureFactory.builder().addIcon(ACTIVE).extFacing().build() };
+                    TextureFactory.builder()
+                        .addIcon(ACTIVE)
+                        .extFacing()
+                        .build() };
             } else {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                        TextureFactory.builder().addIcon(INACTIVE).extFacing().build() };
+                    TextureFactory.builder()
+                        .addIcon(INACTIVE)
+                        .extFacing()
+                        .build() };
             }
         } else if (side == aFacing.getOpposite()) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(FACE).extFacing().build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(FACE)
+                .extFacing()
+                .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -176,22 +183,26 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Drone Centre").addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
-                .addInfo("Monitors multiblock machines in range.")
-                .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
-                .addInfo("Provides maintenance, power control, monitoring and etc.")
-                .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
-                .addInfo("Place drones in input bus; only one needed to operate.")
-                .addInfo("Automatically upgrade based on the drone level in the input bus.")
-                .addInfo("There is a chance per second that the drone will crash.")
-                .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
-                .addInfo("If machine is too far, remote control would not available")
-                .beginStructureBlock(5, 4, 9, false).addController("Front center")
-                .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
-                .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
-                .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
-                .addCasingInfoExactly("Any tiered glass", 6, false).addInputBus("Any Titanium Casing", 1)
-                .addStructureInfo("No maintenance hatch needed").toolTipFinisher(AuthorSilverMoon);
+        tt.addMachineType("Drone Centre")
+            .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
+            .addInfo("Monitors multiblock machines in range.")
+            .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
+            .addInfo("Provides maintenance, power control, monitoring and etc.")
+            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
+            .addInfo("Place drones in input bus; only one needed to operate.")
+            .addInfo("Automatically upgrade based on the drone level in the input bus.")
+            .addInfo("There is a chance per second that the drone will crash.")
+            .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
+            .addInfo("If machine is too far, remote control would not available")
+            .beginStructureBlock(5, 4, 9, false)
+            .addController("Front center")
+            .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
+            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
+            .addCasingInfoExactly("Any tiered glass", 6, false)
+            .addInputBus("Any Titanium Casing", 1)
+            .addStructureInfo("No maintenance hatch needed")
+            .toolTipFinisher(AuthorSilverMoon);
         return tt;
     }
 
@@ -210,7 +221,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // I don't think a drone can take off HORIZONTALLY!
         return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
-                && !f.isVerticallyFliped();
+            && !f.isVerticallyFliped();
     }
 
     private void onCasingAdded() {
@@ -225,12 +236,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         useRender = !useRender;
         aPlayer.addChatComponentMessage(
-                new ChatComponentTranslation(
-                        "GT5U.machines.dronecentre." + (useRender ? "enableRender" : "disableRender")));
+            new ChatComponentTranslation(
+                "GT5U.machines.dronecentre." + (useRender ? "enableRender" : "disableRender")));
         if (useRender) {
             createRenderBlock();
         } else {
@@ -300,7 +311,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("connectionCount", connectionList.size());
         if (droneLevel != 0) tag.setInteger("droneLevel", droneLevel);
@@ -308,16 +319,15 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.drone_downlink.droneLevel",
-                        tag.getInteger("droneLevel")));
+            EnumChatFormatting.AQUA + StatCollector
+                .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
         currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.drone_downlink.connectionCount",
-                        tag.getInteger("connectionCount")));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.drone_downlink.connectionCount",
+                tag.getInteger("connectionCount")));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -339,9 +349,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         if (aBaseMetaTileEntity.isServerSide()) {
             if (droneMap.containsValue(this)) return;
             centreCoord = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
             droneMap.put(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
         }
     }
@@ -366,15 +376,16 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 yield null;
         }, 1);
         final EntityItem tItemEntity = new EntityItem(
-                getBaseMetaTileEntity().getWorld(),
-                getBaseMetaTileEntity().getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                getBaseMetaTileEntity().getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                getBaseMetaTileEntity().getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                insideDrone);
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            getBaseMetaTileEntity().getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            getBaseMetaTileEntity().getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            insideDrone);
         tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
         tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.25D);
         tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
-        getBaseMetaTileEntity().getWorld().spawnEntityInWorld(tItemEntity);
+        getBaseMetaTileEntity().getWorld()
+            .spawnEntityInWorld(tItemEntity);
     }
 
     @Override
@@ -438,7 +449,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
         int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        World world = this.getBaseMetaTileEntity().getWorld();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         if (world.isAirBlock(x, y, z)) {
             world.setBlock(x, y, z, GregTechAPI.sDroneRender);
         }
@@ -449,8 +461,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
         int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        World world = this.getBaseMetaTileEntity().getWorld();
-        if (world.getBlock(x, y, z).equals(GregTechAPI.sDroneRender)) {
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        if (world.getBlock(x, y, z)
+            .equals(GregTechAPI.sDroneRender)) {
             world.setBlock(x, y, z, Blocks.air);
         }
     }
@@ -461,89 +475,119 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         buildContext.addSyncedWindow(MACHINE_LIST_WINDOW_ID, this::createMachineListWindow);
         buildContext.addSyncedWindow(CUSTOM_NAME_WINDOW_ID, this::createCustomNameWindow);
         builder.widget(// Machine List
-                new ButtonWidget().setOnClick(
-                        (clickData, widget) -> {
-                            if (!widget.isClient()) widget.getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                        }).setSize(16, 16).setBackground(() -> {
-                            List<UITexture> UI = new ArrayList<>();
-                            UI.add(GTUITextures.BUTTON_STANDARD);
-                            UI.add(GTUITextures.OVERLAY_BUTTON_WHITELIST);
-                            return UI.toArray(new IDrawable[0]);
-                        }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list")).setPos(94, 91)
-                        .setEnabled(var -> getBaseMetaTileEntity().isActive()))
-                .widget(// Turn on ALL machines
-                        new ButtonWidget().setOnClick((clickData, widget) -> {
-                            if (!widget.isClient()) {
-                                if (!getBaseMetaTileEntity().isActive()) {
-                                    widget.getContext().getPlayer().addChatComponentMessage(
-                                            new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                                    return;
-                                }
-                                for (DroneConnection mte : connectionList) {
-                                    mte.machine.getBaseMetaTileEntity().enableWorking();
-                                }
-                                widget.getContext().getPlayer().addChatComponentMessage(
-                                        new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
-                                widget.getContext().getPlayer().closeScreen();
-                            }
-                        }).setSize(16, 16).setBackground(() -> {
-                            List<UITexture> UI = new ArrayList<>();
-                            UI.add(GTUITextures.BUTTON_STANDARD);
-                            UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                            return UI.toArray(new IDrawable[0]);
-                        }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
-                                .setPos(146, 91).setEnabled(var -> getBaseMetaTileEntity().isActive()))
-                .widget(// Turn off ALL machines
-                        new ButtonWidget().setOnClick((clickData, widget) -> {
-                            if (!widget.isClient()) {
-                                if (!getBaseMetaTileEntity().isActive()) {
-                                    widget.getContext().getPlayer().addChatComponentMessage(
-                                            new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                                    return;
-                                }
-                                for (DroneConnection mte : connectionList) {
-                                    mte.machine.getBaseMetaTileEntity().disableWorking();
-                                }
-                                widget.getContext().getPlayer().addChatComponentMessage(
-                                        new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
-                                widget.getContext().getPlayer().closeScreen();
-                            }
-                        }).setSize(16, 16).setBackground(() -> {
-                            List<UITexture> UI = new ArrayList<>();
-                            UI.add(GTUITextures.BUTTON_STANDARD);
-                            UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-                            return UI.toArray(new IDrawable[0]);
-                        }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
-                                .setPos(120, 91).setEnabled(var -> getBaseMetaTileEntity().isActive()))
-                .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
-                    connectionList.clear();
-                    connectionList.addAll(var1);
-                }, (buffer, j) -> {
-                    try {
-                        buffer.writeNBTTagCompoundToBuffer(j.transConnectionToNBT());
-                    } catch (IOException e) {
-                        GTLog.err.println(e.getCause());
+            new ButtonWidget().setOnClick(
+                (clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                })
+                .setSize(16, 16)
+                .setBackground(() -> {
+                    List<UITexture> UI = new ArrayList<>();
+                    UI.add(GTUITextures.BUTTON_STANDARD);
+                    UI.add(GTUITextures.OVERLAY_BUTTON_WHITELIST);
+                    return UI.toArray(new IDrawable[0]);
+                })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list"))
+                .setPos(94, 91)
+                .setEnabled(var -> getBaseMetaTileEntity().isActive()))
+            .widget(// Turn on ALL machines
+                new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) {
+                        if (!getBaseMetaTileEntity().isActive()) {
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                            return;
+                        }
+                        for (DroneConnection mte : connectionList) {
+                            mte.machine.getBaseMetaTileEntity()
+                                .enableWorking();
+                        }
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
+                        widget.getContext()
+                            .getPlayer()
+                            .closeScreen();
                     }
-                }, buffer -> {
-                    try {
-                        return new DroneConnection(buffer.readNBTTagCompoundFromBuffer());
-                    } catch (IOException e) {
-                        GTLog.err.println(e.getCause());
+                })
+                    .setSize(16, 16)
+                    .setBackground(() -> {
+                        List<UITexture> UI = new ArrayList<>();
+                        UI.add(GTUITextures.BUTTON_STANDARD);
+                        UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                        return UI.toArray(new IDrawable[0]);
+                    })
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
+                    .setPos(146, 91)
+                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
+            .widget(// Turn off ALL machines
+                new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) {
+                        if (!getBaseMetaTileEntity().isActive()) {
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                            return;
+                        }
+                        for (DroneConnection mte : connectionList) {
+                            mte.machine.getBaseMetaTileEntity()
+                                .disableWorking();
+                        }
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
+                        widget.getContext()
+                            .getPlayer()
+                            .closeScreen();
                     }
-                    return null;
-                }));
+                })
+                    .setSize(16, 16)
+                    .setBackground(() -> {
+                        List<UITexture> UI = new ArrayList<>();
+                        UI.add(GTUITextures.BUTTON_STANDARD);
+                        UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                        return UI.toArray(new IDrawable[0]);
+                    })
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
+                    .setPos(120, 91)
+                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
+            .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
+                connectionList.clear();
+                connectionList.addAll(var1);
+            }, (buffer, j) -> {
+                try {
+                    buffer.writeNBTTagCompoundToBuffer(j.transConnectionToNBT());
+                } catch (IOException e) {
+                    GTLog.err.println(e.getCause());
+                }
+            }, buffer -> {
+                try {
+                    return new DroneConnection(buffer.readNBTTagCompoundFromBuffer());
+                } catch (IOException e) {
+                    GTLog.err.println(e.getCause());
+                }
+                return null;
+            }));
     }
 
     protected ModularWindow createMachineListWindow(final EntityPlayer player) {
         int heightCoff = getBaseMetaTileEntity().isServerSide() ? 0
-                : Minecraft.getMinecraft().currentScreen.height - 40;
+            : Minecraft.getMinecraft().currentScreen.height - 40;
         ModularWindow.Builder builder = ModularWindow.builder(260, heightCoff);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        builder.widget(ButtonWidget.closeWindowButton(true).setPos(245, 3));
         builder.widget(
-                new TextWidget(EnumChatFormatting.BOLD + StatCollector.translateToLocal("GT5U.gui.text.drone_title"))
-                        .setScale(2).setTextAlignment(Alignment.Center).setPos(0, 10).setSize(260, 8));
+            ButtonWidget.closeWindowButton(true)
+                .setPos(245, 3));
+        builder.widget(
+            new TextWidget(EnumChatFormatting.BOLD + StatCollector.translateToLocal("GT5U.gui.text.drone_title"))
+                .setScale(2)
+                .setTextAlignment(Alignment.Center)
+                .setPos(0, 10)
+                .setSize(260, 8));
         // SearchBar
         builder.widget(new TextFieldWidget() {
 
@@ -564,230 +608,278 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     }
                 }
             }
-        }.setGetter(() -> searchFilter).setSetter(var -> searchFilter = var).setTextAlignment(Alignment.CenterLeft)
-                .setTextColor(Color.WHITE.dark(1)).setFocusOnGuiOpen(false)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search")).setPos(50, 30)
-                .setSize(200, 16))
-                // Sort button
-                .widget(new ButtonWidget() {
+        }.setGetter(() -> searchFilter)
+            .setSetter(var -> searchFilter = var)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setTextColor(Color.WHITE.dark(1))
+            .setFocusOnGuiOpen(false)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
+            .setPos(50, 30)
+            .setSize(200, 16))
+            // Sort button
+            .widget(new ButtonWidget() {
 
-                    @Override
-                    public ClickResult onClick(int buttonId, boolean doubleClick) {
-                        ClickResult result = super.onClick(buttonId, doubleClick);
-                        syncToServer(2, buffer -> {});
-                        return result;
-                    }
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
 
-                    @Override
-                    public void readOnServer(int id, PacketBuffer buf) {
-                        switch (id) {
-                            case 1 -> super.readOnServer(id, buf);
-                            case 2 -> {
-                                getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                                getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                            }
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                         }
                     }
-                }.setOnClick((clickData, widget) -> {
-                    switch (sort) {
-                        case "name" -> sort = "distance";
-                        case "distance" -> sort = "error";
-                        case "error" -> sort = "name";
-                    }
-                }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
-                        .setBackground(
-                                () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                                        GTUITextures.OVERLAY_BUTTON_SORTING_MODE })
-                        .setPos(10, 30).setSize(16, 16))
-                .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
-                // Localized Button
-                .widget(new ButtonWidget() {
+                }
+            }.setOnClick((clickData, widget) -> {
+                switch (sort) {
+                    case "name" -> sort = "distance";
+                    case "distance" -> sort = "error";
+                    case "error" -> sort = "name";
+                }
+            })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
+                .setBackground(
+                    () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SORTING_MODE })
+                .setPos(10, 30)
+                .setSize(16, 16))
+            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
+            // Localized Button
+            .widget(new ButtonWidget() {
 
-                    @Override
-                    public ClickResult onClick(int buttonId, boolean doubleClick) {
-                        ClickResult result = super.onClick(buttonId, doubleClick);
-                        syncToServer(2, buffer -> {});
-                        return result;
-                    }
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
 
-                    @Override
-                    public void readOnServer(int id, PacketBuffer buf) {
-                        switch (id) {
-                            case 1 -> super.readOnServer(id, buf);
-                            case 2 -> {
-                                getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                                getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                            }
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                         }
                     }
-                }.setOnClick((clickData, widget) -> showLocalizedName = !showLocalizedName)
-                        .addTooltip(
-                                StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
-                        .setBackground(
-                                () -> new IDrawable[] { showLocalizedName ? GTUITextures.BUTTON_STANDARD_PRESSED
-                                        : GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC })
-                        .setPos(30, 30).setSize(16, 16));
+                }
+            }.setOnClick((clickData, widget) -> showLocalizedName = !showLocalizedName)
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
+                .setBackground(
+                    () -> new IDrawable[] {
+                        showLocalizedName ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,
+                        GTUITextures.OVERLAY_BUTTON_CYCLIC })
+                .setPos(30, 30)
+                .setSize(16, 16));
         // Sort first
         switch (sort) {
             case "name" -> connectionList = connectionList.stream()
-                    .sorted(
-                            (o1, o2) -> Collator.getInstance(Locale.UK)
-                                    .compare(o1.getCustomName(false), o2.getCustomName(false)))
-                    .collect(Collectors.toList());
+                .sorted(
+                    (o1, o2) -> Collator.getInstance(Locale.UK)
+                        .compare(o1.getCustomName(false), o2.getCustomName(false)))
+                .collect(Collectors.toList());
             case "distance" -> connectionList = connectionList.stream()
-                    .sorted(Comparator.comparing(DroneConnection::getDistanceSquared)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(DroneConnection::getDistanceSquared))
+                .collect(Collectors.toList());
             case "error" -> connectionList = connectionList.stream()
-                    .sorted(
-                            Comparator.comparing(DroneConnection::isMachineShutdown).reversed()
-                                    .thenComparing(DroneConnection::getDistanceSquared))
-                    .collect(Collectors.toList());
+                .sorted(
+                    Comparator.comparing(DroneConnection::isMachineShutdown)
+                        .reversed()
+                        .thenComparing(DroneConnection::getDistanceSquared))
+                .collect(Collectors.toList());
         }
 
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
         int posY = 0;
         for (int i = 0; i < connectionList.size(); i++) {
             DroneConnection connection = connectionList.get(i);
-            if (!connection.customName.toLowerCase().contains(searchFilter.toLowerCase())) continue;
+            if (!connection.customName.toLowerCase()
+                .contains(searchFilter.toLowerCase())) continue;
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
             MTEMultiBlockBase coreMachine = connection.machine;
             int finalI = i;
-            row.widget(SlotWidget.phantom(drawitem, 0).disableInteraction().setPos(0, 0))
-                    .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                        buttonID = finalI;
-                        if (!widget.isClient()) widget.getContext().openSyncedWindow(CUSTOM_NAME_WINDOW_ID);
-                    }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname")).setBackground(
-                            () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PRINT })
-                            .setSize(16, 16));
+            row.widget(
+                SlotWidget.phantom(drawitem, 0)
+                    .disableInteraction()
+                    .setPos(0, 0))
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    buttonID = finalI;
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(CUSTOM_NAME_WINDOW_ID);
+                })
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
+                    .setBackground(
+                        () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PRINT })
+                    .setSize(16, 16));
             // Client can't handle unloaded machines
             row.widget(
-                    new ButtonWidget()
-                            .setOnClick((clickData, widget) -> Optional.ofNullable(coreMachine).ifPresent(machine -> {
-                                if (!getBaseMetaTileEntity().isActive()) {
-                                    player.addChatComponentMessage(
-                                            new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                                    return;
-                                }
-                                if (machine.isAllowedToWork()) {
-                                    machine.disableWorking();
-                                } else {
-                                    machine.enableWorking();
-                                }
-                            }))
-                            .setPlayClickSoundResource(
-                                    () -> Optional.ofNullable(coreMachine).filter(MTEMultiBlockBase::isAllowedToWork)
-                                            .map(var -> SoundResource.GUI_BUTTON_UP.resourceLocation)
-                                            .orElse(SoundResource.GUI_BUTTON_DOWN.resourceLocation))
-                            .setBackground(
-                                    () -> Optional.ofNullable(coreMachine)
-                                            .map(
-                                                    machine -> machine.isAllowedToWork()
-                                                            ? new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                                                                    GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
-                                                            : new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                                                                    GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
-                                            .orElse(new IDrawable[] { GTUITextures.OVERLAY_BUTTON_CROSS }))
-                            .attachSyncer(
-                                    new FakeSyncWidget.BooleanSyncer(
-                                            () -> Optional.ofNullable(coreMachine)
-                                                    .map(MTEMultiBlockBase::isAllowedToWork).orElse(false),
-                                            var -> Optional.ofNullable(coreMachine).ifPresent(machine -> {
-                                                if (var) machine.enableWorking();
-                                                else machine.disableWorking();
-                                            })),
-                                    builder)
-                            .addTooltip(
-                                    coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.power_switch")
-                                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
-                            .setSize(16, 16))
-                    .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                        if (widget.isClient()) {
-                            highlightMachine(player, connection.machineCoord);
-                            player.closeScreen();
-                        }
-                    }).addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
-                            .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
-                            .setSize(16, 16));
+                new ButtonWidget().setOnClick(
+                    (clickData, widget) -> Optional.ofNullable(coreMachine)
+                        .ifPresent(machine -> {
+                            if (!getBaseMetaTileEntity().isActive()) {
+                                player.addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                                return;
+                            }
+                            if (machine.isAllowedToWork()) {
+                                machine.disableWorking();
+                            } else {
+                                machine.enableWorking();
+                            }
+                        }))
+                    .setPlayClickSoundResource(
+                        () -> Optional.ofNullable(coreMachine)
+                            .filter(MTEMultiBlockBase::isAllowedToWork)
+                            .map(var -> SoundResource.GUI_BUTTON_UP.resourceLocation)
+                            .orElse(SoundResource.GUI_BUTTON_DOWN.resourceLocation))
+                    .setBackground(
+                        () -> Optional.ofNullable(coreMachine)
+                            .map(
+                                machine -> machine.isAllowedToWork()
+                                    ? new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
+                                    : new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
+                            .orElse(new IDrawable[] { GTUITextures.OVERLAY_BUTTON_CROSS }))
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(
+                            () -> Optional.ofNullable(coreMachine)
+                                .map(MTEMultiBlockBase::isAllowedToWork)
+                                .orElse(false),
+                            var -> Optional.ofNullable(coreMachine)
+                                .ifPresent(machine -> {
+                                    if (var) machine.enableWorking();
+                                    else machine.disableWorking();
+                                })),
+                        builder)
+                    .addTooltip(
+                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.power_switch")
+                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
+                    .setSize(16, 16))
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (widget.isClient()) {
+                        highlightMachine(player, connection.machineCoord);
+                        player.closeScreen();
+                    }
+                })
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
+                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
+                    .setSize(16, 16));
             // Show the reason why the machine shutdown
             row.widget(
-                    new DrawableWidget()
-                            .dynamicTooltip(
-                                    () -> Collections.singletonList(
-                                            Optional.ofNullable(coreMachine)
-                                                    .map(
-                                                            machine -> machine.getBaseMetaTileEntity()
-                                                                    .getLastShutDownReason().getDisplayString())
-                                                    .orElse("")))
-                            .setBackground(GTUITextures.PICTURE_STALLED_ELECTRICITY).setSize(16, 16)
-                            .setEnabled(
-                                    var -> coreMachine != null && coreMachine.shouldDisplayShutDownReason()
-                                            && !coreMachine.getBaseMetaTileEntity().isActive()
-                                            && GTUtility.isStringValid(
-                                                    coreMachine.getBaseMetaTileEntity().getLastShutDownReason()
-                                                            .getDisplayString())
-                                            && coreMachine.getBaseMetaTileEntity().wasShutdown())
-                            .attachSyncer(
-                                    new ShutDownReasonSyncer(
-                                            () -> Optional.ofNullable(coreMachine).map(
-                                                    var -> coreMachine.getBaseMetaTileEntity().getLastShutDownReason())
-                                                    .orElse(ShutDownReasonRegistry.NONE),
-                                            reason -> Optional.ofNullable(coreMachine).ifPresent(
-                                                    machine -> coreMachine.getBaseMetaTileEntity()
-                                                            .setShutDownReason(reason))),
-                                    builder)
-                            .attachSyncer(
-                                    new FakeSyncWidget.BooleanSyncer(
-                                            () -> Optional.ofNullable(coreMachine)
-                                                    .map(var -> coreMachine.getBaseMetaTileEntity().wasShutdown())
-                                                    .orElse(false),
-                                            wasShutDown -> Optional.ofNullable(coreMachine).ifPresent(
-                                                    machine -> coreMachine.getBaseMetaTileEntity()
-                                                            .setShutdownStatus(wasShutDown))),
-                                    builder));
+                new DrawableWidget().dynamicTooltip(
+                    () -> Collections.singletonList(
+                        Optional.ofNullable(coreMachine)
+                            .map(
+                                machine -> machine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason()
+                                    .getDisplayString())
+                            .orElse("")))
+                    .setBackground(GTUITextures.PICTURE_STALLED_ELECTRICITY)
+                    .setSize(16, 16)
+                    .setEnabled(
+                        var -> coreMachine != null && coreMachine.shouldDisplayShutDownReason()
+                            && !coreMachine.getBaseMetaTileEntity()
+                                .isActive()
+                            && GTUtility.isStringValid(
+                                coreMachine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason()
+                                    .getDisplayString())
+                            && coreMachine.getBaseMetaTileEntity()
+                                .wasShutdown())
+                    .attachSyncer(
+                        new ShutDownReasonSyncer(
+                            () -> Optional.ofNullable(coreMachine)
+                                .map(
+                                    var -> coreMachine.getBaseMetaTileEntity()
+                                        .getLastShutDownReason())
+                                .orElse(ShutDownReasonRegistry.NONE),
+                            reason -> Optional.ofNullable(coreMachine)
+                                .ifPresent(
+                                    machine -> coreMachine.getBaseMetaTileEntity()
+                                        .setShutDownReason(reason))),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(
+                            () -> Optional.ofNullable(coreMachine)
+                                .map(
+                                    var -> coreMachine.getBaseMetaTileEntity()
+                                        .wasShutdown())
+                                .orElse(false),
+                            wasShutDown -> Optional.ofNullable(coreMachine)
+                                .ifPresent(
+                                    machine -> coreMachine.getBaseMetaTileEntity()
+                                        .setShutdownStatus(wasShutDown))),
+                        builder));
             row.widget(
-                    new TextWidget(connectionList.get(i).getCustomName(showLocalizedName))
-                            .setTextAlignment(Alignment.CenterLeft).setPos(0, 4));
-            MachineContainer.widget(row.setAlignment(MainAxisAlignment.SPACE_BETWEEN).setSpace(4).setPos(0, posY));
+                new TextWidget(
+                    connectionList.get(i)
+                        .getCustomName(showLocalizedName)).setTextAlignment(Alignment.CenterLeft)
+                            .setPos(0, 4));
+            MachineContainer.widget(
+                row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                    .setSpace(4)
+                    .setPos(0, posY));
             posY += 20;
         }
-        return builder.widget(MachineContainer.setPos(10, 50).setSize(240, heightCoff - 60)).setDraggable(false)
-                .build();
+        return builder.widget(
+            MachineContainer.setPos(10, 50)
+                .setSize(240, heightCoff - 60))
+            .setDraggable(false)
+            .build();
     }
 
     protected ModularWindow createCustomNameWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(150, 40);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        return builder.widget(ButtonWidget.closeWindowButton(true).setPos(135, 3))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
-                                .setTextAlignment(Alignment.Center).setPos(0, 5).setSize(150, 8))
-                .widget(new TextFieldWidget() {
+        return builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(135, 3))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(0, 5)
+                    .setSize(150, 8))
+            .widget(new TextFieldWidget() {
 
-                    @Override
-                    public void onDestroy() {
-                        if (isClient()) return;
-                        getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                        getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                    }
-                }.setGetter(() -> connectionList.get(buttonID).getCustomName(false))
-                        .setSetter(var -> connectionList.get(buttonID).setCustomName(var))
-                        .setTextAlignment(Alignment.CenterLeft).setTextColor(Color.WHITE.dark(1))
-                        .setFocusOnGuiOpen(true)
-                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                        .setPos(10, 16).setSize(130, 16))
-                .build();
+                @Override
+                public void onDestroy() {
+                    if (isClient()) return;
+                    getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                    getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                }
+            }.setGetter(
+                () -> connectionList.get(buttonID)
+                    .getCustomName(false))
+                .setSetter(
+                    var -> connectionList.get(buttonID)
+                        .setCustomName(var))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(true)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .setPos(10, 16)
+                .setSize(130, 16))
+            .build();
     }
 
     // Just like HIGHLIGHT_INTERFACE (and exactly from it)
     private void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
         DimensionalCoord blockPos = new DimensionalCoord(
-                machineCoord.posX,
-                machineCoord.posY,
-                machineCoord.posZ,
-                player.dimension);
+            machineCoord.posX,
+            machineCoord.posY,
+            machineCoord.posZ,
+            player.dimension);
         BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
     }
 

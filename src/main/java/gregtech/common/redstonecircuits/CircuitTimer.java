@@ -61,8 +61,8 @@ public class CircuitTimer extends CircuitryBehavior {
                     aCircuitData[4] = 0;
                 } else {
                     aRedstoneCircuitBlock.setRedstone(
-                            (byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0),
-                            aRedstoneCircuitBlock.getOutputFacing());
+                        (byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0),
+                        aRedstoneCircuitBlock.getOutputFacing());
                 }
             } else {
                 aRedstoneCircuitBlock.setRedstone((byte) 15, aRedstoneCircuitBlock.getOutputFacing());
@@ -90,8 +90,8 @@ public class CircuitTimer extends CircuitryBehavior {
             case 1 -> StatCollector.translateToLocal("GT5U.gui.circuit.timer.data_description.pulses");
             case 2 -> StatCollector.translateToLocal("GT5U.gui.circuit.data_description.length");
             case 3 -> StatCollector.translateToLocal(
-                    aCircuitData[aCircuitDataIndex] == 1 ? "GT5U.gui.circuit.data_description.rs_on"
-                            : "GT5U.gui.circuit.data_description.rs_off");
+                aCircuitData[aCircuitDataIndex] == 1 ? "GT5U.gui.circuit.data_description.rs_on"
+                    : "GT5U.gui.circuit.data_description.rs_off");
             case 4 -> StatCollector.translateToLocal("GT5U.gui.circuit.timer.data_description.time");
             default -> "";
         };

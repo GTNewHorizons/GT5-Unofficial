@@ -24,7 +24,7 @@ import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
 public abstract class GTMetaItemBase extends GTGenericItem
-        implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
+    implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /**
      * Creates the Item using these Parameters.
@@ -44,9 +44,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
 
     @Override
     public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
-            final boolean aF3_H) {
+        final boolean aF3_H) {
         final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
-                tString = GTLanguageManager.getTranslation(tKey);
+            tString = GTLanguageManager.getTranslation(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
             aList.add(tString);
         }
@@ -55,26 +55,26 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                        EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
-                                "item.itemBaseEuItem.tooltip.1",
-                                GTUtility.formatNumbers(tStats[3]),
-                                (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "item.itemBaseEuItem.tooltip.1",
+                        GTUtility.formatNumbers(tStats[3]),
+                        (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
                     aList.add(
-                            EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
-                                    + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
+                            + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
-                                    "item.itemBaseEuItem.tooltip.3",
-                                    GTUtility.formatNumbers(tCharge),
-                                    GTUtility.formatNumbers(Math.abs(tStats[0])),
-                                    GTUtility.formatNumbers(
-                                            V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1
-                                                    : 1)]))
-                                    + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA
+                            + StatCollector.translateToLocalFormatted(
+                                "item.itemBaseEuItem.tooltip.3",
+                                GTUtility.formatNumbers(tCharge),
+                                GTUtility.formatNumbers(Math.abs(tStats[0])),
+                                GTUtility.formatNumbers(
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
+                            + EnumChatFormatting.GRAY);
                 }
             }
         }
@@ -83,15 +83,15 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats != null) && (tStats[0] > 0)) {
             final FluidStack tFluid = this.getFluidContent(aStack);
             aList.add(
-                    EnumChatFormatting.BLUE
-                            + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
-                            + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
+                    + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.BLUE
-                            + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                                    + GTUtility.formatNumbers(tStats[0])
-                                    + "L")
-                            + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
+                        + GTUtility.formatNumbers(tStats[0])
+                        + "L")
+                    + EnumChatFormatting.GRAY);
         }
 
         this.addAdditionalToolTips(aList, aStack);
@@ -126,18 +126,18 @@ public abstract class GTMetaItemBase extends GTGenericItem
 
     @Override
     public final double charge(final ItemStack aStack, final double aCharge, final int aTier,
-            final boolean aIgnoreTransferLimit, final boolean aSimulate) {
+        final boolean aIgnoreTransferLimit, final boolean aSimulate) {
         final Long[] tStats = this.getElectricStats(aStack);
         if ((tStats == null) || (tStats[2] > aTier)
-                || !((tStats[3] == -1) || (tStats[3] == -3) || ((tStats[3] < 0) && (aCharge == Integer.MAX_VALUE)))
-                || (aStack.stackSize != 1)) {
+            || !((tStats[3] == -1) || (tStats[3] == -3) || ((tStats[3] < 0) && (aCharge == Integer.MAX_VALUE)))
+            || (aStack.stackSize != 1)) {
             return 0;
         }
-        final long tChargeBefore = this.getRealCharge(aStack), tNewCharge = aCharge == Integer.MAX_VALUE
-                ? Long.MAX_VALUE
+        final long tChargeBefore = this.getRealCharge(aStack),
+            tNewCharge = aCharge == Integer.MAX_VALUE ? Long.MAX_VALUE
                 : Math.min(
-                        Math.abs(tStats[0]),
-                        tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+                    Math.abs(tStats[0]),
+                    tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) {
             this.setCharge(aStack, tNewCharge);
         }
@@ -146,7 +146,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
 
     @Override
     public final double discharge(final ItemStack aStack, final double aCharge, final int aTier,
-            final boolean aIgnoreTransferLimit, final boolean aBatteryAlike, final boolean aSimulate) {
+        final boolean aIgnoreTransferLimit, final boolean aBatteryAlike, final boolean aSimulate) {
         final Long[] tStats = this.getElectricStats(aStack);
         if ((tStats == null) || (tStats[2] > aTier)) {
             return 0;
@@ -164,7 +164,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
             return tStats[3];
         }
         final long tChargeBefore = this.getRealCharge(aStack), tNewCharge = Math
-                .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+            .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) {
             this.setCharge(aStack, tNewCharge);
         }
@@ -209,12 +209,12 @@ public abstract class GTMetaItemBase extends GTGenericItem
                 final IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
                 if (tArmorItem.canProvideEnergy(tArmor) && (tArmorItem.getTier(tArmor) >= this.getTier(aStack))) {
                     final double tCharge = ElectricItem.manager.discharge(
-                            tArmor,
-                            this.charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
-                            Integer.MAX_VALUE,
-                            true,
-                            true,
-                            false);
+                        tArmor,
+                        this.charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
+                        Integer.MAX_VALUE,
+                        true,
+                        true,
+                        false);
                     if (tCharge > 0) {
                         this.charge(aStack, tCharge, Integer.MAX_VALUE, true, false);
                         if (aPlayer instanceof EntityPlayer) {
@@ -301,15 +301,17 @@ public abstract class GTMetaItemBase extends GTGenericItem
 
         final Long[] tStats = this.getFluidContainerStats(aStack);
         if ((tStats == null) || (tStats[0] <= 0)
-                || (aFluid == null)
-                || (aFluid.getFluid().getID() <= 0)
-                || (aFluid.amount <= 0)) {
+            || (aFluid == null)
+            || (aFluid.getFluid()
+                .getID() <= 0)
+            || (aFluid.amount <= 0)) {
             return 0;
         }
 
         FluidStack tFluid = this.getFluidContent(aStack);
 
-        if ((tFluid == null) || (tFluid.getFluid().getID() <= 0)) {
+        if ((tFluid == null) || (tFluid.getFluid()
+            .getID() <= 0)) {
             if (aFluid.amount <= tStats[0]) {
                 if (doFill) {
                     this.setFluidContent(aStack, aFluid);

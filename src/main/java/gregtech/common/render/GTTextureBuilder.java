@@ -142,14 +142,14 @@ public class GTTextureBuilder implements ITextureBuilder {
         return switch (iconContainerList.size()) {
             case 1 -> new GTRenderedTexture(iconContainerList.get(0), rgba, glow, stdOrient, extFacing);
             case 6 -> new GTSidedTextureRender(
-                    iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                    iconContainerList.get(ForgeDirection.UP.ordinal()),
-                    iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                    iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                    iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                    iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                    rgba,
-                    allowAlpha);
+                iconContainerList.get(ForgeDirection.DOWN.ordinal()),
+                iconContainerList.get(ForgeDirection.UP.ordinal()),
+                iconContainerList.get(ForgeDirection.NORTH.ordinal()),
+                iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
+                iconContainerList.get(ForgeDirection.WEST.ordinal()),
+                iconContainerList.get(ForgeDirection.EAST.ordinal()),
+                rgba,
+                allowAlpha);
             default -> throw new IllegalStateException("Invalid sideIconContainer count");
         };
     }

@@ -39,13 +39,13 @@ public class MTEHatchDegasifierControl extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -67,7 +67,7 @@ public class MTEHatchDegasifierControl extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the Degasser Purification Unit.",
-                "Outputs Redstone Signal Strength based on the current control signal." };
+            "Outputs Redstone Signal Strength based on the current control signal." };
     }
 
     @Override
@@ -103,8 +103,10 @@ public class MTEHatchDegasifierControl extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+            .addIcon(textureFont_Glow)
+            .glow()
+            .build() };
     }
 
     @Override

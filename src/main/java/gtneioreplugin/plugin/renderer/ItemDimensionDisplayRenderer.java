@@ -33,12 +33,12 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
         }
 
         renderItem.renderItemIntoGUI(
-                Minecraft.getMinecraft().fontRenderer,
-                Minecraft.getMinecraft().renderEngine,
-                stack,
-                0,
-                0,
-                false);
+            Minecraft.getMinecraft().fontRenderer,
+            Minecraft.getMinecraft().renderEngine,
+            stack,
+            0,
+            0,
+            false);
 
         FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
         float smallTextScale = 3F / 4F;
@@ -51,7 +51,7 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
         String tooltipPrefix = prefix != -1 ? "T" + prefix : "INVALID. Please, report this to the GTNH team";
 
         fontRender
-                .drawString(tooltipPrefix, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+            .drawString(tooltipPrefix, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
 
         GL11.glPopMatrix();
 

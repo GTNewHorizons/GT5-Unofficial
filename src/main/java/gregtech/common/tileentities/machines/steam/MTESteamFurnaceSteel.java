@@ -67,9 +67,9 @@ public class MTESteamFurnaceSteel extends MTEBasicMachineSteel {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-                && GTModHandler.getSmeltingOutput(GTUtility.copyAmount(64, aStack), false, null) != null;
+            && GTModHandler.getSmeltingOutput(GTUtility.copyAmount(64, aStack), false, null) != null;
     }
 
     @Override
@@ -88,53 +88,72 @@ public class MTESteamFurnaceSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[] { super.getSideFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE_GLOW).glow().build() };
+            TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE), TextureFactory.builder()
+                .addIcon(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[] { super.getSideFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_FURNACE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(OVERLAY_SIDE_STEAM_FURNACE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[] { super.getFrontFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE_GLOW).glow().build() };
+            TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[] { super.getFrontFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_FURNACE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_STEAM_FURNACE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[] { super.getTopFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW).glow().build() };
+            TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE_ACTIVE), TextureFactory.builder()
+                .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[] { super.getTopFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE),
-                TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_FURNACE_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(OVERLAY_TOP_STEAM_FURNACE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[] { super.getBottomFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW).glow().build() };
+            TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE), TextureFactory.builder()
+                .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[] { super.getBottomFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_GLOW).glow().build() };
+            TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE), TextureFactory.builder()
+                .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_GLOW)
+                .glow()
+                .build() };
     }
 }

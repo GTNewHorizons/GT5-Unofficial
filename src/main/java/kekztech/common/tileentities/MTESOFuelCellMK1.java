@@ -68,22 +68,23 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     private static final int CASING_TEXTURE_ID = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTESOFuelCellMK1> STRUCTURE_DEFINITION = IStructureDefinition
-            .<MTESOFuelCellMK1>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] { { "ccc", "ccc", "ccc", "ccc", "ccc" },
-                                    { "c~c", "geg", "geg", "geg", "cdc" }, { "ccc", "ccc", "ccc", "ccc", "ccc" } }))
-            .addElement(
-                    'c',
-                    ofChain(
-                            onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                            ofHatchAdder(MTESOFuelCellMK1::addInputToMachineList, CASING_TEXTURE_ID, 1),
-                            ofHatchAdder(MTESOFuelCellMK1::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
-                            ofHatchAdder(MTESOFuelCellMK1::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
-            .addElement('d', ofHatchAdder(MTESOFuelCellMK1::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
-            .addElement('e', ofBlockAnyMeta(Blocks.yszUnit)).build();
+        .<MTESOFuelCellMK1>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] { { "ccc", "ccc", "ccc", "ccc", "ccc" }, { "c~c", "geg", "geg", "geg", "cdc" },
+                    { "ccc", "ccc", "ccc", "ccc", "ccc" } }))
+        .addElement(
+            'c',
+            ofChain(
+                onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                ofHatchAdder(MTESOFuelCellMK1::addInputToMachineList, CASING_TEXTURE_ID, 1),
+                ofHatchAdder(MTESOFuelCellMK1::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
+                ofHatchAdder(MTESOFuelCellMK1::addOutputToMachineList, CASING_TEXTURE_ID, 1)))
+        .addElement('d', ofHatchAdder(MTESOFuelCellMK1::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+        .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+        .addElement('e', ofBlockAnyMeta(Blocks.yszUnit))
+        .build();
 
     @Override
     public IStructureDefinition<MTESOFuelCellMK1> getStructureDefinition() {
@@ -94,33 +95,51 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
-                .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-                .addInfo(
-                        "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
-                                + "EU worth of fuel with up to 100% efficiency each second")
-                .addInfo("Steam production requires the SOFC to heat up completely first")
-                .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
-                .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-                .beginStructureBlock(3, 3, 5, false).addController("Front center")
-                .addCasingInfoMin("Clean Stainless Steel Casing", 12, false)
-                .addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-                .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Any casing").addInputHatch("Fuel, any casing")
-                .addInputHatch("Oxygen, any casing").addOutputHatch("Steam, any casing").toolTipFinisher();
+            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+            .addInfo(
+                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
+                    + "EU worth of fuel with up to 100% efficiency each second")
+            .addInfo("Steam production requires the SOFC to heat up completely first")
+            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+            .beginStructureBlock(3, 3, 5, false)
+            .addController("Front center")
+            .addCasingInfoMin("Clean Stainless Steel Casing", 12, false)
+            .addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
+            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
+            .addDynamoHatch("Back center", 1)
+            .addMaintenanceHatch("Any casing")
+            .addInputHatch("Fuel, any casing")
+            .addInputHatch("Oxygen, any casing")
+            .addOutputHatch("Steam, any casing")
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int colorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int colorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
@@ -135,7 +154,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             for (GTRecipe aFuel : recipeList) {
                 FluidStack liquid;
                 if ((liquid = GTUtility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-                        && hatchFluid.isFluidEqual(liquid)) {
+                    && hatchFluid.isFluidEqual(liquid)) {
 
                     liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue;
 

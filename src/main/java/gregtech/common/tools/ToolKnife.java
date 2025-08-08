@@ -54,19 +54,19 @@ public class ToolKnife extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword")
-                || GTToolHarvestHelper.isAppropriateMaterial(
-                        aBlock,
-                        Material.leaves,
-                        Material.gourd,
-                        Material.vine,
-                        Material.web,
-                        Material.cloth,
-                        Material.carpet,
-                        Material.plants,
-                        Material.cactus,
-                        Material.cake,
-                        Material.tnt,
-                        Material.sponge);
+            || GTToolHarvestHelper.isAppropriateMaterial(
+                aBlock,
+                Material.leaves,
+                Material.gourd,
+                Material.vine,
+                Material.web,
+                Material.cloth,
+                Material.carpet,
+                Material.plants,
+                Material.cactus,
+                Material.cake,
+                Material.tnt,
+                Material.sponge);
     }
 
     @Override
@@ -82,23 +82,23 @@ public class ToolKnife extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                "<" + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + "> "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " what are you doing?, "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + "?!? STAHP!!!");
+            "<" + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + "> "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " what are you doing?, "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + "?!? STAHP!!!");
     }
 }

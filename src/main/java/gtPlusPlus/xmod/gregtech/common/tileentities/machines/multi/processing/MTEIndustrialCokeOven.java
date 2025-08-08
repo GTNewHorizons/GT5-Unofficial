@@ -64,19 +64,24 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-                .addInfo("Gain 4% energy discount per voltage tier")
-                .addInfo("Process 12x materials with Heat Resistant Casings")
-                .addInfo("Or 24x materials with Heat Proof Casings").addPollutionAmount(getPollutionPerSecond(null))
-                .beginStructureBlock(3, 3, 3, true).addController("Front middle at bottom")
-                .addCasingInfoMin("Structural Coke Oven Casings", 8, false)
-                .addCasingInfoMin("Heat Resistant/Proof Coke Oven Casings", 8, false)
-                .addInputBus("Any Structural Coke Oven Casing", 1).addOutputBus("Any Structural Coke Oven Casing", 1)
-                .addInputHatch("Any Structural Coke Oven Casing", 1)
-                .addOutputHatch("Any Structural Coke Oven Casing", 1)
-                .addEnergyHatch("Any Structural Coke Oven Casing", 1)
-                .addMaintenanceHatch("Any Structural Coke Oven Casing", 1)
-                .addMufflerHatch("Any Structural Coke Oven Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
+            .addInfo("Gain 4% energy discount per voltage tier")
+            .addInfo("Process 12x materials with Heat Resistant Casings")
+            .addInfo("Or 24x materials with Heat Proof Casings")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front middle at bottom")
+            .addCasingInfoMin("Structural Coke Oven Casings", 8, false)
+            .addCasingInfoMin("Heat Resistant/Proof Coke Oven Casings", 8, false)
+            .addInputBus("Any Structural Coke Oven Casing", 1)
+            .addOutputBus("Any Structural Coke Oven Casing", 1)
+            .addInputHatch("Any Structural Coke Oven Casing", 1)
+            .addOutputHatch("Any Structural Coke Oven Casing", 1)
+            .addEnergyHatch("Any Structural Coke Oven Casing", 1)
+            .addMaintenanceHatch("Any Structural Coke Oven Casing", 1)
+            .addMufflerHatch("Any Structural Coke Oven Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -84,34 +89,33 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     public IStructureDefinition<MTEIndustrialCokeOven> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCokeOven>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "C~C", "CCC", "CCC" }, }))
-                    .addShape(
-                            mName + "1",
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "aaa", "a-a", "aaa" },
-                                            { "C~C", "CCC", "CCC" }, }))
-                    .addShape(
-                            mName + "2",
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "bbb", "b-b", "bbb" },
-                                            { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialCokeOven.class)
-                                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(1)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 1))))
-                    .addElement(
-                            'H',
-                            ofChain(
-                                    onElementPass(x -> ++x.mCasing1, ofBlock(ModBlocks.blockCasingsMisc, 2)),
-                                    onElementPass(x -> ++x.mCasing2, ofBlock(ModBlocks.blockCasingsMisc, 3))))
-                    .addElement('a', ofBlock(ModBlocks.blockCasingsMisc, 2))
-                    .addElement('b', ofBlock(ModBlocks.blockCasingsMisc, 3)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
+                .addShape(
+                    mName + "1",
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "aaa", "a-a", "aaa" }, { "C~C", "CCC", "CCC" }, }))
+                .addShape(
+                    mName + "2",
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "bbb", "b-b", "bbb" }, { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialCokeOven.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.GTPP_INDEX(1))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 1))))
+                .addElement(
+                    'H',
+                    ofChain(
+                        onElementPass(x -> ++x.mCasing1, ofBlock(ModBlocks.blockCasingsMisc, 2)),
+                        onElementPass(x -> ++x.mCasing2, ofBlock(ModBlocks.blockCasingsMisc, 3))))
+                .addElement('a', ofBlock(ModBlocks.blockCasingsMisc, 2))
+                .addElement('b', ofBlock(ModBlocks.blockCasingsMisc, 3))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }

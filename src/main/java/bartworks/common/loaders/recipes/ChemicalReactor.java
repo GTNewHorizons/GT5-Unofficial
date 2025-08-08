@@ -15,9 +15,12 @@ public class ChemicalReactor implements Runnable {
     @Override
     public void run() {
 
-        GTValues.RA.stdBuilder().fluidInputs(new FluidStack(FluidLoader.heatedfulvicAcid, 1000))
-                .fluidOutputs(new FluidStack(FluidLoader.Kerogen, 1000)).duration(3 * SECONDS + 15 * TICKS)
-                .eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(FluidLoader.heatedfulvicAcid, 1000))
+            .fluidOutputs(new FluidStack(FluidLoader.Kerogen, 1000))
+            .duration(3 * SECONDS + 15 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
 
     }
 }

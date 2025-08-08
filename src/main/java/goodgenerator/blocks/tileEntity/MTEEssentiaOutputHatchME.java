@@ -130,7 +130,8 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     protected boolean getEssentiaMonitor() {
         IMEEssentiaMonitor essentiaMonitor = null;
         IGrid grid = null;
-        IGridNode node = this.getProxy().getNode();
+        IGridNode node = this.getProxy()
+            .getNode();
 
         if (node != null) {
             grid = node.getGrid();

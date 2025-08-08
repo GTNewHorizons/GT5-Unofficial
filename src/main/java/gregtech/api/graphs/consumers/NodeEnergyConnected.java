@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 public class NodeEnergyConnected extends ConsumerNode {
 
     public NodeEnergyConnected(int aNodeValue, IEnergyConnected aTileEntity, ForgeDirection side,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, side, aConsumers);
     }
 

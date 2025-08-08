@@ -128,7 +128,7 @@ public class ItemLoader {
         PartiallyOxidizedTeaLeaf.set(kubaitems.registerProxyItem(new ItemTeaIngredient("partially_oxidized_tea_leaf")));
 
         TeaAcceptorResearchNote
-                .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
+            .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
         Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee")));
 
         // DEFC stuff
@@ -136,9 +136,9 @@ public class ItemLoader {
 
             @Override
             public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList,
-                    boolean showDebugInfo) {
-                tooltipList.add(
-                        EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubaitem.defc_schematic_t1.tip"));
+                boolean showDebugInfo) {
+                tooltipList
+                    .add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubaitem.defc_schematic_t1.tip"));
             }
         }));
         DEFCWyvernSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t2")));

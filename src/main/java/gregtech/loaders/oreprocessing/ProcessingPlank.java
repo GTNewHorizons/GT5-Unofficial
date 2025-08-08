@@ -53,9 +53,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
      * standard ShapedOreRecipe, and thus may be skipped. We specify them manually here to avoid this.
      */
     private static final String[] SPECIAL_PLANKS = new String[] { "witchery:witchwood",
-            "GalacticraftAmunRa:tile.wood1:2", "GalacticraftAmunRa:tile.wood1:3", "etfuturum:wood_planks" };
+        "GalacticraftAmunRa:tile.wood1:2", "GalacticraftAmunRa:tile.wood1:3", "etfuturum:wood_planks" };
     private static final String[] SPECIAL_SLABS = new String[] { "witchery:witchwoodslab",
-            "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
+        "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
 
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
 
@@ -65,7 +65,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aOreDictName.startsWith("plankWood")) {
             int tPlankMeta = aStack.getItemDamage();
 
@@ -80,11 +80,18 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             // Also skip this plank if it's wildcard equivalent was already processed
             if (!tIsWildcard && sProcessedPlanks.contains(tHashPrefix + ":" + OreDictionary.WILDCARD_VALUE)) return;
 
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L)).duration(10 * TICKS)
-                    .eut(8).addTo(latheRecipes);
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
-                    .itemOutputs(new ItemStack(Blocks.chest, 1)).duration(40 * SECONDS).eut(4).addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
+                .duration(10 * TICKS)
+                .eut(8)
+                .addTo(latheRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(new ItemStack(Blocks.chest, 1))
+                .duration(40 * SECONDS)
+                .eut(4)
+                .addTo(assemblerRecipes);
 
             if (aStack.getItem() instanceof MetaGeneratedItem) {
                 // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
@@ -134,19 +141,31 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (tSkipRecipeCreation) return;
 
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
-                .fluidInputs(Materials.Water.getFluid(4)).duration(2 * 25 * TICKS).eut(4).addTo(cutterRecipes);
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
-                .fluidInputs(GTModHandler.getDistilledWater(3)).duration(2 * 25 * TICKS).eut(4).addTo(cutterRecipes);
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
-                .fluidInputs(Materials.Lubricant.getFluid(1)).duration(25 * TICKS).eut(4).addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
+            .fluidInputs(Materials.Water.getFluid(4))
+            .duration(2 * 25 * TICKS)
+            .eut(4)
+            .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
+            .fluidInputs(GTModHandler.getDistilledWater(3))
+            .duration(2 * 25 * TICKS)
+            .eut(4)
+            .addTo(cutterRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
+            .fluidInputs(Materials.Lubricant.getFluid(1))
+            .duration(25 * TICKS)
+            .eut(4)
+            .addTo(cutterRecipes);
         GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(tOutput.stackSize / 3, tOutput),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "sP", 'P', aStack });
+            GTUtility.copyAmount(tOutput.stackSize / 3, tOutput),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "sP", 'P', aStack });
     }
 
     private SpecialSlabConversionResult trySpecialSlabConversion(ItemStack aPlankStack) {
@@ -187,8 +206,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             }
 
             return new SpecialSlabConversionResult(
-                    true,
-                    GTModHandler.getModItem(tSlabParts[0], tSlabParts[1], 6, tSlabMeta));
+                true,
+                GTModHandler.getModItem(tSlabParts[0], tSlabParts[1], 6, tSlabMeta));
         }
 
         return new SpecialSlabConversionResult(false, null);

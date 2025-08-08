@@ -14,13 +14,17 @@ public class Rows {
 
     public static Flow makeInvertRedstoneRow(Invertable cover) {
         BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted);
-        return Flow.row().debugName("invert_redstone").child(
-                new ToggleButton().value(isInvertedSyncValue).overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF).size(16))
-                .child(
-                        IKey.dynamic(
-                                () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
-                                        : translateToLocal("gt.interact.desc.inverted"))
-                                .asWidget());
+        return Flow.row()
+            .debugName("invert_redstone")
+            .child(
+                new ToggleButton().value(isInvertedSyncValue)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    .size(16))
+            .child(
+                IKey.dynamic(
+                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
+                        : translateToLocal("gt.interact.desc.inverted"))
+                    .asWidget());
     }
 }

@@ -63,8 +63,8 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
 
     protected String getTotalPowerString(OverclockCalculator calculator) {
         return StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.total",
-                GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
+            "GT5U.nei.display.total",
+            GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
@@ -79,11 +79,11 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      */
     protected String getEUtDisplay(OverclockCalculator calculator) {
         String tier_displayed = shouldShowAmperage(calculator) ? ""
-                : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
+            : GTUtility.getTierNameWithParentheses(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(calculator.getConsumption()),
-                tier_displayed);
+            "GT5U.nei.display.usage",
+            GTUtility.formatNumbers(calculator.getConsumption()),
+            tier_displayed);
     }
 
     /**
@@ -92,9 +92,9 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     protected String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
-                GTUtility.getTierNameWithParentheses(voltage));
+            "GT5U.nei.display.voltage",
+            GTUtility.formatNumbers(voltage),
+            GTUtility.getTierNameWithParentheses(voltage));
 
     }
 

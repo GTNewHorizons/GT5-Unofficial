@@ -25,7 +25,8 @@ public class LMACraftingFX extends EntityFX {
         super(w, x, y, z, 0, 0, 0);
         this.entityItem = new EntityItem(this.worldObj, 0, 0, 0, itemStack.getItemStack());
         this.entityItem.hoverStart = 0;
-        this.isItemBlock = itemStack.getItemStack().getItem() instanceof ItemBlock;
+        this.isItemBlock = itemStack.getItemStack()
+            .getItem() instanceof ItemBlock;
 
         this.motionX = 0;
         this.motionY = 0;
@@ -36,7 +37,7 @@ public class LMACraftingFX extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator tess, float renderPartialTicks, float rX, float rY, float rZ, float rYZ,
-            float rXY) {
+        float rXY) {
         tess.draw();
         GL11.glPushMatrix();
 

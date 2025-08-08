@@ -12,7 +12,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 public class EmptyPowerConsumer extends ConsumerNode {
 
     public EmptyPowerConsumer(int aNodeValue, TileEntity aTileEntity, ForgeDirection side,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, side, aConsumers);
     }
 

@@ -28,7 +28,7 @@ public class GTSpawnEventHandler {
         if (event.getResult() == Event.Result.DENY) return;
 
         if (event.entityLiving instanceof EntitySlime slime && !slime.hasCustomNameTag()
-                && event.getResult() == Event.Result.ALLOW) {
+            && event.getResult() == Event.Result.ALLOW) {
             event.setResult(Event.Result.DEFAULT);
         }
 
@@ -38,10 +38,10 @@ public class GTSpawnEventHandler {
 
         if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             if (repellents.isInRange(
-                    event.entity.worldObj.provider.dimensionId,
-                    event.entity.posX,
-                    event.entity.posY,
-                    event.entity.posZ)) {
+                event.entity.worldObj.provider.dimensionId,
+                event.entity.posX,
+                event.entity.posY,
+                event.entity.posZ)) {
                 if (event.entityLiving instanceof EntitySlime slime) {
                     slime.setCustomNameTag("DoNotSpawnSlimes");
                 }

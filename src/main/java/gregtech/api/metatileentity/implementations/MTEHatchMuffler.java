@@ -23,20 +23,20 @@ import gregtech.common.pollution.Pollution;
 public class MTEHatchMuffler extends MTEHatch {
 
     private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-            "gt.blockmachines.hatch.muffler.desc.format",
-            "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-                    + "Reduces Pollution to %d%%%n");
+        "gt.blockmachines.hatch.muffler.desc.format",
+        "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
+            + "Reduces Pollution to %d%%%n");
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-            .split("\\R");
+        .split("\\R");
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription, ITexture... aTextures) {
+        String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -45,7 +45,7 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     public MTEHatchMuffler(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -71,13 +71,13 @@ public class MTEHatchMuffler extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -89,8 +89,12 @@ public class MTEHatchMuffler extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()) {
-            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), ParticleFX.LARGE_SMOKE.toString());
+        if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
+            .isActive()) {
+            pollutionParticles(
+                this.getBaseMetaTileEntity()
+                    .getWorld(),
+                ParticleFX.LARGE_SMOKE.toString());
         }
     }
 
@@ -136,25 +140,33 @@ public class MTEHatchMuffler extends MTEHatch {
         }
 
         final WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                .setIdentifier(name).setWorld(aWorld).setMotion(xSpd, ySpd, zSpd);
+            .setIdentifier(name)
+            .setWorld(aWorld)
+            .setMotion(xSpd, ySpd, zSpd);
 
         if (chk1) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran1 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                .run();
         }
         if (chk2) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran2 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                .run();
         }
         if (chk3) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran3 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                .run();
         }
     }
 

@@ -18,8 +18,8 @@ public class GTPlayedSound {
     public boolean equals(Object aObject) {
         if (aObject instanceof GTPlayedSound) {
             return ((GTPlayedSound) aObject).mX == mX && ((GTPlayedSound) aObject).mY == mY
-                    && ((GTPlayedSound) aObject).mZ == mZ
-                    && ((GTPlayedSound) aObject).mSoundName.equals(mSoundName);
+                && ((GTPlayedSound) aObject).mZ == mZ
+                && ((GTPlayedSound) aObject).mSoundName.equals(mSoundName);
         }
         return false;
     }

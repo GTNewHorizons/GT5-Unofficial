@@ -45,7 +45,8 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
     @Override
     public void encode(final ByteBuf aOut) {
-        final byte[] name = action.name().getBytes(StandardCharsets.UTF_8);
+        final byte[] name = action.name()
+            .getBytes(StandardCharsets.UTF_8);
         aOut.writeInt(newColor);
         aOut.writeInt(name.length);
         aOut.writeBytes(name);
@@ -71,9 +72,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
         ItemStack currentItemStack = player.inventory.getCurrentItem();
         if (currentItemStack != null && currentItemStack.getItem() instanceof MetaBaseItem item) {
             item.forEachBehavior(
-                    currentItemStack,
-                    behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
-                            && action.execute(spraycanBehavior, currentItemStack, player, newColor));
+                currentItemStack,
+                behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
+                    && action.execute(spraycanBehavior, currentItemStack, player, newColor));
         }
     }
 
@@ -83,7 +84,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
             @Override
             boolean execute(final BehaviourSprayColorInfinite behaviour, final ItemStack itemStack,
-                    final EntityPlayerMP player, final int newColor) {
+                final EntityPlayerMP player, final int newColor) {
                 if (!behaviour.isLocked(itemStack)) {
                     behaviour.incrementColor(itemStack, player.isSneaking());
                     playShakeSound(player);
@@ -97,7 +98,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
             @Override
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
-                    final EntityPlayerMP player, final int newColor) {
+                final EntityPlayerMP player, final int newColor) {
                 if (behavior.toggleLock(itemStack)) {
                     Action.playLockSound(player);
                 } else {
@@ -110,7 +111,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
             @Override
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
-                    final EntityPlayerMP player, final int newColor) {
+                final EntityPlayerMP player, final int newColor) {
                 if (newColor != -1) {
                     behavior.setColor(itemStack, (byte) newColor);
                     Action.playShakeSound(player);
@@ -123,7 +124,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
             @Override
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
-                    final EntityPlayerMP player, final int newColor) {
+                final EntityPlayerMP player, final int newColor) {
                 if (behavior.togglePreventShake(itemStack)) {
                     Action.playLockSound(player);
                 } else {
@@ -135,38 +136,38 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
 
         private static void playShakeSound(final EntityPlayerMP player) {
             GTUtility.sendSoundToPlayers(
-                    player.worldObj,
-                    SoundResource.GT_SPRAYCAN_SHAKE,
-                    1.0F,
-                    1,
-                    (int) player.posX,
-                    (int) player.posY,
-                    (int) player.posZ);
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_SHAKE,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
         }
 
         private static void playLockSound(final EntityPlayerMP player) {
             GTUtility.sendSoundToPlayers(
-                    player.worldObj,
-                    SoundResource.GT_SPRAYCAN_LOCK,
-                    1.0F,
-                    1,
-                    (int) player.posX,
-                    (int) player.posY,
-                    (int) player.posZ);
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_LOCK,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
         }
 
         private static void playUnlockSound(final EntityPlayerMP player) {
             GTUtility.sendSoundToPlayers(
-                    player.worldObj,
-                    SoundResource.GT_SPRAYCAN_UNLOCK,
-                    1.0F,
-                    1,
-                    (int) player.posX,
-                    (int) player.posY,
-                    (int) player.posZ);
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_UNLOCK,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
         }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,
-                final int newColor);
+            final int newColor);
     }
 }

@@ -26,10 +26,10 @@ public class GregtechIndustrialMassFabricator {
     private static void run1() {
         // Industrial Matter Fabricator Multiblock
         GregtechItemList.Industrial_MassFab.set(
-                new MTEMassFabricator(
-                        Industrial_MassFab.ID,
-                        "industrialmassfab.controller.tier.single",
-                        "Matter Fabrication CPU").getStackForm(1L));
+            new MTEMassFabricator(
+                Industrial_MassFab.ID,
+                "industrialmassfab.controller.tier.single",
+                "Matter Fabrication CPU").getStackForm(1L));
     }
 
     private static void generateRecipes() {
@@ -37,37 +37,57 @@ public class GregtechIndustrialMassFabricator {
         // Generate Scrap->UUA Recipes
 
         // Basic UUA1
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(9), ItemList.IC2_Scrap.get(9L))
-                .fluidOutputs(Materials.UUAmplifier.getFluid(1)).duration(9 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(9), ItemList.IC2_Scrap.get(9L))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUA2
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrapbox.get(1L))
-                .fluidOutputs(Materials.UUAmplifier.getFluid(1)).duration(9 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrapbox.get(1L))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUM
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(1))
-                .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS)).duration(2 * MINUTES + 40 * SECONDS).eut(4096)
-                .addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(4096)
+            .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUM
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(2))
-                .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
-                .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS)).duration(40 * SECONDS).eut(4096)
-                .addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(2))
+            .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
+            .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
+            .duration(40 * SECONDS)
+            .eut(4096)
+            .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(3))
-                .fluidOutputs(Materials.UUMatter.getFluid(256)).duration(2 * MINUTES + 40 * SECONDS).eut(65536)
-                .addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(3))
+            .fluidOutputs(Materials.UUMatter.getFluid(256))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(65536)
+            .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(4))
-                .fluidInputs(Materials.UUAmplifier.getFluid(256)).fluidOutputs(Materials.UUMatter.getFluid(256))
-                .duration(40 * SECONDS).eut(65536).addTo(multiblockMassFabricatorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(4))
+            .fluidInputs(Materials.UUAmplifier.getFluid(256))
+            .fluidOutputs(Materials.UUMatter.getFluid(256))
+            .duration(40 * SECONDS)
+            .eut(65536)
+            .addTo(multiblockMassFabricatorRecipes);
 
         Logger.INFO(
-                "Generated " + multiblockMassFabricatorRecipes.getAllRecipes().size() + " Matter Fabricator recipes.");
+            "Generated " + multiblockMassFabricatorRecipes.getAllRecipes()
+                .size() + " Matter Fabricator recipes.");
     }
 }

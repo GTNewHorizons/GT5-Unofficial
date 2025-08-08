@@ -32,10 +32,10 @@ public class WirelessChargerManager {
                 CHARGER_MAP.forEachInRange(player.dimension, player.posX, player.posY, player.posZ, charger -> {
                     if (charger.canChargePlayerItems(player)) {
                         charger.chargePlayerItems(
-                                player,
-                                player.inventory.armorInventory,
-                                player.inventory.mainInventory,
-                                getBaublesItems(player));
+                            player,
+                            player.inventory.armorInventory,
+                            player.inventory.mainInventory,
+                            getBaublesItems(player));
                     }
                 });
             }
@@ -44,13 +44,8 @@ public class WirelessChargerManager {
 
     public void addCharger(@NotNull IWirelessCharger charger, int range) {
         final IGregTechTileEntity te = charger.getChargerTE();
-        CHARGER_MAP.put(
-                charger,
-                te.getWorld().provider.dimensionId,
-                te.getXCoord(),
-                te.getYCoord(),
-                te.getZCoord(),
-                range);
+        CHARGER_MAP
+            .put(charger, te.getWorld().provider.dimensionId, te.getXCoord(), te.getYCoord(), te.getZCoord(), range);
     }
 
     public void removeCharger(@NotNull IWirelessCharger charger) {

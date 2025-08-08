@@ -127,46 +127,46 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     /** Input parameters */
     Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
-            stepSetting;
+        stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
 
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
     /** Name of the overdrive setting */
     private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
     /** Status of the overdrive setting */
     private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
     /** Name of the mode setting */
     private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
     /** Name of the mode setting */
     private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
     /** Name of the step setting */
     private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
+        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
     /** Status of the step setting */
     private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
 
     // endregion
 
@@ -203,7 +203,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @param tMinMotorTier Minimum needed motor tier
      */
     public TileEntityModuleMiner(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-            int tMinMotorTier) {
+        int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
     }
@@ -293,11 +293,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             if (availablePlasmaTier > 0) {
                 // Check if valid inputs for a mining operation are present
                 CheckRecipeResult result = process(
-                        itemInputs,
-                        inputFluids.toArray(new FluidStack[0]),
-                        availablePlasmaTier,
-                        fluidStack,
-                        getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
+                    itemInputs,
+                    inputFluids.toArray(new FluidStack[0]),
+                    availablePlasmaTier,
+                    fluidStack,
+                    getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
                 if (result.wasSuccessful()) {
                     cycleDistance();
                     return result;
@@ -351,7 +351,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @return Multiblock control structure that contains all process data or null if nothing can be processed
      */
     public CheckRecipeResult process(ItemStack[] inputs, FluidStack[] fluidInputs, int availablePlasmaTier,
-            FluidStack plasma, int maxParallels) {
+        FluidStack plasma, int maxParallels) {
         // Check inputs
         if ((inputs == null && fluidInputs == null)) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -370,17 +370,22 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             recipes = prevRecipes;
         } else {
             recipes = new WeightedAsteroidList(
-                    IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs).fluids(fluidInputs)
-                            .voltage(tVoltage).findAll().filter(r -> {
-                                // Check module tier
-                                int recipeTier = r.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-                                if (recipeTier > tModuleTier) return false;
+                IGRecipeMaps.spaceMiningRecipes.findRecipeQuery()
+                    .items(inputs)
+                    .fluids(fluidInputs)
+                    .voltage(tVoltage)
+                    .findAll()
+                    .filter(r -> {
+                        // Check module tier
+                        int recipeTier = r.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+                        if (recipeTier > tModuleTier) return false;
 
-                                // Check mining recipe distance
-                                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-                                if (data == null) return false;
-                                return data.minDistance <= distance && data.maxDistance >= distance;
-                            }).distinct());
+                        // Check mining recipe distance
+                        SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                        if (data == null) return false;
+                        return data.minDistance <= distance && data.maxDistance >= distance;
+                    })
+                    .distinct());
             // The original implementation had each recipe added multiple times redundantly, so I implemented
             // hashCode/equals
             // and use .distinct() here
@@ -427,9 +432,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         // Check how many parallels we can actually do, return if none
-        ParallelHelper helper = new ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
-                .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GTValues.V[tTier])
-                .setMachine(this, false, false).setConsumption(true).build();
+        ParallelHelper helper = new ParallelHelper().setMaxParallel(maxParallels)
+            .setRecipe(tRecipe)
+            .setFluidInputs(fluidInputs)
+            .setItemInputs(inputs)
+            .setAvailableEUt(GTValues.V[tTier])
+            .setMachine(this, false, false)
+            .setConsumption(true)
+            .build();
         int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -459,11 +469,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         if (random <= currentChance) {
                             ItemStack generatedOre = tRecipe.mOutputs[j];
                             if (configuredOres == null || configuredOres.isEmpty()
-                                    || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
+                                || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
                                 outputs.merge(
-                                        GTUtility.ItemId.createNoCopy(generatedOre),
-                                        (long) generatedOre.stackSize,
-                                        Long::sum);
+                                    GTUtility.ItemId.createNoCopy(generatedOre),
+                                    (long) generatedOre.stackSize,
+                                    Long::sum);
                             }
                             break;
                         }
@@ -475,13 +485,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         plasma.amount = (int) Math.max(
-                0,
-                Math.ceil(plasma.amount - parallels * getPlasmaUsageFromTier(availablePlasmaTier) * plasmaModifier));
+            0,
+            Math.ceil(plasma.amount - parallels * getPlasmaUsageFromTier(availablePlasmaTier) * plasmaModifier));
 
         // Assign recipe parameters
         ArrayList<ItemStack> outputItems = new ArrayList<>();
         for (Map.Entry<GTUtility.ItemId, Long> entry : outputs.entrySet()) {
-            ParallelHelper.addItemsLong(outputItems, entry.getKey().getItemStack(), entry.getValue());
+            ParallelHelper.addItemsLong(
+                outputItems,
+                entry.getKey()
+                    .getItemStack(),
+                entry.getValue());
         }
         mOutputItems = outputItems.toArray(new ItemStack[0]);
 
@@ -507,10 +521,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         int res = 0;
         for (int tier = ItemMiningDrones.DroneTiers.LV.ordinal(); tier
-                <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
-            if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier)).allMatch(
+            <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
+            if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier))
+                .allMatch(
                     input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0L)
-                            >= Math.max(input.stackSize, 1))) {
+                        >= Math.max(input.stackSize, 1))) {
                 res |= 1 << tier;
             }
         }
@@ -528,22 +543,21 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return 0;
         }
         if ((fluidStack.isFluidEqual(Materials.Plutonium241.getPlasma(1))
-                && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
+            && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
         } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
-                && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
-                    return 4;
-                } else
+            && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
+                return 4;
+            } else
             if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
                 return 3;
             } else if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1))
-                    && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-                        return 2;
-                    } else
-                if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
-                        && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-                            return 1;
-                        }
+                && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
+                    return 2;
+                } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
+                    && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
+                        return 1;
+                    }
         return 0;
     }
 
@@ -582,8 +596,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // T5: 0.578
         // The whole chance is multiplied by 2 - overdrive setting
         return Math.min(
-                (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
-                BONUS_STACK_MAX_CHANCE);
+            (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
+            BONUS_STACK_MAX_CHANCE);
     }
 
     /**
@@ -613,10 +627,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return null;
         }
         // For GT ores we want to save the ore independent of its stone type
-        if (oreStack.getUnlocalizedName().startsWith("gt.blockores")) {
-            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
+        if (oreStack.getUnlocalizedName()
+            .startsWith("gt.blockores")) {
+            return oreStack.getItem()
+                .getUnlocalizedName() + ":"
+                + oreStack.getItemDamage() % 1000;
         } else {
-            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage();
+            return oreStack.getItem()
+                .getUnlocalizedName() + ":"
+                + oreStack.getItemDamage();
         }
     }
 
@@ -640,8 +659,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
         return Math.min(
-                (int) Math.min(getMaxParallels(), parallelSetting.get()),
-                (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
+            (int) Math.min(getMaxParallels(), parallelSetting.get()),
+            (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
     /**
@@ -653,9 +672,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected int getRecipeTime(int unboostedTime, int plasmaTier) {
         // Reduce recipe time by 10% for every plasma tier above T1 and divide recipe time by the overdrive value
         return plasmaTier > 0
-                ? (int) ((double) unboostedTime
-                        * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
-                : unboostedTime;
+            ? (int) ((double) unboostedTime
+                * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
+            : unboostedTime;
     }
 
     /**
@@ -666,7 +685,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
             if (distanceDisplay.get() + stepSetting.get()
-                    <= Math.min(MAX_DISTANCE, distanceSetting.get() + rangeSetting.get())) {
+                <= Math.min(MAX_DISTANCE, distanceSetting.get() + rangeSetting.get())) {
                 distanceDisplay.set(distanceDisplay.get() + stepSetting.get());
             } else {
                 distanceDisplay.set(Math.max(0, distanceSetting.get() - rangeSetting.get()));
@@ -711,15 +730,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
         float totalTimedensity = prevRecipes.totalTimedensity;
-        return prevRecipes.recipes.stream().map(r -> {
-            SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-            if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
-            return new AsteroidSummary(
+        return prevRecipes.recipes.stream()
+            .map(r -> {
+                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
+                return new AsteroidSummary(
                     data.asteroidName,
                     data.recipeWeight / totalWeight,
                     data.recipeWeight * r.mDuration / totalTimedensity,
                     Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
-        }).collect(Collectors.toList());
+            })
+            .collect(Collectors.toList());
     }
 
     /**
@@ -749,12 +770,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             if (!widget.isClient()) {
-                widget.getContext().openSyncedWindow(WHITELIST_WINDOW_ID);
+                widget.getContext()
+                    .openSyncedWindow(WHITELIST_WINDOW_ID);
             }
-        }).setPlayClickSound(false)
-                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_OPTIONS)
-                .setPos(174, 132).setSize(16, 16);
-        button.addTooltip("Configure Filter").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        })
+            .setPlayClickSound(false)
+            .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_OPTIONS)
+            .setPos(174, 132)
+            .setSize(16, 16);
+        button.addTooltip("Configure Filter")
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
 
@@ -778,14 +803,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @return Window object
      */
     protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
-        return ModularWindow.builder(158, 180).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .setGuiTint(getGUIColorization())
-                // Toggle white-/blacklist
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    isWhitelisted = !isWhitelisted;
-                    wasFilterModified = true;
-                }).setPlayClickSound(false).setBackground(() -> {
+        return ModularWindow.builder(158, 180)
+            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+            .setGuiTint(getGUIColorization())
+            // Toggle white-/blacklist
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                isWhitelisted = !isWhitelisted;
+                wasFilterModified = true;
+            })
+                .setPlayClickSound(false)
+                .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
                     ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                     if (isWhitelisted) {
@@ -794,46 +822,62 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         ret.add(IG_UITextures.OVERLAY_BUTTON_BLACKLIST);
                     }
                     return ret.toArray(new IDrawable[0]);
-                }).setPos(7, 9).setSize(16, 16).addTooltip("Mode").setTooltipShowUpDelay(TOOLTIP_DELAY))
-                // Clear list
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    wasFilterModified = true;
-                    if (!widget.isClient()) {
-                        if (whiteListHandler != null) {
-                            for (int i = 0; i < whiteListHandler.getSlots(); i++) {
-                                whiteListHandler.setStackInSlot(i, null);
-                            }
+                })
+                .setPos(7, 9)
+                .setSize(16, 16)
+                .addTooltip("Mode")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            // Clear list
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                wasFilterModified = true;
+                if (!widget.isClient()) {
+                    if (whiteListHandler != null) {
+                        for (int i = 0; i < whiteListHandler.getSlots(); i++) {
+                            whiteListHandler.setStackInSlot(i, null);
                         }
                     }
-                }).setPlayClickSound(false)
-                        .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
-                        .setPos(25, 9).setSize(16, 16).addTooltip("Clear").setTooltipShowUpDelay(TOOLTIP_DELAY))
-                // Configure from bus
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    wasFilterModified = true;
-                    if (!widget.isClient()) {
-                        int i = 0;
-                        for (ItemStack itemStack : getStoredInputs()) {
-                            if (i < WHITELIST_SIZE) {
-                                ItemStack copy = itemStack.copy();
-                                copy.stackSize = 1;
-                                whiteListHandler.setStackInSlot(i++, copy);
-                            }
+                }
+            })
+                .setPlayClickSound(false)
+                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
+                .setPos(25, 9)
+                .setSize(16, 16)
+                .addTooltip("Clear")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            // Configure from bus
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                wasFilterModified = true;
+                if (!widget.isClient()) {
+                    int i = 0;
+                    for (ItemStack itemStack : getStoredInputs()) {
+                        if (i < WHITELIST_SIZE) {
+                            ItemStack copy = itemStack.copy();
+                            copy.stackSize = 1;
+                            whiteListHandler.setStackInSlot(i++, copy);
                         }
+                    }
 
-                    }
-                }).setPlayClickSound(false)
-                        .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
-                        .setPos(43, 9).setSize(16, 16).addTooltip("Load from Bus").setTooltipShowUpDelay(TOOLTIP_DELAY))
-                // List
-                .widget(
-                        SlotGroup.ofItemHandler(whiteListHandler, 8).startFromSlot(0).endAtSlot(WHITELIST_SIZE - 1)
-                                .applyForWidget(
-                                        slotWidget -> slotWidget.setChangeListener(() -> wasFilterModified = true))
-                                .phantom(true).background(getGUITextureSet().getItemSlot()).build().setPos(7, 27))
-                .build();
+                }
+            })
+                .setPlayClickSound(false)
+                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
+                .setPos(43, 9)
+                .setSize(16, 16)
+                .addTooltip("Load from Bus")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            // List
+            .widget(
+                SlotGroup.ofItemHandler(whiteListHandler, 8)
+                    .startFromSlot(0)
+                    .endAtSlot(WHITELIST_SIZE - 1)
+                    .applyForWidget(slotWidget -> slotWidget.setChangeListener(() -> wasFilterModified = true))
+                    .phantom(true)
+                    .background(getGUITextureSet().getItemSlot())
+                    .build()
+                    .setPos(7, 27))
+            .build();
     }
 
     /**
@@ -851,14 +895,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             res.append(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"));
             res.append(": ");
             res.append(
-                    StatCollector.translateToLocal(
-                            (int) modeSetting.get() == 0 ? "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1"
-                                    : "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2"));
+                StatCollector.translateToLocal(
+                    (int) modeSetting.get() == 0 ? "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1"
+                        : "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2"));
             res.append('\n');
             if (prevRecipes != null) {
                 res.append(
-                        StatCollector
-                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.activedronetiers"));
+                    StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.activedronetiers"));
                 res.append(": ");
                 boolean found = false;
                 for (ItemMiningDrones.DroneTiers tier : ItemMiningDrones.DroneTiers.values()) {
@@ -875,39 +918,42 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 }
                 res.append('\n');
                 res.append(
-                        StatCollector.translateToLocal(
-                                "gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0"));
+                    StatCollector
+                        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0"));
                 res.append(":\n");
                 float effectiveComp = getAvailableData_EM()
-                        / (asteroidOutpost == null ? 1f : 1f - asteroidOutpost.getComputationDiscount());
+                    / (asteroidOutpost == null ? 1f : 1f - asteroidOutpost.getComputationDiscount());
                 for (AsteroidSummary summ : getAsteroidSummaries(
-                        Math.min(getMaxParallels(), (int) parallelSetting.get()),
-                        effectiveComp)) {
+                    Math.min(getMaxParallels(), (int) parallelSetting.get()),
+                    effectiveComp)) {
                     res.append(StatCollector.translateToLocal("ig.asteroid." + summ.name));
                     res.append(
-                            String.format(
-                                    ": %.3f%% / %s, %.3f%% / %s, %s %dx",
-                                    summ.chance * 100f,
-                                    StatCollector.translateToLocal(
-                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidchance"),
-                                    summ.timeDensity * 100f,
-                                    StatCollector.translateToLocal(
-                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidtimedensity"),
-                                    StatCollector.translateToLocal(
-                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels"),
-                                    summ.maxParallels));
+                        String.format(
+                            ": %.3f%% / %s, %.3f%% / %s, %s %dx",
+                            summ.chance * 100f,
+                            StatCollector
+                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidchance"),
+                            summ.timeDensity * 100f,
+                            StatCollector
+                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidtimedensity"),
+                            StatCollector.translateToLocal(
+                                "gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels"),
+                            summ.maxParallels));
                     res.append('\n');
                 }
             }
             return res.toString();
-        }).setSynced(true).setTextAlignment(Alignment.TopLeft).setScale(0.5f).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine)).widget(
-                        new FakeSyncWidget.IntegerSyncer(
-                                () -> (int) modeSetting.get(),
-                                val -> parametrization.trySetParameters(
-                                        modeSetting.id % 10,
-                                        modeSetting.id / 10,
-                                        modeSetting.get())));
+        })
+            .setSynced(true)
+            .setTextAlignment(Alignment.TopLeft)
+            .setScale(0.5f)
+            .setDefaultColor(COLOR_TEXT_WHITE.get())
+            .setEnabled(widget -> mMachine))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> (int) modeSetting.get(),
+                    val -> parametrization
+                        .trySetParameters(modeSetting.id % 10, modeSetting.id / 10, modeSetting.get())));
     }
 
     /** Texture that will be displayed on the side of the module */
@@ -926,15 +972,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
             return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TTRenderedExtendedFacingTexture(engraving) };
+                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                new TTRenderedExtendedFacingTexture(engraving) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -957,7 +1003,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         if (SpaceProjectManager.teamHasProject(getBaseMetaTileEntity().getOwnerUuid(), ASTEROID_OUTPOST)) {
             ISpaceProject proj = SpaceProjectManager
-                    .getTeamProject(getBaseMetaTileEntity().getOwnerUuid(), SolarSystem.KuiperBelt, "AsteroidOutpost");
+                .getTeamProject(getBaseMetaTileEntity().getOwnerUuid(), SolarSystem.KuiperBelt, "AsteroidOutpost");
             if (proj.isFinished()) {
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
@@ -1030,36 +1076,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                           // that
-                    // adds Space
-                    // Mining
-                    // Operations to the
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
-                    // this
-                    // violate
-                    // drone rights?
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOtherStructurePart(
-                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
-                            1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                       // that
+                // adds Space
+                // Mining
+                // Operations to the
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
+                // this
+                // violate
+                // drone rights?
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOtherStructurePart(
+                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    1)
+                .toolTipFinisher();
             return tt;
         }
     }
@@ -1129,36 +1175,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                           // that
-                    // adds Space
-                    // Mining
-                    // Operations to the
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
-                    // definitely
-                    // violates
-                    // drone rights.
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOtherStructurePart(
-                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
-                            1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                       // that
+                // adds Space
+                // Mining
+                // Operations to the
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
+                // definitely
+                // violates
+                // drone rights.
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOtherStructurePart(
+                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    1)
+                .toolTipFinisher();
             return tt;
         }
     }
@@ -1228,36 +1274,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                           // that
-                    // adds Space
-                    // Mining
-                    // Operations to the
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
-                    // treasures
-                    // beyond
-                    // your imagination await!
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOtherStructurePart(
-                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
-                            1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                       // that
+                // adds Space
+                // Mining
+                // Operations to the
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
+                // treasures
+                // beyond
+                // your imagination await!
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOtherStructurePart(
+                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    1)
+                .toolTipFinisher();
             return tt;
         }
     }

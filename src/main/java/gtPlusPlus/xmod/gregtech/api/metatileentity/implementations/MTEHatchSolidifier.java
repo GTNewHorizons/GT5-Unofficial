@@ -28,21 +28,21 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     static final int circuitSlot = 3;
 
     static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
-            ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1), ItemList.Shape_Mold_Gear.get(1),
-            ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1), ItemList.Shape_Mold_Nugget.get(1),
-            ItemList.Shape_Mold_Block.get(1), ItemList.Shape_Mold_Ball.get(1), ItemList.Shape_Mold_Cylinder.get(1),
-            ItemList.Shape_Mold_Anvil.get(1), ItemList.Shape_Mold_Arrow.get(1), ItemList.Shape_Mold_Rod.get(1),
-            ItemList.Shape_Mold_Bolt.get(1), ItemList.Shape_Mold_Round.get(1), ItemList.Shape_Mold_Screw.get(1),
-            ItemList.Shape_Mold_Ring.get(1), ItemList.Shape_Mold_Rod_Long.get(1), ItemList.Shape_Mold_Rotor.get(1),
-            ItemList.Shape_Mold_Turbine_Blade.get(1), ItemList.Shape_Mold_Pipe_Tiny.get(1),
-            ItemList.Shape_Mold_Pipe_Small.get(1), ItemList.Shape_Mold_Pipe_Medium.get(1),
-            ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
-            ItemList.Shape_Mold_ToolHeadDrill.get(1),
+        ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1), ItemList.Shape_Mold_Gear.get(1),
+        ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1), ItemList.Shape_Mold_Nugget.get(1),
+        ItemList.Shape_Mold_Block.get(1), ItemList.Shape_Mold_Ball.get(1), ItemList.Shape_Mold_Cylinder.get(1),
+        ItemList.Shape_Mold_Anvil.get(1), ItemList.Shape_Mold_Arrow.get(1), ItemList.Shape_Mold_Rod.get(1),
+        ItemList.Shape_Mold_Bolt.get(1), ItemList.Shape_Mold_Round.get(1), ItemList.Shape_Mold_Screw.get(1),
+        ItemList.Shape_Mold_Ring.get(1), ItemList.Shape_Mold_Rod_Long.get(1), ItemList.Shape_Mold_Rotor.get(1),
+        ItemList.Shape_Mold_Turbine_Blade.get(1), ItemList.Shape_Mold_Pipe_Tiny.get(1),
+        ItemList.Shape_Mold_Pipe_Small.get(1), ItemList.Shape_Mold_Pipe_Medium.get(1),
+        ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
+        ItemList.Shape_Mold_ToolHeadDrill.get(1),
 
-            GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
-            GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),
-            GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftMalletMold.get(1),
-            GGItemList.SingleUseScrewdriverMold.get(1), GGItemList.SingleUseSawMold.get(1) };
+        GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
+        GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),
+        GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftMalletMold.get(1),
+        GGItemList.SingleUseScrewdriverMold.get(1), GGItemList.SingleUseSawMold.get(1) };
 
     public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -51,14 +51,14 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
-                "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
-                "Added by: " + EnumChatFormatting.AQUA
-                        + "Quetz4l"
-                        + " - "
-                        + EnumChatFormatting.RED
-                        + "[GT++]"
-                        + EnumChatFormatting.RESET };
+            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
+            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            "Added by: " + EnumChatFormatting.AQUA
+                + "Quetz4l"
+                + " - "
+                + EnumChatFormatting.RED
+                + "[GT++]"
+                + EnumChatFormatting.RESET };
     }
 
     public MTEHatchSolidifier(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -132,9 +132,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-                new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setShiftClickPriority(-1).setPos(125, 35)
-                        .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
-                        .setSize(18, 18));
+            new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setShiftClickPriority(-1)
+                .setPos(125, 35)
+                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
+                .setSize(18, 18));
     }
 
     @Override

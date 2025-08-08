@@ -20,7 +20,7 @@ import gtnhlanth.util.Util;
 public class TargetChamberFrontend extends RecipeMapFrontend {
 
     public TargetChamberFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -42,7 +42,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GTNEIDefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) { // See above
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtnhlanth.tt.pc")); // Partially
                                                                                                          // consumed:
@@ -85,17 +85,17 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     // todo: use an OverclockDescriber here
     private String getEUtDisplay(OverclockCalculator calculator) {
         return StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(calculator.getConsumption()),
-                "");
+            "GT5U.nei.display.usage",
+            GTUtility.formatNumbers(calculator.getConsumption()),
+            "");
     }
 
     private String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
-                "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
-                GTUtility.getTierNameWithParentheses(voltage));
+            "GT5U.nei.display.voltage",
+            GTUtility.formatNumbers(voltage),
+            GTUtility.getTierNameWithParentheses(voltage));
     }
 
     private long computeVoltageForEURate(long euPerTick) {

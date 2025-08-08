@@ -5,16 +5,16 @@ import net.minecraft.util.EnumChatFormatting;
 public class CharExchanger {
 
     public static final String[] tierName = new String[] { EnumChatFormatting.RED + "ULV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.GRAY + "LV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.AQUA + "MV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.GOLD + "HV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.DARK_PURPLE + "EV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.DARK_BLUE + "IV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.LIGHT_PURPLE + "LuV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.WHITE + "ZPM" + EnumChatFormatting.RESET,
-            EnumChatFormatting.DARK_AQUA + "UV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.DARK_RED + "UHV" + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + "UEV" + EnumChatFormatting.RESET, };
+        EnumChatFormatting.GRAY + "LV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.AQUA + "MV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.GOLD + "HV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.DARK_PURPLE + "EV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.DARK_BLUE + "IV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.LIGHT_PURPLE + "LuV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.WHITE + "ZPM" + EnumChatFormatting.RESET,
+        EnumChatFormatting.DARK_AQUA + "UV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.DARK_RED + "UHV" + EnumChatFormatting.RESET,
+        EnumChatFormatting.GREEN + "UEV" + EnumChatFormatting.RESET, };
 
     public static char shifter(int unicode) {
         return (char) unicode;

@@ -5,10 +5,10 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(
-        modid = Mods.ModIDs.GREG_TECH,
-        category = "worldgen",
-        configSubDirectory = "GregTech",
-        filename = "WorldGeneration")
+    modid = Mods.ModIDs.GREG_TECH,
+    category = "worldgen",
+    configSubDirectory = "GregTech",
+    filename = "WorldGeneration")
 @Config.LangKey("GT5U.gui.config.worldgen")
 public class Worldgen {
 

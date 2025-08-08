@@ -42,7 +42,7 @@ public class SpaceDimRegisterer {
         // These Blocks will randomly be generated
         DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
         DimensionDef.EndAsteroids.modDimensionDef
-                .addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
+            .addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
 
         ModContainers.Vanilla.modContainer.addDimensionDef(DimensionDef.EndAsteroids.modDimensionDef);
 

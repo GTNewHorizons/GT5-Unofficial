@@ -48,7 +48,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-        implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
@@ -56,14 +56,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                3,
-                new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
-                        "Use a screwdriver to enable", "voiding items on overflow",
-                        "Will keep its contents when harvested", });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
+            new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
+                "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
     protected static int commonSizeCompute(int tier) {
@@ -90,19 +89,19 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mItemStack")) {
             final ItemStack tContents = ItemStack
-                    .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("mItemStack"));
+                .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("mItemStack"));
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
-                                + EnumChatFormatting.YELLOW
-                                + tContents.getDisplayName()
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
+                        + EnumChatFormatting.YELLOW
+                        + tContents.getDisplayName()
+                        + EnumChatFormatting.GRAY);
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tSize)
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(tSize)
+                        + EnumChatFormatting.GRAY);
             }
         }
     }
@@ -215,24 +214,24 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                        mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                                : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+            aPlayer,
+            StatCollector.translateToLocal(
+                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         mDisableFilter = !mDisableFilter;
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                        mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                                : "GT5U.machines.digitalchest.inputfilter.enabled"));
+            aPlayer,
+            StatCollector.translateToLocal(
+                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
         return true;
     }
 
@@ -265,11 +264,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
             } else if ((count > 0) && GTUtility.areStacksEqual(mInventory[1], stack)
-                    && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
-                        int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
-                        mInventory[1].stackSize += tmp;
-                        count -= tmp;
-                    }
+                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
+                    int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
+                    mInventory[1].stackSize += tmp;
+                    count -= tmp;
+                }
             setItemCount(count);
             if (stack != null) {
                 mInventory[2] = stack.copy();
@@ -302,7 +301,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public int getProgresstime() {
         return getItemCount() + (mInventory[0] == null ? 0 : mInventory[0].stackSize)
-                + (mInventory[1] == null ? 0 : mInventory[1].stackSize);
+            + (mInventory[1] == null ? 0 : mInventory[1].stackSize);
     }
 
     @Override
@@ -320,26 +319,26 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         if (getItemStack() == null) {
             return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                    EnumChatFormatting.GOLD
-                            + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
-                            + EnumChatFormatting.RESET,
-                    EnumChatFormatting.GREEN + "0"
-                            + EnumChatFormatting.RESET
-                            + " "
-                            + EnumChatFormatting.YELLOW
-                            + GTUtility.formatNumbers(getMaxItemCount())
-                            + EnumChatFormatting.RESET };
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.GREEN + "0"
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + EnumChatFormatting.YELLOW
+                    + GTUtility.formatNumbers(getMaxItemCount())
+                    + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getItemCount())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(getMaxItemCount())
-                        + EnumChatFormatting.RESET };
+            StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+            EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(getItemCount())
+                + EnumChatFormatting.RESET
+                + " "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(getMaxItemCount())
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -368,14 +367,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
@@ -386,21 +385,25 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build() };
+            TextureFactory.builder()
+                .addIcon(OVERLAY_SCHEST_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
             currenttip.add("Item Count: " + GTUtility.formatNumbers(tag.getLong("itemCount")));
             currenttip.add(
-                    "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType")).getDisplayName());
+                "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                    .getDisplayName());
         } else {
             currenttip.add("Chest Empty");
         }
@@ -408,7 +411,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ItemStack is = getItemStack();
         if (GTUtility.isStackInvalid(is)) return;
@@ -425,28 +428,34 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(
-                        new SlotWidget(inventoryHandler, 0)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
-                                .setPos(79, 16))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                                .setPos(79, 52))
-                .widget(
-                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
-                                .setBackground(GTUITextures.TRANSPARENT).setPos(59, 42))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30))
-                .widget(
-                        new FakeSyncWidget.IntegerSyncer(
-                                () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
-                                value -> clientItemCount = value));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 16)
+                .setSize(71, 45))
+            .widget(
+                new SlotWidget(inventoryHandler, 0)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
+                    .setPos(79, 16))
+            .widget(
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
+                    .setPos(79, 52))
+            .widget(
+                SlotWidget.phantom(inventoryHandler, 2)
+                    .disableInteraction()
+                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setPos(59, 42))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(
+                new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 30))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
+                    value -> clientItemCount = value));
 
     }
 }

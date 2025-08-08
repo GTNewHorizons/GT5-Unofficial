@@ -25,19 +25,16 @@ public class ThermalBoilerFrontend extends LargeNEIFrontend {
     private static final int maxInputs = 3;
 
     public ThermalBoilerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                uiPropertiesBuilder,
-                neiPropertiesBuilder.neiSpecialInfoFormatter(new ThermalBoilerSpecialValueFormatter()));
+            uiPropertiesBuilder,
+            neiPropertiesBuilder.neiSpecialInfoFormatter(new ThermalBoilerSpecialValueFormatter()));
     }
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        return UIHelper.getGridPositions(
-                fluidInputCount,
-                xOrigin + tileSize * (maxInputs - fluidInputCount),
-                yOrigin,
-                maxInputs);
+        return UIHelper
+            .getGridPositions(fluidInputCount, xOrigin + tileSize * (maxInputs - fluidInputCount), yOrigin, maxInputs);
     }
 
     private static class ThermalBoilerSpecialValueFormatter implements INEISpecialInfoFormatter {

@@ -52,7 +52,7 @@ public class ItemWirelessHeadphones extends GTGenericItem implements IBauble {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
         final TileEntity pointedTe = world.getTileEntity(x, y, z);
         if (!(pointedTe instanceof BaseMetaTileEntity mte)) {
             return false;
@@ -69,8 +69,8 @@ public class ItemWirelessHeadphones extends GTGenericItem implements IBauble {
             tag.setLong(MTEBetterJukebox.NBTKEY_UUID_LOW, uuid.getLeastSignificantBits());
             tag.setLong(MTEBetterJukebox.NBTKEY_UUID_HIGH, uuid.getMostSignificantBits());
             tag.setString(
-                    NBTKEY_JUKEBOX_COORDINATES,
-                    String.format("(%d, %d, %d) @ %d", x, y, z, world.provider.dimensionId));
+                NBTKEY_JUKEBOX_COORDINATES,
+                String.format("(%d, %d, %d) @ %d", x, y, z, world.provider.dimensionId));
             stack.setTagCompound(tag);
 
             player.addChatMessage(new ChatComponentTranslation("GT5U.machines.betterjukebox.headphonesbound"));
@@ -84,7 +84,7 @@ public class ItemWirelessHeadphones extends GTGenericItem implements IBauble {
         }
         final NBTTagCompound tag = stack.getTagCompound();
         if (!tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_LOW, Constants.NBT.TAG_ANY_NUMERIC)
-                || !tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_HIGH, Constants.NBT.TAG_ANY_NUMERIC)) {
+            || !tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_HIGH, Constants.NBT.TAG_ANY_NUMERIC)) {
             return null;
         }
         final long idLow = tag.getLong(MTEBetterJukebox.NBTKEY_UUID_LOW);

@@ -17,8 +17,8 @@ import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 public class GUIFishTrap extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/FishTrap.png");
+        GTPlusPlus.ID,
+        "textures/gui/FishTrap.png");
 
     public GUIFishTrap(final InventoryPlayer player_inventory, final TileEntityFishTrap te) {
         super(new ContainerFishTrap(player_inventory, te));

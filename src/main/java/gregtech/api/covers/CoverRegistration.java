@@ -12,7 +12,7 @@ final class CoverRegistration {
     private final ITexture coverTexture;
 
     CoverRegistration(@NotNull CoverFactory factory, @NotNull CoverPlacer coverPlacer,
-            @Nullable ITexture coverTexture) {
+        @Nullable ITexture coverTexture) {
         this.factory = factory;
         this.coverPlacer = coverPlacer;
         this.coverTexture = coverTexture;

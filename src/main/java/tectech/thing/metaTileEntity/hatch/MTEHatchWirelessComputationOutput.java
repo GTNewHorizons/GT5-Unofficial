@@ -45,9 +45,10 @@ public class MTEHatchWirelessComputationOutput extends MTEHatchDataOutput {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q != null) {
             WirelessComputationPacket.uploadData(
-                    aBaseMetaTileEntity.getOwnerUuid(),
-                    q.getContent(),
-                    MinecraftServer.getServer().getTickCounter());
+                aBaseMetaTileEntity.getOwnerUuid(),
+                q.getContent(),
+                MinecraftServer.getServer()
+                    .getTickCounter());
         }
     }
 

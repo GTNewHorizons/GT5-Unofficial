@@ -11,7 +11,7 @@ public class GTClientPreference {
     private final boolean wailaAverageNS;
 
     public GTClientPreference(boolean mSingleBlockInitialFilter, boolean mSingleBlockInitialMultiStack,
-            boolean mInputBusInitialFilter, boolean wailaAverageNS, boolean mInputHatchInitialFilter) {
+        boolean mInputBusInitialFilter, boolean wailaAverageNS, boolean mInputHatchInitialFilter) {
         this.mSingleBlockInitialFilter = mSingleBlockInitialFilter;
         this.mSingleBlockInitialMultiStack = mSingleBlockInitialMultiStack;
         this.mInputBusInitialFilter = mInputBusInitialFilter;

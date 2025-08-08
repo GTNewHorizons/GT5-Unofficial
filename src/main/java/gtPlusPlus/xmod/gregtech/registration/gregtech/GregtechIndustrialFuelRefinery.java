@@ -16,9 +16,9 @@ public class GregtechIndustrialFuelRefinery {
     private static void run1() {
         // Industrial Maceration Stack Multiblock
         GregtechItemList.Industrial_FuelRefinery.set(
-                new MTERefinery(
-                        Industrial_FuelRefinery.ID,
-                        "industrialrefinery.controller.tier.single",
-                        "Reactor Fuel Processing Plant").getStackForm(1L));
+            new MTERefinery(
+                Industrial_FuelRefinery.ID,
+                "industrialrefinery.controller.tier.single",
+                "Reactor Fuel Processing Plant").getStackForm(1L));
     }
 }

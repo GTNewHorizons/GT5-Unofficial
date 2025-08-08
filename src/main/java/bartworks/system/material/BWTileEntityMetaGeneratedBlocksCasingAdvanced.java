@@ -38,13 +38,13 @@ public class BWTileEntityMetaGeneratedBlocksCasingAdvanced extends TileEntityMet
             if (aMaterial != null) {
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
-                        PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
-                                .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
-                        aMaterial.getRGBA());
+                    PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
+                        .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
+                    aMaterial.getRGBA());
                 return new ITexture[] { TextureFactory.of(Blocks.iron_block), aIconSet };
             }
         }
         return new ITexture[] { TextureFactory.of(Blocks.iron_block),
-                TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]) };
+            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]) };
     }
 }

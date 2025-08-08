@@ -17,12 +17,16 @@ public class GTUODimension {
         fFluids = HashBiMap.create();
         if (aConfigCategory.containsKey("Dimension")) {
             aConfigCategory.get("Dimension").comment = "Dimension ID or Class Name";
-            Dimension = aConfigCategory.get("Dimension").getString();
+            Dimension = aConfigCategory.get("Dimension")
+                .getString();
         }
         maxChance = 0;
         // GT_FML_LOGGER.info("GT UO "+aConfigCategory.getName()+" Dimension:"+Dimension);
-        for (int i = 0; i < aConfigCategory.getChildren().size(); i++) {
-            GTUOFluid fluid = new GTUOFluid((ConfigCategory) aConfigCategory.getChildren().toArray()[i]);
+        for (int i = 0; i < aConfigCategory.getChildren()
+            .size(); i++) {
+            GTUOFluid fluid = new GTUOFluid(
+                (ConfigCategory) aConfigCategory.getChildren()
+                    .toArray()[i]);
             fFluids.put(fluid.Registry, fluid);
             maxChance += fluid.Chance;
         }
@@ -44,7 +48,8 @@ public class GTUODimension {
     }
 
     public String getUOFluidKey(GTUOFluid uoFluid) {
-        return fFluids.inverse().get(uoFluid);
+        return fFluids.inverse()
+            .get(uoFluid);
     }
 
     public GTUOFluid getUOFluid(String key) {

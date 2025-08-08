@@ -22,9 +22,9 @@ public class CoverRedstoneReceiverExternal extends CoverRedstoneWirelessBase {
             return;
         }
         coverable.setOutputRedstoneSignal(
-                coverSide,
-                GregTechAPI.sWirelessRedstone.get(this.coverData) == null ? 0
-                        : GregTechAPI.sWirelessRedstone.get(this.coverData));
+            coverSide,
+            GregTechAPI.sWirelessRedstone.get(this.coverData) == null ? 0
+                : GregTechAPI.sWirelessRedstone.get(this.coverData));
     }
 
     @Override

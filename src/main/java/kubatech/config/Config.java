@@ -57,19 +57,19 @@ public class Config {
         private static void load(Configuration configuration) {
             Category category = Category.MOB_HANDLER;
             playerOnlyDropsModifier = configuration
-                    .get(
-                            category.get(),
-                            "PlayerOnlyDropsModifier",
-                            .1d,
-                            "Hard player only loot (such as core mod drops) will be multiplied by this number")
-                    .getDouble();
+                .get(
+                    category.get(),
+                    "PlayerOnlyDropsModifier",
+                    .1d,
+                    "Hard player only loot (such as core mod drops) will be multiplied by this number")
+                .getDouble();
 
             ignorePeacefulCheck = configuration.get(
-                    category.get(),
-                    "ignorePeacefulCheck",
-                    false,
-                    "Allow for EEC to run with non-passive mobs in peaceful difficulty. Useful for weak hosting machines.")
-                    .getBoolean();
+                category.get(),
+                "ignorePeacefulCheck",
+                false,
+                "Allow for EEC to run with non-passive mobs in peaceful difficulty. Useful for weak hosting machines.")
+                .getBoolean();
         }
     }
 
@@ -79,7 +79,8 @@ public class Config {
 
         private static void load(Configuration configuration) {
             Category category = Category.DEBUG;
-            showRenderErrors = configuration.get(category.get(), "ShowRenderErrors", false).getBoolean();
+            showRenderErrors = configuration.get(category.get(), "ShowRenderErrors", false)
+                .getBoolean();
         }
     }
 

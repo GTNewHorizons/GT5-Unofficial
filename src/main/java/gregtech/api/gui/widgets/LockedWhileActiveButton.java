@@ -29,9 +29,9 @@ public class LockedWhileActiveButton extends ButtonWidget {
         this.machine = machine;
 
         super.attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(machine::isActive, a -> {}),
-                builder,
-                (widget, aBoolean) -> widget.notifyTooltipChange());
+            new FakeSyncWidget.BooleanSyncer(machine::isActive, a -> {}),
+            builder,
+            (widget, aBoolean) -> widget.notifyTooltipChange());
 
         super.dynamicTooltip(this::generateTooltip);
     }
@@ -62,7 +62,8 @@ public class LockedWhileActiveButton extends ButtonWidget {
     @Override
     public Widget dynamicTooltip(@NotNull Supplier<List<String>> dynamicTooltip) {
         return super.dynamicTooltip(() -> {
-            ImmutableList.Builder<String> tooltips = ImmutableList.<String>builder().addAll(dynamicTooltip.get());
+            ImmutableList.Builder<String> tooltips = ImmutableList.<String>builder()
+                .addAll(dynamicTooltip.get());
             tooltips.addAll(generateTooltip());
 
             return tooltips.build();

@@ -28,9 +28,9 @@ public class CoverPosition {
         if (o == null || getClass() != o.getClass()) return false;
         CoverPosition that = (CoverPosition) o;
         return this.x == that.x && this.y == that.y
-                && this.z == that.z
-                && Objects.equals(this.dimName, that.dimName)
-                && this.side == that.side;
+            && this.z == that.z
+            && Objects.equals(this.dimName, that.dimName)
+            && this.side == that.side;
     }
 
     @Override

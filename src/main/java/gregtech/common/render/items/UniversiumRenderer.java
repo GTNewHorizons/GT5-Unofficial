@@ -35,11 +35,11 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         if (item == null) return false;
 
         magicRenderMethod(
-                type,
-                ItemList.Emitter_UEV.get(1), // hack to make it render correctly
-                item.getIconFromDamage(aStack.getItemDamage()),
-                true,
-                data);
+            type,
+            ItemList.Emitter_UEV.get(1), // hack to make it render correctly
+            item.getIconFromDamage(aStack.getItemDamage()),
+            true,
+            data);
         return true;
     }
 
@@ -80,7 +80,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
     }
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
-            Object... data) {
+        Object... data) {
         if (!Avaritia.isModLoaded()) {
             return;
         }
@@ -108,8 +108,9 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             if (fluidDisplay) {
                 // this somehow makes shader render correctly
                 ResourceLocation resourcelocation = mc.getTextureManager()
-                        .getResourceLocation(aStack.getItemSpriteNumber());
-                mc.getTextureManager().bindTexture(resourcelocation);
+                    .getResourceLocation(aStack.getItemSpriteNumber());
+                mc.getTextureManager()
+                    .bindTexture(resourcelocation);
             } else {
                 GTRenderUtil.renderItem(type, tIcon);
             }
@@ -169,20 +170,20 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
                     CosmicRenderShenanigans.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
+                        ent.worldObj,
+                        MathHelper.floor_double(ent.posX),
+                        MathHelper.floor_double(ent.posY),
+                        MathHelper.floor_double(ent.posZ));
                 }
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderShenanigans.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
+                        ent.worldObj,
+                        MathHelper.floor_double(ent.posX),
+                        MathHelper.floor_double(ent.posY),
+                        MathHelper.floor_double(ent.posZ));
                 }
             }
             case INVENTORY -> {

@@ -29,16 +29,16 @@ public class MTETieredTank extends MTEBasicTank {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                3,
-                "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
+            "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -60,35 +60,35 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == ForgeDirection.UP
-                ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
-                : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                        TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
+            ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
+            : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
     }
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
             final FluidStack tContents = FluidStack
-                    .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
+                .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization(
-                                "TileEntity_TANK_INFO",
-                                "Contains Fluid: ",
-                                !GregTechAPI.sPostloadFinished) + EnumChatFormatting.YELLOW
-                                + tContents.getLocalizedName()
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization(
+                        "TileEntity_TANK_INFO",
+                        "Contains Fluid: ",
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.YELLOW
+                        + tContents.getLocalizedName()
+                        + EnumChatFormatting.GRAY);
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization(
-                                "TileEntity_TANK_AMOUNT",
-                                "Fluid Amount: ",
-                                !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tContents.amount)
-                                + " L"
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization(
+                        "TileEntity_TANK_AMOUNT",
+                        "Fluid Amount: ",
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(tContents.amount)
+                        + " L"
+                        + EnumChatFormatting.GRAY);
             }
         }
     }
@@ -128,19 +128,19 @@ public class MTETieredTank extends MTEBasicTank {
 
         if (this.mFluid == null) {
             return new String[] {
-                    StatCollector.translateToLocalFormatted(
-                            "gtpp.infodata.tiered_tank.name",
-                            GTValues.getLocalizedLongVoltageName(this.mTier)),
-                    StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                    StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
-                    this.getCapacity() + "L" };
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.tiered_tank.name",
+                    GTValues.getLocalizedLongVoltageName(this.mTier)),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
+                this.getCapacity() + "L" };
         }
         return new String[] {
-                StatCollector.translateToLocalFormatted(
-                        "gtpp.infodata.tiered_tank.name",
-                        GTValues.getLocalizedLongVoltageName(this.mTier)),
-                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                this.mFluid.getLocalizedName(), this.mFluid.amount + "L", this.getCapacity() + "L" };
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.tiered_tank.name",
+                GTValues.getLocalizedLongVoltageName(this.mTier)),
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
+            this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 
     @Override

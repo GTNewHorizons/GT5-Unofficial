@@ -64,8 +64,8 @@ public class EIGDynamicInventory<T> {
     boolean isEnabled = true;
 
     public EIGDynamicInventory(int width, int height, Supplier<Integer> maxSeedTypeGetter,
-            Supplier<Integer> maxSeedCountGetter, Supplier<Integer> usedSeedTypesGetter,
-            Supplier<Integer> usedSeedCountGetter, List<T> inventory, TInventoryGetter<T> inventoryGetter) {
+        Supplier<Integer> maxSeedCountGetter, Supplier<Integer> usedSeedTypesGetter,
+        Supplier<Integer> usedSeedCountGetter, List<T> inventory, TInventoryGetter<T> inventoryGetter) {
         this.width = width;
         this.height = height;
         this.maxSeedTypeGetter = maxSeedTypeGetter;
@@ -106,99 +106,96 @@ public class EIGDynamicInventory<T> {
         // TODO: Only reset the widget when there are more slot stacks, otherwise just refresh them somehow
 
         container
-                // max seed types
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                    int i = this.maxSeedTypeGetter.get();
-                    if (this.maxSeedTypes != i) {
-                        this.maxSeedTypes = i;
-                        container.notifyChangeNoSync();
-                    }
-                    return i;
-                }, i -> {
-                    if (this.maxSeedTypes != i) {
-                        this.maxSeedTypes = i;
-                        container.notifyChangeNoSync();
-                    }
-                }), builder)
-                // used seed types
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                    int i = this.usedSeedTypesGetter.get();
-                    if (this.usedSeedTypes != i) {
-                        this.usedSeedTypes = i;
-                        container.notifyChangeNoSync();
-                    }
-                    return i;
-                }, i -> {
-                    if (this.usedSeedTypes != i) {
-                        this.usedSeedTypes = i;
-                        container.notifyChangeNoSync();
-                    }
-                }), builder)
-                // max seed count
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                    int i = this.maxSeedCountGetter.get();
-                    if (this.maxSeedCount != i) {
-                        this.maxSeedCount = i;
-                        container.notifyChangeNoSync();
-                    }
-                    return i;
-                }, i -> {
-                    if (this.maxSeedCount != i) {
-                        this.maxSeedCount = i;
-                        container.notifyChangeNoSync();
-                    }
-                }), builder)
-                // used seed count
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                    int i = this.usedSeedCountGetter.get();
-                    if (this.usedSeedCount != i) {
-                        this.usedSeedCount = i;
-                        container.notifyChangeNoSync();
-                    }
-                    return i;
-                }, i -> {
-                    if (this.usedSeedCount != i) {
-                        this.usedSeedCount = i;
-                        container.notifyChangeNoSync();
-                    }
-                }), builder)
-
-                .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
-                    List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
-                    for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
-                        T slot = inventory.get(i);
-                        if (slot == null) {
-                            continue;
-                        }
-                        ItemStack stack = inventoryGetter.get(slot);
-                        newDrawables.add(
-                                new GTHelper.StackableItemSlot(
-                                        1,
-                                        stack,
-                                        new ArrayList<>(Collections.singletonList(i))));
-                    }
-                    if (!Objects.equals(newDrawables, drawables)) {
-                        drawables = newDrawables;
-                        container.notifyChangeNoSync();
-                    }
-                    return drawables;
-                }, l -> {
-                    drawables.clear();
-                    drawables.addAll(l);
+            // max seed types
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+                int i = this.maxSeedTypeGetter.get();
+                if (this.maxSeedTypes != i) {
+                    this.maxSeedTypes = i;
                     container.notifyChangeNoSync();
-                }, (buffer, i) -> {
-                    try {
-                        i.write(buffer);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                }
+                return i;
+            }, i -> {
+                if (this.maxSeedTypes != i) {
+                    this.maxSeedTypes = i;
+                    container.notifyChangeNoSync();
+                }
+            }), builder)
+            // used seed types
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+                int i = this.usedSeedTypesGetter.get();
+                if (this.usedSeedTypes != i) {
+                    this.usedSeedTypes = i;
+                    container.notifyChangeNoSync();
+                }
+                return i;
+            }, i -> {
+                if (this.usedSeedTypes != i) {
+                    this.usedSeedTypes = i;
+                    container.notifyChangeNoSync();
+                }
+            }), builder)
+            // max seed count
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+                int i = this.maxSeedCountGetter.get();
+                if (this.maxSeedCount != i) {
+                    this.maxSeedCount = i;
+                    container.notifyChangeNoSync();
+                }
+                return i;
+            }, i -> {
+                if (this.maxSeedCount != i) {
+                    this.maxSeedCount = i;
+                    container.notifyChangeNoSync();
+                }
+            }), builder)
+            // used seed count
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+                int i = this.usedSeedCountGetter.get();
+                if (this.usedSeedCount != i) {
+                    this.usedSeedCount = i;
+                    container.notifyChangeNoSync();
+                }
+                return i;
+            }, i -> {
+                if (this.usedSeedCount != i) {
+                    this.usedSeedCount = i;
+                    container.notifyChangeNoSync();
+                }
+            }), builder)
+
+            .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
+                List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
+                for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
+                    T slot = inventory.get(i);
+                    if (slot == null) {
+                        continue;
                     }
-                }, buffer -> {
-                    try {
-                        return GTHelper.StackableItemSlot.read(buffer);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }), builder);
+                    ItemStack stack = inventoryGetter.get(slot);
+                    newDrawables
+                        .add(new GTHelper.StackableItemSlot(1, stack, new ArrayList<>(Collections.singletonList(i))));
+                }
+                if (!Objects.equals(newDrawables, drawables)) {
+                    drawables = newDrawables;
+                    container.notifyChangeNoSync();
+                }
+                return drawables;
+            }, l -> {
+                drawables.clear();
+                drawables.addAll(l);
+                container.notifyChangeNoSync();
+            }, (buffer, i) -> {
+                try {
+                    i.write(buffer);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }, buffer -> {
+                try {
+                    return GTHelper.StackableItemSlot.read(buffer);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }), builder);
         if (isEnabledGetter != null) {
             container.attachSyncer(new FakeSyncWidget.BooleanSyncer(isEnabledGetter, i -> isEnabled = i), builder);
         }
@@ -242,101 +239,109 @@ public class EIGDynamicInventory<T> {
                         GL11.glDisable(GL11.GL_BLEND);
                     }
                     // Copied from SlotWidget#draw
-                    else if (isHovering() && !getContext().getCursor().hasDraggable()) {
-                        GL11.glDisable(GL11.GL_LIGHTING);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        GlStateManager.colorMask(true, true, true, false);
-                        ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
-                        GlStateManager.colorMask(true, true, true, true);
-                        GL11.glDisable(GL11.GL_BLEND);
-                    }
-                }
-            }.setPlayClickSound(false).setOnClick((clickData, widget) -> {
-                if (!(player instanceof EntityPlayerMP)) return;
-                if (!isEnabledGetter.get()) return;
-
-                if (clickData.mouseButton == 2) {
-                    // special button handler goes here
-                    if (drawables.size() <= finalID) return;
-                    if (player.capabilities.isCreativeMode && player.inventory.getItemStack() == null) {
-                        int realID = drawables.get(finalID).realSlots.get(0);
-                        ItemStack stack = inventoryGetter.get(inventory.get(realID)).copy();
-                        stack.stackSize = stack.getMaxStackSize();
-                        player.inventory.setItemStack(stack);
-                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                        ((EntityPlayerMP) player).updateHeldItem();
-                    }
-                } else if (clickData.shift) {
-                    if (inventoryExtractor == null) return;
-                    if (drawables.size() <= finalID) return;
-                    int realID = drawables.get(finalID).realSlots.get(0);
-                    T toRemoveFrom = this.inventory.get(realID);
-                    ItemStack removed = this.inventoryExtractor.extract(toRemoveFrom, (EntityPlayerMP) player);
-                    if (removed != null) {
-                        if (player.inventory.addItemStackToInventory(removed))
-                            player.inventoryContainer.detectAndSendChanges();
-                        else player.entityDropItem(removed, 0.f);
-                    }
-                } else {
-                    ItemStack input = player.inventory.getItemStack();
-                    if (input != null) {
-                        if (inventoryInjector == null) return;
-                        if (clickData.mouseButton == 1) {
-                            ItemStack copy = input.copy();
-                            copy.stackSize = 1;
-                            inventoryInjector.inject(copy);
-                            if (copy.stackSize == 1) return;
-                            input.stackSize--;
-                        } else {
-                            inventoryInjector.inject(input);
+                    else if (isHovering() && !getContext().getCursor()
+                        .hasDraggable()) {
+                            GL11.glDisable(GL11.GL_LIGHTING);
+                            GL11.glEnable(GL11.GL_BLEND);
+                            GlStateManager.colorMask(true, true, true, false);
+                            ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
+                            GlStateManager.colorMask(true, true, true, true);
+                            GL11.glDisable(GL11.GL_BLEND);
                         }
-                        if (input.stackSize > 0) {
-                            // clearing and updating the held item value like this is the only
-                            // way I found to be able to reliably update the item count in the UI.
-                            player.inventory.setItemStack(null);
+                }
+            }.setPlayClickSound(false)
+                .setOnClick((clickData, widget) -> {
+                    if (!(player instanceof EntityPlayerMP)) return;
+                    if (!isEnabledGetter.get()) return;
+
+                    if (clickData.mouseButton == 2) {
+                        // special button handler goes here
+                        if (drawables.size() <= finalID) return;
+                        if (player.capabilities.isCreativeMode && player.inventory.getItemStack() == null) {
+                            int realID = drawables.get(finalID).realSlots.get(0);
+                            ItemStack stack = inventoryGetter.get(inventory.get(realID))
+                                .copy();
+                            stack.stackSize = stack.getMaxStackSize();
+                            player.inventory.setItemStack(stack);
+                            ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            player.inventory.setItemStack(input);
-                            ((EntityPlayerMP) player).updateHeldItem();
-                            return;
-                        } else player.inventory.setItemStack(null);
-                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                        ((EntityPlayerMP) player).updateHeldItem();
-                        return;
-                    }
-                    if (drawables.size() > finalID) {
+                        }
+                    } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
+                        if (drawables.size() <= finalID) return;
                         int realID = drawables.get(finalID).realSlots.get(0);
                         T toRemoveFrom = this.inventory.get(realID);
                         ItemStack removed = this.inventoryExtractor.extract(toRemoveFrom, (EntityPlayerMP) player);
                         if (removed != null) {
-                            player.inventory.setItemStack(removed);
+                            if (player.inventory.addItemStackToInventory(removed))
+                                player.inventoryContainer.detectAndSendChanges();
+                            else player.entityDropItem(removed, 0.f);
+                        }
+                    } else {
+                        ItemStack input = player.inventory.getItemStack();
+                        if (input != null) {
+                            if (inventoryInjector == null) return;
+                            if (clickData.mouseButton == 1) {
+                                ItemStack copy = input.copy();
+                                copy.stackSize = 1;
+                                inventoryInjector.inject(copy);
+                                if (copy.stackSize == 1) return;
+                                input.stackSize--;
+                            } else {
+                                inventoryInjector.inject(input);
+                            }
+                            if (input.stackSize > 0) {
+                                // clearing and updating the held item value like this is the only
+                                // way I found to be able to reliably update the item count in the UI.
+                                player.inventory.setItemStack(null);
+                                ((EntityPlayerMP) player).updateHeldItem();
+                                player.inventory.setItemStack(input);
+                                ((EntityPlayerMP) player).updateHeldItem();
+                                return;
+                            } else player.inventory.setItemStack(null);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
+                            return;
+                        }
+                        if (drawables.size() > finalID) {
+                            if (inventoryExtractor == null) return;
+                            int realID = drawables.get(finalID).realSlots.get(0);
+                            T toRemoveFrom = this.inventory.get(realID);
+                            ItemStack removed = this.inventoryExtractor.extract(toRemoveFrom, (EntityPlayerMP) player);
+                            if (removed != null) {
+                                player.inventory.setItemStack(removed);
+                                ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                                ((EntityPlayerMP) player).updateHeldItem();
+                            }
                         }
                     }
-                }
-            }).setBackground(() -> {
-                ItemStack stack = drawables.get(finalID).stack;
-                float slotSize = 16.0f;
-                IDrawable itemDrawable = new ItemDrawable(stack).withFixedSize(slotSize, slotSize, 1, 1);
-                IDrawable stackSizeText = new AutoScalingStackSizeText(stack.stackSize).color(Color.WHITE.normal)
-                        .shadow().alignment(Alignment.BottomRight).measure();
-
-                return new IDrawable[] { getItemSlot(), itemDrawable, stackSizeText };
-            }).dynamicTooltip(() -> {
-                if (drawables.size() > finalID) {
+                })
+                .setBackground(() -> {
                     ItemStack stack = drawables.get(finalID).stack;
-                    List<String> tip = new LinkedList<>();
-                    for (Object o : stack.getTooltip(player, false)) {
-                        tip.add(o.toString());
+                    float slotSize = 16.0f;
+                    IDrawable itemDrawable = new ItemDrawable(stack).withFixedSize(slotSize, slotSize, 1, 1);
+                    IDrawable stackSizeText = new AutoScalingStackSizeText(stack.stackSize).color(Color.WHITE.normal)
+                        .shadow()
+                        .alignment(Alignment.BottomRight)
+                        .measure();
+
+                    return new IDrawable[] { getItemSlot(), itemDrawable, stackSizeText };
+                })
+                .dynamicTooltip(() -> {
+                    if (drawables.size() > finalID) {
+                        ItemStack stack = drawables.get(finalID).stack;
+                        List<String> tip = new LinkedList<>();
+                        for (Object o : stack.getTooltip(player, false)) {
+                            tip.add(o.toString());
+                        }
+                        if (!tip.isEmpty() && tip.get(0) != null) {
+                            tip.set(0, stack.stackSize + " x " + tip.get(0));
+                        }
+                        return tip;
                     }
-                    if (!tip.isEmpty() && tip.get(0) != null) {
-                        tip.set(0, stack.stackSize + " x " + tip.get(0));
-                    }
-                    return tip;
-                }
-                return Collections.emptyList();
-            }).setSize(18, 18));
+                    return Collections.emptyList();
+                })
+                .setSize(18, 18));
         }
 
         // only add the extra slot if we are still able to insert
@@ -355,61 +360,69 @@ public class EIGDynamicInventory<T> {
                         GL11.glDisable(GL11.GL_BLEND);
                     }
                     // Copied from SlotWidget#draw
-                    else if (isHovering() && !getContext().getCursor().hasDraggable()) {
-                        GL11.glDisable(GL11.GL_LIGHTING);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        GlStateManager.colorMask(true, true, true, false);
-                        ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
-                        GlStateManager.colorMask(true, true, true, true);
-                        GL11.glDisable(GL11.GL_BLEND);
-                    }
+                    else if (isHovering() && !getContext().getCursor()
+                        .hasDraggable()) {
+                            GL11.glDisable(GL11.GL_LIGHTING);
+                            GL11.glEnable(GL11.GL_BLEND);
+                            GlStateManager.colorMask(true, true, true, false);
+                            ModularGui.drawSolidRect(1, 1, 16, 16, Theme.INSTANCE.getSlotHighlight());
+                            GlStateManager.colorMask(true, true, true, true);
+                            GL11.glDisable(GL11.GL_BLEND);
+                        }
                 }
-            }.setPlayClickSound(false).setOnClick((clickData, widget) -> {
-                if (!(player instanceof EntityPlayerMP)) return;
-                if (!isEnabledGetter.get()) return;
-                ItemStack input = player.inventory.getItemStack();
-                if (input != null) {
-                    if (clickData.mouseButton == 1) {
-                        ItemStack copy = input.copy();
-                        copy.stackSize = 1;
-                        inventoryInjector.inject(copy);
-                        if (copy.stackSize == 1) return;
+            }.setPlayClickSound(false)
+                .setOnClick((clickData, widget) -> {
+                    if (!(player instanceof EntityPlayerMP)) return;
+                    if (!isEnabledGetter.get()) return;
+                    ItemStack input = player.inventory.getItemStack();
+                    if (input != null) {
+                        if (clickData.mouseButton == 1) {
+                            ItemStack copy = input.copy();
+                            copy.stackSize = 1;
+                            inventoryInjector.inject(copy);
+                            if (copy.stackSize == 1) return;
 
-                        input.stackSize--;
-                    } else {
-                        inventoryInjector.inject(input);
+                            input.stackSize--;
+                        } else {
+                            inventoryInjector.inject(input);
+                        }
+                        if (input.stackSize > 0) {
+                            // clearing and updating the held item value like this is the only
+                            // way i found to be able to reliably update the item count in the UI.
+                            player.inventory.setItemStack(null);
+                            ((EntityPlayerMP) player).updateHeldItem();
+                            player.inventory.setItemStack(input);
+                            ((EntityPlayerMP) player).updateHeldItem();
+                            return;
+                        } else player.inventory.setItemStack(null);
+                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                        ((EntityPlayerMP) player).updateHeldItem();
                     }
-                    if (input.stackSize > 0) {
-                        // clearing and updating the held item value like this is the only
-                        // way i found to be able to reliably update the item count in the UI.
-                        player.inventory.setItemStack(null);
-                        ((EntityPlayerMP) player).updateHeldItem();
-                        player.inventory.setItemStack(input);
-                        ((EntityPlayerMP) player).updateHeldItem();
-                        return;
-                    } else player.inventory.setItemStack(null);
-                    ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                    ((EntityPlayerMP) player).updateHeldItem();
-                }
-            }).setBackground(() -> {
-                IDrawable itemSlot = getItemSlot();
+                })
+                .setBackground(() -> {
+                    IDrawable itemSlot = getItemSlot();
 
-                IDrawable stackSizeText = new AutoScalingStackSizeText(this.maxSeedCount - this.usedSeedCount)
-                        .color(Color.WHITE.normal).shadow().alignment(Alignment.BottomRight).measure();
+                    IDrawable stackSizeText = new AutoScalingStackSizeText(this.maxSeedCount - this.usedSeedCount)
+                        .color(Color.WHITE.normal)
+                        .shadow()
+                        .alignment(Alignment.BottomRight)
+                        .measure();
 
-                return new IDrawable[] { itemSlot, stackSizeText };
-            }).dynamicTooltip(() -> {
-                List<String> tip = new ArrayList<>();
-                tip.add(
+                    return new IDrawable[] { itemSlot, stackSizeText };
+                })
+                .dynamicTooltip(() -> {
+                    List<String> tip = new ArrayList<>();
+                    tip.add(
                         EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
-                                "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types",
-                                (this.maxSeedTypes - this.usedSeedTypes)));
-                tip.add(
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types",
+                            (this.maxSeedTypes - this.usedSeedTypes)));
+                    tip.add(
                         EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocalFormatted(
-                                "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity",
-                                (this.maxSeedCount - this.usedSeedCount)));
-                return tip;
-            }).setSize(18, 18));
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity",
+                            (this.maxSeedCount - this.usedSeedCount)));
+                    return tip;
+                })
+                .setSize(18, 18));
         }
 
         final int perRow = width / 18;

@@ -15,7 +15,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
 
     public QuantumForceTransformerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

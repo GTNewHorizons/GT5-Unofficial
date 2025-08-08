@@ -34,14 +34,23 @@ public class BlockLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (!werkstoff.hasItemType(block)) return;
         if (werkstoff.hasItemType(ingot)) {
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(ingot, 9))
-                    .duration(16 * TICKS).eut(90).metadata(GTRecipeConstants.RECYCLE, true).addTo(UniversalArcFurnace);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(block))
+                .itemOutputs(werkstoff.get(ingot, 9))
+                .duration(16 * TICKS)
+                .eut(90)
+                .metadata(GTRecipeConstants.RECYCLE, true)
+                .addTo(UniversalArcFurnace);
         }
         if (werkstoff.hasItemType(cellMolten)) {
 
-            GTValues.RA.stdBuilder().itemInputs(werkstoff.get(block)).fluidOutputs(werkstoff.getMolten(9 * INGOTS))
-                    .recipeCategory(RecipeCategories.fluidExtractorRecycling).duration(14 * SECONDS + 8 * TICKS).eut(8)
-                    .addTo(fluidExtractionRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(block))
+                .fluidOutputs(werkstoff.getMolten(9 * INGOTS))
+                .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+                .duration(14 * SECONDS + 8 * TICKS)
+                .eut(8)
+                .addTo(fluidExtractionRecipes);
 
         }
     }

@@ -54,7 +54,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPlatePress>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
 
@@ -84,14 +84,22 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("500% faster than using single block machines of the same voltage")
-                .addInfo("Processes four items per voltage tier").addInfo("Circuit for recipe goes in the Input Bus")
-                .addInfo("Each Input Bus can have a different Circuit/Shape!")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Material Press Machine Casings", 6, false)
-                .addInputHatch("Any Casing", 1).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("500% faster than using single block machines of the same voltage")
+            .addInfo("Processes four items per voltage tier")
+            .addInfo("Circuit for recipe goes in the Input Bus")
+            .addInfo("Each Input Bus can have a different Circuit/Shape!")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Material Press Machine Casings", 6, false)
+            .addInputHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -99,18 +107,18 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     public IStructureDefinition<MTEIndustrialPlatePress> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialPlatePress>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialPlatePress.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                                    .casingIndex(50).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialPlatePress.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                        .casingIndex(50)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -180,7 +188,8 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F).setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -212,9 +221,8 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatToPlayer(
-                aPlayer,
-                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -236,21 +244,21 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-                translateToLocal("GT5U.machines.oreprocessor1") + " "
-                        + EnumChatFormatting.WHITE
-                        + translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + tag.getInteger("mode"))
-                        + EnumChatFormatting.RESET);
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 
     @Override

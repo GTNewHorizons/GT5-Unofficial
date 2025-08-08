@@ -20,13 +20,13 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MT
 public class MillingFrontend extends RecipeMapFrontend {
 
     public MillingFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GTNEIDefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (MTEIsaMill.isMillingBall(pStack.item)) {
             currentTip.add(GRAY + StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
         } else {

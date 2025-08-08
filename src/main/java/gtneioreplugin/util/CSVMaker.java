@@ -19,7 +19,8 @@ public class CSVMaker implements Runnable {
     public void runSmallOres() {
         try {
             Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.mapOreSmallWrapper
-                    .entrySet().iterator();
+                .entrySet()
+                .iterator();
             List<SmallOre> SmallOreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 SmallOre oremix = new SmallOre();
@@ -40,8 +41,9 @@ public class CSVMaker implements Runnable {
                 it.remove(); // avoids a ConcurrentModificationException
             }
 
-            BufferedWriter one = Files
-                    .newBufferedWriter(GTNEIOrePlugin.instanceDir.toPath().resolve(Config.CSVnameSmall));
+            BufferedWriter one = Files.newBufferedWriter(
+                GTNEIOrePlugin.instanceDir.toPath()
+                    .resolve(Config.CSVnameSmall));
             Collections.sort(SmallOreVeins);
 
             // header first
@@ -67,7 +69,7 @@ public class CSVMaker implements Runnable {
     public void runVeins() {
         try {
             Iterator<Map.Entry<String, OreLayerWrapper>> it = GT5OreLayerHelper.mapOreLayerWrapper.entrySet()
-                    .iterator();
+                .iterator();
             List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
@@ -85,18 +87,20 @@ public class CSVMaker implements Runnable {
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setOreMixIDs(
-                        Integer.toString(oreLayer.Meta[0]) + "|"
-                                + Integer.toString(oreLayer.Meta[1])
-                                + "|"
-                                + Integer.toString(oreLayer.Meta[2])
-                                + "|"
-                                + Integer.toString(oreLayer.Meta[3]));
+                    Integer.toString(oreLayer.Meta[0]) + "|"
+                        + Integer.toString(oreLayer.Meta[1])
+                        + "|"
+                        + Integer.toString(oreLayer.Meta[2])
+                        + "|"
+                        + Integer.toString(oreLayer.Meta[3]));
                 oremix.setDims(Dims);
                 OreVeins.add(oremix);
 
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(GTNEIOrePlugin.instanceDir.toPath().resolve(Config.CSVName));
+            BufferedWriter one = Files.newBufferedWriter(
+                GTNEIOrePlugin.instanceDir.toPath()
+                    .resolve(Config.CSVName));
             Collections.sort(OreVeins);
 
             // header first

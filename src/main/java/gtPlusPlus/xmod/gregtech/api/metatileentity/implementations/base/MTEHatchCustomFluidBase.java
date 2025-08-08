@@ -30,27 +30,27 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     protected String mTempMod = null;
 
     public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName,
-            final String aNameRegional, int aTier) {
+        final String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                3,
-                new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
+            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
     public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
-            final String[] aDescription, final ITexture[][][] aTextures) {
+        final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
 
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             FluidStack fs = GTUtility.getFluidForFilledItem(aStack, true);
             return fs != null && fs.getFluid() == this.mLockedFluid;
@@ -60,24 +60,24 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GTMod.proxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
-                        TextureFactory.of(FLUID_STEAM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
+                TextureFactory.of(FLUID_STEAM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GTMod.proxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
-                        TextureFactory.of(FLUID_STEAM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN),
+                TextureFactory.of(FLUID_STEAM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -154,26 +154,29 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             aColour = EnumChatFormatting.RED;
         }
         String aFluidName = "Accepted Fluid: " + aColour
-                + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
-                + EnumChatFormatting.RESET;
+            + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
+            + EnumChatFormatting.RESET;
         return new String[] { "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
-                "Capacity: " + getCapacity() + "L", aFluidName, GTPPCore.GT_Tooltip.get() };
+            "Capacity: " + getCapacity() + "L", aFluidName, GTPPCore.GT_Tooltip.get() };
     }
 
     @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
-        return this.mLockedFluid.getName().equals(aFluid.getFluid().getName());
+        return this.mLockedFluid.getName()
+            .equals(
+                aFluid.getFluid()
+                    .getName());
     }
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTEHatchCustomFluidBase(
-                this.mLockedFluid,
-                this.mFluidCapacity,
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mLockedFluid,
+            this.mFluidCapacity,
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override

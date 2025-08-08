@@ -13,13 +13,13 @@ public class ItemArmorHazmatEx extends ItemArmorHazmat {
 
     public static void init() {
         GregtechItemList.Armour_Hazmat_Advanced_Helmet
-                .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatHelmetEx, 0)));
+            .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatHelmetEx, 0)));
         GregtechItemList.Armour_Hazmat_Advanced_Chest
-                .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatChestEx, 1)));
+            .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatChestEx, 1)));
         GregtechItemList.Armour_Hazmat_Advanced_Legs
-                .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatLegsEx, 2)));
+            .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatLegsEx, 2)));
         GregtechItemList.Armour_Hazmat_Advanced_Boots
-                .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatBootsEx, 3)));
+            .set(new ItemStack(new ItemArmorHazmatEx(CustomInternalName.aHazmatBootsEx, 3)));
     }
 
     private ItemArmorHazmatEx(InternalName internalName, int type) {

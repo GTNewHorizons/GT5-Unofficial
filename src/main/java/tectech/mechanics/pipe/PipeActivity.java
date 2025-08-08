@@ -55,13 +55,16 @@ public class PipeActivity {
     private static final int MAX_UPDATES_PER_PACKET = 30_000 / 8;
 
     public synchronized static void sendUpdates() {
-        var iter = updates.entrySet().iterator();
+        var iter = updates.entrySet()
+            .iterator();
 
         while (iter.hasNext()) {
             var e = iter.next();
 
-            int worldId = e.getKey().leftInt();
-            boolean isActive = e.getKey().rightBoolean();
+            int worldId = e.getKey()
+                .leftInt();
+            boolean isActive = e.getKey()
+                .rightBoolean();
             LongArrayList coords = e.getValue();
 
             for (int i = 0; i < coords.size(); i += MAX_UPDATES_PER_PACKET) {
@@ -80,7 +83,9 @@ public class PipeActivity {
     }
 
     public static void init() {
-        FMLCommonHandler.instance().bus().register(INSTANCE);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(INSTANCE);
     }
 
     @SubscribeEvent
@@ -94,7 +99,7 @@ public class PipeActivity {
 
         @Override
         public IMessage handleClientMessage(EntityPlayer player, BatchedPipeActivityMessage message,
-                MessageContext ctx) {
+            MessageContext ctx) {
             World world = player.worldObj;
 
             if (message.worldId != world.provider.dimensionId) return null;
@@ -111,7 +116,8 @@ public class PipeActivity {
 
                 // if this pipe's chunk isn't loaded, ignore it completely
                 if (!Objects.equals(chunkX, lastChunkX) || !Objects.equals(chunkZ, lastChunkZ)) {
-                    if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+                    if (!world.getChunkProvider()
+                        .chunkExists(chunkX, chunkZ)) {
                         continue;
                     } else {
                         lastChunkX = chunkX;

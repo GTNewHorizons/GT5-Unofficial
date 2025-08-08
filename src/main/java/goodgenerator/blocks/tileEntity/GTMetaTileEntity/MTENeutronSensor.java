@@ -44,7 +44,7 @@ public class MTENeutronSensor extends MTEHatch {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon(
-            "icons/NeutronSensorFont_GLOW");
+        "icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
     protected boolean inverted = false;
@@ -61,8 +61,8 @@ public class MTENeutronSensor extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in Neutron Activator.",
-                "Output Redstone Signal according to the Neutron Kinetic Energy.",
-                "Right click to open the GUI and setting." };
+            "Output Redstone Signal according to the Neutron Kinetic Energy.",
+            "Right click to open the GUI and setting." };
     }
 
     @Override
@@ -96,7 +96,7 @@ public class MTENeutronSensor extends MTEHatch {
      */
     private void setThresholdFromString(String text) {
         Matcher matcher = Pattern.compile("^(<|>|<=|>=|==|!=)([0-9]*)(|k|m)(ev)$", Pattern.CASE_INSENSITIVE)
-                .matcher(text);
+            .matcher(text);
 
         if (!matcher.matches()) {
             Log.error("Failed to parse Neutron Sensor setting: \"" + text + "\"!");
@@ -164,7 +164,7 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
     }
@@ -180,8 +180,10 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+            .addIcon(textureFont_Glow)
+            .glow()
+            .build() };
     }
 
     @Override
@@ -215,13 +217,13 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -232,58 +234,82 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build().child(
-                Flow.column().child(createInvertButtonRow()).child(createThresholdFieldRow()).coverChildren()
-                        .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START).childPadding(2)
-                        .pos(8, 6));
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build()
+            .child(
+                Flow.column()
+                    .child(createInvertButtonRow())
+                    .child(createThresholdFieldRow())
+                    .coverChildren()
+                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
+                    .childPadding(2)
+                    .pos(8, 6));
     }
 
     public Flow createInvertButtonRow() {
         BooleanSyncValue invertedSyncer = new BooleanSyncValue(() -> inverted, val -> inverted = val);
         return Flow.row()
-                .child(
-                        new ToggleButton().value(invertedSyncer).overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF).size(16, 16))
-                .child(
-                        IKey.dynamic(
-                                () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
-                                        : translateToLocal("gt.interact.desc.normal"))
-                                .asWidget())
-                .coverChildren().childPadding(2);
+            .child(
+                new ToggleButton().value(invertedSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    .size(16, 16))
+            .child(
+                IKey.dynamic(
+                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
     }
 
     public Flow createThresholdFieldRow() {
-        return Flow.row().child(
-                new TextFieldWidget().setFormatAsInteger(true).setNumbers(0, 1200000000).size(77, 12)
-                        .value(new IntSyncValue(() -> threshold, val -> threshold = val)).setFocusOnGuiOpen(true))
-                .child(IKey.lang("gui.NeutronSensor.4").asWidget()).coverChildren().childPadding(2);
+        return Flow.row()
+            .child(
+                new TextFieldWidget().setFormatAsInteger(true)
+                    .setNumbers(0, 1200000000)
+                    .size(77, 12)
+                    .value(new IntSyncValue(() -> threshold, val -> threshold = val))
+                    .setFocusOnGuiOpen(true))
+            .child(
+                IKey.lang("gui.NeutronSensor.4")
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                        .setTextureGetter(
-                                (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                        .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted")).setPos(10, 8))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                                                : translateToLocal("gt.interact.desc.normal"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(28, 12))
-                .widget(
-                        new NumericWidget().setBounds(0, 1200000000).setGetter(() -> threshold)
-                                .setSetter((value) -> threshold = (int) value).setScrollValues(1000, 1, 1_000_000)
-                                .setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
-                                .setFocusOnGuiOpen(true)
-                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                                .setPos(10, 28).setSize(77, 12))
-                .widget(
-                        new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setTextAlignment(Alignment.CenterLeft).setPos(90, 30));
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                .setPos(10, 8))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(28, 12))
+            .widget(
+                new NumericWidget().setBounds(0, 1200000000)
+                    .setGetter(() -> threshold)
+                    .setSetter((value) -> threshold = (int) value)
+                    .setScrollValues(1000, 1, 1_000_000)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 28)
+                    .setSize(77, 12))
+            .widget(
+                new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(90, 30));
     }
 }

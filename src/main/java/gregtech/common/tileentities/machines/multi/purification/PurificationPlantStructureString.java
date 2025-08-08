@@ -4,12 +4,12 @@ package gregtech.common.tileentities.machines.multi.purification;
 public class PurificationPlantStructureString {
 
     public static final String[][] STRUCTURE_STRING = new String[][] {
-            { "       ", "       ", "       ", "  GBG  ", "  GHG  ", "  GHG  ", "  G~G  ", "  GHG  ", "AAAAAAA" },
-            { "       ", "       ", "       ", "  GBG  ", "BBBBBBB", "BCCCCCB", "BCCCCCB", "BCCCCCB", "AAAAAAA" },
-            { " G   G ", " G   G ", " G   G ", " GGBGG ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
-            { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
-            { "  BFB  ", "  BFB  ", "  BFB  ", "  BFB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
-            { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D      ", "C      ", "AAAAAAA" },
-            { " G   G ", " G   G ", " G   G ", " G   G ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
-            { "       ", "       ", "       ", "       ", "BBBBBBB", "BCCCCCB", "BCDDDCB", "BCCCCCB", "AAAAAAA" } };
+        { "       ", "       ", "       ", "  GBG  ", "  GHG  ", "  GHG  ", "  G~G  ", "  GHG  ", "AAAAAAA" },
+        { "       ", "       ", "       ", "  GBG  ", "BBBBBBB", "BCCCCCB", "BCCCCCB", "BCCCCCB", "AAAAAAA" },
+        { " G   G ", " G   G ", " G   G ", " GGBGG ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
+        { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
+        { "  BFB  ", "  BFB  ", "  BFB  ", "  BFB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
+        { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D      ", "C      ", "AAAAAAA" },
+        { " G   G ", " G   G ", " G   G ", " G   G ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
+        { "       ", "       ", "       ", "       ", "BBBBBBB", "BCCCCCB", "BCDDDCB", "BCCCCCB", "AAAAAAA" } };
 }

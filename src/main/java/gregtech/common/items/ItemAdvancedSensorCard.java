@@ -43,19 +43,19 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 @cpw.mods.fml.common.Optional.Interface(
-        iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-        modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL)
+    iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
+    modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL)
 public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");
 
     // This has obfuscated formatting, so no need to localize it.
     private static final String SELF_DESTRUCTED_OUTPUT = EnumChatFormatting.OBFUSCATED + "critical error"
-            + EnumChatFormatting.RESET;
+        + EnumChatFormatting.RESET;
 
     private static final ImmutableList<String> DECONSTRUCTED_OUTPUT = ImmutableList.of(
-            StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"),
-            StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"));
+        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"),
+        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"));
 
     private static final String NO_DATA_FOUND = StatCollector.translateToLocal("gt.item.adv_sensor_card.error.no_data");
 
@@ -82,7 +82,7 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     @Override
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> tooltip,
-            final boolean p_77624_4_) {
+        final boolean p_77624_4_) {
         super.addInformation(itemStack, player, tooltip, p_77624_4_);
 
         final Optional<State> cardState = getCardState(itemStack);
@@ -95,15 +95,13 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                 tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.3"));
             } else {
                 getMachineName(itemStack).ifPresent(
-                        machineName -> tooltip.add(
-                                StatCollector.translateToLocalFormatted(
-                                        "gt.item.adv_sensor_card.tooltip.machine",
-                                        machineName)));
+                    machineName -> tooltip.add(
+                        StatCollector
+                            .translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.machine", machineName)));
                 getUUID(itemStack).ifPresent(
-                        uuid -> tooltip.add(
-                                StatCollector.translateToLocalFormatted(
-                                        "gt.item.adv_sensor_card.tooltip.frequency",
-                                        uuid.toString())));
+                    uuid -> tooltip.add(
+                        StatCollector
+                            .translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.frequency", uuid.toString())));
             }
         } else {
             tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.recipe_hint"));
@@ -132,7 +130,8 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
     @Override
     public IIcon getIconIndex(final ItemStack itemStack) {
         return getCardState(itemStack).filter(Predicate.isEqual(State.SELF_DESTRUCTED))
-                .map(ignored -> selfDestructedIcon).orElse(normalIcon);
+            .map(ignored -> selfDestructedIcon)
+            .orElse(normalIcon);
     }
 
     @Override
@@ -149,24 +148,26 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
             reconcileSelfDestructedCard(card.getItemStack(), machineState);
             card.setInt(CARD_STATE_KEY, machineState.getType());
 
-            getMachineName(card.getItemStack()).ifPresent(
-                    name -> card.setString(MACHINE_NAME_KEY, machineState == State.SELF_DESTRUCTED ? "" : name));
+            getMachineName(card.getItemStack())
+                .ifPresent(name -> card.setString(MACHINE_NAME_KEY, machineState == State.SELF_DESTRUCTED ? "" : name));
 
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
             switch (machineState) {
                 case SELF_DESTRUCTED -> builder.add(SELF_DESTRUCTED_OUTPUT);
                 case HOST_DECONSTRUCTED -> builder.addAll(DECONSTRUCTED_OUTPUT);
                 case OPERATIONAL -> {
-                    data.getCoordinates().ifPresent(
+                    data.getCoordinates()
+                        .ifPresent(
                             coordinates -> builder.add(
-                                    StatCollector.translateToLocalFormatted(
-                                            "gt.item.adv_sensor_card.dimension",
-                                            coordinates.getDimension()),
-                                    StatCollector.translateToLocalFormatted(
-                                            "gt.item.adv_sensor_card.coords",
-                                            coordinates.getLocalizedCoordinates())));
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.item.adv_sensor_card.dimension",
+                                    coordinates.getDimension()),
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.item.adv_sensor_card.coords",
+                                    coordinates.getLocalizedCoordinates())));
 
-                    data.getPayload().ifPresent(builder::addAll);
+                    data.getPayload()
+                        .ifPresent(builder::addAll);
                 }
                 default -> builder.add(NO_DATA_FOUND);
             }
@@ -186,7 +187,7 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     @Override
     public List<PanelString> getStringData(final int displaySettings, final ICardWrapper card,
-            final boolean showLabels) {
+        final boolean showLabels) {
         final List<PanelString> returned = new ArrayList<>();
         final String machineName = card.getString(MACHINE_NAME_KEY);
         final int bitmaskOffset;
@@ -202,11 +203,12 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
         }
 
         // Not reusing payloadSize here because it can be conditionally mutated.
-        IntStream.range(0, card.getInt(OUTPUT_ENTRY_LENGTH_KEY)).forEach(i -> {
-            if ((displaySettings & 1 << (i + bitmaskOffset)) != 0) {
-                returned.add(panelString(card.getString(String.format(OUTPUT_ENTRY_KEY, i))));
-            }
-        });
+        IntStream.range(0, card.getInt(OUTPUT_ENTRY_LENGTH_KEY))
+            .forEach(i -> {
+                if ((displaySettings & 1 << (i + bitmaskOffset)) != 0) {
+                    returned.add(panelString(card.getString(String.format(OUTPUT_ENTRY_KEY, i))));
+                }
+            });
 
         return returned;
     }
@@ -214,10 +216,10 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
     @Override
     public List<PanelSetting> getSettingsList() {
         return payloadSize == 0 ? ImmutableList.of()
-                : ImmutableList.copyOf(
-                        IntStream.range(0, Math.min(payloadSize, 31))
-                                .mapToObj(i -> new PanelSetting(String.valueOf(i + 1), 1 << i, getCardType()))
-                                .iterator());
+            : ImmutableList.copyOf(
+                IntStream.range(0, Math.min(payloadSize, 31))
+                    .mapToObj(i -> new PanelSetting(String.valueOf(i + 1), 1 << i, getCardType()))
+                    .iterator());
     }
 
     @Override
@@ -238,7 +240,11 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                     stack.setTagCompound(new NBTTagCompound());
                 }
 
-                stack.getTagCompound().setInteger(CARD_STATE_KEY, data.getState().getType());
+                stack.getTagCompound()
+                    .setInteger(
+                        CARD_STATE_KEY,
+                        data.getState()
+                            .getType());
             });
         }
     }
@@ -259,8 +265,11 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     @NotNull
     private Optional<State> getCardState(ItemStack itemStack) {
-        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey(CARD_STATE_KEY)) {
-            return State.find(itemStack.getTagCompound().getInteger(CARD_STATE_KEY));
+        if (itemStack.hasTagCompound() && itemStack.getTagCompound()
+            .hasKey(CARD_STATE_KEY)) {
+            return State.find(
+                itemStack.getTagCompound()
+                    .getInteger(CARD_STATE_KEY));
         }
 
         return Optional.empty();
@@ -280,10 +289,12 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     @NotNull
     private Optional<String> getMachineName(ItemStack stack) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey(MACHINE_KEY)) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(MACHINE_KEY)) {
             try {
-                final ItemStack machine = ItemStack
-                        .loadItemStackFromNBT(stack.getTagCompound().getCompoundTag(MACHINE_KEY));
+                final ItemStack machine = ItemStack.loadItemStackFromNBT(
+                    stack.getTagCompound()
+                        .getCompoundTag(MACHINE_KEY));
                 if (machine != null) {
                     return Optional.of(machine.getDisplayName());
                 }

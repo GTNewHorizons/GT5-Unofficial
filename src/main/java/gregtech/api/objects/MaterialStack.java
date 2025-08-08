@@ -32,8 +32,7 @@ public class MaterialStack implements Cloneable {
         if (aObject == null) return false;
         if (aObject instanceof Materials) return aObject == mMaterial;
         if (aObject instanceof MaterialStack) return ((MaterialStack) aObject).mMaterial == mMaterial
-                && (mAmount < 0 || ((MaterialStack) aObject).mAmount < 0
-                        || ((MaterialStack) aObject).mAmount == mAmount);
+            && (mAmount < 0 || ((MaterialStack) aObject).mAmount < 0 || ((MaterialStack) aObject).mAmount == mAmount);
         return false;
     }
 

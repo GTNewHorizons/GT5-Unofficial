@@ -53,7 +53,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArcFurnace>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
@@ -85,16 +85,24 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo(
-                        "Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
-                .addInfo("Right-click controller with a Screwdriver to change modes")
-                .addInfo("Max Size required to process Plasma recipes").addPollutionAmount(getPollutionPerSecond(null))
-                .addController("Top center").addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
-                .addStructureInfo("n can be 3, 5 or 7").addCasingInfoMin(mCasingName, 10, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("250% faster than using single block machines of the same voltage")
+            .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
+            .addInfo("Right-click controller with a Screwdriver to change modes")
+            .addInfo("Max Size required to process Plasma recipes")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addController("Top center")
+            .addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
+            .addStructureInfo("n can be 3, 5 or 7")
+            .addCasingInfoMin(mCasingName, 10, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -112,34 +120,29 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     public IStructureDefinition<MTEIndustrialArcFurnace> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialArcFurnace>builder()
-                    .addShape(STRUCTURE_PIECE_FRONT + 1, new String[][] { { "CCC", "C~C", "CCC" } })
-                    .addShape(
-                            STRUCTURE_PIECE_FRONT + 2,
-                            new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } })
-                    .addShape(
-                            STRUCTURE_PIECE_FRONT + 3,
-                            new String[][] {
-                                    { "CCCCCCC", "C     C", "C     C", "C     C", "C     C", "C     C", "CCCCCCC" }, })
-                    .addShape(
-                            STRUCTURE_PIECE_REST + 1,
-                            new String[][] { { "CCC", "C-C", "CCC" }, { "CCC", "CCC", "CCC" } })
-                    .addShape(
-                            STRUCTURE_PIECE_REST + 2,
-                            new String[][] { { "CCCCC", "C---C", "C---C", "C---C", "CCCCC" },
-                                    { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" } })
-                    .addShape(
-                            STRUCTURE_PIECE_REST + 3,
-                            new String[][] {
-                                    { "CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC" },
-                                    { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" }, })
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialArcFurnace.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).allowOnly(ForgeDirection.NORTH)
-                                    .buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3))))
-                    .build();
+                .addShape(STRUCTURE_PIECE_FRONT + 1, new String[][] { { "CCC", "C~C", "CCC" } })
+                .addShape(STRUCTURE_PIECE_FRONT + 2, new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } })
+                .addShape(
+                    STRUCTURE_PIECE_FRONT + 3,
+                    new String[][] { { "CCCCCCC", "C     C", "C     C", "C     C", "C     C", "C     C", "CCCCCCC" }, })
+                .addShape(STRUCTURE_PIECE_REST + 1, new String[][] { { "CCC", "C-C", "CCC" }, { "CCC", "CCC", "CCC" } })
+                .addShape(
+                    STRUCTURE_PIECE_REST + 2,
+                    new String[][] { { "CCCCC", "C---C", "C---C", "C---C", "CCCCC" },
+                        { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" } })
+                .addShape(
+                    STRUCTURE_PIECE_REST + 3,
+                    new String[][] { { "CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC" },
+                        { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" }, })
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialArcFurnace.class)
+                        .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .allowOnly(ForgeDirection.NORTH)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -167,28 +170,28 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         int built;
         for (int tier = 1; tier <= maxTier; tier++) {
             built = survivalBuildPiece(
-                    STRUCTURE_PIECE_FRONT + tier,
-                    stackSize,
-                    tier,
-                    tier,
-                    0,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-        }
-
-        return survivalBuildPiece(
-                STRUCTURE_PIECE_REST + maxTier,
+                STRUCTURE_PIECE_FRONT + tier,
                 stackSize,
-                maxTier,
-                maxTier,
-                -1,
+                tier,
+                tier,
+                0,
                 elementBudget,
                 env,
                 false,
                 true);
+            if (built >= 0) return built;
+        }
+
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_REST + maxTier,
+            stackSize,
+            maxTier,
+            maxTier,
+            -1,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -250,7 +253,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -281,35 +285,35 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             this.mPlasmaMode = !mPlasmaMode;
             if (mPlasmaMode) {
                 GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        "[" + EnumChatFormatting.RED
-                                + "MODE"
-                                + EnumChatFormatting.RESET
-                                + "] "
-                                + EnumChatFormatting.LIGHT_PURPLE
-                                + "Plasma"
-                                + EnumChatFormatting.RESET);
+                    aPlayer,
+                    "[" + EnumChatFormatting.RED
+                        + "MODE"
+                        + EnumChatFormatting.RESET
+                        + "] "
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + "Plasma"
+                        + EnumChatFormatting.RESET);
             } else {
                 GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        "[" + EnumChatFormatting.RED
-                                + "MODE"
-                                + EnumChatFormatting.RESET
-                                + "] "
-                                + EnumChatFormatting.YELLOW
-                                + "Electric"
-                                + EnumChatFormatting.RESET);
+                    aPlayer,
+                    "[" + EnumChatFormatting.RED
+                        + "MODE"
+                        + EnumChatFormatting.RESET
+                        + "] "
+                        + EnumChatFormatting.YELLOW
+                        + "Electric"
+                        + EnumChatFormatting.RESET);
             }
         } else {
             GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    "[" + EnumChatFormatting.RED
-                            + "MODE"
-                            + EnumChatFormatting.RESET
-                            + "] "
-                            + EnumChatFormatting.GRAY
-                            + "Cannot change mode, structure not large enough."
-                            + EnumChatFormatting.RESET);
+                aPlayer,
+                "[" + EnumChatFormatting.RED
+                    + "MODE"
+                    + EnumChatFormatting.RESET
+                    + "] "
+                    + EnumChatFormatting.GRAY
+                    + "Cannot change mode, structure not large enough."
+                    + EnumChatFormatting.RESET);
         }
         mLastRecipe = null;
     }
@@ -330,22 +334,21 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("mode", mPlasmaMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                        + EnumChatFormatting.WHITE
-                        + StatCollector.translateToLocal(
-                                "GT5U.GTPP_MULTI_ARC_FURNACE.mode." + (tag.getBoolean("mode") ? 1 : 0))
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + EnumChatFormatting.RESET);
     }
 
     @SideOnly(Side.CLIENT)

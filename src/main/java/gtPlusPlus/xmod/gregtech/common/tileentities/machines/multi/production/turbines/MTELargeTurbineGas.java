@@ -30,7 +30,9 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
     static {
-        BLACKLIST.add(Materials.Benzene.getFluid(0).getFluid());
+        BLACKLIST.add(
+            Materials.Benzene.getFluid(0)
+                .getFluid());
     }
 
     public MTELargeTurbineGas(int aID, String aName, String aNameRegional) {
@@ -71,7 +73,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         if (aLiquid == null) {
             return 0;
         }
-        GTRecipe tFuel = getRecipeMap().getBackend().findFuel(aLiquid);
+        GTRecipe tFuel = getRecipeMap().getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
         }
@@ -128,9 +131,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             }
 
             actualOptimalFlow = GTUtility.safeInt(
-                    (long) (getSpeedMultiplier()
-                            * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow())
-                                    / fuelValue)));
+                (long) (getSpeedMultiplier()
+                    * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue)));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -158,8 +160,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
             }
-            tEU = GTUtility.safeInt(
-                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+            tEU = GTUtility
+                .safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             return tEU;
         }

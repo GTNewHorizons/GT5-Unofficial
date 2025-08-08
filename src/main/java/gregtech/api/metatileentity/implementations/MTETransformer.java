@@ -53,38 +53,38 @@ public class MTETransformer extends MTETieredMachineBlock {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
         }
         return rTextures;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return mTextures[Math.min(2, side.ordinal()) + (side == facingDirection ? 3 : 0)
-                + (baseMetaTileEntity.isAllowedToWork() ? 0 : 6)][colorIndex + 1];
+            + (baseMetaTileEntity.isAllowedToWork() ? 0 : 6)][colorIndex + 1];
     }
 
     @Override
@@ -167,48 +167,46 @@ public class MTETransformer extends MTETieredMachineBlock {
                 if (!aBaseMetaTileEntity.inputEnergyFrom(side)) continue;
                 final TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                 if (tTileEntity instanceof IEnergyProvider energyProvider
-                        && energyProvider.extractEnergy(side.getOpposite(), 1, true) == 1) {
+                    && energyProvider.extractEnergy(side.getOpposite(), 1, true) == 1) {
                     long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(
-                            side.getOpposite(),
-                            GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU),
-                            false);
+                        side.getOpposite(),
+                        GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU),
+                        false);
                     tEU = tEU * GregTechAPI.mRFtoEU / 100;
                     aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
                 } else if (tTileEntity instanceof IEnergyStorage energyStorage
-                        && energyStorage.extractEnergy(1, true) == 1) {
-                            long tEU = ((IEnergyStorage) tTileEntity)
-                                    .extractEnergy(GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU), false);
-                            tEU = tEU * GregTechAPI.mRFtoEU / 100;
-                            aBaseMetaTileEntity
-                                    .injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
-                        } else
-                    if (EnderIO.isModLoaded() && tTileEntity instanceof IPowerContainer powerContainer
-                            && powerContainer.getEnergyStored() > 0) {
-                                final int storedRF = powerContainer.getEnergyStored();
-                                final int extractRF = GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU);
-                                long tEU = 0;
-                                if (tTileEntity instanceof TileCapBank capBank) {
-                                    ICapBankNetwork network = capBank.getNetwork();
-                                    if (network != null && network.getEnergyStoredL() > 0) {
-                                        tEU = Math.min(
-                                                (Math.min(
-                                                        Math.min(network.getEnergyStoredL(), storedRF - extractRF),
-                                                        network.getMaxOutput())) * (long) GregTechAPI.mRFtoEU / 100L,
-                                                maxEUInput());
-                                        network.addEnergy(GTUtility.safeInt(-(tEU * 100 / GregTechAPI.mRFtoEU)));
-                                    }
-                                } else {
-                                    if (storedRF > extractRF) {
-                                        powerContainer.setEnergyStored(storedRF - extractRF);
-                                        tEU = maxEUInput();
-                                    } else {
-                                        powerContainer.setEnergyStored(0);
-                                        tEU = storedRF * (long) GregTechAPI.mRFtoEU / 100L;
-                                    }
+                    && energyStorage.extractEnergy(1, true) == 1) {
+                        long tEU = ((IEnergyStorage) tTileEntity)
+                            .extractEnergy(GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU), false);
+                        tEU = tEU * GregTechAPI.mRFtoEU / 100;
+                        aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                    } else if (EnderIO.isModLoaded() && tTileEntity instanceof IPowerContainer powerContainer
+                        && powerContainer.getEnergyStored() > 0) {
+                            final int storedRF = powerContainer.getEnergyStored();
+                            final int extractRF = GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU);
+                            long tEU = 0;
+                            if (tTileEntity instanceof TileCapBank capBank) {
+                                ICapBankNetwork network = capBank.getNetwork();
+                                if (network != null && network.getEnergyStoredL() > 0) {
+                                    tEU = Math.min(
+                                        (Math.min(
+                                            Math.min(network.getEnergyStoredL(), storedRF - extractRF),
+                                            network.getMaxOutput())) * (long) GregTechAPI.mRFtoEU / 100L,
+                                        maxEUInput());
+                                    network.addEnergy(GTUtility.safeInt(-(tEU * 100 / GregTechAPI.mRFtoEU)));
                                 }
-                                aBaseMetaTileEntity
-                                        .injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                            } else {
+                                if (storedRF > extractRF) {
+                                    powerContainer.setEnergyStored(storedRF - extractRF);
+                                    tEU = maxEUInput();
+                                } else {
+                                    powerContainer.setEnergyStored(0);
+                                    tEU = storedRF * (long) GregTechAPI.mRFtoEU / 100L;
+                                }
                             }
+                            aBaseMetaTileEntity
+                                .injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                        }
             }
         }
     }
@@ -225,13 +223,13 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -243,14 +241,14 @@ public class MTETransformer extends MTETieredMachineBlock {
     @Override
     public String getAlternativeModeText() {
         return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.trans("145", "Step Down, In: ")
-                : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
-                + GTUtility.trans("148", "V ")
-                + maxAmperesIn()
-                + GTUtility.trans("147", "A, Out: ")
-                + maxEUOutput()
-                + GTUtility.trans("148", "V ")
-                + maxAmperesOut()
-                + GTUtility.trans("149", "A");
+            : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
+            + GTUtility.trans("148", "V ")
+            + maxAmperesIn()
+            + GTUtility.trans("147", "A, Out: ")
+            + maxEUOutput()
+            + GTUtility.trans("148", "V ")
+            + maxAmperesOut()
+            + GTUtility.trans("149", "A");
     }
 
     @Override
@@ -260,7 +258,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection side = accessor.getSide();
@@ -270,30 +268,30 @@ public class MTETransformer extends MTETieredMachineBlock {
         final byte outputTier = GTUtility.getTier(tag.getLong("maxEUOutput"));
 
         currenttip.add(
-                String.format(
-                        "%s %s(%dA) -> %s(%dA)",
-                        (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                        GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
-                                : tag.getLong("maxEUInput"),
-                        tag.getLong("maxAmperesIn"),
-                        GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
-                                : tag.getLong("maxEUOutput"),
-                        tag.getLong("maxAmperesOut")));
+            String.format(
+                "%s %s(%dA) -> %s(%dA)",
+                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                    : tag.getLong("maxEUInput"),
+                tag.getLong("maxAmperesIn"),
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                    : tag.getLong("maxEUOutput"),
+                tag.getLong("maxAmperesOut")));
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                    String.format(
-                            GOLD + "Input:" + RESET + " %s(%dA)",
-                            GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
-                                    : tag.getLong("maxEUInput"),
-                            tag.getLong("maxAmperesIn")));
+                String.format(
+                    GOLD + "Input:" + RESET + " %s(%dA)",
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                        : tag.getLong("maxEUInput"),
+                    tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                    String.format(
-                            BLUE + "Output:" + RESET + " %s(%dA)",
-                            GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
-                                    : tag.getLong("maxEUOutput"),
-                            tag.getLong("maxAmperesOut")));
+                String.format(
+                    BLUE + "Output:" + RESET + " %s(%dA)",
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                        : tag.getLong("maxEUOutput"),
+                    tag.getLong("maxAmperesOut")));
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -301,7 +299,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
         tag.setLong("maxEUInput", maxEUInput());

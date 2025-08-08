@@ -21,11 +21,14 @@ public class FishPondRecipes {
     public static void generateFishPondRecipes() {
         try {
             ArrayList<WeightedRandomFishable> fishList = (ArrayList<WeightedRandomFishable>) GTUtility
-                    .getField(FishingHooks.class, "fish").get(null);
+                .getField(FishingHooks.class, "fish")
+                .get(null);
             ArrayList<WeightedRandomFishable> junkList = (ArrayList<WeightedRandomFishable>) GTUtility
-                    .getField(FishingHooks.class, "junk").get(null);
+                .getField(FishingHooks.class, "junk")
+                .get(null);
             ArrayList<WeightedRandomFishable> treasureList = (ArrayList<WeightedRandomFishable>) GTUtility
-                    .getField(FishingHooks.class, "treasure").get(null);
+                .getField(FishingHooks.class, "treasure")
+                .get(null);
             generateRecipes(MTEIndustrialFishingPond.FISH_MODE, fishList, 0.85);
             generateRecipes(MTEIndustrialFishingPond.JUNK_MODE, junkList, 1.35);
             generateRecipes(MTEIndustrialFishingPond.TREASURE_MODE, treasureList, 20D);
@@ -41,7 +44,7 @@ public class FishPondRecipes {
      * @param chanceMultiplier Arbitrary multiplier to the whole table of chances for balancing purposes
      */
     private static void generateRecipes(int circuitType, ArrayList<WeightedRandomFishable> lootTable,
-            double chanceMultiplier) {
+        double chanceMultiplier) {
         int[] chances = new int[lootTable.size()];
         ItemStack[] outputs = new ItemStack[lootTable.size()];
         for (int i = 0; i < lootTable.size(); i++) {
@@ -58,7 +61,12 @@ public class FishPondRecipes {
             outputs[i] = output;
         }
 
-        GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(circuitType)).itemOutputs(outputs, chances)
-                .duration(10 * SECONDS).eut(16).ignoreCollision().addTo(GTPPRecipeMaps.fishPondRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
+            .itemOutputs(outputs, chances)
+            .duration(10 * SECONDS)
+            .eut(16)
+            .ignoreCollision()
+            .addTo(GTPPRecipeMaps.fishPondRecipes);
     }
 }

@@ -14,7 +14,7 @@ public class GuiValueField extends GuiTextField {
     private final GUIVolumetricFlaskSetter mGUI;
 
     public GuiValueField(FontRenderer aFontRenderer, int aX, int aY, int aScreenLocationX, int aScreenLocationY,
-            int aWidth, int aHeight, GUIVolumetricFlaskSetter aGUI) {
+        int aWidth, int aHeight, GUIVolumetricFlaskSetter aGUI) {
         super(aFontRenderer, aX, aY, aWidth, aHeight);
         mFontRenderer = aFontRenderer;
         mScreenLocationX = aScreenLocationX;
@@ -28,8 +28,8 @@ public class GuiValueField extends GuiTextField {
 
     public boolean clickInTextField(int aX, int aY) {
         return aX >= this.mScreenLocationX && aX < this.mScreenLocationX + this.width
-                && aY >= this.mScreenLocationY
-                && aY < this.mScreenLocationY + this.height;
+            && aY >= this.mScreenLocationY
+            && aY < this.mScreenLocationY + this.height;
     }
 
     /**
@@ -45,15 +45,23 @@ public class GuiValueField extends GuiTextField {
                 l -= 4;
             }
             if (aButton == 0) {
-                String s = this.mFontRenderer
-                        .trimStringToWidth(this.getText().substring(getLineScrollOffset()), this.getWidth());
-                this.setCursorPosition(this.mFontRenderer.trimStringToWidth(s, l).length() + getLineScrollOffset());
+                String s = this.mFontRenderer.trimStringToWidth(
+                    this.getText()
+                        .substring(getLineScrollOffset()),
+                    this.getWidth());
+                this.setCursorPosition(
+                    this.mFontRenderer.trimStringToWidth(s, l)
+                        .length() + getLineScrollOffset());
             } else if (aButton == 1) {
                 mGUI.setText(0);
                 mGUI.sendUpdateToServer();
-                String s = this.mFontRenderer
-                        .trimStringToWidth(this.getText().substring(getLineScrollOffset()), this.getWidth());
-                this.setCursorPosition(this.mFontRenderer.trimStringToWidth(s, l).length() + getLineScrollOffset());
+                String s = this.mFontRenderer.trimStringToWidth(
+                    this.getText()
+                        .substring(getLineScrollOffset()),
+                    this.getWidth());
+                this.setCursorPosition(
+                    this.mFontRenderer.trimStringToWidth(s, l)
+                        .length() + getLineScrollOffset());
             }
         }
     }

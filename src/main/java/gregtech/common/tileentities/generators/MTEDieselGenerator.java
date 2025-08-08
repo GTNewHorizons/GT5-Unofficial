@@ -49,20 +49,20 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
 
     public MTEDieselGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { "Requires liquid Fuel",
-                        "Causes "
-                                + (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
-                                        * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[aTier])
-                                + " Pollution per second" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { "Requires liquid Fuel",
+                "Causes "
+                    + (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+                        * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[aTier])
+                    + " Pollution per second" });
         this.efficiency = efficiency;
     }
 
     public MTEDieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            int efficiency) {
+        int efficiency) {
         super(aName, aTier, aDescription, aTextures);
         this.efficiency = efficiency;
     }
@@ -111,16 +111,19 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
         if (aBaseMetaTileEntity.isActive()) {
 
             if (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP)
-                    && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
+                && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
                 final double x = aBaseMetaTileEntity.getOffsetX(ForgeDirection.UP, 1) + 2D / 16D
-                        + XSTR_INSTANCE.nextFloat() * 14D / 16D;
+                    + XSTR_INSTANCE.nextFloat() * 14D / 16D;
                 final double y = aBaseMetaTileEntity.getOffsetY(ForgeDirection.UP, 1) + 1D / 32D;
                 final double z = aBaseMetaTileEntity.getOffsetZ(ForgeDirection.UP, 1) + 2D / 16D
-                        + XSTR_INSTANCE.nextFloat() * 14D / 16D;
+                    + XSTR_INSTANCE.nextFloat() * 14D / 16D;
 
-                new ParticleEventBuilder().setMotion(0D, 0D, 0D).setPosition(x, y, z)
-                        .setWorld(getBaseMetaTileEntity().getWorld()).setIdentifier(ParticleFX.SMOKE).run();
+                new ParticleEventBuilder().setMotion(0D, 0D, 0D)
+                    .setPosition(x, y, z)
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .setIdentifier(ParticleFX.SMOKE)
+                    .run();
             }
         }
     }
@@ -128,88 +131,118 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_FRONT),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_FRONT_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier] };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_FRONT),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_FRONT_GLOW)
+                    .glow()
+                    .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BACK),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BACK_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BACK),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BACK_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BOTTOM),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BOTTOM_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BOTTOM),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BOTTOM_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_TOP),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_TOP_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_TOP),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_TOP_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_SIDE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_SIDE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_SIDE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_SIDE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_FRONT_ACTIVE_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier] };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_FRONT_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_FRONT_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BACK_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BACK_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BACK_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BACK_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BOTTOM_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BOTTOM_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BOTTOM_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BOTTOM_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_TOP_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_TOP_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_TOP_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_TOP_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_SIDE_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_SIDE_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_SIDE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_SIDE_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public int getPollution() {
         return (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
-                * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
+            * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
     }
 }

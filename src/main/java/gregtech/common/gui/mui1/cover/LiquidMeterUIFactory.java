@@ -37,33 +37,36 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                        .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                                CoverLiquidMeter::isInverted,
-                                CoverLiquidMeter::setInverted,
-                                widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
-                                        .setPos(spaceX * 0, spaceY * 0))
-                        .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) coverData.getThreshold(),
-                                (coverData, state) -> coverData.setThreshold(state.intValue()),
-                                widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                                        .setScrollValues(1000, 144, 100000).setFocusOnGuiOpen(true)
-                                        .setPos(spaceX * 0, spaceY * 1 + 2).setSize(spaceX * 4 + 5, 12))
-                        .setPos(startX, startY))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        getCoverString(
-                                                c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
-                                                        : translateToLocal("gt.interact.desc.normal")))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                        new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                        CoverLiquidMeter::isInverted,
+                        CoverLiquidMeter::setInverted,
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                            .setPos(spaceX * 0, spaceY * 0))
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThreshold(state.intValue()),
+                        widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(spaceX * 0, spaceY * 1 + 2)
+                            .setSize(spaceX * 4 + 5, 12))
+                    .setPos(startX, startY))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+            .widget(
+                new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
     }
 }

@@ -78,7 +78,7 @@ public enum Dyes implements IColorModulationContainer {
     private static final Map<String, Dyes> dyesFromName = new HashMap<>();
     /** Valid dye colors, indexed 0-15. */
     public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,
-            dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
+        dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
 
     static {
         for (Dyes dye : Dyes.values()) {

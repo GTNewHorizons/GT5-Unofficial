@@ -17,7 +17,8 @@ public class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
     @Override
     public ShutDownReason deserialize(PacketBuffer buffer) throws IOException {
         String id = NetworkUtils.readStringSafe(buffer);
-        ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id).newInstance();
+        ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
+            .newInstance();
         result.decode(buffer);
         return result;
     }
@@ -30,6 +31,7 @@ public class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
 
     @Override
     public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
-        return t1.getID().equals(t2.getID());
+        return t1.getID()
+            .equals(t2.getID());
     }
 }

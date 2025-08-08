@@ -25,5 +25,5 @@ public interface IProjectileItem {
      *         EntityArrow
      */
     EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-            float aSpeed);
+        float aSpeed);
 }

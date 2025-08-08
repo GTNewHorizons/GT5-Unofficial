@@ -82,10 +82,12 @@ public class GTPPComb extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int colour = GTPPCombType.get(stack.getItemDamage()).getColours()[0];
+        int colour = GTPPCombType.get(stack.getItemDamage())
+            .getColours()[0];
 
         if (pass >= 1) {
-            colour = GTPPCombType.get(stack.getItemDamage()).getColours()[1];
+            colour = GTPPCombType.get(stack.getItemDamage())
+                .getColours()[1];
         }
 
         return colour;
@@ -93,31 +95,37 @@ public class GTPPComb extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTPPCombType.get(stack.getItemDamage()).getName();
+        return GTPPCombType.get(stack.getItemDamage())
+            .getName();
     }
 
     public static void initCombsRecipes() {
 
         addChemicalRecipe(
-                GTPPCombType.DRAGONBLOOD,
-                new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
-                        GTPP_Bees.propolis.getStackForType(GTPPPropolisType.DRAGONBLOOD),
-                        GTPP_Bees.drop.getStackForType(GTPPDropType.DRAGONBLOOD) },
-                new int[] { 3000, 1500, 500 });
+            GTPPCombType.DRAGONBLOOD,
+            new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
+                GTPP_Bees.propolis.getStackForType(GTPPPropolisType.DRAGONBLOOD),
+                GTPP_Bees.drop.getStackForType(GTPPDropType.DRAGONBLOOD) },
+            new int[] { 3000, 1500, 500 });
         addChemicalRecipe(
-                GTPPCombType.FORCE,
-                new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
-                        GTPP_Bees.propolis.getStackForType(GTPPPropolisType.FORCE),
-                        GTPP_Bees.drop.getStackForType(GTPPDropType.FORCE) },
-                new int[] { 5000, 3000, 1000 });
+            GTPPCombType.FORCE,
+            new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
+                GTPP_Bees.propolis.getStackForType(GTPPPropolisType.FORCE),
+                GTPP_Bees.drop.getStackForType(GTPPDropType.FORCE) },
+            new int[] { 5000, 3000, 1000 });
     }
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
         long aEU = aMat.vVoltageMultiplier;
         int aTier = Math.max(aMat.vTier / 2, 1);
-        GTValues.RA.stdBuilder().itemInputs(aInputStack.getStackForType(aTier)).itemOutputs(aOutputs)
-                .duration(aTier * 20 * 60).eut(aEU).metadata(CHEMPLANT_CASING_TIER, aTier).addTo(chemicalPlantRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(aInputStack.getStackForType(aTier))
+            .itemOutputs(aOutputs)
+            .duration(aTier * 20 * 60)
+            .eut(aEU)
+            .metadata(CHEMPLANT_CASING_TIER, aTier)
+            .addTo(chemicalPlantRecipes);
 
     }
 }

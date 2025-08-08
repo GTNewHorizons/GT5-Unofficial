@@ -67,7 +67,8 @@ public class GTRecipeBuilder {
 
     static {
         final boolean debugAll;
-        if (System.getProperties().containsKey("gt.recipebuilder.debug")) {
+        if (System.getProperties()
+            .containsKey("gt.recipebuilder.debug")) {
             debugAll = Boolean.getBoolean("gt.recipebuilder.debug");
         } else {
             // turn on debug by default in dev mode
@@ -116,10 +117,10 @@ public class GTRecipeBuilder {
     GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-            FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
-            int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-            @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip, boolean valid) {
+        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
+        int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+        @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -162,7 +163,8 @@ public class GTRecipeBuilder {
      * Creates empty builder where only duration and EU/t are set to 0.
      */
     public static GTRecipeBuilder empty() {
-        return new GTRecipeBuilder().duration(0).eut(0);
+        return new GTRecipeBuilder().duration(0)
+            .eut(0);
     }
 
     private static boolean containsNull(Object[] arr) {
@@ -387,7 +389,7 @@ public class GTRecipeBuilder {
             for (int i = 1; i < GTValues.VP.length; i++) {
                 if (eut <= GTValues.V[i] && eut > GTValues.VP[i]) {
                     GTLog.err.println(
-                            "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GTValues.VP[i]);
+                        "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GTValues.VP[i]);
                     new IllegalArgumentException().printStackTrace(GTLog.err);
                     break;
                 }
@@ -541,29 +543,29 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder copy() {
         return new GTRecipeBuilder(
-                ArrayExt.copyItemsIfNonEmpty(inputsBasic),
-                copy(inputsOreDict),
-                ArrayExt.copyItemsIfNonEmpty(outputs),
-                copy(alts),
-                ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
-                ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
-                copy(chances),
-                special,
-                duration,
-                eut,
-                specialValue,
-                enabled,
-                hidden,
-                fakeRecipe,
-                mCanBeBuffered,
-                mNeedsEmptyOutput,
-                nbtSensitive,
-                copy(neiDesc),
-                recipeCategory,
-                metadataStorage,
-                checkForCollision,
-                skip,
-                valid);
+            ArrayExt.copyItemsIfNonEmpty(inputsBasic),
+            copy(inputsOreDict),
+            ArrayExt.copyItemsIfNonEmpty(outputs),
+            copy(alts),
+            ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
+            copy(chances),
+            special,
+            duration,
+            eut,
+            specialValue,
+            enabled,
+            hidden,
+            fakeRecipe,
+            mCanBeBuffered,
+            mNeedsEmptyOutput,
+            nbtSensitive,
+            copy(neiDesc),
+            recipeCategory,
+            metadataStorage,
+            checkForCollision,
+            skip,
+            valid);
     }
 
     /**
@@ -571,29 +573,29 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder copyNoMetadata() {
         return new GTRecipeBuilder(
-                ArrayExt.copyItemsIfNonEmpty(inputsBasic),
-                copy(inputsOreDict),
-                ArrayExt.copyItemsIfNonEmpty(outputs),
-                copy(alts),
-                ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
-                ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
-                copy(chances),
-                special,
-                duration,
-                eut,
-                specialValue,
-                enabled,
-                hidden,
-                fakeRecipe,
-                mCanBeBuffered,
-                mNeedsEmptyOutput,
-                nbtSensitive,
-                copy(neiDesc),
-                recipeCategory,
-                null,
-                checkForCollision,
-                skip,
-                valid);
+            ArrayExt.copyItemsIfNonEmpty(inputsBasic),
+            copy(inputsOreDict),
+            ArrayExt.copyItemsIfNonEmpty(outputs),
+            copy(alts),
+            ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
+            copy(chances),
+            special,
+            duration,
+            eut,
+            specialValue,
+            enabled,
+            hidden,
+            fakeRecipe,
+            mCanBeBuffered,
+            mNeedsEmptyOutput,
+            nbtSensitive,
+            copy(neiDesc),
+            recipeCategory,
+            null,
+            checkForCollision,
+            skip,
+            valid);
     }
 
     // region getter
@@ -800,26 +802,26 @@ public class GTRecipeBuilder {
         }
         preBuildChecks();
         return Optional.of(
-                decorate(
-                        new GTRecipe(
-                                inputsBasic,
-                                outputs,
-                                fluidInputs,
-                                fluidOutputs,
-                                chances,
-                                special,
-                                duration,
-                                eut,
-                                specialValue,
-                                enabled,
-                                hidden,
-                                fakeRecipe,
-                                mCanBeBuffered,
-                                mNeedsEmptyOutput,
-                                nbtSensitive,
-                                neiDesc,
-                                metadataStorage,
-                                recipeCategory)));
+            decorate(
+                new GTRecipe(
+                    inputsBasic,
+                    outputs,
+                    fluidInputs,
+                    fluidOutputs,
+                    chances,
+                    special,
+                    duration,
+                    eut,
+                    specialValue,
+                    enabled,
+                    hidden,
+                    fakeRecipe,
+                    mCanBeBuffered,
+                    mNeedsEmptyOutput,
+                    nbtSensitive,
+                    neiDesc,
+                    metadataStorage,
+                    recipeCategory)));
     }
 
     public GTRecipeBuilder forceOreDictInput() {
@@ -840,27 +842,27 @@ public class GTRecipeBuilder {
         }
         preBuildChecks();
         return Optional.of(
-                decorate(
-                        new GTRecipe.GTRecipe_WithAlt(
-                                inputsBasic,
-                                outputs,
-                                fluidInputs,
-                                fluidOutputs,
-                                chances,
-                                special,
-                                duration,
-                                eut,
-                                specialValue,
-                                enabled,
-                                hidden,
-                                fakeRecipe,
-                                mCanBeBuffered,
-                                mNeedsEmptyOutput,
-                                nbtSensitive,
-                                neiDesc,
-                                metadataStorage,
-                                recipeCategory,
-                                alts)));
+            decorate(
+                new GTRecipe.GTRecipe_WithAlt(
+                    inputsBasic,
+                    outputs,
+                    fluidInputs,
+                    fluidOutputs,
+                    chances,
+                    special,
+                    duration,
+                    eut,
+                    specialValue,
+                    enabled,
+                    hidden,
+                    fakeRecipe,
+                    mCanBeBuffered,
+                    mNeedsEmptyOutput,
+                    nbtSensitive,
+                    neiDesc,
+                    metadataStorage,
+                    recipeCategory,
+                    alts)));
     }
 
     private void preBuildChecks() {

@@ -18,7 +18,7 @@ public class BehaviourScoop extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager
-            .addStringLocalization("gt.behaviour.scoop", "Catches Butterflies on Leftclick");
+        .addStringLocalization("gt.behaviour.scoop", "Catches Butterflies on Leftclick");
 
     public BehaviourScoop(int aCosts) {
         this.mCosts = aCosts;
@@ -32,16 +32,21 @@ public class BehaviourScoop extends BehaviourNone {
             }
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 IButterfly tButterfly = ((IEntityButterfly) aEntity).getButterfly();
-                tButterfly.getGenome().getPrimary().getRoot()
-                        .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile()).registerCatch(tButterfly);
+                tButterfly.getGenome()
+                    .getPrimary()
+                    .getRoot()
+                    .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
+                    .registerCatch(tButterfly);
                 aPlayer.worldObj.spawnEntityInWorld(
-                        new EntityItem(
-                                aPlayer.worldObj,
-                                aEntity.posX,
-                                aEntity.posY,
-                                aEntity.posZ,
-                                tButterfly.getGenome().getPrimary().getRoot()
-                                        .getMemberStack(tButterfly.copy(), EnumFlutterType.BUTTERFLY.ordinal())));
+                    new EntityItem(
+                        aPlayer.worldObj,
+                        aEntity.posX,
+                        aEntity.posY,
+                        aEntity.posZ,
+                        tButterfly.getGenome()
+                            .getPrimary()
+                            .getRoot()
+                            .getMemberStack(tButterfly.copy(), EnumFlutterType.BUTTERFLY.ordinal())));
                 aEntity.setDead();
             }
             return true;

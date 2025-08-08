@@ -43,18 +43,32 @@ public final class BasicUIProperties {
      * Creates new builder from this instance.
      */
     public BasicUIPropertiesBuilder toBuilder() {
-        return new BasicUIPropertiesBuilder().maxItemInputs(maxItemInputs).maxItemOutputs(maxItemOutputs)
-                .maxFluidInputs(maxFluidInputs).maxFluidOutputs(maxFluidOutputs).slotOverlays(slotOverlays)
-                .slotOverlaysSteam(slotOverlaysSteam).progressBarTexture(progressBarTexture)
-                .progressBarTextureSteam(progressBarTextureSteam).progressBarDirection(progressBarDirection)
-                .progressBarSize(progressBarSize).progressBarPos(progressBarPos).useProgressBar(useProgressBar)
-                .useSpecialSlot(useSpecialSlot).neiTransferRect(neiTransferRect).neiTransferRectId(neiTransferRectId)
-                .specialTextures(specialTextures).specialTexturesSteam(specialTexturesSteam).logo(logo)
-                .logoSize(logoSize).logoPos(logoPos).itemInputPositionsGetter(itemInputPositionsGetter)
-                .itemOutputPositionsGetter(itemOutputPositionsGetter)
-                .specialItemPositionGetter(specialItemPositionGetter)
-                .fluidInputPositionsGetter(fluidInputPositionsGetter)
-                .fluidOutputPositionsGetter(fluidOutputPositionsGetter).amperage(amperage);
+        return new BasicUIPropertiesBuilder().maxItemInputs(maxItemInputs)
+            .maxItemOutputs(maxItemOutputs)
+            .maxFluidInputs(maxFluidInputs)
+            .maxFluidOutputs(maxFluidOutputs)
+            .slotOverlays(slotOverlays)
+            .slotOverlaysSteam(slotOverlaysSteam)
+            .progressBarTexture(progressBarTexture)
+            .progressBarTextureSteam(progressBarTextureSteam)
+            .progressBarDirection(progressBarDirection)
+            .progressBarSize(progressBarSize)
+            .progressBarPos(progressBarPos)
+            .useProgressBar(useProgressBar)
+            .useSpecialSlot(useSpecialSlot)
+            .neiTransferRect(neiTransferRect)
+            .neiTransferRectId(neiTransferRectId)
+            .specialTextures(specialTextures)
+            .specialTexturesSteam(specialTexturesSteam)
+            .logo(logo)
+            .logoSize(logoSize)
+            .logoPos(logoPos)
+            .itemInputPositionsGetter(itemInputPositionsGetter)
+            .itemOutputPositionsGetter(itemOutputPositionsGetter)
+            .specialItemPositionGetter(specialItemPositionGetter)
+            .fluidInputPositionsGetter(fluidInputPositionsGetter)
+            .fluidOutputPositionsGetter(fluidOutputPositionsGetter)
+            .amperage(amperage);
     }
 
     /**
@@ -163,20 +177,18 @@ public final class BasicUIProperties {
     public final int amperage;
 
     BasicUIProperties(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs,
-            SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
-            @Nullable FallbackableUITexture progressBarTexture,
-            @Nullable FallbackableSteamTexture progressBarTextureSteam, ProgressBar.Direction progressBarDirection,
-            Size progressBarSize, Pos2d progressBarPos, boolean useProgressBar, boolean useSpecialSlot,
-            List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId,
-            List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
-            List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize,
-            Pos2d logoPos, IntFunction<List<Pos2d>> itemInputPositionsGetter,
-            IntFunction<List<Pos2d>> itemOutputPositionsGetter, Supplier<Pos2d> specialItemPositionGetter,
-            IntFunction<List<Pos2d>> fluidInputPositionsGetter, IntFunction<List<Pos2d>> fluidOutputPositionsGetter,
-            int amperage) {
+        SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
+        @Nullable FallbackableUITexture progressBarTexture, @Nullable FallbackableSteamTexture progressBarTextureSteam,
+        ProgressBar.Direction progressBarDirection, Size progressBarSize, Pos2d progressBarPos, boolean useProgressBar,
+        boolean useSpecialSlot, List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId,
+        List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
+        List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
+        IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
+        Supplier<Pos2d> specialItemPositionGetter, IntFunction<List<Pos2d>> fluidInputPositionsGetter,
+        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage) {
         if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
             throw new IllegalArgumentException(
-                    "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
+                "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
         }
         if (amperage < 1) {
             throw new IllegalArgumentException("Amperage cannot be lower than 1");

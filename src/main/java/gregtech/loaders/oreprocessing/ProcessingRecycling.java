@@ -23,21 +23,23 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if ((aMaterial != Materials.Empty) && (GTUtility.getFluidForFilledItem(aStack, true) == null)
-                && !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
-                && (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
+            && !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
+            && (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack);
             if (GTUtility.getContainerItem(aStack, true) == null) {
                 recipeBuilder.itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
             } else {
                 recipeBuilder.itemOutputs(
-                        GTUtility.getContainerItem(aStack, true),
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+                    GTUtility.getContainerItem(aStack, true),
+                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
             }
-            recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS).eut(2).addTo(cannerRecipes);
+            recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
+                .eut(2)
+                .addTo(cannerRecipes);
         }
     }
 }

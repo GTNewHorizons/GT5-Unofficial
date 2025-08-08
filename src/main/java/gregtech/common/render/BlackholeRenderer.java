@@ -51,9 +51,9 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
     private void init() {
         try {
             blackholeProgram = new ShaderProgram(
-                    GregTech.resourceDomain,
-                    "shaders/blackhole.vert.glsl",
-                    "shaders/blackhole.frag.glsl");
+                GregTech.resourceDomain,
+                "shaders/blackhole.vert.glsl",
+                "shaders/blackhole.frag.glsl");
 
             u_CameraPosition = blackholeProgram.getUniformLocation("u_CameraPosition");
 
@@ -67,7 +67,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         }
 
         blackholeModel = (IModelCustomExt) AdvancedModelLoader
-                .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
+            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
         blackholeTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.png");
 
         blackholeProgram.use();
@@ -77,9 +77,9 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         try {
             laserProgram = new ShaderProgram(
-                    GregTech.resourceDomain,
-                    "shaders/laser.vert.glsl",
-                    "shaders/laser.frag.glsl");
+                GregTech.resourceDomain,
+                "shaders/laser.vert.glsl",
+                "shaders/laser.frag.glsl");
             u_LaserCameraPosition = laserProgram.getUniformLocation("u_CameraPosition");
             u_LaserColor = laserProgram.getUniformLocation("u_Color");
             u_LaserModelMatrix = laserProgram.getUniformLocation("u_ModelMatrix");
@@ -137,10 +137,10 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GL20.glUniform3f(
-                u_CameraPosition,
-                ActiveRenderInfo.objectX - xLocal,
-                ActiveRenderInfo.objectY - yLocal,
-                ActiveRenderInfo.objectZ - zLocal);
+            u_CameraPosition,
+            ActiveRenderInfo.objectX - xLocal,
+            ActiveRenderInfo.objectY - yLocal,
+            ActiveRenderInfo.objectZ - zLocal);
 
         GL20.glUniform1f(u_Time, timer);
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
@@ -172,10 +172,10 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         modelMatrix.pushMatrix();
         modelMatrix.invert();
         Vector4f cameraPosition = new Vector4f(
-                ActiveRenderInfo.objectX,
-                ActiveRenderInfo.objectY,
-                ActiveRenderInfo.objectZ,
-                1);
+            ActiveRenderInfo.objectX,
+            ActiveRenderInfo.objectY,
+            ActiveRenderInfo.objectZ,
+            1);
         cameraPosition = modelMatrix.transform(cameraPosition);
         GL20.glUniform3f(u_LaserCameraPosition, cameraPosition.x, cameraPosition.y, cameraPosition.z);
         laserVBO.render();
@@ -207,10 +207,22 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             if (!initialized) return;
         }
         if (((TileEntityBlackhole) tile).getLaserRender()) {
-            renderLasers(blackhole, x, y, z, tile.getWorldObj().getTotalWorldTime() + timeSinceLastTick);
+            renderLasers(
+                blackhole,
+                x,
+                y,
+                z,
+                tile.getWorldObj()
+                    .getTotalWorldTime() + timeSinceLastTick);
         }
 
-        renderBlackHole(blackhole, x, y, z, tile.getWorldObj().getTotalWorldTime() + timeSinceLastTick);
+        renderBlackHole(
+            blackhole,
+            x,
+            y,
+            z,
+            tile.getWorldObj()
+                .getTotalWorldTime() + timeSinceLastTick);
 
     }
 

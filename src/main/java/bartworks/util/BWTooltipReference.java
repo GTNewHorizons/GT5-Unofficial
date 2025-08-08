@@ -32,11 +32,11 @@ public class BWTooltipReference {
     public static final String TT = TT_NO_RESET + GRAY;
 
     public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = () -> StatCollector.translateToLocal(
-            "tooltip.bw.1.name") + " " + BW;
+        "tooltip.bw.1.name") + " " + BW;
 
     public static final Function<String, String> MULTIBLOCK_ADDED_VIA_BARTWORKS = owner -> String
-            .format(StatCollector.translateToLocal("tooltip.bw.mb_via.name"), owner);
+        .format(StatCollector.translateToLocal("tooltip.bw.mb_via.name"), owner);
     public static final String MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = MULTIBLOCK_ADDED_VIA_BARTWORKS
-            .apply(GREEN + "bartimaeusnek");
+        .apply(GREEN + "bartimaeusnek");
 
 }

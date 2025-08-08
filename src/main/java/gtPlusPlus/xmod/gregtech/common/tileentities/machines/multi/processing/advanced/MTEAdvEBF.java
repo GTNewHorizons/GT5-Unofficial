@@ -94,51 +94,61 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Blast Furnace")
-                .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
-                .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
-                .addInfo("Constructed exactly the same as a normal EBF").addPollutionAmount(getPollutionPerSecond(null))
-                .addController("Bottom center").addCasingInfoMin(mCasingName, 6, false).addInputHatch("Any Casing", 1)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addOtherStructurePart(mHatchName, "Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Advanced Blast Furnace")
+            .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
+            .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
+            .addInfo("Constructed exactly the same as a normal EBF")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addController("Bottom center")
+            .addCasingInfoMin(mCasingName, 6, false)
+            .addInputHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(mHatchName, "Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public String[] getExtraInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
-                + EnumChatFormatting.RESET
-                + " K" };
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
+            + EnumChatFormatting.RESET
+            + " K" };
     }
 
     @Override
     public IStructureDefinition<MTEAdvEBF> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAdvEBF>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(MTEAdvEBF.class).adder(MTEAdvEBF::addPyrotheumHatch).hatchId(968)
-                                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
-                                            .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    buildHatchAdder(MTEAdvEBF.class).atLeast(
-                                            InputBus,
-                                            OutputBus,
-                                            Maintenance,
-                                            Energy,
-                                            Muffler,
-                                            InputHatch,
-                                            OutputHatch).casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
-                    .addElement('H', activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel))).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                            { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(MTEAdvEBF.class).adder(MTEAdvEBF::addPyrotheumHatch)
+                            .hatchId(968)
+                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(MTEAdvEBF.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
+                .addElement('H', activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel)))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -172,8 +182,8 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase
-                    && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 968) {
+            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
+                .getMetaTileID() == 968) {
                 return addToMachineListInternal(mPyrotheumHatches, aTileEntity, aBaseCasingIndex);
             }
         }
@@ -229,16 +239,20 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 return recipe.mSpecialValue <= getCoilLevel().getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
-                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setHeatOC(true).setHeatDiscount(true)
-                        .setRecipeHeat(recipe.mSpecialValue).setMachineHeat((int) getCoilLevel().getHeat());
+                return super.createOverclockCalculator(recipe).setHeatOC(true)
+                    .setHeatDiscount(true)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat((int) getCoilLevel().getHeat());
             }
-        }.setSpeedBonus(1F / 2.2F).setEuModifier(0.9F).setMaxParallelSupplier(this::getTrueParallel);
+        }.setSpeedBonus(1F / 2.2F)
+            .setEuModifier(0.9F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -251,13 +265,14 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Try dry Pyrotheum after all other logic
         if (this.mStartUpCheck < 0) {
-            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-                if (aTick % 20 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
+                .hasWorkJustBeenEnabled()) {
+                if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
+                    .hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(this.mPyrotheumHatches, 10)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                                ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidPyrotheum, 10)));
+                            ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidPyrotheum, 10)));
                     }
                 }
             }
@@ -273,9 +288,8 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        inputSeparation ? "interaction.separateBusses.enabled"
-                                : "interaction.separateBusses.disabled"));
+            new ChatComponentTranslation(
+                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
     }
 
     @Override

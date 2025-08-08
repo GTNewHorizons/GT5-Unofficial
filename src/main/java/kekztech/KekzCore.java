@@ -17,15 +17,15 @@ import kekztech.common.CommonProxy;
  * @author kekzdealer
  */
 @Mod(
-        modid = KekzCore.MODID,
-        name = KekzCore.NAME,
-        version = KekzCore.VERSION,
-        dependencies = "required-after:IC2;" + "required-after:gregtech;"
-                + "required-after:tectech;"
-                + "after:Thaumcraft;"
-                + "after:ThaumicTinkerer;"
-                + "after:bartworks;"
-                + "after:dreamcraft")
+    modid = KekzCore.MODID,
+    name = KekzCore.NAME,
+    version = KekzCore.VERSION,
+    dependencies = "required-after:IC2;" + "required-after:gregtech;"
+        + "required-after:tectech;"
+        + "after:Thaumcraft;"
+        + "after:ThaumicTinkerer;"
+        + "after:bartworks;"
+        + "after:dreamcraft")
 public class KekzCore {
 
     public static final String NAME = "KekzTech";

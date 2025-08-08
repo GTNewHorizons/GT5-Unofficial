@@ -36,7 +36,8 @@ public class PlayerSleepEventHandler {
     public void onPlayerWakeUp(PlayerWakeUpEvent event) {
         EntityPlayer player = event.entityPlayer;
         if (player == null || player.worldObj.isRemote) return;
-        if (player.getEntityWorld().getWorldTime() % 24000 != 0) {
+        if (player.getEntityWorld()
+            .getWorldTime() % 24000 != 0) {
             return;
         }
         final List<Integer> potionToRemove = new ArrayList<>();
@@ -66,7 +67,7 @@ public class PlayerSleepEventHandler {
         // Try give a buff
         Potion aPotionToApply = potionBuffs.get(MathUtils.randInt(0, potionBuffs.size() - 1));
         player.addPotionEffect(
-                new PotionEffect(aPotionToApply.id, MathUtils.randInt(60, 180) * 20, MathUtils.randInt(0, 2)));
+            new PotionEffect(aPotionToApply.id, MathUtils.randInt(60, 180) * 20, MathUtils.randInt(0, 2)));
         messagePlayer(player, "sleep.event.wellrested");
     }
 

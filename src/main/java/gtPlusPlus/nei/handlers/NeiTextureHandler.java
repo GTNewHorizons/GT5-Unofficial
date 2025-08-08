@@ -48,16 +48,16 @@ public final class NeiTextureHandler {
     public final double height;
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(
-            GTPlusPlus.ID + ":textures/gui/nei/widgets.png");
+        GTPlusPlus.ID + ":textures/gui/nei/widgets.png");
 
     public NeiTextureHandler(int x, int y, int width, int height) {
         this(
-                width,
-                height,
-                (float) (0.00390625D * (double) x),
-                (float) (0.00390625D * (double) (x + width)),
-                (float) (0.00390625D * (double) y),
-                (float) (0.00390625D * (double) (y + height)));
+            width,
+            height,
+            (float) (0.00390625D * (double) x),
+            (float) (0.00390625D * (double) (x + width)),
+            (float) (0.00390625D * (double) y),
+            (float) (0.00390625D * (double) (y + height)));
     }
 
     public NeiTextureHandler(double width, double height, double minU, double maxU, double minV, double maxV) {
@@ -74,7 +74,7 @@ public final class NeiTextureHandler {
     }
 
     public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw,
-            boolean flipY) {
+        boolean flipY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tessellator = Tessellator.instance;
         if (doDraw) {

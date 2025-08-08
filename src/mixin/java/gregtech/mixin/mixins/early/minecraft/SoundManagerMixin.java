@@ -22,12 +22,12 @@ import gregtech.client.SeekingOggCodec;
 public class SoundManagerMixin {
 
     @WrapOperation(
-            method = "playSound",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/audio/SoundPoolEntry;getSoundPoolEntryLocation()Lnet/minecraft/util/ResourceLocation;"))
+        method = "playSound",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/audio/SoundPoolEntry;getSoundPoolEntryLocation()Lnet/minecraft/util/ResourceLocation;"))
     ResourceLocation gt5u$wrap(SoundPoolEntry instance, Operation<ResourceLocation> original,
-            @Local(argsOnly = true) ISound sound) {
+        @Local(argsOnly = true) ISound sound) {
         ResourceLocation result = original.call(instance);
         if (sound instanceof ISeekingSound seekingSound) {
             result = SeekingOggCodec.seekResource(result, seekingSound.getSeekMillisecondOffset());

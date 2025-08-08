@@ -66,7 +66,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         this.mNether = mix.dimsEnabled.getOrDefault(OreMixBuilder.NETHER, false);
         this.mEnd = mix.dimsEnabled.getOrDefault(OreMixBuilder.THE_END, false);
         this.mEndAsteroid = mix.dimsEnabled
-                .getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
+            .getOrDefault(DimensionDef.EndAsteroids.modDimensionDef.getDimensionName(), false);
         this.twilightForest = mix.dimsEnabled.getOrDefault(OreMixBuilder.TWILIGHT_FOREST, false);
         this.mMinY = ((short) mix.minY);
         short mMaxY = ((short) mix.maxY);
@@ -112,7 +112,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
     @Override
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
@@ -147,10 +147,10 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
         if (wX >= eX) { // No overlap between orevein and this chunk exists in X
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.netherrack)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.end_stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockGranites)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.netherrack)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.end_stone)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -166,10 +166,10 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         int sZ = Math.min(sZVein, aChunkZ + 2 + 16);
         if (nZ >= sZ) { // No overlap between orevein and this chunk exists in Z
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.netherrack)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.end_stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockGranites)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.netherrack)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, Blocks.end_stone)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 7, tMinY, aChunkZ + 9, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -180,19 +180,19 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
         if (debugOrevein) {
             GTLog.out.print(
-                    "Trying Orevein:" + this.mWorldGenName
-                            + " Dimension="
-                            + tDimensionName
-                            + " mX="
-                            + aChunkX / 16
-                            + " mZ="
-                            + aChunkZ / 16
-                            + " oreseedX="
-                            + aSeedX / 16
-                            + " oreseedZ="
-                            + aSeedZ / 16
-                            + " cY="
-                            + tMinY);
+                "Trying Orevein:" + this.mWorldGenName
+                    + " Dimension="
+                    + tDimensionName
+                    + " mX="
+                    + aChunkX / 16
+                    + " mZ="
+                    + aChunkZ / 16
+                    + " oreseedX="
+                    + aSeedX / 16
+                    + " oreseedZ="
+                    + aSeedZ / 16
+                    + " cY="
+                    + tMinY);
         }
         double dx = aChunkX / 16 - aSeedX / 16;
         double dz = aChunkZ / 16 - aSeedZ / 16;
@@ -207,22 +207,21 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         int level = tMinY - 1; // Dunno why, but the first layer is actually played one below tMinY. Go figure.
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta > 0)) {
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
                         placeCount[1]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         if ((placeCount[1] + placeCount[3]) == 0) {
@@ -232,91 +231,87 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         // Layers 0 & 1 Secondary and Sporadic
         for (level = tMinY; level < (tMinY + 2); level++) {
             for (int tX = wX; tX < eX; tX++) {
-                int placeX = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                int placeX = Math
+                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(
-                            1,
-                            Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                        1,
+                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSecondaryMeta > 0)) {
+                        && (this.mSecondaryMeta > 0)) {
                         if (TileEntityOres
-                                .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
+                            .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
-                            && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
                 }
             }
         }
         // Layer 2 is Secondary, in-between, and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
+                    && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, isUnderdark)) {
                         placeCount[2]++;
                     }
                 } else if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mSecondaryMeta > 0)) {
-                            if (TileEntityOres
-                                    .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
-                                placeCount[1]++;
-                            }
-                        } else
+                    && (this.mSecondaryMeta > 0)) {
+                        if (TileEntityOres
+                            .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
+                            placeCount[1]++;
+                        }
+                    } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         level++; // Increment level to next layer
         // Layer 3 is In-between, and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
+                    && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, isUnderdark)) {
                         placeCount[2]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         level++; // Increment level to next layer
         // Layer 4 is In-between, Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
+                    && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, isUnderdark)) {
                         placeCount[2]++;
                     }
@@ -326,25 +321,24 @@ public class WorldgenGTOreLayer extends GTWorldgen {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
-                            && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         level++; // Increment level to next layer
         // Layer 5 is In-between, Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
+                    && (this.mBetweenMeta > 0)) { // Between are reduce by 1/2 to compensate
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, isUnderdark)) {
                         placeCount[2]++;
                     }
@@ -354,56 +348,54 @@ public class WorldgenGTOreLayer extends GTWorldgen {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
-                            && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         level++; // Increment level to next layer
         // Layer 6 is Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0)) {
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, isUnderdark)) {
                         placeCount[1]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         level++; // Increment level to next layer
         // Layer 7 is Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0)) {
                     if (TileEntityOres.setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, isUnderdark)) {
                         placeCount[1]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (TileEntityOres
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
+                            if (TileEntityOres
+                                .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                placeCount[3]++;
+                        }
             }
         }
         // Place small ores for the vein
@@ -435,25 +427,25 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         }
         if (debugOrevein) {
             GTLog.out.println(
-                    " wXVein" + wXVein
-                            + " eXVein"
-                            + eXVein
-                            + " nZVein"
-                            + nZVein
-                            + " sZVein"
-                            + sZVein
-                            + " locDen="
-                            + localDensity
-                            + " Den="
-                            + this.mDensity
-                            + " Sec="
-                            + placeCount[1]
-                            + " Spo="
-                            + placeCount[3]
-                            + " Bet="
-                            + placeCount[2]
-                            + " Pri="
-                            + placeCount[0]);
+                " wXVein" + wXVein
+                    + " eXVein"
+                    + eXVein
+                    + " nZVein"
+                    + nZVein
+                    + " sZVein"
+                    + sZVein
+                    + " locDen="
+                    + localDensity
+                    + " Den="
+                    + this.mDensity
+                    + " Sec="
+                    + placeCount[1]
+                    + " Spo="
+                    + placeCount[3]
+                    + " Bet="
+                    + placeCount[2]
+                    + " Pri="
+                    + placeCount[0]);
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;

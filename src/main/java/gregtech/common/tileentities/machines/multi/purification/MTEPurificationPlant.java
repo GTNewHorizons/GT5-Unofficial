@@ -80,7 +80,7 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
 
 public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPurificationPlant>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
@@ -110,34 +110,39 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
 
     private static final IStructureDefinition<MTEPurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEPurificationPlant>builder()
-            .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-            // Create an identical structure for survival autobuild, with water replaced with air
-            .addShape(
-                    STRUCTURE_PIECE_MAIN_SURVIVAL,
-                    Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
-                            .map(sa -> Arrays.stream(sa).map(s -> s.replaceAll("F", " ")).toArray(String[]::new))
-                            .toArray(String[][]::new))
-            // Superplasticizer-treated high strength concrete
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 3))
-            // Sterile Water Plant Casing
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 4))
-            // Reinforced Sterile Water Plant Casing
-            .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
-            // Tinted Industrial Glass
-            .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0)).addElement('F', ofAnyWater())
-            .addElement('G', ofFrame(Materials.Tungsten))
-            // Hatch space
-            .addElement(
-                    'H',
-                    ofChain(
-                            lazy(
-                                    t -> GTStructureUtility.<MTEPurificationPlant>buildHatchAdder()
-                                            .atLeastList(t.getAllowedHatches()).dot(1)
-                                            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4))
-                                            .build()),
-                            ofBlock(GregTechAPI.sBlockCasings9, 4)))
-            .build();
+        .<MTEPurificationPlant>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
+        // Create an identical structure for survival autobuild, with water replaced with air
+        .addShape(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
+                .map(
+                    sa -> Arrays.stream(sa)
+                        .map(s -> s.replaceAll("F", " "))
+                        .toArray(String[]::new))
+                .toArray(String[][]::new))
+        // Superplasticizer-treated high strength concrete
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 3))
+        // Sterile Water Plant Casing
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 4))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
+        // Tinted Industrial Glass
+        .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
+        .addElement('F', ofAnyWater())
+        .addElement('G', ofFrame(Materials.Tungsten))
+        // Hatch space
+        .addElement(
+            'H',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationPlant>buildHatchAdder()
+                        .atLeastList(t.getAllowedHatches())
+                        .dot(1)
+                        .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4))
+                        .build()),
+                ofBlock(GregTechAPI.sBlockCasings9, 4)))
+        .build();
 
     public MTEPurificationPlant(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -157,8 +162,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
             GTUtility.sendChatToPlayer(
-                    env.getActor(),
-                    EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
             return 0;
         }
         return built;
@@ -172,97 +177,106 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant, WPP").addInfo("Main controller block for the Water Purification Plant.")
-                .addInfo(
-                        "Freely place " + EnumChatFormatting.YELLOW
-                                + "Purification Units "
-                                + EnumChatFormatting.GRAY
-                                + "within "
-                                + EnumChatFormatting.RED
-                                + MAX_UNIT_DISTANCE
-                                + EnumChatFormatting.GRAY
-                                + " blocks along each axis.")
-                .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
-                .addInfo("Supplies power to linked purification units.").addTecTechHatchInfo().addSeparator()
-                .addInfo(
-                        "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                                + CYCLE_TIME_TICKS / SECONDS
-                                + EnumChatFormatting.GRAY
-                                + " seconds.")
-                .addInfo("All linked units follow this cycle.").addSeparator()
-                .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-                .addInfo("by using a portion of the target output as a secondary input.")
-                .addInfo(
-                        EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
-                                + "%"
-                                + EnumChatFormatting.GRAY
-                                + " of output yield will be consumed in exchange for an")
-                .addInfo(
-                        "additive " + EnumChatFormatting.RED
-                                + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
-                                + "%"
-                                + EnumChatFormatting.GRAY
-                                + " increase to success.")
-                .addInfo(
-                        "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
-                                + "50%"
-                                + EnumChatFormatting.GRAY
-                                + " chance")
-                .addInfo("to return water of the same quality as the input or lower.").addSeparator()
-                .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
-                .addInfo(
-                        "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
-                .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O.").addSeparator()
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "the water is systematically purified through a series of increasingly precise and complex")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "purification processes, and this multiblock is the heart of the operation.")
-                .beginStructureBlock(7, 9, 8, false).addController("Front center")
-                .addCasingInfoExactlyColored(
-                        "Superplasticizer-Treated High Strength Concrete",
-                        EnumChatFormatting.GRAY,
-                        56,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoRangeColored(
-                        "Sterile Water Plant Casing",
-                        EnumChatFormatting.GRAY,
-                        71,
-                        72,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Reinforced Sterile Water Plant Casing",
-                        EnumChatFormatting.GRAY,
-                        77,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Tungsten Frame Box",
-                        EnumChatFormatting.GRAY,
-                        30,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Tinted Industrial Glass",
-                        EnumChatFormatting.GRAY,
-                        6,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1).addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-                .addStructureInfo("Requires water to be placed in the tank.").toolTipFinisher(AuthorNotAPenguin);
+        tt.addMachineType("Purification Plant, WPP")
+            .addInfo("Main controller block for the Water Purification Plant.")
+            .addInfo(
+                "Freely place " + EnumChatFormatting.YELLOW
+                    + "Purification Units "
+                    + EnumChatFormatting.GRAY
+                    + "within "
+                    + EnumChatFormatting.RED
+                    + MAX_UNIT_DISTANCE
+                    + EnumChatFormatting.GRAY
+                    + " blocks along each axis.")
+            .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
+            .addInfo("Supplies power to linked purification units.")
+            .addTecTechHatchInfo()
+            .addSeparator()
+            .addInfo(
+                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
+                    + CYCLE_TIME_TICKS / SECONDS
+                    + EnumChatFormatting.GRAY
+                    + " seconds.")
+            .addInfo("All linked units follow this cycle.")
+            .addSeparator()
+            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
+            .addInfo("by using a portion of the target output as a secondary input.")
+            .addInfo(
+                EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " of output yield will be consumed in exchange for an")
+            .addInfo(
+                "additive " + EnumChatFormatting.RED
+                    + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " increase to success.")
+            .addInfo(
+                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
+                    + "50%"
+                    + EnumChatFormatting.GRAY
+                    + " chance")
+            .addInfo("to return water of the same quality as the input or lower.")
+            .addSeparator()
+            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
+            .addInfo(
+                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
+            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "the water is systematically purified through a series of increasingly precise and complex")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "purification processes, and this multiblock is the heart of the operation.")
+            .beginStructureBlock(7, 9, 8, false)
+            .addController("Front center")
+            .addCasingInfoExactlyColored(
+                "Superplasticizer-Treated High Strength Concrete",
+                EnumChatFormatting.GRAY,
+                56,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoRangeColored(
+                "Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                71,
+                72,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Reinforced Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                77,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Tungsten Frame Box",
+                EnumChatFormatting.GRAY,
+                30,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Tinted Industrial Glass",
+                EnumChatFormatting.GRAY,
+                6,
+                EnumChatFormatting.GOLD,
+                false)
+            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
+            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
+            .addStructureInfo("Requires water to be placed in the tank.")
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -273,23 +287,35 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean active, boolean redstoneLevel) {
+        int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) return new ITexture[] {
-                    Textures.BlockIcons
-                            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
+                Textures.BlockIcons
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] {
-                    Textures.BlockIcons
-                            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PURIFICATION_PLANT).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW).extFacing().glow()
-                            .build() };
+                Textures.BlockIcons
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
-        return new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
+        return new ITexture[] {
+            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
     }
 
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
@@ -330,7 +356,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             for (int i = 0; i < mLinkedUnits.size(); ++i) {
                 if (aTick % CYCLE_TIME_TICKS == i) {
                     LinkedPurificationUnit unit = mLinkedUnits.get(i);
-                    boolean structure = unit.metaTileEntity().checkStructure(true);
+                    boolean structure = unit.metaTileEntity()
+                        .checkStructure(true);
                     // If unit was active but deformed, set as inactive
                     if (unit.isActive() && !structure) {
                         unit.setActive(false);
@@ -349,10 +376,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Calculate efficiency based on maintenance issues
         if (mMaxProgresstime > 0) {
             mEfficiency = Math.max(
-                    0,
-                    Math.min(
-                            mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                0,
+                Math.min(
+                    mEfficiency + mEfficiencyIncrease,
+                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
         }
     }
 
@@ -382,7 +409,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     // onRunningTick already
                     for (LinkedPurificationUnit unit : mLinkedUnits) {
                         if (unit.isActive()) {
-                            unit.metaTileEntity().stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            unit.metaTileEntity()
+                                .stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                         }
                     }
                 }
@@ -441,7 +469,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         long euT = 0;
         for (LinkedPurificationUnit unit : mLinkedUnits) {
             if (unit.isActive()) {
-                euT += unit.metaTileEntity().getActualPowerUsage();
+                euT += unit.metaTileEntity()
+                    .getActualPowerUsage();
             }
         }
         return euT;
@@ -476,12 +505,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         dataStick.stackTagCompound = tag;
         dataStick.setStackDisplayName(
-                "Purification Plant Link Data Stick (" + aBaseMetaTileEntity.getXCoord()
-                        + ", "
-                        + aBaseMetaTileEntity.getYCoord()
-                        + ", "
-                        + aBaseMetaTileEntity.getZCoord()
-                        + ")");
+            "Purification Plant Link Data Stick (" + aBaseMetaTileEntity
+                .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
@@ -491,20 +516,22 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
-            String text = EnumChatFormatting.AQUA + unit.metaTileEntity().getLocalName() + ": ";
-            PurificationUnitStatus status = unit.metaTileEntity().status();
+            String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
+                .getLocalName() + ": ";
+            PurificationUnitStatus status = unit.metaTileEntity()
+                .status();
             switch (status) {
                 case ONLINE -> {
                     text = text + EnumChatFormatting.GREEN
-                            + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                            + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                            + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
@@ -516,55 +543,68 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public void onBlockDestroyed() {
         // When the controller is destroyed we want to notify all currently linked units
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
-            unit.metaTileEntity().unlinkController();
+            unit.metaTileEntity()
+                .unlinkController();
         }
         super.onBlockDestroyed();
     }
 
     private void drawTopText(DynamicPositionedColumn screenElements) {
-        screenElements.setSynced(false).setSpace(0);
+        screenElements.setSynced(false)
+            .setSpace(0);
 
-        screenElements.widget(
+        screenElements
+            .widget(
                 new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(EnumChatFormatting.RED).setEnabled(widget -> !mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+                    .setDefaultColor(EnumChatFormatting.RED)
+                    .setEnabled(widget -> !mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements
-                .widget(
-                        new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(EnumChatFormatting.BLACK)
-                                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID)).widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)));
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-                new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(EnumChatFormatting.GREEN)
-                        .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(EnumChatFormatting.GREEN)
+                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-                TextWidget.dynamicString(() -> getBaseMetaTileEntity().getLastShutDownReason().getDisplayString())
-                        .setSynced(false).setTextAlignment(Alignment.CenterLeft).setEnabled(
-                                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                                        && GTUtility.isStringValid(
-                                                getBaseMetaTileEntity().getLastShutDownReason().getDisplayString())
-                                        && getBaseMetaTileEntity().wasShutdown()))
-                .widget(
-                        new ShutDownReasonSyncer(
-                                () -> getBaseMetaTileEntity().getLastShutDownReason(),
-                                reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().wasShutdown(),
-                                wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
-        screenElements
-                .widget(
-                        TextWidget.dynamicString(this::generateCurrentProgress).setSynced(false)
-                                .setTextAlignment(new Alignment(-1, -1)).setSize(180, 12).setEnabled(
-                                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                                                || (mOutputItems != null && mOutputItems.length > 0)))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+            TextWidget.dynamicString(
+                () -> getBaseMetaTileEntity().getLastShutDownReason()
+                    .getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                        && GTUtility.isStringValid(
+                            getBaseMetaTileEntity().getLastShutDownReason()
+                                .getDisplayString())
+                        && getBaseMetaTileEntity().wasShutdown()))
+            .widget(
+                new ShutDownReasonSyncer(
+                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
+                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().wasShutdown(),
+                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+        screenElements.widget(
+            TextWidget.dynamicString(this::generateCurrentProgress)
+                .setSynced(false)
+                .setTextAlignment(new Alignment(-1, -1))
+                .setSize(180, 12)
+                .setEnabled(
+                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        || (mOutputItems != null && mOutputItems.length > 0)))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }
 
     private final int STATUS_WINDOW_ID = 10;
@@ -574,15 +614,20 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         final int windowHeight = 200;
         ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.widget(ButtonWidget.closeWindowButton(true).setPos(windowWidth - 15, 3));
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(windowWidth - 15, 3));
 
         // Title widget
         builder.widget(
-                new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
-                        .setTextAlignment(Alignment.Center).setPos(5, 10).setSize(windowWidth, 8));
+            new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
+                .setTextAlignment(Alignment.Center)
+                .setPos(5, 10)
+                .setSize(windowWidth, 8));
 
         int currentYPosition = 20;
-        Scrollable mainDisp = new Scrollable().setVerticalScroll().setHorizontalScroll();
+        Scrollable mainDisp = new Scrollable().setVerticalScroll()
+            .setHorizontalScroll();
 
         int rowHeight = 20;
         for (int i = 0; i < this.mLinkedUnits.size(); i++) {
@@ -590,18 +635,26 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         }
 
         builder.widget(
-                mainDisp.setPos(5, currentYPosition).setSize(windowWidth - 10, windowHeight - currentYPosition - 5));
+            mainDisp.setPos(5, currentYPosition)
+                .setSize(windowWidth - 10, windowHeight - currentYPosition - 5));
         return builder.build();
     }
 
     private Widget makeStatusWindowButton() {
         TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
-                translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4).setSize(40, 16)
-                        .setPos(10, 40);
+            translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
+                .setSize(40, 16)
+                .setPos(10, 40);
         widget.button()
-                .setOnClick((clickData, w) -> { if (!w.isClient()) w.getContext().openSyncedWindow(STATUS_WINDOW_ID); })
-                .setBackground(GTUITextures.BUTTON_STANDARD);
-        widget.text().setTextAlignment(Alignment.CenterLeft).setDefaultColor(EnumChatFormatting.BLACK);
+            .setOnClick(
+                (clickData, w) -> {
+                    if (!w.isClient()) w.getContext()
+                        .openSyncedWindow(STATUS_WINDOW_ID);
+                })
+            .setBackground(GTUITextures.BUTTON_STANDARD);
+        widget.text()
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.BLACK);
         return widget;
     }
 
@@ -609,12 +662,20 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Draw small machine controller icon
         DynamicPositionedRow row = new DynamicPositionedRow();
         ItemStackHandler machineIcon = new ItemStackHandler(1);
-        machineIcon.setStackInSlot(0, unit.metaTileEntity().getStackForm(1));
+        machineIcon.setStackInSlot(
+            0,
+            unit.metaTileEntity()
+                .getStackForm(1));
 
-        row.widget(SlotWidget.phantom(machineIcon, 0).disableInteraction().setPos(0, 0)).setSize(20, 20);
+        row.widget(
+            SlotWidget.phantom(machineIcon, 0)
+                .disableInteraction()
+                .setPos(0, 0))
+            .setSize(20, 20);
 
         // Display machine name and status
-        String name = unit.metaTileEntity().getLocalName();
+        String name = unit.metaTileEntity()
+            .getLocalName();
 
         String statusString = name + "  " + unit.getStatusString();
         int widgetWidth = 0;
@@ -624,11 +685,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         }
 
         row.widget(
-                TextWidget.dynamicString(() -> statusString).setSynced(false).setTextAlignment(Alignment.CenterLeft)
-                        .setPos(25, 0).fillParent())
-                .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
-                .widget(unit.metaTileEntity().makeSyncerWidgets())
-                .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive)).setSize(widgetWidth, 20);
+            TextWidget.dynamicString(() -> statusString)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(25, 0)
+                .fillParent())
+            .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
+            .widget(
+                unit.metaTileEntity()
+                    .makeSyncerWidgets())
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive))
+            .setSize(widgetWidth, 20);
 
         return row;
     }
@@ -641,33 +708,42 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Draw basic recipe info
         final DynamicPositionedColumn controlTextArea = new DynamicPositionedColumn();
         drawTopText(controlTextArea);
-        builder.widget(new Scrollable().setVerticalScroll().widget(controlTextArea).setPos(10, 7).setSize(182, 24));
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(controlTextArea)
+                .setPos(10, 7)
+                .setSize(182, 24));
 
         // Draw line separator
         builder.widget(
-                new Rectangle().setColor(Color.rgb(114, 120, 139)).asWidget()
-                        .setSizeProvider((screenSize, window, parent) -> new Size(window.getSize().width - 8, 2))
-                        .setPos(3, 32));
+            new Rectangle().setColor(Color.rgb(114, 120, 139))
+                .asWidget()
+                .setSizeProvider((screenSize, window, parent) -> new Size(window.getSize().width - 8, 2))
+                .setPos(3, 32));
 
         // Add status window button
         builder.widget(makeStatusWindowButton());
 
         //
         builder.widget(
-                new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
-                        .setOnClick((c, w) -> debugMode = !debugMode).setBackground(() -> {
-                            List<UITexture> ret = new ArrayList<>();
-                            if (debugMode) {
-                                ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                                ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-                            } else {
-                                ret.add(GTUITextures.BUTTON_STANDARD);
-                                ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-                            }
-                            return ret.toArray(new IDrawable[0]);
-                        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                        .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 112).setSize(16, 16));
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
+                .setOnClick((c, w) -> debugMode = !debugMode)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (debugMode) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+                    } else {
+                        ret.add(GTUITextures.BUTTON_STANDARD);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
+                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(174, 112)
+                .setSize(16, 16));
 
         builder.widget(createPowerSwitchButton(builder));
 

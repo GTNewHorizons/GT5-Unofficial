@@ -64,7 +64,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         // Variable required outside of loop for
         // multi-hatch scenarios.
         this.realOptFlow = getSpeedMultiplier()
-                * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
+            * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
@@ -74,7 +74,9 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
-            String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
+            String fluidName = aFluids.get(i)
+                .getFluid()
+                .getUnlocalizedName(aFluids.get(i));
             switch (fluidName) {
                 case "ic2.fluidSuperheatedSteam" -> {
                     if (!hasConsumedSteam) {
@@ -91,9 +93,12 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
                     if (!achievement) {
                         try {
                             GTMod.achievements.issueAchievement(
-                                    this.getBaseMetaTileEntity().getWorld()
-                                            .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
-                                    "efficientsteam");
+                                this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .getPlayerEntityByName(
+                                        this.getBaseMetaTileEntity()
+                                            .getOwnerName()),
+                                "efficientsteam");
                         } catch (Exception e) {}
                         achievement = true;
                     }
@@ -116,7 +121,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
                     steamFlowForNextSteam += denseFlow;
                 }
                 case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> depleteInput(
-                        new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                    new FluidStack(aFluids.get(i), aFluids.get(i).amount));
             }
         }
         if (totalFlow <= 0) return 0;
@@ -131,13 +136,12 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
             tEU = Math.max(
-                    1,
-                    MathUtils.safeInt(
-                            (long) (tEU
-                                    * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
+                1,
+                MathUtils.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         } else {
-            tEU = MathUtils.safeInt(
-                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
+            tEU = MathUtils
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
 
         return tEU;

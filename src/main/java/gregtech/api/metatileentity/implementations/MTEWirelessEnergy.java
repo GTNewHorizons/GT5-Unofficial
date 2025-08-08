@@ -21,7 +21,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
-            .valueOf(2 * V[mTier] * ticks_between_energy_addition);
+        .valueOf(2 * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;
@@ -37,8 +37,8 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     @Override
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                AuthorColen };
+            EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+            AuthorColen };
     }
 
     @Override

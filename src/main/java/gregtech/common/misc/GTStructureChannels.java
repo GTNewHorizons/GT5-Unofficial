@@ -75,9 +75,9 @@ public enum GTStructureChannels implements IStructureChannels {
     public static void register() {
         for (GTStructureChannels value : values()) {
             StructureLibAPI.registerChannelDescription(
-                    value.get(),
-                    Mods.ModIDs.GREG_TECH,
-                    "channels." + Mods.GregTech.ID + "." + value.get());
+                value.get(),
+                Mods.ModIDs.GREG_TECH,
+                "channels." + Mods.GregTech.ID + "." + value.get());
         }
     }
 }

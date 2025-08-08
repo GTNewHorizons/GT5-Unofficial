@@ -16,10 +16,10 @@ public class ItemNeutronReflector extends GTGenericItem implements IReactorCompo
 
     @Override
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
-            int pulseX, int pulseY, boolean heatrun) {
+        int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             ((IReactorComponent) pulsingStack.getItem())
-                    .acceptUraniumPulse(reactor, pulsingStack, yourStack, pulseX, pulseY, youX, youY, heatrun);
+                .acceptUraniumPulse(reactor, pulsingStack, yourStack, pulseX, pulseY, youX, youY, heatrun);
         }
         return true;
     }

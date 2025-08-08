@@ -45,10 +45,14 @@ public class ToolBranchCutter extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-            int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         if (aBlock.getMaterial() == Material.leaves) {
-            aEvent.dropChance = Math
-                    .min(1.0F, Math.max(aEvent.dropChance, (aStack.getItem().getHarvestLevel(aStack, "") + 1) * 0.2F));
+            aEvent.dropChance = Math.min(
+                1.0F,
+                Math.max(
+                    aEvent.dropChance,
+                    (aStack.getItem()
+                        .getHarvestLevel(aStack, "") + 1) * 0.2F));
             if (aBlock == Blocks.leaves) {
                 aDrops.clear();
                 if (((aMetaData & 0x3) == 0) && (aPlayer.worldObj.rand.nextInt(9) <= aFortune * 2)) {
@@ -70,7 +74,7 @@ public class ToolBranchCutter extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "grafter")
-                || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.leaves);
+            || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.leaves);
     }
 
     @Override
@@ -81,17 +85,17 @@ public class ToolBranchCutter extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has been trimmed by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has been trimmed by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

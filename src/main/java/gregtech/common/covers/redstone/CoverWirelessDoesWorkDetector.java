@@ -97,7 +97,7 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
 
                     if (tScale > 0 && mProgress.hasThingsToDo()) {
                         signal = inverted ? (15 - mProgress.getProgress() / tScale)
-                                : (mProgress.getProgress() / tScale);
+                            : (mProgress.getProgress() / tScale);
                     } else {
                         signal = inverted ? 15 : 0;
                     }

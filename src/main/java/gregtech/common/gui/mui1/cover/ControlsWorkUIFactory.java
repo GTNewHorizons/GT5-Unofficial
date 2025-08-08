@@ -23,49 +23,50 @@ public class ControlsWorkUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCover,
-                        (id, coverData) -> !getClickable(id, coverData.getVariable()),
-                        (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
-                        getUIBuildContext())
-                                .addToggleButton(
-                                        0,
-                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                                .setPos(spaceX * 0, spaceY * 0))
-                                .addToggleButton(
-                                        1,
-                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                                .setPos(spaceX * 0, spaceY * 1))
-                                .addToggleButton(
-                                        2,
-                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CROSS)
-                                                .setPos(spaceX * 0, spaceY * 2))
-                                .setPos(startX, startY))
-                .widget(
-                        new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                                coverData -> coverData.getVariable() > 2,
-                                (coverData, state) -> coverData
-                                        .setVariable(adjustCoverVariable(state, coverData.getVariable())),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 3)).setPos(startX, startY))
-                .widget(
-                        new TextWidget(GTUtility.trans("243", "Enable with Redstone"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                        new TextWidget(GTUtility.trans("244", "Disable with Redstone"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
-                        new TextWidget(GTUtility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                .widget(
-                        new TextWidget(GTUtility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+                    this::getCover,
+                    (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                    (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
+                    getUIBuildContext())
+                        .addToggleButton(
+                            0,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addToggleButton(
+                            1,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                .setPos(spaceX * 0, spaceY * 1))
+                        .addToggleButton(
+                            2,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CROSS)
+                                .setPos(spaceX * 0, spaceY * 2))
+                        .setPos(startX, startY))
+            .widget(
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                        coverData -> coverData.getVariable() > 2,
+                        (coverData, state) -> coverData
+                            .setVariable(adjustCoverVariable(state, coverData.getVariable())),
+                        widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                    .setPos(startX, startY))
+            .widget(
+                new TextWidget(GTUtility.trans("243", "Enable with Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+            .widget(
+                new TextWidget(GTUtility.trans("244", "Disable with Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+            .widget(
+                new TextWidget(GTUtility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+            .widget(
+                new TextWidget(GTUtility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
     }
 
     private int getNewCoverVariable(int id, int coverVariable) {

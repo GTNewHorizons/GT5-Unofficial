@@ -47,11 +47,11 @@ public class NEIPluginConfig implements IConfigureNEI {
         API.registerUsageHandler(pluginGT5UndergroundFluid);
 
         List<ItemList> catalysts = Arrays.asList(
-                ItemList.OilDrill1,
-                ItemList.OilDrill2,
-                ItemList.OilDrill3,
-                ItemList.OilDrill4,
-                ItemList.OilDrillInfinite);
+            ItemList.OilDrill1,
+            ItemList.OilDrill2,
+            ItemList.OilDrill3,
+            ItemList.OilDrill4,
+            ItemList.OilDrillInfinite);
         for (ItemList catalyst : catalysts) {
             API.addRecipeCatalyst(catalyst.get(1), pluginGT5UndergroundFluid);
         }
@@ -67,11 +67,13 @@ public class NEIPluginConfig implements IConfigureNEI {
         handlers.put("PluginGT5UndergroundFluid", ItemList.Electric_Pump_UEV.get(1));
         for (Map.Entry<String, ItemStack> handler : handlers.entrySet()) {
             event.registerHandlerInfo(
-                    new HandlerInfo.Builder(
-                            "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
-                            GTNEIOrePlugin.NAME,
-                            GTNEIOrePlugin.MODID).setHeight(160).setMaxRecipesPerPage(2)
-                                    .setDisplayStack(handler.getValue()).build());
+                new HandlerInfo.Builder(
+                    "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
+                    GTNEIOrePlugin.NAME,
+                    GTNEIOrePlugin.MODID).setHeight(160)
+                        .setMaxRecipesPerPage(2)
+                        .setDisplayStack(handler.getValue())
+                        .build());
         }
     }
 }

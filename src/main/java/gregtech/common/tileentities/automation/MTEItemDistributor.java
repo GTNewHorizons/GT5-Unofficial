@@ -30,46 +30,49 @@ public class MTEItemDistributor extends MTEBuffer {
 
     public MTEItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                28,
-                new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
-                        "Use Screwdriver to increase/decrease Items per Side" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            28,
+            new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
+                "Use Screwdriver to increase/decrease Items per Side" });
     }
 
     public MTEItemDistributor(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEItemDistributor(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
-                TextureFactory.builder().addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW).glow().build());
+            TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             return mTextures[0][colorIndex + 1];
         } else {
@@ -127,16 +130,16 @@ public class MTEItemDistributor extends MTEBuffer {
             }
         }
         movedItems = GTUtility.moveOneItemStack(
-                aBaseMetaTileEntity,
-                adjacentTileEntity,
-                currentSide,
-                currentSide.getOpposite(),
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) (itemsPerSide[currentSideOrdinal] - currentSideItemCount),
-                (byte) 1);
+            aBaseMetaTileEntity,
+            adjacentTileEntity,
+            currentSide,
+            currentSide.getOpposite(),
+            null,
+            false,
+            (byte) 64,
+            (byte) 1,
+            (byte) (itemsPerSide[currentSideOrdinal] - currentSideItemCount),
+            (byte) 1);
         currentSideItemCount += movedItems;
         if (currentSideItemCount >= itemsPerSide[currentSideOrdinal]) {
             currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
@@ -151,7 +154,7 @@ public class MTEItemDistributor extends MTEBuffer {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         final int ordinalSide = side.ordinal();
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;
@@ -186,8 +189,9 @@ public class MTEItemDistributor extends MTEBuffer {
         addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(87, true)).setPos(62, 60)
-                        .setSize(87, 22));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(87, true))
+                .setPos(62, 60)
+                .setSize(87, 22));
         addInventorySlots(builder);
     }
 }

@@ -158,22 +158,26 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER).extFacing()
-                .build();
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE).extFacing()
-                .build();
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                    aActive ? getFrontOverlayActive() : getFrontOverlay() };
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
@@ -184,40 +188,41 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamForgeHammer>builder()
 
-                    .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
-                    .addElement(
-                            'B',
-                            ofBlocksTiered(
-                                    MTESteamForgeHammer::getTierPipeCasing,
-                                    ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                                    -1,
-                                    (t, m) -> t.tierPipeCasing = m,
-                                    t -> t.tierPipeCasing))
-                    .addElement(
-                            'C',
-                            ofBlocksTiered(
-                                    MTESteamForgeHammer::getTierSimpleBlock,
-                                    ImmutableList
-                                            .of(Pair.of(Blocks.iron_block, 0), Pair.of(GregTechAPI.sBlockMetal6, 13)),
-                                    -1,
-                                    (t, m) -> t.tierSimpleBlock = m,
-                                    t -> t.tierSimpleBlock))
-                    .addElement(
-                            'A',
-                            ofChain(
-                                    buildSteamInput(MTESteamForgeHammer.class).casingIndex(10).dot(1).build(),
-                                    buildHatchAdder(MTESteamForgeHammer.class)
-                                            .atLeast(
-                                                    SteamHatchElement.InputBus_Steam,
-                                                    SteamHatchElement.OutputBus_Steam)
-                                            .casingIndex(10).dot(1).buildAndChain(),
-                                    ofBlocksTiered(
-                                            this::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing)))
-                    .build();
+                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
+                .addElement(
+                    'B',
+                    ofBlocksTiered(
+                        MTESteamForgeHammer::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
+                .addElement(
+                    'C',
+                    ofBlocksTiered(
+                        MTESteamForgeHammer::getTierSimpleBlock,
+                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(GregTechAPI.sBlockMetal6, 13)),
+                        -1,
+                        (t, m) -> t.tierSimpleBlock = m,
+                        t -> t.tierSimpleBlock))
+                .addElement(
+                    'A',
+                    ofChain(
+                        buildSteamInput(MTESteamForgeHammer.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(MTESteamForgeHammer.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            this::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
+                .build();
 
         }
         return STRUCTURE_DEFINITION;
@@ -232,15 +237,15 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return this.survivalBuildPiece(
-                STRUCTUR_PIECE_MAIN,
-                stackSize,
-                HORIZONTAL_OFF_SET,
-                VERTICAL_OFF_SET,
-                DEPTH_OFF_SET,
-                elementBudget,
-                env,
-                false,
-                true);
+            STRUCTUR_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -251,17 +256,17 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1
-                && tierSimpleBlock == 1
-                && tCountCasing >= 35
-                && checkHatches()) {
+            && tierSimpleBlock == 1
+            && tCountCasing >= 35
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
         if (tierPipeCasing == 2 && tierMachineCasing == 2
-                && tierSimpleBlock == 2
-                && tCountCasing >= 35
-                && checkHatches()) {
+            && tierSimpleBlock == 2
+            && tCountCasing >= 35
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -271,9 +276,9 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     private boolean checkHatches() {
         return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-                && !mSteamOutputs.isEmpty()
-                && mOutputHatches.isEmpty()
-                && mInputHatches.isEmpty();
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && mInputHatches.isEmpty();
     }
 
     @Override
@@ -308,10 +313,12 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe).setEUtDiscount(1.25 * tierMachine)
-                        .setDurationModifier(1.6 / tierMachine);
+                return OverclockCalculator.ofNoOverclock(recipe)
+                    .setEUtDiscount(1.25 * tierMachine)
+                    .setDurationModifier(1.6 / tierMachine);
             }
-        }.noRecipeCaching().setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -323,36 +330,36 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-                .addInfo("25% faster than using single block steam machines of the same pressure")
-                .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
-                .addInfo("Processes up to 8 items at once").addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-                .beginStructureBlock(6, 5, 5, false)
-                .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-                .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-                .addStructureInfo(
-                        EnumChatFormatting.WHITE + "Steam Input Hatch "
-                                + EnumChatFormatting.GOLD
-                                + "1"
-                                + EnumChatFormatting.GRAY
-                                + " Any casing")
-                .addStructureInfo("")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-                .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
-                .addStructureInfo("")
-                .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "2x"
-                                + EnumChatFormatting.GRAY
-                                + " Steel Block"
-                                + EnumChatFormatting.RED
-                                + " from GregTech")
-                .toolTipFinisher(GTValues.AuthorEvgenWarGold);
+            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
+            .addInfo("Processes up to 8 items at once")
+            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .beginStructureBlock(6, 5, 5, false)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
+            .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "2x"
+                    + EnumChatFormatting.GRAY
+                    + " Steel Block"
+                    + EnumChatFormatting.RED
+                    + " from GregTech")
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 
@@ -360,36 +367,36 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-                StatCollector.translateToLocalFormatted(
-                        "gtpp.infodata.multi.steam.tier",
-                        "" + EnumChatFormatting.YELLOW + tierMachine));
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.tier",
+                "" + EnumChatFormatting.YELLOW + tierMachine));
         info.add(
-                StatCollector.translateToLocalFormatted(
-                        "gtpp.infodata.multi.steam.parallel",
-                        "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.parallel",
+                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-                StatCollector.translateToLocal("GTPP.machines.tier") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + getSteamTierTextForWaila(tag)
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + getSteamTierTextForWaila(tag)
+                + EnumChatFormatting.RESET);
         currenttip.add(
-                StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
-                        + EnumChatFormatting.BLUE
-                        + tag.getInteger("parallel")
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+                + EnumChatFormatting.BLUE
+                + tag.getInteger("parallel")
+                + EnumChatFormatting.RESET);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());

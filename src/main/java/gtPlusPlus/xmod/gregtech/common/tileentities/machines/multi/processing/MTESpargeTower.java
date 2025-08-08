@@ -60,41 +60,44 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     static {
         IHatchElement<MTESpargeTower> layeredOutputHatch = OutputHatch
-                .withCount(MTESpargeTower::getCurrentLayerOutputHatchCount)
-                .withAdder(MTESpargeTower::addLayerOutputHatch);
+            .withCount(MTESpargeTower::getCurrentLayerOutputHatchCount)
+            .withAdder(MTESpargeTower::addLayerOutputHatch);
         STRUCTURE_DEFINITION = StructureDefinition.<MTESpargeTower>builder()
-                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" } }))
-                .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" } }))
-                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "lll", "lll", "lll" } }))
-                .addElement(
-                        'b',
-                        buildHatchAdder(MTESpargeTower.class).atLeast(Energy, InputHatch, InputBus, Maintenance)
-                                .disallowOnly(ForgeDirection.UP).casingIndex(getCasingIndex()).dot(1).buildAndChain(
-                                        onElementPass(
-                                                MTESpargeTower::onCasingFound,
-                                                ofBlock(ModBlocks.blockCasings5Misc, 4))))
-                .addElement(
-                        'l',
-                        ofChain(
-                                buildHatchAdder(MTESpargeTower.class).atLeast(layeredOutputHatch)
-                                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                        .casingIndex(getCasingIndex()).dot(2).build(),
-                                ofHatchAdder(MTESpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
-                                ofHatchAdder(MTESpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
-                                onElementPass(MTESpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))))
-                .addElement(
-                        'c',
-                        ofChain(
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(MTESpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(MTESpargeTower::addMaintenanceToMachineList, getCasingIndex(), 3)),
-                                onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
-                                isAir()))
-                .build();
+            .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" } }))
+            .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" } }))
+            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "lll", "lll", "lll" } }))
+            .addElement(
+                'b',
+                buildHatchAdder(MTESpargeTower.class).atLeast(Energy, InputHatch, InputBus, Maintenance)
+                    .disallowOnly(ForgeDirection.UP)
+                    .casingIndex(getCasingIndex())
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(MTESpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))))
+            .addElement(
+                'l',
+                ofChain(
+                    buildHatchAdder(MTESpargeTower.class).atLeast(layeredOutputHatch)
+                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                        .casingIndex(getCasingIndex())
+                        .dot(2)
+                        .build(),
+                    ofHatchAdder(MTESpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
+                    ofHatchAdder(MTESpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
+                    onElementPass(MTESpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))))
+            .addElement(
+                'c',
+                ofChain(
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(MTESpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(MTESpargeTower::addMaintenanceToMachineList, getCasingIndex(), 3)),
+                    onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
+                    isAir()))
+            .build();
     }
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
@@ -123,16 +126,18 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Sparge Tower")
-                .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-                .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-                .addInfo("Fluids are only put out at the correct height")
-                .addInfo("The correct height equals the slot number in the NEI recipe")
-                .beginStructureBlock(3, 8, 3, true).addController("Front bottom")
-                .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
-                .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2, 3)
-                .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
-                .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-                .toolTipFinisher();
+            .addInfo("Runs gases through depleted molten salts to extract precious fluids")
+            .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
+            .addInfo("Fluids are only put out at the correct height")
+            .addInfo("The correct height equals the slot number in the NEI recipe")
+            .beginStructureBlock(3, 8, 3, true)
+            .addController("Front bottom")
+            .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
+            .addEnergyHatch("Any casing", 1, 2)
+            .addMaintenanceHatch("Any casing", 1, 2, 3)
+            .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
+            .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -196,9 +201,9 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             private GTRecipe modifyRecipe(GTRecipe recipe) {
                 GTRecipe newRecipe = recipe.copy();
                 newRecipe.mFluidOutputs = randomizeByproducts(
-                        recipe.mFluidOutputs,
-                        recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0),
-                        recipe.mFluidInputs[0]);
+                    recipe.mFluidOutputs,
+                    recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0),
+                    recipe.mFluidInputs[0]);
                 return newRecipe;
             }
         };
@@ -213,12 +218,13 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1).size();
+            : mOutputHatchesByLayer.get(mHeight - 1)
+                .size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) {
+            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) {
             Logger.INFO("Bad Output Hatch");
             return false;
         }
@@ -226,7 +232,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             mOutputHatchesByLayer.add(new ArrayList<>());
         }
         tHatch.updateTexture(aBaseCasingIndex);
-        boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+        boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
+            .add(tHatch);
         Logger.INFO("Added Hatch: " + addedHatch);
         return addedHatch;
     }
@@ -263,7 +270,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
         // check each layer
         while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.get(mHeight - 1).isEmpty()) {
+            if (mOutputHatchesByLayer.get(mHeight - 1)
+                .isEmpty()) {
                 // layer without output hatch
                 Logger.INFO("Height: " + mHeight + " - Missing output on " + (mHeight - 1));
                 return false;
@@ -317,15 +325,15 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         }
         mHeight = tTotalHeight - 1;
         return survivalBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT,
-                stackSize,
-                1,
-                tTotalHeight - 1,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            STRUCTURE_PIECE_TOP_HINT,
+            stackSize,
+            1,
+            tTotalHeight - 1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -337,22 +345,22 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aLayerIndex = 0;
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
+            aPlayer,
+            "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
         for (List<MTEHatchOutput> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
             for (MTEHatchOutput hatch : layer) {
                 if (hatch.mFluid != null) {
                     GTUtility.sendChatToPlayer(
-                            aPlayer,
-                            "Clearing " + hatch.mFluid.amount
-                                    + "L of "
-                                    + hatch.mFluid.getLocalizedName()
-                                    + " from hatch "
-                                    + aHatchIndex
-                                    + " on layer "
-                                    + aLayerIndex
-                                    + ".");
+                        aPlayer,
+                        "Clearing " + hatch.mFluid.amount
+                            + "L of "
+                            + hatch.mFluid.getLocalizedName()
+                            + " from hatch "
+                            + aHatchIndex
+                            + " on layer "
+                            + aLayerIndex
+                            + ".");
                     hatch.mFluid = null;
                 }
                 aHatchIndex++;

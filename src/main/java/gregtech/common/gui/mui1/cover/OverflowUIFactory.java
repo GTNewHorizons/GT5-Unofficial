@@ -49,82 +49,83 @@ public final class OverflowUIFactory extends CoverUIFactory<CoverOverflowValve> 
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(
+        builder
+            .widget(
                 new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_overflow_point"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(xOP, yOP))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_liter"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(xOP + width + 3, yOP + 11))
-                .widget(
-                        new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) coverData.getOverflowPoint(),
-                                (coverData, state) -> coverData.setOverflowPoint(state.intValue()),
-                                widget -> ifCoverValid(
-                                        c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
-                                                .setScrollValues(1000, 144, 100000).setFocusOnGuiOpen(true)
-                                                .setPos(xOP, yOP + 10).setSize(width, height))))
-                .widget(
-                        new TextWidget(
-                                StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_voiding_rate"))
-                                        .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(xVR + 6, yVR))
-                .widget(
-                        new TextWidget(
-                                StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_l_per_update"))
-                                        .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(xVR + width + 3, yVR + 11))
-                .widget(
-                        new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) coverData.getVoidingRate(),
-                                (coverData, state) -> coverData.setVoidingRate(state.intValue()),
-                                widget -> ifCoverValid(
-                                        c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
-                                                .setScrollValues(1000, 144, 100000).setFocusOnGuiOpen(true)
-                                                .setPos(xVR, yVR + 10).setSize(width, height))))
-                .widget(
-                        new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                this::getCover,
-                                this::getClickable,
-                                this::updateData,
-                                getUIBuildContext()).addToggleButton(
-                                        0,
-                                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                                .addTooltip(
-                                                        StatCollector.translateToLocal(
-                                                                "GTPP.gui.text"
-                                                                        + ".cover_overflow_valve_allow_fluid_input"))
-                                                .setPos(xFI + 18, yFI))
-                                        .addToggleButton(
-                                                1,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget
-                                                        .setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                                        .addTooltip(
-                                                                StatCollector.translateToLocal(
-                                                                        "GTPP.gui.text"
-                                                                                + ".cover_overflow_valve_block_fluid_input"))
-                                                        .setPos(xFI, yFI))
-                                        .addToggleButton(
-                                                2,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget
-                                                        .setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
-                                                        .addTooltip(
-                                                                StatCollector.translateToLocal(
-                                                                        "GTPP.gui.text"
-                                                                                + ".cover_overflow_valve_allow_fluid_output"))
-                                                        .setPos(xFO, yFO))
-                                        .addToggleButton(
-                                                3,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget
-                                                        .setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
-                                                        .addTooltip(
-                                                                StatCollector.translateToLocal(
-                                                                        "GTPP.gui.text"
-                                                                                + ".cover_overflow_valve_block_fluid_output"))
-                                                        .setPos(xFO + 18, yFO)));
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(xOP, yOP))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_liter"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(xOP + width + 3, yOP + 11))
+            .widget(
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
+                    new CoverDataFollowerNumericWidget<>(),
+                    coverData -> (double) coverData.getOverflowPoint(),
+                    (coverData, state) -> coverData.setOverflowPoint(state.intValue()),
+                    widget -> ifCoverValid(
+                        c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xOP, yOP + 10)
+                            .setSize(width, height))))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_voiding_rate"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(xVR + 6, yVR))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_l_per_update"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(xVR + width + 3, yVR + 11))
+            .widget(
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
+                    new CoverDataFollowerNumericWidget<>(),
+                    coverData -> (double) coverData.getVoidingRate(),
+                    (coverData, state) -> coverData.setVoidingRate(state.intValue()),
+                    widget -> ifCoverValid(
+                        c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xVR, yVR + 10)
+                            .setSize(width, height))))
+            .widget(
+                new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                    this::getCover,
+                    this::getClickable,
+                    this::updateData,
+                    getUIBuildContext())
+                        .addToggleButton(
+                            0,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                .addTooltip(
+                                    StatCollector
+                                        .translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_allow_fluid_input"))
+                                .setPos(xFI + 18, yFI))
+                        .addToggleButton(
+                            1,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                .addTooltip(
+                                    StatCollector
+                                        .translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_block_fluid_input"))
+                                .setPos(xFI, yFI))
+                        .addToggleButton(
+                            2,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
+                                .addTooltip(
+                                    StatCollector
+                                        .translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_allow_fluid_output"))
+                                .setPos(xFO, yFO))
+                        .addToggleButton(
+                            3,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
+                                .addTooltip(
+                                    StatCollector
+                                        .translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_block_fluid_output"))
+                                .setPos(xFO + 18, yFO)));
     }
 
     private boolean getClickable(int id, CoverOverflowValve coverData) {

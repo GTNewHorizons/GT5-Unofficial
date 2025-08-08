@@ -43,7 +43,7 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTUtility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1))
-                || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1));
+            || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1));
     }
 
     @Override
@@ -54,6 +54,6 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     @Override
     protected FluidSlotWidget createFluidSlot() {
         return super.createFluidSlot()
-                .setFilter(f -> (f == Materials.LiquidAir.mFluid || f == Materials.NetherSemiFluid.mFluid));
+            .setFilter(f -> (f == Materials.LiquidAir.mFluid || f == Materials.NetherSemiFluid.mFluid));
     }
 }

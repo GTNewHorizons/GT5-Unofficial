@@ -18,10 +18,12 @@ public final class CheckRecipeResultRegistry {
     public static void register(CheckRecipeResult sample) {
         if (isRegistered(sample.getID())) {
             throw new IllegalStateException(
-                    String.format(
-                            "ID %s is already registered for %s",
-                            sample.getID(),
-                            registry.get(sample.getID()).getClass().getCanonicalName()));
+                String.format(
+                    "ID %s is already registered for %s",
+                    sample.getID(),
+                    registry.get(sample.getID())
+                        .getClass()
+                        .getCanonicalName()));
         }
         registry.put(sample.getID(), sample);
     }
@@ -105,7 +107,7 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult MISSING_MINING_PIPE = SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
     /** Concrete backfiller is out of concrete */
     public static final CheckRecipeResult BACKFILLER_NO_CONCRETE = SimpleCheckRecipeResult
-            .ofFailure("backfiller_no_concrete");
+        .ofFailure("backfiller_no_concrete");
 
     /**
      * Black Hole Compressor does not have an active black hole

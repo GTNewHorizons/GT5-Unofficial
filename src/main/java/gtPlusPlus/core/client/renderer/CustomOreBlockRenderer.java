@@ -68,7 +68,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
-            RenderBlocks aRenderer) {
+        RenderBlocks aRenderer) {
         if (!(aBlock instanceof ITexturedBlock textures)) {
             return false;
         }

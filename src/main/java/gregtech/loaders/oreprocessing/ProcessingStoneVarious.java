@@ -19,7 +19,7 @@ public class ProcessingStoneVarious implements gregtech.api.interfaces.IOreRecip
 
     @Override
     public void registerOre(OrePrefixes aPrefix, gregtech.api.enums.Materials aMaterial, String aOreDictName,
-            String aModName, ItemStack aStack) {
+        String aModName, ItemStack aStack) {
         // no recipes currently.
     }
 }

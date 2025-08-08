@@ -53,7 +53,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialForgeHammer>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private int mAnvilTier = 0;
@@ -80,8 +80,9 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
-                .addInfo("T1 - Vanilla Anvil");
+        tt.addMachineType(getMachineType())
+            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
+            .addInfo("T1 - Vanilla Anvil");
         if (Railcraft.isModLoaded()) {
             tt.addInfo("T2 - Steel Anvil");
         }
@@ -93,15 +94,22 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
             tt.addInfo("T4 - Void Metal Anvil");
         }
 
-        tt.addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Forge Casing", 6, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
-                        "In the center of 3x3x3 structure",
-                        2)
-                .toolTipFinisher();
+        tt.addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Forge Casing", 6, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
+                "In the center of 3x3x3 structure",
+                2)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -126,33 +134,36 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
             }
 
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialForgeHammer>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "CAC", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialForgeHammer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(TAE.getIndexFromPage(1, 11)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 6))))
-                    .addElement(
-                            'A',
-                            ofBlocksTiered(
-                                    anvilTierConverter(anvilTiers),
-                                    getAllAnvilTiers(anvilTiers),
-                                    0,
-                                    MTEIndustrialForgeHammer::setAnvilTier,
-                                    MTEIndustrialForgeHammer::getAnvilTier))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "CAC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialForgeHammer.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(TAE.getIndexFromPage(1, 11))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 6))))
+                .addElement(
+                    'A',
+                    ofBlocksTiered(
+                        anvilTierConverter(anvilTiers),
+                        getAllAnvilTiers(anvilTiers),
+                        0,
+                        MTEIndustrialForgeHammer::setAnvilTier,
+                        MTEIndustrialForgeHammer::getAnvilTier))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     private static List<Pair<Block, Integer>> getAllAnvilTiers(Map<Block, Integer> anvilTiers) {
-        return anvilTiers.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry<Block, Integer>::getValue))
-                .map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList());
+        return anvilTiers.entrySet()
+            .stream()
+            .sorted(Comparator.comparingInt(Map.Entry<Block, Integer>::getValue))
+            .map(e -> Pair.of(e.getKey(), e.getValue()))
+            .collect(Collectors.toList());
     }
 
     private static ITierConverter<Integer> anvilTierConverter(Map<Block, Integer> anvilTiers) {
@@ -213,8 +224,9 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching().setSpeedBonus(1 / 2F)
-                .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1 / 2F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

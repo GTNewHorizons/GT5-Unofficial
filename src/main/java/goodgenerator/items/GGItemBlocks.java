@@ -76,7 +76,8 @@ public class GGItemBlocks extends ItemBlock {
             tooltip.add(translateToLocal("gt.casing.not-tile-entity"));
         }
 
-        if (Block.getBlockFromItem(stack.getItem()).equals(yottaFluidTankCell)) {
+        if (Block.getBlockFromItem(stack.getItem())
+            .equals(yottaFluidTankCell)) {
             StringBuilder cap = new StringBuilder();
             cap.append(" 1000000");
             for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
@@ -85,7 +86,8 @@ public class GGItemBlocks extends ItemBlock {
             tooltip.add(translateToLocal("YOTTankCell.tooltip.1"));
         }
 
-        if (Block.getBlockFromItem(stack.getItem()).equals(essentiaCell)) {
+        if (Block.getBlockFromItem(stack.getItem())
+            .equals(essentiaCell)) {
             tooltip.add(translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
         }
     }

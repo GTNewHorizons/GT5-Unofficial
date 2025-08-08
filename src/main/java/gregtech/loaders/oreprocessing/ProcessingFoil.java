@@ -22,7 +22,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-            ItemStack stack) {
+        ItemStack stack) {
         // Blacklist materials which are handled by Werkstoff loader
         if (material == Materials.Calcium || material == Materials.Magnesia) return;
 
@@ -32,17 +32,17 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     private void registerBenderRecipe(Materials material) {
         GTValues.RA.stdBuilder()
-                .itemInputs(
-                        GTUtility.copyAmount(1, GTOreDictUnificator.get(OrePrefixes.plate, material, 4L)),
-                        GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
-                .duration((int) Math.max(material.getMass(), 1L)).eut(calculateRecipeEU(material, 24))
-                .addTo(benderRecipes);
+            .itemInputs(
+                GTUtility.copyAmount(1, GTOreDictUnificator.get(OrePrefixes.plate, material, 4L)),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
+            .duration((int) Math.max(material.getMass(), 1L))
+            .eut(calculateRecipeEU(material, 24))
+            .addTo(benderRecipes);
     }
 
     private void registerCover(ItemStack stack, Materials material) {
-        CoverRegistry.registerDecorativeCover(
-                stack,
-                TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false));
+        CoverRegistry
+            .registerDecorativeCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false));
     }
 }

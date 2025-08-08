@@ -16,9 +16,12 @@ public class LaserEngraver implements Runnable {
     @Override
     public void run() {
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(Items.emerald), GTUtility.getIntegratedCircuit(17))
-                .itemOutputs(BioItemList.getPlasmidCell(null)).duration(5 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(laserEngraverRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.emerald), GTUtility.getIntegratedCircuit(17))
+            .itemOutputs(BioItemList.getPlasmidCell(null))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(laserEngraverRecipes);
 
     }
 }

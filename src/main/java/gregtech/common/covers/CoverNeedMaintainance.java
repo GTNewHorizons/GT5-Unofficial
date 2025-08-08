@@ -34,8 +34,8 @@ public class CoverNeedMaintainance extends CoverLegacyData {
 
     public static boolean isRotor(ItemStack rotor) {
         return (rotor != null && rotor.getItem() instanceof MetaGeneratedTool
-                && rotor.getItemDamage() >= 170
-                && rotor.getItemDamage() <= 176);
+            && rotor.getItemDamage() >= 170
+            && rotor.getItemDamage() <= 176);
     }
 
     public MaintenanceAlertCondition getMaintenanceAlertCondition() {
@@ -87,9 +87,9 @@ public class CoverNeedMaintainance extends CoverLegacyData {
                             needsRepair = (tCur >= tMax * 8 / 10);
                         } else {
                             long mExpectedDamage = Math.round(
-                                    Math.min(
-                                            multi.mEUt / multi.damageFactorLow,
-                                            Math.pow(multi.mEUt, multi.damageFactorHigh)));
+                                Math.min(
+                                    multi.mEUt / multi.damageFactorLow,
+                                    Math.pow(multi.mEUt, multi.damageFactorHigh)));
                             needsRepair = tCur + mExpectedDamage * 2 >= tMax;
                         }
                     } else {
@@ -114,18 +114,18 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         }
         switch (this.coverData) {
             case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> sendChatToPlayer(
-                    aPlayer,
-                    getMaintenanceIssuesCount(this.coverData / 2 + 1, this.coverData % 2 != 0));
+                aPlayer,
+                getMaintenanceIssuesCount(this.coverData / 2 + 1, this.coverData % 2 != 0));
             case 10 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_lo"));
             case 11 -> sendChatToPlayer(
-                    aPlayer,
-                    translateToLocal("gt.interact.desc.need_maint_rotor_lo")
-                            + translateToLocal("gt.interact.desc.inverted_b"));
+                aPlayer,
+                translateToLocal("gt.interact.desc.need_maint_rotor_lo")
+                    + translateToLocal("gt.interact.desc.inverted_b"));
             case 12 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_hi"));
             case 13 -> sendChatToPlayer(
-                    aPlayer,
-                    translateToLocal("gt.interact.desc.need_maint_rotor_hi")
-                            + translateToLocal("gt.interact.desc.inverted_b"));
+                aPlayer,
+                translateToLocal("gt.interact.desc.need_maint_rotor_hi")
+                    + translateToLocal("gt.interact.desc.inverted_b"));
         }
     }
 

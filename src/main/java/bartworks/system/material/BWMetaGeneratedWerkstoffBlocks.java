@@ -30,11 +30,11 @@ import gregtech.api.util.GTLanguageManager;
 public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
 
     public BWMetaGeneratedWerkstoffBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity,
-            String blockName) {
+        String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + OrePrefixes.block,
-                OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
+            "bw.blocktype." + OrePrefixes.block,
+            OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
     }
 
     @Override
@@ -58,7 +58,8 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs tab, List<ItemStack> aList) {
         Werkstoff.werkstoffHashSet.stream()
-                .filter(tMaterial -> tMaterial.hasItemType(OrePrefixes.gem) || tMaterial.hasItemType(OrePrefixes.ingot))
-                .map(tMaterial -> new ItemStack(aItem, 1, tMaterial.getmID())).forEach(aList::add);
+            .filter(tMaterial -> tMaterial.hasItemType(OrePrefixes.gem) || tMaterial.hasItemType(OrePrefixes.ingot))
+            .map(tMaterial -> new ItemStack(aItem, 1, tMaterial.getmID()))
+            .forEach(aList::add);
     }
 }

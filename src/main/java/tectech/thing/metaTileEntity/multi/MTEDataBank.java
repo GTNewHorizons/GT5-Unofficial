@@ -66,42 +66,42 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     // region structure
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
-                                                                                  // casing
-            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
-                                                                                  // Hatches or
-            // computer casing
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
+                                                                              // casing
+        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
+                                                                              // Hatches or
+        // computer casing
     };
 
     private static final IStructureDefinition<MTEDataBank> STRUCTURE_DEFINITION = IStructureDefinition
-            .<MTEDataBank>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] { { "BCCCB", "BDDDB", "BDDDB" }, { "BC~CB", "BAAAB", "BDDDB" },
-                                    { "BCCCB", "BDDDB", "BDDDB" } }))
-            .addElement('A', ofBlock(TTCasingsContainer.sBlockCasingsTT, 1))
-            .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 2))
-            .addElement(
-                    'C',
-                    buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
-                            .casingIndex(BlockGTCasingsTT.textureOffset).dot(1)
-                            .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
-            .addElement(
-                    'D',
-                    buildHatchAdder(MTEDataBank.class)
-                            .atLeast(
-                                    DataBankHatches.OutboundConnector,
-                                    DataBankHatches.InboundConnector,
-                                    DataBankHatches.WirelessOutboundConnector)
-                            .casingIndex(BlockGTCasingsTT.textureOffset + 1).dot(2).buildAndChain(
-                                    DataBankHatches.DataStick.newAnyOrCasing(
-                                            BlockGTCasingsTT.textureOffset + 1,
-                                            2,
-                                            TTCasingsContainer.sBlockCasingsTT,
-                                            1)))
-            .build();
+        .<MTEDataBank>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "BCCCB", "BDDDB", "BDDDB" }, { "BC~CB", "BAAAB", "BDDDB" },
+                    { "BCCCB", "BDDDB", "BDDDB" } }))
+        .addElement('A', ofBlock(TTCasingsContainer.sBlockCasingsTT, 1))
+        .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 2))
+        .addElement(
+            'C',
+            buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
+                .casingIndex(BlockGTCasingsTT.textureOffset)
+                .dot(1)
+                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
+        .addElement(
+            'D',
+            buildHatchAdder(MTEDataBank.class)
+                .atLeast(
+                    DataBankHatches.OutboundConnector,
+                    DataBankHatches.InboundConnector,
+                    DataBankHatches.WirelessOutboundConnector)
+                .casingIndex(BlockGTCasingsTT.textureOffset + 1)
+                .dot(2)
+                .buildAndChain(
+                    DataBankHatches.DataStick
+                        .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 1, 2, TTCasingsContainer.sBlockCasingsTT, 1)))
+        .build();
     // endregion
 
     public MTEDataBank(int aID, String aName, String aNameRegional) {
@@ -122,35 +122,38 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
                                                                                               // Bank, DB
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                               // the Data Bank
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                               // Assembling Lines
-                // with more Data Sticks
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                               // Assembling Lines
-                                                                                               // access to
-                                                                                               // the same Data
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
-                                                                                               // toggle
-                                                                                               // wireless mode
-                .addTecTechHatchInfo().beginStructureBlock(5, 3, 3, false).addController("Front center")
-                .addCasingInfoExactly("Computer Heat Vent", 18, false)
-                .addCasingInfoExactly("High Power Casing", 7, false).addCasingInfoMin("Computer Casing", 3, false)
-                .addOtherStructurePart(
-                        translateToLocal("tt.keyword.Structure.DataAccessHatch"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        2) // Data Access Hatch: Any Computer Casing
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        2) // Data Bank Master Connector: Any Computer Casing
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                                // High Power Casing
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
-                                                                                                     // Hatch: Any High
-                                                                                                     // Power Casing
-                .toolTipFinisher();
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
+                                                                                           // the Data Bank
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
+                                                                                           // Assembling Lines
+            // with more Data Sticks
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
+                                                                                           // Assembling Lines
+                                                                                           // access to
+                                                                                           // the same Data
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
+                                                                                           // toggle
+                                                                                           // wireless mode
+            .addTecTechHatchInfo()
+            .beginStructureBlock(5, 3, 3, false)
+            .addController("Front center")
+            .addCasingInfoExactly("Computer Heat Vent", 18, false)
+            .addCasingInfoExactly("High Power Casing", 7, false)
+            .addCasingInfoMin("Computer Casing", 3, false)
+            .addOtherStructurePart(
+                translateToLocal("tt.keyword.Structure.DataAccessHatch"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
+                2) // Data Access Hatch: Any Computer Casing
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
+                2) // Data Bank Master Connector: Any Computer Casing
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
+                                                                                            // High Power Casing
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
+                                                                                                 // Hatch: Any High
+                                                                                                 // Power Casing
+            .toolTipFinisher();
         return tt;
     }
 
@@ -168,8 +171,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     protected CheckRecipeResult checkProcessing_EM() {
         if (!eDataAccessHatches.isEmpty() && (!eStacksDataOutputs.isEmpty() || !eWirelessStacksDataOutputs.isEmpty())) {
             mEUt = -(int) V[slave ? 6 : 4];
-            eAmpereFlow = 1 + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size())
-                    * eDataAccessHatches.size();
+            eAmpereFlow = 1
+                + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");
@@ -210,11 +213,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1],
-                    new TTRenderedExtendedFacingTexture(
-                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
+                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1] };
     }
@@ -245,7 +247,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
-                && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
+            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDataAccessHatches.add(hatch);
         }
@@ -261,7 +263,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {

@@ -68,29 +68,27 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     private static final String STRUCTURE_PIECE_LAST = "last";
     private static final String STRUCTURE_PIECE_LATER_HINT = "laterHint";
     private static final IStructureDefinition<MTEResearchCompleter> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEResearchCompleter>builder()
-            .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] { { "ccc" }, { "g~g" }, { "ccc" }, }))
-            .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][] { { "c c" }, { "gxg" }, { "c c" }, }))
-            .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][] { { "c" }, { "g" }, { "c" }, }))
-            .addShape(STRUCTURE_PIECE_LATER_HINT, transpose(new String[][] { { "c c" }, { "g g" }, { "c c" }, }))
-            .addElement(
-                    'c',
-                    ofChain( // Magical machine casing or hatch
-                            ofHatchAdder(MTEResearchCompleter::addEnergyInputToMachineList, CASING_INDEX, 1),
-                            ofHatchAdder(MTEResearchCompleter::addInputToMachineList, CASING_INDEX, 1),
-                            ofHatchAdder(MTEResearchCompleter::addOutputToMachineList, CASING_INDEX, 1),
-                            ofHatchAdder(MTEResearchCompleter::addMaintenanceToMachineList, CASING_INDEX, 1),
-                            onElementPass(MTEResearchCompleter::onCasingFound, ofBlock(GregTechAPI.sBlockCasings8, 8))))
-            .addElement(
-                    'x',
-                    ofChain( // Check for the end but otherwise treat as a skipped spot
-                            onElementPass(
-                                    MTEResearchCompleter::onEndFound,
-                                    ofBlock(ConfigBlocks.blockCosmeticOpaque, 2)),
-                            isAir(), // Forgive me
-                            notAir()))
-            .addElement('g', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2)) // Warded glass
-            .build();
+        .<MTEResearchCompleter>builder()
+        .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] { { "ccc" }, { "g~g" }, { "ccc" }, }))
+        .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][] { { "c c" }, { "gxg" }, { "c c" }, }))
+        .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][] { { "c" }, { "g" }, { "c" }, }))
+        .addShape(STRUCTURE_PIECE_LATER_HINT, transpose(new String[][] { { "c c" }, { "g g" }, { "c c" }, }))
+        .addElement(
+            'c',
+            ofChain( // Magical machine casing or hatch
+                ofHatchAdder(MTEResearchCompleter::addEnergyInputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEResearchCompleter::addInputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEResearchCompleter::addOutputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(MTEResearchCompleter::addMaintenanceToMachineList, CASING_INDEX, 1),
+                onElementPass(MTEResearchCompleter::onCasingFound, ofBlock(GregTechAPI.sBlockCasings8, 8))))
+        .addElement(
+            'x',
+            ofChain( // Check for the end but otherwise treat as a skipped spot
+                onElementPass(MTEResearchCompleter::onEndFound, ofBlock(ConfigBlocks.blockCosmeticOpaque, 2)),
+                isAir(), // Forgive me
+                notAir()))
+        .addElement('g', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2)) // Warded glass
+        .build();
 
     public MTEResearchCompleter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -135,18 +133,18 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
                 double yCoord = aBaseMetaTileEntity.getYCoord() + 0.5;
                 double zCoord = aBaseMetaTileEntity.getZCoord() + 0.5;
                 Thaumcraft.proxy.beam(
-                        aBaseMetaTileEntity.getWorld(),
-                        xCoord + 0.5 * xDir,
-                        yCoord + 0.5 * yDir,
-                        zCoord + 0.5 * zDir,
-                        xCoord + xDir * lastNodeDistance,
-                        yCoord + yDir * lastNodeDistance,
-                        zCoord + zDir * lastNodeDistance,
-                        3,
-                        lastNodeColor,
-                        true,
-                        2,
-                        1);
+                    aBaseMetaTileEntity.getWorld(),
+                    xCoord + 0.5 * xDir,
+                    yCoord + 0.5 * yDir,
+                    zCoord + 0.5 * zDir,
+                    xCoord + xDir * lastNodeDistance,
+                    yCoord + yDir * lastNodeDistance,
+                    zCoord + zDir * lastNodeDistance,
+                    3,
+                    lastNodeColor,
+                    true,
+                    2,
+                    1);
             } else {
                 lastNodeDistance = 0;
                 lastNodeColor = 0;
@@ -173,7 +171,8 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             int nodeX = aBaseMetaTileEntity.getXCoord() + xDir * i;
             int nodeY = aBaseMetaTileEntity.getYCoord() + yDir * i;
             int nodeZ = aBaseMetaTileEntity.getZCoord() + zDir * i;
-            TileEntity tileEntity = aBaseMetaTileEntity.getWorld().getTileEntity(nodeX, nodeY, nodeZ);
+            TileEntity tileEntity = aBaseMetaTileEntity.getWorld()
+                .getTileEntity(nodeX, nodeY, nodeZ);
 
             if (tileEntity instanceof TileNode aNode) {
                 AspectList aspectsBase = aNode.getAspectsBase();
@@ -194,10 +193,12 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
                     }
                 }
 
-                if (aspectsBase.visSize() <= 0) aBaseMetaTileEntity.getWorld().setBlockToAir(nodeX, nodeY, nodeZ);
+                if (aspectsBase.visSize() <= 0) aBaseMetaTileEntity.getWorld()
+                    .setBlockToAir(nodeX, nodeY, nodeZ);
                 else {
                     aNode.markDirty();
-                    aBaseMetaTileEntity.getWorld().markBlockForUpdate(nodeX, nodeY, nodeZ);
+                    aBaseMetaTileEntity.getWorld()
+                        .markBlockForUpdate(nodeX, nodeY, nodeZ);
                 }
             }
             i++;
@@ -231,7 +232,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         for (ItemStack stack : tInputList) {
             if (GTUtility.isStackValid(stack) && stack.stackSize > 0) {
                 if (stack.getItem() == ConfigItems.itemResearchNotes
-                        && !stack.stackTagCompound.getBoolean("complete")) {
+                    && !stack.stackTagCompound.getBoolean("complete")) {
                     ResearchNoteData noteData = ResearchManager.getData(stack);
                     if (noteData == null) continue;
                     ResearchItem researchItem = ResearchCategories.getResearch(noteData.key);
@@ -240,7 +241,9 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
                     this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                     this.mEfficiencyIncrease = 10000;
                     OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(RECIPE_EUT)
-                            .setEUt(getMaxInputVoltage()).setDuration(RECIPE_LENGTH).calculate();
+                        .setEUt(getMaxInputVoltage())
+                        .setDuration(RECIPE_LENGTH)
+                        .calculate();
                     this.mEUt = (int) calculator.getConsumption();
                     this.mMaxProgresstime = calculator.getDuration();
                     if (this.mEUt > 0) {
@@ -283,8 +286,8 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         }
 
         return endFound && mLength >= 3
-                && checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1))
-                && mCasing >= mLength * 3;
+            && checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1))
+            && mCasing >= mLength * 3;
     }
 
     @Override
@@ -302,16 +305,27 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int ColorIndex, boolean aActive, boolean aRedstone) {
+        int ColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -325,13 +339,17 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Research Completer")
-                .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-                .addInfo("Place nodes in the center row").beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
-                .addController("Front center")
-                .addOtherStructurePart("Magical machine casing", "Top and bottom layers outside. 3 x L minimum")
-                .addOtherStructurePart("Warded glass", "Middle layer outside").addEnergyHatch("Any casing")
-                .addMaintenanceHatch("Any casing").addInputBus("Any casing").addOutputBus("Any casing")
-                .toolTipFinisher();
+            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
+            .addInfo("Place nodes in the center row")
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
+            .addController("Front center")
+            .addOtherStructurePart("Magical machine casing", "Top and bottom layers outside. 3 x L minimum")
+            .addOtherStructurePart("Warded glass", "Middle layer outside")
+            .addEnergyHatch("Any casing")
+            .addMaintenanceHatch("Any casing")
+            .addInputBus("Any casing")
+            .addOutputBus("Any casing")
+            .toolTipFinisher();
         return tt;
     }
 

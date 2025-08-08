@@ -63,8 +63,9 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
         ICoverable cover = coveredTile.get();;
         if (cover != null && cover.getWorld() != null) {
             GregTechAPI.sAdvancedWirelessRedstone
-                    .computeIfAbsent(uuid == null ? "null" : uuid.toString(), (k) -> new ConcurrentHashMap<>())
-                    .computeIfAbsent(frequency, (k) -> new ConcurrentHashMap<>()).remove(getCoverKey(cover, coverSide));
+                .computeIfAbsent(uuid == null ? "null" : uuid.toString(), (k) -> new ConcurrentHashMap<>())
+                .computeIfAbsent(frequency, (k) -> new ConcurrentHashMap<>())
+                .remove(getCoverKey(cover, coverSide));
         }
         frequency = tag.getString("frequency");
         if (tag.hasKey("uuid")) {
@@ -113,7 +114,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     public static Byte getSignalAt(UUID uuid, String frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
         Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
-                .get(String.valueOf(uuid));
+            .get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
         Map<CoverPosition, Byte> signals = frequencies.get(frequency);
@@ -121,26 +122,37 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
         switch (mode) {
             case AND -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+                return (byte) (signals.values()
+                    .stream()
+                    .map(signal -> signal > 0)
+                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
             }
             case NAND -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
+                return (byte) (signals.values()
+                    .stream()
+                    .map(signal -> signal > 0)
+                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
             }
             case OR -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
+                return (byte) (signals.values()
+                    .stream()
+                    .map(signal -> signal > 0)
+                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
             }
             case NOR -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+                return (byte) (signals.values()
+                    .stream()
+                    .map(signal -> signal > 0)
+                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
             }
             case SINGLE_SOURCE -> {
-                if (signals.values().isEmpty()) {
+                if (signals.values()
+                    .isEmpty()) {
                     return 0;
                 }
-                return signals.values().iterator().next();
+                return signals.values()
+                    .iterator()
+                    .next();
             }
             default -> {
                 return 0;
@@ -150,7 +162,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     public static void removeSignalAt(UUID uuid, String frequency, CoverPosition key) {
         Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
-                .get(String.valueOf(uuid));
+            .get(String.valueOf(uuid));
         if (frequencies == null) return;
         frequencies.computeIfPresent(frequency, (freq, coverPositionByteMap) -> {
             coverPositionByteMap.remove(key);
@@ -160,17 +172,17 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     public static void setSignalAt(UUID uuid, String frequency, CoverPosition key, byte value) {
         Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
-                .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
+            .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
         Map<CoverPosition, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
         signals.put(key, value);
     }
 
     public static CoverPosition getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
         return new CoverPosition(
-                tile.getCoords(),
-                tile.getWorld().provider.getDimensionName(),
-                tile.getWorld().provider.dimensionId,
-                side.ordinal());
+            tile.getCoords(),
+            tile.getWorld().provider.getDimensionName(),
+            tile.getWorld().provider.dimensionId,
+            side.ordinal());
     }
 
     @Override
@@ -206,10 +218,9 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     @Override
     public String getDescription() {
         return translateToLocalFormatted(
-                "gt.interact.desc.freq_perm",
-                frequency,
-                uuid == null ? translateToLocal("gt.interact.desc.public")
-                        : translateToLocal("gt.interact.desc.private"));
+            "gt.interact.desc.freq_perm",
+            frequency,
+            uuid == null ? translateToLocal("gt.interact.desc.public") : translateToLocal("gt.interact.desc.private"));
     }
 
     @Override

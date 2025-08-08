@@ -12,21 +12,24 @@ public class GGUtils {
 
     public static boolean isValidTile(IGregTechTileEntity tile) {
         return tile != null && !tile.isDead()
-                && tile.getMetaTileEntity() != null
-                && tile.getMetaTileEntity().getBaseMetaTileEntity() == tile;
+            && tile.getMetaTileEntity() != null
+            && tile.getMetaTileEntity()
+                .getBaseMetaTileEntity() == tile;
     }
 
     public static boolean isValidTile(IMetaTileEntity mte) {
         return mte != null && mte.getBaseMetaTileEntity() != null
-                && mte.getBaseMetaTileEntity().getMetaTileEntity() == mte
-                && !mte.getBaseMetaTileEntity().isDead();
+            && mte.getBaseMetaTileEntity()
+                .getMetaTileEntity() == mte
+            && !mte.getBaseMetaTileEntity()
+                .isDead();
     }
 
     public static ChunkCoordinates translate(ChunkCoordinates origin, ForgeDirection direction) {
         return new ChunkCoordinates(
-                origin.posX + direction.offsetX,
-                origin.posY + direction.offsetY,
-                origin.posZ + direction.offsetZ);
+            origin.posX + direction.offsetX,
+            origin.posY + direction.offsetY,
+            origin.posZ + direction.offsetZ);
     }
 
     public static String formatTileInfo(String prefix, IMetaTileEntity mte, String delimiter, String suffix) {

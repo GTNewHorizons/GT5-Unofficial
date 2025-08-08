@@ -21,11 +21,15 @@ import gtPlusPlus.core.util.minecraft.NBTUtils;
 public class Utils {
 
     public static boolean isServer() {
-        return FMLCommonHandler.instance().getEffectiveSide().isServer();
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer();
     }
 
     public static boolean isClient() {
-        return FMLCommonHandler.instance().getEffectiveSide().isClient();
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
     }
 
     public static int rgbtoHexValue(final int r, final int g, final int b) {
@@ -47,22 +51,22 @@ public class Utils {
 
     public static String addBookTitleLocalization(final String aTitle) {
         return GTLanguageManager
-                .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTechAPI.sPostloadFinished);
+            .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTechAPI.sPostloadFinished);
     }
 
     public static String[] addBookPagesLocalization(final String aTitle, final String[] aPages) {
         String[] aLocalizationPages = new String[aPages.length];
         for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
             aLocalizationPages[i] = GTLanguageManager.addStringLocalization(
-                    "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
-                    aPages[i],
-                    !GregTechAPI.sPostloadFinished);
+                "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
+                aPages[i],
+                !GregTechAPI.sPostloadFinished);
         }
         return aLocalizationPages;
     }
 
     public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String title, String author,
-            String[] pages) {
+        String[] pages) {
 
         if (GTUtility.isStringInvalid(mapping)) {
             return null;
@@ -104,19 +108,19 @@ public class Utils {
         }
 
         String credits = String.format(
-                "Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all!",
-                author,
-                ID);
+            "Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all!",
+            author,
+            ID);
         NBTList.appendTag(new NBTTagString(credits));
         NBT.setTag("pages", NBTList);
 
         stack.setTagCompound(NBT);
 
         String logMessage = String.format(
-                "GT++_Mod: Added Book to Book++ List  -  Mapping: '%s'  -  Name: '%s'  -  Author: '%s'",
-                mapping,
-                title,
-                author);
+            "GT++_Mod: Added Book to Book++ List  -  Mapping: '%s'  -  Name: '%s'  -  Author: '%s'",
+            mapping,
+            title,
+            author);
         GTLog.out.println(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);

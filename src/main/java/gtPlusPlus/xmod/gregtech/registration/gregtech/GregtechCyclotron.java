@@ -15,7 +15,7 @@ public class GregtechCyclotron {
 
     private static void run1() {
         GregtechItemList.COMET_Cyclotron.set(
-                new MTECyclotron(COMET_Cyclotron.ID, "cyclotron.tier.single", "COMET - Compact Cyclotron")
-                        .getStackForm(1L));
+            new MTECyclotron(COMET_Cyclotron.ID, "cyclotron.tier.single", "COMET - Compact Cyclotron")
+                .getStackForm(1L));
     }
 }

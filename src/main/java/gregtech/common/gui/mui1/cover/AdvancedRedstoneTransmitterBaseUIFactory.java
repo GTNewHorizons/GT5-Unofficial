@@ -11,7 +11,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAdvancedRedstoneTransmitterBase>
-        extends AdvancedWirelessRedstoneBaseUIFactory<C> {
+    extends AdvancedWirelessRedstoneBaseUIFactory<C> {
 
     public AdvancedRedstoneTransmitterBaseUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
@@ -36,27 +36,28 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
     protected void addUIWidgets(ModularWindow.Builder builder) {
         super.addUIWidgets(builder);
         builder.widget(
-                TextWidget
-                        .dynamicString(
-                                getCoverString(
-                                        c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
-                                                : translateToLocal("gt.interact.desc.normal")))
-                        .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+            TextWidget
+                .dynamicString(
+                    getCoverString(
+                        c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal")))
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
     }
 
     @Override
     protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
         super.addUIForDataController(controller);
         controller.addFollower(
-                CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                CoverAdvancedRedstoneTransmitterBase::isInverted,
-                (coverData, state) -> {
-                    coverData.setInverted(state);
-                    return coverData;
-                },
-                widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
-                        .setPos(spaceX * 9, spaceY * getButtonRow()));
+            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+            CoverAdvancedRedstoneTransmitterBase::isInverted,
+            (coverData, state) -> {
+                coverData.setInverted(state);
+                return coverData;
+            },
+            widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                .setPos(spaceX * 9, spaceY * getButtonRow()));
     }
 }

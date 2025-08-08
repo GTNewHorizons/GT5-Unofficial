@@ -38,16 +38,16 @@ public class GTRecipeUtils {
                 }
             }
             GTRecipe newRecipe = new GTRecipe(
-                    false,
-                    itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
-                    recipeInput.mOutputs,
-                    recipeInput.mSpecialItems,
-                    recipeInput.mChances,
-                    recipeInput.mFluidInputs,
-                    recipeInput.mFluidOutputs,
-                    recipeInput.mDuration,
-                    recipeInput.mEUt,
-                    recipeInput.mSpecialValue);
+                false,
+                itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
+                recipeInput.mOutputs,
+                recipeInput.mSpecialItems,
+                recipeInput.mChances,
+                recipeInput.mFluidInputs,
+                recipeInput.mFluidOutputs,
+                recipeInput.mDuration,
+                recipeInput.mEUt,
+                recipeInput.mSpecialValue);
             if (!recipesHashSet.contains(newRecipe)) {
                 // if the recipes customHashSet does not contain the new recipe then add it
                 recipesHashSet.add(newRecipe);
@@ -60,7 +60,8 @@ public class GTRecipeUtils {
                 // damage value. This is to prevent a case where recipe load order would affect which duplicate
                 // recipes with multiple circuit values gets removed.
                 if (circuitMap.containsKey(newRecipe)) {
-                    if (circuitMap.get(newRecipe).getItemDamage() > savedCircuit.getItemDamage()) {
+                    if (circuitMap.get(newRecipe)
+                        .getItemDamage() > savedCircuit.getItemDamage()) {
                         circuitMap.put(newRecipe, savedCircuit);
                     }
                 } else {
@@ -85,10 +86,10 @@ public class GTRecipeUtils {
         }
         // print results to log
         Logger.INFO(
-                "Recipe Array duplication removal process completed for '" + recipeMapName
-                        + "': '"
-                        + removedRecipeCount
-                        + "' removed.");
+            "Recipe Array duplication removal process completed for '" + recipeMapName
+                + "': '"
+                + removedRecipeCount
+                + "' removed.");
         return recipeOutput;
     }
 }

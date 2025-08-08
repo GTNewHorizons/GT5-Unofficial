@@ -69,18 +69,16 @@ public class PowerGogglesEventHandler {
         if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
             MTELapotronicSuperCapacitor lsc = getLsc(player);
             NW.sendToPlayer(
-                    new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), forceRefresh),
-                    player);
+                new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), forceRefresh),
+                player);
         } else {
             if (lscLinkMap.get(player.getUniqueID()) != null) {
                 lscLinkMap.put(player.getUniqueID(), null);
                 forceRefresh = true;
             }
             NW.sendToPlayer(
-                    new GTPacketUpdatePowerGoggles(
-                            WirelessNetworkManager.getUserEU((player).getUniqueID()),
-                            forceRefresh),
-                    player);
+                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID()), forceRefresh),
+                player);
         }
         forceUpdate = false;
         forceRefresh = false;
@@ -116,26 +114,27 @@ public class PowerGogglesEventHandler {
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
             Minecraft screenInfo = Minecraft.getMinecraft();
             Minecraft.getMinecraft()
-                    .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
+                .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
 
         } else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
-            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL).get("Show Power Chart")
-                    .set(PowerGogglesConfigHandler.showPowerChart);
+            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                .get("Show Power Chart")
+                .set(PowerGogglesConfigHandler.showPowerChart);
             PowerGogglesConfigHandler.config.save();
         }
     }
 
     private void setLink(ItemStack item) {
-        if (!item.hasTagCompound() || item.getTagCompound().hasNoTags())
-            NW.sendToServer(new GTPacketLinkPowerGoggles());
+        if (!item.hasTagCompound() || item.getTagCompound()
+            .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
         else {
             NBTTagCompound tag = item.getTagCompound();
             DimensionalCoord coords = new DimensionalCoord(
-                    tag.getInteger("x"),
-                    tag.getInteger("y"),
-                    tag.getInteger("z"),
-                    tag.getInteger("dim"));
+                tag.getInteger("x"),
+                tag.getInteger("y"),
+                tag.getInteger("z"),
+                tag.getInteger("dim"));
             NW.sendToServer(new GTPacketLinkPowerGoggles(coords));
         }
     }

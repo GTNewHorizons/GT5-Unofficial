@@ -78,7 +78,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-            boolean p_77663_5_) {
+        boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 
@@ -155,13 +155,15 @@ public class ItemGenericChemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEIsaMill.isMillingBall(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound()
+                .hasNoTags()) {
                 createMillingBallNBT(aStack);
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
         } else if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound()
+                .hasNoTags()) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -188,8 +190,8 @@ public class ItemGenericChemBase extends Item {
         }
         if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
-                    EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
             aMaxDamage = getCatalystMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getCatalystDamage(aStack);
@@ -233,19 +235,23 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getMillingBallDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound()
+            .hasNoTags()) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("MillingBall").getInteger("Damage");
+        return aNBT.getCompoundTag("MillingBall")
+            .getInteger("Damage");
     }
 
     public static int getMillingBallMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound()
+            .hasNoTags()) {
             createMillingBallNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("MillingBall").getInteger("MaxDamage");
+        return aNBT.getCompoundTag("MillingBall")
+            .getInteger("MaxDamage");
     }
 
     public static void setMillingBallDamage(ItemStack aStack, int aAmount) {
@@ -275,19 +281,23 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound()
+            .hasNoTags()) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("catalyst").getInteger("Damage");
+        return aNBT.getCompoundTag("catalyst")
+            .getInteger("Damage");
     }
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
-        if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+        if (aStack.getTagCompound() == null || aStack.getTagCompound()
+            .hasNoTags()) {
             createCatalystNBT(aStack);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        return aNBT.getCompoundTag("catalyst").getInteger("MaxDamage");
+        return aNBT.getCompoundTag("catalyst")
+            .getInteger("MaxDamage");
     }
 
     public static void setCatalystDamage(ItemStack aStack, int aAmount) {

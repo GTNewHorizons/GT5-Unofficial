@@ -52,7 +52,8 @@ public class CommandHandler extends CommandBase {
         final String key;
 
         Translations() {
-            key = "kubatech.commandhandler." + this.name().toLowerCase();
+            key = "kubatech.commandhandler." + this.name()
+                .toLowerCase();
         }
 
         public String get() {
@@ -118,12 +119,13 @@ public class CommandHandler extends CommandBase {
         ICommand cmd = childCommands.get(args[0]);
         if (!cmd.canCommandSenderUseCommand(sender)) {
             ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation(
-                    "commands.generic.permission");
-            chatcomponenttranslation2.getChatStyle().setColor(EnumChatFormatting.RED);
+                "commands.generic.permission");
+            chatcomponenttranslation2.getChatStyle()
+                .setColor(EnumChatFormatting.RED);
             sender.addChatMessage(chatcomponenttranslation2);
         } else cmd.processCommand(
-                sender,
-                args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : GTValues.emptyStringArray);
+            sender,
+            args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : GTValues.emptyStringArray);
     }
 
     @Override

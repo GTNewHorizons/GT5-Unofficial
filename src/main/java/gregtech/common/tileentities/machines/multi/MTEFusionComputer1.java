@@ -15,8 +15,15 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public class MTEFusionComputer1 extends MTEFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
-            TextureFactory.builder().addIcon(OVERLAY_FUSION1).extFacing().build(),
-            TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build());
+        TextureFactory.builder()
+            .addIcon(OVERLAY_FUSION1)
+            .extFacing()
+            .build(),
+        TextureFactory.builder()
+            .addIcon(OVERLAY_FUSION1_GLOW)
+            .extFacing()
+            .glow()
+            .build());
 
     public MTEFusionComputer1(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -69,16 +76,21 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor").addInfo("It's over 9000!!!")
-                .addInfo("§b2,048§7 EU/t and §b10M§7 EU capacity per Energy Hatch")
-                .addInfo("If the recipe has a startup cost greater than the")
-                .addInfo("number of energy hatches * cap, you can't do it").beginStructureBlock(15, 3, 15, false)
-                .addController("See diagram when placed").addCasingInfoRange("LuV Machine Casing", 79, 123, false)
-                .addStructureInfo("Cover the coils with casing")
-                .addOtherStructurePart("Superconducting Coil Block", "Center part of the ring")
-                .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
-                .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be LuV or better")
-                .toolTipFinisher();
+        tt.addMachineType("Fusion Reactor")
+            .addInfo("It's over 9000!!!")
+            .addInfo("§b2,048§7 EU/t and §b10M§7 EU capacity per Energy Hatch")
+            .addInfo("If the recipe has a startup cost greater than the")
+            .addInfo("number of energy hatches * cap, you can't do it")
+            .beginStructureBlock(15, 3, 15, false)
+            .addController("See diagram when placed")
+            .addCasingInfoRange("LuV Machine Casing", 79, 123, false)
+            .addStructureInfo("Cover the coils with casing")
+            .addOtherStructurePart("Superconducting Coil Block", "Center part of the ring")
+            .addEnergyHatch("1-16, Specified casings", 2)
+            .addInputHatch("2-16, Specified casings", 1)
+            .addOutputHatch("1-16, Specified casings", 3)
+            .addStructureInfo("ALL Hatches must be LuV or better")
+            .toolTipFinisher();
         return tt;
     }
 

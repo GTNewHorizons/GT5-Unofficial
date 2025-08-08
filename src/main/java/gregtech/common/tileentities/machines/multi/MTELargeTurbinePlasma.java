@@ -41,30 +41,41 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
-                aFacing == side
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
-                        : casingTexturePages[0][60] };
+            aFacing == side ? (aActive ? TextureFactory.builder()
+                .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                .build()
+                : hasTurbine() ? TextureFactory.builder()
+                    .addIcon(LARGETURBINE_NEW5)
+                    .build()
+                    : TextureFactory.builder()
+                        .addIcon(LARGETURBINE_NEW_EMPTY5)
+                        .build())
+                : casingTexturePages[0][60] };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Turbine, LPT").addInfo("Needs a Turbine, place inside controller")
-                .addInfo("Use your Fusion Reactor to produce the Plasma").beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false)
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
-                .addInputHatch("Plasma Fluid, Side centered", 2)
-                .addOutputHatch("Molten Fluid, optional, Side centered", 2).toolTipFinisher();
+        tt.addMachineType("Plasma Turbine, LPT")
+            .addInfo("Needs a Turbine, place inside controller")
+            .addInfo("Use your Fusion Reactor to produce the Plasma")
+            .beginStructureBlock(3, 3, 4, true)
+            .addController("Front center")
+            .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false)
+            .addDynamoHatch("Back center", 1)
+            .addMaintenanceHatch("Side centered", 2)
+            .addInputHatch("Plasma Fluid, Side centered", 2)
+            .addOutputHatch("Molten Fluid, optional, Side centered", 2)
+            .toolTipFinisher();
         return tt;
     }
 
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GTRecipe tFuel = RecipeMaps.plasmaFuels.getBackend().findFuel(aLiquid);
+        GTRecipe tFuel = RecipeMaps.plasmaFuels.getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }
@@ -124,10 +135,9 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             }
 
             actualOptimalFlow = GTUtility.safeInt(
-                    (long) Math.ceil(
-                            (double) (looseFit ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow())
-                                    * 20
-                                    / (double) fuelValue));
+                (long) Math.ceil(
+                    (double) (looseFit ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20
+                        / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -140,7 +150,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             // - 550% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
             int remainingFlow = GTUtility
-                    .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency() + 1)));
+                .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency() + 1)));
             int flow = 0;
             int totalFlow = 0;
 
@@ -176,7 +186,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
                 tEU = (int) (tEU * efficiency);
             }
             tEU = GTUtility.safeInt(
-                    (long) ((looseFit ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
+                (long) ((looseFit ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -202,7 +212,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
 
         if (totalFlow > actualOptimalFlow) {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
-                    / ((float) actualOptimalFlow * ((overflowMultiplier * 3) + 1));
+                / ((float) actualOptimalFlow * ((overflowMultiplier * 3) + 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

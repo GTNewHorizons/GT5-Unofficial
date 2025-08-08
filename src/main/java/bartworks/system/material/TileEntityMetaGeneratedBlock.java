@@ -50,10 +50,10 @@ public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements
     @Override
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote) GTValues.NW.sendPacketToAllPlayersInRange(
-                this.worldObj,
-                new PacketBWMetaBlock(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
-                this.xCoord,
-                this.zCoord);
+            this.worldObj,
+            new PacketBWMetaBlock(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+            this.xCoord,
+            this.zCoord);
         return null;
     }
 

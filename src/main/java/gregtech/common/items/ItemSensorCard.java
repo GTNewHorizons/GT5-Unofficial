@@ -31,13 +31,13 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 @Optional.InterfaceList(
-        value = {
-                @Optional.Interface(
-                        iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
-                        modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL),
-                @Optional.Interface(
-                        iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-                        modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL) })
+    value = {
+        @Optional.Interface(
+            iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL),
+        @Optional.Interface(
+            iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL) })
 public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
@@ -59,11 +59,11 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
             } else {
                 aList.add(translateToLocal("gt.item.desc.device_at"));
                 aList.add(
-                        String.format(
-                                "x: %d, y: %d, z: %d",
-                                tNBT.getInteger("x"),
-                                tNBT.getInteger("y"),
-                                tNBT.getInteger("z")));
+                    String.format(
+                        "x: %d, y: %d, z: %d",
+                        tNBT.getInteger("x"),
+                        tNBT.getInteger("y"),
+                        tNBT.getInteger("z")));
             }
         }
     }
@@ -79,7 +79,7 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
         if (((tTileEntity instanceof IGregTechDeviceInformation))
-                && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+            && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
