@@ -259,9 +259,9 @@ public class MaterialsInit1 {
         Materials.InfusedVis = loadInfusedVis();
         Materials.InfusedDull = loadInfusedDull();
         Materials.Inolashite = loadInolashite();
+        Materials.Invisium = loadInvisium();
 
         // spotless:off
-        Materials.Invisium                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Invisium"                ,   "Invisium"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.Jade                    = new Materials( 537, TextureSet.SET_SHINY             ,   1.0F,     16,  2, 1  |4|8      |64          ,   0, 100,   0,   0,   "Jade"                    ,   "Jade"                          ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyeGreen       ,0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3)));
         Materials.Kalendrite              = new Materials( 953, TextureSet.SET_METALLIC          ,   5.0F,   2560,  3, 1|2                       , 170,  91, 189,   0,   "Kalendrite"              ,   "Kalendrite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Komatiite               = new Materials( 869, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Komatiite"               ,   "Komatiite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -4440,6 +4440,14 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadInvisium() {
+        return new MaterialBuilder().setName("Invisium")
+            .setDefaultLocalName("Invisium")
+            .addDustItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
