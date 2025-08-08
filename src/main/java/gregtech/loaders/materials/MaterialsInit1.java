@@ -228,9 +228,9 @@ public class MaterialsInit1 {
         Materials.Epidote = loadEpidote();
         Materials.Eximite = loadEximite();
         Materials.FierySteel = loadFierySteel();
+        Materials.Firestone = loadFirestone();
 
         // spotless:off
-        Materials.Firestone               = new Materials( 347, TextureSet.SET_QUARTZ            ,   6.0F,   1280,  3, 1  |4|8      |64          , 200,  20,   0,   0,   "Firestone"               ,   "Firestone"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
         Materials.Fluorite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1    |8                   , 255, 255, 255,   0,   "Fluorite"                ,   "Fluorite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeGreen       );
         Materials.FoolsRuby               = new Materials( 512, TextureSet.SET_RUBY              ,   1.0F,      0,  2, 1  |4|8                   , 255, 100, 100, 127,   "FoolsRuby"               ,   "Spinel"                          ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Magnesium, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 4)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Force                   = new Materials( 521, TextureSet.SET_DIAMOND           ,  10.0F,    128,  3, 1|2|4|8      |64|128      , 255, 255,   0,   0,   "Force"                   ,   "Force"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5)));
@@ -3916,6 +3916,24 @@ public class MaterialsInit1 {
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 3))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.CORPUS, 3))
+            .constructMaterial();
+    }
+
+    private static Materials loadFirestone() {
+        return new MaterialBuilder().setName("Firestone")
+            .setDefaultLocalName("Firestone")
+            .setMetaItemSubID(347)
+            .setIconSet(TextureSet.SET_QUARTZ)
+            .setColor(Dyes.dyeRed)
+            .setRGB(0xc81400)
+            .setToolSpeed(6.0f)
+            .setDurability(1280)
+            .setToolQuality(3)
+            .addDustItems()
+            .addGemItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
