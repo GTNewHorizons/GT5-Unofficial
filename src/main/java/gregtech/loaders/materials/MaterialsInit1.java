@@ -239,9 +239,9 @@ public class MaterialsInit1 {
         Materials.Gneiss = loadGneiss();
         Materials.Graphite = loadGraphite();
         Materials.Graphene = loadGraphene();
+        Materials.Greenschist = loadGreenschist();
 
         // spotless:off
-        Materials.Greenschist             = new Materials( 866, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenschist"             ,   "Green Schist"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Greenstone              = new Materials( 867, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greenstone"              ,   "Greenstone"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
         Materials.Greywacke               = new Materials( 897, TextureSet.SET_DULL              ,   1.0F,      0,  1, 1                         , 255, 255, 255,   0,   "Greywacke"               ,   "Greywacke"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        );
         Materials.Haderoth                = new Materials( 963, TextureSet.SET_METALLIC          ,  10.0F,   3200,  3, 1|2  |8      |64          , 119,  52,  30,   0,   "Haderoth"                ,   "Haderoth"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
@@ -4091,6 +4091,16 @@ public class MaterialsInit1 {
             .addMaterial(new MaterialStack(Carbon, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
+            .constructMaterial();
+    }
+
+    private static Materials loadGreenschist() {
+        return new MaterialBuilder().setName("Greenschist")
+            .setDefaultLocalName("Green Schist")
+            .setMetaItemSubID(866)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
             .constructMaterial();
     }
 
