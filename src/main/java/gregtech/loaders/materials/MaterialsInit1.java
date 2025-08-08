@@ -245,9 +245,9 @@ public class MaterialsInit1 {
         Materials.Haderoth = loadHaderoth();
         Materials.Hematite = loadHematite();
         Materials.Hepatizon = loadHepatizon();
+        Materials.HSLA = loadHSLA();
 
         // spotless:off
-        Materials.HSLA                    = new Materials( 322, TextureSet.SET_METALLIC          ,   6.0F,    500,  3, 1|2          |64|128      , 128, 128, 128,   0,   "HSLA"                    ,   "HSLA Steel"                    ,    0,       0,       1811, 1000,  true, false,   3,   1,   1, Dyes._NULL          , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1), new TCAspects.TC_AspectStack(TCAspects.ORDO, 1)));
         Materials.Ignatius                = new Materials( 950, TextureSet.SET_METALLIC          ,  12.0F,    512,  2, 1|2                       , 255, 169,  83,   0,   "Ignatius"                ,   "Ignatius"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infernal                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "Infernal"                ,   "Infernal"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
         Materials.Infuscolium             = new Materials( 490, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 146,  33,  86,   0,   "Infuscolium"             ,   "Infuscolium"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -4163,6 +4163,28 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadHSLA() {
+        return new MaterialBuilder().setName("HSLA")
+            .setDefaultLocalName("HSLA Steel")
+            .setMetaItemSubID(322)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x808080)
+            .setToolSpeed(6.0f)
+            .setDurability(500)
+            .setToolQuality(3)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(1811)
+            .setBlastFurnaceTemp(1000)
+            .setBlastFurnaceRequired(true)
+            .setOreValue(3)
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
+            .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
             .constructMaterial();
     }
 
