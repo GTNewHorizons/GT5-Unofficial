@@ -1493,14 +1493,14 @@ public class GTModHandler {
     }
 
     /**
-     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
-     * If available, will choose a recipe that wasn't auto generated during OreDictionary
-     * registration. The OreDict recipe is still chosen if it is the only one that exists.
+     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection. If available, will choose a
+     * recipe that wasn't auto generated during OreDictionary registration. The OreDict recipe is still chosen if it is
+     * the only one that exists.
      *
-     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab,
-     * but also have another that results in Minecraft's default Oak Slab. This second recipe
-     * is generated automatically when the plank is registered as 'plankWood' in the OreDict.
-     * This method will select the former, regardless of the order they appear on the list.
+     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab, but also have another that
+     * results in Minecraft's default Oak Slab. This second recipe is generated automatically when the plank is
+     * registered as 'plankWood' in the OreDict. This method will select the former, regardless of the order they appear
+     * on the list.
      */
     public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
         return getRecipeOutput(false, true, aRecipe);
@@ -2029,8 +2029,8 @@ public class GTModHandler {
          */
         public static final long BUFFERED = B[1];
         /**
-         * This is a special Tag I used for crafting Coins up and down.
-         * If all the input items have the same NBT, keep it in the output item.
+         * This is a special Tag I used for crafting Coins up and down. If all the input items have the same NBT, keep
+         * it in the output item.
          */
         public static final long KEEPNBT = B[2];
         /**
@@ -2084,18 +2084,16 @@ public class GTModHandler {
          */
         public static final long OVERWRITE_NBT = B[14];
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
+         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
         public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
+         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
          */
         public static final long BITSD = BITS | DISMANTLEABLE;
         /**
-         * Combination of common bits.
-         * DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL, NOT_REMOVABLE
+         * Combination of common bits. DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL,
+         * NOT_REMOVABLE
          */
         public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
             | ONLY_ADD_IF_RESULT_IS_NOT_NULL

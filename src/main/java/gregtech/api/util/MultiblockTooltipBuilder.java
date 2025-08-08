@@ -126,8 +126,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a line for static parallel count
-     * Processes up to {parallels} recipes at once
+     * Add a line for static parallel count Processes up to {parallels} recipes at once
      *
      * @param parallels Maximum parallels
      * @return Instance this method was called on.
