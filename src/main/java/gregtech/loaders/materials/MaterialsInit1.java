@@ -248,9 +248,9 @@ public class MaterialsInit1 {
         Materials.HSLA = loadHSLA();
         Materials.Ignatius = loadIgnatius();
         Materials.Infernal = loadInfernal();
+        Materials.Infuscolium = loadInfuscolium();
 
         // spotless:off
-        Materials.Infuscolium             = new Materials( 490, TextureSet.SET_METALLIC          ,   6.0F,     64,  2, 1|2  |8      |64          , 146,  33,  86,   0,   "Infuscolium"             ,   "Infuscolium"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
         Materials.InfusedGold             = new Materials( 323, TextureSet.SET_SHINY             ,  12.0F,     64,  3, 1|2  |8      |64|128      , 255, 200,  60,   0,   "InfusedGold"             ,   "Infused Gold"                  ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
         Materials.InfusedAir              = new Materials( 540, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255, 255,   0,   0,   "InfusedAir"              ,   "Aer"                           ,    5,     160,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.AER, 2)));
         Materials.InfusedFire             = new Materials( 541, TextureSet.SET_SHARDS            ,   8.0F,     64,  3, 1  |4|8      |64|128      , 255,   0,   0,   0,   "InfusedFire"             ,   "Ignis"                         ,    5,     320,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1), new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2)));
@@ -4205,6 +4205,23 @@ public class MaterialsInit1 {
     private static Materials loadInfernal() {
         return new MaterialBuilder().setName("Infernal")
             .setDefaultLocalName("Infernal")
+            .constructMaterial();
+    }
+
+    private static Materials loadInfuscolium() {
+        return new MaterialBuilder().setName("Infuscolium")
+            .setDefaultLocalName("Infuscolium")
+            .setMetaItemSubID(490)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setRGB(0x922156)
+            .setToolSpeed(6.0f)
+            .setDurability(64)
+            .setToolQuality(2)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .setOreValue(3)
             .constructMaterial();
     }
 
