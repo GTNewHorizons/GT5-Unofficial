@@ -378,7 +378,7 @@ public class MaterialsInit1 {
         Materials.LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
         Materials.LiquidNitrogen          = new Materials( 494, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidNitrogen"          ,   "Liquid Nitrogen"               ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Nitrogen, 1)));
         Materials.LiquidOxygen            = new Materials( 493, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidOxygen"            ,   "Liquid Oxygen"                 ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Collections.singletonList(new MaterialStack(Oxygen, 1)));
-        Materials.SiliconDioxide          = new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F).setDurability(0).setToolQuality(1).addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeLightGray).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
+        Materials.SiliconDioxide          = new MaterialBuilder(837, TextureSet.SET_QUARTZ, "Silicon Dioxide").setToolSpeed(1.0F).setDurability(0).setToolQuality(1).addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeLightGray).setExtraData(0).setMaterialList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)).constructMaterial();
         Materials.Jasper                  = new Materials( 511, TextureSet.SET_EMERALD           ,   1.0F,      0,  2, 1  |4|8      |64          , 200,  80,  80, 100,   "Jasper"                  ,   "Jasper"                        ,    0,       0,         -1,    0, false,  true,   3,   1,   1, Dyes.dyeRed         , 1, Collections.singletonList(new MaterialStack(SiliconDioxide, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2)));
         Materials.Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
@@ -416,7 +416,7 @@ public class MaterialsInit1 {
         Materials.Galena                  = new Materials( 830, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1 |8                      , 100,  60, 100,   0,   "Galena"                  ,   "Galena"                        ,    0,       0,         -1,    0, false, false,   4,   1,   1, Dyes.dyePurple      , 1, Arrays.asList(new MaterialStack(Lead, 1), new MaterialStack(Sulfur, 1)));
         Materials.Garnierite              = new Materials( 906, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   ,  50, 200,  70,   0,   "Garnierite"              ,   "Garnierite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)));
         Materials.Glyceryl                = new Materials( 714, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                ,   0, 150, 150,   0,   "Glyceryl"                ,   "Glyceryl Trinitrate"           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeCyan        , 1, Arrays.asList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Nitrogen, 3), new MaterialStack(Oxygen, 9)));
-        Materials.GreenSapphire           = new MaterialBuilder(504, TextureSet.SET_GEM_HORIZONTAL, "Green Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 200, 130, 127).setColor(Dyes.dyeCyan).setOreValue(5).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.GreenSapphire           = new MaterialBuilder(504, TextureSet.SET_GEM_HORIZONTAL, "Green Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 200, 130, 127).setColor(Dyes.dyeCyan).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
         Materials.Grossular               = new Materials( 831, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 200, 100,   0,   0,   "Grossular"               ,   "Grossular"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
         Materials.HolyWater               = new Materials( 729, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0,   0, 255,   0,   "HolyWater"               ,   "Holy Water"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2), new TCAspects.TC_AspectStack(TCAspects.AURAM, 1)));
         Materials.Ice                     = new Materials( 702, TextureSet.SET_SHINY             ,   1.0F,      0,  0, 1|      16                , 200, 200, 255,   0,   "Ice"                     ,   "Ice"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlue        , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2)));
@@ -457,7 +457,7 @@ public class MaterialsInit1 {
         Materials.Ruby                    = new Materials( 502, TextureSet.SET_RUBY              ,   7.0F,    256,  2, 1  |4|8      |64          , 255, 100, 100, 127,   "Ruby"                    ,   "Ruby"                          ,    0,       0,         -1,    0, false,  true,   5,   1,   1, Dyes.dyeRed         , 0, Arrays.asList(new MaterialStack(Chrome, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 6), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4))).disableAutoGeneratedBlastFurnaceRecipes();
         Materials.Salt                    = new Materials( 817, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 250, 250, 250,   0,   "Salt"                    ,   "Salt"                          ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Sodium, 1), new MaterialStack(Chlorine, 1)));
         Materials.Saltpeter               = new Materials( 836, TextureSet.SET_FINE              ,   1.0F,      0,  1, 1    |8                   , 230, 230, 230,   0,   "Saltpeter"               ,   "Saltpeter"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)));
-        Materials.Sapphire                = new MaterialBuilder(503, TextureSet.SET_GEM_VERTICAL, "Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 100, 200, 127).setColor(Dyes.dyeBlue).setOreValue(5).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.Sapphire                = new MaterialBuilder(503, TextureSet.SET_GEM_VERTICAL, "Sapphire").setToolSpeed(7.0F).setDurability(256).setToolQuality(2).addDustItems().addGemItems().setTransparent(true).addOreItems().addToolHeadItems().setRGBA(100, 100, 200, 127).setColor(Dyes.dyeBlue).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 5), new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
 
         Materials.Scheelite               = new Materials( 910, TextureSet.SET_DULL              ,   1.0F,      0,  3, 1    |8                   , 200, 140,  20,   0,   "Scheelite"               ,   "Scheelite"                     ,    0,       0,       2500, 2500, false, false,   4,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Calcium, 1), new MaterialStack(Oxygen, 4)));
         Materials.Snow                    = new Materials( 728, TextureSet.SET_FINE              ,   1.0F,      0,  0, 1|      16                , 250, 250, 250,   0,   "Snow"                    ,   "Snow"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 1)));
@@ -709,10 +709,10 @@ public class MaterialsInit1 {
         Materials.TPV                     = new Materials( 576, TextureSet.SET_METALLIC          ,  16.0F,   4000,  5, 1|2          |64|128      , 250,  170,250,   0,   "TPVAlloy"                ,   "TPV-Alloy"                     ,    0,       0,       3000, 3000,  true, false,   4,   1,   1, Dyes.dyeRed         , 2, Arrays.asList(new MaterialStack(Titanium, 3), new MaterialStack(Platinum, 3), new MaterialStack(Vanadium, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
         Materials.DilutedSulfuricAcid     = new MaterialBuilder(640, TextureSet.SET_FLUID             ,                                                                                                     "Diluted Sulfuric Acid").addCell().addFluid().setRGB(192, 120, 32).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(SulfuricAcid, 1)).constructMaterial();
         Materials.EpoxidFiberReinforced   = new Materials( 610, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 160, 112,  16,   0,   "EpoxidFiberReinforced"   ,   "Fiber-Reinforced Epoxy Resin"  ,    0,       0,        400,    0, false, false,   1,   1,   1, Dyes.dyeBrown       , 2, Collections.singletonList(new MaterialStack(Epoxid, 1)), Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
-        Materials.SodiumCarbonate         = new MaterialBuilder(695, TextureSet.SET_QUARTZ, "Sodium Carbonate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(851 ).setMeltingPoint(851 ).setBlastFurnaceRequired(false).setOreValue(1).setExtraData(1).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.SodiumAluminate         = new MaterialBuilder(696, TextureSet.SET_QUARTZ, "Sodium Aluminate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1800).setMeltingPoint(1800).setBlastFurnaceRequired(false).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 2)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Aluminiumoxide          = new MaterialBuilder(697, TextureSet.SET_QUARTZ, "Alumina").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 255, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(2054).setMeltingPoint(2054).setBlastFurnaceRequired(true).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
-        Materials.Aluminiumhydroxide      = new MaterialBuilder(698, TextureSet.SET_QUARTZ, "Aluminium Hydroxide").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1200).setMeltingPoint(1200).setBlastFurnaceRequired(true).setOreValue(1).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 3),  new MaterialStack(Hydrogen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.SodiumCarbonate         = new MaterialBuilder(695, TextureSet.SET_QUARTZ, "Sodium Carbonate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 255, 235).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(851 ).setMeltingPoint(851 ).setBlastFurnaceRequired(false).setExtraData(1).setMaterialList(new MaterialStack(Sodium, 2), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.SodiumAluminate         = new MaterialBuilder(696, TextureSet.SET_QUARTZ, "Sodium Aluminate").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(255, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1800).setMeltingPoint(1800).setBlastFurnaceRequired(false).setExtraData(0).setMaterialList(new MaterialStack(Sodium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 2)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.Aluminiumoxide          = new MaterialBuilder(697, TextureSet.SET_QUARTZ, "Alumina").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 255, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(2054).setMeltingPoint(2054).setBlastFurnaceRequired(true).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
+        Materials.Aluminiumhydroxide      = new MaterialBuilder(698, TextureSet.SET_QUARTZ, "Aluminium Hydroxide").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addDustItems().setRGB(235, 235, 255).setColor(Dyes.dyeWhite).setBlastFurnaceTemp(1200).setMeltingPoint(1200).setBlastFurnaceRequired(true).setExtraData(0).setMaterialList(new MaterialStack(Aluminium, 1), new MaterialStack(Oxygen, 3),  new MaterialStack(Hydrogen, 3)).setAspects(Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.GELUM, 2))).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
         Materials.Cryolite                = new MaterialBuilder(699, TextureSet.SET_QUARTZ, "Cryolite").setToolSpeed(1.0F).setDurability(64).setToolQuality(1).addOreItems().setRGB(191, 239, 255).setColor(Dyes.dyeLightBlue).setMeltingPoint(1012).setBlastFurnaceTemp(1012).setExtraData(0).setMaterialList(new MaterialStack(Sodium, 3), new MaterialStack(Aluminium, 1), new MaterialStack(Fluorine, 6)).constructMaterial().disableAutoGeneratedBlastFurnaceRecipes();
         Materials.RedMud                  = new MaterialBuilder(743, TextureSet.SET_FLUID, "Red Mud").addCell().addFluid().setRGB(140, 22, 22).setColor(Dyes.dyeRed).constructMaterial();
 
@@ -963,7 +963,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1))
             .constructMaterial();
@@ -982,7 +981,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(1449)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1001,7 +999,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(903)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial();
@@ -1018,7 +1015,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(83)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
             .constructMaterial();
     }
@@ -1036,7 +1032,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1090)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3))
             .constructMaterial();
     }
@@ -1073,7 +1068,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1560)
-            .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
             .constructMaterial();
@@ -1097,7 +1091,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(544)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
             .constructMaterial();
@@ -1130,7 +1123,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(301)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1149,7 +1141,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1115)
             .setBlastFurnaceTemp(1115)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
             .constructMaterial();
@@ -1173,7 +1164,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(3800)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
             .constructMaterial();
@@ -1191,7 +1181,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(594)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1))
@@ -1212,7 +1201,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1068)
             .setBlastFurnaceTemp(1068)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1228,7 +1216,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(171)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PANNUS, 1))
             .constructMaterial();
@@ -1254,7 +1241,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(2180)
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
             .constructMaterial();
@@ -1281,7 +1267,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1700)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1))
             .constructMaterial();
@@ -1301,7 +1286,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addGearItems()
             .setMeltingPoint(1357)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1))
             .constructMaterial();
@@ -1321,7 +1305,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1680)
             .setBlastFurnaceTemp(1680)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
     }
@@ -1351,7 +1334,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1802)
             .setBlastFurnaceTemp(1802)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1371,7 +1353,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1099)
             .setBlastFurnaceTemp(1099)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1388,7 +1369,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(53)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2))
             .constructMaterial();
     }
@@ -1407,7 +1387,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1585)
             .setBlastFurnaceTemp(1585)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1429,7 +1408,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(302)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
             .constructMaterial();
@@ -1453,7 +1431,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1337)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2))
             .constructMaterial();
@@ -1473,7 +1450,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1734)
             .setBlastFurnaceTemp(1734)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1490,7 +1466,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .setOreValue(2)
             .setFuelType(1)
             .setFuelPower(20)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
@@ -1508,7 +1483,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
             .constructMaterial();
     }
@@ -1526,7 +1500,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(429)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1554,7 +1527,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(10)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
             .constructMaterial();
@@ -1578,7 +1550,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1811)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
     }
@@ -1597,7 +1568,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1193)
             .setBlastFurnaceTemp(1193)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1621,7 +1591,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(600)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
             .constructMaterial();
@@ -1640,7 +1609,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(454)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
             .constructMaterial();
@@ -1660,7 +1628,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1925)
             .setBlastFurnaceTemp(1925)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -1686,7 +1653,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(5000)
-            .setOreValue(7)
             .setFuelType(5)
             .setFuelPower(32)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4))
@@ -1706,7 +1672,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(923)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
             .constructMaterial();
@@ -1729,7 +1694,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1519)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
     }
@@ -1745,7 +1709,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(234)
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(32)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
@@ -1795,7 +1758,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1297)
             .setBlastFurnaceTemp(1297)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 2))
             .constructMaterial();
@@ -1823,7 +1785,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(20)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 2))
@@ -1849,7 +1810,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1728)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
             .constructMaterial();
@@ -1869,7 +1829,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(2750)
             .setBlastFurnaceTemp(2750)
             .setBlastFurnaceRequired(true)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
             .constructMaterial();
@@ -1886,7 +1845,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(63)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 2))
             .constructMaterial();
     }
@@ -1913,7 +1871,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(10)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))
@@ -1956,7 +1913,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceTemp(1828)
             .setBlastFurnaceRequired(true)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .constructMaterial();
     }
@@ -1972,7 +1928,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addPlasma()
             .setMeltingPoint(317)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .constructMaterial();
@@ -1996,7 +1951,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(2041)
-            .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1))
             .constructMaterial();
@@ -2019,7 +1973,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(912)
-            .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
             .constructMaterial();
@@ -2037,7 +1990,6 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addPlasma()
             .setMeltingPoint(336)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .constructMaterial();
@@ -2057,7 +2009,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1208)
             .setBlastFurnaceTemp(1208)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2077,7 +2028,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1315)
             .setBlastFurnaceTemp(1315)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2094,7 +2044,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(202)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2113,7 +2062,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(312)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
@@ -2134,7 +2082,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1345)
             .setBlastFurnaceTemp(1345)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 10))
@@ -2156,7 +2103,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1814)
             .setBlastFurnaceTemp(1814)
             .setBlastFurnaceRequired(true)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2200,7 +2146,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(1234)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1))
             .constructMaterial();
@@ -2254,7 +2199,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(388)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
             .constructMaterial();
     }
@@ -2278,7 +2222,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1))
             .constructMaterial();
@@ -2297,7 +2240,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(722)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2316,7 +2258,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1629)
             .setBlastFurnaceTemp(1629)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2339,7 +2280,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(2115)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2359,7 +2299,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1818)
             .setBlastFurnaceTemp(1818)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2380,7 +2319,6 @@ public class MaterialsInit1 {
             .addGearItems()
             .setMeltingPoint(505)
             .setBlastFurnaceTemp(505)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
@@ -2408,7 +2346,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(5)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
             .constructMaterial();
@@ -2462,7 +2399,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1))
             .constructMaterial();
@@ -2485,7 +2421,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1405)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2506,7 +2441,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(2183)
             .setBlastFurnaceTemp(2183)
             .setBlastFurnaceRequired(true)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2526,7 +2460,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1097)
             .setBlastFurnaceTemp(1097)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2546,7 +2479,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1799)
             .setBlastFurnaceTemp(1799)
             .setBlastFurnaceRequired(true)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 1))
             .constructMaterial();
@@ -2565,7 +2497,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addPlasma()
             .setMeltingPoint(692)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.SANO, 1))
             .constructMaterial();
@@ -2590,7 +2521,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .setOreValue(10)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 3))
             .constructMaterial();
     }
@@ -2606,7 +2536,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(1)
-            .setOreValue(10)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AER, 3))
             .constructMaterial();
     }
@@ -2628,7 +2557,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(912)
-            .setOreValue(6)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 3))
             .constructMaterial();
@@ -2645,7 +2573,6 @@ public class MaterialsInit1 {
             .addCell()
             .addPlasma()
             .setMeltingPoint(14)
-            .setOreValue(10)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4))
             .constructMaterial();
     }
@@ -2667,7 +2594,6 @@ public class MaterialsInit1 {
             .addPlasma()
             .addToolHeadItems()
             .setMeltingPoint(1405)
-            .setOreValue(4)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.RADIO, 2))
             .constructMaterial();
@@ -2694,7 +2620,6 @@ public class MaterialsInit1 {
             .setARGB(0x003f4cfd)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2709,7 +2634,6 @@ public class MaterialsInit1 {
             .setARGB(0x005d5dfe)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2724,7 +2648,6 @@ public class MaterialsInit1 {
             .setARGB(0x00736dfe)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2739,7 +2662,6 @@ public class MaterialsInit1 {
             .setARGB(0x00877eff)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2754,7 +2676,6 @@ public class MaterialsInit1 {
             .setARGB(0x009890ff)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2769,7 +2690,6 @@ public class MaterialsInit1 {
             .setARGB(0x00a8a1ff)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2784,7 +2704,6 @@ public class MaterialsInit1 {
             .setARGB(0x00b7b3ff)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2799,7 +2718,6 @@ public class MaterialsInit1 {
             .setARGB(0x00c5c5ff)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2814,7 +2732,6 @@ public class MaterialsInit1 {
             .setARGB(0x003d3a52)
             .addCell()
             .setMeltingPoint(273)
-            .setOreValue(2)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.AQUA, 1))
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -2973,7 +2890,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -2981,7 +2897,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Flux")
             .setDefaultLocalName("Flux")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -2989,14 +2904,12 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("OsmiumTetroxide")
             .setDefaultLocalName("Osmium Tetroxide")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
     private static Materials loadRubberTreeSap() {
         return new MaterialBuilder().setName("RubberTreeSap")
             .setDefaultLocalName("Rubber Tree Sap")
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3008,7 +2921,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(3300)
             .setBlastFurnaceTemp(3300)
             .setBlastFurnaceRequired(true)
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3019,7 +2931,6 @@ public class MaterialsInit1 {
             .addMetalItems()
             .setBlastFurnaceTemp(1800)
             .setBlastFurnaceRequired(true)
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3038,7 +2949,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3047,7 +2957,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Teslatite")
             .setRGB(0x3cb4c8)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3056,7 +2965,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Fluix")
             .addDustItems()
             .addGemItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3065,7 +2973,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Dark Thaumium")
             .addDustItems()
             .addMetalItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3073,7 +2980,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Alfium")
             .setDefaultLocalName("Alfium")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3081,7 +2987,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Mutation")
             .setDefaultLocalName("Mutation")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3090,7 +2995,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Aquamarine")
             .addDustItems()
             .addGemItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3098,7 +3002,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Ender")
             .setDefaultLocalName("Ender")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3106,7 +3009,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("SodiumPeroxide")
             .setDefaultLocalName("Sodium Peroxide")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3114,7 +3016,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("IridiumSodiumOxide")
             .setDefaultLocalName("Iridium Sodium Oxide")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3125,7 +3026,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_POWDER)
             .setRGB(0x001e00)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3150,7 +3050,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(3)
             .constructMaterial()
             .setHasCorrespondingPlasma(true);
     }
@@ -3176,7 +3075,6 @@ public class MaterialsInit1 {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
-            .setOreValue(3)
             .constructMaterial()
             .setHasCorrespondingPlasma(true);
     }
@@ -3185,7 +3083,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("PurpleAlloy")
             .setDefaultLocalName("Purple Alloy")
             .setRGB(0x64b4ff)
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3193,7 +3090,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("InfusedTeslatite")
             .setDefaultLocalName("Infused Teslatite")
             .setRGB(0x64b4ff)
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3244,7 +3140,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Agate")
             .setDefaultLocalName("Agate")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3406,7 +3301,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Black")
             .setColor(Dyes.dyeBlack)
             .setRGB(0x000000)
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3417,7 +3311,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_SHINY)
             .setRGB(0xdce9ff)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
     }
@@ -3429,7 +3322,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightBlue)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -3448,7 +3340,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Bloodstone")
             .setColor(Dyes.dyeRed)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3461,7 +3352,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3511,7 +3401,6 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .constructMaterial();
@@ -3528,7 +3417,6 @@ public class MaterialsInit1 {
             .setDurability(32)
             .setToolQuality(1)
             .addOreItems()
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
@@ -3562,7 +3450,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Citrine")
             .setDefaultLocalName("Citrine")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3598,7 +3485,6 @@ public class MaterialsInit1 {
             .setMetaItemSubID(857)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -3606,7 +3492,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Chimerite")
             .setDefaultLocalName("Chimerite")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3615,7 +3500,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Coral")
             .setRGB(0xff80ff)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3634,7 +3518,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Chrysocolla")
             .setDefaultLocalName("Chrysocolla")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3653,7 +3536,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Cyanite")
             .setColor(Dyes.dyeCyan)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3664,7 +3546,6 @@ public class MaterialsInit1 {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -3682,7 +3563,6 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
-            .setOreValue(5)
             .constructMaterial();
     }
 
@@ -3691,7 +3571,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Dark Stone")
             .setColor(Dyes.dyeBlack)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3700,7 +3579,6 @@ public class MaterialsInit1 {
             .setDefaultLocalName("Demonite")
             .setColor(Dyes.dyeRed)
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3873,7 +3751,6 @@ public class MaterialsInit1 {
             .setMetaItemSubID(862)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -3933,7 +3810,6 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addToolHeadItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3943,7 +3819,6 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeGreen)
             .addDustItems()
             .addOreItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -3957,7 +3832,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addGemItems()
             .addOreItems()
-            .setOreValue(3)
             .addElectrolyzerRecipe()
             .addMaterial(new MaterialStack(Magnesium, 1))
             .addMaterial(new MaterialStack(Aluminium, 2))
@@ -3983,7 +3857,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 5))
             .constructMaterial();
     }
@@ -3999,7 +3872,6 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addCell()
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
             .constructMaterial();
     }
@@ -4015,7 +3887,6 @@ public class MaterialsInit1 {
             .addGemItems()
             .addOreItems()
             .addCell()
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2))
             .constructMaterial();
     }
@@ -4026,7 +3897,6 @@ public class MaterialsInit1 {
             .setMetaItemSubID(863)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -4050,7 +3920,6 @@ public class MaterialsInit1 {
             .setMetaItemSubID(864)
             .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setOreValue(0)
             .constructMaterial();
     }
 
@@ -4068,7 +3937,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addCell()
             .addToolHeadItems()
-            .setOreValue(3)
             .addMaterial(new MaterialStack(Carbon, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1))
@@ -4087,7 +3955,6 @@ public class MaterialsInit1 {
             .setToolQuality(1)
             .addDustItems()
             .addToolHeadItems()
-            .setOreValue(3)
             .addMaterial(new MaterialStack(Carbon, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1))
@@ -4146,7 +4013,6 @@ public class MaterialsInit1 {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -4182,7 +4048,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(1811)
             .setBlastFurnaceTemp(1000)
             .setBlastFurnaceRequired(true)
-            .setOreValue(3)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1))
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1))
             .constructMaterial();
@@ -4221,7 +4086,6 @@ public class MaterialsInit1 {
             .addMetalItems()
             .addOreItems()
             .addToolHeadItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -4240,7 +4104,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -4260,7 +4123,6 @@ public class MaterialsInit1 {
             .addToolHeadItems()
             .addGearItems()
             .setMeltingPoint(-1)
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(160)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4283,7 +4145,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(320)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4306,7 +4167,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(160)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4329,7 +4189,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(160)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4352,7 +4211,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(320)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4375,7 +4233,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(240)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4397,7 +4254,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(240)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4419,7 +4275,6 @@ public class MaterialsInit1 {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .setOreValue(3)
             .setFuelType(5)
             .setFuelPower(160)
             .addAspect(new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1))
@@ -4447,7 +4302,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder().setName("Invisium")
             .setDefaultLocalName("Invisium")
             .addDustItems()
-            .setOreValue(3)
             .constructMaterial();
     }
 
@@ -4663,7 +4517,6 @@ public class MaterialsInit1 {
                 new MaterialStack(Materials.SiliconDioxide, 26244),
                 new MaterialStack(Materials.Diamond, 9))
             .setColor(Dyes.dyeBlack)
-            .setOreValue(4)
             .setDensityDivider(1)
             .setDensityMultiplier(1)
             .constructMaterial()
@@ -4696,7 +4549,6 @@ public class MaterialsInit1 {
             .setMeltingPoint(0)
             .setBlastFurnaceTemp(3000)
             .setBlastFurnaceRequired(true)
-            .setOreValue(200)
             .setDensityDivider(1)
             .setDensityMultiplier(1)
             .setColor(Dyes.dyePurple)
@@ -4752,7 +4604,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder(563, TextureSet.SET_DULL, "Activated Carbon").addDustItems()
             .setRGB(20, 20, 20)
             .setName("ActivatedCarbon")
-            .setOreValue(0)
             .setMaterialList(new MaterialStack(Carbon, 1))
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
@@ -4762,7 +4613,6 @@ public class MaterialsInit1 {
         return new MaterialBuilder(564, TextureSet.SET_DULL, "Pre-Activated Carbon").addDustItems()
             .setRGB(15, 51, 65)
             .setName("PreActivatedCarbon")
-            .setOreValue(0)
             .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
@@ -4773,7 +4623,6 @@ public class MaterialsInit1 {
             .setRGB(110, 110, 110)
             .setName("carbonactivateddirty") // don't change this to the more sensible name or a centrifuge recipe
                                              // appears
-            .setOreValue(0)
             .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
             .constructMaterial()
             .disableAutoGeneratedRecycleRecipes();
