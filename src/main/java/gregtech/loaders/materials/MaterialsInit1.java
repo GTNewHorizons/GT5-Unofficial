@@ -210,9 +210,9 @@ public class MaterialsInit1 {
         Materials.Chrysocolla = loadChrysocolla();
         Materials.CrystalFlux = loadCrystalFlux();
         Materials.Cyanite = loadCyanite();
+        Materials.Dacite = loadDacite();
 
         // spotless:off;
-        Materials.Dacite                  = new Materials( 859, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Dacite"                  ,   "Dacite"                        ,    0,       0,         -1,    0, false, false,   0,   1,   1, Dyes.dyeLightGray   );
         Materials.DarkIron                = new Materials( 342, TextureSet.SET_DULL              ,   7.0F,    384,  3, 1|2  |8      |64          ,  55,  40,  60,   0,   "DarkIron"                ,   "Deep Dark Iron"                ,    0,       0,         -1,    0, false, false,   5,   1,   1, Dyes.dyePurple      );
         Materials.DarkStone               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "DarkStone"               ,   "Dark Stone"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
         Materials.Demonite                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Demonite"                ,   "Demonite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         );
@@ -3654,6 +3654,17 @@ public class MaterialsInit1 {
             .setColor(Dyes.dyeCyan)
             .addDustItems()
             .setOreValue(3)
+            .constructMaterial();
+    }
+
+    private static Materials loadDacite() {
+        return new MaterialBuilder().setName("Dacite")
+            .setDefaultLocalName("Dacite")
+            .setMetaItemSubID(859)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .addDustItems()
+            .setOreValue(0)
             .constructMaterial();
     }
 
