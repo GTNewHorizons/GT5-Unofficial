@@ -22,16 +22,16 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
 
     @Deprecated
     public GTShapelessRecipe(ItemStack aResult, boolean aDismantleable, boolean aRemovableByGT, boolean aKeepingNBT,
-            boolean overwriteNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
+        boolean overwriteNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         this(aResult, aRemovableByGT, aKeepingNBT, overwriteNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe);
     }
 
     public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
-            Enchantment[] enchants, int[] enchantLevels, Object... aRecipe) {
+        Enchantment[] enchants, int[] enchantLevels, Object... aRecipe) {
         super(aResult, aRecipe);
         final boolean hasEnchants = enchants != null && enchants.length > 0
-                && enchantLevels != null
-                && enchantLevels.length > 0;
+            && enchantLevels != null
+            && enchantLevels.length > 0;
         if (hasEnchants) {
             this.mEnchantmentsAdded = enchants;
             this.mEnchantmentLevelsAdded = enchantLevels;
@@ -51,9 +51,12 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
             for (int i = 0; i < aGrid.getSizeInventory(); i++) {
                 if (aGrid.getStackInSlot(i) != null) {
                     if (tStack != null) {
-                        if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i).hasTagCompound())
-                                || (tStack.hasTagCompound()
-                                        && !tStack.getTagCompound().equals(aGrid.getStackInSlot(i).getTagCompound())))
+                        if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i)
+                            .hasTagCompound()) || (tStack.hasTagCompound()
+                                && !tStack.getTagCompound()
+                                    .equals(
+                                        aGrid.getStackInSlot(i)
+                                            .getTagCompound())))
                             return false;
                     }
                     tStack = aGrid.getStackInSlot(i);
@@ -72,8 +75,12 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
 
             // Keeping NBT
             if (mKeepingNBT) for (int i = 0; i < aGrid.getSizeInventory(); i++) {
-                if (aGrid.getStackInSlot(i) != null && aGrid.getStackInSlot(i).hasTagCompound()) {
-                    rStack.setTagCompound((NBTTagCompound) aGrid.getStackInSlot(i).getTagCompound().copy());
+                if (aGrid.getStackInSlot(i) != null && aGrid.getStackInSlot(i)
+                    .hasTagCompound()) {
+                    rStack.setTagCompound(
+                        (NBTTagCompound) aGrid.getStackInSlot(i)
+                            .getTagCompound()
+                            .copy());
                     break;
                 }
             }
@@ -83,7 +90,8 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
                 for (int i = 0; i < aGrid.getSizeInventory(); i++) {
                     ItemStack item = aGrid.getStackInSlot(i);
                     if (GTUtility.areStacksEqual(item, rStack, true) && item.hasTagCompound()) {
-                        NBTTagCompound inputNBT = (NBTTagCompound) item.getTagCompound().copy();
+                        NBTTagCompound inputNBT = (NBTTagCompound) item.getTagCompound()
+                            .copy();
                         if (rStack.hasTagCompound()) {
                             @SuppressWarnings("unchecked")
                             Set<Map.Entry<String, NBTBase>> set = rStack.getTagCompound().tagMap.entrySet();
@@ -102,12 +110,12 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
                 GTModHandler.dischargeElectricItem(rStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
                 int tCharge = 0;
                 for (int i = 0; i < aGrid.getSizeInventory(); i++) tCharge += GTModHandler.dischargeElectricItem(
-                        aGrid.getStackInSlot(i),
-                        Integer.MAX_VALUE,
-                        Integer.MAX_VALUE,
-                        true,
-                        true,
-                        true);
+                    aGrid.getStackInSlot(i),
+                    Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,
+                    true,
+                    true,
+                    true);
                 if (tCharge > 0) GTModHandler.chargeElectricItem(rStack, tCharge, Integer.MAX_VALUE, true, false);
             }
 
@@ -115,10 +123,10 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
             if (mEnchantmentsAdded != null) {
                 for (int i = 0; i < mEnchantmentsAdded.length; i++) {
                     GTUtility.ItemNBT.addEnchantment(
-                            rStack,
-                            mEnchantmentsAdded[i],
-                            EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
-                                    + mEnchantmentLevelsAdded[i]);
+                        rStack,
+                        mEnchantmentsAdded[i],
+                        EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
+                            + mEnchantmentLevelsAdded[i]);
                 }
             }
 

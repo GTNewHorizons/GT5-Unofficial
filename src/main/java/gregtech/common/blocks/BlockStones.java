@@ -30,17 +30,13 @@ public class BlockStones extends BlockStonesAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Basalt");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Basalt");
         for (int i = 0; i < 16; i++) {
+            GTOreDictUnificator
+                .registerOre(OrePrefixes.stone, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
+            GTOreDictUnificator
+                .registerOre(OrePrefixes.block, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
             GTOreDictUnificator.registerOre(
-                    OrePrefixes.stone,
-                    i < 8 ? Materials.Marble : Materials.Basalt,
-                    new ItemStack(this, 1, i));
-            GTOreDictUnificator.registerOre(
-                    OrePrefixes.block,
-                    i < 8 ? Materials.Marble : Materials.Basalt,
-                    new ItemStack(this, 1, i));
-            GTOreDictUnificator.registerOre(
-                    (i < 8 ? Materials.Marble.mName.toLowerCase() : Materials.Basalt.mName.toLowerCase()),
-                    new ItemStack(this, 1, i));
+                (i < 8 ? Materials.Marble.mName.toLowerCase() : Materials.Basalt.mName.toLowerCase()),
+                new ItemStack(this, 1, i));
         }
     }
 

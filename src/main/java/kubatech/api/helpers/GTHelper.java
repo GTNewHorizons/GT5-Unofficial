@@ -65,7 +65,8 @@ public class GTHelper {
         public StackableItemSlot(int count, @NotNull ItemStack stack, ArrayList<Integer> realSlots) {
             this.count = count;
             this.stack = stack;
-            this.hashcode = ItemId.createNoCopyWithStackSize(stack).hashCode();
+            this.hashcode = ItemId.createNoCopyWithStackSize(stack)
+                .hashCode();
             this.realSlots = realSlots;
         }
 
@@ -81,9 +82,9 @@ public class GTHelper {
 
         public static @NotNull StackableItemSlot read(@NotNull PacketBuffer buffer) throws IOException {
             return new StackableItemSlot(
-                    buffer.readVarIntFromBuffer(),
-                    buffer.readItemStackFromBuffer(),
-                    new ArrayList<>());
+                buffer.readVarIntFromBuffer(),
+                buffer.readItemStackFromBuffer(),
+                new ArrayList<>());
         }
 
         @Override

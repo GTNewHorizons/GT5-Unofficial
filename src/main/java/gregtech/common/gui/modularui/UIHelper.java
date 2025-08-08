@@ -25,49 +25,57 @@ public class UIHelper {
      */
     @SuppressWarnings("SimplifyStreamApiCallChains")
     public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
-            ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
-            IDrawable itemSlotBackground, IDrawable fluidSlotBackground, BasicUIProperties uiProperties,
-            int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount,
-            SteamVariant steamVariant, Pos2d offset) {
-        List<Pos2d> itemInputPositions = uiProperties.itemInputPositionsGetter.apply(itemInputCount).stream()
-                .map(p -> p.add(offset)).collect(Collectors.toList());
+        ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
+        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, BasicUIProperties uiProperties, int itemInputCount,
+        int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant, Pos2d offset) {
+        List<Pos2d> itemInputPositions = uiProperties.itemInputPositionsGetter.apply(itemInputCount)
+            .stream()
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, i, false, steamVariant),
-                    itemInputPositions.get(i));
+                i,
+                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, i, false, steamVariant),
+                itemInputPositions.get(i));
         }
 
-        List<Pos2d> itemOutputPositions = uiProperties.itemOutputPositionsGetter.apply(itemOutputCount).stream()
-                .map(p -> p.add(offset)).collect(Collectors.toList());
+        List<Pos2d> itemOutputPositions = uiProperties.itemOutputPositionsGetter.apply(itemOutputCount)
+            .stream()
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(itemSlotBackground, uiProperties, false, true, i, false, steamVariant),
-                    itemOutputPositions.get(i));
+                i,
+                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, true, i, false, steamVariant),
+                itemOutputPositions.get(i));
         }
 
         forEachSpecialSlot.accept(
-                0,
-                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, 0, true, steamVariant),
-                uiProperties.specialItemPositionGetter.get().add(offset));
+            0,
+            getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, 0, true, steamVariant),
+            uiProperties.specialItemPositionGetter.get()
+                .add(offset));
 
-        List<Pos2d> fluidInputPositions = uiProperties.fluidInputPositionsGetter.apply(fluidInputCount).stream()
-                .map(p -> p.add(offset)).collect(Collectors.toList());
+        List<Pos2d> fluidInputPositions = uiProperties.fluidInputPositionsGetter.apply(fluidInputCount)
+            .stream()
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, false, i, false, steamVariant),
-                    fluidInputPositions.get(i));
+                i,
+                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, false, i, false, steamVariant),
+                fluidInputPositions.get(i));
         }
 
-        List<Pos2d> fluidOutputPositions = uiProperties.fluidOutputPositionsGetter.apply(fluidOutputCount).stream()
-                .map(p -> p.add(offset)).collect(Collectors.toList());
+        List<Pos2d> fluidOutputPositions = uiProperties.fluidOutputPositionsGetter.apply(fluidOutputCount)
+            .stream()
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, true, i, false, steamVariant),
-                    fluidOutputPositions.get(i));
+                i,
+                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, true, i, false, steamVariant),
+                fluidOutputPositions.get(i));
         }
     }
 
@@ -136,7 +144,7 @@ public class UIHelper {
     }
 
     public static List<Pos2d> getGridPositions(int totalCount, int xOrigin, int yOrigin, int xDirMaxCount,
-            int yDirMaxCount) {
+        int yDirMaxCount) {
         // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
         // around them.
         int distance = 18;
@@ -158,7 +166,7 @@ public class UIHelper {
     }
 
     private static IDrawable[] getBackgroundsForSlot(IDrawable base, BasicUIProperties uiProperties, boolean isFluid,
-            boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
+        boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
         IDrawable overlay = getOverlay(uiProperties, isFluid, isOutput, index, isSpecial, steamVariant);
         if (overlay != null) {
             return new IDrawable[] { base, overlay };
@@ -169,7 +177,7 @@ public class UIHelper {
 
     @Nullable
     private static IDrawable getOverlay(BasicUIProperties uiProperties, boolean isFluid, boolean isOutput, int index,
-            boolean isSpecial, SteamVariant steamVariant) {
+        boolean isSpecial, SteamVariant steamVariant) {
         if (isSpecial && !uiProperties.useSpecialSlot) {
             return null;
         }

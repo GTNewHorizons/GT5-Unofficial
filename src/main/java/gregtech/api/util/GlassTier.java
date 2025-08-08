@@ -44,7 +44,8 @@ import tectech.thing.block.BlockQuantumGlass;
 public class GlassTier {
 
     private static final Comparator<Pair<Integer, Integer>> tierComparator = Comparator
-            .comparing(Pair<Integer, Integer>::getLeft).thenComparing(Pair::getRight);
+        .comparing(Pair<Integer, Integer>::getLeft)
+        .thenComparing(Pair::getRight);
     private static final Map<Pair<Integer, Integer>, Pair<Block, Integer>> tierToGlass = new TreeMap<>(tierComparator);
     private static final HashMap<Pair<Block, Integer>, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
@@ -52,7 +53,7 @@ public class GlassTier {
     private static final int maxTier = VoltageIndex.UMV;
     private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
-            Collections.nCopies(maxTier + 1 - minTier, null));
+        Collections.nCopies(maxTier + 1 - minTier, null));
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
 
     /**
@@ -70,10 +71,10 @@ public class GlassTier {
             addCustomGlass(block, meta, tier, subtier);
         } else {
             new IllegalArgumentException(
-                    "Block: " + unlocalisedBlockName
-                            + " of the Mod: "
-                            + modname
-                            + " was NOT found when attempting to register a glass!").printStackTrace();
+                "Block: " + unlocalisedBlockName
+                    + " of the Mod: "
+                    + modname
+                    + " was NOT found when attempting to register a glass!").printStackTrace();
         }
     }
 
@@ -96,11 +97,13 @@ public class GlassTier {
      */
     @Nullable
     public static Integer getGlassBlockTier(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier).getLeft();
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
+            .getLeft();
     }
 
     public static int getGlassChannelValue(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier).getRight();
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
+            .getRight();
     }
 
     public static List<Pair<Block, Integer>> getGlassList() {
@@ -110,16 +113,22 @@ public class GlassTier {
                 glassList.add(glass);
                 glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr));
                 GTStructureChannels.BOROGLASS
-                        .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
+                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
             for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
-                if (entry.getKey().getRight() == 0) continue;
+                if (entry.getKey()
+                    .getRight() == 0) continue;
                 Pair<Block, Integer> glass = entry.getValue();
                 glassList.add(glass);
-                glassToTierAndIndex.put(glass, Pair.of(entry.getKey().getLeft(), ctr));
+                glassToTierAndIndex.put(
+                    glass,
+                    Pair.of(
+                        entry.getKey()
+                            .getLeft(),
+                        ctr));
                 GTStructureChannels.BOROGLASS
-                        .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
+                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
             glassList.add(mainGlass.get(mainGlass.size() - 1));
@@ -204,8 +213,14 @@ public class GlassTier {
 
             // Register glass ore dict entries.
             for (Map.Entry<Pair<Block, Integer>, Pair<Integer, Integer>> entry : glassToTierAndIndex.entrySet()) {
-                String oreName = "blockGlass" + VN[entry.getValue().getLeft()];
-                ItemStack itemStack = new ItemStack(entry.getKey().getLeft(), 1, entry.getKey().getRight());
+                String oreName = "blockGlass" + VN[entry.getValue()
+                    .getLeft()];
+                ItemStack itemStack = new ItemStack(
+                    entry.getKey()
+                        .getLeft(),
+                    1,
+                    entry.getKey()
+                        .getRight());
                 OreDictionary.registerOre(oreName, itemStack);
             }
         }
@@ -227,8 +242,8 @@ public class GlassTier {
             if (tier == null) return;
 
             event.toolTip.add(
-                    StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " "
-                            + getColoredTierNameFromTier(tier.byteValue()));
+                StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " "
+                    + getColoredTierNameFromTier(tier.byteValue()));
         }
     }
 }

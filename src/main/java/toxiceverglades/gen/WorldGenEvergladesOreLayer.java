@@ -56,30 +56,30 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
     public final String aTextWorldgen = "worldgen.";
 
     public WorldGenEvergladesOreLayer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
-            Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
+        Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         this(
-                aName,
-                true,
-                aMinY,
-                aMaxY,
-                aWeight,
-                aDensity,
-                aSize,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                aPrimary,
-                aSecondary,
-                aBetween,
-                aSporadic);
+            aName,
+            true,
+            aMinY,
+            aMaxY,
+            aWeight,
+            aDensity,
+            aSize,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            aPrimary,
+            aSecondary,
+            aBetween,
+            aSporadic);
     }
 
     public WorldGenEvergladesOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
-            int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2,
-            boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
+        int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2,
+        boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
         Logger.WORLD("Creating Ore Layer Object");
         this.mOverworld = aOverworld;
@@ -106,18 +106,18 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
     }
 
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         // Debug Handler
         // This handles Variables that are null during Init
         if (this.mPrimaryMeta == Blocks.stone || this.mSecondaryMeta == Blocks.stone
-                || this.mBetweenMeta == Blocks.stone
-                || this.mSporadicMeta == Blocks.stone) {
+            || this.mBetweenMeta == Blocks.stone
+            || this.mSporadicMeta == Blocks.stone) {
             this.mPrimaryMeta = this.mPrimary.getOreBlock(1);
             this.mSecondaryMeta = this.mSecondary.getOreBlock(1);
             this.mBetweenMeta = this.mBetween.getOreBlock(1);
             this.mSporadicMeta = this.mSporadic.getOreBlock(1);
             Logger.WORLD(
-                    "[Vein Generator] An Ore in a Vein had defaulted back to a default value, so they have now been reset to correct values.");
+                "[Vein Generator] An Ore in a Vein had defaulted back to a default value, so they have now been reset to correct values.");
         }
 
         if (mWorldGenName.equals("vein0")) {
@@ -147,24 +147,21 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         int eX = Math.min(eXVein, aChunkX + 2 + 16);
         if (wX >= eX) { // No overlap between orevein and this chunk exists in X
             Block tBlock = aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8);
-            if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone) || tBlock
+            if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone)
+                || tBlock
                     .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, DimensionEverglades.blockSecondLayer)
-                    || tBlock.isReplaceableOreGen(
-                            aWorld,
-                            aChunkX + 8,
-                            tMinY,
-                            aChunkZ + 8,
-                            DimensionEverglades.blockMainFiller)
-                    || tBlock.isReplaceableOreGen(
-                            aWorld,
-                            aChunkX + 8,
-                            tMinY,
-                            aChunkZ + 8,
-                            DimensionEverglades.blockSecondaryFiller)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
+                || tBlock
+                    .isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, DimensionEverglades.blockMainFiller)
+                || tBlock.isReplaceableOreGen(
+                    aWorld,
+                    aChunkX + 8,
+                    tMinY,
+                    aChunkZ + 8,
+                    DimensionEverglades.blockSecondaryFiller)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -181,10 +178,10 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         if (nZ >= sZ) { // No overlap between orevein and this chunk exists in Z
             Block tBlock = aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8);
             if (tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
-                    || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.netherrack)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, Blocks.end_stone)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockGranites)
+                || tBlock.isReplaceableOreGen(aWorld, aChunkX + 8, tMinY, aChunkZ + 8, GregTechAPI.sBlockStones)) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -196,19 +193,19 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
             GTLog.out.print(
-                    "Trying Orevein:" + this.mWorldGenName
-                            + " Dimension="
-                            + tDimensionName
-                            + " mX="
-                            + aChunkX / 16
-                            + " mZ="
-                            + aChunkZ / 16
-                            + " oreseedX="
-                            + aSeedX / 16
-                            + " oreseedZ="
-                            + aSeedZ / 16
-                            + " cY="
-                            + tMinY);
+                "Trying Orevein:" + this.mWorldGenName
+                    + " Dimension="
+                    + tDimensionName
+                    + " mX="
+                    + aChunkX / 16
+                    + " mZ="
+                    + aChunkZ / 16
+                    + " oreseedX="
+                    + aSeedX / 16
+                    + " oreseedZ="
+                    + aSeedZ / 16
+                    + " cY="
+                    + tMinY);
         }
         double dx = aChunkX / 16 - aSeedX / 16;
         double dz = aChunkZ / 16 - aSeedZ / 16;
@@ -222,24 +219,22 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         int level = tMinY - 1; // Dunno why, but the first layer is actually played one below tMinY. Go figure.
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mSecondaryMeta != null)) {
+                    && (this.mSecondaryMeta != null)) {
                     if (setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
                         placeCount[1]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
-                                // reduce by 1/7 to
-                                // compensate
-                                if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
+                            // reduce by 1/7 to
+                            // compensate
+                            if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false)) placeCount[3]++;
+                        }
             }
         }
         /*
@@ -249,26 +244,24 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         Logger.WORLD("[World Generation Debug] Trying to set Ores?");
         for (level = tMinY; level < (tMinY - 1 + 3); level++) {
             for (int tX = wX; tX < eX; tX++) {
-                int placeX = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                int placeX = Math
+                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(
-                            1,
-                            Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                        1,
+                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSecondaryMeta != null)) {
+                        && (this.mSecondaryMeta != null)) {
                         if (setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
-                            && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
-                                // reduce by 1/7 to
-                                // compensate
-                                if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
-                                    placeCount[3]++;
-                            }
+                        && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
+                        && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
+                            // reduce by 1/7 to
+                            // compensate
+                            if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false)) placeCount[3]++;
+                        }
                 }
             }
         }
@@ -276,120 +269,114 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         // level should be = tMinY-1+3 from end of for loop
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta != null)) { // Between are only 1 per vertical column, reduce by 1/2 to
+                    && (this.mBetweenMeta != null)) { // Between are only 1 per vertical column, reduce by 1/2 to
                     // compensate
                     if (setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
                         placeCount[2]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
-                                // reduce by 1/7 to
-                                // compensate
-                                if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
+                            // reduce by 1/7 to
+                            // compensate
+                            if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false)) placeCount[3]++;
+                        }
             }
         }
         // High Middle layer is between + primary + sporadic
         level++; // Increment level to next layer
         for (int tX = wX; tX < eX; tX++) {
             int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
-                int placeZ = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                int placeZ = Math
+                    .max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mBetweenMeta != null)) { // Between are only 1 per vertical column, reduce by 1/2 to
+                    && (this.mBetweenMeta != null)) { // Between are only 1 per vertical column, reduce by 1/2 to
                     // compensate
                     if (setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
                         placeCount[2]++;
                     }
                 } else if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                        && (this.mPrimaryMeta != null)) {
-                            if (setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
-                                placeCount[0]++;
-                            }
-                        } else
+                    && (this.mPrimaryMeta != null)) {
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
+                            placeCount[0]++;
+                        }
+                    } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
-                                // reduce by 1/7 to
-                                // compensate
-                                if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
-                                    placeCount[3]++;
-                            }
+                        && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
+                            // reduce by 1/7 to
+                            // compensate
+                            if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false)) placeCount[3]++;
+                        }
             }
         }
         // Top two layers are primary + sporadic
         level++; // Increment level to next layer
         for (; level < (tMinY + 6); level++) { // should do two layers
             for (int tX = wX; tX < eX; tX++) {
-                int placeX = Math.max(
-                        1,
-                        Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+                int placeX = Math
+                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(
-                            1,
-                            Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
+                        1,
+                        Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mPrimaryMeta != null)) {
+                        && (this.mPrimaryMeta != null)) {
                         if (setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
                             placeCount[0]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
-                            && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
-                            && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
-                                // reduce by 1/7 to
-                                // compensate
-                                if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
-                                    placeCount[3]++;
-                            }
+                        && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
+                        && (this.mSporadicMeta != null)) { // Sporadics are only 1 per vertical column normally,
+                            // reduce by 1/7 to
+                            // compensate
+                            if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false)) placeCount[3]++;
+                        }
                 }
             }
         }
         if (debugWorldGen) {
             String tDimensionName = aWorld.provider.getDimensionName();
             GTLog.out.println(
-                    "Generated Orevein:" + this.mWorldGenName
-                            + " Dimension="
-                            + tDimensionName
-                            + " mX="
-                            + aChunkX / 16
-                            + " mZ="
-                            + aChunkZ / 16
-                            + " oreseedX="
-                            + aSeedX / 16
-                            + " oreseedZ="
-                            + aSeedZ / 16
-                            + " cY="
-                            + tMinY
-                            + " wXVein"
-                            + wXVein
-                            + " eXVein"
-                            + eXVein
-                            + " nZVein"
-                            + nZVein
-                            + " sZVein"
-                            + sZVein
-                            + " locDen="
-                            + localDensity
-                            + " Den="
-                            + this.mDensity
-                            + " Sec="
-                            + placeCount[1]
-                            + " Spo="
-                            + placeCount[3]
-                            + " Bet="
-                            + placeCount[2]
-                            + " Pri="
-                            + placeCount[0]);
+                "Generated Orevein:" + this.mWorldGenName
+                    + " Dimension="
+                    + tDimensionName
+                    + " mX="
+                    + aChunkX / 16
+                    + " mZ="
+                    + aChunkZ / 16
+                    + " oreseedX="
+                    + aSeedX / 16
+                    + " oreseedZ="
+                    + aSeedZ / 16
+                    + " cY="
+                    + tMinY
+                    + " wXVein"
+                    + wXVein
+                    + " eXVein"
+                    + eXVein
+                    + " nZVein"
+                    + nZVein
+                    + " sZVein"
+                    + sZVein
+                    + " locDen="
+                    + localDensity
+                    + " Den="
+                    + this.mDensity
+                    + " Sec="
+                    + placeCount[1]
+                    + " Spo="
+                    + placeCount[3]
+                    + " Bet="
+                    + placeCount[2]
+                    + " Pri="
+                    + placeCount[0]);
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;
@@ -409,16 +396,24 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
         // Set GT ORE
         if (aMetaData instanceof BlockOres) {
             if (ore1String.equals("unset")) {
-                ore1String = StringUtils.sanitizeString(this.mPrimary.getLocalizedName().toLowerCase());
+                ore1String = StringUtils.sanitizeString(
+                    this.mPrimary.getLocalizedName()
+                        .toLowerCase());
             }
             if (ore2String.equals("unset")) {
-                ore2String = StringUtils.sanitizeString(this.mSecondaryMeta.getLocalizedName().toLowerCase());
+                ore2String = StringUtils.sanitizeString(
+                    this.mSecondaryMeta.getLocalizedName()
+                        .toLowerCase());
             }
             if (ore3String.equals("unset")) {
-                ore3String = StringUtils.sanitizeString(this.mBetweenMeta.getLocalizedName().toLowerCase());
+                ore3String = StringUtils.sanitizeString(
+                    this.mBetweenMeta.getLocalizedName()
+                        .toLowerCase());
             }
             if (ore4String.equals("unset")) {
-                ore4String = StringUtils.sanitizeString(this.mSporadicMeta.getLocalizedName().toLowerCase());
+                ore4String = StringUtils.sanitizeString(
+                    this.mSporadicMeta.getLocalizedName()
+                        .toLowerCase());
             }
 
             String fString;
@@ -482,14 +477,14 @@ public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockGranites)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockStones)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondLayer)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockMainFiller)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
-                || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockGranites)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTechAPI.sBlockStones)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondLayer)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockMainFiller)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
+            || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
 
             return aWorld.setBlock(aX, aY, aZ, aMetaData, 0, 3);
         }

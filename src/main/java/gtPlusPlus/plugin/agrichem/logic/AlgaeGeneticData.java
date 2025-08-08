@@ -27,7 +27,7 @@ public class AlgaeGeneticData {
     }
 
     public AlgaeGeneticData(boolean isDominant, boolean requiresLight, boolean isSalt, boolean isFresh,
-            byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration) {
+        byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration) {
         mIsDominant = isDominant;
         mRequiresLight = requiresLight;
         mSaltWater = isSalt;

@@ -60,13 +60,13 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -77,7 +77,7 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
     }
@@ -85,8 +85,8 @@ public class MTEHatchPHSensor extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the pH Neutralization Purification Unit.",
-                "Outputs Redstone Signal according to the current pH value.",
-                "Right click to open the GUI and change settings." };
+            "Outputs Redstone Signal according to the current pH value.",
+            "Right click to open the GUI and change settings." };
     }
 
     @Override
@@ -131,8 +131,10 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+            .addIcon(textureFont_Glow)
+            .glow()
+            .build() };
     }
 
     @Override
@@ -142,30 +144,37 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                        .setTextureGetter(
-                                (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                        .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted")).setPos(10, 8))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                                                : translateToLocal("gt.interact.desc.normal"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(28, 12))
-                .widget(
-                        new NumericWidget().setBounds(0, 14.0).setIntegerOnly(false).setGetter(() -> (double) threshold)
-                                .setSetter((value) -> threshold = (float) Math.round(value * 100.0) / 100.0f)
-                                .setScrollValues(0.1, 0.01, 1.0).setMaximumFractionDigits(2)
-                                .setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
-                                .setFocusOnGuiOpen(true)
-                                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                                .setPos(10, 28).setSize(77, 12))
-                .widget(
-                        new TextWidget(translateToLocal("GT5U.gui.text.ph_sensor"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(90, 30));
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                .setPos(10, 8))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(28, 12))
+            .widget(
+                new NumericWidget().setBounds(0, 14.0)
+                    .setIntegerOnly(false)
+                    .setGetter(() -> (double) threshold)
+                    .setSetter((value) -> threshold = (float) Math.round(value * 100.0) / 100.0f)
+                    .setScrollValues(0.1, 0.01, 1.0)
+                    .setMaximumFractionDigits(2)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 28)
+                    .setSize(77, 12))
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.ph_sensor")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(90, 30));
     }
 }

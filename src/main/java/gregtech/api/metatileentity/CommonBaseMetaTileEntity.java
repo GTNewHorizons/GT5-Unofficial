@@ -35,7 +35,7 @@ import gregtech.api.util.GTUtility;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-            mInventoryChanged = false;
+        mInventoryChanged = false;
 
     protected NBTTagCompound pendingDescriptionPacket;
 
@@ -50,7 +50,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
-            GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this)
+                .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
             // If we have a pending description packet that was received before the MTE was created, load it
@@ -94,21 +95,21 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
             mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
             if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
-                    && mTickTimer > 1000
-                    && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
-                    && mLagWarningCount++ < 10)
+                && mTickTimer > 1000
+                && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
+                && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn(
-                        "WARNING: Possible Lag Source at [" + xCoord
-                                + ", "
-                                + yCoord
-                                + ", "
-                                + zCoord
-                                + "] in Dimension "
-                                + worldObj.provider.dimensionId
-                                + " with "
-                                + tTime
-                                + " ns caused by an instance of "
-                                + getMetaTileEntity().getClass());
+                    "WARNING: Possible Lag Source at [" + xCoord
+                        + ", "
+                        + yCoord
+                        + ", "
+                        + zCoord
+                        + "] in Dimension "
+                        + worldObj.provider.dimensionId
+                        + " with "
+                        + tTime
+                        + " ns caused by an instance of "
+                        + getMetaTileEntity().getClass());
         }
 
     }
@@ -213,12 +214,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                        "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
-                                + "ns over "
-                                + GTUtility.formatNumbers(samples)
-                                + " ticks with worst time of "
-                                + GTUtility.formatNumbers(tWorstTime)
-                                + "ns.");
+                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
+                        + "ns over "
+                        + GTUtility.formatNumbers(samples)
+                        + " ticks with worst time of "
+                        + GTUtility.formatNumbers(tWorstTime)
+                        + "ns.");
             }
         } else {
             startTimeStatistics();
@@ -226,10 +227,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                    "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
-                            + " Lag Spike Warnings (anything taking longer than "
-                            + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
-                            + "ms) on the Server.");
+                "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
+                    + " Lag Spike Warnings (anything taking longer than "
+                    + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
+                    + "ms) on the Server.");
         }
     }
 

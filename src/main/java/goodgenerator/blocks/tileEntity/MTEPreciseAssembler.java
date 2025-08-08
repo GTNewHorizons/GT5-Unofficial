@@ -93,14 +93,14 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-            "iconsets/OVERLAY_QTANK_GLOW");
+        "iconsets/OVERLAY_QTANK_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-            "iconsets/OVERLAY_QCHEST_GLOW");
+        "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -122,58 +122,60 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public IStructureDefinition<MTEPreciseAssembler> getStructureDefinition() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEPreciseAssembler>builder().addShape(
+            multiDefinition = StructureDefinition.<MTEPreciseAssembler>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC" },
-                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
-                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
-                                    { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
-                                    { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
-                    .addElement(
-                            'C',
-                            GTStructureChannels.PRASS_UNIT_CASING.use(
-                                    HatchElementBuilder.<MTEPreciseAssembler>builder()
-                                            .atLeast(
-                                                    InputBus,
-                                                    InputHatch,
-                                                    OutputHatch,
-                                                    OutputBus,
-                                                    Maintenance,
-                                                    Muffler,
-                                                    ExoticEnergy.or(Energy))
-                                            .adder(MTEPreciseAssembler::addToPAssList).casingIndex(CASING_INDEX).dot(1)
-                                            .buildAndChain(
-                                                    onElementPass(
-                                                            x -> x.casingAmount++,
-                                                            StructureUtility.ofBlocksTiered(
-                                                                    MTEPreciseAssembler::getCasingBlockTier,
-                                                                    ImmutableList.of(
-                                                                            Pair.of(Loaders.impreciseUnitCasing, 0),
-                                                                            Pair.of(Loaders.preciseUnitCasing, 0),
-                                                                            Pair.of(Loaders.preciseUnitCasing, 1),
-                                                                            Pair.of(Loaders.preciseUnitCasing, 2),
-                                                                            Pair.of(Loaders.preciseUnitCasing, 3)),
-                                                                    -3,
-                                                                    MTEPreciseAssembler::setCasingTier,
-                                                                    MTEPreciseAssembler::getCasingTier)))))
-                    .addElement('F', ofFrame(Materials.TungstenSteel))
-                    .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-                    .addElement(
-                            'M',
-                            GTStructureChannels.TIER_MACHINE_CASING.use(
+                        new String[][] { { "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC" },
+                            { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                            { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                            { "F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F" },
+                            { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
+                .addElement(
+                    'C',
+                    GTStructureChannels.PRASS_UNIT_CASING.use(
+                        HatchElementBuilder.<MTEPreciseAssembler>builder()
+                            .atLeast(
+                                InputBus,
+                                InputHatch,
+                                OutputHatch,
+                                OutputBus,
+                                Maintenance,
+                                Muffler,
+                                ExoticEnergy.or(Energy))
+                            .adder(MTEPreciseAssembler::addToPAssList)
+                            .casingIndex(CASING_INDEX)
+                            .dot(1)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> x.casingAmount++,
                                     StructureUtility.ofBlocksTiered(
-                                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0
-                                                    && meta <= 9) ? meta : null,
-                                            IntStream.range(0, 10)
-                                                    .mapToObj(
-                                                            meta -> org.apache.commons.lang3.tuple.Pair
-                                                                    .of(GregTechAPI.sBlockCasings1, meta))
-                                                    .collect(Collectors.toList()),
-                                            -1,
-                                            MTEPreciseAssembler::setMachineTier,
-                                            MTEPreciseAssembler::getMachineTier)))
-                    .build();
+                                        MTEPreciseAssembler::getCasingBlockTier,
+                                        ImmutableList.of(
+                                            Pair.of(Loaders.impreciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 1),
+                                            Pair.of(Loaders.preciseUnitCasing, 2),
+                                            Pair.of(Loaders.preciseUnitCasing, 3)),
+                                        -3,
+                                        MTEPreciseAssembler::setCasingTier,
+                                        MTEPreciseAssembler::getCasingTier)))))
+                .addElement('F', ofFrame(Materials.TungstenSteel))
+                .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement(
+                    'M',
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        StructureUtility.ofBlocksTiered(
+                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
+                                : null,
+                            IntStream.range(0, 10)
+                                .mapToObj(
+                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
+                                .collect(Collectors.toList()),
+                            -1,
+                            MTEPreciseAssembler::setMachineTier,
+                            MTEPreciseAssembler::getMachineTier)))
+                .build();
         }
         return multiDefinition;
     }
@@ -240,7 +242,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
@@ -328,8 +330,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
             return casingAmount >= 42 && mMaintenanceHatches.size() == 1
-                    && glassTier >= VoltageIndex.EV
-                    && !mMufflerHatches.isEmpty();
+                && glassTier >= VoltageIndex.EV
+                && !mMufflerHatches.isEmpty();
         }
         return false;
     }
@@ -337,29 +339,39 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss").addInfo("The error is no more than 7nm.")
-                .addInfo("Can assemble precise components in Precise Mode.")
-                .addInfo("Can work like a normal assembler in Normal Mode.")
-                .addInfo("Use a screwdriver to change the mode.")
-                .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
-                .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
-                .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
-                .addInfo(
-                        "Machine Casing limits the voltage tier the machine can work on, "
-                                + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                                + "UHV"
-                                + EnumChatFormatting.GRAY
-                                + "-tier Machine Casing unlocks all.")
-                .addTecTechHatchInfo().addNoTierSkips().addPollutionAmount(getPollutionPerSecond(null))
-                .beginStructureBlock(9, 5, 5, true).addController("Front bottom")
-                .addCasingInfoExactly("Machine Casing", 21, true)
-                .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
-                .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true).addInputHatch("Any Casing")
-                .addInputBus("Any Casing").addOutputHatch("Any Casing").addOutputBus("Any Casing")
-                .addEnergyHatch("Any Casing").addMufflerHatch("Any Casing").addMaintenanceHatch("Any Casing")
-                .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-                .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-                .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING).toolTipFinisher();
+        tt.addMachineType("Precise Assembler, Assembler, PrAss")
+            .addInfo("The error is no more than 7nm.")
+            .addInfo("Can assemble precise components in Precise Mode.")
+            .addInfo("Can work like a normal assembler in Normal Mode.")
+            .addInfo("Use a screwdriver to change the mode.")
+            .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
+            .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
+            .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo(
+                "Machine Casing limits the voltage tier the machine can work on, "
+                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
+                    + "UHV"
+                    + EnumChatFormatting.GRAY
+                    + "-tier Machine Casing unlocks all.")
+            .addTecTechHatchInfo()
+            .addNoTierSkips()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(9, 5, 5, true)
+            .addController("Front bottom")
+            .addCasingInfoExactly("Machine Casing", 21, true)
+            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
+            .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
+            .addInputHatch("Any Casing")
+            .addInputBus("Any Casing")
+            .addOutputHatch("Any Casing")
+            .addOutputBus("Any Casing")
+            .addEnergyHatch("Any Casing")
+            .addMufflerHatch("Any Casing")
+            .addMaintenanceHatch("Any Casing")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -459,15 +471,29 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         int t = Math.max(getCasingTier(), -1);
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                    TextureFactory.builder().addIcon(textureFontOn).extFacing().build(),
-                    TextureFactory.builder().addIcon(textureFontOn_Glow).extFacing().glow().build() };
+                TextureFactory.builder()
+                    .addIcon(textureFontOn)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(textureFontOn_Glow)
+                    .extFacing()
+                    .glow()
+                    .build() };
             else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                    TextureFactory.builder().addIcon(textureFontOff).extFacing().build(),
-                    TextureFactory.builder().addIcon(textureFontOff_Glow).extFacing().glow().build() };
+                TextureFactory.builder()
+                    .addIcon(textureFontOff)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(textureFontOff_Glow)
+                    .extFacing()
+                    .glow()
+                    .build() };
         } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t) };
     }
 
@@ -475,15 +501,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-                new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
-                        .setTextureGetter(
-                                state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
-                                        : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
-                        .setBackground(GTUITextures.BUTTON_STANDARD).setPos(80, 91).setSize(16, 16)
-                        .dynamicTooltip(
-                                () -> Collections
-                                        .singletonList(StatCollector.translateToLocal("preciseassembler.chat." + mode)))
-                        .setUpdateTooltipEveryTick(true).setTooltipShowUpDelay(TOOLTIP_DELAY));
+            new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+                .setTextureGetter(
+                    state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
+                        : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .setPos(80, 91)
+                .setSize(16, 16)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(StatCollector.translateToLocal("preciseassembler.chat." + mode)))
+                .setUpdateTooltipEveryTick(true)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
@@ -503,22 +531,21 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                        + EnumChatFormatting.WHITE
-                        + StatCollector
-                                .translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + tag.getInteger("mode"))
-                        + EnumChatFormatting.RESET);
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 
     @SideOnly(Side.CLIENT)
@@ -529,7 +556,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -545,18 +572,16 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> (machineTier > 0 && machineTier < 9)
-                                                ? StatCollector.translateToLocalFormatted(
-                                                        "GT5U.multiblock.preciseassemblercasing",
-                                                        GTUtility
-                                                                .getColoredTierNameFromVoltage(GTValues.V[machineTier]))
-                                                : "")
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> (machineTier > 0 && machineTier < 9) ? StatCollector.translateToLocalFormatted(
+                            "GT5U.multiblock.preciseassemblercasing",
+                            GTUtility.getColoredTierNameFromVoltage(GTValues.V[machineTier])) : "")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
         super.drawTexts(screenElements, inventorySlot);
     }
 }

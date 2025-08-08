@@ -20,8 +20,8 @@ public class FuelSpecialValueFormatter implements INEISpecialInfoFormatter {
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         return Collections.singletonList(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.fuel",
-                        GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 1000L)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.fuel",
+                GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 1000L)));
     }
 }

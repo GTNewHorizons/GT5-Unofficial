@@ -81,7 +81,9 @@ public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
     @Override
     public String displayName() {
-        return StatCollector.translateToLocal("crops." + cropName.toLowerCase().replace(" ", ""));
+        return StatCollector.translateToLocal(
+            "crops." + cropName.toLowerCase()
+                .replace(" ", ""));
     }
 
     @Override

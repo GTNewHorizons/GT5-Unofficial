@@ -106,8 +106,10 @@ public class RecipeMapBackend {
      * @return Raw recipe list
      */
     private Collection<GTRecipe> allRecipes() {
-        return recipesByCategory.values().stream().flatMap(Collection::stream)
-                .collect(Collectors.toCollection(ArrayList::new));
+        return recipesByCategory.values()
+            .stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -116,7 +118,7 @@ public class RecipeMapBackend {
     @Unmodifiable
     public Collection<GTRecipe> getRecipesByCategory(RecipeCategory recipeCategory) {
         return Collections
-                .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
+            .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
     }
 
     @Unmodifiable
@@ -135,10 +137,14 @@ public class RecipeMapBackend {
         if (recipe.getRecipeCategory() == null) {
             recipe.setRecipeCategory(recipeMap.getDefaultRecipeCategory());
         }
-        recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>()).add(recipe);
+        recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
+            .add(recipe);
         for (FluidStack fluid : recipe.mFluidInputs) {
             if (fluid == null) continue;
-            fluidIndex.put(fluid.getFluid().getName(), recipe);
+            fluidIndex.put(
+                fluid.getFluid()
+                    .getName(),
+                recipe);
         }
         return addToItemMap(recipe);
     }
@@ -205,7 +211,8 @@ public class RecipeMapBackend {
                 continue;
             }
             if (hasAnEntry) {
-                errorInfo.append("+").append(s);
+                errorInfo.append("+")
+                    .append(s);
             } else {
                 errorInfo.append(s);
             }
@@ -217,7 +224,8 @@ public class RecipeMapBackend {
             }
             String itemName = item.getDisplayName();
             if (hasAnEntry) {
-                errorInfo.append("+").append(itemName);
+                errorInfo.append("+")
+                    .append(itemName);
             } else {
                 errorInfo.append(itemName);
             }
@@ -234,10 +242,12 @@ public class RecipeMapBackend {
             recipes.removeAll(recipesToRemove);
         }
         for (GTItemStack key : new HashMap<>(itemIndex.asMap()).keySet()) {
-            itemIndex.get(key).removeAll(recipesToRemove);
+            itemIndex.get(key)
+                .removeAll(recipesToRemove);
         }
         for (String key : new HashMap<>(fluidIndex.asMap()).keySet()) {
-            fluidIndex.get(key).removeAll(recipesToRemove);
+            fluidIndex.get(key)
+                .removeAll(recipesToRemove);
         }
     }
 
@@ -292,7 +302,7 @@ public class RecipeMapBackend {
      */
     boolean checkCollision(GTRecipe recipe) {
         return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true).findAny()
-                .isPresent();
+            .isPresent();
     }
 
     /**
@@ -300,7 +310,7 @@ public class RecipeMapBackend {
      */
     @Nullable
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-            @Nullable GTRecipe cachedRecipe) {
+        @Nullable GTRecipe cachedRecipe) {
         return null;
     }
 
@@ -316,7 +326,7 @@ public class RecipeMapBackend {
      */
     @Nullable
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-            @Nullable ItemStack specialSlot) {
+        @Nullable ItemStack specialSlot) {
         return recipe;
     }
 
@@ -344,8 +354,8 @@ public class RecipeMapBackend {
      * @return Stream of matches recipes.
      */
     Stream<GTRecipe> matchRecipeStream(@Nullable ItemStack @NotNull [] rawItems,
-            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
-            boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
+        boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
         if (doesOverwriteFindRecipe()) {
             return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
@@ -385,37 +395,50 @@ public class RecipeMapBackend {
         }
 
         return Stream.<Stream<GTRecipe>>of(
-                // Check the recipe which has been used last time in order to not have to search for it again, if
-                // possible.
-                GTStreamUtil.ofNullable(cachedRecipe).filter(recipe -> recipe.mCanBeBuffered)
-                        .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                        .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot)).filter(Objects::nonNull),
-                GTStreamUtil.ofSupplier(() -> cacheMap.get(hash(items, fluids))).filter(Objects::nonNull)
-                        .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                        .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot)).filter(Objects::nonNull),
-                // Now look for the recipes inside the item index, but only when the recipes actually can have items
-                // inputs.
-                GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items).filter(Objects::nonNull)
-                        .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
-                        .map(itemIndex::get).flatMap(Collection::stream)
-                        .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                        .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot)).filter(Objects::nonNull),
-                // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only
-                // recipes,
-                // so check fluid index too.
-                GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids).filter(Objects::nonNull)
-                        .map(fluidStack -> fluidIndex.get(fluidStack.getFluid().getName())).flatMap(Collection::stream)
-                        .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                        .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot)).filter(Objects::nonNull),
-                // Lastly, find fallback.
-                forCollisionCheck ? Stream.empty()
-                        : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
-                                .filter(Objects::nonNull))
-                .flatMap(Function.identity());
+            // Check the recipe which has been used last time in order to not have to search for it again, if
+            // possible.
+            GTStreamUtil.ofNullable(cachedRecipe)
+                .filter(recipe -> recipe.mCanBeBuffered)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            GTStreamUtil.ofSupplier(() -> cacheMap.get(hash(items, fluids)))
+                .filter(Objects::nonNull)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // Now look for the recipes inside the item index, but only when the recipes actually can have items
+            // inputs.
+            GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
+                .filter(Objects::nonNull)
+                .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
+                .map(itemIndex::get)
+                .flatMap(Collection::stream)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only
+            // recipes,
+            // so check fluid index too.
+            GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
+                .filter(Objects::nonNull)
+                .map(
+                    fluidStack -> fluidIndex.get(
+                        fluidStack.getFluid()
+                            .getName()))
+                .flatMap(Collection::stream)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // Lastly, find fallback.
+            forCollisionCheck ? Stream.empty()
+                : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
+                    .filter(Objects::nonNull))
+            .flatMap(Function.identity());
     }
 
     protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
-            @NotNull GTRecipe recipe) {
+        @NotNull GTRecipe recipe) {
         cacheMap.putAndMoveToFirst(hash(items, fluids), recipe);
         while (cacheMap.size() > 1024) cacheMap.removeLast();
     }
@@ -448,11 +471,11 @@ public class RecipeMapBackend {
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
     protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
-            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
         if (recipe.mEnabled && !recipe.mFakeRecipe
-                && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
+            && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
             return !properties.specialSlotSensitive
-                    || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
+                || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
         }
         return false;
     }

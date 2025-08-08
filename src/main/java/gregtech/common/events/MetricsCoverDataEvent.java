@@ -19,7 +19,7 @@ public class MetricsCoverDataEvent extends BaseMetricsCoverEvent {
     private final GlobalMetricsCoverDatabase.Coordinates coordinates;
 
     public MetricsCoverDataEvent(@NotNull UUID frequency, @NotNull List<String> payload,
-            @NotNull GlobalMetricsCoverDatabase.Coordinates coordinates) {
+        @NotNull GlobalMetricsCoverDatabase.Coordinates coordinates) {
         super(frequency);
         this.payload = payload;
         this.coordinates = coordinates;

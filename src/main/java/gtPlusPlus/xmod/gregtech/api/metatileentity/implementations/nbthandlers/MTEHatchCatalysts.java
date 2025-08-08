@@ -26,16 +26,28 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().build(),
-                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+                .extFacing()
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().build(),
-                TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Bus_Catalyst).extFacing().glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+                .extFacing()
+                .glow()
+                .build() };
     }
 
     @Override

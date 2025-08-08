@@ -45,7 +45,8 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 @EventBusSubscriber
 public class GTCoilTracker {
 
-    private static final Map<World, GTCoilTracker> TRACKERS = new MapMaker().weakKeys().makeMap();
+    private static final Map<World, GTCoilTracker> TRACKERS = new MapMaker().weakKeys()
+        .makeMap();
 
     @SuppressWarnings("unused")
     private final WeakReference<World> world;
@@ -148,9 +149,10 @@ public class GTCoilTracker {
             // maybe there's a more efficient way to do this, but I couldn't figure out how to shove a chunk coord into
             // a long
             long chunk = CoordinatePacker
-                    .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
+                .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
 
-            activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR).add(coil);
+            activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR)
+                .add(coil);
         }
     }
 
@@ -163,7 +165,7 @@ public class GTCoilTracker {
             pendingActivations.remove(coil);
 
             long chunk = CoordinatePacker
-                    .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
+                .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
 
             LongSet list = activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR);
 
@@ -236,7 +238,8 @@ public class GTCoilTracker {
 
         if (base == null || base.isDead()) return null;
 
-        return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR).activateImpl(multi, coils);
+        return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR)
+            .activateImpl(multi, coils);
     }
 
     /**

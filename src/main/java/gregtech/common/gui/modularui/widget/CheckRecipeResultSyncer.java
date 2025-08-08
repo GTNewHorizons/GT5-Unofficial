@@ -17,7 +17,8 @@ public class CheckRecipeResultSyncer extends FakeSyncWidget<CheckRecipeResult> {
             result.encode(buffer);
         }, buffer -> {
             String id = NetworkUtils.readStringSafe(buffer);
-            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id).newInstance();
+            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
+                .newInstance();
             result.decode(buffer);
             return result;
         });

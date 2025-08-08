@@ -90,7 +90,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
     private static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
-            512 };
+        512 };
     private static final int AMPERAGE_NORMAL = 3;
     private static final int AMPERAGE_TE = 6;
 
@@ -121,15 +121,15 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public String[] getDescription() {
         return new String[] { "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
-                "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
-                EnumChatFormatting.GOLD + "Blocks Mode: "
-                        + EnumChatFormatting.RESET
-                        + String.format("Radius 1-%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
-                EnumChatFormatting.GOLD + "TileEntity Mode: "
-                        + EnumChatFormatting.RESET
-                        + String.format("Radius 1 | Amps \u2264%s", AMPERAGE_TE),
-                "Use a screwdriver to change mode, sneak to change radius", "Use a wrench to change speed",
-                "Power consumption increases with speed/radius" };
+            "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
+            EnumChatFormatting.GOLD + "Blocks Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Radius 1-%d | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
+            EnumChatFormatting.GOLD + "TileEntity Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Radius 1 | Amps \u2264%s", AMPERAGE_TE),
+            "Use a screwdriver to change mode, sneak to change radius", "Use a wrench to change speed",
+            "Power consumption increases with speed/radius" };
     }
 
     @Override
@@ -142,31 +142,29 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         List<String> tInfoDisplay = new ArrayList<>();
 
         tInfoDisplay.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.world_accelerator.mode",
-                        StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
         tInfoDisplay.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.world_accelerator.speed",
-                        mAccelerateStatic[getSpeedTierOverride()],
-                        mAccelerateStatic[mTier]));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.speed",
+                mAccelerateStatic[getSpeedTierOverride()],
+                mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.world_accelerator.consuming",
-                        getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.consuming",
+                getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
         if (mMode == 0) tInfoDisplay.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.world_accelerator.radius",
-                        getRadiusTierOverride(),
-                        mTier));
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }
 
     public MTEWorldAccelerator(String pName, int pTier, int pInvSlotCount, String[] pDescription,
-            ITexture[][][] pTextures) {
+        ITexture[][][] pTextures) {
         super(pName, pTier, pInvSlotCount, pDescription, pTextures);
     }
 
@@ -182,25 +180,25 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity pBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean pActive, boolean pRedstone) {
+        int colorIndex, boolean pActive, boolean pRedstone) {
         if (mMode == 0) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], side.offsetY != 0 ? null
-                    : pActive ? TextureFactory.of(_mGTIco_Norm_Active) : TextureFactory.of(_mGTIco_Norm_Idle) };
+                : pActive ? TextureFactory.of(_mGTIco_Norm_Active) : TextureFactory.of(_mGTIco_Norm_Idle) };
         } else {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], side.offsetY != 0 ? null
-                    : pActive ? TextureFactory.of(_mGTIco_TE_Active) : TextureFactory.of(_mGTIco_TE_Idle) };
+                : pActive ? TextureFactory.of(_mGTIco_TE_Active) : TextureFactory.of(_mGTIco_TE_Idle) };
         }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, ForgeDirection side,
-            ItemStack pStack) {
+        ItemStack pStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, ForgeDirection side,
-            ItemStack pStack) {
+        ItemStack pStack) {
         return false;
     }
 
@@ -273,33 +271,32 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private static final String[] mModeStr = { "Blocks", "TileEntities" };
 
     private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
-            "GT5U.word_accelerator.mode.tile_entities" };
+        "GT5U.word_accelerator.mode.tile_entities" };
 
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-            float aY, float aZ, ItemStack aTool) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
 
         markDirty();
         PlayerChatHelper.SendInfo(
-                pPlayer,
-                String.format("Machine acceleration changed to x%d", mAccelerateStatic[getSpeedTierOverride()]));
+            pPlayer,
+            String.format("Machine acceleration changed to x%d", mAccelerateStatic[getSpeedTierOverride()]));
 
         return true;
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();
 
                 markDirty();
-                PlayerChatHelper.SendInfo(
-                        pPlayer,
-                        String.format("Machine radius changed to %d Blocks", getRadiusTierOverride()));
+                PlayerChatHelper
+                    .SendInfo(pPlayer, String.format("Machine radius changed to %d Blocks", getRadiusTierOverride()));
             } else PlayerChatHelper.SendError(pPlayer, "Can't change radius; Machine is in TileEntity Mode!");
         } else {
             mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
@@ -386,9 +383,11 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         }
 
         String tSimpleClassName = simpleNameCache.get(pTile.getClass());
-        String tCanonicalName = pTile.getClass().getCanonicalName().toLowerCase();
+        String tCanonicalName = pTile.getClass()
+            .getCanonicalName()
+            .toLowerCase();
         if (tSimpleClassName.contains("conduit") || tSimpleClassName.contains("wire")
-                || tSimpleClassName.contains("cable")) {
+            || tSimpleClassName.contains("cable")) {
             return true;
         }
         if (tCanonicalName.contains("appeng") || tCanonicalName.contains(GregTech.ID)) // Don't accelerate ANY gregtech
@@ -407,8 +406,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
             }
         }
 
-        return MTEWorldAccelerator._mBlacklistedTiles.stream().map(Class::getCanonicalName).map(String::toLowerCase)
-                .anyMatch(tCanonicalName::equalsIgnoreCase);
+        return MTEWorldAccelerator._mBlacklistedTiles.stream()
+            .map(Class::getCanonicalName)
+            .map(String::toLowerCase)
+            .anyMatch(tCanonicalName::equalsIgnoreCase);
     }
 
     /**

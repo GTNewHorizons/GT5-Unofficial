@@ -25,13 +25,13 @@ public class LinkedBoolValue {
 
     public static BoolValue.Dynamic of(IntSyncValue syncValue, int value) {
         return new BoolValue.Dynamic(
-                () -> syncValue.getValue() == value,
-                enabled -> syncValue.setValue(value, true, syncValue.getValue() != value));
+            () -> syncValue.getValue() == value,
+            enabled -> syncValue.setValue(value, true, syncValue.getValue() != value));
     }
 
     public static BoolValue.Dynamic of(BooleanSyncValue syncValue, boolean value) {
         return new BoolValue.Dynamic(
-                () -> syncValue.getValue() == value,
-                enabled -> syncValue.setValue(value, true, syncValue.getValue() != value));
+            () -> syncValue.getValue() == value,
+            enabled -> syncValue.setValue(value, true, syncValue.getValue() != value));
     }
 }

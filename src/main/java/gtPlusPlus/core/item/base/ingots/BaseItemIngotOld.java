@@ -20,7 +20,7 @@ public class BaseItemIngotOld extends Item {
     protected String unlocalName;
 
     public BaseItemIngotOld(final String unlocalizedName, final String materialName, final int colour,
-            final int sRadioactivity) {
+        final int sRadioactivity) {
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = unlocalizedName;
@@ -61,7 +61,7 @@ public class BaseItemIngotOld extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
     }
 }

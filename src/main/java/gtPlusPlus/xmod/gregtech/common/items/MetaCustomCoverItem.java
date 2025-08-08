@@ -35,7 +35,7 @@ public class MetaCustomCoverItem extends Item {
     private final short[][] mRGB;
 
     public MetaCustomCoverItem(String aModId, int aTextureCount, String aTextureSetName, IIconContainer[] aTextures,
-            short[][] aRGB) {
+        short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
         mModID = aModId;
@@ -51,12 +51,12 @@ public class MetaCustomCoverItem extends Item {
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
         Logger.INFO(
-                "[Covers] Generated Custom covers for " + mModID
-                        + " using "
-                        + aTextureCount
-                        + " textures from "
-                        + mTextureSetName
-                        + ".");
+            "[Covers] Generated Custom covers for " + mModID
+                + " using "
+                + aTextureCount
+                + " textures from "
+                + mTextureSetName
+                + ".");
     }
 
     public boolean hide() {
@@ -172,9 +172,9 @@ public class MetaCustomCoverItem extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         list.add(
-                EnumChatFormatting.GRAY + (getCoverConnections(stack)
-                        ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
-                        : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
+            EnumChatFormatting.GRAY + (getCoverConnections(stack)
+                ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
+                : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.cover_item.change_state"));
         super.addInformation(stack, player, list, bool);
     }

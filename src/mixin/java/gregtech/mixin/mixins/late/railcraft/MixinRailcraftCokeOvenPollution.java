@@ -31,8 +31,8 @@ public abstract class MixinRailcraftCokeOvenPollution extends TileMultiBlock {
         if (this.worldObj.isRemote || !this.cooking || !this.isMaster) return;
         if ((this.worldObj.getTotalWorldTime() % 20) == 0) {
             final int pollution = (((TileMultiBlock) this) instanceof TileBlastFurnace)
-                    ? PollutionConfig.advancedCokeOvenPollutionAmount
-                    : PollutionConfig.cokeOvenPollutionAmount;
+                ? PollutionConfig.advancedCokeOvenPollutionAmount
+                : PollutionConfig.cokeOvenPollutionAmount;
             Pollution.addPollution(this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord), pollution);
         }
     }

@@ -13,11 +13,11 @@ public class CustomInternalName {
 
     public static void init() {
         aHazmatHelmetEx = EnumHelper
-                .addEnum(InternalName.class, "itemArmorHazmatHelmetEx", new Class[] {}, new Object[] {});
+            .addEnum(InternalName.class, "itemArmorHazmatHelmetEx", new Class[] {}, new Object[] {});
         aHazmatChestEx = EnumHelper
-                .addEnum(InternalName.class, "itemArmorHazmatChestplateEx", new Class[] {}, new Object[] {});
+            .addEnum(InternalName.class, "itemArmorHazmatChestplateEx", new Class[] {}, new Object[] {});
         aHazmatLegsEx = EnumHelper
-                .addEnum(InternalName.class, "itemArmorHazmatLeggingsEx", new Class[] {}, new Object[] {});
+            .addEnum(InternalName.class, "itemArmorHazmatLeggingsEx", new Class[] {}, new Object[] {});
         aHazmatBootsEx = EnumHelper.addEnum(InternalName.class, "itemArmorRubBootsEx", new Class[] {}, new Object[] {});
     }
 }

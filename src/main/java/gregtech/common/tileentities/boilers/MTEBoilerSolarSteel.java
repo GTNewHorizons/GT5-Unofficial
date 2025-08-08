@@ -38,13 +38,13 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
             int i = color + 1;
             short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] {
-                    TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
+                TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_TOP, colorModulation),
-                    TextureFactory.of(BlockIcons.BOILER_SOLAR) };
+                TextureFactory.of(BlockIcons.BOILER_SOLAR) };
             rTextures[2][i] = new ITexture[] {
-                    TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_SIDE, colorModulation) };
+                TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_SIDE, colorModulation) };
             rTextures[3][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_SIDE, colorModulation),
-                    TextureFactory.of(BlockIcons.OVERLAY_PIPE) };
+                TextureFactory.of(BlockIcons.OVERLAY_PIPE) };
         }
         return rTextures;
     }

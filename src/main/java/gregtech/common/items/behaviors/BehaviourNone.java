@@ -28,13 +28,13 @@ public class BehaviourNone implements IItemBehaviour<MetaBaseItem> {
 
     @Override
     public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-            int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+        int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -50,7 +50,7 @@ public class BehaviourNone implements IItemBehaviour<MetaBaseItem> {
 
     @Override
     public void onUpdate(MetaBaseItem aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer,
-            boolean aIsInHand) {}
+        boolean aIsInHand) {}
 
     @Override
     public boolean isItemStackUsable(MetaBaseItem aItem, ItemStack aStack) {
@@ -78,13 +78,13 @@ public class BehaviourNone implements IItemBehaviour<MetaBaseItem> {
 
     @Override
     public EntityArrow getProjectile(MetaBaseItem aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            double aX, double aY, double aZ) {
+        double aX, double aY, double aZ) {
         return null;
     }
 
     @Override
     public EntityArrow getProjectile(MetaBaseItem aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            EntityLivingBase aEntity, float aSpeed) {
+        EntityLivingBase aEntity, float aSpeed) {
         return null;
     }
 }

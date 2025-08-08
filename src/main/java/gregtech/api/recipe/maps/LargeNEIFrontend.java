@@ -28,7 +28,7 @@ public class LargeNEIFrontend extends RecipeMapFrontend {
     private final int fluidRowCount;
 
     public LargeNEIFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder.logoPos(new Pos2d(80, 62)), neiPropertiesBuilder);
         this.itemRowCount = getItemRowCount();
         this.fluidRowCount = getFluidRowCount();

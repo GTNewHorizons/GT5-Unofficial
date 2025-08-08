@@ -48,7 +48,7 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     private int dura;
 
     public ItemStonageRotors(int diameter, float eff, int speed, float mRotor, int min, int max, int durability,
-            IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
+        IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
         this.DiaMinMax[0] = diameter;
         this.DiaMinMax[1] = min;
         this.DiaMinMax[2] = max;
@@ -73,8 +73,7 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> info, boolean b) {
         info.add(
-                StatCollector
-                        .translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
+            StatCollector.translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
         IKineticRotor.GearboxType type = null;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator) {
             type = WATER;
@@ -83,10 +82,10 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
         }
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
         info.add(
-                StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                        + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
-                        + "/"
-                        + this.getMaxDamageEx() / 100);
+            StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
+                + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
+                + "/"
+                + this.getMaxDamageEx() / 100);
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
         info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
         info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);

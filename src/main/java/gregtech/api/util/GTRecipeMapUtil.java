@@ -90,11 +90,11 @@ public class GTRecipeMapUtil {
     }
 
     private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit,
-            TIntList chances) {
+        TIntList chances) {
         for (int i = items.size() - 1; i >= 0; i--) {
             ItemStack item = items.get(i);
             if (GTUtility.getFluidForFilledItem(item, true) != null || GTUtility.isCellEmpty(item)
-                    || (removeIntegratedCircuit && GTUtility.isAnyIntegratedCircuit(item))) {
+                || (removeIntegratedCircuit && GTUtility.isAnyIntegratedCircuit(item))) {
                 fluids.add(GTUtility.convertCellToFluid(item));
                 items.remove(i);
                 if (chances != null) chances.removeAt(i);
@@ -103,7 +103,9 @@ public class GTRecipeMapUtil {
     }
 
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {
-        return builder.build().map(Collections::singletonList).orElse(Collections.emptyList());
+        return builder.build()
+            .map(Collections::singletonList)
+            .orElse(Collections.emptyList());
     }
 
     /**
@@ -117,9 +119,11 @@ public class GTRecipeMapUtil {
      *                     end up with a bunch of weird concurrency bugs.
      */
     public static void registerRecipeMap(String identifier, IRecipeMap recipeMap, RecipeMapDependency... dependencies) {
-        String modId = Loader.instance().activeModContainer().getModId();
+        String modId = Loader.instance()
+            .activeModContainer()
+            .getModId();
         if (GregTech.ID.equals(modId)) throw new IllegalStateException(
-                "do not register recipe map under the name of gregtech! do it in your own preinit!");
+            "do not register recipe map under the name of gregtech! do it in your own preinit!");
         String id = modId + "@" + identifier;
         addonRecipeMaps.put(id, recipeMap);
         for (Consumer<IRecipeMap> action : delayedActions.get(id)) {

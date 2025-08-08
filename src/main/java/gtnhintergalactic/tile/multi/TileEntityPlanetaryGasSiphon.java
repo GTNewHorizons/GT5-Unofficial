@@ -65,7 +65,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
  * @author glowredman
  */
 public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<TileEntityPlanetaryGasSiphon>
-        implements IChunkLoader, ISurvivalConstructable {
+    implements IChunkLoader, ISurvivalConstructable {
 
     /** Main structure of the machine */
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -73,25 +73,25 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     private static final double LOG4 = Math.log10(4);
     /** Structure definition of the machine */
     private static final IStructureDefinition<TileEntityPlanetaryGasSiphon> STRUCTURE_DEFINITION = StructureDefinition
-            .<TileEntityPlanetaryGasSiphon>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    StructureUtility.transpose(
-                            new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " },
-                                    { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
-                                    { "b~b", "bcb", "bbb" } }))
-            .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
-            .addElement(
-                    'c',
-                    StructureUtility
-                            .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
-            .addElement(
-                    'b',
-                    GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphon.class)
-                            .atLeast(Maintenance, InputBus, OutputHatch, Energy).dot(1)
-                            .casingIndex(IGTextures.CASING_INDEX_SIPHON)
-                            .buildAndChain(GregTechAPI.sBlockCasingsSiphon, 0))
-            .build();
+        .<TileEntityPlanetaryGasSiphon>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            StructureUtility.transpose(
+                new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " },
+                    { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
+                    { "b~b", "bcb", "bbb" } }))
+        .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
+        .addElement(
+            'c',
+            StructureUtility.ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
+        .addElement(
+            'b',
+            GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphon.class)
+                .atLeast(Maintenance, InputBus, OutputHatch, Energy)
+                .dot(1)
+                .casingIndex(IGTextures.CASING_INDEX_SIPHON)
+                .buildAndChain(GregTechAPI.sBlockCasingsSiphon, 0))
+        .build();
 
     /**
      * Create a new planetary gas siphon
@@ -166,25 +166,26 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
         tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
-                .beginStructureBlock(3, 7, 3, false)
-                .addController(GCCoreUtil.translate("ig.siphon.structure.ControllerPos"))
-                .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.siphon.structure.SiphonCasing"),
-                        GCCoreUtil.translate("ig.siphon.structure.Base"))
-                .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
-                        GCCoreUtil.translate("ig.siphon.structure.PillarMiddle"))
-                .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.siphon.structure.FrameTungstensteel"),
-                        GCCoreUtil.translate("ig.siphon.structure.Sides"))
-                .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-                .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-                .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-                .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1).toolTipFinisher();
+            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
+            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
+            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
+            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
+            .beginStructureBlock(3, 7, 3, false)
+            .addController(GCCoreUtil.translate("ig.siphon.structure.ControllerPos"))
+            .addOtherStructurePart(
+                GCCoreUtil.translate("ig.siphon.structure.SiphonCasing"),
+                GCCoreUtil.translate("ig.siphon.structure.Base"))
+            .addOtherStructurePart(
+                GCCoreUtil.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
+                GCCoreUtil.translate("ig.siphon.structure.PillarMiddle"))
+            .addOtherStructurePart(
+                GCCoreUtil.translate("ig.siphon.structure.FrameTungstensteel"),
+                GCCoreUtil.translate("ig.siphon.structure.Sides"))
+            .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -220,15 +221,19 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean active, boolean redstone) {
+        int colorIndex, boolean active, boolean redstone) {
         if (side == facing) {
             if (active)
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                        TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
-                        TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW).glow().build() };
+                    TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
+                        .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW)
+                        .glow()
+                        .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                    TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
-                    TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_GLOW).glow().build() };
+                TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_GLOW)
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON) };
     }
@@ -243,12 +248,14 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         depth = 0;
 
         // return early if no input busses are present, the first bus is invalid or the TE is not on a space station
-        if (mInputBusses.isEmpty() || !mInputBusses.get(0).isValid()) {
+        if (mInputBusses.isEmpty() || !mInputBusses.get(0)
+            .isValid()) {
             resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
 
-        if (!(this.getBaseMetaTileEntity().getWorld().provider instanceof IOrbitDimension provider)) {
+        if (!(this.getBaseMetaTileEntity()
+            .getWorld().provider instanceof IOrbitDimension provider)) {
             resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
@@ -274,13 +281,18 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 depth = stack.getItemDamage();
                 continue;
             }
-            if (Objects.equals(stack.getItem(), GTModHandler.getIC2Item("miningPipe", 0).getItem())) {
+            if (Objects.equals(
+                stack.getItem(),
+                GTModHandler.getIC2Item("miningPipe", 0)
+                    .getItem())) {
                 numPipes += stack.stackSize;
             }
         }
 
-        for (int i = 0; i < bus.getBaseMetaTileEntity().getSizeInventory(); i++) {
-            ItemStack stack = bus.getBaseMetaTileEntity().getStackInSlot(i);
+        for (int i = 0; i < bus.getBaseMetaTileEntity()
+            .getSizeInventory(); i++) {
+            ItemStack stack = bus.getBaseMetaTileEntity()
+                .getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -288,7 +300,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 depth = stack.getItemDamage();
                 continue;
             }
-            if (Objects.equals(stack.getItem(), GTModHandler.getIC2Item("miningPipe", 0).getItem())) {
+            if (Objects.equals(
+                stack.getItem(),
+                GTModHandler.getIC2Item("miningPipe", 0)
+                    .getItem())) {
                 numPipes += stack.stackSize;
             }
         }
@@ -317,9 +332,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         }
 
         // calculate overclockedness
-        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody().getTierRequirement() + 2));
+        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody()
+            .getTierRequirement() + 2));
         int ocLevel = MathHelper
-                .floor_double(Math.log10((double) this.getMaxInputVoltage() / (double) recipeEUt) / LOG4);
+            .floor_double(Math.log10((double) this.getMaxInputVoltage() / (double) recipeEUt) / LOG4);
 
         // apply recipe
         if (ocLevel < 0) {
@@ -356,11 +372,11 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && mMaintenanceHatches.size() == 1
-                && mInputBusses.size() == 1
-                && mOutputHatches.size() == 1
-                && mEnergyHatches.size() == 1
-                && mInputHatches.isEmpty()
-                && mOutputBusses.isEmpty();
+            && mInputBusses.size() == 1
+            && mOutputHatches.size() == 1
+            && mEnergyHatches.size() == 1
+            && mInputHatches.isEmpty()
+            && mOutputBusses.isEmpty();
     }
 
     /**
@@ -390,8 +406,8 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
         if (aNBT.getBoolean("isChunkloading")) {
             mCurrentChunk = new ChunkCoordIntPair(
-                    aNBT.getInteger("loadedChunkXPos"),
-                    aNBT.getInteger("loadedChunkZPos"));
+                aNBT.getInteger("loadedChunkXPos"),
+                aNBT.getInteger("loadedChunkZPos"));
         }
     }
 
@@ -408,13 +424,13 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
      */
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer player,
-            float x, float y, float z, ItemStack aTool) {
+        float x, float y, float z, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GTUtility.sendChatToPlayer(
-                    player,
-                    mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                            : GTUtility.trans("503", "Mining chunk loading disabled"));
+                player,
+                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
+                    : GTUtility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z, aTool);
@@ -447,8 +463,8 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
         if (baseMetaTileEntity.isServerSide() && mCurrentChunk != null
-                && !mWorkChunkNeedsReload
-                && !baseMetaTileEntity.isAllowedToWork()) {
+            && !mWorkChunkNeedsReload
+            && !baseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunk loading
             GTChunkManager.releaseTicket((TileEntity) baseMetaTileEntity);
             mWorkChunkNeedsReload = true;
@@ -461,11 +477,11 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET, "Depth: " + YELLOW + depth + RESET,
-                "Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET,
-                "EU/t required: " + YELLOW + GTUtility.formatNumbers(-mEUt) + RESET + " EU/t",
-                "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                        : RED + "Has problems" + RESET),
-                "---------------------------------------------" };
+            "Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET,
+            "EU/t required: " + YELLOW + GTUtility.formatNumbers(-mEUt) + RESET + " EU/t",
+            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
+                : RED + "Has problems" + RESET),
+            "---------------------------------------------" };
     }
 
     @Override

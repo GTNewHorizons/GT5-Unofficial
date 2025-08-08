@@ -60,20 +60,20 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-            int colorIndex, boolean aConnected, boolean aRedstone) {
+        int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-                .of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            .of(getActive() ? EMCandyActive : EMcandy, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -114,12 +114,12 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
                 mConnections |= side.flag;
                 connectionCount++;
             } else if (tTileEntity instanceof IGregTechTileEntity gregTechTileEntity
-                    && gregTechTileEntity.getMetaTileEntity() instanceof IConnectsToEnergyTunnel tunnel) {
-                        if (tunnel.canConnect(oppositeSide)) {
-                            mConnections |= side.flag;
-                            connectionCount++;
-                        }
+                && gregTechTileEntity.getMetaTileEntity() instanceof IConnectsToEnergyTunnel tunnel) {
+                    if (tunnel.canConnect(oppositeSide)) {
+                        mConnections |= side.flag;
+                        connectionCount++;
                     }
+                }
         }
 
         if (!nestedCall) updateNeighboringNetworks();
@@ -139,7 +139,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
             if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
-                    && neighbor.isConnectedAtSide(side.getOpposite())) {
+                && neighbor.isConnectedAtSide(side.getOpposite())) {
                 neighbor.mConnections &= ~side.getOpposite().flag;
                 neighbor.connectionCount--;
             }
@@ -160,17 +160,18 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
             if ((aTick & 31) == 31) {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
-                            new PipeActivityMessage.PipeActivityData(this),
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256);
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy().changeDetected() == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override
@@ -196,15 +197,15 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
-                // tunneling
-                // device.
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
-                // painted to
-                // work
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
-                // or turn
+            // tunneling
+            // device.
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
+            // painted to
+            // work
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
+            // or turn
         };
     }
 

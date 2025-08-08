@@ -52,7 +52,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEPurificationUnitUVTreatment>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings9, 12);
 
@@ -88,7 +88,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     private boolean removedTooEarly = false;
 
     private static final String[][] structure = new String[][] {
-            // spotless:off
+        // spotless:off
         { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     H~H     " },
         { "     AAA     ", "   DDAAADD   ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "   DDBBBDD   ", "   AAAAAAA   " },
         { "   AAAAAAA   ", " DDAACCCAADD ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", " DDBB   BBDD ", " AAAAAAAAAAA " },
@@ -101,41 +101,51 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         // spotless:on
 
     private static final IStructureDefinition<MTEPurificationUnitUVTreatment> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEPurificationUnitUVTreatment>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
-            // Naquadria-Reinforced Water Plant Casing
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 12))
-            // Neutronium-Coated UV-Resistant Glass
-            .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 1))
-            // UV Backlight sterilizer casing
-            .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 13)).addElement('D', ofFrame(Materials.StellarAlloy))
-            // Lens housing bus
-            .addElement(
-                    'L',
-                    lazy(
-                            t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
-                                    .atLeast(SpecialHatchElement.LensHousing).dot(2).cacheHint(() -> "Lens Housing")
-                                    .casingIndex(CASING_INDEX_MAIN).build()))
-            // Lens indicator hatch
-            .addElement(
-                    'I',
-                    ofChain(
-                            lazy(
-                                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
-                                            .atLeast(SpecialHatchElement.LensIndicator).dot(3)
-                                            .cacheHint(() -> "Lens Indicator").casingIndex(CASING_INDEX_MAIN).build()),
-                            ofBlock(GregTechAPI.sBlockCasings9, 12)))
-            // Input or output hatch
-            .addElement(
-                    'H',
-                    ofChain(
-                            lazy(
-                                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
-                                            .atLeastList(Arrays.asList(InputHatch, OutputHatch)).dot(1)
-                                            .cacheHint(() -> "Input Hatch, Output Hatch").casingIndex(CASING_INDEX_MAIN)
-                                            .build()),
-                            // Naquadria-reinforced Water Plant Casing
-                            ofBlock(GregTechAPI.sBlockCasings9, 12)))
-            .build();
+        .<MTEPurificationUnitUVTreatment>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        // Naquadria-Reinforced Water Plant Casing
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 12))
+        // Neutronium-Coated UV-Resistant Glass
+        .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 1))
+        // UV Backlight sterilizer casing
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 13))
+        .addElement('D', ofFrame(Materials.StellarAlloy))
+        // Lens housing bus
+        .addElement(
+            'L',
+            lazy(
+                t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
+                    .atLeast(SpecialHatchElement.LensHousing)
+                    .dot(2)
+                    .cacheHint(() -> "Lens Housing")
+                    .casingIndex(CASING_INDEX_MAIN)
+                    .build()))
+        // Lens indicator hatch
+        .addElement(
+            'I',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
+                        .atLeast(SpecialHatchElement.LensIndicator)
+                        .dot(3)
+                        .cacheHint(() -> "Lens Indicator")
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                ofBlock(GregTechAPI.sBlockCasings9, 12)))
+        // Input or output hatch
+        .addElement(
+            'H',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
+                        .atLeastList(Arrays.asList(InputHatch, OutputHatch))
+                        .dot(1)
+                        .cacheHint(() -> "Input Hatch, Output Hatch")
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                // Naquadria-reinforced Water Plant Casing
+                ofBlock(GregTechAPI.sBlockCasings9, 12)))
+        .build();
 
     public MTEPurificationUnitUVTreatment(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -152,16 +162,28 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean active, boolean redstoneLevel) {
+        int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
     }
@@ -169,25 +191,25 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                hintsOnly,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET,
-                elementBudget,
-                env,
-                true);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET,
+            elementBudget,
+            env,
+            true);
     }
 
     @Override
@@ -200,96 +222,98 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit");
         tt.addInfo(
+            EnumChatFormatting.AQUA + ""
+                + EnumChatFormatting.BOLD
+                + "Water Tier: "
+                + EnumChatFormatting.WHITE
+                + GTUtility.formatNumbers(getWaterTier())
+                + EnumChatFormatting.RESET)
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addSeparator()
+            .addInfo(
+                "During operation, swap the lens in the " + EnumChatFormatting.WHITE
+                    + "Lens Housing"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo(
+                "The multiblock will output a signal through the " + EnumChatFormatting.WHITE + "Lens Indicator Hatch")
+            .addInfo("when the current lens must be swapped.")
+            .addInfo(
+                "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
+                    + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
+                    + " to "
+                    + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
+                    + "s"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addSeparator()
+            .addInfo(
+                "Success chance is boosted by " + EnumChatFormatting.RED
+                    + SUCCESS_PER_LENS
+                    + "% "
+                    + EnumChatFormatting.GRAY
+                    + "for each successful swap performed.")
+            .addInfo("Removing a lens too early will fail the recipe.")
+            .addInfo("Find the order of lenses in the recipe in NEI,")
+            .addInfo("or use a portable scanner to view the currently requested lens.")
+            .addInfo("The recipe always starts at the Orundum Lens.")
+            .addSeparator()
+            .addInfo(
                 EnumChatFormatting.AQUA + ""
-                        + EnumChatFormatting.BOLD
-                        + "Water Tier: "
-                        + EnumChatFormatting.WHITE
-                        + GTUtility.formatNumbers(getWaterTier())
-                        + EnumChatFormatting.RESET)
-                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
-                .addInfo(
-                        "During operation, swap the lens in the " + EnumChatFormatting.WHITE
-                                + "Lens Housing"
-                                + EnumChatFormatting.GRAY
-                                + ".")
-                .addInfo(
-                        "The multiblock will output a signal through the " + EnumChatFormatting.WHITE
-                                + "Lens Indicator Hatch")
-                .addInfo("when the current lens must be swapped.")
-                .addInfo(
-                        "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
-                                + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
-                                + " to "
-                                + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
-                                + "s"
-                                + EnumChatFormatting.GRAY
-                                + ".")
-                .addSeparator()
-                .addInfo(
-                        "Success chance is boosted by " + EnumChatFormatting.RED
-                                + SUCCESS_PER_LENS
-                                + "% "
-                                + EnumChatFormatting.GRAY
-                                + "for each successful swap performed.")
-                .addInfo("Removing a lens too early will fail the recipe.")
-                .addInfo("Find the order of lenses in the recipe in NEI,")
-                .addInfo("or use a portable scanner to view the currently requested lens.")
-                .addInfo("The recipe always starts at the Orundum Lens.").addSeparator()
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "The sixth step of water purification involves identifying any remaining negatively charged ions within")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "the water which may cause electrical faults in future wafer manufacturing. Bombarding the water with varying")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "wavelengths of photon beams will impart energy into outer-shell electrons, causing them to detach from the")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
-                .beginStructureBlock(13, 9, 9, true).addController("Front center")
-                .addCasingInfoRangeColored(
-                        "Naquadria-Reinforced Water Plant Casing",
-                        EnumChatFormatting.GRAY,
-                        147,
-                        155,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Electron-Permeable Neutronium Coated Glass",
-                        EnumChatFormatting.GRAY,
-                        144,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "High Energy Ultraviolet Emitter Casing",
-                        EnumChatFormatting.GRAY,
-                        29,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Stellar Alloy Frame Box",
-                        EnumChatFormatting.GRAY,
-                        56,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_output_hatch"),
-                        EnumChatFormatting.GOLD + "1+",
-                        1)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
-                        EnumChatFormatting.GOLD + "1",
-                        2)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
-                        EnumChatFormatting.GOLD + "1",
-                        3)
-                .toolTipFinisher(AuthorNotAPenguin);
+                    + EnumChatFormatting.ITALIC
+                    + "The sixth step of water purification involves identifying any remaining negatively charged ions within")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "the water which may cause electrical faults in future wafer manufacturing. Bombarding the water with varying")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "wavelengths of photon beams will impart energy into outer-shell electrons, causing them to detach from the")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
+            .beginStructureBlock(13, 9, 9, true)
+            .addController("Front center")
+            .addCasingInfoRangeColored(
+                "Naquadria-Reinforced Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                147,
+                155,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Electron-Permeable Neutronium Coated Glass",
+                EnumChatFormatting.GRAY,
+                144,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "High Energy Ultraviolet Emitter Casing",
+                EnumChatFormatting.GRAY,
+                29,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Stellar Alloy Frame Box",
+                EnumChatFormatting.GRAY,
+                56,
+                EnumChatFormatting.GOLD,
+                false)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_output_hatch"),
+                EnumChatFormatting.GOLD + "1+",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
+                EnumChatFormatting.GOLD + "1",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
+                EnumChatFormatting.GOLD + "1",
+                3)
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -399,17 +423,17 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (this.lensCycle != null) {
             infoData.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
-                            "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
+                    "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
             infoData.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
-                            EnumChatFormatting.GREEN + lensCycle.current().getDisplayName()));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
+                    EnumChatFormatting.GREEN + lensCycle.current()
+                        .getDisplayName()));
             if (removedTooEarly) {
                 infoData.add(
-                        StatCollector
-                                .translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
+                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
             }
         }
         return infoData.toArray(new String[] {});
@@ -484,7 +508,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
 
         @SafeVarargs
         SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
-                Class<? extends IMetaTileEntity>... mteClasses) {
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

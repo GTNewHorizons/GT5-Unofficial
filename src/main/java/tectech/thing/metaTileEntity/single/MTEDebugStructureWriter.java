@@ -47,15 +47,14 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     public MTEDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),
-                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),
-                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") });
     }
 
     public MTEDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -76,9 +75,9 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-                side != facing ? TextureFactory.of(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
+            side != facing ? TextureFactory.of(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
     }
 
     @Override
@@ -88,13 +87,13 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -123,31 +122,6 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
         if (aBaseMetaTileEntity.isAllowedToWork()) {
 
             String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
-                    aBaseMetaTileEntity.getWorld(),
-                    ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
-                    aBaseMetaTileEntity.getXCoord(),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getZCoord(),
-                    numbers[0],
-                    numbers[1],
-                    numbers[2],
-                    te -> te.getClass().getCanonicalName(),
-                    numbers[3],
-                    numbers[4],
-                    numbers[5],
-                    false);
-            TecTech.LOGGER.info(pseudoJavaCode);
-            result = pseudoJavaCode.split("\\n");
-            aBaseMetaTileEntity.disableWorking();
-        }
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
-        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-
-        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
                 aBaseMetaTileEntity.getWorld(),
                 ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
                 aBaseMetaTileEntity.getXCoord(),
@@ -156,11 +130,38 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
                 numbers[0],
                 numbers[1],
                 numbers[2],
-                te -> te.getClass().getCanonicalName(),
+                te -> te.getClass()
+                    .getCanonicalName(),
                 numbers[3],
                 numbers[4],
                 numbers[5],
                 false);
+            TecTech.LOGGER.info(pseudoJavaCode);
+            result = pseudoJavaCode.split("\\n");
+            aBaseMetaTileEntity.disableWorking();
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
+
+        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
+            aBaseMetaTileEntity.getWorld(),
+            ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord(),
+            numbers[0],
+            numbers[1],
+            numbers[2],
+            te -> te.getClass()
+                .getCanonicalName(),
+            numbers[3],
+            numbers[4],
+            numbers[5],
+            false);
         TecTech.LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
         aBaseMetaTileEntity.disableWorking();
@@ -195,41 +196,42 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
-                        .setPos(113, 56));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+                .setSize(17, 17)
+                .setPos(113, 56));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> size
-                                                ? StatCollector.translateToLocal(
-                                                        "tt.gui.text.debug_structure_writer.structure_size")
-                                                : StatCollector.translateToLocal(
-                                                        "tt.gui.text.debug_structure_writer.my_position"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> size
-                                                ? StatCollector.translateToLocal(
-                                                        "tt.gui.text.debug_structure_writer.changing_scan_size")
-                                                : StatCollector.translateToLocal(
-                                                        "tt.gui.text.debug_structure_writer.moving_origin"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "A: " + numbers[size ? 3 : 0])
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "B: " + numbers[size ? 4 : 1])
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "C: " + numbers[size ? 5 : 2])
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 40));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setSize(90, 72)
+                .setPos(43, 4))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> size ? StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.structure_size")
+                            : StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.my_position"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(46, 8))
+            .widget(
+                new TextWidget().setStringSupplier(
+                    () -> size ? StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.changing_scan_size")
+                        : StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.moving_origin"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(46, 16))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "A: " + numbers[size ? 3 : 0])
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(46, 24))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "B: " + numbers[size ? 4 : 1])
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(46, 32))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "C: " + numbers[size ? 5 : 2])
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(46, 40));
 
         addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
         addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
@@ -238,41 +240,45 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     }
 
     private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
-            int addNumber, int xPos) {
+        int addNumber, int xPos) {
         addChangeNumberButton(
-                builder,
-                overlay,
-                val -> numbers[size ? 3 : 0] += val,
-                addNumberShift,
-                addNumber,
-                xPos,
-                4);
+            builder,
+            overlay,
+            val -> numbers[size ? 3 : 0] += val,
+            addNumberShift,
+            addNumber,
+            xPos,
+            4);
         addChangeNumberButton(
-                builder,
-                overlay,
-                val -> numbers[size ? 4 : 1] += val,
-                addNumberShift,
-                addNumber,
-                xPos,
-                22);
+            builder,
+            overlay,
+            val -> numbers[size ? 4 : 1] += val,
+            addNumberShift,
+            addNumber,
+            xPos,
+            22);
         addChangeNumberButton(
-                builder,
-                overlay,
-                val -> numbers[size ? 5 : 2] += val,
-                addNumberShift,
-                addNumber,
-                xPos,
-                40);
+            builder,
+            overlay,
+            val -> numbers[size ? 5 : 2] += val,
+            addNumberShift,
+            addNumber,
+            xPos,
+            40);
         builder.widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> size = !size)
-                        .setBackground(GTUITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, 58));
+            new ButtonWidget().setOnClick((clickData, widget) -> size = !size)
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, 58));
     }
 
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-            int changeNumberShift, int changeNumber, int xPos, int yPos) {
+        int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(
-                new ButtonWidget().setOnClick(
-                        (clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
-                        .setBackground(GTUITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
+            new ButtonWidget()
+                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
+                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, yPos));
     }
 }

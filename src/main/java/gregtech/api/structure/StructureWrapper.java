@@ -100,7 +100,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
                     if (c == '~') {
                         if (controllerOffset != null) {
                             throw new IllegalStateException(
-                                    "Structure definition for " + provider + " contains two tildes");
+                                "Structure definition for " + provider + " contains two tildes");
                         }
 
                         controllerOffset = new Vec3Impl(x, y, z);
@@ -115,8 +115,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
         if (controllerOffset == null) {
             throw new IllegalStateException(
-                    "Structure definition for " + provider
-                            + " did not contain a tilde! This is required so that the wrapper knows where the controller is.");
+                "Structure definition for " + provider
+                    + " did not contain a tilde! This is required so that the wrapper knows where the controller is.");
         }
     }
 
@@ -196,17 +196,17 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     private boolean checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
         return structureDefinition.check(
-                instance,
-                piece,
-                tTile.getWorld(),
-                instance.getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-                controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-                controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
-                !instance.mMachine);
+            instance,
+            piece,
+            tTile.getWorld(),
+            instance.getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            !instance.mMachine);
     }
 
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly) {
@@ -238,18 +238,18 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     private void constructImpl(MTE instance, ItemStack trigger, boolean hintsOnly, String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
         structureDefinition.buildOrHints(
-                instance,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                instance.getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-                controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-                controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
-                hintsOnly);
+            instance,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            instance.getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            hintsOnly);
     }
 
     public int survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
@@ -261,7 +261,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      * world space.
      */
     public int survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env,
-            String piece, Vec3Impl pieceOffset) {
+        String piece, Vec3Impl pieceOffset) {
         if (instance.mMachine) return -1;
 
         ensureStructureLoaded();
@@ -282,23 +282,23 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     private int survivalConstructImpl(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env,
-            String piece, Vec3Impl pieceOffset) {
+        String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
         int built = structureDefinition.survivalBuild(
-                instance,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                instance.getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-                controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-                controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
-                elementBudget,
-                env,
-                false);
+            instance,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            instance.getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            elementBudget,
+            env,
+            false);
 
         if (built > 0) instance.checkStructure(true, tTile);
 
@@ -319,22 +319,24 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             Objects.requireNonNull(casing.casing, "CasingInfo.casing cannot be null");
 
             element = onElementPass(
-                    instance -> instance.getStructureInstance().onCasingEncountered(c),
-                    casing.casing.asElement(casing));
+                instance -> instance.getStructureInstance()
+                    .onCasingEncountered(c),
+                casing.casing.asElement(casing));
 
             IHatchElement<? super MTE>[] hatches = casing.hatches;
 
             if (casing.casing.isTiered()) {
                 // If the casing is tiered, we want to keep track of valid hatches so that we can update their
                 // background texture to the correct index after the casing tier is established.
-                hatches = GTDataUtils.mapToArray(
-                        casing.hatches,
-                        IHatchElement[]::new,
-                        hatch -> new HatchInterceptor<>(casing, hatch));
+                hatches = GTDataUtils
+                    .mapToArray(casing.hatches, IHatchElement[]::new, hatch -> new HatchInterceptor<>(casing, hatch));
             }
 
-            element = HatchElementBuilder.<MTE>builder().atLeast(hatches).casingIndex(casing.casing.getTextureId())
-                    .dot(casing.dot).buildAndChain(element);
+            element = HatchElementBuilder.<MTE>builder()
+                .atLeast(hatches)
+                .casingIndex(casing.casing.getTextureId())
+                .dot(casing.dot)
+                .buildAndChain(element);
         } else {
             element = casing.casing.asElement(casing);
         }
@@ -369,7 +371,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             return (t, hatch, textureId) -> {
                 if (realAdder.apply(t, hatch, textureId)) {
                     if (hatch.getMetaTileEntity() instanceof MTEHatch hatch2) {
-                        casing.getInstance(t).addTieredHatch(hatch2, casing.casing, casing);
+                        casing.getInstance(t)
+                            .addTieredHatch(hatch2, casing.casing, casing);
                     }
 
                     return true;

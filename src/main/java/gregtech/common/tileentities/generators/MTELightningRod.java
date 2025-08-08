@@ -24,22 +24,24 @@ public class MTELightningRod extends MTETieredMachineBlock {
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) {
             return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                    BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
         if (!active) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
         return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder()
+                .addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -50,11 +52,11 @@ public class MTELightningRod extends MTETieredMachineBlock {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTELightningRod(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -76,8 +78,9 @@ public class MTELightningRod extends MTETieredMachineBlock {
                 int aZ = aBaseMetaTileEntity.getZCoord();
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
-                    if (isRodValid
-                            && aBaseMetaTileEntity.getBlock(aX, i, aZ).getUnlocalizedName().equals("blockFenceIron")) {
+                    if (isRodValid && aBaseMetaTileEntity.getBlock(aX, i, aZ)
+                        .getUnlocalizedName()
+                        .equals("blockFenceIron")) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
@@ -90,7 +93,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
                 if (!aWorld.isThundering() && ((aY + aRodValue) < 128)) aRodValue = 0;
                 if (XSTR_INSTANCE.nextInt(4 * aWorld.getHeight()) < (aRodValue * (aY + aRodValue))) {
                     aBaseMetaTileEntity
-                            .increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
+                        .increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
                     aWorld.addWeatherEffect(new EntityLightningBolt(aWorld, aX, aY + aRodValue, aZ));
                     // randomly break a rod
                     if (aWorld.isThundering()) {
@@ -103,13 +106,13 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 

@@ -42,9 +42,9 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
         for (int i = 0; i < aSlot; i++) {
             final int index = i;
             fluidTanks[i] = new FluidStackTank(
-                    () -> mStoredFluid[index],
-                    fluid -> mStoredFluid[index] = fluid,
-                    mCapacityPer);
+                () -> mStoredFluid[index],
+                fluid -> mStoredFluid[index] = fluid,
+                mCapacityPer);
         }
     }
 
@@ -176,11 +176,8 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0
-                || aFluid.amount <= 0
-                || !canTankBeFilled()
-                || !isFluidInputAllowed(aFluid))
-            return 0;
+        if (aFluid == null || aFluid.getFluid()
+            .getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid)) return 0;
         if (!hasFluid(aFluid) && getFirstEmptySlot() != -1) {
             int tFilled = Math.min(aFluid.amount, mCapacityPer);
             if (doFill) {
@@ -283,12 +280,12 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
         final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
-                new Pos2d(88, 43), };
+            new Pos2d(88, 43), };
 
         for (int i = 0; i < SLOT_NUMBER; i++) {
             builder.widget(
-                    new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
-                            .setPos(positions[i]));
+                new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
+                    .setPos(positions[i]));
         }
     }
 }

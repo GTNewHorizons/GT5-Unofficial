@@ -56,7 +56,7 @@ public enum Items {
 
     public ItemStack getOreDictedItemStack(int amount) {
         return this.getOreDictName() != null ? Util.getStackofAmountFromOreDict(this.getOreDictName(), amount)
-                : new ItemStack(MetaItemCraftingComponent.getInstance(), amount, this.getMetaID());
+            : new ItemStack(MetaItemCraftingComponent.getInstance(), amount, this.getMetaID());
     }
 
     public String getOreDictName() {

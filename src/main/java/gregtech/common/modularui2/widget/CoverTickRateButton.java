@@ -27,7 +27,7 @@ public class CoverTickRateButton extends ButtonWidget<CoverTickRateButton> {
         tooltipBuilder(this::buildTooltip);
 
         IntSyncValue tickRateAdditionSyncHandler = SyncHandlers
-                .intNumber(cover::getTickRateAddition, cover::setTickRateAddition);
+            .intNumber(cover::getTickRateAddition, cover::setTickRateAddition);
         tickRateAdditionSyncHandler.setChangeListener(this::markTooltipDirty);
         syncManager.syncValue("tickRateAddition", tickRateAdditionSyncHandler);
     }
@@ -55,12 +55,13 @@ public class CoverTickRateButton extends ButtonWidget<CoverTickRateButton> {
             boundsNotification = "";
         }
 
-        tooltip.addLine(
+        tooltip
+            .addLine(
                 IKey.lang(
-                        "gt.cover.info.button.tick_rate.1",
-                        new ClientTickRateFormatter(cover.getTickRate()),
-                        boundsNotification))
-                .addLine(IKey.lang("gt.cover.info.button.tick_rate.2"))
-                .addLine(IKey.lang("gt.cover.info.button.tick_rate.3"));
+                    "gt.cover.info.button.tick_rate.1",
+                    new ClientTickRateFormatter(cover.getTickRate()),
+                    boundsNotification))
+            .addLine(IKey.lang("gt.cover.info.button.tick_rate.2"))
+            .addLine(IKey.lang("gt.cover.info.button.tick_rate.3"));
     }
 }

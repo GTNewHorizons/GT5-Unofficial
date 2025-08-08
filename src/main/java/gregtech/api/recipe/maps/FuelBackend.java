@@ -42,18 +42,24 @@ public class FuelBackend extends RecipeMapBackend {
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
         if (recipe.mInputs != null && GTUtility.getNonnullElementCount(recipe.mInputs) == 1
-                && (recipe.mFluidInputs == null || GTUtility.getNonnullElementCount(recipe.mFluidInputs) == 0)) {
+            && (recipe.mFluidInputs == null || GTUtility.getNonnullElementCount(recipe.mFluidInputs) == 0)) {
             FluidStack fluidStack = GTUtility.getFluidForFilledItem(recipe.mInputs[0], true);
             if (fluidStack != null) {
                 fluidStack.amount = 0;
-                recipesByFluidInput.put(fluidStack.getFluid().getName(), recipe);
+                recipesByFluidInput.put(
+                    fluidStack.getFluid()
+                        .getName(),
+                    recipe);
             }
         } else if ((recipe.mInputs == null || GTUtility.getNonnullElementCount(recipe.mInputs) == 0)
-                && recipe.mFluidInputs != null
-                && GTUtility.getNonnullElementCount(recipe.mFluidInputs) >= 1
-                && recipe.mFluidInputs[0] != null) {
-                    recipesByFluidInput.put(recipe.mFluidInputs[0].getFluid().getName(), recipe);
-                }
+            && recipe.mFluidInputs != null
+            && GTUtility.getNonnullElementCount(recipe.mFluidInputs) >= 1
+            && recipe.mFluidInputs[0] != null) {
+                recipesByFluidInput.put(
+                    recipe.mFluidInputs[0].getFluid()
+                        .getName(),
+                    recipe);
+            }
         return recipe;
     }
 

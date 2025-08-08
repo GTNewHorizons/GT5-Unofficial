@@ -56,7 +56,8 @@ public class SeekingOggCodec extends CodecJOrbis {
     @Override
     public boolean initialize(URL url) {
         final String textUrl = url.toString();
-        final String[] queryParts = url.getQuery().split("&");
+        final String[] queryParts = url.getQuery()
+            .split("&");
         long seekMs = 0;
         for (String part : queryParts) {
             if (!part.startsWith("seek_ms=")) {

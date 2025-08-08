@@ -50,7 +50,7 @@ public class MTEVoidMiners {
         private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMLUV> STRUCTURE_DEFINITION = StructureDefinition.<VMLUV>builder()
-                // spotless:off
+            // spotless:off
             .addShape(
                 STRUCTURE_PIECE_MAIN,
                 transpose(
@@ -77,25 +77,34 @@ public class MTEVoidMiners {
                         { " G ", "GFG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-                .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
-                .addElement('B', ofFrame(Materials.Osmiridium))
-                .addElement('C', Casings.ReboltedOsmiridiumCasing.asElement())
-                .addElement('D', Casings.BoltedOsmiridiumCasing.asElement())
-                .addElement(
-                        'E',
-                        buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                                .dot(1).casingIndex(Casings.MiningOsmiridiumCasing.getTextureId())
-                                .buildAndChain(Casings.MiningOsmiridiumCasing.asElement()))
-                // for compatibility with the old structure #TODO remove for 2.9
-                .addElement('F', ofBlock(ItemList.Casing_UV.getBlock(), ItemList.Casing_UV.get(0).getItemDamage()))
-                .addElement('G', ofFrame(Materials.Europium))
-                .addElement(
-                        'H',
-                        buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                                .dot(1).casingIndex(8).buildAndChain(
-                                        ItemList.Casing_UV.getBlock(),
-                                        ItemList.Casing_UV.get(0).getItemDamage()))
-                .build();
+            .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
+            .addElement('B', ofFrame(Materials.Osmiridium))
+            .addElement('C', Casings.ReboltedOsmiridiumCasing.asElement())
+            .addElement('D', Casings.BoltedOsmiridiumCasing.asElement())
+            .addElement(
+                'E',
+                buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(Casings.MiningOsmiridiumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningOsmiridiumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
+            .addElement(
+                'F',
+                ofBlock(
+                    ItemList.Casing_UV.getBlock(),
+                    ItemList.Casing_UV.get(0)
+                        .getItemDamage()))
+            .addElement('G', ofFrame(Materials.Europium))
+            .addElement(
+                'H',
+                buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(8)
+                    .buildAndChain(
+                        ItemList.Casing_UV.getBlock(),
+                        ItemList.Casing_UV.get(0)
+                            .getItemDamage()))
+            .build();
 
         @Override
         public IStructureDefinition<VMLUV> getStructureDefinition() {
@@ -106,32 +115,33 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType("Miner")
-                    .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
-                    .addInfo(
-                            "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
-                    .addInfo(
-                            "Will output " + 2 * this.TIER_MULTIPLIER
-                                    + " Ores per Second depending on the Dimension it is build in")
-                    .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                    .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                    .addInfo(
-                            "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                                    + "VOIDED"
-                                    + EnumChatFormatting.RESET
-                                    + ".")
-                    .beginStructureBlock(7, 9, 7, false)
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
-                    .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
-                    .addInputBus("Mining Pipes or Ores, optional, any base casing")
-                    .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
-                    .toolTipFinisher();
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(7, 9, 7, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
             return tt;
         }
 
@@ -147,10 +157,10 @@ public class MTEVoidMiners {
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
             return (checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1)
-                    // old structure (to be deprecated on future version)
-                    || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
-                    && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                    && mMaintenanceHatches.size() == 1;
+                // old structure (to be deprecated on future version)
+                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
+                && mMaintenanceHatches.size() == 1;
         }
 
         public VMLUV(String aName, int tier) {
@@ -187,7 +197,7 @@ public class MTEVoidMiners {
         private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMZPM> STRUCTURE_DEFINITION = StructureDefinition.<VMZPM>builder()
-                // spotless:off
+            // spotless:off
             .addShape(
                 STRUCTURE_PIECE_MAIN,
                 transpose(
@@ -218,30 +228,35 @@ public class MTEVoidMiners {
                         { " G ", "GIG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-                .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
-                .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
-                .addElement('C', ofFrame(Materials.NaquadahAlloy))
-                .addElement('D', Casings.BoltedNaquadahAlloyCasing.asElement())
-                .addElement('E', Casings.ReboltedNaquadahAlloyCasing.asElement())
-                .addElement(
-                        'F',
-                        buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                                .dot(1).casingIndex(Casings.MiningBlackPlutoniumCasing.getTextureId())
-                                .buildAndChain(Casings.MiningBlackPlutoniumCasing.asElement()))
-                // for compatibility with the old structure #TODO remove for 2.9
-                .addElement(
-                        'I',
-                        ofBlock(
-                                ItemList.Casing_MiningBlackPlutonium.getBlock(),
-                                ItemList.Casing_MiningBlackPlutonium.get(0).getItemDamage()))
-                .addElement('G', ofFrame(Materials.BlackPlutonium))
-                .addElement(
-                        'H',
-                        buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                                .dot(1).casingIndex(179).buildAndChain(
-                                        ItemList.Casing_MiningBlackPlutonium.getBlock(),
-                                        ItemList.Casing_MiningBlackPlutonium.get(0).getItemDamage()))
-                .build();
+            .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
+            .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
+            .addElement('C', ofFrame(Materials.NaquadahAlloy))
+            .addElement('D', Casings.BoltedNaquadahAlloyCasing.asElement())
+            .addElement('E', Casings.ReboltedNaquadahAlloyCasing.asElement())
+            .addElement(
+                'F',
+                buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(Casings.MiningBlackPlutoniumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningBlackPlutoniumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
+            .addElement(
+                'I',
+                ofBlock(
+                    ItemList.Casing_MiningBlackPlutonium.getBlock(),
+                    ItemList.Casing_MiningBlackPlutonium.get(0)
+                        .getItemDamage()))
+            .addElement('G', ofFrame(Materials.BlackPlutonium))
+            .addElement(
+                'H',
+                buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(179)
+                    .buildAndChain(
+                        ItemList.Casing_MiningBlackPlutonium.getBlock(),
+                        ItemList.Casing_MiningBlackPlutonium.get(0)
+                            .getItemDamage()))
+            .build();
 
         @Override
         public IStructureDefinition<VMZPM> getStructureDefinition() {
@@ -252,40 +267,36 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType("Miner")
-                    .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
-                    .addInfo(
-                            "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
-                    .addInfo(
-                            "Will output " + 2 * this.TIER_MULTIPLIER
-                                    + " Ores per Second depending on the Dimension it is build in")
-                    .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                    .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                    .addInfo(
-                            "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                                    + "VOIDED"
-                                    + EnumChatFormatting.RESET
-                                    + ".")
-                    .beginStructureBlock(9, 13, 8, false)
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "29x"
-                                    + EnumChatFormatting.GRAY
-                                    + " Mining Black Plutonium Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "20x"
-                                    + EnumChatFormatting.GRAY
-                                    + " Black Plutonium Item Pipe Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Naquadah Alloy Frame Box")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "9x"
-                                    + EnumChatFormatting.GRAY
-                                    + " Rebolted Naquadah Alloy Casing")
-                    .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
-                    .addInputBus("Mining Pipes or Ores, optional, any base casing")
-                    .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
-                    .toolTipFinisher();
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(9, 13, 8, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Naquadah Alloy Frame Box")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
             return tt;
         }
 
@@ -301,10 +312,10 @@ public class MTEVoidMiners {
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
             return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1)
-                    // old structure (to be deprecated on future version)
-                    || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
-                    && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                    && mMaintenanceHatches.size() == 1;
+                // old structure (to be deprecated on future version)
+                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
+                && mMaintenanceHatches.size() == 1;
         }
 
         public VMZPM(String aName, int tier) {
@@ -334,7 +345,7 @@ public class MTEVoidMiners {
         private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMUV> STRUCTURE_DEFINITION = StructureDefinition.<VMUV>builder()
-                // spotless:off
+            // spotless:off
             .addShape(
                 STRUCTURE_PIECE_MAIN,
                 transpose(
@@ -368,30 +379,35 @@ public class MTEVoidMiners {
                         { " G ", "GIG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-                .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
-                .addElement('B', Casings.MiningNeutroniumCasing.asElement())
-                .addElement('C', ofFrame(Materials.Adamantium))
-                .addElement('D', Casings.ReboltedIridiumCasing.asElement())
-                .addElement('E', Casings.BoltedIridiumCasing.asElement())
-                .addElement(
-                        'F',
-                        buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy).dot(1)
-                                .casingIndex(Casings.MiningNeutroniumCasing.getTextureId())
-                                .buildAndChain(Casings.MiningNeutroniumCasing.asElement()))
-                // for compatibility with the old structure #TODO remove for 2.9
-                .addElement(
-                        'I',
-                        ofBlock(
-                                ItemList.Casing_MiningNeutronium.getBlock(),
-                                ItemList.Casing_MiningNeutronium.get(0).getItemDamage()))
-                .addElement('G', ofFrame(Materials.Neutronium))
-                .addElement(
-                        'H',
-                        buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy).dot(1)
-                                .casingIndex(178).buildAndChain(
-                                        ItemList.Casing_MiningNeutronium.getBlock(),
-                                        ItemList.Casing_MiningNeutronium.get(0).getItemDamage()))
-                .build();
+            .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
+            .addElement('B', Casings.MiningNeutroniumCasing.asElement())
+            .addElement('C', ofFrame(Materials.Adamantium))
+            .addElement('D', Casings.ReboltedIridiumCasing.asElement())
+            .addElement('E', Casings.BoltedIridiumCasing.asElement())
+            .addElement(
+                'F',
+                buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(Casings.MiningNeutroniumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningNeutroniumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
+            .addElement(
+                'I',
+                ofBlock(
+                    ItemList.Casing_MiningNeutronium.getBlock(),
+                    ItemList.Casing_MiningNeutronium.get(0)
+                        .getItemDamage()))
+            .addElement('G', ofFrame(Materials.Neutronium))
+            .addElement(
+                'H',
+                buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
+                    .dot(1)
+                    .casingIndex(178)
+                    .buildAndChain(
+                        ItemList.Casing_MiningNeutronium.getBlock(),
+                        ItemList.Casing_MiningNeutronium.get(0)
+                            .getItemDamage()))
+            .build();
 
         @Override
         public IStructureDefinition<VMUV> getStructureDefinition() {
@@ -402,36 +418,34 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType("Miner")
-                    .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
-                    .addInfo(
-                            "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
-                    .addInfo(
-                            "Will output " + 2 * this.TIER_MULTIPLIER
-                                    + " Ores per Second depending on the Dimension it is build in")
-                    .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                    .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                    .addInfo(
-                            "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                                    + "VOIDED"
-                                    + EnumChatFormatting.RESET
-                                    + ".")
-                    .beginStructureBlock(9, 16, 9, false)
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "8x"
-                                    + EnumChatFormatting.GRAY
-                                    + " Black Plutonium Item Pipe Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Adamantium Frame Box")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Bolted Iridium Casing")
-                    .addStructureInfo(
-                            EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
-                    .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
-                    .addInputBus("Mining Pipes or Ores, optional, any base casing")
-                    .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
-                    .toolTipFinisher();
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(9, 16, 9, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Adamantium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Bolted Iridium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
             return tt;
         }
 
@@ -447,10 +461,10 @@ public class MTEVoidMiners {
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
             return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2)
-                    // old structure (to be deprecated on future version)
-                    || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
-                    && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                    && mMaintenanceHatches.size() == 1;
+                // old structure (to be deprecated on future version)
+                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
+                && mMaintenanceHatches.size() == 1;
         }
 
         public VMUV(String aName, int tier) {

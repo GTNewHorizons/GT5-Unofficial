@@ -64,7 +64,7 @@ public class TeleporterDimensionMod extends Teleporter {
                         int i2 = k - l * b0;
                         boolean flag = j1 < 0;
                         this.worldServerInstance
-                                .setBlock(k1, l1, i2, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
+                            .setBlock(k1, l1, i2, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -93,7 +93,7 @@ public class TeleporterDimensionMod extends Teleporter {
 
         if (this.destinationCoordinateCache.containsItem(j1)) {
             Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
-                    .getValueByKey(j1);
+                .getValueByKey(j1);
             d3 = 0.0D;
             i = portalposition.posX;
             j = portalposition.posY;
@@ -110,7 +110,7 @@ public class TeleporterDimensionMod extends Teleporter {
                     for (int i2 = this.worldServerInstance.getActualHeight() - 1; i2 >= 0; --i2) {
                         if (this.worldServerInstance.getBlock(l3, i2, l1) == DimensionEverglades.portalBlock) {
                             while (this.worldServerInstance.getBlock(l3, i2 - 1, l1)
-                                    == DimensionEverglades.portalBlock) {
+                                == DimensionEverglades.portalBlock) {
                                 --i2;
                             }
 
@@ -132,7 +132,7 @@ public class TeleporterDimensionMod extends Teleporter {
         if (d3 >= 0.0D) {
             if (flag) {
                 this.destinationCoordinateCache
-                        .add(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
+                    .add(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
                 this.destinationCoordinateKeys.add(j1);
             }
 
@@ -166,9 +166,9 @@ public class TeleporterDimensionMod extends Teleporter {
                 int j3 = Direction.offsetX[k2];
                 int k3 = Direction.offsetZ[k2];
                 boolean flag1 = !this.worldServerInstance.isAirBlock(i + l2 + j3, j, k + i3 + k3)
-                        || !this.worldServerInstance.isAirBlock(i + l2 + j3, j + 1, k + i3 + k3);
+                    || !this.worldServerInstance.isAirBlock(i + l2 + j3, j + 1, k + i3 + k3);
                 boolean flag2 = !this.worldServerInstance.isAirBlock(i + l2, j, k + i3)
-                        || !this.worldServerInstance.isAirBlock(i + l2, j + 1, k + i3);
+                    || !this.worldServerInstance.isAirBlock(i + l2, j + 1, k + i3);
 
                 if (flag1 && flag2) {
                     i4 = Direction.rotateOpposite[i4];
@@ -182,9 +182,9 @@ public class TeleporterDimensionMod extends Teleporter {
                     int k1 = k - k3;
                     d7 -= k3;
                     flag1 = !this.worldServerInstance.isAirBlock(l3 + l2 + j3, j, k1 + i3 + k3)
-                            || !this.worldServerInstance.isAirBlock(l3 + l2 + j3, j + 1, k1 + i3 + k3);
+                        || !this.worldServerInstance.isAirBlock(l3 + l2 + j3, j + 1, k1 + i3 + k3);
                     flag2 = !this.worldServerInstance.isAirBlock(l3 + l2, j, k1 + i3)
-                            || !this.worldServerInstance.isAirBlock(l3 + l2, j + 1, k1 + i3);
+                        || !this.worldServerInstance.isAirBlock(l3 + l2, j + 1, k1 + i3);
                 }
 
                 float f1 = 0.5F;
@@ -290,10 +290,9 @@ public class TeleporterDimensionMod extends Teleporter {
                                         i5 = i3 + k4;
                                         int j5 = k2 + (j4 - 1) * l3 - i4 * k3;
 
-                                        if (k4 < 0
-                                                && !this.worldServerInstance.getBlock(l4, i5, j5).getMaterial()
-                                                        .isSolid()
-                                                || k4 >= 0 && !this.worldServerInstance.isAirBlock(l4, i5, j5)) {
+                                        if (k4 < 0 && !this.worldServerInstance.getBlock(l4, i5, j5)
+                                            .getMaterial()
+                                            .isSolid() || k4 >= 0 && !this.worldServerInstance.isAirBlock(l4, i5, j5)) {
                                             continue label274;
                                         }
                                     }
@@ -338,10 +337,9 @@ public class TeleporterDimensionMod extends Teleporter {
                                         l4 = i3 + j4;
                                         i5 = k2 + (i4 - 1) * l3;
 
-                                        if (j4 < 0
-                                                && !this.worldServerInstance.getBlock(k4, l4, i5).getMaterial()
-                                                        .isSolid()
-                                                || j4 >= 0 && !this.worldServerInstance.isAirBlock(k4, l4, i5)) {
+                                        if (j4 < 0 && !this.worldServerInstance.getBlock(k4, l4, i5)
+                                            .getMaterial()
+                                            .isSolid() || j4 >= 0 && !this.worldServerInstance.isAirBlock(k4, l4, i5)) {
                                             continue label222;
                                         }
                                     }
@@ -396,7 +394,7 @@ public class TeleporterDimensionMod extends Teleporter {
                         j4 = k2 + (j3 - 1) * l2 - i3 * l5;
                         flag = k3 < 0;
                         this.worldServerInstance
-                                .setBlock(l3, i4, j4, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
+                            .setBlock(l3, i4, j4, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
                     }
                 }
             }
@@ -410,12 +408,12 @@ public class TeleporterDimensionMod extends Teleporter {
                     j4 = k2 + (j3 - 1) * l2;
                     flag = j3 == 0 || j3 == 3 || k3 == -1 || k3 == 3;
                     this.worldServerInstance.setBlock(
-                            l3,
-                            i4,
-                            j4,
-                            flag ? DimensionEverglades.blockPortalFrame : DimensionEverglades.portalBlock,
-                            0,
-                            2);
+                        l3,
+                        i4,
+                        j4,
+                        flag ? DimensionEverglades.blockPortalFrame : DimensionEverglades.portalBlock,
+                        0,
+                        2);
                 }
             }
 
@@ -425,7 +423,7 @@ public class TeleporterDimensionMod extends Teleporter {
                     i4 = j2 + k3;
                     j4 = k2 + (j3 - 1) * l2;
                     this.worldServerInstance
-                            .notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
+                        .notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
                 }
             }
         }
@@ -447,7 +445,7 @@ public class TeleporterDimensionMod extends Teleporter {
             while (iterator.hasNext()) {
                 Long olong = (Long) iterator.next();
                 Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
-                        .getValueByKey(olong);
+                    .getValueByKey(olong);
 
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();

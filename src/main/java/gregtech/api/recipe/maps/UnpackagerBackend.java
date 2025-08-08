@@ -32,12 +32,18 @@ public class UnpackagerBackend extends RecipeMapBackend {
         if (output == null) {
             return null;
         }
-        return GTValues.RA.stdBuilder().itemInputs(ItemList.IC2_Scrapbox.get(1)).itemOutputs(output).duration(16).eut(1)
-                // It is not allowed to be buffered due to the random Output
-                .noBuffer()
-                // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could
-                // manipulate the outcome.
-                .needsEmptyOutput().build().orElse(null);
+        return GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_Scrapbox.get(1))
+            .itemOutputs(output)
+            .duration(16)
+            .eut(1)
+            // It is not allowed to be buffered due to the random Output
+            .noBuffer()
+            // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could
+            // manipulate the outcome.
+            .needsEmptyOutput()
+            .build()
+            .orElse(null);
     }
 
     @Override

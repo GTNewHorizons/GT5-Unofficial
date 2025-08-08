@@ -58,7 +58,7 @@ import kubatech.loaders.ItemLoader;
 import kubatech.loaders.block.kubablock.KubaBlock;
 
 public class TeaAcceptorTile extends TileEntity
-        implements IInventory, ITileWithModularUI, KubaBlock.IModularUIProvider {
+    implements IInventory, ITileWithModularUI, KubaBlock.IModularUIProvider {
 
     public TeaAcceptorTile() {
         super();
@@ -147,7 +147,8 @@ public class TeaAcceptorTile extends TileEntity
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return p_70300_1_.getPersistentID().equals(tileOwner);
+        return p_70300_1_.getPersistentID()
+            .equals(tileOwner);
     }
 
     @Override
@@ -156,15 +157,17 @@ public class TeaAcceptorTile extends TileEntity
     @Override
     public void closeInventory() {}
 
-    private static final int minDamage = ItemList.BlackTea.get(1).getItemDamage();
-    private static final int maxDamage = ItemList.YellowTea.get(1).getItemDamage();
+    private static final int minDamage = ItemList.BlackTea.get(1)
+        .getItemDamage();
+    private static final int maxDamage = ItemList.YellowTea.get(1)
+        .getItemDamage();
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
         if (teaNetwork == null) return false;
         if (!teaNetwork.canAdd(p_94041_2_.stackSize)) return false;
         return p_94041_2_.getItem() == ItemLoader.kubaitems && p_94041_2_.getItemDamage() >= minDamage
-                && p_94041_2_.getItemDamage() <= maxDamage;
+            && p_94041_2_.getItemDamage() <= maxDamage;
     }
 
     private static final UIInfo<?, ?> UI = KubaBlock.TileEntityUIFactory.apply(ModularUIContainer::new);
@@ -179,8 +182,8 @@ public class TeaAcceptorTile extends TileEntity
     }
 
     private static final BiFunction<TextWidget, Integer, Widget.PosProvider> posCenteredHorizontallyProvider = (
-            TextWidget widget, Integer y) -> (Widget.PosProvider) (screenSize, window,
-                    parent) -> new Pos2d((window.getSize().width / 2) - (widget.getSize().width / 2), y);
+        TextWidget widget, Integer y) -> (Widget.PosProvider) (screenSize, window,
+            parent) -> new Pos2d((window.getSize().width / 2) - (widget.getSize().width / 2), y);
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
@@ -189,44 +192,41 @@ public class TeaAcceptorTile extends TileEntity
         EntityPlayer player = buildContext.getPlayer();
         AtomicReference<BigInteger> teaAmount = new AtomicReference<>(BigInteger.ZERO);
         builder.widgets(
-                posCenteredHorizontally(
-                        10,
-                        new TextWidget(
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.name"))
-                                        .format(EnumChatFormatting.BOLD).format(EnumChatFormatting.DARK_RED))),
-                posCenteredHorizontally(30, new DynamicTextWidget(() -> {
-                    if (player.getPersistentID().equals(tileOwner))
-                        return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.tea"))
-                                .color(Color.GREEN.normal);
-                    else return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.not_owner"))
-                            .color(Color.RED.normal);
-                })),
-                posCenteredHorizontally(
-                        40,
-                        (TextWidget) new DynamicTextWidget(
-                                () -> new Text(
-                                        StringUtils.applyRainbow(
-                                                NEIClientUtils.shiftKey() ? numberFormat.format(teaAmount.get())
-                                                        : numberFormatScientific.format(teaAmount.get()),
-                                                (int) ((teaAmount.get().longValue() / Math.max(1, averageInput * 10))
-                                                        % Integer.MAX_VALUE),
-                                                EnumChatFormatting.BOLD.toString())).shadow()).setSynced(false)
-                                                        .attachSyncer(
-                                                                new FakeSyncWidget.BigIntegerSyncer(
-                                                                        () -> teaNetwork.teaAmount,
-                                                                        teaAmount::set),
-                                                                builder)),
-                posCenteredHorizontally(
-                        50,
-                        new DynamicTextWidget(
-                                () -> new Text(
-                                        StatCollector.translateToLocalFormatted(
-                                                "kubatech.gui.text.tea_acceptor.in",
-                                                averageInput)).color(Color.BLACK.normal))).addTooltip(
-                                                        new Text(
-                                                                StatCollector.translateToLocal(
-                                                                        "kubatech.gui.text.tea_acceptor.in.tooltip"))
-                                                                                .color(Color.GRAY.normal)));
+            posCenteredHorizontally(
+                10,
+                new TextWidget(
+                    new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.name"))
+                        .format(EnumChatFormatting.BOLD)
+                        .format(EnumChatFormatting.DARK_RED))),
+            posCenteredHorizontally(30, new DynamicTextWidget(() -> {
+                if (player.getPersistentID()
+                    .equals(tileOwner))
+                    return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.tea"))
+                        .color(Color.GREEN.normal);
+                else return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.not_owner"))
+                    .color(Color.RED.normal);
+            })),
+            posCenteredHorizontally(
+                40,
+                (TextWidget) new DynamicTextWidget(
+                    () -> new Text(
+                        StringUtils.applyRainbow(
+                            NEIClientUtils.shiftKey() ? numberFormat.format(teaAmount.get())
+                                : numberFormatScientific.format(teaAmount.get()),
+                            (int) ((teaAmount.get()
+                                .longValue() / Math.max(1, averageInput * 10)) % Integer.MAX_VALUE),
+                            EnumChatFormatting.BOLD.toString())).shadow()).setSynced(false)
+                                .attachSyncer(
+                                    new FakeSyncWidget.BigIntegerSyncer(() -> teaNetwork.teaAmount, teaAmount::set),
+                                    builder)),
+            posCenteredHorizontally(
+                50,
+                new DynamicTextWidget(
+                    () -> new Text(
+                        StatCollector.translateToLocalFormatted("kubatech.gui.text.tea_acceptor.in", averageInput))
+                            .color(Color.BLACK.normal))).addTooltip(
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.in.tooltip"))
+                                    .color(Color.GRAY.normal)));
         return builder.build();
     }
 }

@@ -47,12 +47,12 @@ public class BlockBaseModular extends BasicBlock {
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
         this(
-                material.getUnlocalizedName(),
-                material.getLocalizedName(),
-                net.minecraft.block.material.Material.iron,
-                blockType,
-                colour,
-                Math.min(Math.max(material.vTier, 1), 6));
+            material.getUnlocalizedName(),
+            material.getLocalizedName(),
+            net.minecraft.block.material.Material.iron,
+            blockType,
+            colour,
+            Math.min(Math.max(material.vTier, 1), 6));
         blockMaterial = material;
         registerComponent();
         sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
@@ -61,21 +61,22 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
-            final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
-            final int miningLevel) {
+        final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
+        final int miningLevel) {
         super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
         this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
         this.setBlockTextureName(GTPlusPlus.ID + ":" + blockType.getTexture());
         this.blockColour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.thisBlock = blockType;
         this.thisBlockMaterial = blockMaterialString;
-        this.thisBlockType = blockType.name().toUpperCase();
+        this.thisBlockType = blockType.name()
+            .toUpperCase();
         this.setBlockName(this.getUnlocalizedProperName());
         int fx = getBlockTypeMeta();
         GameRegistry.registerBlock(
-                this,
-                ItemBlockGtBlock.class,
-                StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
+            this,
+            ItemBlockGtBlock.class,
+            StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
             GTOreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {
@@ -86,7 +87,9 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public static String unifyMaterialName(String rawMaterName) {
-        return rawMaterName.replace(" ", "").replace("-", "").replace("_", "");
+        return rawMaterName.replace(" ", "")
+            .replace("-", "")
+            .replace("_", "");
     }
 
     public void registerComponent() {
@@ -103,7 +106,7 @@ public class BlockBaseModular extends BasicBlock {
         }
         int fx = getBlockTypeMeta();
         String aKey = (fx == 0 ? OrePrefixes.block.name()
-                : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
+            : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
@@ -116,13 +119,20 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public int getBlockTypeMeta() {
-        if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())) {
+        if (this.thisBlockType.equals(
+            BlockTypes.STANDARD.name()
+                .toUpperCase())) {
             return 0;
-        } else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())) {
-            return 1;
-        } else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())) {
-            return 2;
-        }
+        } else if (this.thisBlockType.equals(
+            BlockTypes.FRAME.name()
+                .toUpperCase())) {
+                    return 1;
+                } else
+            if (this.thisBlockType.equals(
+                BlockTypes.ORE.name()
+                    .toUpperCase())) {
+                        return 2;
+                    }
         return 0;
     }
 
@@ -151,19 +161,25 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public String getUnlocalizedProperName() {
-        return getProperName().replace("%s", "%temp").replace("%material", this.thisBlockMaterial)
-                .replace("%temp", "%s");
+        return getProperName().replace("%s", "%temp")
+            .replace("%material", this.thisBlockMaterial)
+            .replace("%temp", "%s");
     }
 
     @Override
     public String getLocalizedName() {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name").replace("%s", "%temp")
-                .replace("%material", this.thisBlockMaterialTranslatedName).replace("%temp", "%s");
+        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
+            .replace("%s", "%temp")
+            .replace("%material", this.thisBlockMaterialTranslatedName)
+            .replace("%temp", "%s");
     }
 
     @Override
     public String getUnlocalizedName() {
-        return "block." + blockMaterial.getUnlocalizedName() + "." + this.thisBlock.name().toLowerCase();
+        return "block." + blockMaterial.getUnlocalizedName()
+            + "."
+            + this.thisBlock.name()
+                .toLowerCase();
     }
 
     @Override
@@ -179,7 +195,7 @@ public class BlockBaseModular extends BasicBlock {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
         if (!Configuration.visual.useGregtechTextures || this.blockMaterial == null
-                || this.thisBlock == BlockTypes.ORE) {
+            || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";

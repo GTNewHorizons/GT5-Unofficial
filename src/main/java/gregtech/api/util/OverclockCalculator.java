@@ -81,7 +81,10 @@ public class OverclockCalculator {
 
     /** Creates calculator that doesn't do OC at all, with set duration. */
     public static OverclockCalculator ofNoOverclock(long eut, int duration) {
-        return new OverclockCalculator().setRecipeEUt(eut).setDuration(duration).setEUt(eut).setNoOverclock(true);
+        return new OverclockCalculator().setRecipeEUt(eut)
+            .setDuration(duration)
+            .setEUt(eut)
+            .setNoOverclock(true);
     }
 
     /** An Overclock helper for calculating overclocks in many different situations */
@@ -329,7 +332,7 @@ public class OverclockCalculator {
     protected void calculateOverclock() {
         // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
-                : this.duration * durationModifier;
+            : this.duration * durationModifier;
 
         // If currentParallel isn't set, assume full parallel usage.
         currentParallel = Math.max(currentParallel, parallel);
@@ -359,7 +362,7 @@ public class OverclockCalculator {
 
             // Calculate per-slice duration
             double durationPerSlice = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
-                    : duration;
+                : duration;
 
             // Increase laser overclocks until 1 tick per slice or power limit
             int laserOverclocks = 0;
@@ -367,7 +370,7 @@ public class OverclockCalculator {
                 double multiplier = 4.0 + 0.3 * (laserOverclocks + 1);
                 double potentialEU = eutOverclock * multiplier;
                 double estimatedDuration = duration
-                        / Math.pow(durationDecreasePerOC, regularOverclocks + laserOverclocks + 1);
+                    / Math.pow(durationDecreasePerOC, regularOverclocks + laserOverclocks + 1);
 
                 if (potentialEU >= machinePower) break;
                 if (estimatedDuration <= duration / durationPerSlice) break;
@@ -417,7 +420,7 @@ public class OverclockCalculator {
 
         // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
-                : this.duration * durationModifier;
+            : this.duration * durationModifier;
 
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
@@ -475,16 +478,16 @@ public class OverclockCalculator {
         neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
         int heatMultiplier = (int) GTUtility
-                .powInt(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
+            .powInt(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) GTUtility
-                .powInt(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
+            .powInt(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
 
         // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
         // durations. It is 1 / (duration of first OC to go below 1 tick)
         double correctionMultiplier = 1.0;
         if (heatOverclocks >= neededHeatOverclocks) {
             double criticalDuration = originalDuration
-                    / GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks);
+                / GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks);
             correctionMultiplier = 1 / criticalDuration;
         } else if (regularOverclocks >= neededOverclocks) {
             double criticalDuration = originalDuration / GTUtility.powInt(durationDecreasePerOC, neededOverclocks);

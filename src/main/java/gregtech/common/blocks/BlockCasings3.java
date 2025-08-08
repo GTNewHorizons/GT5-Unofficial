@@ -54,11 +54,11 @@ public class BlockCasings3 extends BlockCasingsAbstract {
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VENT.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
             case 13 -> ordinalSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon()
-                    : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+                : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
             case 14 -> ordinalSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon()
-                    : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             case 15 -> ordinalSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL.getIcon()
-                    : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
     }

@@ -38,31 +38,43 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
-                aFacing == side
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
-                        : casingTexturePages[0][58] };
+            aFacing == side ? (aActive ? TextureFactory.builder()
+                .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                .build()
+                : hasTurbine() ? TextureFactory.builder()
+                    .addIcon(LARGETURBINE_NEW5)
+                    .build()
+                    : TextureFactory.builder()
+                        .addIcon(LARGETURBINE_NEW_EMPTY5)
+                        .build())
+                : casingTexturePages[0][58] };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine, LGT").addInfo("Needs a Turbine, place inside controller")
-                // .addInfo("The excess fuel that gets consumed will be voided!")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
-                .addOtherStructurePart("Air", "3x3 area in front of controller").toolTipFinisher();
+        tt.addMachineType("Gas Turbine, LGT")
+            .addInfo("Needs a Turbine, place inside controller")
+            // .addInfo("The excess fuel that gets consumed will be voided!")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 4, true)
+            .addController("Front center")
+            .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
+            .addDynamoHatch("Back center", 1)
+            .addMaintenanceHatch("Side centered", 2)
+            .addMufflerHatch("Side centered", 2)
+            .addInputHatch("Gas Fuel, Side centered", 2)
+            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .toolTipFinisher();
         return tt;
     }
 
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GTRecipe tFuel = RecipeMaps.gasTurbineFuels.getBackend().findFuel(aLiquid);
+        GTRecipe tFuel = RecipeMaps.gasTurbineFuels.getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }
@@ -136,7 +148,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             }
 
             actualOptimalFlow = GTUtility.safeInt(
-                    (long) ((looseFit ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue));
+                (long) ((looseFit ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
@@ -149,7 +161,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             // - 450% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
             int remainingFlow = GTUtility
-                    .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
+                .safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
             int flow = 0;
             int totalFlow = 0;
 
@@ -171,7 +183,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
                 tEU *= efficiency;
             }
             tEU = GTUtility
-                    .safeInt((long) (tEU * (looseFit ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update
@@ -202,7 +214,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
 
         if (totalFlow > actualOptimalFlow) {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
-                    / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
+                / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

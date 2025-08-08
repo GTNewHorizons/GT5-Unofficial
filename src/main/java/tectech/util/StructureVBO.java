@@ -51,7 +51,8 @@ public class StructureVBO {
         Pair<Block, Integer> info = mapper.get(letter);
         if (info == null) return false;
         if (info.getLeft() == Blocks.air) return false;
-        return info.getLeft().isOpaqueCube();
+        return info.getLeft()
+            .isOpaqueCube();
     }
 
     private FaceVisibility getVisibleFaces(int x, int y, int z) {
@@ -99,9 +100,9 @@ public class StructureVBO {
 
                     // The floor division is intended to produce proper offsets
                     tess.setTranslation(
-                            -structure.length / 2f + x,
-                            plane.length / 2f - y, // y needs to be drawn from top to bottom
-                            -row.length() / 2f + z);
+                        -structure.length / 2f + x,
+                        plane.length / 2f - y, // y needs to be drawn from top to bottom
+                        -row.length() / 2f + z);
 
                     renderer.renderBlockAsItem(info.getLeft(), info.getRight(), 1f);
                 }

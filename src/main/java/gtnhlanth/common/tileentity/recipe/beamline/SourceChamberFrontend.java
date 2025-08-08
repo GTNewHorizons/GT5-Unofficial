@@ -8,7 +8,7 @@ import gregtech.nei.RecipeDisplayInfo;
 public class SourceChamberFrontend extends RecipeMapFrontend {
 
     public SourceChamberFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

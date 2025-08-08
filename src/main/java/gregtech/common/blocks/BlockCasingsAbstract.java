@@ -39,7 +39,7 @@ import gregtech.common.render.GTRendererCasing;
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
  */
 public abstract class BlockCasingsAbstract extends GTGenericBlock
-        implements gregtech.api.interfaces.IHasIndexedTexture {
+    implements gregtech.api.interfaces.IHasIndexedTexture {
 
     public static final Supplier<String> NO_MOB_SPAWNING = translatedText("gt.casing.no-mob-spawning");
     public static final Supplier<String> NOT_TILE_ENTITY = translatedText("gt.casing.not-tile-entity");
@@ -148,7 +148,8 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
     public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            if (!aStack.getDisplayName()
+                .contains(".name")) aList.add(aStack);
         }
     }
 
@@ -175,7 +176,7 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     @SafeVarargs
     protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
-            @Nullable Supplier<String>... tooltips) {
+        @Nullable Supplier<String>... tooltips) {
         ItemStack stack = new ItemStack(this, 1, meta);
 
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + meta + ".name", defaultLocalName);

@@ -57,8 +57,9 @@ public class StringUtils {
     public static @NotNull String applyRainbow(@NotNull String str, int offset, String additional) {
         StringBuilder final_string = new StringBuilder();
         int i = offset;
-        for (char c : str.toCharArray())
-            final_string.append(rainbow[i++ % rainbow.length]).append(additional).append(c);
+        for (char c : str.toCharArray()) final_string.append(rainbow[i++ % rainbow.length])
+            .append(additional)
+            .append(c);
         return final_string.toString();
     }
 

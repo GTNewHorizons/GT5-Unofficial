@@ -15,10 +15,10 @@ import gregtech.common.handlers.PowerGogglesConfigHandler;
 public class PowerGogglesGuiHudConfig extends GuiScreen {
 
     public String[] formatTypes = new String[] { "GT5U.power_goggles_config.notation_scientific",
-            "GT5U.power_goggles_config.notation_engineering", "GT5U.power_goggles_config.notation_si" };
+        "GT5U.power_goggles_config.notation_engineering", "GT5U.power_goggles_config.notation_si" };
 
     public String[] readingTypes = new String[] { "GT5U.power_goggles_config.reading_both",
-            "GT5U.power_goggles_config.reading_total", "GT5U.power_goggles_config.reading_eut" };
+        "GT5U.power_goggles_config.reading_total", "GT5U.power_goggles_config.reading_eut" };
     public GuiScreen parentScreen;
     private boolean draggingHud = false;
 
@@ -45,33 +45,33 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         int gapBetweenLines = 2;
         int borderRadius = 3;
         int rectangleHeightToBorderBottom = PowerGogglesConfigHandler.rectangleHeight + gapBetweenLines * 2
-                + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
-                + borderRadius;
+            + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
+            + borderRadius;
         dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX
-                + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale
-                - 1));
+            + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale
+            - 1));
         dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
-                - PowerGogglesConfigHandler.rectangleHeight)
-                + (rectangleHeightToBorderBottom) * (1 - PowerGogglesConfigHandler.hudScale));
+            - PowerGogglesConfigHandler.rectangleHeight)
+            + (rectangleHeightToBorderBottom) * (1 - PowerGogglesConfigHandler.hudScale));
         dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
         dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
 
         drawRect(
-                dragCenterX - dragWidth / 2,
-                dragCenterY - dragHeight / 2,
-                dragCenterX + dragWidth / 2,
-                dragCenterY + dragHeight / 2,
-                Color.rgb(255, 50, 50));
+            dragCenterX - dragWidth / 2,
+            dragCenterY - dragHeight / 2,
+            dragCenterX + dragWidth / 2,
+            dragCenterY + dragHeight / 2,
+            Color.rgb(255, 50, 50));
         drawHorizontalLine(
-                dragCenterX - dragWidth / 2,
-                dragCenterX + dragWidth / 2 - 1,
-                dragCenterY,
-                Color.rgb(255, 255, 255));
+            dragCenterX - dragWidth / 2,
+            dragCenterX + dragWidth / 2 - 1,
+            dragCenterY,
+            Color.rgb(255, 255, 255));
         drawVerticalLine(
-                dragCenterX,
-                dragCenterY + dragHeight / 2,
-                dragCenterY - dragHeight / 2,
-                Color.rgb(255, 255, 255));
+            dragCenterX,
+            dragCenterY + dragHeight / 2,
+            dragCenterY - dragHeight / 2,
+            Color.rgb(255, 255, 255));
         super.drawScreen(x, y, partial);
     }
 
@@ -88,17 +88,17 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
 
     private boolean isOnDragRectangle(int x, int y) {
         return x <= dragCenterX + dragWidth / 2 && x >= dragCenterX - dragWidth / 2
-                && y >= dragCenterY - dragHeight
-                && y <= dragCenterY + dragHeight;
+            && y >= dragCenterY - dragHeight
+            && y <= dragCenterY + dragHeight;
     }
 
     @Override
     protected void mouseMovedOrUp(int x, int y, int action) {
         if (draggingHud) {
             PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
-                    .set(PowerGogglesConfigHandler.mainOffsetX);
+                .set(PowerGogglesConfigHandler.mainOffsetX);
             PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 40, "")
-                    .set(PowerGogglesConfigHandler.mainOffsetY);
+                .set(PowerGogglesConfigHandler.mainOffsetY);
             PowerGogglesConfigHandler.config.save();
             draggingHud = false;
         }
@@ -123,7 +123,8 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     @Override
     protected void keyTyped(char keyChar, int keyInt) {
         if (keyInt == 1) {
-            Minecraft.getMinecraft().displayGuiScreen(parentScreen); // return to parent???
+            Minecraft.getMinecraft()
+                .displayGuiScreen(parentScreen); // return to parent???
         }
     }
 }

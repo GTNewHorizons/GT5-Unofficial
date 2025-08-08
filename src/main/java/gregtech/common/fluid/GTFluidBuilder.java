@@ -113,7 +113,7 @@ public class GTFluidBuilder implements IGTFluidBuilder {
      */
     @Override
     public IGTFluidBuilder withTextures(final ResourceLocation stillIconResourceLocation,
-            final ResourceLocation flowingIconResourceLocation) {
+        final ResourceLocation flowingIconResourceLocation) {
         this.stillIconResourceLocation = stillIconResourceLocation;
         this.flowingIconResourceLocation = flowingIconResourceLocation;
         return this;

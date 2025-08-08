@@ -54,7 +54,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public class MTENetworkSwitchAdv extends TTMultiblockBase
-        implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitchAdv> {
+    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitchAdv> {
 
     private static final String STRUCTURE_SHAPE_FIRST = "first";
     private static final String STRUCTURE_SHAPE_MIDDLE = "middle";
@@ -116,17 +116,18 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitchAdv> compile(String[][] definition) {
         structure.addCasing('A', Casings.ComputerCasing)
-                .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
+            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
         structure.addCasing('B', Casings.AdvancedComputerCasing);
         structure.addCasing('C', Casings.AdvancedComputerCasing)
-                .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
+            .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
 
         var shapes = Arrays.asList(
-                Pair.of(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST }),
-                Pair.of(STRUCTURE_SHAPE_MIDDLE, new String[][] { MIDDLE }),
-                Pair.of(STRUCTURE_SHAPE_LAST, new String[][] { LAST }));
+            Pair.of(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST }),
+            Pair.of(STRUCTURE_SHAPE_MIDDLE, new String[][] { MIDDLE }),
+            Pair.of(STRUCTURE_SHAPE_LAST, new String[][] { LAST }));
 
-        return structure.getStructureBuilder(shapes).build();
+        return structure.getStructureBuilder(shapes)
+            .build();
     }
 
     @Override
@@ -177,7 +178,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             offset = offset.add(inc);
 
             temp = structure
-                    .survivalConstruct(this, trigger, elementBudget - built, env, STRUCTURE_SHAPE_MIDDLE, offset);
+                .survivalConstruct(this, trigger, elementBudget - built, env, STRUCTURE_SHAPE_MIDDLE, offset);
 
             if (temp > -1) built += temp;
             if (elementBudget - built <= 0) return built;
@@ -266,7 +267,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     @Override
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-            List<String> lines) {
+        List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
         structureInstanceInfo.localizeStructureErrors(errors, context, lines);
@@ -277,17 +278,17 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("Static Network Switch With QoS")
-                .addInfo("Variable-length version of the Weighted Network Switch.").addSeparator()
-                .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.").addSeparator()
-                .addInfo(
-                        "Computation output is configured by right clicking transmission connectors with a screwdriver.")
-                .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
-                .addInfo("Computation output for a hatch is directly controlled by the hatch's setting.")
-                .addInfo(
-                        "For weighted computation distribution, use the §6"
-                                + Machine_Multi_Switch.get(1).getDisplayName()
-                                + "§r.")
-                .addSeparator();
+            .addInfo("Variable-length version of the Weighted Network Switch.")
+            .addSeparator()
+            .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.")
+            .addSeparator()
+            .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
+            .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
+            .addInfo("Computation output for a hatch is directly controlled by the hatch's setting.")
+            .addInfo(
+                "For weighted computation distribution, use the §6" + Machine_Multi_Switch.get(1)
+                    .getDisplayName() + "§r.")
+            .addSeparator();
 
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
@@ -312,15 +313,14 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         List<ITexture> textures = new ArrayList<>();
 
         textures.add(Casings.AdvancedComputerCasing.getCasingTexture());
 
         if (side == facing) {
             textures.add(
-                    new TTRenderedExtendedFacingTexture(
-                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF));
+                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF));
         }
 
         return textures.toArray(new ITexture[0]);
@@ -361,9 +361,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         super.outputAfterRecipe_EM();
 
         Vec3Impl pos = new Vec3Impl(
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord());
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
 
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             if (pendingComputation <= 0) break;
@@ -383,23 +383,27 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-                .widget(new FakeSyncWidget.LongSyncer(() -> pendingComputation, value -> pendingComputation = value));
+            .widget(new FakeSyncWidget.LongSyncer(() -> pendingComputation, value -> pendingComputation = value));
         screenElements
-                .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
+            .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
         screenElements.widget(
-                TextWidget
-                        .dynamicString(
-                                () -> GTUtility.translate(
-                                        "GT5U.machines.computation_hatch.pending_computation",
-                                        GTUtility.formatNumbers(pendingComputation)))
-                        .setSynced(false).setTextAlignment(Alignment.CenterLeft).setEnabled(w -> mMaxProgresstime > 0));
+            TextWidget
+                .dynamicString(
+                    () -> GTUtility.translate(
+                        "GT5U.machines.computation_hatch.pending_computation",
+                        GTUtility.formatNumbers(pendingComputation)))
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> mMaxProgresstime > 0));
         screenElements.widget(
-                TextWidget
-                        .dynamicString(
-                                () -> GTUtility.translate(
-                                        "GT5U.machines.computation_hatch.wasted_computation",
-                                        GTUtility.formatNumbers(wastedComputation)))
-                        .setSynced(false).setTextAlignment(Alignment.CenterLeft).setEnabled(w -> mMaxProgresstime > 0));
+            TextWidget
+                .dynamicString(
+                    () -> GTUtility.translate(
+                        "GT5U.machines.computation_hatch.wasted_computation",
+                        GTUtility.formatNumbers(wastedComputation)))
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(w -> mMaxProgresstime > 0));
     }
 }

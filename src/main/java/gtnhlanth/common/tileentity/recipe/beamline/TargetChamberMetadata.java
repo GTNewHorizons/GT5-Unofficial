@@ -23,7 +23,7 @@ public class TargetChamberMetadata {
     public final ItemStack focusItem;
 
     private TargetChamberMetadata(ItemStack focusItem, int particleID, int amount, float minEnergy, float maxEnergy,
-            float minFocus, float energyRatio) {
+        float minFocus, float energyRatio) {
         this.particleID = particleID;
         this.amount = amount;
         this.minEnergy = minEnergy;
@@ -56,9 +56,14 @@ public class TargetChamberMetadata {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("particleID", particleID).append("amount", amount)
-                .append("minEnergy", minEnergy).append("maxEnergy", maxEnergy).append("minFocus", minFocus)
-                .append("energyRatio", energyRatio).append("focusItem", focusItem).toString();
+        return new ToStringBuilder(this).append("particleID", particleID)
+            .append("amount", amount)
+            .append("minEnergy", minEnergy)
+            .append("maxEnergy", maxEnergy)
+            .append("minFocus", minFocus)
+            .append("energyRatio", energyRatio)
+            .append("focusItem", focusItem)
+            .toString();
     }
 
     public static Builder builder(ItemStack focusItem) {
@@ -116,13 +121,13 @@ public class TargetChamberMetadata {
 
         public TargetChamberMetadata build() {
             return new TargetChamberMetadata(
-                    focusItem,
-                    particleID,
-                    amount,
-                    minEnergy,
-                    maxEnergy,
-                    minFocus,
-                    energyRatio);
+                focusItem,
+                particleID,
+                amount,
+                minEnergy,
+                maxEnergy,
+                minFocus,
+                energyRatio);
         }
     }
 }

@@ -69,83 +69,111 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
     }
 
     private void registerAssemblerRecipes() {
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 0), GTUtility.getIntegratedCircuit(4))
-                .itemOutputs(new ItemStack(this, 1, 3)).duration(2 * SECONDS + 10 * TICKS).eut(4)
-                .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 8), GTUtility.getIntegratedCircuit(4))
-                .itemOutputs(new ItemStack(this, 1, 11)).duration(2 * SECONDS + 10 * TICKS).eut(4)
-                .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 0), GTUtility.getIntegratedCircuit(4))
+            .itemOutputs(new ItemStack(this, 1, 3))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(4)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 8), GTUtility.getIntegratedCircuit(4))
+            .itemOutputs(new ItemStack(this, 1, 11))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(4)
+            .addTo(assemblerRecipes);
     }
 
     private void registerCraftingRecipes() {
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 6),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "f", "X", 'X', new ItemStack(this, 1, 7) });
+            new ItemStack(this, 1, 6),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "f", "X", 'X', new ItemStack(this, 1, 7) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 14),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "f", "X", 'X', new ItemStack(this, 1, 15) });
+            new ItemStack(this, 1, 14),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "f", "X", 'X', new ItemStack(this, 1, 15) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 4),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 3) });
+            new ItemStack(this, 1, 4),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "h", "X", 'X', new ItemStack(this, 1, 3) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 12),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 11) });
+            new ItemStack(this, 1, 12),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "h", "X", 'X', new ItemStack(this, 1, 11) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 1),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 0) });
+            new ItemStack(this, 1, 1),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "h", "X", 'X', new ItemStack(this, 1, 0) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 1, 9),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "h", "X", 'X', new ItemStack(this, 1, 8) });
+            new ItemStack(this, 1, 9),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "h", "X", 'X', new ItemStack(this, 1, 8) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 4, 3),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 0) });
+            new ItemStack(this, 4, 3),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 0) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 4, 11),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 8) });
+            new ItemStack(this, 4, 11),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 8) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 4, 3),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 7) });
+            new ItemStack(this, 4, 3),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 7) });
         GTModHandler.addCraftingRecipe(
-                new ItemStack(this, 4, 11),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 15) });
+            new ItemStack(this, 4, 11),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 15) });
     }
 
     private void registerForgeHammerRecipes() {
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 3)).itemOutputs(new ItemStack(this, 1, 4))
-                .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 3))
+            .itemOutputs(new ItemStack(this, 1, 4))
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 11)).itemOutputs(new ItemStack(this, 1, 12))
-                .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 11))
+            .itemOutputs(new ItemStack(this, 1, 12))
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 0)).itemOutputs(new ItemStack(this, 1, 1))
-                .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 0))
+            .itemOutputs(new ItemStack(this, 1, 1))
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 8)).itemOutputs(new ItemStack(this, 1, 9))
-                .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 8))
+            .itemOutputs(new ItemStack(this, 1, 9))
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(hammerRecipes);
     }
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 
-            GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 7), GTUtility.copyAmount(0, aStack))
-                    .itemOutputs(new ItemStack(this, 1, 6)).duration(2 * SECONDS + 10 * TICKS).eut(16)
-                    .addTo(laserEngraverRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(this, 1, 7), GTUtility.copyAmount(0, aStack))
+                .itemOutputs(new ItemStack(this, 1, 6))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(laserEngraverRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(new ItemStack(this, 1, 15), GTUtility.copyAmount(0, aStack))
-                    .itemOutputs(new ItemStack(this, 1, 14)).duration(2 * SECONDS + 10 * TICKS).eut(16)
-                    .addTo(laserEngraverRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(this, 1, 15), GTUtility.copyAmount(0, aStack))
+                .itemOutputs(new ItemStack(this, 1, 14))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(laserEngraverRecipes);
 
         }
     }

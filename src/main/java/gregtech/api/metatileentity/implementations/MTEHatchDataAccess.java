@@ -35,13 +35,13 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     public MTEHatchDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                16,
-                new String[] { "Data Access for Multiblocks",
-                        "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            16,
+            new String[] { "Data Access for Multiblocks",
+                "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
     }
 
     public MTEHatchDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -81,13 +81,13 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return mTier >= 8 && !aBaseMetaTileEntity.isActive();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return mTier >= 8 && !aBaseMetaTileEntity.isActive();
     }
 
@@ -134,16 +134,16 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mTier == 4) {
             getBaseMetaTileEntity()
-                    .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
+                .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
         } else {
             getBaseMetaTileEntity()
-                    .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
+                .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
         }
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("recipeCount", getAssemblyLineRecipes().size());
     }
@@ -154,7 +154,7 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();

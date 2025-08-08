@@ -42,7 +42,7 @@ import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch
-        implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
@@ -103,42 +103,45 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(
-                        new SlotWidget(inventoryHandler, 0)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
-                                .setPos(79, 16))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                                .setPos(79, 52))
-                .widget(
-                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
-                                .setBackground(GTUITextures.TRANSPARENT).setPos(59, 42))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30))
-                .widget(
-                        new ButtonWidget()
-                                .setOnClick((clickData, widget) -> { isOutputSlotLocked = !isOutputSlotLocked; })
-                                .setBackground(
-                                        () -> new UITexture[] {
-                                                isOutputSlotLocked ? GTUITextures.BUTTON_STANDARD_PRESSED
-                                                        : GTUITextures.BUTTON_STANDARD,
-                                                isOutputSlotLocked ? GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED
-                                                        : GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED })
-                                .addTooltip(translateToLocal("GT5U.gui.button.toggle_output_slot_lock"))
-                                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                                .attachSyncer(
-                                        new FakeSyncWidget.BooleanSyncer(
-                                                () -> isOutputSlotLocked,
-                                                val -> isOutputSlotLocked = val),
-                                        builder)
-                                .setPos(100, 52).setSize(18, 18))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> itemCount, value -> clientItemCount = value));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 16)
+                .setSize(71, 45))
+            .widget(
+                new SlotWidget(inventoryHandler, 0)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
+                    .setPos(79, 16))
+            .widget(
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
+                    .setPos(79, 52))
+            .widget(
+                SlotWidget.phantom(inventoryHandler, 2)
+                    .disableInteraction()
+                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setPos(59, 42))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(
+                new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 30))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> { isOutputSlotLocked = !isOutputSlotLocked; })
+                    .setBackground(
+                        () -> new UITexture[] {
+                            isOutputSlotLocked ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,
+                            isOutputSlotLocked ? GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED
+                                : GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED })
+                    .addTooltip(translateToLocal("GT5U.gui.button.toggle_output_slot_lock"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(() -> isOutputSlotLocked, val -> isOutputSlotLocked = val),
+                        builder)
+                    .setPos(100, 52)
+                    .setSize(18, 18))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> itemCount, value -> clientItemCount = value));
 
     }
 
@@ -147,19 +150,19 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
         tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
             final ItemStack tContents = ItemStack
-                    .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
+                .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
             final int tSize = stack.stackTagCompound.getInteger("itemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
-                                + EnumChatFormatting.YELLOW
-                                + tContents.getDisplayName()
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
+                        + EnumChatFormatting.YELLOW
+                        + tContents.getDisplayName()
+                        + EnumChatFormatting.GRAY);
                 tooltip.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tSize)
-                                + EnumChatFormatting.GRAY);
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(tSize)
+                        + EnumChatFormatting.GRAY);
             }
         }
     }
@@ -245,7 +248,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             int savedCount = count;
 
             if ((mInventory[0] != null) && ((count < getItemCapacity()))
-                    && GTUtility.areStacksEqual(mInventory[0], stack)) {
+                && GTUtility.areStacksEqual(mInventory[0], stack)) {
                 count += mInventory[0].stackSize;
                 if (count <= getItemCapacity()) {
                     mInventory[0] = null;
@@ -259,12 +262,12 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
             } else if ((count > 0) && GTUtility.areStacksEqual(mInventory[1], stack)
-                    && mInventory[1].getMaxStackSize() > mInventory[1].stackSize
-                    && !isOutputSlotLocked) {
-                        int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
-                        mInventory[1].stackSize += tmp;
-                        count -= tmp;
-                    }
+                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize
+                && !isOutputSlotLocked) {
+                    int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
+                    mInventory[1].stackSize += tmp;
+                    count -= tmp;
+                }
             setItemCount(count);
             if (stack != null) {
                 mInventory[2] = stack.copy();
@@ -324,14 +327,14 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;

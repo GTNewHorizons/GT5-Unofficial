@@ -54,7 +54,7 @@ public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
+        RenderBlocks renderer) {
         // renderer.renderStandardBlock(block, x, y, z);
         GL11.glPushMatrix();
         Tessellator tes = Tessellator.instance;
@@ -63,11 +63,11 @@ public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
         IIcon side = BlockQuantumStuff.stuff;
         for (int i = 0; i < 6; i++) {
             float f = 1 - TecTech.RANDOM.nextFloat() / 4f, g = f - TecTech.RANDOM.nextFloat() / 4f,
-                    r = g - TecTech.RANDOM.nextFloat() / 4f - 0.25f;
+                r = g - TecTech.RANDOM.nextFloat() / 4f - 0.25f;
             tes.setColorOpaque_F(r, g, f);
             float rotX = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI,
-                    rotY = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI,
-                    rotZ = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI;
+                rotY = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI,
+                rotZ = TecTech.RANDOM.nextFloat() * 2 * (float) Math.PI;
             tesAbuse(x, y, z, -1.425f, -1.425f, .1f, rotX, rotY, rotZ, side.getMinU(), side.getMaxV());
             tesAbuse(x, y, z, -1.425f, 1.425f, .1f, rotX, rotY, rotZ, side.getMinU(), side.getMinV());
             tesAbuse(x, y, z, 1.425f, 1.425f, .1f, rotX, rotY, rotZ, side.getMaxU(), side.getMinV());
@@ -83,13 +83,13 @@ public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
     }
 
     private void tesAbuse(int x, int y, int z, float sx, float sy, float sz, float rotX, float rotY, float rotZ,
-            float sideU, float sideV) {
+        float sideU, float sideV) {
         Vec3 pos = Vec3.createVectorHelper(sx, sy, sz);
         pos.rotateAroundX(rotX);
         pos.rotateAroundY(rotY);
         pos.rotateAroundZ(rotZ);
         Tessellator.instance
-                .addVertexWithUV(pos.xCoord + x + .5f, pos.yCoord + y + .5f, pos.zCoord + z + .5f, sideU, sideV);
+            .addVertexWithUV(pos.xCoord + x + .5f, pos.yCoord + y + .5f, pos.zCoord + z + .5f, sideU, sideV);
     }
 
     @Override

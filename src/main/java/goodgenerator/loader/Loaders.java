@@ -72,26 +72,26 @@ public class Loaders {
     public static final Item radiationProtectionPlate = new GGItem("radiationProtectionPlate", GoodGenerator.GG);
     public static final Item wrappedUraniumIngot = new GGItem("wrappedUraniumIngot", GoodGenerator.GG);
     public static final Item highDensityUraniumNugget = new RadioactiveItem(
-            "highDensityUraniumNugget",
-            GoodGenerator.GG,
-            200);
+        "highDensityUraniumNugget",
+        GoodGenerator.GG,
+        200);
     public static final Item highDensityUranium = new RadioactiveItem("highDensityUranium", GoodGenerator.GG, 1800);
     public static final Item wrappedThoriumIngot = new GGItem("wrappedThoriumIngot", GoodGenerator.GG);
     public static final Item highDensityThoriumNugget = new RadioactiveItem(
-            "highDensityThoriumNugget",
-            GoodGenerator.GG,
-            50);
+        "highDensityThoriumNugget",
+        GoodGenerator.GG,
+        50);
     public static final Item highDensityThorium = new RadioactiveItem("highDensityThorium", GoodGenerator.GG, 450);
     public static final Item wrappedPlutoniumIngot = new GGItem("wrappedPlutoniumIngot", GoodGenerator.GG);
     public static final Item highDensityPlutoniumNugget = new RadioactiveItem(
-            "highDensityPlutoniumNugget",
-            GoodGenerator.GG,
-            450);
+        "highDensityPlutoniumNugget",
+        GoodGenerator.GG,
+        450);
     public static final Item highDensityPlutonium = new RadioactiveItem("highDensityPlutonium", GoodGenerator.GG, 4050);
     public static final Item rawAtomicSeparationCatalyst = new GGItem("rawAtomicSeparationCatalyst", GoodGenerator.GG);
     public static final Item advancedRadiationProtectionPlate = new GGItem(
-            "advancedRadiationProtectionPlate",
-            GoodGenerator.GG);
+        "advancedRadiationProtectionPlate",
+        GoodGenerator.GG);
     public static final Item aluminumNitride = new GGItem("aluminumNitride", "AlN", GoodGenerator.GG);
     public static final Item specialCeramics = new GGItem("specialCeramics", GoodGenerator.GG);
     public static final Item specialCeramicsPlate = new GGItem("specialCeramicsPlate", GoodGenerator.GG);
@@ -103,163 +103,160 @@ public class Loaders {
     public static final Item inverter = new GGItem("inverter", addText("inverter.tooltip", 1), GoodGenerator.GG);
     public static final Item neutronSource = new GGItem("neutronSource", GoodGenerator.GG);
     public static final Item naquadahMass = new GGItem(
-            "naquadahMass",
-            addText("naquadahMass.tooltip", 1),
-            GoodGenerator.GG);
+        "naquadahMass",
+        addText("naquadahMass.tooltip", 1),
+        GoodGenerator.GG);
     public static final Item enrichedNaquadahMass = new GGItem(
-            "enrichedNaquadahMass",
-            addText("enrichedNaquadahMass.tooltip", 1),
-            GoodGenerator.GG);
+        "enrichedNaquadahMass",
+        addText("enrichedNaquadahMass.tooltip", 1),
+        GoodGenerator.GG);
     public static final Item naquadriaMass = new GGItem(
-            "naquadriaMass",
-            addText("naquadriaMass.tooltip", 1),
-            GoodGenerator.GG);
+        "naquadriaMass",
+        addText("naquadriaMass.tooltip", 1),
+        GoodGenerator.GG);
     public static final Item advancedFuelRod = new GGItem("advancedFuelRod", GoodGenerator.GG);
     public static final Item fluidCore = new GGItem(
-            "fluidCore",
-            GoodGenerator.GG,
-            new String[] { GoodGenerator.MOD_ID + ":fluidCore/1", GoodGenerator.MOD_ID + ":fluidCore/2",
-                    GoodGenerator.MOD_ID + ":fluidCore/3", GoodGenerator.MOD_ID + ":fluidCore/4",
-                    GoodGenerator.MOD_ID + ":fluidCore/5", GoodGenerator.MOD_ID + ":fluidCore/6",
-                    GoodGenerator.MOD_ID + ":fluidCore/7", GoodGenerator.MOD_ID + ":fluidCore/8",
-                    GoodGenerator.MOD_ID + ":fluidCore/9", GoodGenerator.MOD_ID + ":fluidCore/10" });
+        "fluidCore",
+        GoodGenerator.GG,
+        new String[] { GoodGenerator.MOD_ID + ":fluidCore/1", GoodGenerator.MOD_ID + ":fluidCore/2",
+            GoodGenerator.MOD_ID + ":fluidCore/3", GoodGenerator.MOD_ID + ":fluidCore/4",
+            GoodGenerator.MOD_ID + ":fluidCore/5", GoodGenerator.MOD_ID + ":fluidCore/6",
+            GoodGenerator.MOD_ID + ":fluidCore/7", GoodGenerator.MOD_ID + ":fluidCore/8",
+            GoodGenerator.MOD_ID + ":fluidCore/9", GoodGenerator.MOD_ID + ":fluidCore/10" });
     public static final Item highEnergyMixture = new GGItem(
-            "highEnergyMixture",
-            GoodGenerator.GG,
-            new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
+        "highEnergyMixture",
+        GoodGenerator.GG,
+        new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
     public static final Item saltyRoot = new GGItem(
-            "saltyRoot",
-            GoodGenerator.GG,
-            new String[] { GoodGenerator.MOD_ID + ":saltyRoot" });
+        "saltyRoot",
+        GoodGenerator.GG,
+        new String[] { GoodGenerator.MOD_ID + ":saltyRoot" });
     public static final Item huiCircuit = new GGItem(
-            "huiCircuit",
-            addText("huiCircuit.tooltip", 5),
-            GoodGenerator.GG,
-            new String[] { GoodGenerator.MOD_ID + ":ciruits/1", GoodGenerator.MOD_ID + ":ciruits/2",
-                    GoodGenerator.MOD_ID + ":ciruits/3", GoodGenerator.MOD_ID + ":ciruits/4",
-                    GoodGenerator.MOD_ID + ":ciruits/5", });
+        "huiCircuit",
+        addText("huiCircuit.tooltip", 5),
+        GoodGenerator.GG,
+        new String[] { GoodGenerator.MOD_ID + ":ciruits/1", GoodGenerator.MOD_ID + ":ciruits/2",
+            GoodGenerator.MOD_ID + ":ciruits/3", GoodGenerator.MOD_ID + ":ciruits/4",
+            GoodGenerator.MOD_ID + ":ciruits/5", });
 
     public static final Item circuitWrap = new GGItem(
-            "circuitWrap",
-            GoodGenerator.GG,
-            new String[] { GoodGenerator.MOD_ID + ":wraps/0", GoodGenerator.MOD_ID + ":wraps/1",
-                    GoodGenerator.MOD_ID + ":wraps/2", GoodGenerator.MOD_ID + ":wraps/3",
-                    GoodGenerator.MOD_ID + ":wraps/4", GoodGenerator.MOD_ID + ":wraps/5",
-                    GoodGenerator.MOD_ID + ":wraps/6", GoodGenerator.MOD_ID + ":wraps/7",
-                    GoodGenerator.MOD_ID + ":wraps/8", GoodGenerator.MOD_ID + ":wraps/9",
-                    GoodGenerator.MOD_ID + ":wraps/10", GoodGenerator.MOD_ID + ":wraps/11",
-                    GoodGenerator.MOD_ID + ":wraps/12", GoodGenerator.MOD_ID + ":wraps/13",
-                    GoodGenerator.MOD_ID + ":wraps/14" });
+        "circuitWrap",
+        GoodGenerator.GG,
+        new String[] { GoodGenerator.MOD_ID + ":wraps/0", GoodGenerator.MOD_ID + ":wraps/1",
+            GoodGenerator.MOD_ID + ":wraps/2", GoodGenerator.MOD_ID + ":wraps/3", GoodGenerator.MOD_ID + ":wraps/4",
+            GoodGenerator.MOD_ID + ":wraps/5", GoodGenerator.MOD_ID + ":wraps/6", GoodGenerator.MOD_ID + ":wraps/7",
+            GoodGenerator.MOD_ID + ":wraps/8", GoodGenerator.MOD_ID + ":wraps/9", GoodGenerator.MOD_ID + ":wraps/10",
+            GoodGenerator.MOD_ID + ":wraps/11", GoodGenerator.MOD_ID + ":wraps/12", GoodGenerator.MOD_ID + ":wraps/13",
+            GoodGenerator.MOD_ID + ":wraps/14" });
 
     public static final Block MAR_Casing = new BlockCasing(
-            "MAR_Casing",
-            new String[] { GoodGenerator.MOD_ID + ":MAR_Casing" });
+        "MAR_Casing",
+        new String[] { GoodGenerator.MOD_ID + ":MAR_Casing" });
     public static final Block FRF_Casings = new BlockCasing(
-            "FRF_Casing",
-            new String[] { "gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM" });
+        "FRF_Casing",
+        new String[] { "gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM" });
     public static final Block FRF_Coil_1 = new BlockCasing(
-            "FRF_Coil_1",
-            new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/1" });
+        "FRF_Coil_1",
+        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/1" });
     public static final Block FRF_Coil_2 = new BlockCasing(
-            "FRF_Coil_2",
-            new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/2" });
+        "FRF_Coil_2",
+        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/2" });
     public static final Block FRF_Coil_3 = new BlockCasing(
-            "FRF_Coil_3",
-            new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/3" });
+        "FRF_Coil_3",
+        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/3" });
     public static final Block FRF_Coil_4 = new BlockCasing(
-            "FRF_Coil_4",
-            new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/4" });
+        "FRF_Coil_4",
+        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/4" });
     public static final Block radiationProtectionSteelFrame = new BlockFrame(
-            "radiationProtectionSteelFrame",
-            new String[] { GoodGenerator.MOD_ID + ":radiationProtectionSteelFrame" });
+        "radiationProtectionSteelFrame",
+        new String[] { GoodGenerator.MOD_ID + ":radiationProtectionSteelFrame" });
     public static final Block fieldRestrictingGlass = new BlockFrame(
-            "fieldRestrictingGlass",
-            new String[] { GoodGenerator.MOD_ID + ":fieldRestrictingGlass" });
+        "fieldRestrictingGlass",
+        new String[] { GoodGenerator.MOD_ID + ":fieldRestrictingGlass" });
     public static final Block rawCylinder = new BlockCasing(
-            "rawCylinder",
-            new String[] { GoodGenerator.MOD_ID + ":rawCylinder" });
+        "rawCylinder",
+        new String[] { GoodGenerator.MOD_ID + ":rawCylinder" });
     public static final Block titaniumPlatedCylinder = new BlockCasing(
-            "titaniumPlatedCylinder",
-            new String[] { GoodGenerator.MOD_ID + ":titaniumPlatedCylinder" });
+        "titaniumPlatedCylinder",
+        new String[] { GoodGenerator.MOD_ID + ":titaniumPlatedCylinder" });
     public static final Block magicCasing = new BlockCasing(
-            "magicCasing",
-            new String[] { GoodGenerator.MOD_ID + ":MagicCasing" });
+        "magicCasing",
+        new String[] { GoodGenerator.MOD_ID + ":MagicCasing" });
     public static final Block essentiaCell = new BlockCasing(
-            "essentiaCell",
-            new String[] { GoodGenerator.MOD_ID + ":essentiaCell/1", GoodGenerator.MOD_ID + ":essentiaCell/2",
-                    GoodGenerator.MOD_ID + ":essentiaCell/3", GoodGenerator.MOD_ID + ":essentiaCell/4" });
+        "essentiaCell",
+        new String[] { GoodGenerator.MOD_ID + ":essentiaCell/1", GoodGenerator.MOD_ID + ":essentiaCell/2",
+            GoodGenerator.MOD_ID + ":essentiaCell/3", GoodGenerator.MOD_ID + ":essentiaCell/4" });
     public static final Block speedingPipe = new BlockComplexTextureCasing(
-            "speedingPipe",
-            new String[] { GoodGenerator.MOD_ID + ":speedingPipe_SIDE" },
-            new String[] { GoodGenerator.MOD_ID + ":speedingPipe_TOP" });
+        "speedingPipe",
+        new String[] { GoodGenerator.MOD_ID + ":speedingPipe_SIDE" },
+        new String[] { GoodGenerator.MOD_ID + ":speedingPipe_TOP" });
     public static final Block yottaFluidTankCell = new BlockCasing(
-            "yottaFluidTankCell",
-            new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCell/1",
-                    GoodGenerator.MOD_ID + ":yottaFluidTankCell/2", GoodGenerator.MOD_ID + ":yottaFluidTankCell/3",
-                    GoodGenerator.MOD_ID + ":yottaFluidTankCell/4", GoodGenerator.MOD_ID + ":yottaFluidTankCell/5",
-                    GoodGenerator.MOD_ID + ":yottaFluidTankCell/6", GoodGenerator.MOD_ID + ":yottaFluidTankCell/7",
-                    GoodGenerator.MOD_ID + ":yottaFluidTankCell/8", GoodGenerator.MOD_ID + ":yottaFluidTankCell/9",
-                    GoodGenerator.MOD_ID + ":yottaFluidTankCell/10", });
+        "yottaFluidTankCell",
+        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCell/1", GoodGenerator.MOD_ID + ":yottaFluidTankCell/2",
+            GoodGenerator.MOD_ID + ":yottaFluidTankCell/3", GoodGenerator.MOD_ID + ":yottaFluidTankCell/4",
+            GoodGenerator.MOD_ID + ":yottaFluidTankCell/5", GoodGenerator.MOD_ID + ":yottaFluidTankCell/6",
+            GoodGenerator.MOD_ID + ":yottaFluidTankCell/7", GoodGenerator.MOD_ID + ":yottaFluidTankCell/8",
+            GoodGenerator.MOD_ID + ":yottaFluidTankCell/9", GoodGenerator.MOD_ID + ":yottaFluidTankCell/10", });
     public static final Block yottaFluidTankCasing = new BlockComplexTextureCasing(
-            "yottaFluidTankCasing",
-            new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_SIDE" },
-            new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_TOP" });
+        "yottaFluidTankCasing",
+        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_SIDE" },
+        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_TOP" });
     public static final Block supercriticalFluidTurbineCasing = new BlockTurbineCasing(
-            "supercriticalFluidTurbineCasing",
-            "supercriticalFluidTurbineCasing");
+        "supercriticalFluidTurbineCasing",
+        "supercriticalFluidTurbineCasing");
     public static final Block pressureResistantWalls = new BlockCasing(
-            "pressureResistantWalls",
-            new String[] { GoodGenerator.MOD_ID + ":pressureResistantWalls" });
+        "pressureResistantWalls",
+        new String[] { GoodGenerator.MOD_ID + ":pressureResistantWalls" });
     public static final Block impreciseUnitCasing = new BlockCasing(
-            "impreciseUnitCasing",
-            new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/0" });
+        "impreciseUnitCasing",
+        new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/0" });
     public static final Block preciseUnitCasing = new BlockCasing(
-            "preciseUnitCasing",
-            new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/1", GoodGenerator.MOD_ID + ":preciseUnitCasing/2",
-                    GoodGenerator.MOD_ID + ":preciseUnitCasing/3", GoodGenerator.MOD_ID + ":preciseUnitCasing/4" });
+        "preciseUnitCasing",
+        new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/1", GoodGenerator.MOD_ID + ":preciseUnitCasing/2",
+            GoodGenerator.MOD_ID + ":preciseUnitCasing/3", GoodGenerator.MOD_ID + ":preciseUnitCasing/4" });
     public static final Block compactFusionCoil = new BlockCasing(
-            "compactFusionCoil",
-            new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
-                    GoodGenerator.MOD_ID + ":fuison/3", GoodGenerator.MOD_ID + ":fuison/4",
-                    GoodGenerator.MOD_ID + ":fuison/5" });
+        "compactFusionCoil",
+        new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
+            GoodGenerator.MOD_ID + ":fuison/3", GoodGenerator.MOD_ID + ":fuison/4",
+            GoodGenerator.MOD_ID + ":fuison/5" });
     public static final Block antimatterContainmentCasing = new BlockFrame(
-            "antimatterContainmentCasing",
-            new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
+        "antimatterContainmentCasing",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
     public static final Block magneticFluxCasing = new BlockCasing(
-            "magneticFluxCasing",
-            new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
+        "magneticFluxCasing",
+        new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
     public static final Block gravityStabilizationCasing = new BlockCasing(
-            "gravityStabilizationCasing",
-            new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
+        "gravityStabilizationCasing",
+        new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
     public static final Block protomatterActivationCoil = new BlockCasing(
-            "protomatterActivationCoil",
-            new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
+        "protomatterActivationCoil",
+        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
     public static final Block antimatterAnnihilationMatrix = new BlockCasing(
-            "antimatterAnnihilationMatrix",
-            new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+        "antimatterAnnihilationMatrix",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
     public static final Block antimatterRenderBlock = new AntimatterRenderBlock();
     public static final Block essentiaFilterCasing = new BlockCasing(
-            "essentiaFilterCasing",
-            new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
+        "essentiaFilterCasing",
+        new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
     public static Block essentiaOutputHatch;
     public static Block essentiaOutputHatch_ME;
     public static final Block componentAssemblylineCasing = new BlockCasing(
-            "componentAssemblyLineCasing",
-            new String[] { GoodGenerator.MOD_ID + ":compAsslineCasing/0", // LV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/1", // MV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/2", // HV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/3", // EV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/4", // IV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/5", // LuV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/6", // ZPM
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/7", // UV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/8", // UHV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/9", // UEV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/10", // UIV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/11", // UMV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/12", // UXV
-                    GoodGenerator.MOD_ID + ":compAsslineCasing/13" // MAX
-            });
+        "componentAssemblyLineCasing",
+        new String[] { GoodGenerator.MOD_ID + ":compAsslineCasing/0", // LV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/1", // MV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/2", // HV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/3", // EV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/4", // IV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/5", // LuV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/6", // ZPM
+            GoodGenerator.MOD_ID + ":compAsslineCasing/7", // UV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/8", // UHV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/9", // UEV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/10", // UIV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/11", // UMV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/12", // UXV
+            GoodGenerator.MOD_ID + ":compAsslineCasing/13" // MAX
+        });
     public static ItemStack MAR;
     public static ItemStack FRF;
     public static ItemStack UCFE;
@@ -285,102 +282,102 @@ public class Loaders {
 
     public static void GTMetaTileRegister() {
         Loaders.MAR = new MTEMultiNqGenerator(MetaTileEntityIDs.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.FRF = new MTEFuelRefineFactory(MetaTileEntityIDs.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery")
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.UCFE = new MTEUniversalChemicalFuelEngine(
-                MetaTileEntityIDs.UniversalChemicalFuelEngine.ID,
-                "UniversalChemicalFuelEngine",
-                "Universal Chemical Fuel Engine").getStackForm(1L);
+            MetaTileEntityIDs.UniversalChemicalFuelEngine.ID,
+            "UniversalChemicalFuelEngine",
+            "Universal Chemical Fuel Engine").getStackForm(1L);
         int[] neutronAcceleratorIDs = new int[] { MetaTileEntityIDs.NeutronAcceleratorULV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorLV.ID, MetaTileEntityIDs.NeutronAcceleratorMV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorHV.ID, MetaTileEntityIDs.NeutronAcceleratorEV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorIV.ID, MetaTileEntityIDs.NeutronAcceleratorLuV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorZPM.ID, MetaTileEntityIDs.NeutronAcceleratorUV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorUHV.ID, MetaTileEntityIDs.NeutronAcceleratorUEV.ID,
-                MetaTileEntityIDs.NeutronAcceleratorUIV.ID, MetaTileEntityIDs.NeutronAcceleratorUMV.ID, };
+            MetaTileEntityIDs.NeutronAcceleratorLV.ID, MetaTileEntityIDs.NeutronAcceleratorMV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorHV.ID, MetaTileEntityIDs.NeutronAcceleratorEV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorIV.ID, MetaTileEntityIDs.NeutronAcceleratorLuV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorZPM.ID, MetaTileEntityIDs.NeutronAcceleratorUV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorUHV.ID, MetaTileEntityIDs.NeutronAcceleratorUEV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorUIV.ID, MetaTileEntityIDs.NeutronAcceleratorUMV.ID, };
         for (int i = 0; i < 13; i++) {
             Loaders.NeutronAccelerators[i] = new MTENeutronAccelerator(
-                    neutronAcceleratorIDs[i],
-                    "Neutron Accelerator " + GTValues.VN[i],
-                    "Neutron Accelerator " + GTValues.VN[i],
-                    i).getStackForm(1L);
+                neutronAcceleratorIDs[i],
+                "Neutron Accelerator " + GTValues.VN[i],
+                "Neutron Accelerator " + GTValues.VN[i],
+                i).getStackForm(1L);
         }
         Loaders.NS = new MTENeutronSensor(MetaTileEntityIDs.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.NA = new MTENeutronActivator(
-                MetaTileEntityIDs.NeutronActivator.ID,
-                "NeutronActivator",
-                "Neutron Activator").getStackForm(1L);
+            MetaTileEntityIDs.NeutronActivator.ID,
+            "NeutronActivator",
+            "Neutron Activator").getStackForm(1L);
         Loaders.YFT = new MTEYottaFluidTank(MetaTileEntityIDs.YottaFluidTank.ID, "YottaFluidTank", "YOTTank")
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.YFH = new MTEYOTTAHatch(MetaTileEntityIDs.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.AMHatch = new AntimatterOutputHatch(
-                MetaTileEntityIDs.AntimatterHatch.ID,
-                "AntimatterHatch",
-                "Antimatter Hatch").getStackForm(1L);
+            MetaTileEntityIDs.AntimatterHatch.ID,
+            "AntimatterHatch",
+            "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
-                MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
-                "SupercriticalSteamTurbine",
-                "Large Supercritical Steam Turbine").getStackForm(1L);
+            MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
+            "SupercriticalSteamTurbine",
+            "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
-                MetaTileEntityIDs.ExtremeHeatExchanger.ID,
-                "ExtremeHeatExchanger",
-                "Extreme Heat Exchanger").getStackForm(1L);
+            MetaTileEntityIDs.ExtremeHeatExchanger.ID,
+            "ExtremeHeatExchanger",
+            "Extreme Heat Exchanger").getStackForm(1L);
         Loaders.PA = new MTEPreciseAssembler(
-                MetaTileEntityIDs.PreciseAssembler.ID,
-                "PreciseAssembler",
-                "Precise Auto-Assembler MT-3662").getStackForm(1L);
+            MetaTileEntityIDs.PreciseAssembler.ID,
+            "PreciseAssembler",
+            "Precise Auto-Assembler MT-3662").getStackForm(1L);
         Loaders.LFC[0] = new MTELargeFusionComputer1(
-                MetaTileEntityIDs.LargeFusionComputer1.ID,
-                "LargeFusionComputer1",
-                "Compact Fusion Computer MK-I Prototype").getStackForm(1);
+            MetaTileEntityIDs.LargeFusionComputer1.ID,
+            "LargeFusionComputer1",
+            "Compact Fusion Computer MK-I Prototype").getStackForm(1);
         Loaders.LFC[1] = new MTELargeFusionComputer2(
-                MetaTileEntityIDs.LargeFusionComputer2.ID,
-                "LargeFusionComputer2",
-                "Compact Fusion Computer MK-II").getStackForm(1L);
+            MetaTileEntityIDs.LargeFusionComputer2.ID,
+            "LargeFusionComputer2",
+            "Compact Fusion Computer MK-II").getStackForm(1L);
         Loaders.LFC[2] = new MTELargeFusionComputer3(
-                MetaTileEntityIDs.LargeFusionComputer3.ID,
-                "LargeFusionComputer3",
-                "Compact Fusion Computer MK-III").getStackForm(1L);
+            MetaTileEntityIDs.LargeFusionComputer3.ID,
+            "LargeFusionComputer3",
+            "Compact Fusion Computer MK-III").getStackForm(1L);
         Loaders.LFC[3] = new MTELargeFusionComputer4(
-                MetaTileEntityIDs.LargeFusionComputer4.ID,
-                "LargeFusionComputer4",
-                "Compact Fusion Computer MK-IV Prototype").getStackForm(1L);
+            MetaTileEntityIDs.LargeFusionComputer4.ID,
+            "LargeFusionComputer4",
+            "Compact Fusion Computer MK-IV Prototype").getStackForm(1L);
         Loaders.LFC[4] = new MTELargeFusionComputer5(
-                MetaTileEntityIDs.LargeFusionComputer5.ID,
-                "LargeFusionComputer5",
-                "Compact Fusion Computer MK-V").getStackForm(1L);
+            MetaTileEntityIDs.LargeFusionComputer5.ID,
+            "LargeFusionComputer5",
+            "Compact Fusion Computer MK-V").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new MTEDieselGenerator(
-                MetaTileEntityIDs.DieselGeneratorEV.ID,
-                "basicgenerator.diesel.tier.04",
-                "Turbo Supercharging Combustion Generator",
-                4,
-                65).getStackForm(1L);
+            MetaTileEntityIDs.DieselGeneratorEV.ID,
+            "basicgenerator.diesel.tier.04",
+            "Turbo Supercharging Combustion Generator",
+            4,
+            65).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new MTEDieselGenerator(
-                MetaTileEntityIDs.DieselGeneratorIV.ID,
-                "basicgenerator.diesel.tier.05",
-                "Ultimate Chemical Energy Releaser",
-                5,
-                50).getStackForm(1L);
+            MetaTileEntityIDs.DieselGeneratorIV.ID,
+            "basicgenerator.diesel.tier.05",
+            "Ultimate Chemical Energy Releaser",
+            5,
+            50).getStackForm(1L);
         Loaders.CT = new MTECoolantTower(MetaTileEntityIDs.CoolantTower.ID, "CoolantTower", "Coolant Tower")
-                .getStackForm(1L);
+            .getStackForm(1L);
         Loaders.CompAssline = new MTEComponentAssemblyLine(
-                MetaTileEntityIDs.ComponentAssemblyLine.ID,
-                "ComponentAssemblyLine",
-                "Component Assembly Line").getStackForm(1L);
+            MetaTileEntityIDs.ComponentAssemblyLine.ID,
+            "ComponentAssemblyLine",
+            "Component Assembly Line").getStackForm(1L);
         CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(
-                MetaTileEntityIDs.AntimatterForge.ID,
-                "AntimatterForge",
-                "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
+            MetaTileEntityIDs.AntimatterForge.ID,
+            "AntimatterForge",
+            "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
         Loaders.AMGenerator = new AntimatterGenerator(
-                MetaTileEntityIDs.AntimatterGenerator.ID,
-                "AntimatterGenerator",
-                "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
+            MetaTileEntityIDs.AntimatterGenerator.ID,
+            "AntimatterGenerator",
+            "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
     }
 
     public static void Register() {
@@ -402,7 +399,7 @@ public class Loaders {
         GameRegistry.registerBlock(yottaFluidTankCell, GGItemBlocks.class, "yottaFluidTankCells");
         GameRegistry.registerBlock(yottaFluidTankCasing, GGItemBlocks.class, "yottaFluidTankCasing");
         GameRegistry
-                .registerBlock(supercriticalFluidTurbineCasing, GGItemBlocks.class, "supercriticalFluidTurbineCasing");
+            .registerBlock(supercriticalFluidTurbineCasing, GGItemBlocks.class, "supercriticalFluidTurbineCasing");
         GameRegistry.registerBlock(componentAssemblylineCasing, GGItemBlocks.class, "componentAssemblylineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, GGItemBlocks.class, "pressureResistantWalls");
         GameRegistry.registerBlock(impreciseUnitCasing, GGItemBlocks.class, "impreciseUnitCasing");
@@ -425,10 +422,8 @@ public class Loaders {
         GameRegistry.registerItem(highDensityPlutoniumNugget, "highDensityPlutoniumNugget", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityPlutonium, "highDensityPlutonium", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rawAtomicSeparationCatalyst, "rawAtomicSeparationCatalyst", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                advancedRadiationProtectionPlate,
-                "advancedRadiationProtectionPlate",
-                GoodGenerator.MOD_ID);
+        GameRegistry
+            .registerItem(advancedRadiationProtectionPlate, "advancedRadiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(aluminumNitride, "aluminumNitride", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
@@ -453,7 +448,7 @@ public class Loaders {
         GTStructureChannels.PRASS_UNIT_CASING.registerAsIndicator(new ItemStack(impreciseUnitCasing), 1);
         for (int i = 1; i < 6; i++) {
             GTStructureChannels.PRASS_UNIT_CASING
-                    .registerAsIndicator(new ItemStack(preciseUnitCasing, 1, i - 1), i + 1);
+                .registerAsIndicator(new ItemStack(preciseUnitCasing, 1, i - 1), i + 1);
         }
     }
 
@@ -462,17 +457,17 @@ public class Loaders {
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatch.class, "EssentiaOutputHatch");
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatchME.class, "EssentiaOutputHatch_ME");
         Loaders.LES = new MTELargeEssentiaSmeltery(
-                MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
-                "LargeEssentiaSmeltery",
-                "Large Essentia Smeltery").getStackForm(1L);
+            MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
+            "LargeEssentiaSmeltery",
+            "Large Essentia Smeltery").getStackForm(1L);
         essentiaOutputHatch = new BlockTEContainer(
-                "essentiaOutputHatch",
-                new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
-                2);
+            "essentiaOutputHatch",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
+            2);
         essentiaOutputHatch_ME = new BlockTEContainer(
-                "essentiaOutputHatch_ME",
-                new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
-                3);
+            "essentiaOutputHatch_ME",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
+            3);
         GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
         GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");
         GameRegistry.registerBlock(essentiaOutputHatch, GGItemBlocks.class, "essentiaOutputHatch");
@@ -506,28 +501,28 @@ public class Loaders {
         if (Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] == null) {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][1] = TextureFactory
-                    .of(yottaFluidTankCasing);
+                .of(yottaFluidTankCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][2] = TextureFactory
-                    .of(supercriticalFluidTurbineCasing);
+                .of(supercriticalFluidTurbineCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][3] = TextureFactory
-                    .of(GregTechAPI.sBlockConcretes, 8);
+                .of(GregTechAPI.sBlockConcretes, 8);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory
-                    .of(impreciseUnitCasing, 0);
+                .of(impreciseUnitCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory
-                    .of(preciseUnitCasing, 0);
+                .of(preciseUnitCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][6] = TextureFactory
-                    .of(preciseUnitCasing, 1);
+                .of(preciseUnitCasing, 1);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][7] = TextureFactory
-                    .of(preciseUnitCasing, 2);
+                .of(preciseUnitCasing, 2);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][8] = TextureFactory
-                    .of(preciseUnitCasing, 3);
+                .of(preciseUnitCasing, 3);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][9] = TextureFactory
-                    .of(magneticFluxCasing, 0);
+                .of(magneticFluxCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
-                    .of(gravityStabilizationCasing, 0);
+                .of(gravityStabilizationCasing, 0);
             // index 126 taken by GTNH-Lanthanides
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][127] = TextureFactory
-                    .of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE);
+                .of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE);
         }
     }
 

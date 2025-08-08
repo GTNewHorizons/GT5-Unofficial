@@ -39,19 +39,19 @@ public class AspectLoader implements IWerkstoffRunnable {
             if (werkstoff.hasItemType(enabledOrePrefixes)) {
                 if (enabledOrePrefixes.mMaterialAmount >= 3628800L || enabledOrePrefixes == OrePrefixes.ore) {
                     DebugLog.log(
-                            "OrePrefix: " + enabledOrePrefixes.name()
-                                    + " mMaterialAmount: "
-                                    + enabledOrePrefixes.mMaterialAmount / 3628800L);
+                        "OrePrefix: " + enabledOrePrefixes.name()
+                            + " mMaterialAmount: "
+                            + enabledOrePrefixes.mMaterialAmount / 3628800L);
                     if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                         ThaumcraftHandler.AspectAdder.addAspectViaBW(
-                                werkstoff.get(enabledOrePrefixes),
-                                werkstoff.getTCAspects(
-                                        enabledOrePrefixes == OrePrefixes.ore ? 1
-                                                : (int) (enabledOrePrefixes.mMaterialAmount / 3628800L)));
+                            werkstoff.get(enabledOrePrefixes),
+                            werkstoff.getTCAspects(
+                                enabledOrePrefixes == OrePrefixes.ore ? 1
+                                    : (int) (enabledOrePrefixes.mMaterialAmount / 3628800L)));
                 } else if (enabledOrePrefixes.mMaterialAmount >= 0L
-                        && Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
+                    && Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                     ThaumcraftHandler.AspectAdder
-                            .addAspectViaBW(werkstoff.get(enabledOrePrefixes), Pair.of(TCAspects.PERDITIO.mAspect, 1));
+                        .addAspectViaBW(werkstoff.get(enabledOrePrefixes), Pair.of(TCAspects.PERDITIO.mAspect, 1));
             }
         }
     }

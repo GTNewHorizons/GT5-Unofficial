@@ -66,50 +66,59 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
         setMaxSlot();
         setMaxThreshold();
 
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                        .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                                CoverItemMeter::isInverted,
-                                CoverItemMeter::setInverted,
-                                widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted")).setPos(0, 0))
-                        .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) coverData.getThreshold(),
-                                (coverData, state) -> coverData.setThresdhold(state.intValue()),
-                                widget -> widget.setBounds(0, maxThreshold).setScrollValues(1, 64, 1000)
-                                        .setFocusOnGuiOpen(true).setPos(0, 2 + spaceY).setSize(spaceX * 4 + 5, 12))
-                        .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) coverData.getSlot(),
-                                (coverData, state) -> coverData.setSlot(state.intValue()),
-                                widget -> widget.setBounds(-1, maxSlot).setDefaultValue(-1).setScrollValues(1, 100, 10)
-                                        .setNumberFormat(numberFormatAll).setPos(0, 2 + spaceY * 2)
-                                        .setSize(spaceX * 3 + 1, 12))
-                        .setPos(startX, startY))
-                .widget(
-                        new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                                .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        getCoverString(
-                                                c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
-                                                        : translateToLocal("gt.interact.desc.normal")))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX + spaceX, 4 + startY))
-                .widget(
-                        new TextWidget(GTUtility.trans("254", "Detect slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
-                .widget(
-                        new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                        CoverItemMeter::isInverted,
+                        CoverItemMeter::setInverted,
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                            .setPos(0, 0))
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                        widget -> widget.setBounds(0, maxThreshold)
+                            .setScrollValues(1, 64, 1000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(0, 2 + spaceY)
+                            .setSize(spaceX * 4 + 5, 12))
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getSlot(),
+                        (coverData, state) -> coverData.setSlot(state.intValue()),
+                        widget -> widget.setBounds(-1, maxSlot)
+                            .setDefaultValue(-1)
+                            .setScrollValues(1, 100, 10)
+                            .setNumberFormat(numberFormatAll)
+                            .setPos(0, 2 + spaceY * 2)
+                            .setSize(spaceX * 3 + 1, 12))
+                    .setPos(startX, startY))
+            .widget(
+                new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
+                    .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX, 4 + startY))
+            .widget(
+                new TextWidget(GTUtility.trans("254", "Detect slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
+            .widget(
+                new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
     }
 
     private void setMaxSlot() {
         final ICoverable tile = getUIBuildContext().getTile();
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-                && !(gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase)) {
+            && !(gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase)) {
             maxSlot = Math.min(tile.getSizeInventory() - 1, MAX_SLOT_NUMBER);
         } else {
             maxSlot = -1;
@@ -119,7 +128,7 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
     private void setMaxThreshold() {
         final ICoverable tile = getUIBuildContext().getTile();
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-                && gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase) {
+            && gtTile.getMetaTileEntity() instanceof MTEDigitalChestBase) {
             maxThreshold = gtTile.getMaxItemCount();
         } else {
             maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;

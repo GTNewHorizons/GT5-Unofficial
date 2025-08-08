@@ -26,12 +26,12 @@ import gregtech.common.pollution.Pollution;
 public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMapWorkable {
 
     public MTEBasicGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
     public MTEBasicGenerator(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
@@ -59,10 +59,10 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return mTextures[(active ? 5 : 0) + (side == facingDirection ? 0
-                : side == facingDirection.getOpposite() ? 1
-                        : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][colorIndex + 1];
+            : side == facingDirection.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][colorIndex + 1];
     }
 
     @Override
@@ -188,10 +188,10 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
                 long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount >= tConsumed) {
                     long tFluidAmountToUse = Math.min(
-                            mFluid.amount / tConsumed,
-                            (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
+                        mFluid.amount / tConsumed,
+                        (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
                     if (tFluidAmountToUse > 0
-                            && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
+                        && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         // divided by two because this is called every 10 ticks, not 20
                         Pollution.addPollution(getBaseMetaTileEntity(), getPollution() / 2);
                         mFluid.amount -= tFluidAmountToUse * tConsumed;
@@ -200,9 +200,9 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
             }
 
             if (mInventory[getInputSlot()] != null
-                    && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU())
-                    && ((GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true) != null)
-                            || solidFuelOverride(mInventory[getInputSlot()]))) {
+                && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU())
+                && ((GTUtility.getFluidForFilledItem(mInventory[getInputSlot()], true) != null)
+                    || solidFuelOverride(mInventory[getInputSlot()]))) {
                 long tFuelValue = getFuelValue(mInventory[getInputSlot()]);
                 if (tFuelValue <= 0) tFuelValue = getFuelValue(mInventory[getInputSlot()], true);
                 // System.out.println(" tFuelValue : " + tFuelValue );
@@ -219,8 +219,8 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         }
 
         if (aBaseMetaTileEntity.isServerSide()) aBaseMetaTileEntity.setActive(
-                aBaseMetaTileEntity.isAllowedToWork()
-                        && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
+            aBaseMetaTileEntity.isAllowedToWork()
+                && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
     }
 
     /**
@@ -233,16 +233,18 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         // if it is a gregtech Item, make sure its not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
         if (association != null) {
             return !OrePrefixes.CELL_TYPES.contains(association.mPrefix)
-                    && !GTUtility.areStacksEqual(ItemList.VOLUMETRIC_FLASK.get(1L), stack, true);
+                && !GTUtility.areStacksEqual(ItemList.VOLUMETRIC_FLASK.get(1L), stack, true);
         } else {
             return stack != null && // when the stack is null its not a solid
-                    stack.getItem() != null && // when the item in the stack is null its not a solid
-                    !(stack.getItem() instanceof IFluidContainerItem) && // when the item is a fluid container its not a
-                                                                         // solid...
-                    !(stack.getItem() instanceof IFluidHandler) && // when the item is a fluid handler its not a
-                                                                   // solid...
-                    !stack.getItem().getUnlocalizedName().contains("bucket"); // since we cant really check for
-                                                                              // buckets...
+                stack.getItem() != null && // when the item in the stack is null its not a solid
+                !(stack.getItem() instanceof IFluidContainerItem) && // when the item is a fluid container its not a
+                                                                     // solid...
+                !(stack.getItem() instanceof IFluidHandler) && // when the item is a fluid handler its not a
+                                                               // solid...
+                !stack.getItem()
+                    .getUnlocalizedName()
+                    .contains("bucket"); // since we cant really check for
+                                         // buckets...
         }
     }
 
@@ -278,7 +280,9 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     public long getFuelValue(ItemStack aStack, boolean aLong) {
         if (GTUtility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
-        GTRecipe tFuel = getRecipeMap().findRecipeQuery().items(aStack).find();
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel == null) return 0;
 
         long liters = 10L; // 1000mb/100
@@ -287,16 +291,18 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack) || getRecipeMap() == null) return null;
-        GTRecipe tFuel = getRecipeMap().findRecipeQuery().items(aStack).find();
+        GTRecipe tFuel = getRecipeMap().findRecipeQuery()
+            .items(aStack)
+            .find();
         if (tFuel != null) return GTUtility.copyOrNull(tFuel.getOutput(0));
         return GTUtility.getContainerItem(aStack, true);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && (getFuelValue(aStack, true) > 0
-                || getFuelValue(GTUtility.getFluidForFilledItem(aStack, true), true) > 0);
+            || getFuelValue(GTUtility.getFluidForFilledItem(aStack, true), true) > 0);
     }
 
     @Override

@@ -14,7 +14,9 @@ public class CustomTextureSet extends TextureSet {
         private final CustomTextureSet A;
 
         TextureSets() {
-            A = new CustomTextureSet(this.name().toUpperCase());
+            A = new CustomTextureSet(
+                this.name()
+                    .toUpperCase());
         }
 
         public CustomTextureSet get() {

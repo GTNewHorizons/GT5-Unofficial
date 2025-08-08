@@ -24,13 +24,13 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMapFrontend {
 
     public PurificationUnitClarifierFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                80,
-                uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                        .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_CLARIFIER))
-                        .logoPos(new Pos2d(152, 90)),
-                neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+            80,
+            uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_CLARIFIER))
+                .logoPos(new Pos2d(152, 90)),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override

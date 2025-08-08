@@ -65,7 +65,7 @@ public class GTPPBees {
 
         // Nikolite may not exist, so lets make it.
         dropNikoliteDust = ItemUtils
-                .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
+            .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
 
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotNikolite", 1) == null) {
             new BaseItemIngotOld("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
@@ -82,8 +82,12 @@ public class GTPPBees {
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {
-        GTValues.RA.stdBuilder().itemInputs(input).fluidOutputs(output).duration(1 * SECONDS + 10 * TICKS).eut(8)
-                .addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(input)
+            .fluidOutputs(output)
+            .duration(1 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(fluidExtractionRecipes);
     }
 
     private void setMaterials() {

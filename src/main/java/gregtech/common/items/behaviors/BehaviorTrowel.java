@@ -21,7 +21,7 @@ public class BehaviorTrowel extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
-            final ItemStack aStack) {
+        final ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.trowel.tooltip1"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.trowel.tooltip2"));
         return aList;

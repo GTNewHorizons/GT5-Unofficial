@@ -28,13 +28,13 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipeMapFrontend {
 
     public PurificationUnitPhAdjustmentFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                80,
-                uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                        .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_PH_NEUTRALIZATION))
-                        .logoPos(new Pos2d(152, 90)),
-                neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+            80,
+            uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_PH_NEUTRALIZATION))
+                .logoPos(new Pos2d(152, 90)),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
     @Override
     @NotNull
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-            GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         // Add pH adjustment values
         if (stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
             currentTip.add("+" + MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64 + " pH/stack");
@@ -70,11 +70,11 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
         if (neiCachedRecipe.mInputs.size() == 1) {
             neiCachedRecipe.mInputs.add(new PositionedStack(Materials.SodiumHydroxide.getDust(64), 3, 1, false));
             neiCachedRecipe.mInputs.add(
-                    new PositionedStack(
-                            GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1_000), true),
-                            147,
-                            1,
-                            false));
+                new PositionedStack(
+                    GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1_000), true),
+                    147,
+                    1,
+                    false));
         }
     }
 }

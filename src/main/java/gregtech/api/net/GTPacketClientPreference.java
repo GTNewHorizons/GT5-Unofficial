@@ -54,11 +54,11 @@ public class GTPacketClientPreference extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketClientPreference(
-                new GTClientPreference(
-                        aData.readBoolean(),
-                        aData.readBoolean(),
-                        aData.readBoolean(),
-                        aData.readBoolean(),
-                        aData.readBoolean()));
+            new GTClientPreference(
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean(),
+                aData.readBoolean()));
     }
 }

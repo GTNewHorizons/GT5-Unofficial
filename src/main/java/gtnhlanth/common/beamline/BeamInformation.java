@@ -41,11 +41,11 @@ public class BeamInformation {
     @Override
     public String toString() {
         return "Energy=" + this.getEnergy()
-                + ",Rate="
-                + this.getRate()
-                + ",Particle="
-                + this.getParticleId()
-                + ",Focus="
-                + this.getFocus();
+            + ",Rate="
+            + this.getRate()
+            + ",Particle="
+            + this.getParticleId()
+            + ",Focus="
+            + this.getFocus();
     }
 }

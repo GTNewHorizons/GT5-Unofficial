@@ -27,7 +27,7 @@ public class BWBlocksGlass2 extends BWBlocks {
     }
 
     public BWBlocksGlass2(String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex,
-            boolean fake) {
+        boolean fake) {
         super(name, texture, tabs, Material.glass);
         this.connectedTex = connectedTex;
         this.color = color;
@@ -73,12 +73,12 @@ public class BWBlocksGlass2 extends BWBlocks {
             String[] splitname = this.textureNames[0].split(":");
             for (int j = 0; j < 16; j++) {
                 this.connectedTexture[j] = par1IconRegister.registerIcon(
-                        splitname[0] + ":connectedTex/"
-                                + "BoronSilicateGlassBlock"
-                                + '/'
-                                + "BoronSilicateGlassBlock"
-                                + '_'
-                                + j);
+                    splitname[0] + ":connectedTex/"
+                        + "BoronSilicateGlassBlock"
+                        + '/'
+                        + "BoronSilicateGlassBlock"
+                        + '_'
+                        + j);
             }
         }
     }

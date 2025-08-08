@@ -52,7 +52,8 @@ public class GTHashSet extends AbstractSet<GTItemStack> {
     @Nonnull
     @Override
     public Iterator<GTItemStack> iterator() {
-        return map.keySet().iterator();
+        return map.keySet()
+            .iterator();
     }
 
     @Override

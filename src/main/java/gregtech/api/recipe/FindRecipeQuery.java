@@ -64,7 +64,8 @@ public final class FindRecipeQuery {
      */
     @Nullable
     public GTRecipe find() {
-        return findAll().findFirst().orElse(null);
+        return findAll().findFirst()
+            .orElse(null);
     }
 
     /**
@@ -79,16 +80,20 @@ public final class FindRecipeQuery {
         }
 
         return recipeMap.getBackend()
-                .matchRecipeStream(
-                        items,
-                        fluids,
-                        specialSlot,
-                        cachedRecipe,
-                        notUnificated,
-                        dontCheckStackSizes,
-                        forCollisionCheck)
-                .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
-                .peek(recipe -> { if (caching) recipeMap.getBackend().cache(items, fluids, recipe); });
+            .matchRecipeStream(
+                items,
+                fluids,
+                specialSlot,
+                cachedRecipe,
+                notUnificated,
+                dontCheckStackSizes,
+                forCollisionCheck)
+            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
+            .peek(
+                recipe -> {
+                    if (caching) recipeMap.getBackend()
+                        .cache(items, fluids, recipe);
+                });
     }
 
     /**
@@ -99,7 +104,8 @@ public final class FindRecipeQuery {
     public boolean checkCollision() {
         dontCheckStackSizes = true;
         forCollisionCheck = true;
-        return findAll().findAny().isPresent();
+        return findAll().findAny()
+            .isPresent();
     }
 
     // endregion

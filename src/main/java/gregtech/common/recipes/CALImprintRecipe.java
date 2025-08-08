@@ -20,7 +20,9 @@ public class CALImprintRecipe implements IRecipe {
     public static final CALImprintRecipe INSTANCE = new CALImprintRecipe();
 
     public static void register() {
-        CraftingManager.getInstance().getRecipeList().add(INSTANCE);
+        CraftingManager.getInstance()
+            .getRecipeList()
+            .add(INSTANCE);
     }
 
     @Override

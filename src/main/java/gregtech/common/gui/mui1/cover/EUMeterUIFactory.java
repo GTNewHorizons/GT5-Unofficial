@@ -40,48 +40,59 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
     protected void addUIWidgets(ModularWindow.Builder builder) {
         final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                        .addFollower(
-                                new CoverDataFollowerCycleButtonWidget<>(),
-                                coverData -> coverData.getType().ordinal(),
-                                (coverData, state) -> coverData.setType(CoverEUMeter.EnergyType.getEnergyType(state)),
-                                widget -> widget.setLength(CoverEUMeter.EnergyType.values().length)
-                                        .addTooltip(state -> CoverEUMeter.EnergyType.getEnergyType(state).getTooltip())
-                                        .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                        .setPos(spaceX * 0, spaceY * 0))
-                        .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                                CoverEUMeter::isInverted,
-                                CoverEUMeter::setInverted,
-                                widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                                        .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
-                                        .setPos(spaceX * 0, spaceY * 1))
-                        .addFollower(
-                                numericWidget,
-                                coverData -> (double) coverData.getThreshold(),
-                                (coverData, state) -> coverData.setThresdhold(state.longValue()),
-                                widget -> widget.setScrollValues(1000, 100, 100000).setFocusOnGuiOpen(true)
-                                        .setPos(spaceX * 0, spaceY * 2 + 2).setSize(spaceX * 8, 12))
-                        .setPos(startX, startY))
-                .widget(
-                        new TextWidget().setStringSupplier(getCoverString(c -> c.getType().getTitle()))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX + spaceX, 4 + startY))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        getCoverString(
-                                                c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
-                                                        : translateToLocal("gt.interact.desc.normal")))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX + spaceX, 4 + startY + spaceY))
-                .widget(
-                        new TextWidget(GTUtility.trans("222.1", "Energy threshold"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX, startY + spaceY * 3 + 4))
+                    .addFollower(
+                        new CoverDataFollowerCycleButtonWidget<>(),
+                        coverData -> coverData.getType()
+                            .ordinal(),
+                        (coverData, state) -> coverData.setType(CoverEUMeter.EnergyType.getEnergyType(state)),
+                        widget -> widget.setLength(CoverEUMeter.EnergyType.values().length)
+                            .addTooltip(
+                                state -> CoverEUMeter.EnergyType.getEnergyType(state)
+                                    .getTooltip())
+                            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                            .setPos(spaceX * 0, spaceY * 0))
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                        CoverEUMeter::isInverted,
+                        CoverEUMeter::setInverted,
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                            .setPos(spaceX * 0, spaceY * 1))
+                    .addFollower(
+                        numericWidget,
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThresdhold(state.longValue()),
+                        widget -> widget.setScrollValues(1000, 100, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                            .setSize(spaceX * 8, 12))
+                    .setPos(startX, startY))
+            .widget(
+                new TextWidget().setStringSupplier(
+                    getCoverString(
+                        c -> c.getType()
+                            .getTitle()))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX, 4 + startY))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX, 4 + startY + spaceY))
+            .widget(
+                new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX, startY + spaceY * 3 + 4))
 
-                .widget(new FakeSyncWidget.LongSyncer(() -> {
-                    CoverEUMeter cover = getCover();
-                    return cover != null ? cover.getType().getTileEntityEnergyCapacity(getUIBuildContext().getTile())
-                            : Long.MAX_VALUE;
-                }, numericWidget::setMaxValue));
+            .widget(new FakeSyncWidget.LongSyncer(() -> {
+                CoverEUMeter cover = getCover();
+                return cover != null ? cover.getType()
+                    .getTileEntityEnergyCapacity(getUIBuildContext().getTile()) : Long.MAX_VALUE;
+            }, numericWidget::setMaxValue));
     }
 }

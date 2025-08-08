@@ -43,8 +43,12 @@ public class SourceChamberMetadata {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("particleID", particleID).append("rate", rate)
-                .append("maxEnergy", maxEnergy).append("focus", focus).append("energyRatio", energyRatio).toString();
+        return new ToStringBuilder(this).append("particleID", particleID)
+            .append("rate", rate)
+            .append("maxEnergy", maxEnergy)
+            .append("focus", focus)
+            .append("energyRatio", energyRatio)
+            .toString();
     }
 
     public static Builder builder() {

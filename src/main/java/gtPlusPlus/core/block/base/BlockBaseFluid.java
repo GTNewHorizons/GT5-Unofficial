@@ -78,22 +78,25 @@ public class BlockBaseFluid extends BlockFluidClassic {
         }
 
         if (arg4.nextInt(20) == 0
-                && arg0.isSideSolid(
-                        arg1,
-                        arg2 + super.densityDir,
-                        arg3,
-                        super.densityDir == -1 ? ForgeDirection.UP : ForgeDirection.DOWN)
-                && !arg0.getBlock(arg1, arg2 + 2 * super.densityDir, arg3).getMaterial().blocksMovement()) {
+            && arg0.isSideSolid(
+                arg1,
+                arg2 + super.densityDir,
+                arg3,
+                super.densityDir == -1 ? ForgeDirection.UP : ForgeDirection.DOWN)
+            && !arg0.getBlock(arg1, arg2 + 2 * super.densityDir, arg3)
+                .getMaterial()
+                .blocksMovement()) {
             EntityDropParticleFX arg11 = new EntityDropParticleFX(
-                    arg0,
-                    arg5,
-                    arg7,
-                    arg9,
-                    this.particleRed,
-                    this.particleGreen,
-                    this.particleBlue,
-                    super.densityDir);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(arg11);
+                arg0,
+                arg5,
+                arg7,
+                arg9,
+                this.particleRed,
+                this.particleGreen,
+                this.particleBlue,
+                super.densityDir);
+            FMLClientHandler.instance()
+                .getClient().effectRenderer.addEffect(arg11);
         }
     }
 }

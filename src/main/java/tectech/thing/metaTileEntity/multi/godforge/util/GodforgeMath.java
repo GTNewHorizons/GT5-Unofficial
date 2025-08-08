@@ -151,7 +151,7 @@ public class GodforgeMath {
         }
 
         if (module instanceof MTEMoltenModule
-                || (module instanceof MTESmeltingModule && godforge.isUpgradeActive(DOP))) {
+            || (module instanceof MTESmeltingModule && godforge.isUpgradeActive(DOP))) {
             isMoltenOrSmeltingWithUpgrade = true;
         }
 
@@ -211,12 +211,12 @@ public class GodforgeMath {
 
         if (godforge.isUpgradeActive(IMKG)) {
             double fillRatioMinusZeroPointFive = (double) godforge.getBatteryCharge() / godforge.getMaxBatteryCharge()
-                    - 0.5;
+                - 0.5;
             if (module instanceof MTEPlasmaModule) {
                 fillRatioDiscount = 1 - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15);
             } else {
                 fillRatioDiscount = 1
-                        - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15) * 2 / 3;
+                    - (fillRatioMinusZeroPointFive * fillRatioMinusZeroPointFive * (-0.6) + 0.15) * 2 / 3;
             }
         }
 
@@ -238,7 +238,7 @@ public class GodforgeMath {
     }
 
     public static void calculateProcessingVoltageForModules(MTEBaseModule module, MTEForgeOfGods godforge,
-            int fuelFactor) {
+        int fuelFactor) {
         long voltage = 2_000_000_000;
 
         if (godforge.isUpgradeActive(GISS)) {

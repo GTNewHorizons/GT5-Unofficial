@@ -27,8 +27,8 @@ public class TTRecipeAdder extends RecipeAdder {
 
     @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
-            int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
-            FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
             aInputs = GTValues.emptyItemStackArray;
         }
@@ -41,51 +41,64 @@ public class TTRecipeAdder extends RecipeAdder {
         for (ItemStack tItem : aInputs) {
             if (tItem == null) {
                 TecTech.LOGGER.error(
-                        "addResearchableAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                                + " --> "
-                                + aOutput.getUnlocalizedName()
-                                + " there is some null item in that recipe");
+                    "addResearchableAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                        + " --> "
+                        + aOutput.getUnlocalizedName()
+                        + " there is some null item in that recipe");
             }
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
         computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
 
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
-                CustomItemList.UnusedStuff.get(1),
-                totalComputationRequired / computationRequiredPerSec,
-                0,
-                aInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt);
+            CustomItemList.UnusedStuff.get(1),
+            totalComputationRequired / computationRequiredPerSec,
+            0,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
         RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
-                aResearchItem,
-                totalComputationRequired / computationRequiredPerSec,
-                0,
-                aInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt);
+            aResearchItem,
+            totalComputationRequired / computationRequiredPerSec,
+            0,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
-        GTValues.RA.stdBuilder().itemInputs(aResearchItem).itemOutputs(aOutput)
-                .special(recipeGT.newDataStickForNEI("Writes Research result")).duration(totalComputationRequired)
-                .eut(researchEUt).metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-                .ignoreCollision().fake().addTo(researchStationFakeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(aResearchItem)
+            .itemOutputs(aOutput)
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .duration(totalComputationRequired)
+            .eut(researchEUt)
+            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
+            .ignoreCollision()
+            .fake()
+            .addTo(researchStationFakeRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(aInputs).itemOutputs(aOutput).fluidInputs(aFluidInputs)
-                .special(recipeGT.newDataStickForNEI("Reads Research result")).duration(assDuration).eut(assEUt)
-                .ignoreCollision().fake().addTo(assemblylineVisualRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .itemOutputs(aOutput)
+            .fluidInputs(aFluidInputs)
+            .special(recipeGT.newDataStickForNEI("Reads Research result"))
+            .duration(assDuration)
+            .eut(assEUt)
+            .ignoreCollision()
+            .fake()
+            .addTo(assemblylineVisualRecipes);
         return true;
     }
 
     @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
-            int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
-            FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
             aInputs = GTValues.emptyItemStackArray;
         }
@@ -93,11 +106,11 @@ public class TTRecipeAdder extends RecipeAdder {
             aFluidInputs = GTValues.emptyFluidStackArray;
         }
         if (aResearchItem == null || totalComputationRequired <= 0
-                || aOutput == null
-                || aInputs.length > 16
-                || aFluidInputs.length > 4
-                || assDuration <= 0
-                || assEUt <= 0) {
+            || aOutput == null
+            || aInputs.length > 16
+            || aFluidInputs.length > 4
+            || assDuration <= 0
+            || assEUt <= 0) {
             return false;
         }
 
@@ -127,11 +140,12 @@ public class TTRecipeAdder extends RecipeAdder {
                     try {
                         // sort the output, so the hash code is stable across launches
                         tList.sort(
-                                Comparator
-                                        .<ItemStack, String>comparing(
-                                                s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                        .thenComparingInt(Items.feather::getDamage).thenComparingInt(s -> s.stackSize));
+                            Comparator
+                                .<ItemStack, String>comparing(
+                                    s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                .thenComparingInt(Items.feather::getDamage)
+                                .thenComparingInt(s -> s.stackSize));
                         int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
                         for (ItemStack tStack : tList) {
@@ -147,16 +161,16 @@ public class TTRecipeAdder extends RecipeAdder {
                         continue;
                     } catch (Exception t) {
                         TecTech.LOGGER.error(
-                                "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                                        + " --> there is some ... in that recipe");
+                            "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                                + " --> there is some ... in that recipe");
                     }
                 }
             }
             TecTech.LOGGER.error(
-                    "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                            + " --> "
-                            + aOutput.getUnlocalizedName()
-                            + " there is some null item in that recipe");
+                "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                    + " --> "
+                    + aOutput.getUnlocalizedName()
+                    + " there is some null item in that recipe");
         }
         tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aResearchItem, true, false);
         tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aOutput, true, false);
@@ -174,47 +188,53 @@ public class TTRecipeAdder extends RecipeAdder {
         tPersistentHash = tPersistentHash * 31 + assEUt;
 
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
-                CustomItemList.UnusedStuff.get(1),
-                totalComputationRequired / computationRequiredPerSec,
-                0,
-                tInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt,
-                tAlts);
+            CustomItemList.UnusedStuff.get(1),
+            totalComputationRequired / computationRequiredPerSec,
+            0,
+            tInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt,
+            tAlts);
         recipeGT.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
-                aResearchItem,
-                totalComputationRequired / computationRequiredPerSec,
-                0,
-                tInputs,
-                aFluidInputs,
-                aOutput,
-                assDuration,
-                assEUt,
-                tAlts);
+            aResearchItem,
+            totalComputationRequired / computationRequiredPerSec,
+            0,
+            tInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt,
+            tAlts);
         recipeTT.setPersistentHash(tPersistentHash);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
-        GTValues.RA.stdBuilder().itemInputs(aResearchItem).itemOutputs(aOutput)
-                .special(recipeGT.newDataStickForNEI("Writes Research result")).duration(totalComputationRequired)
-                .eut(researchEUt).metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-                .ignoreCollision().fake().addTo(researchStationFakeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(aResearchItem)
+            .itemOutputs(aOutput)
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .duration(totalComputationRequired)
+            .eut(researchEUt)
+            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
+            .ignoreCollision()
+            .fake()
+            .addTo(researchStationFakeRecipes);
 
         assemblylineVisualRecipes.addFakeRecipe(
-                false,
-                tInputs,
-                new ItemStack[] { aOutput },
-                new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
-                aFluidInputs,
-                null,
-                assDuration,
-                assEUt,
-                0,
-                tAlts,
-                false);
+            false,
+            tInputs,
+            new ItemStack[] { aOutput },
+            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
+            aFluidInputs,
+            null,
+            assDuration,
+            assEUt,
+            0,
+            tAlts,
+            false);
         return true;
     }
 }

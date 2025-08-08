@@ -13,11 +13,12 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
     public BehaviourSprayColorRemover(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
         super(aEmpty, aUsed, aFull, aUses);
         this.mTooltip = GTLanguageManager
-                .addStringLocalization("gt.behaviour.paintspray.solvent.tooltip", "Can remove paint from things");
+            .addStringLocalization("gt.behaviour.paintspray.solvent.tooltip", "Can remove paint from things");
     }
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player).removeColor();
+        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+            .removeColor();
     }
 }

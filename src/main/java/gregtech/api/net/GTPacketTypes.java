@@ -54,11 +54,11 @@ public enum GTPacketTypes {
             final GTPacket previous = foundIds.get(type.id);
             if (previous != null) {
                 throw new IllegalStateException(
-                        "Duplicate packet IDs defined: " + type.id
-                                + " for "
-                                + type.getClass()
-                                + " and "
-                                + previous.getClass());
+                    "Duplicate packet IDs defined: " + type.id
+                        + " for "
+                        + type.getClass()
+                        + " and "
+                        + previous.getClass());
             }
             foundIds.put(type.id, type.referencePacket);
         }
@@ -76,6 +76,8 @@ public enum GTPacketTypes {
     }
 
     public static GTPacket[] referencePackets() {
-        return Arrays.stream(values()).map(p -> p.referencePacket).toArray(GTPacket[]::new);
+        return Arrays.stream(values())
+            .map(p -> p.referencePacket)
+            .toArray(GTPacket[]::new);
     }
 }

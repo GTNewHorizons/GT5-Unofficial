@@ -15,7 +15,7 @@ public class SpaceMiningData {
     public final int recipeWeight;
 
     public SpaceMiningData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
-            int computation, int recipeWeight) {
+        int computation, int recipeWeight) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
@@ -48,8 +48,13 @@ public class SpaceMiningData {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("asteroidName", asteroidName).append("minDistance", minDistance)
-                .append("maxDistance", maxDistance).append("minSize", minSize).append("maxSize", maxSize)
-                .append("computation", computation).append("recipeWeight", recipeWeight).toString();
+        return new ToStringBuilder(this).append("asteroidName", asteroidName)
+            .append("minDistance", minDistance)
+            .append("maxDistance", maxDistance)
+            .append("minSize", minSize)
+            .append("maxSize", maxSize)
+            .append("computation", computation)
+            .append("recipeWeight", recipeWeight)
+            .toString();
     }
 }

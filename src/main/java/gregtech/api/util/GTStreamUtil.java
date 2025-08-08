@@ -38,6 +38,7 @@ public final class GTStreamUtil {
      * @return the new stream
      */
     public static <T> Stream<T> ofSupplier(Supplier<T> supplier) {
-        return Stream.generate(supplier).limit(1);
+        return Stream.generate(supplier)
+            .limit(1);
     }
 }

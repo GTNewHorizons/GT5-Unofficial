@@ -55,7 +55,7 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-                .registerOre(componentType.getComponent() + material.getUnlocalizedName(), new ItemStack(this));
+            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), new ItemStack(this));
     }
 
     public boolean registerComponent() {
@@ -85,10 +85,10 @@ public class BaseOreComponent extends Item {
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
-                    "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                            + "] Map: ["
-                            + aKey
-                            + "]");
+                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
+                    + "] Map: ["
+                    + aKey
+                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {
@@ -110,7 +110,7 @@ public class BaseOreComponent extends Item {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-            final boolean bool) {
+        final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
                 if (this.componentMaterial.vChemicalFormula.contains("?")) {
@@ -120,8 +120,7 @@ public class BaseOreComponent extends Item {
                 }
                 if (this.componentMaterial.isRadioactive) {
                     list.add(
-                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
-                                    + this.componentMaterial.vRadiationLevel);
+                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
@@ -135,13 +134,13 @@ public class BaseOreComponent extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
-                    iStack.stackSize,
-                    this.componentMaterial.vRadiationLevel,
-                    world,
-                    entityHolding);
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 
@@ -164,26 +163,26 @@ public class BaseOreComponent extends Item {
             this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
             if (this.componentType.hasOverlay()) {
                 this.overlay = par1IconRegister
-                        .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
+                    .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else if (Configuration.visual.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
             // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
             this.base = par1IconRegister
-                    .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
+                .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
                 // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
                 // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" +
                 // this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
                 this.overlay = par1IconRegister.registerIcon(
-                        GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
+                    GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
             }
         } else {
             this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent());
             if (this.componentType.hasOverlay()) {
                 this.overlay = par1IconRegister
-                        .registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
+                    .registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
             }
         }
     }

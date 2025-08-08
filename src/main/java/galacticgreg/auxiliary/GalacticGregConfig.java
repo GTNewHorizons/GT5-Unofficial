@@ -49,51 +49,51 @@ public class GalacticGregConfig extends ConfigManager {
     @Override
     protected void Init() {
         ProfileOreGen = _mainConfig.getBoolean(
-                "ProfileOreGen",
-                "Debug",
-                ProfileOreGen,
-                "Enable to profile oregen and register the ingame command ggregprofiler");
+            "ProfileOreGen",
+            "Debug",
+            ProfileOreGen,
+            "Enable to profile oregen and register the ingame command ggregprofiler");
         ReportOreGenFailures = _mainConfig.getBoolean(
-                "ReportOreGenFailures",
-                "Debug",
-                ReportOreGenFailures,
-                "Report if a ore tileentity could not be placed");
+            "ReportOreGenFailures",
+            "Debug",
+            ReportOreGenFailures,
+            "Report if a ore tileentity could not be placed");
         PrintDebugMessagesToFMLLog = _mainConfig.getBoolean(
-                "PrintDebugMessagesToFMLLog",
-                "Debug",
-                PrintDebugMessagesToFMLLog,
-                "Enable debug output, not recommended for servers");
+            "PrintDebugMessagesToFMLLog",
+            "Debug",
+            PrintDebugMessagesToFMLLog,
+            "Enable debug output, not recommended for servers");
         PrintTraceMessagesToFMLLog = _mainConfig.getBoolean(
-                "PrintTraceMessagesToFMLLog",
-                "Debug",
-                PrintTraceMessagesToFMLLog,
-                "Enable trace output. Warning: This will produce gazillions of log entries");
+            "PrintTraceMessagesToFMLLog",
+            "Debug",
+            PrintTraceMessagesToFMLLog,
+            "Enable trace output. Warning: This will produce gazillions of log entries");
         QuietMode = _mainConfig.getBoolean(
-                "QuietMode",
-                "Debug",
-                QuietMode,
-                "In quiet-mode only errors, warnings and fatals will be printed to the logfile/console");
+            "QuietMode",
+            "Debug",
+            QuietMode,
+            "In quiet-mode only errors, warnings and fatals will be printed to the logfile/console");
 
         LootChestsEnabled = _mainConfig.getBoolean(
-                "LootChestsEnabled",
-                "Extras",
-                LootChestsEnabled,
-                "Enables/disables the dungeon-chest generator system for asteroids. New config values will be generated if set to true");
+            "LootChestsEnabled",
+            "Extras",
+            LootChestsEnabled,
+            "Enables/disables the dungeon-chest generator system for asteroids. New config values will be generated if set to true");
         EnableAEExportCommand = _mainConfig.getBoolean(
-                "EnableAEExportCommand",
-                "Extras",
-                EnableAEExportCommand,
-                "If set to true, you can export any structure stored on a AE2 spatial storage disk. (Can't be spawned yet, WiP). Requires SchematicsEnabled to be true");
+            "EnableAEExportCommand",
+            "Extras",
+            EnableAEExportCommand,
+            "If set to true, you can export any structure stored on a AE2 spatial storage disk. (Can't be spawned yet, WiP). Requires SchematicsEnabled to be true");
         SchematicsEnabled = _mainConfig.getBoolean(
-                "SchematicsEnabled",
-                "Extras",
-                SchematicsEnabled,
-                "Enable the experimental Schematics-handler to spawn exported schematics in dimensions. This is WiP, use at own risk");
+            "SchematicsEnabled",
+            "Extras",
+            SchematicsEnabled,
+            "Enable the experimental Schematics-handler to spawn exported schematics in dimensions. This is WiP, use at own risk");
         LootChestItemOverride = _mainConfig.getString(
-                "CustomLootChest",
-                "Extras",
-                LootChestItemOverride,
-                "Define the chest you wish to use as LootChest. use the <ModID>:<Name>:<meta> format or leave empty for the default Minecraft Chest");
+            "CustomLootChest",
+            "Extras",
+            LootChestItemOverride,
+            "Define the chest you wish to use as LootChest. use the <ModID>:<Name>:<meta> format or leave empty for the default Minecraft Chest");
 
         GalacticGreg.Logger.setDebugOutput(PrintDebugMessagesToFMLLog);
         GalacticGreg.Logger.setTraceOutput(PrintTraceMessagesToFMLLog);
@@ -123,7 +123,7 @@ public class GalacticGregConfig extends ConfigManager {
                     Block tBlock = GameRegistry.findBlock(tMod, tName);
                     if (tBlock != null) {
                         GalacticGreg.Logger
-                                .debug("Found valid ChestOverride: %s. LootChest replaced", LootChestItemOverride);
+                            .debug("Found valid ChestOverride: %s. LootChest replaced", LootChestItemOverride);
                         CustomLootChest = new BlockMetaComb(tBlock, tMeta);
                     }
                 }
@@ -132,8 +132,8 @@ public class GalacticGregConfig extends ConfigManager {
             return true;
         } catch (Exception e) {
             GalacticGreg.Logger.error(
-                    "Unable to find custom chest override %s. Make sure item exists. Defaulting to Minecraft:chest",
-                    LootChestItemOverride);
+                "Unable to find custom chest override %s. Make sure item exists. Defaulting to Minecraft:chest",
+                LootChestItemOverride);
             e.printStackTrace();
             return false;
         }

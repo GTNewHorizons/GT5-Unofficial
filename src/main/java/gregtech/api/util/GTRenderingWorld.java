@@ -47,7 +47,8 @@ public class GTRenderingWorld implements IBlockAccess {
     public static void register(int x, int y, int z, Block block, int meta) {
         ChunkPosition key = new ChunkPosition(x, y, z);
         infos.put(key, new BlockInfo(block, meta));
-        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>()).add(key);
+        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>())
+            .add(key);
     }
 
     public static void unregister(int x, int y, int z, Block block, int meta) {
@@ -121,8 +122,11 @@ public class GTRenderingWorld implements IBlockAccess {
         @SubscribeEvent
         public void onChunkUnloaded(ChunkEvent.Unload e) {
             if (!e.world.isRemote) return;
-            Set<ChunkPosition> set = index.remove(e.getChunk().getChunkCoordIntPair());
-            if (set != null) infos.keySet().removeAll(set);
+            Set<ChunkPosition> set = index.remove(
+                e.getChunk()
+                    .getChunkCoordIntPair());
+            if (set != null) infos.keySet()
+                .removeAll(set);
         }
 
         @SubscribeEvent

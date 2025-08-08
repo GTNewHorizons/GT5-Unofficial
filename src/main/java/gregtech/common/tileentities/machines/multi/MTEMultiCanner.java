@@ -57,26 +57,24 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiCanner> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEMultiCanner>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    (transpose(
-                            new String[][] {
-                                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " },
-                                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                                    { "       ", "  B B  ", " BA~AB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " } })))
-            .addElement(
-                    'A',
-                    buildHatchAdder(MTEMultiCanner.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)).dot(1)
-                            .buildAndChain(
-                                    onElementPass(
-                                            MTEMultiCanner::onCasingAdded,
-                                            ofBlock(GregTechAPI.sBlockCasings2, 0))))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 13)).build();
+        .<MTEMultiCanner>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            (transpose(
+                new String[][] { { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " },
+                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "       ", "  B B  ", " BA~AB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " } })))
+        .addElement(
+            'A',
+            buildHatchAdder(MTEMultiCanner.class)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .buildAndChain(onElementPass(MTEMultiCanner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 13))
+        .build();
 
     public MTEMultiCanner(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -98,26 +96,39 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons
-                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW).extFacing().glow()
-                                .build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons
-                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_CANNER).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW).extFacing().glow().build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
         }
         return rTexture;
     }
@@ -125,15 +136,22 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner, Fluid Canner").addInfo("Use screwdriver to switch mode")
-                .addInfo("100% faster than single block machines of the same voltage")
-                .addInfo("Gains 8 parallels per voltage tier").addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
-                .beginStructureBlock(7, 5, 7, true).addController("Front Center")
-                .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-                .addCasingInfoExactly("Steel Pipe Casing", 24, false).addInputBus("Any Solid Steel Casing", 1)
-                .addOutputBus("Any Solid Steel Casing", 1).addInputHatch("Any Solid Steel Casing", 1)
-                .addOutputHatch("Any Solid Steel Casing", 1).addEnergyHatch("Any Solid Steel Casing", 1)
-                .addMaintenanceHatch("Any Solid Steel Casing", 1).toolTipFinisher();
+        tt.addMachineType("Canner, Fluid Canner")
+            .addInfo("Use screwdriver to switch mode")
+            .addInfo("100% faster than single block machines of the same voltage")
+            .addInfo("Gains 8 parallels per voltage tier")
+            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
+            .beginStructureBlock(7, 5, 7, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
+            .addInputBus("Any Solid Steel Casing", 1)
+            .addOutputBus("Any Solid Steel Casing", 1)
+            .addInputHatch("Any Solid Steel Casing", 1)
+            .addOutputHatch("Any Solid Steel Casing", 1)
+            .addEnergyHatch("Any Solid Steel Casing", 1)
+            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -167,7 +185,8 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F).setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -206,11 +225,10 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatToPlayer(
-                aPlayer,
-                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -226,21 +244,21 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-                translateToLocal("GT5U.machines.oreprocessor1") + " "
-                        + EnumChatFormatting.WHITE
-                        + translateToLocal("GT5U.MULTI_CANNER.mode." + tag.getInteger("mode"))
-                        + EnumChatFormatting.RESET);
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + translateToLocal("GT5U.MULTI_CANNER.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 
     @Override

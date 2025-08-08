@@ -21,13 +21,16 @@ public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistr
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aOreDictName.equals("sandOil")) {
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Cell_Empty.get(1))
-                    .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
-                            new ItemStack(Blocks.sand, 1, 0))
-                    .duration(50 * SECONDS).eut(5).addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Cell_Empty.get(1))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
+                    new ItemStack(Blocks.sand, 1, 0))
+                .duration(50 * SECONDS)
+                .eut(5)
+                .addTo(centrifugeRecipes);
         }
     }
 }

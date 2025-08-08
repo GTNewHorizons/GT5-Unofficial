@@ -61,7 +61,9 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
             GL11.glDisable(GL11.GL_LIGHTING);
 
-            double rotationTimer = wTile.getWorldObj().getWorldInfo().getWorldTotalTime() + timeSinceLastTick;
+            double rotationTimer = wTile.getWorldObj()
+                .getWorldInfo()
+                .getWorldTotalTime() + timeSinceLastTick;
 
             this.bindTexture(TextureMap.locationBlocksTexture);
             render(wTile.getBlock(), rotationTimer);

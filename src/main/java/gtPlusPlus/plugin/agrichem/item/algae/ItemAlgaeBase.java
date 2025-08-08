@@ -48,8 +48,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-            boolean p_77663_5_) {
-        if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound().hasNoTags()) {
+        boolean p_77663_5_) {
+        if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound()
+            .hasNoTags()) {
             p_77663_1_ = initNBT(p_77663_1_);
         }
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
@@ -69,10 +70,11 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
         int aDam = aStack.getItemDamage();
         try {
             aList.add(
-                    StatCollector.translateToLocal(
-                            "GTPP.algae." + AlgaeDefinition.getByIndex(aDam).mSimpleName.replace(" ", "_").toLowerCase()
-                                    + ".name"));
-            if (!aStack.hasTagCompound() || aStack.getTagCompound().hasNoTags()) {
+                StatCollector.translateToLocal(
+                    "GTPP.algae." + AlgaeDefinition.getByIndex(aDam).mSimpleName.replace(" ", "_")
+                        .toLowerCase() + ".name"));
+            if (!aStack.hasTagCompound() || aStack.getTagCompound()
+                .hasNoTags()) {
                 aStack = initNBT(aStack);
             } else {
                 NBTTagCompound aNBT = aStack.getTagCompound();
@@ -86,8 +88,7 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 int mGeneration = aNBT.getInteger("mGeneration");
 
                 aList.add(
-                        StatCollector
-                                .translateToLocalFormatted("GTPP.tooltip.requires_light", boolLoc(mRequiresLight)));
+                    StatCollector.translateToLocalFormatted("GTPP.tooltip.requires_light", boolLoc(mRequiresLight)));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.salt_water", boolLoc(mSaltWater)));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.fresh_water", boolLoc(mFreshWater)));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.temp_tolerance", mTempTolerance));
@@ -176,7 +177,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public AlgaeGeneticData getSpeciesData(ItemStack aStack) {
         NBTTagCompound aTag;
-        if (!aStack.hasTagCompound() || aStack.getTagCompound().hasNoTags()) {
+        if (!aStack.hasTagCompound() || aStack.getTagCompound()
+            .hasNoTags()) {
             AlgaeGeneticData aGenes;
             if (aStack.getItemDamage() < 3 || aStack.getItemDamage() > 5) {
                 aGenes = new AlgaeGeneticData();
@@ -191,15 +193,15 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 aSpeed = aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f;
 
                 aGenes = new AlgaeGeneticData(
-                        true,
-                        true,
-                        AlgaeDefinition.getByIndex(aDam).mSaltWater,
-                        AlgaeDefinition.getByIndex(aDam).mFreshWater,
-                        aTemp,
-                        aFert,
-                        aSpeed,
-                        aLifespan,
-                        0);
+                    true,
+                    true,
+                    AlgaeDefinition.getByIndex(aDam).mSaltWater,
+                    AlgaeDefinition.getByIndex(aDam).mFreshWater,
+                    aTemp,
+                    aFert,
+                    aSpeed,
+                    aLifespan,
+                    0);
             }
             aTag = aGenes.writeToNBT();
         } else {

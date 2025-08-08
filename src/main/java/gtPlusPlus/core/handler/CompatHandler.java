@@ -113,18 +113,18 @@ public class CompatHandler {
         // In-house
 
         ItemStack[] bufferCores = new ItemStack[] { GregtechItemList.Energy_Core_ULV.get(1),
-                GregtechItemList.Energy_Core_LV.get(1), GregtechItemList.Energy_Core_MV.get(1),
-                GregtechItemList.Energy_Core_HV.get(1), GregtechItemList.Energy_Core_EV.get(1),
-                GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
-                GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
-                GregtechItemList.Energy_Core_UHV.get(1), };
+            GregtechItemList.Energy_Core_LV.get(1), GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1), GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1), };
         for (int i = 1; i < 10; i++) {
             GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
         }
 
         for (Particle i : Particle.aMap) {
             GTOreDictUnificator
-                    .registerOre(OrePrefixes.particle + i.mParticleName.replace(" ", ""), Particle.getBaseParticle(i));
+                .registerOre(OrePrefixes.particle + i.mParticleName.replace(" ", ""), Particle.getBaseParticle(i));
         }
 
         for (String i : IonParticles.ions) {
@@ -205,7 +205,7 @@ public class CompatHandler {
     public static void intermodOreDictionarySupport() {
         if (ExtraUtilities.isModLoaded()) {
             GTOreDictUnificator
-                    .registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
+                .registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
         }
         if (PamsHarvestCraft.isModLoaded()) {
             FishTrapHandler.pamsHarvestCraftCompat();
@@ -243,7 +243,9 @@ public class CompatHandler {
         for (Set<RunnableWithInfo<Material>> m : MaterialGenerator.mRecipeMapsToGenerate) {
             for (RunnableWithInfo<Material> r : m) {
                 r.run();
-                Logger.INFO("[FIND] " + r.getInfoData().getLocalizedName() + " recipes generated.");
+                Logger.INFO(
+                    "[FIND] " + r.getInfoData()
+                        .getLocalizedName() + " recipes generated.");
             }
         }
         RecipeGenRecycling.executeGenerators();

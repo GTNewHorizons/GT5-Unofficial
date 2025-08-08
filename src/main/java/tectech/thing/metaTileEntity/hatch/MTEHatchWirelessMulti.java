@@ -40,39 +40,39 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     private final long precisionMultiplier = LongMath.pow(10, 15);
     private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
-            .multiply(BigInteger.valueOf(ticks_between_energy_addition));
+        .multiply(BigInteger.valueOf(ticks_between_energy_addition));
 
     private final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
 
     private final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
-            ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
-            : ticks_between_energy_addition;
+        ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
+        : ticks_between_energy_addition;
 
     private final long eu_transferred_per_operation_long = overflowDivisor > 1
-            ? eu_transferred_per_operation
-                    .divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
-                    .multiply(BigInteger.valueOf(precisionMultiplier)).longValue()
-            : eu_transferred_per_operation.longValue();
+        ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
+            .multiply(BigInteger.valueOf(precisionMultiplier))
+            .longValue()
+        : eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                        GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                        translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                        AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                                + YELLOW
-                                + GTUtility.formatNumbers(aAmp * V[aTier])
-                                + GRAY
-                                + " EU/t" },
-                aAmp);
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + GRAY
+                    + " EU/t" },
+            aAmp);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -234,10 +234,19 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(TextWidget.localised("GT5U.machines.laser_hatch.amperage").setPos(x, y).setSize(74, 14)).widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val).setGetter(() -> Amperes)
-                        .setBounds(1, maxAmperes).setScrollValues(1, 4, 64).setTextAlignment(Alignment.Center)
-                        .setTextColor(Color.WHITE.normal).setSize(70, 18).setPos(x, y + 16)
-                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
+                .setPos(x, y)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> Amperes = (int) val)
+                    .setGetter(() -> Amperes)
+                    .setBounds(1, maxAmperes)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(x, y + 16)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

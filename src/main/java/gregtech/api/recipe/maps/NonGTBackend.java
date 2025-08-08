@@ -25,7 +25,7 @@ public abstract class NonGTBackend extends RecipeMapBackend {
 
     @Override
     protected abstract GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
-            @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe);
+        @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe);
 
     @Override
     protected boolean doesOverwriteFindRecipe() {

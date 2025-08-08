@@ -23,8 +23,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 
 public class CoverDataControllerWidget<T extends Cover>
-        extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
-        implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
+    extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
+    implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
 
     private final Supplier<T> coverSupplier;
     private final CoverUIBuildContext coverUiContext;
@@ -63,11 +63,12 @@ public class CoverDataControllerWidget<T extends Cover>
 
     private boolean isCoverValid() {
         ICoverable tile = coverUiContext.getTile();
-        return !tile.isDead() && tile.getCoverAtSide(coverUiContext.getCoverSide()).isValid();
+        return !tile.isDead() && tile.getCoverAtSide(coverUiContext.getCoverSide())
+            .isValid();
     }
 
     public <U, W extends Widget & ICoverDataFollowerWidget<T, U>> CoverDataControllerWidget<T> addFollower(W widget,
-            Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
+        Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
         widget.setDataToStateGetter(dataToStateGetter);
         widget.setStateSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
@@ -185,7 +186,7 @@ public class CoverDataControllerWidget<T extends Cover>
      * Uses int index to determine toggle button behaviors.
      */
     public static class CoverDataIndexedControllerWidget_ToggleButtons<T extends Cover>
-            extends CoverDataControllerWidget<T> {
+        extends CoverDataControllerWidget<T> {
 
         private final BiFunction<Integer, T, Boolean> dataToStateGetter;
         private final BiFunction<Integer, T, T> dataUpdater;
@@ -197,8 +198,8 @@ public class CoverDataControllerWidget<T extends Cover>
          * @param coverUiContext    identifies and locates the cover we're interacting with
          */
         public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverSupplier,
-                BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater,
-                CoverUIBuildContext coverUiContext) {
+            BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater,
+            CoverUIBuildContext coverUiContext) {
             super(coverSupplier, coverUiContext);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
@@ -210,12 +211,12 @@ public class CoverDataControllerWidget<T extends Cover>
          * @param applyForWidget methods to call for widget to add
          */
         public <W extends CoverDataFollowerToggleButtonWidget<T>> CoverDataIndexedControllerWidget_ToggleButtons<T> addToggleButton(
-                int index, W widget, Consumer<CoverDataFollowerToggleButtonWidget<T>> applyForWidget) {
+            int index, W widget, Consumer<CoverDataFollowerToggleButtonWidget<T>> applyForWidget) {
             addFollower(
-                    widget,
-                    data -> dataToStateGetter.apply(index, data),
-                    (data, state) -> dataUpdater.apply(index, data),
-                    applyForWidget);
+                widget,
+                data -> dataToStateGetter.apply(index, data),
+                (data, state) -> dataUpdater.apply(index, data),
+                applyForWidget);
             return this;
         }
     }

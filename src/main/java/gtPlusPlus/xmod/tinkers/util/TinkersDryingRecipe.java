@@ -26,14 +26,16 @@ public class TinkersDryingRecipe {
         this.input = input;
         this.result = result;
         Logger.INFO(
-                "Generating Drying Recipe. Input: " + input.getDisplayName() + ", Output: " + result.getDisplayName());
+            "Generating Drying Recipe. Input: " + input.getDisplayName() + ", Output: " + result.getDisplayName());
     }
 
     public static void generateAllDryingRecipes() {
         List<DryingRackRecipes.DryingRecipe> aRecipes = TinkersDryingRecipe.getDryingRecipes();
         if (!aRecipes.isEmpty()) {
             for (DryingRackRecipes.DryingRecipe recipe : aRecipes) {
-                Logger.INFO("Trying to generate recipe using object of type " + recipe.getClass().getSimpleName());
+                Logger.INFO(
+                    "Trying to generate recipe using object of type " + recipe.getClass()
+                        .getSimpleName());
                 generateFromTinkersRecipe(recipe);
             }
         } else {
@@ -42,8 +44,12 @@ public class TinkersDryingRecipe {
         if (!recipes.isEmpty()) {
             Logger.INFO("Adding " + recipes.size() + " drying rack recipes to the dehydrator.");
             for (TinkersDryingRecipe r : recipes) {
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.getIntegratedCircuit(16), r.input).itemOutputs(r.result)
-                        .eut(TierEU.RECIPE_LV).duration(r.time / 10).addTo(chemicalDehydratorRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(16), r.input)
+                    .itemOutputs(r.result)
+                    .eut(TierEU.RECIPE_LV)
+                    .duration(r.time / 10)
+                    .addTo(chemicalDehydratorRecipes);
             }
         }
     }
@@ -66,8 +72,10 @@ public class TinkersDryingRecipe {
     public boolean matches(ItemStack input) {
         if (input.hasTagCompound()) {
             input = input.copy();
-            input.getTagCompound().removeTag("frypanKill");
-            if (input.getTagCompound().hasNoTags()) {
+            input.getTagCompound()
+                .removeTag("frypanKill");
+            if (input.getTagCompound()
+                .hasNoTags()) {
                 input.setTagCompound(null);
             }
         }

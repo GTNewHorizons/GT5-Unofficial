@@ -63,13 +63,13 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
     public MTEHatchRack(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                4,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            4,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
     }
 
     public MTEHatchRack(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -132,7 +132,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
@@ -141,7 +141,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
@@ -185,16 +185,16 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
                     mInventory[i] = null;
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coolConstant * this.heat / 100000f)
-                            * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
+                        * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
 
                     if (overvolt > TecTech.RANDOM.nextFloat()) {
                         computation += comp.computation * (1 + overclock * overclock)
-                                / (1 + (overclock - overvolt) * (overclock - overvolt));
+                            / (1 + (overclock - overvolt) * (overclock - overvolt));
                     }
                 }
             } else {
                 computation += comp.computation * (1 + overclock * overclock)
-                        / (1 + (overclock - overvolt) * (overclock - overvolt)); // For getInfoData()
+                    / (1 + (overclock - overvolt) * (overclock - overvolt)); // For getInfoData()
             }
         }
         if (tickingComponents) {
@@ -244,26 +244,29 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @Override
     public String[] getInfoData() {
         return new String[] {
-                translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
-                        + EnumChatFormatting.AQUA
-                        + getComputationPower(overClock, overVolt, false),
-                translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
-                        + EnumChatFormatting.RED
-                        + heat
-                        + EnumChatFormatting.RESET };
+            translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
+                + EnumChatFormatting.AQUA
+                + getComputationPower(overClock, overVolt, false),
+            translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
+                + EnumChatFormatting.RED
+                + heat
+                + EnumChatFormatting.RESET };
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO).setSize(18, 18)
-                        .setPos(151, 63));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
+                .setSize(18, 18)
+                .setPos(151, 63));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK).setPos(46, 17).setSize(84, 60));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK)
+                .setPos(46, 17)
+                .setSize(84, 60));
 
         Pos2d[] positions = new Pos2d[] { new Pos2d(68, 27), new Pos2d(90, 27), new Pos2d(68, 49), new Pos2d(90, 49), };
         for (int i = 0; i < positions.length; i++) {
@@ -279,32 +282,35 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
                     return !getBaseMetaTileEntity().isActive() && heat <= 0;
                 }
             }).setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_RACK)
-                    .setPos(positions[i]));
+                .setPos(positions[i]));
 
             builder.widget(
-                    new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16).setPos(152, 24)
-                            .setSize(16, 16))
-                    .widget(
-                            new DrawableWidget()
-                                    .setDrawable(
-                                            () -> getBaseMetaTileEntity().isActive()
-                                                    ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-                                                    : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
-                                    .setPos(152, 24).setSize(16, 16))
-                    .widget(
-                            new FakeSyncWidget.BooleanSyncer(
-                                    () -> getBaseMetaTileEntity().isActive(),
-                                    val -> getBaseMetaTileEntity().setActive(val)));
+                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
+                    .setPos(152, 24)
+                    .setSize(16, 16))
+                .widget(
+                    new DrawableWidget()
+                        .setDrawable(
+                            () -> getBaseMetaTileEntity().isActive() ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
+                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
+                        .setPos(152, 24)
+                        .setSize(16, 16))
+                .widget(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
             builder.widget(
-                    new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16).setPos(152, 41)
-                            .setSize(16, 16))
-                    .widget(
-                            new DrawableWidget()
-                                    .setDrawable(
-                                            () -> heat > 0 ? TecTechUITextures.OVERLAY_BUTTON_HEAT_ON
-                                                    : TecTechUITextures.OVERLAY_BUTTON_HEAT_OFF)
-                                    .setPos(152, 41).setSize(16, 16))
-                    .widget(new FakeSyncWidget.IntegerSyncer(() -> heat, val -> heat = val));
+                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
+                    .setPos(152, 41)
+                    .setSize(16, 16))
+                .widget(
+                    new DrawableWidget()
+                        .setDrawable(
+                            () -> heat > 0 ? TecTechUITextures.OVERLAY_BUTTON_HEAT_ON
+                                : TecTechUITextures.OVERLAY_BUTTON_HEAT_OFF)
+                        .setPos(152, 41)
+                        .setSize(16, 16))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> heat, val -> heat = val));
         }
     }
 
@@ -361,18 +367,22 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         private final boolean subZero;
 
         RackComponent(ItemStack is, float computation, float heatConstant, float coolConstant, float maxHeat,
-                boolean subZero) {
+            boolean subZero) {
             this(TTUtility.getUniqueIdentifier(is), computation, heatConstant, coolConstant, maxHeat, subZero);
 
-            GTValues.RA.stdBuilder().itemInputs(is)
-                    .metadata(
-                            QUANTUM_COMPUTER_DATA,
-                            new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
-                    .duration(0).eut(0).fake().addTo(quantumComputerFakeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(is)
+                .metadata(
+                    QUANTUM_COMPUTER_DATA,
+                    new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(quantumComputerFakeRecipes);
         }
 
         RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,
-                boolean subZero) {
+            boolean subZero) {
             unlocalizedName = is;
             this.computation = computation;
             this.heatConstant = heatConstant;

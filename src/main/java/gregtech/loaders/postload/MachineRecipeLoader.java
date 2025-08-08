@@ -62,7 +62,7 @@ public class MachineRecipeLoader implements Runnable {
     public static final String aTextTCGTPage = "gt.research.page.1.";
 
     public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-            Materials.Tin };
+        Materials.Tin };
 
     @Override
     public void run() {

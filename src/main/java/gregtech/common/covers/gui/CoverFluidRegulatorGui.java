@@ -38,62 +38,74 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
-                TransferMode.class,
-                cover::getIOMode,
-                cover::setIOMode);
+            TransferMode.class,
+            cover::getIOMode,
+            cover::setIOMode);
         syncManager.syncValue("io_mode", ioModeSyncValue);
         EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
-                MachineProcessingCondition.class,
-                cover::getMachineProcessingCondition,
-                cover::setMachineProcessingCondition);
+            MachineProcessingCondition.class,
+            cover::getMachineProcessingCondition,
+            cover::setMachineProcessingCondition);
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         column.child(
-                makeRowLayout().child(positionRow(makeTransferModeRow(ioModeSyncValue)))
-                        .child(positionRow(makeMachineConditionModeRow(conditionModeSyncValue)))
-                        .child(positionRow(makeSpeedConfigRow()))
-                        .child(positionRow(makeAverageSpeedRow()).marginTop(ROW_PADDING)));
+            makeRowLayout().child(positionRow(makeTransferModeRow(ioModeSyncValue)))
+                .child(positionRow(makeMachineConditionModeRow(conditionModeSyncValue)))
+                .child(positionRow(makeSpeedConfigRow()))
+                .child(positionRow(makeAverageSpeedRow()).marginTop(ROW_PADDING)));
     }
 
     private static Flow makeTransferModeRow(EnumSyncValue<TransferMode> ioModeSyncValue) {
-        return Flow.row().child(
+        return Flow.row()
+            .child(
                 new ParentWidget<>().child(
-                        new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
-                                .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
-                                .build())
-                        .width(80))
-                .child(IKey.str(GTUtility.trans("229", "Export/Import")).asWidget());
+                    new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
+                        .build())
+                    .width(80))
+            .child(
+                IKey.str(GTUtility.trans("229", "Export/Import"))
+                    .asWidget());
     }
 
     private static Flow makeMachineConditionModeRow(EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue) {
-        return Flow.row().child(
+        return Flow.row()
+            .child(
                 new ParentWidget<>()
-                        .child(
-                                new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
-                                        .overlay(
-                                                GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
-                                                GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
-                                                GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                                        .build())
-                        .width(80))
-                .child(IKey.str(GTUtility.trans("230", "Conditional")).asWidget());
+                    .child(
+                        new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+                            .overlay(
+                                GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
+                                GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
+                                GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                            .build())
+                    .width(80))
+            .child(
+                IKey.str(GTUtility.trans("230", "Conditional"))
+                    .asWidget());
     }
 
     private Flow makeSpeedConfigRow() {
         return Flow.row()
-                .child(
-                        makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed))
-                                .setNumbers(cover::getMinSpeed, cover::getMaxSpeed).setFocusOnGuiOpen(true))
-                .child(IKey.str(GTUtility.trans("208", " L")).asWidget())
-                .child(
-                        makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi))
-                                .setValidator(this::validateTickRateText))
-                .child(IKey.str(GTUtility.trans("209", " ticks")).asWidget());
+            .child(
+                makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed))
+                    .setNumbers(cover::getMinSpeed, cover::getMaxSpeed)
+                    .setFocusOnGuiOpen(true))
+            .child(
+                IKey.str(GTUtility.trans("208", " L"))
+                    .asWidget())
+            .child(
+                makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi))
+                    .setValidator(this::validateTickRateText))
+            .child(
+                IKey.str(GTUtility.trans("209", " ticks"))
+                    .asWidget());
     }
 
     private @NotNull String validateTickRateText(String tickRateText) {
         return Long.toString(
-                (long) valiateTickRate(
-                        MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true).getResult()));
+            (long) valiateTickRate(
+                MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
+                    .getResult()));
     }
 
     /**
@@ -113,11 +125,17 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
     }
 
     private Flow makeAverageSpeedRow() {
-        return Flow.row().collapseDisabledChild()
-                .child(
-                        IKey.dynamic(this::getAverageSpeedText).color(Color.RED.main).asWidget()
-                                .setEnabledIf((w) -> isAtSpeedLimit()))
-                .child(IKey.dynamic(this::getAverageSpeedText).asWidget().setEnabledIf((w1) -> !isAtSpeedLimit()));
+        return Flow.row()
+            .collapseDisabledChild()
+            .child(
+                IKey.dynamic(this::getAverageSpeedText)
+                    .color(Color.RED.main)
+                    .asWidget()
+                    .setEnabledIf((w) -> isAtSpeedLimit()))
+            .child(
+                IKey.dynamic(this::getAverageSpeedText)
+                    .asWidget()
+                    .setEnabledIf((w1) -> !isAtSpeedLimit()));
     }
 
     private boolean isAtSpeedLimit() {
@@ -126,9 +144,8 @@ public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
 
     private @NotNull String getAverageSpeedText() {
         return GTUtility.trans("210.1", "Average:") + " "
-                + numberFormat
-                        .format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
-                + " "
-                + GTUtility.trans("210.2", "L/sec");
+            + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
+            + " "
+            + GTUtility.trans("210.2", "L/sec");
     }
 }

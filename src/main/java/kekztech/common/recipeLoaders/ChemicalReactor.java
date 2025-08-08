@@ -17,10 +17,13 @@ public class ChemicalReactor implements Runnable {
         final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
         // Ceria Dust
-        GTValues.RA.stdBuilder().itemInputs(Materials.Cerium.getDust(1), GTUtility.getIntegratedCircuit(6))
-                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
-                .fluidInputs(Materials.Oxygen.getGas(2_000)).duration(20 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Cerium.getDust(1), GTUtility.getIntegratedCircuit(6))
+            .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
+            .fluidInputs(Materials.Oxygen.getGas(2_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
     }
 }

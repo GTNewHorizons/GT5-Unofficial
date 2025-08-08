@@ -41,7 +41,8 @@ public class SlotIntegratedCircuit extends Slot {
 
     public static synchronized boolean isRegularProgrammableCircuit(final ItemStack itemstack) {
         if (mCircuitItem == null) {
-            mCircuitItem = GTUtility.getIntegratedCircuit(0).getItem();
+            mCircuitItem = GTUtility.getIntegratedCircuit(0)
+                .getItem();
         }
         return itemstack != null && itemstack.getItem() == mCircuitItem;
     }

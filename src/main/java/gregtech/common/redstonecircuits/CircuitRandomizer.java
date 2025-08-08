@@ -49,7 +49,7 @@ public class CircuitRandomizer extends CircuitryBehavior {
         if (aCircuitData[4] >= aCircuitData[0]) {
             aCircuitData[4] = 0;
             aRedstoneCircuitBlock
-                    .setRedstone((byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
+                .setRedstone((byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
         }
     }
 
@@ -68,8 +68,8 @@ public class CircuitRandomizer extends CircuitryBehavior {
         return switch (aCircuitDataIndex) {
             case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.data_description.delay");
             case 3 -> aCircuitData[aCircuitDataIndex] == 1
-                    ? StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_on")
-                    : StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_off");
+                ? StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_on")
+                : StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_off");
             case 4 -> StatCollector.translateToLocal("GT5U.gui.circuit.randomizer.data_description.status");
             default -> "";
         };

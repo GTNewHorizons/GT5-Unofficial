@@ -14,7 +14,7 @@ import gtPlusPlus.core.util.Utils;
 public class ItemHalfCompleteCasings extends BaseItemColourable {
 
     public ItemHalfCompleteCasings(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg,
-            String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
+        String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
         super(unlocalizedName, creativeTab, stackSize, maxDmg, description, regRarity, colour, Effect, rgb);
     }
 

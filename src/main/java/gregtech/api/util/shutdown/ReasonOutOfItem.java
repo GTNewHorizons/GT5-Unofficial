@@ -30,10 +30,10 @@ public class ReasonOutOfItem implements ShutDownReason {
     @Override
     public String getDisplayString() {
         return Objects.requireNonNull(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.out_of_item",
-                        requiredItem.getDisplayName(),
-                        formatNumbers(requiredItem.stackSize)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.out_of_item",
+                requiredItem.getDisplayName(),
+                formatNumbers(requiredItem.stackSize)));
     }
 
     @Override

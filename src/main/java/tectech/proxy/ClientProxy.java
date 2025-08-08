@@ -40,14 +40,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(BlockQuantumGlass.renderID, new RenderQuantumGlass());
 
         MinecraftForgeClient
-                .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
+            .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
         BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
 
         MinecraftForgeClient
-                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
+            .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
     }
 
@@ -58,13 +58,13 @@ public class ClientProxy extends CommonProxy {
         float zPos = facing.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
 
         EntityFX particle = new WeightlessParticleFX(
-                aMuffler.getWorld(),
-                xPos + RANDOM.nextFloat() * 0.5F,
-                yPos + RANDOM.nextFloat() * 0.5F,
-                zPos + RANDOM.nextFloat() * 0.5F,
-                0,
-                0,
-                0);
+            aMuffler.getWorld(),
+            xPos + RANDOM.nextFloat() * 0.5F,
+            yPos + RANDOM.nextFloat() * 0.5F,
+            zPos + RANDOM.nextFloat() * 0.5F,
+            0,
+            0,
+            0);
         particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
@@ -87,7 +87,8 @@ public class ClientProxy extends CommonProxy {
             xSpd = facing.offsetX * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
             zSpd = facing.offsetZ * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
         }
-        aMuffler.getWorld().spawnParticle(
+        aMuffler.getWorld()
+            .spawnParticle(
                 "largesmoke",
                 xPos + RANDOM.nextFloat() * 0.5F,
                 yPos + RANDOM.nextFloat() * 0.5F,
@@ -95,7 +96,8 @@ public class ClientProxy extends CommonProxy {
                 xSpd,
                 ySpd,
                 zSpd);
-        aMuffler.getWorld().spawnParticle(
+        aMuffler.getWorld()
+            .spawnParticle(
                 "largesmoke",
                 xPos + RANDOM.nextFloat() * 0.5F,
                 yPos + RANDOM.nextFloat() * 0.5F,
@@ -103,7 +105,8 @@ public class ClientProxy extends CommonProxy {
                 xSpd,
                 ySpd,
                 zSpd);
-        aMuffler.getWorld().spawnParticle(
+        aMuffler.getWorld()
+            .spawnParticle(
                 "largesmoke",
                 xPos + RANDOM.nextFloat() * 0.5F,
                 yPos + RANDOM.nextFloat() * 0.5F,
@@ -116,13 +119,13 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void em_particle(World w, double x, double y, double z) { // CUTE!
         EntityFX particle = new WeightlessParticleFX(
-                w,
-                x + RANDOM.nextFloat() * 0.5F,
-                y + RANDOM.nextFloat() * 0.5F,
-                z + RANDOM.nextFloat() * 0.5F,
-                0,
-                0,
-                0);
+            w,
+            x + RANDOM.nextFloat() * 0.5F,
+            y + RANDOM.nextFloat() * 0.5F,
+            z + RANDOM.nextFloat() * 0.5F,
+            0,
+            0,
+            0);
         particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
@@ -130,18 +133,19 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void pollutor_particle(World w, double x, double y, double z) {
         w.spawnParticle(
-                "largesmoke",
-                x + RANDOM.nextFloat() * 0.5F,
-                y + RANDOM.nextFloat() * 0.5F,
-                z + RANDOM.nextFloat() * 0.5F,
-                0,
-                0,
-                0);
+            "largesmoke",
+            x + RANDOM.nextFloat() * 0.5F,
+            y + RANDOM.nextFloat() * 0.5F,
+            z + RANDOM.nextFloat() * 0.5F,
+            0,
+            0,
+            0);
     }
 
     @Override
     public World getClientWorld() {
-        return FMLClientHandler.instance().getClient().theWorld;
+        return FMLClientHandler.instance()
+            .getClient().theWorld;
     }
 
     @Override
@@ -154,13 +158,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void playSound(IGregTechTileEntity base, String name) {
-        base.getWorld().playSoundEffect(
-                base.getXCoord(),
-                base.getYCoord(),
-                base.getZCoord(),
-                Reference.MODID + ':' + name,
-                1,
-                1);
+        base.getWorld()
+            .playSoundEffect(base.getXCoord(), base.getYCoord(), base.getZCoord(), Reference.MODID + ':' + name, 1, 1);
     }
 
     @Override

@@ -60,15 +60,16 @@ public class RecipeMapFrontend {
     protected final NEIRecipeProperties neiProperties;
 
     protected final GUIColorOverride colorOverride = GUIColorOverride
-            .get(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
+        .get(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
 
     public RecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         this.uiProperties = uiPropertiesBuilder.itemInputPositionsGetter(this::getItemInputPositions)
-                .itemOutputPositionsGetter(this::getItemOutputPositions)
-                .specialItemPositionGetter(this::getSpecialItemPosition)
-                .fluidInputPositionsGetter(this::getFluidInputPositions)
-                .fluidOutputPositionsGetter(this::getFluidOutputPositions).build();
+            .itemOutputPositionsGetter(this::getItemOutputPositions)
+            .specialItemPositionGetter(this::getSpecialItemPosition)
+            .fluidInputPositionsGetter(this::getFluidInputPositions)
+            .fluidOutputPositionsGetter(this::getFluidOutputPositions)
+            .build();
         this.neiProperties = neiPropertiesBuilder.build();
     }
 
@@ -90,39 +91,49 @@ public class RecipeMapFrontend {
      * Creates NEI recipe layout, except for actual items / fluids.
      */
     public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-            IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-            IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-            Supplier<Float> progressSupplier, Pos2d windowOffset) {
+        IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+        IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+        Supplier<Float> progressSupplier, Pos2d windowOffset) {
         ModularWindow.Builder builder = ModularWindow.builder(neiProperties.recipeBackgroundSize)
-                .setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE);
+            .setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE);
 
         UIHelper.forEachSlots(
-                (i, backgrounds, pos) -> builder.widget(
-                        SlotWidget.phantom(itemInputsInventory, i).setBackground(backgrounds).setPos(pos)
-                                .setSize(18, 18)),
-                (i, backgrounds, pos) -> builder.widget(
-                        SlotWidget.phantom(itemOutputsInventory, i).setBackground(backgrounds).setPos(pos)
-                                .setSize(18, 18)),
-                (i, backgrounds, pos) -> {
-                    if (uiProperties.useSpecialSlot) builder.widget(
-                            SlotWidget.phantom(specialSlotInventory, 0).setBackground(backgrounds).setPos(pos)
-                                    .setSize(18, 18));
-                },
-                (i, backgrounds, pos) -> builder.widget(
-                        SlotWidget.phantom(fluidInputsInventory, i).setBackground(backgrounds).setPos(pos)
-                                .setSize(18, 18)),
-                (i, backgrounds, pos) -> builder.widget(
-                        SlotWidget.phantom(fluidOutputsInventory, i).setBackground(backgrounds).setPos(pos)
-                                .setSize(18, 18)),
-                ModularUITextures.ITEM_SLOT,
-                ModularUITextures.FLUID_SLOT,
-                uiProperties,
-                uiProperties.maxItemInputs,
-                uiProperties.maxItemOutputs,
-                uiProperties.maxFluidInputs,
-                uiProperties.maxFluidOutputs,
-                SteamVariant.NONE,
-                windowOffset);
+            (i, backgrounds, pos) -> builder.widget(
+                SlotWidget.phantom(itemInputsInventory, i)
+                    .setBackground(backgrounds)
+                    .setPos(pos)
+                    .setSize(18, 18)),
+            (i, backgrounds, pos) -> builder.widget(
+                SlotWidget.phantom(itemOutputsInventory, i)
+                    .setBackground(backgrounds)
+                    .setPos(pos)
+                    .setSize(18, 18)),
+            (i, backgrounds, pos) -> {
+                if (uiProperties.useSpecialSlot) builder.widget(
+                    SlotWidget.phantom(specialSlotInventory, 0)
+                        .setBackground(backgrounds)
+                        .setPos(pos)
+                        .setSize(18, 18));
+            },
+            (i, backgrounds, pos) -> builder.widget(
+                SlotWidget.phantom(fluidInputsInventory, i)
+                    .setBackground(backgrounds)
+                    .setPos(pos)
+                    .setSize(18, 18)),
+            (i, backgrounds, pos) -> builder.widget(
+                SlotWidget.phantom(fluidOutputsInventory, i)
+                    .setBackground(backgrounds)
+                    .setPos(pos)
+                    .setSize(18, 18)),
+            ModularUITextures.ITEM_SLOT,
+            ModularUITextures.FLUID_SLOT,
+            uiProperties,
+            uiProperties.maxItemInputs,
+            uiProperties.maxItemOutputs,
+            uiProperties.maxFluidInputs,
+            uiProperties.maxFluidOutputs,
+            SteamVariant.NONE,
+            windowOffset);
 
         if (uiProperties.useProgressBar) {
             addProgressBar(builder, progressSupplier, windowOffset);
@@ -131,9 +142,14 @@ public class RecipeMapFrontend {
 
         for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTextures) {
             builder.widget(
-                    new DrawableWidget().setDrawable(specialTexture.getLeft())
-                            .setSize(specialTexture.getRight().getLeft())
-                            .setPos(specialTexture.getRight().getRight().add(windowOffset)));
+                new DrawableWidget().setDrawable(specialTexture.getLeft())
+                    .setSize(
+                        specialTexture.getRight()
+                            .getLeft())
+                    .setPos(
+                        specialTexture.getRight()
+                            .getRight()
+                            .add(windowOffset)));
         }
 
         return builder;
@@ -142,16 +158,19 @@ public class RecipeMapFrontend {
     public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
         assert uiProperties.progressBarTexture != null;
         builder.widget(
-                new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 20)
-                        .setDirection(uiProperties.progressBarDirection).setProgress(progressSupplier)
-                        .setSynced(false, false).setPos(uiProperties.progressBarPos.add(windowOffset))
-                        .setSize(uiProperties.progressBarSize));
+            new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 20)
+                .setDirection(uiProperties.progressBarDirection)
+                .setProgress(progressSupplier)
+                .setSynced(false, false)
+                .setPos(uiProperties.progressBarPos.add(windowOffset))
+                .setSize(uiProperties.progressBarSize));
     }
 
     public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
         builder.widget(
-                new DrawableWidget().setDrawable(uiProperties.logo).setSize(uiProperties.logoSize)
-                        .setPos(uiProperties.logoPos.add(windowOffset)));
+            new DrawableWidget().setDrawable(uiProperties.logo)
+                .setSize(uiProperties.logoSize)
+                .setPos(uiProperties.logoPos.add(windowOffset)));
     }
 
     /**
@@ -219,7 +238,8 @@ public class RecipeMapFrontend {
     protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
         IRecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
         for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
-            entry.getKey().drawInfo(recipeInfo, entry.getValue());
+            entry.getKey()
+                .drawInfo(recipeInfo, entry.getValue());
         }
     }
 
@@ -228,15 +248,20 @@ public class RecipeMapFrontend {
         if (recipe.owners != null) {
             if (recipe.owners.size() > 1) {
                 recipeInfo.drawText(
-                        EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
-                                + recipe.owners.get(0).getName());
+                    EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
+                        + recipe.owners.get(0)
+                            .getName());
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
-                            EnumChatFormatting.ITALIC + trans("274", "Modified by: ") + recipe.owners.get(i).getName());
+                        EnumChatFormatting.ITALIC + trans("274", "Modified by: ")
+                            + recipe.owners.get(i)
+                                .getName());
                 }
             } else if (!recipe.owners.isEmpty()) {
                 recipeInfo.drawText(
-                        EnumChatFormatting.ITALIC + trans("272", "Recipe by: ") + recipe.owners.get(0).getName());
+                    EnumChatFormatting.ITALIC + trans("272", "Recipe by: ")
+                        + recipe.owners.get(0)
+                            .getName());
             }
         }
         if (recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
@@ -249,13 +274,13 @@ public class RecipeMapFrontend {
     }
 
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-            GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
             if (stack == pStack.item) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                     currentTip = handleNEIItemInputTooltip(
-                            currentTip,
-                            (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+                        currentTip,
+                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
                 }
                 break;
             }
@@ -264,8 +289,8 @@ public class RecipeMapFrontend {
             if (stack == pStack.item) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                     currentTip = handleNEIItemOutputTooltip(
-                            currentTip,
-                            (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+                        currentTip,
+                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
                 }
                 break;
             }
@@ -274,7 +299,7 @@ public class RecipeMapFrontend {
     }
 
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GTNEIDefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) {
             currentTip.add(GRAY + trans("151", "Does not get consumed in the process"));
         }
@@ -282,7 +307,7 @@ public class RecipeMapFrontend {
     }
 
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
-            GTNEIDefaultHandler.FixedPositionedStack pStack) {
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isChanceBased()) {
             currentTip.add(GRAY + trans("150", "Chance: ") + pStack.getChanceText());
         }
@@ -316,12 +341,12 @@ public class RecipeMapFrontend {
 
     @SuppressWarnings("SameParameterValue")
     protected void drawNEIOverlayText(String text, PositionedStack stack, int color, float scale, boolean shadow,
-            Alignment alignment) {
+        Alignment alignment) {
         FontRenderer fontRenderer = net.minecraft.client.Minecraft.getMinecraft().fontRenderer;
         int width = fontRenderer.getStringWidth(text);
         int x = (int) ((stack.relx + 8 + 8 * alignment.x) / scale) - (width / 2 * (alignment.x + 1));
         int y = (int) ((stack.rely + 8 + 8 * alignment.y) / scale) - (fontRenderer.FONT_HEIGHT / 2 * (alignment.y + 1))
-                - (alignment.y - 1) / 2;
+            - (alignment.y - 1) / 2;
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(scale, scale, 1);
@@ -331,16 +356,17 @@ public class RecipeMapFrontend {
 
     protected void drawNEIOverlayText(String text, PositionedStack stack) {
         drawNEIOverlayText(
-                text,
-                stack,
-                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                0.5f,
-                false,
-                Alignment.TopLeft);
+            text,
+            stack,
+            colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+            0.5f,
+            false,
+            Alignment.TopLeft);
     }
 
     public static List<Supplier<Float>> splitProgress(Supplier<Float> progress, int... progressbarLengthArray) {
-        float lengthSum = IntStream.of(progressbarLengthArray).sum();
+        float lengthSum = IntStream.of(progressbarLengthArray)
+            .sum();
         List<Supplier<Float>> ret = new ArrayList<>();
         float currentLengthSum = 0;
         for (int progressbarLength : progressbarLengthArray) {
@@ -362,6 +388,6 @@ public class RecipeMapFrontend {
          * @see RecipeMapFrontend#RecipeMapFrontend
          */
         RecipeMapFrontend create(BasicUIPropertiesBuilder uiPropertiesBuilder,
-                NEIRecipePropertiesBuilder neiPropertiesBuilder);
+            NEIRecipePropertiesBuilder neiPropertiesBuilder);
     }
 }

@@ -36,7 +36,9 @@ public class TileEntityWormhole extends TileEntity {
 
     public int getDimFromWorld(World target) {
         if (target == null) return 0;
-        String dimName = Optional.ofNullable(target.provider).map(WorldProvider::getDimensionName).orElse(null);
+        String dimName = Optional.ofNullable(target.provider)
+            .map(WorldProvider::getDimensionName)
+            .orElse(null);
         if (dimName == null) return 0;
         for (int i = 0; i < DimensionHelper.DimName.length; i++) {
             if (dimName.equals(DimensionHelper.DimName[i])) return i;

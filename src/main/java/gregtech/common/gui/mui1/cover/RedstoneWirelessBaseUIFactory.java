@@ -31,31 +31,33 @@ public class RedstoneWirelessBaseUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                        .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) getFlagFrequency(coverData.getVariable()),
-                                (coverData, state) -> coverData
-                                        .setVariable(state.intValue() | getFlagCheckbox(coverData.getVariable())),
-                                widget -> widget.setBounds(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
-                                        .setScrollValues(1, 1000, 10).setFocusOnGuiOpen(true)
-                                        .setPos(spaceX * 0, spaceY * 0 + 2).setSize(spaceX * 4 - 3, 12))
-                        .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                coverData -> getFlagCheckbox(coverData.getVariable()) > 0,
-                                (coverData, state) -> coverData.setVariable(
-                                        getFlagFrequency(coverData.getVariable())
-                                                | (state ? CoverRedstoneWirelessBase.CHECKBOX_MASK : 0)),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-                .widget(
-                        new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                .widget(
-                        new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) getFlagFrequency(coverData.getVariable()),
+                        (coverData, state) -> coverData
+                            .setVariable(state.intValue() | getFlagCheckbox(coverData.getVariable())),
+                        widget -> widget.setBounds(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
+                            .setScrollValues(1, 1000, 10)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(spaceX * 0, spaceY * 0 + 2)
+                            .setSize(spaceX * 4 - 3, 12))
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofCheck(),
+                        coverData -> getFlagCheckbox(coverData.getVariable()) > 0,
+                        (coverData, state) -> coverData.setVariable(
+                            getFlagFrequency(coverData.getVariable())
+                                | (state ? CoverRedstoneWirelessBase.CHECKBOX_MASK : 0)),
+                        widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                    .setPos(startX, startY))
+            .widget(
+                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+            .widget(
+                new TextWidget(GTUtility.trans("602", "Use Private Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
     }
 
     private int getFlagFrequency(int coverVariable) {

@@ -47,8 +47,8 @@ public class BlockFluidTankInfinite extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int ordinalSide, final int meta) {
         return ordinalSide == 1 ? this.textureTop
-                : (ordinalSide == 0 ? this.textureBottom
-                        : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
+            : (ordinalSide == 0 ? this.textureBottom
+                : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BlockFluidTankInfinite extends BlockContainer {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -75,9 +75,9 @@ public class BlockFluidTankInfinite extends BlockContainer {
                 if (player.isSneaking()) {
                     switch (tank.changeMode()) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                                .sendChatToPlayer(player, "This tank is now in single fluid mode.");
+                            .sendChatToPlayer(player, "This tank is now in single fluid mode.");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                                .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
+                            .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
                     }
                     return true;
                 }
@@ -101,21 +101,21 @@ public class BlockFluidTankInfinite extends BlockContainer {
 
                 // report new stats after update
                 if (tank.getFluid() != null) {
-                    String fluidName = tank.getFluid().getLocalizedName();
+                    String fluidName = tank.getFluid()
+                        .getLocalizedName();
                     switch (tank.mode) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                                .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
+                            .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatToPlayer(
-                                player,
-                                "This tank contains " + fluidName
-                                        + " and can supply any fluid that is requested from it.");
+                            player,
+                            "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
                     }
                 } else {
                     switch (tank.mode) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                                .sendChatToPlayer(player, "This tank is empty.");
+                            .sendChatToPlayer(player, "This tank is empty.");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                                .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
+                            .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
                     }
                 }
                 return true;

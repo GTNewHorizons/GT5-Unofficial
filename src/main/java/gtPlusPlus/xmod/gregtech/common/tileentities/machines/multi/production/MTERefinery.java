@@ -55,22 +55,29 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Fission Fuel Processing Unit")
-                .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-                .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-                .addInfo("However, they require fission breeding outputs from the LFTR itself")
-                .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-                .addInfo("All recipe times in this multi are very long, watch out!")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 9, 3, false)
-                .addController("Bottom Center").addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
-                .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-                .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
-                .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false).addInputHatch("Base platform", 1)
-                .addOutputHatch("Base platform", 1).addMufflerHatch("Base platform", 1)
-                .addMaintenanceHatch("Base platform", 1).addEnergyHatch("Base platform", 1)
-                .addStructureInfo("Muffler's Tier must be IV+")
-                .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
-                .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch").toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Fission Fuel Processing Unit")
+            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
+            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
+            .addInfo("However, they require fission breeding outputs from the LFTR itself")
+            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
+            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 9, 3, false)
+            .addController("Bottom Center")
+            .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
+            .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
+            .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
+            .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false)
+            .addInputHatch("Base platform", 1)
+            .addOutputHatch("Base platform", 1)
+            .addMufflerHatch("Base platform", 1)
+            .addMaintenanceHatch("Base platform", 1)
+            .addEnergyHatch("Base platform", 1)
+            .addStructureInfo("Muffler's Tier must be IV+")
+            .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
+            .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
+            .toolTipFinisher();
         return tt;
     }
 
@@ -125,26 +132,32 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     @Override
     public IStructureDefinition<MTERefinery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTERefinery>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTERefinery>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "   ", " N ", "   " }, { " N ", "NIN", " N " }, { " N ", "NIN", " N " },
-                                    { " N ", "NIN", " N " }, { " Z ", "ZIZ", " Z " }, { " N ", "NIN", " N " },
-                                    { "XXX", "XXX", "XXX" }, { "X~X", "XXX", "XXX" }, }))
-                    .addElement(
-                            'X',
-                            ofChain(
-                                    buildHatchAdder(MTERefinery.class)
-                                            .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
-                                            .casingIndex(TAE.GTPP_INDEX(18)).dot(1).build(),
-                                    buildHatchAdder(MTERefinery.class).atLeast(Muffler)
-                                            .adder(MTERefinery::addMufflerToMachineList)
-                                            .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
-                                            .casingIndex(TAE.GTPP_INDEX(18)).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
-                    .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
-                    .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
-                    .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13)).build();
+                        new String[][] { { "   ", " N ", "   " }, { " N ", "NIN", " N " }, { " N ", "NIN", " N " },
+                            { " N ", "NIN", " N " }, { " Z ", "ZIZ", " Z " }, { " N ", "NIN", " N " },
+                            { "XXX", "XXX", "XXX" }, { "X~X", "XXX", "XXX" }, }))
+                .addElement(
+                    'X',
+                    ofChain(
+                        buildHatchAdder(MTERefinery.class)
+                            .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
+                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(MTERefinery.class).atLeast(Muffler)
+                            .adder(MTERefinery::addMufflerToMachineList)
+                            .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
+                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
+                .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
+                .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
+                .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -165,11 +178,11 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         mCasing = 0;
         if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
             if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                    && !this.mOutputHatches.isEmpty()
-                    && this.mOutputHatches.size() <= 2
-                    && this.mMufflerHatches.size() == 1
-                    && this.mMaintenanceHatches.size() == 1
-                    && this.mEnergyHatches.size() == 1) {
+                && !this.mOutputHatches.isEmpty()
+                && this.mOutputHatches.size() <= 2
+                && this.mMufflerHatches.size() == 1
+                && this.mMaintenanceHatches.size() == 1
+                && this.mEnergyHatches.size() == 1) {
                 this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
                 return true;
             }

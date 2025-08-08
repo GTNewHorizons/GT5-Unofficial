@@ -59,7 +59,8 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
 
         if (EOHRenderTile.getOrbitingObjects() != null) {
 
-            if (EOHRenderTile.getOrbitingObjects().isEmpty()) {
+            if (EOHRenderTile.getOrbitingObjects()
+                .isEmpty()) {
                 EOHRenderTile.generateImportantInfo();
             }
 
@@ -70,7 +71,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
     }
 
     void renderOrbit(final TileEntityEyeOfHarmony EOHRenderTile,
-            final TileEntityEyeOfHarmony.OrbitingObject orbitingObject) {
+        final TileEntityEyeOfHarmony.OrbitingObject orbitingObject) {
         // Render orbiting body.
         GL11.glPushMatrix();
 

@@ -21,7 +21,8 @@ import it.unimi.dsi.fastutil.shorts.ShortList;
 @EventBusSubscriber
 public class GTBlockEventTracker {
 
-    private static final Map<World, GTBlockEventTracker> TRACKERS = new MapMaker().weakKeys().makeMap();
+    private static final Map<World, GTBlockEventTracker> TRACKERS = new MapMaker().weakKeys()
+        .makeMap();
 
     private final LongList packedCoordinates = new LongArrayList();
     private final ShortList idsAndValues = new ShortArrayList();
@@ -44,12 +45,12 @@ public class GTBlockEventTracker {
             if (eventCount == 0) return;
 
             GTValues.NW.sendToWorld(
-                    world,
-                    new GTPacketBlockEvent(
-                            world.provider.dimensionId,
-                            eventCount,
-                            tracker.packedCoordinates,
-                            tracker.idsAndValues));
+                world,
+                new GTPacketBlockEvent(
+                    world.provider.dimensionId,
+                    eventCount,
+                    tracker.packedCoordinates,
+                    tracker.idsAndValues));
 
             tracker.packedCoordinates.clear();
             tracker.idsAndValues.clear();

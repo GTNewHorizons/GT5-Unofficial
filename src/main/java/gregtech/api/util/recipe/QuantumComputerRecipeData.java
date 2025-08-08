@@ -6,7 +6,7 @@ public class QuantumComputerRecipeData {
     public final boolean subZero;
 
     public QuantumComputerRecipeData(float heatConstant, float coolConstant, float computation, float maxHeat,
-            boolean subZero) {
+        boolean subZero) {
         this.heatConstant = heatConstant;
         this.coolConstant = coolConstant;
         this.computation = computation;

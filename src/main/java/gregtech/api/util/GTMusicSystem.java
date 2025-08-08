@@ -116,9 +116,9 @@ public final class GTMusicSystem {
             int arrIndex = index * EMITTER_STRIDE;
             if (arrIndex < 0 || arrIndex >= emitterParameters.length) {
                 throw new IndexOutOfBoundsException(
-                        "Trying to access emitter with index " + index
-                                + " in an array of "
-                                + emitterParameters.length / EMITTER_STRIDE);
+                    "Trying to access emitter with index " + index
+                        + " in an array of "
+                        + emitterParameters.length / EMITTER_STRIDE);
             }
 
             if (emitterParameters[arrIndex + EMITTER_X] != position.x) {
@@ -177,7 +177,7 @@ public final class GTMusicSystem {
                 case BETWEEN_DIMENSIONS -> true;
                 case INSIDE_DIMENSION -> dim == originPosition.w;
                 case BLOCK_RANGE -> dim == originPosition.w
-                        && originPosition.distanceSquared(x, y, z, dim) <= sq(headphoneBlockRange);
+                    && originPosition.distanceSquared(x, y, z, dim) <= sq(headphoneBlockRange);
             };
         }
 
@@ -336,7 +336,8 @@ public final class GTMusicSystem {
             public void clearSound(final Minecraft mc) {
                 currentSoundResource = null;
                 if (currentSound != null) {
-                    mc.getSoundHandler().stopSound(currentSound);
+                    mc.getSoundHandler()
+                        .stopSound(currentSound);
                     currentSound = null;
                     originalStartTime = 0;
                 }
@@ -347,7 +348,7 @@ public final class GTMusicSystem {
                     return currentSoundResource == null;
                 } else {
                     return source.currentRecord.equals(currentSoundResource)
-                            && originalStartTime == source.startedPlayingAtMs;
+                        && originalStartTime == source.startedPlayingAtMs;
                 }
             }
 
@@ -357,11 +358,11 @@ public final class GTMusicSystem {
                     return;
                 }
                 int closestEmitter = onHeadphones ? 0
-                        : source.closestEmitter(
-                                (int) Math.floor(mc.thePlayer.posX),
-                                (int) Math.floor(mc.thePlayer.posY),
-                                (int) Math.floor(mc.thePlayer.posZ),
-                                currentDimension);
+                    : source.closestEmitter(
+                        (int) Math.floor(mc.thePlayer.posX),
+                        (int) Math.floor(mc.thePlayer.posY),
+                        (int) Math.floor(mc.thePlayer.posZ),
+                        currentDimension);
                 if (closestEmitter < 0) {
                     return;
                 }
@@ -373,7 +374,8 @@ public final class GTMusicSystem {
                     if (onHeadphones) {
                         this.currentSound.volume = 1.0e20f;
                     }
-                    mc.getSoundHandler().playSound(this.currentSound);
+                    mc.getSoundHandler()
+                        .playSound(this.currentSound);
                 }
             }
 
@@ -382,11 +384,11 @@ public final class GTMusicSystem {
                     return;
                 }
                 int closestEmitter = onHeadphones ? 0
-                        : source.closestEmitter(
-                                (int) Math.floor(mc.thePlayer.posX),
-                                (int) Math.floor(mc.thePlayer.posY),
-                                (int) Math.floor(mc.thePlayer.posZ),
-                                currentDimension);
+                    : source.closestEmitter(
+                        (int) Math.floor(mc.thePlayer.posX),
+                        (int) Math.floor(mc.thePlayer.posY),
+                        (int) Math.floor(mc.thePlayer.posZ),
+                        currentDimension);
                 if (closestEmitter < 0) {
                     currentSound.volume = 0.0f;
                     return;
@@ -396,7 +398,7 @@ public final class GTMusicSystem {
                 currentSound.yPosition = source.emitterParameters[offset + MusicSource.EMITTER_Y];
                 currentSound.zPosition = source.emitterParameters[offset + MusicSource.EMITTER_Z];
                 currentSound.volume = onHeadphones ? 1.0e20f
-                        : source.emitterParameters[offset + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
+                    : source.emitterParameters[offset + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
             }
         }
 
@@ -404,7 +406,7 @@ public final class GTMusicSystem {
         public static final Object2ObjectOpenHashMap<UUID, MusicSource> musicSources = new Object2ObjectOpenHashMap<>();
 
         private static final Object2ObjectOpenHashMap<UUID, ClientSourceData> activelyPlayingMusic = new Object2ObjectOpenHashMap<>(
-                16);
+            16);
 
         private static final ObjectOpenHashSet<UUID> wornHeadphones = new ObjectOpenHashSet<>();
 
@@ -428,7 +430,7 @@ public final class GTMusicSystem {
             final int y = source.emitterParameters[emitter * MusicSource.EMITTER_STRIDE + MusicSource.EMITTER_Y];
             final int z = source.emitterParameters[emitter * MusicSource.EMITTER_STRIDE + MusicSource.EMITTER_Z];
             final float volume = source.emitterParameters[emitter * MusicSource.EMITTER_STRIDE
-                    + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
+                + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
             return new ElectricJukeboxSound(source.currentRecord, volume, source.playingForMs, x, y, z);
         }
 
@@ -446,12 +448,17 @@ public final class GTMusicSystem {
                 for (final ItemRecord record : allRecords.values()) {
                     resources.clear();
                     if (record instanceof MusicRecordMetadataProvider mrmp) {
-                        StreamSupport.stream(mrmp.getMusicRecordVariants().spliterator(), false)
-                                .map(mrmp::getMusicRecordResource).filter(Objects::nonNull).forEach(resources::add);
+                        StreamSupport.stream(
+                            mrmp.getMusicRecordVariants()
+                                .spliterator(),
+                            false)
+                            .map(mrmp::getMusicRecordResource)
+                            .filter(Objects::nonNull)
+                            .forEach(resources::add);
                     } else {
                         final ResourceLocation res = record.getRecordResource(record.recordName);
                         resources
-                                .add(new ResourceLocation(res.getResourceDomain(), "records." + res.getResourcePath()));
+                            .add(new ResourceLocation(res.getResourceDomain(), "records." + res.getResourcePath()));
                     }
                     for (final ResourceLocation res : resources) {
                         try {
@@ -459,9 +466,11 @@ public final class GTMusicSystem {
                             if (registryEntry == null) {
                                 registryEntry = (SoundEventAccessorComposite) sm.getObject(res);
                             }
-                            final ResourceLocation realPath = registryEntry.func_148720_g().getSoundPoolEntryLocation();
-                            try (final InputStream is = mc.getResourceManager().getResource(realPath).getInputStream();
-                                    final OutputStream os = FileUtils.openOutputStream(tempFile)) {
+                            final ResourceLocation realPath = registryEntry.func_148720_g()
+                                .getSoundPoolEntryLocation();
+                            try (final InputStream is = mc.getResourceManager()
+                                .getResource(realPath)
+                                .getInputStream(); final OutputStream os = FileUtils.openOutputStream(tempFile)) {
                                 IOUtils.copy(is, os);
                                 os.close();
                                 final VorbisFile vf = new VorbisFile(tempFile.getAbsolutePath());
@@ -474,8 +483,10 @@ public final class GTMusicSystem {
                     }
                 }
                 GTMod.GT_FML_LOGGER.info(
-                        "Sound durations json: \n{}",
-                        new GsonBuilder().setPrettyPrinting().create().toJson(json));
+                    "Sound durations json: \n{}",
+                    new GsonBuilder().setPrettyPrinting()
+                        .create()
+                        .toJson(json));
                 tempFile.delete();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -490,9 +501,9 @@ public final class GTMusicSystem {
         public static void tick() {
             final Minecraft mc = Minecraft.getMinecraft();
             if (mc == null || mc.renderGlobal == null
-                    || mc.theWorld == null
-                    || mc.thePlayer == null
-                    || mc.theWorld.provider == null) {
+                || mc.theWorld == null
+                || mc.thePlayer == null
+                || mc.theWorld.provider == null) {
                 return;
             }
             tickCounter++;
@@ -522,11 +533,12 @@ public final class GTMusicSystem {
             // Update and mark all present music streams
             musicSources.forEach((uuid, musicSource) -> {
                 final ClientSourceData data = activelyPlayingMusic
-                        .computeIfAbsent(uuid, ignored -> new ClientSourceData());
+                    .computeIfAbsent(uuid, ignored -> new ClientSourceData());
                 data.mark();
-                if (data.currentSound != null && !mc.getSoundHandler().isSoundPlaying(data.currentSound)
-                        && (now - data.clientReferenceStartTime) < getMusicRecordDurations()
-                                .getOrDefault(data.currentSoundResource, Integer.MAX_VALUE)) {
+                if (data.currentSound != null && !mc.getSoundHandler()
+                    .isSoundPlaying(data.currentSound)
+                    && (now - data.clientReferenceStartTime)
+                        < getMusicRecordDurations().getOrDefault(data.currentSoundResource, Integer.MAX_VALUE)) {
                     data.currentSound = null;
                     data.currentSoundResource = null;
                 }
@@ -539,9 +551,11 @@ public final class GTMusicSystem {
             });
 
             // Sweep no longer present music streams
-            final var entries = activelyPlayingMusic.object2ObjectEntrySet().fastIterator();
+            final var entries = activelyPlayingMusic.object2ObjectEntrySet()
+                .fastIterator();
             while (entries.hasNext()) {
-                final ClientSourceData entry = entries.next().getValue();
+                final ClientSourceData entry = entries.next()
+                    .getValue();
                 if (!entry.markFlag) {
                     entry.clearSound(mc);
                     entries.remove();
@@ -581,14 +595,15 @@ public final class GTMusicSystem {
             }
             final Minecraft mc = Minecraft.getMinecraft();
             if (mc == null || mc.renderGlobal == null
-                    || mc.theWorld == null
-                    || mc.thePlayer == null
-                    || mc.theWorld.provider == null) {
+                || mc.theWorld == null
+                || mc.thePlayer == null
+                || mc.theWorld.provider == null) {
                 return;
             }
             soundsPaused = false;
 
-            if (!(mc.isSingleplayer() && !mc.getIntegratedServer().getPublic())) {
+            if (!(mc.isSingleplayer() && !mc.getIntegratedServer()
+                .getPublic())) {
                 return;
             }
             final long now = System.currentTimeMillis();
@@ -627,12 +642,18 @@ public final class GTMusicSystem {
             final Gson gson = new Gson();
 
             try {
-                final ArrayList<URL> candidates = Collections
-                        .list(GTMusicSystem.class.getClassLoader().getResources("soundmeta/durations.json"));
-                final Path configPath = Loader.instance().getConfigDir().toPath().resolve("soundmeta")
-                        .resolve("durations.json");
+                final ArrayList<URL> candidates = Collections.list(
+                    GTMusicSystem.class.getClassLoader()
+                        .getResources("soundmeta/durations.json"));
+                final Path configPath = Loader.instance()
+                    .getConfigDir()
+                    .toPath()
+                    .resolve("soundmeta")
+                    .resolve("durations.json");
                 if (Files.exists(configPath)) {
-                    candidates.add(configPath.toUri().toURL());
+                    candidates.add(
+                        configPath.toUri()
+                            .toURL());
                 }
                 for (final URL url : candidates) {
                     try {
@@ -642,7 +663,10 @@ public final class GTMusicSystem {
                             continue;
                         }
                         for (final var entry : object.soundDurationsMs.entrySet()) {
-                            musicRecordDurations.put(new ResourceLocation(entry.getKey()), entry.getValue().intValue());
+                            musicRecordDurations.put(
+                                new ResourceLocation(entry.getKey()),
+                                entry.getValue()
+                                    .intValue());
                         }
                     } catch (Exception e) {
                         GTMod.GT_FML_LOGGER.error("Could not parse sound durations from {}", url, e);

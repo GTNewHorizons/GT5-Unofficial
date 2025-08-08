@@ -38,60 +38,60 @@ public class ItemCasingsBA0 extends ItemCasings {
             case 4: // "IV Superconductor Primary Tesla Windings"
             case 5: // "LuV Superconductor Primary Tesla Windings"
                 tooltip.add(
-                        translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
-                                + formatNumbers(V[aStack.getItemDamage() + 1])
-                                + " EU/t"); // Handles up to
-                tooltip.add(
-                        AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
-                                                                                                                      // one
-                                                                                                                      // man
-                                                                                                                      // calls
-                                                                                                                      // God,
-                                                                                                                      // another
-                                                                                                                      // calls
-                                                                                                                      // the
+                    translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
+                        + formatNumbers(V[aStack.getItemDamage() + 1])
+                        + " EU/t"); // Handles up to
+                tooltip
+                    .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
+                                                                                                                       // one
+                                                                                                                       // man
+                                                                                                                       // calls
+                                                                                                                       // God,
+                                                                                                                       // another
+                                                                                                                       // calls
+                                                                                                                       // the
                 // laws of physics.
                 break;
             case 6: // "Tesla Base Casing"
                 tooltip.add(translateToLocal("gt.blockcasingsBA0.6.desc.0")); // The base of a wondrous contraption
-                tooltip.add(
-                        AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.6.desc.1")); // it's
-                                                                                                                      // alive,
-                                                                                                                      // IT'S
-                                                                                                                      // ALIVE!
+                tooltip
+                    .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.6.desc.1")); // it's
+                                                                                                                       // alive,
+                                                                                                                       // IT'S
+                                                                                                                       // ALIVE!
                 break;
             case 7: // "Tesla Toroid Casing"
                 tooltip.add(translateToLocal("gt.blockcasingsBA0.7.desc.0")); // Made out of the finest tin foil!
-                tooltip.add(
-                        AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.7.desc.1")); // Faraday
-                                                                                                                      // suits
-                                                                                                                      // might
-                                                                                                                      // come
-                                                                                                                      // later
+                tooltip
+                    .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.7.desc.1")); // Faraday
+                                                                                                                       // suits
+                                                                                                                       // might
+                                                                                                                       // come
+                                                                                                                       // later
                 break;
             case 8: // "Tesla Secondary Windings"
                 tooltip.add(translateToLocal("gt.blockcasingsBA0.8.desc.0")); // Picks up power from a primary coil
-                tooltip.add(
-                        AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.8.desc.1")); // Who
-                                                                                                                      // wouldn't
-                                                                                                                      // want
-                                                                                                                      // a
-                                                                                                                      // 32k
-                                                                                                                      // epoxy
-                                                                                                                      // multi?
+                tooltip
+                    .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.8.desc.1")); // Who
+                                                                                                                       // wouldn't
+                                                                                                                       // want
+                                                                                                                       // a
+                                                                                                                       // 32k
+                                                                                                                       // epoxy
+                                                                                                                       // multi?
                 break;
             case 9: // "ZPM Superconductor Primary Tesla Windings"
-                tooltip.add(
-                        translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumbers(TierEU.ZPM) + " EU/t"); // Handles
+                tooltip
+                    .add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumbers(TierEU.ZPM) + " EU/t"); // Handles
                 // up
                 // to
-                tooltip.add(
-                        AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
-                                                                                                                      // one
-                                                                                                                      // man
-                                                                                                                      // calls
-                                                                                                                      // God,
-                                                                                                                      // another
+                tooltip
+                    .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
+                                                                                                                       // one
+                                                                                                                       // man
+                                                                                                                       // calls
+                                                                                                                       // God,
+                                                                                                                       // another
             case 10: // Reinforced Temporal Structure Casing
                 tooltip.add(AQUA + translateToLocal("gt.blockcasingsBA0.10.desc.0"));
                 tooltip.add(GRAY + translateToLocal("gt.blockcasingsBA0.10.desc.1"));

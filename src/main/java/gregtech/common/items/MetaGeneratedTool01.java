@@ -110,338 +110,338 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
         addTool(
-                SAW.ID,
-                "Saw",
-                "Can also harvest Ice",
-                new ToolSaw(),
-                ToolDictNames.craftingToolSaw,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+            SAW.ID,
+            "Saw",
+            "Can also harvest Ice",
+            new ToolSaw(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         GregTechAPI.registerTool(
-                addTool(
-                        HARDHAMMER.ID,
-                        "Hammer",
-                        "Crushes Ores instead of harvesting them",
-                        new ToolHardHammer(),
-                        ToolDictNames.craftingToolHardHammer,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sHardHammerList);
-        GregTechAPI.registerTool(
-                addTool(
-                        SOFTMALLET.ID,
-                        "Soft Mallet",
-                        "",
-                        new ToolSoftMallet(),
-                        ToolDictNames.craftingToolSoftMallet,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
-                GregTechAPI.sSoftMalletList);
-        GregTechAPI.registerTool(
-                addTool(
-                        WRENCH.ID,
-                        "Wrench",
-                        "Hold Leftclick to dismantle Machines",
-                        new ToolWrench(),
-                        ToolDictNames.craftingToolWrench,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sWrenchList);
-        addTool(
-                FILE.ID,
-                "File",
-                "",
-                new ToolFile(),
-                ToolDictNames.craftingToolFile,
+            addTool(
+                HARDHAMMER.ID,
+                "Hammer",
+                "Crushes Ores instead of harvesting them",
+                new ToolHardHammer(),
+                ToolDictNames.craftingToolHardHammer,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sHardHammerList);
         GregTechAPI.registerTool(
-                addTool(
-                        CROWBAR.ID,
-                        "Crowbar",
-                        "Dismounts Covers and Rotates Rails",
-                        new ToolCrowbar(),
-                        ToolDictNames.craftingToolCrowbar,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)),
-                GregTechAPI.sCrowbarList);
-        GregTechAPI.registerTool(
-                addTool(
-                        SCREWDRIVER.ID,
-                        "Screwdriver",
-                        "Adjusts Covers and Machines",
-                        new ToolScrewdriver(),
-                        ToolDictNames.craftingToolScrewdriver,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sScrewdriverList);
-        addTool(
-                MORTAR.ID,
-                "Mortar",
+            addTool(
+                SOFTMALLET.ID,
+                "Soft Mallet",
                 "",
-                new ToolMortar(),
-                ToolDictNames.craftingToolMortar,
+                new ToolSoftMallet(),
+                ToolDictNames.craftingToolSoftMallet,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
+            GregTechAPI.sSoftMalletList);
+        GregTechAPI.registerTool(
+            addTool(
+                WRENCH.ID,
+                "Wrench",
+                "Hold Leftclick to dismantle Machines",
+                new ToolWrench(),
+                ToolDictNames.craftingToolWrench,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sWrenchList);
+        addTool(
+            FILE.ID,
+            "File",
+            "",
+            new ToolFile(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+        GregTechAPI.registerTool(
+            addTool(
+                CROWBAR.ID,
+                "Crowbar",
+                "Dismounts Covers and Rotates Rails",
+                new ToolCrowbar(),
+                ToolDictNames.craftingToolCrowbar,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
+                new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)),
+            GregTechAPI.sCrowbarList);
         GregTechAPI.registerTool(
-                addTool(
-                        WIRECUTTER.ID,
-                        "Wire Cutter",
-                        "",
-                        new ToolWireCutter(),
-                        ToolDictNames.craftingToolWireCutter,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sWireCutterList);
-        addTool(
-                SCOOP.ID,
-                "Scoop",
-                "",
-                new ToolScoop(),
-                ToolDictNames.craftingToolScoop,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.BESTIA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PANNUS, 2L));
-        addTool(
-                BRANCHCUTTER.ID,
-                "Branch Cutter",
-                "",
-                new ToolBranchCutter(),
-                ToolDictNames.craftingToolBranchCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L));
-        addTool(
-                KNIFE.ID,
-                "Knife",
-                "",
-                new ToolKnife(),
-                ToolDictNames.craftingToolBlade,
-                ToolDictNames.craftingToolKnife,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L));
-        addTool(
-                BUTCHERYKNIFE.ID,
-                "Butchery Knife",
-                "Has a slow Attack Rate",
-                new ToolButcheryKnife(),
-                ToolDictNames.craftingToolBlade,
+            addTool(
+                SCREWDRIVER.ID,
+                "Screwdriver",
+                "Adjusts Covers and Machines",
+                new ToolScrewdriver(),
+                ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4L));
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sScrewdriverList);
+        addTool(
+            MORTAR.ID,
+            "Mortar",
+            "",
+            new ToolMortar(),
+            ToolDictNames.craftingToolMortar,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER.ID,
+                "Wire Cutter",
+                "",
+                new ToolWireCutter(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sWireCutterList);
+        addTool(
+            SCOOP.ID,
+            "Scoop",
+            "",
+            new ToolScoop(),
+            ToolDictNames.craftingToolScoop,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.BESTIA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PANNUS, 2L));
+        addTool(
+            BRANCHCUTTER.ID,
+            "Branch Cutter",
+            "",
+            new ToolBranchCutter(),
+            ToolDictNames.craftingToolBranchCutter,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L));
+        addTool(
+            KNIFE.ID,
+            "Knife",
+            "",
+            new ToolKnife(),
+            ToolDictNames.craftingToolBlade,
+            ToolDictNames.craftingToolKnife,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L));
+        addTool(
+            BUTCHERYKNIFE.ID,
+            "Butchery Knife",
+            "Has a slow Attack Rate",
+            new ToolButcheryKnife(),
+            ToolDictNames.craftingToolBlade,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4L));
 
         addTool(
-                PLUNGER.ID,
-                "Plunger",
-                "",
-                new ToolPlunger(),
-                ToolDictNames.craftingToolPlunger,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 2L));
+            PLUNGER.ID,
+            "Plunger",
+            "",
+            new ToolPlunger(),
+            ToolDictNames.craftingToolPlunger,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ITER, 2L));
         addTool(
-                ROLLING_PIN.ID,
-                "Rolling Pin",
-                "",
-                new ToolRollingPin(),
-                ToolDictNames.craftingToolRollingPin,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L));
+            ROLLING_PIN.ID,
+            "Rolling Pin",
+            "",
+            new ToolRollingPin(),
+            ToolDictNames.craftingToolRollingPin,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L));
 
         addTool(
-                DRILL_LV.ID,
-                "Drill (LV)",
-                "",
-                new ToolDrillLV(),
-                ToolDictNames.craftingToolMiningDrill,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
+            DRILL_LV.ID,
+            "Drill (LV)",
+            "",
+            new ToolDrillLV(),
+            ToolDictNames.craftingToolMiningDrill,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-                DRILL_MV.ID,
-                "Drill (MV)",
-                "",
-                new ToolDrillMV(),
-                ToolDictNames.craftingToolMiningDrill,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
+            DRILL_MV.ID,
+            "Drill (MV)",
+            "",
+            new ToolDrillMV(),
+            ToolDictNames.craftingToolMiningDrill,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-                DRILL_HV.ID,
-                "Drill (HV)",
-                "",
-                new ToolDrillHV(),
-                ToolDictNames.craftingToolMiningDrill,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
+            DRILL_HV.ID,
+            "Drill (HV)",
+            "",
+            new ToolDrillHV(),
+            ToolDictNames.craftingToolMiningDrill,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-                CHAINSAW_LV.ID,
-                "Chainsaw (LV)",
-                "Can also harvest Ice",
-                new ToolChainsawLV(),
-                ToolDictNames.craftingToolSaw,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+            CHAINSAW_LV.ID,
+            "Chainsaw (LV)",
+            "Can also harvest Ice",
+            new ToolChainsawLV(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         addTool(
-                CHAINSAW_MV.ID,
-                "Chainsaw (MV)",
-                "Can also harvest Ice",
-                new ToolChainsawMV(),
-                ToolDictNames.craftingToolSaw,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+            CHAINSAW_MV.ID,
+            "Chainsaw (MV)",
+            "Can also harvest Ice",
+            new ToolChainsawMV(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         addTool(
-                CHAINSAW_HV.ID,
-                "Chainsaw (HV)",
-                "Can also harvest Ice",
-                new ToolChainsawHV(),
-                ToolDictNames.craftingToolSaw,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+            CHAINSAW_HV.ID,
+            "Chainsaw (HV)",
+            "Can also harvest Ice",
+            new ToolChainsawHV(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         GregTechAPI.registerTool(
-                addTool(
-                        WRENCH_LV.ID,
-                        "Wrench (LV)",
-                        "Hold Left Button to dismantle Machines",
-                        new ToolWrenchLV(),
-                        ToolDictNames.craftingToolWrench,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sWrenchList);
+            addTool(
+                WRENCH_LV.ID,
+                "Wrench (LV)",
+                "Hold Left Button to dismantle Machines",
+                new ToolWrenchLV(),
+                ToolDictNames.craftingToolWrench,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
-                addTool(
-                        WRENCH_MV.ID,
-                        "Wrench (MV)",
-                        "Hold Left Button to dismantle Machines",
-                        new ToolWrenchMV(),
-                        ToolDictNames.craftingToolWrench,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sWrenchList);
+            addTool(
+                WRENCH_MV.ID,
+                "Wrench (MV)",
+                "Hold Left Button to dismantle Machines",
+                new ToolWrenchMV(),
+                ToolDictNames.craftingToolWrench,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
-                addTool(
-                        WRENCH_HV.ID,
-                        "Wrench (HV)",
-                        "Hold Left Button to dismantle Machines",
-                        new ToolWrenchHV(),
-                        ToolDictNames.craftingToolWrench,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sWrenchList);
+            addTool(
+                WRENCH_HV.ID,
+                "Wrench (HV)",
+                "Hold Left Button to dismantle Machines",
+                new ToolWrenchHV(),
+                ToolDictNames.craftingToolWrench,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
-                addTool(
-                        JACKHAMMER.ID,
-                        "JackHammer (HV)",
-                        "Breaks Rocks into pieces",
-                        new ToolJackHammer(),
-                        ToolDictNames.craftingToolJackHammer,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
-                GregTechAPI.sJackhammerList);
+            addTool(
+                JACKHAMMER.ID,
+                "JackHammer (HV)",
+                "Breaks Rocks into pieces",
+                new ToolJackHammer(),
+                ToolDictNames.craftingToolJackHammer,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
+            GregTechAPI.sJackhammerList);
         addTool(
-                BUZZSAW_LV.ID,
-                "Buzzsaw (LV)",
-                "Not suitable for harvesting Blocks",
-                new ToolBuzzSaw(),
-                ToolDictNames.craftingToolSaw,
+            BUZZSAW_LV.ID,
+            "Buzzsaw (LV)",
+            "Not suitable for harvesting Blocks",
+            new ToolBuzzSaw(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+        addTool(
+            BUZZSAW_MV.ID,
+            "Buzzsaw (MV)",
+            "Not suitable for harvesting Blocks",
+            new ToolBuzzSaw(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+        addTool(
+            BUZZSAW_HV.ID,
+            "Buzzsaw (HV)",
+            "Not suitable for harvesting Blocks",
+            new ToolBuzzSaw(),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+        GregTechAPI.registerTool(
+            addTool(
+                SCREWDRIVER_LV.ID,
+                "Screwdriver (LV)",
+                "Adjusts Covers and Machines",
+                new ToolScrewdriverLV(),
+                ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-                BUZZSAW_MV.ID,
-                "Buzzsaw (MV)",
-                "Not suitable for harvesting Blocks",
-                new ToolBuzzSaw(),
-                ToolDictNames.craftingToolSaw,
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sScrewdriverList);
+        GregTechAPI.registerTool(
+            addTool(
+                SCREWDRIVER_MV.ID,
+                "Screwdriver (MV)",
+                "Adjusts Covers and Machines",
+                new ToolScrewdriverLV(),
+                ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-                BUZZSAW_HV.ID,
-                "Buzzsaw (HV)",
-                "Not suitable for harvesting Blocks",
-                new ToolBuzzSaw(),
-                ToolDictNames.craftingToolSaw,
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sScrewdriverList);
+        GregTechAPI.registerTool(
+            addTool(
+                SCREWDRIVER_HV.ID,
+                "Screwdriver (HV)",
+                "Adjusts Covers and Machines",
+                new ToolScrewdriverLV(),
+                ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sScrewdriverList);
         GregTechAPI.registerTool(
-                addTool(
-                        SCREWDRIVER_LV.ID,
-                        "Screwdriver (LV)",
-                        "Adjusts Covers and Machines",
-                        new ToolScrewdriverLV(),
-                        ToolDictNames.craftingToolScrewdriver,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sScrewdriverList);
+            addTool(
+                SOLDERING_IRON_LV.ID,
+                "Soldering Iron (LV)",
+                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                new ToolSolderingIron(),
+                ToolDictNames.craftingToolSolderingIron,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sSolderingToolList);
         GregTechAPI.registerTool(
-                addTool(
-                        SCREWDRIVER_MV.ID,
-                        "Screwdriver (MV)",
-                        "Adjusts Covers and Machines",
-                        new ToolScrewdriverLV(),
-                        ToolDictNames.craftingToolScrewdriver,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sScrewdriverList);
+            addTool(
+                SOLDERING_IRON_MV.ID,
+                "Soldering Iron (MV)",
+                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                new ToolSolderingIron(),
+                ToolDictNames.craftingToolSolderingIron,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sSolderingToolList);
         GregTechAPI.registerTool(
-                addTool(
-                        SCREWDRIVER_HV.ID,
-                        "Screwdriver (HV)",
-                        "Adjusts Covers and Machines",
-                        new ToolScrewdriverLV(),
-                        ToolDictNames.craftingToolScrewdriver,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sScrewdriverList);
-        GregTechAPI.registerTool(
-                addTool(
-                        SOLDERING_IRON_LV.ID,
-                        "Soldering Iron (LV)",
-                        "Fixes burned out Circuits. Needs soldering materials in inventory.",
-                        new ToolSolderingIron(),
-                        ToolDictNames.craftingToolSolderingIron,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sSolderingToolList);
-        GregTechAPI.registerTool(
-                addTool(
-                        SOLDERING_IRON_MV.ID,
-                        "Soldering Iron (MV)",
-                        "Fixes burned out Circuits. Needs soldering materials in inventory.",
-                        new ToolSolderingIron(),
-                        ToolDictNames.craftingToolSolderingIron,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sSolderingToolList);
-        GregTechAPI.registerTool(
-                addTool(
-                        SOLDERING_IRON_HV.ID,
-                        "Soldering Iron (HV)",
-                        "Fixes burned out Circuits. Needs soldering materials in inventory.",
-                        new ToolSolderingIron(),
-                        ToolDictNames.craftingToolSolderingIron,
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-                GregTechAPI.sSolderingToolList);
+            addTool(
+                SOLDERING_IRON_HV.ID,
+                "Soldering Iron (HV)",
+                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                new ToolSolderingIron(),
+                ToolDictNames.craftingToolSolderingIron,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
+            GregTechAPI.sSolderingToolList);
 
         addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new ToolTurbineSmall());
         addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new ToolTurbineNormal());
@@ -449,81 +449,81 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(TURBINE_HUGE.ID, "Huge Turbine", "Turbine Rotors for your power station", new ToolTurbineHuge());
 
         addTool(
-                POCKET_MULTITOOL.ID,
-                "Pocket Multitool",
-                "6 useful Tools in one!",
-                new ToolPocketMultitool(POCKET_KNIFE.ID),
-                null,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+            POCKET_MULTITOOL.ID,
+            "Pocket Multitool",
+            "6 useful Tools in one!",
+            new ToolPocketMultitool(POCKET_KNIFE.ID),
+            null,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
         addTool(
-                POCKET_KNIFE.ID,
-                "Pocket Multitool (Knife)",
-                "",
-                new ToolPocketKnife(POCKET_SAW.ID),
-                ToolDictNames.craftingToolKnife,
-                ToolDictNames.craftingToolBlade,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+            POCKET_KNIFE.ID,
+            "Pocket Multitool (Knife)",
+            "",
+            new ToolPocketKnife(POCKET_SAW.ID),
+            ToolDictNames.craftingToolKnife,
+            ToolDictNames.craftingToolBlade,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
         addTool(
-                POCKET_SAW.ID,
-                "Pocket Multitool (Saw)",
-                "Can also harvest Ice",
-                new ToolPocketSaw(POCKET_FILE.ID),
-                ToolDictNames.craftingToolSaw,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+            POCKET_SAW.ID,
+            "Pocket Multitool (Saw)",
+            "Can also harvest Ice",
+            new ToolPocketSaw(POCKET_FILE.ID),
+            ToolDictNames.craftingToolSaw,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
         addTool(
-                POCKET_FILE.ID,
-                "Pocket Multitool (File)",
-                "",
-                new ToolPocketFile(POCKET_SCREWDRIVER.ID),
-                ToolDictNames.craftingToolFile,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+            POCKET_FILE.ID,
+            "Pocket Multitool (File)",
+            "",
+            new ToolPocketFile(POCKET_SCREWDRIVER.ID),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
         GregTechAPI.registerTool(
-                addTool(
-                        POCKET_SCREWDRIVER.ID,
-                        "Pocket Multitool (Screwdriver)",
-                        "Adjusts Covers and Machines",
-                        new ToolPocketScrewdriver(POCKET_WIRECUTTER.ID),
-                        ToolDictNames.craftingToolScrewdriver,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-                GregTechAPI.sScrewdriverList);
-        GregTechAPI.registerTool(
-                addTool(
-                        POCKET_WIRECUTTER.ID,
-                        "Pocket Multitool (Wire Cutter)",
-                        "",
-                        new ToolPocketWireCutter(POCKET_BRANCHCUTTER.ID),
-                        ToolDictNames.craftingToolWireCutter,
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-                GregTechAPI.sWireCutterList);
-        addTool(
-                POCKET_BRANCHCUTTER.ID,
-                "Pocket Multitool (Branch Cutter)",
-                "",
-                new ToolPocketBranchCutter(POCKET_MULTITOOL.ID),
-                ToolDictNames.craftingToolBranchCutter,
+            addTool(
+                POCKET_SCREWDRIVER.ID,
+                "Pocket Multitool (Screwdriver)",
+                "Adjusts Covers and Machines",
+                new ToolPocketScrewdriver(POCKET_WIRECUTTER.ID),
+                ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
-        addTool(
-                TROWEL.ID,
-                "Decorator's Trowel",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sScrewdriverList);
+        GregTechAPI.registerTool(
+            addTool(
+                POCKET_WIRECUTTER.ID,
+                "Pocket Multitool (Wire Cutter)",
                 "",
-                new ToolTrowel(),
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 8),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
+                new ToolPocketWireCutter(POCKET_BRANCHCUTTER.ID),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+        addTool(
+            POCKET_BRANCHCUTTER.ID,
+            "Pocket Multitool (Branch Cutter)",
+            "",
+            new ToolPocketBranchCutter(POCKET_MULTITOOL.ID),
+            ToolDictNames.craftingToolBranchCutter,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+        addTool(
+            TROWEL.ID,
+            "Decorator's Trowel",
+            "",
+            new ToolTrowel(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 8),
+            new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
+            new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         ItemList.Tool_Vajra.set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
 
         initCraftingShapedRecipes();
@@ -532,108 +532,104 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     private void initCraftingShapelessRecipes() {
         GTModHandler.addShapelessCraftingRecipe(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-                new ItemStack(Items.flint, 1),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.gravel, 1) });
+            new ItemStack(Items.flint, 1),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.gravel, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-                new ItemStack(Items.blaze_powder, 2),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1) });
+            new ItemStack(Items.blaze_powder, 2),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1) });
     }
 
     private void initCraftingShapedRecipes() {
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Flint, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', new ItemStack(Items.flint, 1), 'S', OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Flint, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', new ItemStack(Items.flint, 1), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Bronze, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Bronze), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Bronze, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Bronze), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Iron, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Iron), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Iron, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Iron), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Steel, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Steel), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Steel, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Steel), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.WroughtIron, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.WroughtIron), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.WroughtIron, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.WroughtIron), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.RedSteel, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.RedSteel), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.RedSteel, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.RedSteel), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlueSteel, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlueSteel), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlueSteel, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlueSteel), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlackSteel, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlackSteel), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlackSteel, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlackSteel), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.DamascusSteel, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.DamascusSteel), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.DamascusSteel, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.DamascusSteel), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Thaumium, Materials.Stone, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Thaumium), 'S',
-                        OrePrefixes.stone });
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Thaumium, Materials.Stone, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Thaumium), 'S',
+                OrePrefixes.stone });
 
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Wood, Materials.Wood, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
-                        OrePrefixes.stick.get(Materials.Wood) });
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Wood, Materials.Wood, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
+                OrePrefixes.stick.get(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Plastic), 'S',
-                        OrePrefixes.stick.get(Materials.Plastic) });
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Plastic), 'S',
+                OrePrefixes.stick.get(Materials.Plastic) });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Aluminium), 'S',
-                        OrePrefixes.stick.get(Materials.Aluminium) });
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Aluminium), 'S',
+                OrePrefixes.stick.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.StainlessSteel, Materials.StainlessSteel, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.StainlessSteel), 'S',
-                        OrePrefixes.stick.get(Materials.StainlessSteel) });
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.StainlessSteel, Materials.StainlessSteel, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.stick.get(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
-                        OrePrefixes.stick.get(Materials.IronWood) });
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
+                OrePrefixes.stick.get(Materials.IronWood) });
 
         GTModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
-                GTModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
-                        new ItemStack(Items.flint, 1) });
+            INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1) });
     }
 }

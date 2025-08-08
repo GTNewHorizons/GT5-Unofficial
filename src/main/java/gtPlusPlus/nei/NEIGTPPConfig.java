@@ -26,26 +26,26 @@ public class NEIGTPPConfig implements IConfigureNEI {
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");
 
         for (GregtechItemList item : Arrays.asList(
-                GregtechItemList.GT4_Electric_Auto_Workbench_LV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_MV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_HV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_EV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_IV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_LuV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_ZPM,
-                GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
+            GregtechItemList.GT4_Electric_Auto_Workbench_LV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_MV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_HV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_EV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_IV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_LuV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_ZPM,
+            GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
-                GregtechItemList.Controller_Vacuum_Furnace.get(1),
-                GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
+            GregtechItemList.Controller_Vacuum_Furnace.get(1),
+            GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
         // ULV simple washer
         API.removeRecipeCatalyst(
-                GregtechItemList.SimpleDustWasher_ULV.get(1),
-                GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
+            GregtechItemList.SimpleDustWasher_ULV.get(1),
+            GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {

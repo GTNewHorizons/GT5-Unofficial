@@ -59,7 +59,7 @@ public class BlockSpaceElevatorCable extends Block implements ITileEntityProvide
         motorGlow = register.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/motorGlow");
         for (int i = 1; i < LIGHT_STEPS + 1; i++) {
             textures[i + 1] = register
-                    .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/cable/CableLightBlinking" + i);
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/cable/CableLightBlinking" + i);
         }
     }
 

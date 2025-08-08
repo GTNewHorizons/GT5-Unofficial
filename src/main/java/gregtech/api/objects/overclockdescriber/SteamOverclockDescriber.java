@@ -33,8 +33,9 @@ public class SteamOverclockDescriber extends OverclockDescriber {
 
     @Override
     public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
-        return OverclockCalculator.ofNoOverclock(recipe).setEUtDiscount(euPerTickMultiplier)
-                .setDurationModifier(durationMultiplier);
+        return OverclockCalculator.ofNoOverclock(recipe)
+            .setEUtDiscount(euPerTickMultiplier)
+            .setDurationModifier(durationMultiplier);
     }
 
     @Override
@@ -48,13 +49,13 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     private String getTotalPowerString(OverclockCalculator calculator) {
         long steamTotal = convertEUToSteam(calculator.getConsumption() * calculator.getDuration());
         return StatCollector
-                .translateToLocalFormatted("GT5U.nei.display.total.steam", GTUtility.formatNumbers(steamTotal));
+            .translateToLocalFormatted("GT5U.nei.display.total.steam", GTUtility.formatNumbers(steamTotal));
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
         long steamUsage = 20 * convertEUToSteam(calculator.getConsumption());
         return StatCollector
-                .translateToLocalFormatted("GT5U.nei.display.usage.steam", GTUtility.formatNumbers(steamUsage));
+            .translateToLocalFormatted("GT5U.nei.display.usage.steam", GTUtility.formatNumbers(steamUsage));
     }
 
     private static long convertEUToSteam(long eu) {

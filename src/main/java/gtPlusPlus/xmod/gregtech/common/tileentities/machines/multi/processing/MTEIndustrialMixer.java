@@ -84,13 +84,22 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo("Processes eight recipes per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
-                .beginStructureBlock(3, 4, 3, false).addController("Second Layer Center")
-                .addCasingInfoMin(mCasingName, 6, false).addCasingInfoMin(mCasingName2, 2, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("250% faster than using single block machines of the same voltage")
+            .addInfo("Processes eight recipes per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 4, 3, false)
+            .addController("Second Layer Center")
+            .addCasingInfoMin(mCasingName, 6, false)
+            .addCasingInfoMin(mCasingName2, 2, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -98,18 +107,20 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     public IStructureDefinition<MTEIndustrialMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMixer>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "CMC", "CCC" },
-                                            { "C~C", "CMC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialMixer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
-                    .addElement('M', ofBlock(GregTechAPI.sBlockCasings4, 11)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "CMC", "CCC" }, { "C~C", "CMC", "CCC" },
+                            { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialMixer.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(CASING_TEXTURE_ID)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
+                .addElement('M', ofBlock(GregTechAPI.sBlockCasings4, 11))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -168,7 +179,8 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -185,8 +197,8 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class RecipeDisplayInfo {
     private final int neiTextColorOverride;
 
     RecipeDisplayInfo(GTRecipe recipe, RecipeMap<?> recipeMap, OverclockDescriber overclockDescriber,
-            OverclockCalculator calculator, int descriptionYOffset, int neiTextColorOverride) {
+        OverclockCalculator calculator, int descriptionYOffset, int neiTextColorOverride) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.overclockDescriber = overclockDescriber;
@@ -87,7 +87,7 @@ public class RecipeDisplayInfo {
     public void drawText(@Nullable String text, int xStart, int yShift) {
         if (isStringInvalid(text)) return;
         Minecraft.getMinecraft().fontRenderer
-                .drawString(text, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
+            .drawString(text, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
         yPos += yShift;
     }
 

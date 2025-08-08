@@ -32,9 +32,12 @@ public class EntitySickBlaze extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
+            .setBaseValue(1.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+            .setBaseValue(6.0D);
     }
 
     @Override
@@ -99,9 +102,8 @@ public class EntitySickBlaze extends EntityMob {
                 this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * 3.0F;
             }
 
-            if (this.getEntityToAttack() != null
-                    && this.getEntityToAttack().posY + this.getEntityToAttack().getEyeHeight()
-                            > this.posY + this.getEyeHeight() + this.heightOffset) {
+            if (this.getEntityToAttack() != null && this.getEntityToAttack().posY + this.getEntityToAttack()
+                .getEyeHeight() > this.posY + this.getEyeHeight() + this.heightOffset) {
                 this.motionY += (0.30000001192092896D - this.motionY) * 0.30000001192092896D;
             }
         }
@@ -112,13 +114,13 @@ public class EntitySickBlaze extends EntityMob {
 
         for (int i = 0; i < 2; ++i) {
             this.worldObj.spawnParticle(
-                    "crit",
-                    this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
-                    this.posY + this.rand.nextDouble() * this.height,
-                    this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "crit",
+                this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
+                this.posY + this.rand.nextDouble() * this.height,
+                this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
+                0.0D,
+                0.0D,
+                0.0D);
         }
 
         super.onLivingUpdate();
@@ -130,8 +132,8 @@ public class EntitySickBlaze extends EntityMob {
     @Override
     protected void attackEntity(Entity entity, float p_70785_2_) {
         if (this.attackTime <= 0 && p_70785_2_ < 2.0F
-                && entity.boundingBox.maxY > this.boundingBox.minY
-                && entity.boundingBox.minY < this.boundingBox.maxY) {
+            && entity.boundingBox.maxY > this.boundingBox.minY
+            && entity.boundingBox.minY < this.boundingBox.maxY) {
             this.attackTime = 20;
             this.attackEntityAsMob(entity);
         } else if (p_70785_2_ < 30.0F) {
@@ -157,11 +159,11 @@ public class EntitySickBlaze extends EntityMob {
 
                     for (int i = 0; i < 1; ++i) {
                         EntityToxinballSmall entitysmalltoxinball = new EntityToxinballSmall(
-                                this.worldObj,
-                                this,
-                                d0 + this.rand.nextGaussian() * f1,
-                                d1,
-                                d2 + this.rand.nextGaussian() * f1);
+                            this.worldObj,
+                            this,
+                            d0 + this.rand.nextGaussian() * f1,
+                            d1,
+                            d2 + this.rand.nextGaussian() * f1);
                         entitysmalltoxinball.posY = this.posY + this.height / 2.0F + 0.5D;
                         this.worldObj.spawnEntityInWorld(entitysmalltoxinball);
                     }

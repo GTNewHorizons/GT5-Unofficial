@@ -48,11 +48,12 @@ public class RadioHatchCompat {
             Map<Item, String> UniqueIdentifierMap = (Map<Item, String>) map.get(GameData.getItemRegistry());
 
             Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems = (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners
-                    .get(null);
+                .get(null);
             ModContainer gtpp = null;
             ModContainer bartworks = null;
 
-            for (ModContainer container : Loader.instance().getModList()) {
+            for (ModContainer container : Loader.instance()
+                .getModList()) {
                 if (gtpp != null && bartworks != null) break;
                 if (BartWorksCrossmod.MOD_ID.equalsIgnoreCase(container.getModId())) {
                     bartworks = container;
@@ -64,7 +65,8 @@ public class RadioHatchCompat {
             for (Material mats : Material.mMaterialMap) {
                 if (!mats.isRadioactive) continue;
 
-                if (OreDictionary.getOres("stick" + mats.getUnlocalizedName()).isEmpty()) {
+                if (OreDictionary.getOres("stick" + mats.getUnlocalizedName())
+                    .isEmpty()) {
                     Item itemRod = new BaseItemRod(mats);
                     UniqueIdentifierMap.replace(itemRod, "miscutils:" + itemRod.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemRod);
@@ -75,7 +77,8 @@ public class RadioHatchCompat {
                     DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
                 }
 
-                if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName()).isEmpty()) {
+                if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
+                    .isEmpty()) {
                     Item itemRodLong = new BaseItemRodLong(mats);
                     UniqueIdentifierMap.replace(itemRodLong, "miscutils:" + itemRodLong.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);

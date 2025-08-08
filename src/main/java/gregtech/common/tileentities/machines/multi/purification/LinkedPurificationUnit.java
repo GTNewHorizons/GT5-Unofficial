@@ -115,7 +115,10 @@ public class LinkedPurificationUnit {
         linkData.setInteger("z", mte.getZCoord());
         tag.setTag("linkData", linkData);
 
-        tag.setInteger("worldID", this.mMetaTileEntity.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+        tag.setInteger(
+            "worldID",
+            this.mMetaTileEntity.getBaseMetaTileEntity()
+                .getWorld().provider.dimensionId);
         return tag;
     }
 }

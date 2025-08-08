@@ -23,18 +23,18 @@ public class GregtechAlgaeContent {
 
         // Algae Pond
         GregtechItemList.AlgaeFarm_Controller.set(
-                new MTEAlgaePondBase(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
-                        .getStackForm(1L));
+            new MTEAlgaePondBase(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
+                .getStackForm(1L));
 
         // Chemical Plant
         GregtechItemList.ChemicalPlant_Controller.set(
-                new MTEChemicalPlant(
-                        ChemicalPlant_Controller.ID,
-                        "chemicalplant.controller.tier.single",
-                        "ExxonMobil Chemical Plant").getStackForm(1L));
+            new MTEChemicalPlant(
+                ChemicalPlant_Controller.ID,
+                "chemicalplant.controller.tier.single",
+                "ExxonMobil Chemical Plant").getStackForm(1L));
 
         GregtechItemList.Bus_Catalysts
-                .set((new MTEHatchCatalysts(Bus_Catalysts.ID, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
+            .set((new MTEHatchCatalysts(Bus_Catalysts.ID, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
 
         // Bronze
         MTEChemicalPlant.registerMachineCasingForTier(0, ModBlocks.blockCustomMachineCasings, 0, 10);

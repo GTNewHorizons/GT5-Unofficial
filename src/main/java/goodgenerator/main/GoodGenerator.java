@@ -20,14 +20,14 @@ import gregtech.api.enums.Mods;
 
 @SuppressWarnings("ALL")
 @Mod(
-        modid = GoodGenerator.MOD_ID,
-        version = GoodGenerator.VERSION,
-        dependencies = "required-after:IC2; " + "required-after:gregtech; "
-                + "required-after:bartworks; "
-                + "required-after:tectech; "
-                + "required-after:structurelib; "
-                + "before:miscutils; "
-                + "after:dreamcraft;")
+    modid = GoodGenerator.MOD_ID,
+    version = GoodGenerator.VERSION,
+    dependencies = "required-after:IC2; " + "required-after:gregtech; "
+        + "required-after:bartworks; "
+        + "required-after:tectech; "
+        + "required-after:structurelib; "
+        + "before:miscutils; "
+        + "after:dreamcraft;")
 public final class GoodGenerator {
 
     public static final String MOD_ID = "GoodGenerator";

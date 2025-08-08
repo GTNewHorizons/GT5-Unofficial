@@ -12,7 +12,7 @@ public class ToolWrenchLV extends ToolWrench {
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
+        EntityPlayer aPlayer) {
         return aOriginalDamage;
     }
 
@@ -29,14 +29,14 @@ public class ToolWrenchLV extends ToolWrench {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-                ? MetaGeneratedTool.getPrimaryMaterial(
-                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
-                : Textures.ItemIcons.POWER_UNIT_LV;
+            ? MetaGeneratedTool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
+            : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 }

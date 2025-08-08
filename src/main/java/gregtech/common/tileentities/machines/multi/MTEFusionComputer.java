@@ -80,7 +80,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
 public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFusionComputer>
-        implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
+    implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
 
     private final OverclockDescriber overclockDescriber;
 
@@ -89,54 +89,61 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
         @Override
         protected IStructureDefinition<MTEFusionComputer> computeValue(Class<?> type) {
-            return StructureDefinition.<MTEFusionComputer>builder().addShape(
+            return StructureDefinition.<MTEFusionComputer>builder()
+                .addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
-                            new String[][] {
-                                    { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " i           i ", " h           h ",
-                                            " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      ihi      ", "               ", },
-                                    { "      xhx      ", "    hhccchh    ", "   eccxdxcce   ", "  eceh   hece  ",
-                                            " hce       ech ", " hch       hch ", "xcx         xcx", "hch         hch",
-                                            "xcx         xcx", " hch       hch ", " hce       ech ", "  eceh   hece  ",
-                                            "   eccx~xcce   ", "    hhccchh    ", "      xhx      ", },
-                                    { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " i           i ", " h           h ",
-                                            " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      ihi      ", "               ", } }))
-                    .addElement(
-                            'c',
-                            lazy(t -> ofBlock(t.getFusionCoil(), t.getFusionCoilMeta())))
-                    .addElement('h', lazy(t -> ofBlock(t.getCasing(), t.getCasingMeta())))
-                    .addElement(
-                            'i',
-                            lazy(
-                                    t -> buildHatchAdder(MTEFusionComputer.class).atLeast(
-                                            ImmutableMap.of(InputHatch.withAdder(MTEFusionComputer::addInjector), 1))
-                                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
-                                            .casingIndex(53).dot(1).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .addElement(
-                            'e',
-                            lazy(
-                                    t -> buildHatchAdder(MTEFusionComputer.class).atLeast(
-                                            ImmutableMap.of(Energy.withAdder(MTEFusionComputer::addEnergyInjector), 16))
-                                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
-                                            .casingIndex(53).dot(2).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .addElement(
-                            'x',
-                            lazy(
-                                    t -> buildHatchAdder(MTEFusionComputer.class)
-                                            .atLeast(OutputHatch.withAdder(MTEFusionComputer::addExtractor))
-                                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
-                                            .casingIndex(53).dot(3).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .addElement(
-                            'd',
-                            lazy(
-                                    t -> buildHatchAdder(MTEFusionComputer.class)
-                                            .adder(MTEFusionComputer::addDroneHatch).hatchId(9401).casingIndex(53)
-                                            .dot(4).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .build();
+                        new String[][] {
+                            { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
+                                "  h         h  ", "  h         h  ", " i           i ", " h           h ",
+                                " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                "    hh   hh    ", "      ihi      ", "               ", },
+                            { "      xhx      ", "    hhccchh    ", "   eccxdxcce   ", "  eceh   hece  ",
+                                " hce       ech ", " hch       hch ", "xcx         xcx", "hch         hch",
+                                "xcx         xcx", " hch       hch ", " hce       ech ", "  eceh   hece  ",
+                                "   eccx~xcce   ", "    hhccchh    ", "      xhx      ", },
+                            { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
+                                "  h         h  ", "  h         h  ", " i           i ", " h           h ",
+                                " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                "    hh   hh    ", "      ihi      ", "               ", } }))
+                .addElement('c', lazy(t -> ofBlock(t.getFusionCoil(), t.getFusionCoilMeta())))
+                .addElement('h', lazy(t -> ofBlock(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'i',
+                    lazy(
+                        t -> buildHatchAdder(MTEFusionComputer.class)
+                            .atLeast(ImmutableMap.of(InputHatch.withAdder(MTEFusionComputer::addInjector), 1))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .casingIndex(53)
+                            .dot(1)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'e',
+                    lazy(
+                        t -> buildHatchAdder(MTEFusionComputer.class)
+                            .atLeast(ImmutableMap.of(Energy.withAdder(MTEFusionComputer::addEnergyInjector), 16))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .casingIndex(53)
+                            .dot(2)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'x',
+                    lazy(
+                        t -> buildHatchAdder(MTEFusionComputer.class)
+                            .atLeast(OutputHatch.withAdder(MTEFusionComputer::addExtractor))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
+                            .casingIndex(53)
+                            .dot(3)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'd',
+                    lazy(
+                        t -> buildHatchAdder(MTEFusionComputer.class).adder(MTEFusionComputer::addDroneHatch)
+                            .hatchId(9401)
+                            .casingIndex(53)
+                            .dot(4)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .build();
         }
     };
     public GTRecipe mLastRecipe;
@@ -144,11 +151,17 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     static {
         Textures.BlockIcons.setCasingTextureForId(
-                52,
-                TextureFactory.of(
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW).extFacing().build(),
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).extFacing().glow()
-                                .build()));
+            52,
+            TextureFactory.of(
+                TextureFactory.builder()
+                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build()));
     }
 
     public MTEFusionComputer(int aID, String aName, String aNameRegional) {
@@ -201,9 +214,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addController("Fusion Reactor").addInfo("Some kind of fusion reactor, maybe")
-                .addStructureInfo("Should probably be built similar to other fusions")
-                .addStructureInfo("See controller tooltip for details").toolTipFinisher();
+        tt.addController("Fusion Reactor")
+            .addInfo("Some kind of fusion reactor, maybe")
+            .addStructureInfo("Should probably be built similar to other fusions")
+            .addStructureInfo("See controller tooltip for details")
+            .toolTipFinisher();
         return tt;
     }
 
@@ -260,12 +275,16 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing)
-            return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(),
-                    getTextureOverlay() };
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) return new ITexture[] { TextureFactory.builder()
+            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .extFacing()
+            .build(), getTextureOverlay() };
         if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
-        return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build() };
+        return new ITexture[] { TextureFactory.builder()
+            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .extFacing()
+            .build() };
     }
 
     /**
@@ -299,7 +318,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!mRunningOnLoad
-                        && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
+                    && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -371,7 +390,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
                             long energyToMove = GTValues.V[tier()] / 16;
                             if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
-                                    && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyToMove, false)) {
+                                && tHatch.getBaseMetaTileEntity()
+                                    .decreaseStoredEnergyUnits(energyToMove, false)) {
                                 aBaseMetaTileEntity.increaseStoredEnergyUnits(energyToMove, true);
                             }
                         }
@@ -380,15 +400,15 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
                     if (mMaxProgresstime > 0) {
-                        this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(-mEUt, true);
+                        this.getBaseMetaTileEntity()
+                            .decreaseStoredEnergyUnits(-mEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                             if (mOutputItems != null)
                                 for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
-                            mEfficiency = Math.max(
-                                    0,
-                                    Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+                            mEfficiency = Math
+                                .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
@@ -397,9 +417,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
                                     GTMod.achievements.issueAchievementHatchFluid(
-                                            aBaseMetaTileEntity.getWorld()
-                                                    .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                                            mOutputFluids[0]);
+                                        aBaseMetaTileEntity.getWorld()
+                                            .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                                        mOutputFluids[0]);
                                 } catch (Exception ignored) {}
                             }
                             this.mEUStore = aBaseMetaTileEntity.getStoredEU();
@@ -407,7 +427,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                         }
                     } else {
                         if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                                || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                            || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
@@ -415,9 +435,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.mEUt) {
                                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
-                                    aBaseMetaTileEntity.decreaseStoredEnergyUnits(
-                                            this.mLastRecipe.mSpecialValue + this.mEUt,
-                                            true);
+                                    aBaseMetaTileEntity
+                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.mEUt, true);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
@@ -449,8 +468,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     @Override
     public String[] getInfoData() {
         String tier = tier() == 6 ? EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET
-                : tier() == 7 ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
-                        : tier() == 8 ? EnumChatFormatting.GRAY + "III" + EnumChatFormatting.RESET : "IV";
+            : tier() == 7 ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
+                : tier() == 8 ? EnumChatFormatting.GRAY + "III" + EnumChatFormatting.RESET : "IV";
         float plasmaOut = 0;
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
@@ -461,29 +480,29 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         }
 
         return new String[] {
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
-                        + " "
-                        + EnumChatFormatting.RESET
-                        + tier,
-                StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                        + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(powerRequired)
-                        + EnumChatFormatting.RESET
-                        + "EU/t",
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(mEUStore)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(maxEUStore())
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(plasmaOut)
-                        + EnumChatFormatting.RESET
-                        + "L/t" };
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
+                + " "
+                + EnumChatFormatting.RESET
+                + tier,
+            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(powerRequired)
+                + EnumChatFormatting.RESET
+                + "EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(mEUStore)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(maxEUStore())
+                + EnumChatFormatting.RESET
+                + " EU",
+            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(plasmaOut)
+                + EnumChatFormatting.RESET
+                + "L/t" };
     }
 
     @Override
@@ -511,8 +530,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                        .setPos(155, 145));
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(155, 145));
     }
 
     @Override
@@ -535,62 +555,69 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
+        builder
+            .widget(
                 new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine).setPos(10, 8))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.hit_to_start"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center)
-                                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
-                                .setPos(-getGUIWidth() / 2, 170).setSize(getGUIWidth() * 2, 9))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> getErrorDisplayID(), val -> setErrorDisplayID(val)))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)))
-                .widget(
-                        new TextWidget(
-                                StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.running_perfectly"))
-                                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center)
-                                        .setEnabled(
-                                                widget -> getErrorDisplayID() == 0
-                                                        && getBaseMetaTileEntity().isActive())
-                                        .setPos(0, 170).setSize(getGUIWidth(), 9))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-                .widget(
-                        new ProgressBar()
-                                .setProgress(
-                                        () -> (float) getBaseMetaTileEntity().getStoredEU()
-                                                / getBaseMetaTileEntity().getEUCapacity())
-                                .setDirection(ProgressBar.Direction.RIGHT)
-                                .setTexture(GTUITextures.PROGRESSBAR_STORED_EU, 147).setPos(5, 156).setSize(147, 5))
-                .widget(new TextWidget().setStringSupplier(() -> {
-                    if (clientEU > 160_000_000L && clientEU < 160_010_000L) {
-                        clientEU = 160_000_000L;
-                    }
-                    if (clientEU > 320_000_000L && clientEU < 320_010_000L) {
-                        clientEU = 320_000_000L;
-                    }
-                    if (clientEU > 640_000_000L && clientEU < 640_010_000L) {
-                        clientEU = 640_000_000L;
-                    }
-                    if (clientEU > 5_120_000_000L && clientEU < 5_120_080_000L) {
-                        clientEU = 5_120_000_000L;
-                    }
-                    return numberFormat.format(clientEU) + " EU";
-                }).setDefaultColor(COLOR_TEXT_RED.get()).setTextAlignment(Alignment.Center).setScale(0.5f)
-                        .setPos(5, 157).setSize(147, 5))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> getBaseMetaTileEntity().getStoredEU(),
-                                val -> clientEU = val))
-                .widget(
-                        new ButtonWidget()
-                                .setNEITransferRect(
-                                        RecipeMaps.fusionRecipes.getFrontend().getUIProperties().neiTransferRectId)
-                                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_NEI)
-                                .setPos(154, 4).setSize(18, 18));
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mMachine)
+                    .setPos(10, 8))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.hit_to_start"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.Center)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
+                    .setPos(-getGUIWidth() / 2, 170)
+                    .setSize(getGUIWidth() * 2, 9))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> getErrorDisplayID(), val -> setErrorDisplayID(val)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.running_perfectly"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.Center)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
+                    .setPos(0, 170)
+                    .setSize(getGUIWidth(), 9))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+            .widget(
+                new ProgressBar()
+                    .setProgress(
+                        () -> (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity())
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setTexture(GTUITextures.PROGRESSBAR_STORED_EU, 147)
+                    .setPos(5, 156)
+                    .setSize(147, 5))
+            .widget(new TextWidget().setStringSupplier(() -> {
+                if (clientEU > 160_000_000L && clientEU < 160_010_000L) {
+                    clientEU = 160_000_000L;
+                }
+                if (clientEU > 320_000_000L && clientEU < 320_010_000L) {
+                    clientEU = 320_000_000L;
+                }
+                if (clientEU > 640_000_000L && clientEU < 640_010_000L) {
+                    clientEU = 640_000_000L;
+                }
+                if (clientEU > 5_120_000_000L && clientEU < 5_120_080_000L) {
+                    clientEU = 5_120_000_000L;
+                }
+                return numberFormat.format(clientEU) + " EU";
+            })
+                .setDefaultColor(COLOR_TEXT_RED.get())
+                .setTextAlignment(Alignment.Center)
+                .setScale(0.5f)
+                .setPos(5, 157)
+                .setSize(147, 5))
+            .widget(new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEU = val))
+            .widget(
+                new ButtonWidget().setNEITransferRect(
+                    RecipeMaps.fusionRecipes.getFrontend()
+                        .getUIProperties().neiTransferRectId)
+                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_NEI)
+                    .setPos(154, 4)
+                    .setSize(18, 18));
     }
 
     @Override

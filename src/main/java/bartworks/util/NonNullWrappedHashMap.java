@@ -49,7 +49,8 @@ public class NonNullWrappedHashMap<K, V> extends HashMap<K, V> {
 
     @Override
     public V getOrDefault(Object key, V defaultValue) {
-        return Objects
-                .requireNonNull(Optional.ofNullable(super.getOrDefault(key, defaultValue)).orElse(this.defaultValue));
+        return Objects.requireNonNull(
+            Optional.ofNullable(super.getOrDefault(key, defaultValue))
+                .orElse(this.defaultValue));
     }
 }

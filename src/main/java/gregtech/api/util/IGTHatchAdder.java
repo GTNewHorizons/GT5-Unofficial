@@ -23,6 +23,6 @@ public interface IGTHatchAdder<T> {
 
     default IGTHatchAdder<T> orElse(IGTHatchAdder<? super T> fallback) {
         return (t, iGregTechTileEntity, aShort) -> IGTHatchAdder.this.apply(t, iGregTechTileEntity, aShort)
-                || fallback.apply(t, iGregTechTileEntity, aShort);
+            || fallback.apply(t, iGregTechTileEntity, aShort);
     }
 }

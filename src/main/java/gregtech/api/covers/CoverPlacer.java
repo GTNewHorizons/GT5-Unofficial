@@ -18,7 +18,7 @@ public final class CoverPlacer {
     private final boolean isGuiClickable;
 
     private CoverPlacer(CoverPlacementPredicate coverPlacementPredicate, boolean allowOnPrimitiveBlock,
-            boolean isGuiClickable) {
+        boolean isGuiClickable) {
         this.coverPlacementPredicate = coverPlacementPredicate;
         this.allowOnPrimitiveBlock = allowOnPrimitiveBlock;
         this.isGuiClickable = isGuiClickable;

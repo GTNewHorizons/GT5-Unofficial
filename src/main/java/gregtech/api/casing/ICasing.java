@@ -57,10 +57,7 @@ public interface ICasing extends ImmutableBlockMeta {
 
         if (item == null) {
             throw new NullPointerException(
-                    "Block " + getBlock()
-                            + " was not registered, causing it to not have an item (casing: "
-                            + this
-                            + ")");
+                "Block " + getBlock() + " was not registered, causing it to not have an item (casing: " + this + ")");
         }
 
         return new ItemStack(getBlock(), 1, getBlockMeta());
@@ -100,7 +97,9 @@ public interface ICasing extends ImmutableBlockMeta {
 
             @Override
             public ITexture getCasingTexture() {
-                return TextureFactory.builder().setFromBlock(getBlock(), getBlockMeta()).build();
+                return TextureFactory.builder()
+                    .setFromBlock(getBlock(), getBlockMeta())
+                    .build();
             }
 
             @Override

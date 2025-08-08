@@ -90,27 +90,31 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = getCasingBlockItem().get(0)
+            .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         tt.addMachineType("Concrete Backfiller")
-                .addInfo("Will fill in areas below it with light concrete. This goes through walls")
-                .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-                .addInfo("Will pull back the pipes after it finishes that layer")
-                .addInfo("Radius is " + getRadius() + " blocks")
-                .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-                .addInfo(
-                        "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
-                                : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
-                .beginStructureBlock(3, 7, 3, false).addController("Front bottom")
-                .addOtherStructurePart(casings, "form the 3x1x3 Base")
-                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-                .addMaintenanceHatch("Any base casing", 1).addInputBus("Mining Pipes, optional, any base casing", 1)
-                .addInputHatch("GT Concrete, any base casing", 1)
-                .addOutputBus("Mining Pipes, optional, any base casing", 1).toolTipFinisher();
+            .addInfo("Will fill in areas below it with light concrete. This goes through walls")
+            .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
+            .addInfo("Will pull back the pipes after it finishes that layer")
+            .addInfo("Radius is " + getRadius() + " blocks")
+            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo(
+                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
+                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
+            .beginStructureBlock(3, 7, 3, false)
+            .addController("Front bottom")
+            .addOtherStructurePart(casings, "form the 3x1x3 Base")
+            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
+            .addMaintenanceHatch("Any base casing", 1)
+            .addInputBus("Mining Pipes, optional, any base casing", 1)
+            .addInputHatch("GT Concrete, any base casing", 1)
+            .addOutputBus("Mining Pipes, optional, any base casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -143,7 +147,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
+        int yHead, int oldYHead) {
         if (isRefillableBlock(xPipe, yHead - 1, zPipe)) return tryRefillBlock(xPipe, yHead - 1, zPipe);
         int radius = getRadius();
         if (mLastXOff == 0 && mLastZOff == 0) {
@@ -186,11 +190,12 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 return false;
             }
         }
-        if (aBlock.getMaterial().isSolid()) {
+        if (aBlock.getMaterial()
+            .isSolid()) {
             return false;
         }
         return GTUtility
-                .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTechAPI.sBlockConcretes, 8, true);
+            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTechAPI.sBlockConcretes, 8, true);
     }
 
     private boolean tryRefillBlock(int aX, int aY, int aZ) {
@@ -198,7 +203,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             setRuntimeFailureReason(CheckRecipeResultRegistry.BACKFILLER_NO_CONCRETE);
             return false;
         }
-        getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, GregTechAPI.sBlockConcretes, 8, 3);
+        getBaseMetaTileEntity().getWorld()
+            .setBlock(aX, aY, aZ, GregTechAPI.sBlockConcretes, 8, 3);
         return true;
     }
 
@@ -216,16 +222,17 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         screenElements
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> StatCollector.translateToLocalFormatted(
-                                                "GT5U.gui.text.backfiller_current_area",
-                                                numberFormat.format(clientYHead)))
-                                .setSynced(false).setTextAlignment(Alignment.CenterLeft)
-                                .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt));
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.backfiller_current_area",
+                            numberFormat.format(clientYHead)))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt));
     }
 
     @Override
@@ -234,31 +241,32 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         final int BUTTON_Y_LEVEL = 91;
 
         builder.widget(
-                new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                        .setOnClick((clickData, widget) -> mLiquidEnabled = !mLiquidEnabled).setPlayClickSound(true)
-                        .setBackground(() -> {
-                            if (mLiquidEnabled) {
-                                return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                                        GTUITextures.OVERLAY_BUTTON_LIQUIDMODE };
-                            }
-                            return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                                    GTUITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
-                        })
-                        .attachSyncer(
-                                new FakeSyncWidget.BooleanSyncer(
-                                        () -> mLiquidEnabled,
-                                        newBoolean -> mLiquidEnabled = newBoolean),
-                                builder,
-                                (widget, val) -> widget.notifyTooltipChange())
-                        .dynamicTooltip(
-                                () -> ImmutableList.of(
-                                        StatCollector.translateToLocal(
-                                                mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
-                                                        : "GT5U.gui.button.liquid_filling_OFF")))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(new Pos2d(100, BUTTON_Y_LEVEL)).setSize(16, 16));
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+                .setOnClick((clickData, widget) -> mLiquidEnabled = !mLiquidEnabled)
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (mLiquidEnabled) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                            GTUITextures.OVERLAY_BUTTON_LIQUIDMODE };
+                    }
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
+                })
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .dynamicTooltip(
+                    () -> ImmutableList.of(
+                        StatCollector.translateToLocal(
+                            mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
+                                : "GT5U.gui.button.liquid_filling_OFF")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(100, BUTTON_Y_LEVEL))
+                .setSize(16, 16));
         int left = 98;
         for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
-            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL)).setSize(16, 16);
+            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
+                .setSize(16, 16);
             builder.widget(button);
             left += 18;
         }

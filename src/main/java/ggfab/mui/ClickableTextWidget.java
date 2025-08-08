@@ -49,7 +49,10 @@ public class ClickableTextWidget extends ButtonWidget {
     protected @NotNull Size determineSize(int maxWidth, int maxHeight) {
         if (caption == null) return super.determineSize(maxWidth, maxHeight);
         return new Size(
-                Math.min(maxWidth, TextRenderer.getFontRenderer().getStringWidth(caption.getFormatted())),
-                (maxLines + marginInLines) * TextRenderer.getFontRenderer().FONT_HEIGHT);
+            Math.min(
+                maxWidth,
+                TextRenderer.getFontRenderer()
+                    .getStringWidth(caption.getFormatted())),
+            (maxLines + marginInLines) * TextRenderer.getFontRenderer().FONT_HEIGHT);
     }
 }

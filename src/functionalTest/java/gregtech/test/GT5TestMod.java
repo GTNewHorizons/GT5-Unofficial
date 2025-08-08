@@ -29,35 +29,41 @@ public class GT5TestMod {
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        MinecraftServer.getServer().addChatMessage(new ChatComponentText("Running GT5 unit tests..."));
+        MinecraftServer.getServer()
+            .addChatMessage(new ChatComponentText("Running GT5 unit tests..."));
         runTests();
-        MinecraftServer.getServer().addChatMessage(new ChatComponentText("Running GT5 unit tests finished"));
+        MinecraftServer.getServer()
+            .addChatMessage(new ChatComponentText("Running GT5 unit tests finished"));
     }
 
     private void runTests() {
         // https://junit.org/junit5/docs/current/user-guide/#launcher-api
         System.setProperty("junit.platform.reporting.open.xml.enabled", "false");
-        final Path testsXmlOutDir = FileSystems.getDefault().getPath("./junit-out/").toAbsolutePath();
+        final Path testsXmlOutDir = FileSystems.getDefault()
+            .getPath("./junit-out/")
+            .toAbsolutePath();
         final File testsXmlOutDirFile = testsXmlOutDir.toFile();
         testsXmlOutDirFile.mkdirs();
         {
             File[] fileList = testsXmlOutDirFile.listFiles();
             if (fileList != null) {
                 for (File child : fileList) {
-                    if (child.isFile() && child.getName().endsWith(".xml")) {
+                    if (child.isFile() && child.getName()
+                        .endsWith(".xml")) {
                         child.delete();
                     }
                 }
             }
         }
         final LauncherDiscoveryRequest discovery = LauncherDiscoveryRequestBuilder.request()
-                .selectors(DiscoverySelectors.selectPackage("gregtech.test")).build();
+            .selectors(DiscoverySelectors.selectPackage("gregtech.test"))
+            .build();
         final SummaryGeneratingListener summaryGenerator = new SummaryGeneratingListener();
         final TestExecutionSummary summary;
         try (PrintWriter stderrWriter = new PrintWriter(new CloseShieldOutputStream(System.err), true)) {
             final LegacyXmlReportGeneratingListener xmlGenerator = new LegacyXmlReportGeneratingListener(
-                    testsXmlOutDir,
-                    stderrWriter);
+                testsXmlOutDir,
+                stderrWriter);
             try (LauncherSession session = LauncherFactory.openSession()) {
                 final Launcher launcher = session.getLauncher();
                 final TestPlan plan = launcher.discover(discovery);
@@ -71,7 +77,9 @@ public class GT5TestMod {
             stderrWriter.flush();
         }
         // Throw an exception if running via `runServer`
-        if (summary.getTotalFailureCount() > 0 && FMLCommonHandler.instance().getSide().isServer()) {
+        if (summary.getTotalFailureCount() > 0 && FMLCommonHandler.instance()
+            .getSide()
+            .isServer()) {
             throw new RuntimeException("Some of the unit tests failed to execute, check the log for details");
         }
     }

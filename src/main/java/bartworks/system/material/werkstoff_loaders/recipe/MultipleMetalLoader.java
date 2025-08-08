@@ -33,20 +33,23 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
             RecipeMaps.benderRecipes.add(
-                    new GTRecipe(
-                            true,
-                            new ItemStack[] { werkstoff.get(ingot, 2), GTUtility.getIntegratedCircuit(2) },
-                            new ItemStack[] { werkstoff.get(plateDouble) },
-                            null,
-                            null,
-                            null,
-                            null,
-                            (int) Math.max(werkstoff.getStats().getMass() * 2, 1L),
-                            60,
-                            0));
+                new GTRecipe(
+                    true,
+                    new ItemStack[] { werkstoff.get(ingot, 2), GTUtility.getIntegratedCircuit(2) },
+                    new ItemStack[] { werkstoff.get(plateDouble) },
+                    null,
+                    null,
+                    null,
+                    null,
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2,
+                        1L),
+                    60,
+                    0));
             CoverRegistry.registerDecorativeCover(
-                    werkstoff.get(plateDouble),
-                    TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false));
+                werkstoff.get(plateDouble),
+                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false));
         }
     }
 }

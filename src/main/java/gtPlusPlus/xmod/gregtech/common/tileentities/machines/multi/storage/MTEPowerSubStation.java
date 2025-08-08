@@ -123,37 +123,40 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-                .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
-                .addInfo("Does not require maintenance")
-                .addInfo(
-                        "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2)
-                                + "-"
-                                + (CELL_HEIGHT_MAX + 2)
-                                + "")
-                .addInfo("Hatches can be placed nearly anywhere")
-                .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-                .addInfo("Supports voltages >= UHV using MAX tier components.").addController("Bottom Center")
-                .addCasingInfoMin("Sub-Station External Casings", 10, false).addDynamoHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addSubChannelUsage(GTStructureChannels.PSS_CELL)
-                .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT).toolTipFinisher();
+            .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
+            .addInfo("Does not require maintenance")
+            .addInfo(
+                "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
+            .addInfo("Hatches can be placed nearly anywhere")
+            .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
+            .addInfo("Supports voltages >= UHV using MAX tier components.")
+            .addController("Bottom Center")
+            .addCasingInfoMin("Sub-Station External Casings", 10, false)
+            .addDynamoHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.PSS_CELL)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                    TextureFactory.builder()
-                            .addIcon(
-                                    aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
-                                            : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)
-                            .extFacing().build() };
+                TextureFactory.builder()
+                    .addIcon(
+                        aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
+                            : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)
+                    .extFacing()
+                    .build() };
         }
-        if (side == this.getBaseMetaTileEntity().getBackFacing()) {
+        if (side == this.getBaseMetaTileEntity()
+            .getBackFacing()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                    mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
-                            : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()] };
+                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()] };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23)) };
     }
@@ -230,77 +233,69 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public IStructureDefinition<MTEPowerSubStation> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEPowerSubStation>builder()
-                    .addShape(
-                            mName + "bottom",
-                            transpose(new String[][] { { "BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB" } }))
-                    .addShape(
-                            mName + "layer",
-                            transpose(new String[][] { { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
-                    .addShape(
-                            mName + "mid",
-                            transpose(new String[][] { { "CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" } }))
-                    .addShape(
-                            mName + "top",
-                            transpose(new String[][] { { "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEPowerSubStation.class)
-                                    .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
-                                    .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                    .casingIndex(TAE.GTPP_INDEX(24)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
-                    .addElement(
-                            'B',
-                            buildHatchAdder(MTEPowerSubStation.class)
-                                    .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
-                                    .disallowOnly(ForgeDirection.UP).casingIndex(TAE.GTPP_INDEX(24)).dot(1)
-                                    .buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
-                    .addElement(
-                            'T',
-                            buildHatchAdder(MTEPowerSubStation.class)
-                                    .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
-                                    .disallowOnly(ForgeDirection.DOWN).casingIndex(TAE.GTPP_INDEX(24)).dot(1)
-                                    .buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
-                    .addElement(
-                            'I',
-                            GTStructureChannels.PSS_CELL.use(
+                .addShape(
+                    mName + "bottom",
+                    transpose(new String[][] { { "BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB" } }))
+                .addShape(
+                    mName + "layer",
+                    transpose(new String[][] { { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
+                .addShape(mName + "mid", transpose(new String[][] { { "CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" } }))
+                .addShape(mName + "top", transpose(new String[][] { { "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEPowerSubStation.class)
+                        .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                        .casingIndex(TAE.GTPP_INDEX(24))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
+                .addElement(
+                    'B',
+                    buildHatchAdder(MTEPowerSubStation.class)
+                        .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                        .disallowOnly(ForgeDirection.UP)
+                        .casingIndex(TAE.GTPP_INDEX(24))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
+                .addElement(
+                    'T',
+                    buildHatchAdder(MTEPowerSubStation.class)
+                        .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                        .disallowOnly(ForgeDirection.DOWN)
+                        .casingIndex(TAE.GTPP_INDEX(24))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
+                .addElement(
+                    'I',
+                    GTStructureChannels.PSS_CELL.use(
+                        ofChain(
+                            onlyIf(
+                                x -> x.topState != TopState.NotTop,
+                                onElementPass(
+                                    x -> x.topState = TopState.Top,
+                                    ofHatchAdderOptional(
+                                        MTEPowerSubStation::addPowerSubStationList,
+                                        TAE.GTPP_INDEX(24),
+                                        1,
+                                        ModBlocks.blockCasings2Misc,
+                                        8))),
+                            onlyIf(
+                                x -> x.topState != TopState.Top,
+                                onElementPass(
+                                    x -> x.topState = TopState.NotTop,
                                     ofChain(
-                                            onlyIf(
-                                                    x -> x.topState != TopState.NotTop,
-                                                    onElementPass(
-                                                            x -> x.topState = TopState.Top,
-                                                            ofHatchAdderOptional(
-                                                                    MTEPowerSubStation::addPowerSubStationList,
-                                                                    TAE.GTPP_INDEX(24),
-                                                                    1,
-                                                                    ModBlocks.blockCasings2Misc,
-                                                                    8))),
-                                            onlyIf(
-                                                    x -> x.topState != TopState.Top,
-                                                    onElementPass(
-                                                            x -> x.topState = TopState.NotTop,
-                                                            ofChain(
-                                                                    onElementPass(x -> ++x.cellCount[0], ofCell(4)),
-                                                                    onElementPass(x -> ++x.cellCount[1], ofCell(5)),
-                                                                    onElementPass(x -> ++x.cellCount[2], ofCell(6)),
-                                                                    onElementPass(x -> ++x.cellCount[3], ofCell(7)),
-                                                                    onElementPass(x -> ++x.cellCount[4], ofCell(8)),
-                                                                    onElementPass(
-                                                                            x -> ++x.cellCount[5],
-                                                                            ofCell(9))))))))
-                    .addElement(
-                            'H',
-                            GTStructureChannels.PSS_CELL.use(
-                                    // Adding this so preview looks correct
-                                    ofBlocksTiered(
-                                            cellTierConverter(),
-                                            getAllCellTiers(),
-                                            -1,
-                                            (te, t) -> {},
-                                            (te) -> -1)))
-                    .build();
+                                        onElementPass(x -> ++x.cellCount[0], ofCell(4)),
+                                        onElementPass(x -> ++x.cellCount[1], ofCell(5)),
+                                        onElementPass(x -> ++x.cellCount[2], ofCell(6)),
+                                        onElementPass(x -> ++x.cellCount[3], ofCell(7)),
+                                        onElementPass(x -> ++x.cellCount[4], ofCell(8)),
+                                        onElementPass(x -> ++x.cellCount[5], ofCell(9))))))))
+                .addElement(
+                    'H',
+                    GTStructureChannels.PSS_CELL.use(
+                        // Adding this so preview looks correct
+                        ofBlocksTiered(cellTierConverter(), getAllCellTiers(), -1, (te, t) -> {}, (te) -> -1)))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -343,50 +338,50 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(
-                        world,
-                        x,
-                        y,
-                        z,
-                        getBlockFromTier(getIndex(trigger.stackSize)),
-                        getMetaFromTier(getIndex(trigger.stackSize)));
+                    world,
+                    x,
+                    y,
+                    z,
+                    getBlockFromTier(getIndex(trigger.stackSize)),
+                    getMetaFromTier(getIndex(trigger.stackSize)));
                 return true;
             }
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 return world.setBlock(
-                        x,
-                        y,
-                        z,
-                        getBlockFromTier(getIndex(trigger.stackSize)),
-                        getMetaFromTier(getIndex(trigger.stackSize)),
-                        3);
+                    x,
+                    y,
+                    z,
+                    getBlockFromTier(getIndex(trigger.stackSize)),
+                    getMetaFromTier(getIndex(trigger.stackSize)),
+                    3);
             }
 
             @Nullable
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                    AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(getBlockFromTier(trigger.stackSize), getMetaFromTier(trigger.stackSize));
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                    AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 int tier = getCellTier(block, meta);
                 if (tier >= 0) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
-                        getBlockFromTier(getIndex(trigger.stackSize)),
-                        getMetaFromTier(getIndex(trigger.stackSize)),
-                        world,
-                        x,
-                        y,
-                        z,
-                        env.getSource(),
-                        env.getActor(),
-                        env.getChatter());
+                    getBlockFromTier(getIndex(trigger.stackSize)),
+                    getMetaFromTier(getIndex(trigger.stackSize)),
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
             }
         };
     }
@@ -584,7 +579,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             return 0;
         }
 
-        if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)) {
+        if (this.getBaseMetaTileEntity()
+            .increaseStoredEnergyUnits(voltage, false)) {
             aHatch.setEUVar((stored - voltage));
             this.mTotalEnergyAdded += voltage;
             return voltage;
@@ -599,8 +595,10 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             return 0;
         }
 
-        if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(voltage, false)) {
-            aHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
+        if (this.getBaseMetaTileEntity()
+            .decreaseStoredEnergyUnits(voltage, false)) {
+            aHatch.getBaseMetaTileEntity()
+                .increaseStoredEnergyUnits(voltage, false);
             this.mTotalEnergyConsumed += voltage;
             return voltage;
         }
@@ -690,53 +688,53 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         String storedEnergyText;
         if (this.getEUVar() > this.mBatteryCapacity) {
             storedEnergyText = EnumChatFormatting.RED + GTUtility.formatNumbers(this.getEUVar())
-                    + EnumChatFormatting.RESET;
+                + EnumChatFormatting.RESET;
         } else {
             storedEnergyText = EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.getEUVar())
-                    + EnumChatFormatting.RESET;
+                + EnumChatFormatting.RESET;
         }
 
         int errorCode = getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
         return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-                "Capacity: " + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(this.maxEUStore())
-                        + EnumChatFormatting.RESET,
-                "Running Costs: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(this.computeEnergyTax())
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                "Controller Mode: " + mode,
-                "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                        + mMaint
-                        + EnumChatFormatting.RESET
-                        + " | Code: ["
-                        + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                        + errorCode
-                        + EnumChatFormatting.RESET
-                        + "]",
-                EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
-                "Average Input: " + EnumChatFormatting.BLUE
-                        + GTUtility.formatNumbers(this.getAverageEuAdded())
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                "Average Output: " + EnumChatFormatting.GOLD
-                        + GTUtility.formatNumbers(this.getAverageEuConsumed())
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                "Total Input: " + EnumChatFormatting.BLUE
-                        + GTUtility.formatNumbers(this.mTotalEnergyAdded)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                "Total Output: " + EnumChatFormatting.GOLD
-                        + GTUtility.formatNumbers(this.mTotalEnergyConsumed)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                "Total Costs: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(this.mTotalEnergyLost)
-                        + EnumChatFormatting.RESET
-                        + " EU", };
+            "Capacity: " + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(this.maxEUStore())
+                + EnumChatFormatting.RESET,
+            "Running Costs: " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(this.computeEnergyTax())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            "Controller Mode: " + mode,
+            "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                + mMaint
+                + EnumChatFormatting.RESET
+                + " | Code: ["
+                + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                + errorCode
+                + EnumChatFormatting.RESET
+                + "]",
+            EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
+            "Average Input: " + EnumChatFormatting.BLUE
+                + GTUtility.formatNumbers(this.getAverageEuAdded())
+                + EnumChatFormatting.RESET
+                + " EU",
+            "Average Output: " + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(this.getAverageEuConsumed())
+                + EnumChatFormatting.RESET
+                + " EU",
+            "Total Input: " + EnumChatFormatting.BLUE
+                + GTUtility.formatNumbers(this.mTotalEnergyAdded)
+                + EnumChatFormatting.RESET
+                + " EU",
+            "Total Output: " + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(this.mTotalEnergyConsumed)
+                + EnumChatFormatting.RESET
+                + " EU",
+            "Total Costs: " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(this.mTotalEnergyLost)
+                + EnumChatFormatting.RESET
+                + " EU", };
     }
 
     @Override
@@ -768,12 +766,14 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
     @Override
     public boolean isInputFacing(ForgeDirection side) {
-        return (side == this.getBaseMetaTileEntity().getBackFacing() && !mIsOutputtingPower);
+        return (side == this.getBaseMetaTileEntity()
+            .getBackFacing() && !mIsOutputtingPower);
     }
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return (side == this.getBaseMetaTileEntity().getBackFacing() && mIsOutputtingPower);
+        return (side == this.getBaseMetaTileEntity()
+            .getBackFacing() && mIsOutputtingPower);
     }
 
     @Override
@@ -832,8 +832,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                        .setPos(175, 166));
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(175, 166));
     }
 
     private long clientEUIn, clientEUOut, clientEULoss, clientEUStored;
@@ -844,84 +845,102 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(149, 149))
-                .widget(new SlotWidget(inventoryHandler, 0).setPos(154, 4))
-                .widget(new SlotWidget(inventoryHandler, 1).setAccess(true, false).setPos(154, 22))
-                .widget(
-                        SlotGroup.ofItemHandler(new PlayerMainInvWrapper(buildContext.getPlayer().inventory), 9)
-                                .endAtSlot(8).build().setPos(7, 166))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> getErrorDisplayID() == 0 ? getBaseMetaTileEntity().isActive()
-                                                ? StatCollector.translateToLocal(
-                                                        "gtpp.gui.text.power_sub_station.running_perfectly")
-                                                : StatCollector.translateToLocal(
-                                                        "gtpp.gui.text.power_sub_station.turn_on_with_mallet")
-                                                : "")
-                                .setSynced(false).setTextAlignment(Alignment.CenterLeft)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 8))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)))
-                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.in"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(178, 10))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.out"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(176, 28))
-                .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> StatCollector.translateToLocalFormatted(
-                                                "gtpp.gui.text.power_sub_station.avg_in",
-                                                numberFormat.format(clientEUIn)))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(10, 20))
-                .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> StatCollector.translateToLocalFormatted(
-                                                "gtpp.gui.text.power_sub_station.avg_out",
-                                                numberFormat.format(clientEUOut)))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(10, 30))
-                .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> StatCollector.translateToLocalFormatted(
-                                                "gtpp.gui.text.power_sub_station.power_loss",
-                                                numberFormat.format(clientEULoss)))
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(10, 40))
-                .widget(
-                        new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_ENERGY_FRAME).setPos(4, 155)
-                                .setSize(149, 7))
-                .widget(new FakeSyncWidget.FloatSyncer(this::getProgress, val -> clientProgress = val))
-                .widget(
-                        new ProgressBar().setProgress(this::getProgress)
-                                .setTexture(GTPPUITextures.PROGRESSBAR_PSS_ENERGY, 147)
-                                .setDirection(ProgressBar.Direction.RIGHT).setPos(5, 156).setSize(147, 5))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.stored"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(10, 132))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> getBaseMetaTileEntity().getStoredEU(),
-                                val -> clientEUStored = val))
-                .widget(new TextWidget().setTextSupplier(() -> {
-                    int colorScale = (int) (clientProgress * 100 * 2.55);
-                    return new Text(numberFormat.format(clientEUStored) + " EU")
-                            .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
-                }).setTextAlignment(Alignment.CenterLeft).setPos(10, 142)).widget(
-                        new TextWidget().setStringSupplier(() -> numberFormat.format(clientProgress * 100) + "%")
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(70, 155));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(4, 4)
+                .setSize(149, 149))
+            .widget(new SlotWidget(inventoryHandler, 0).setPos(154, 4))
+            .widget(
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setPos(154, 22))
+            .widget(
+                SlotGroup.ofItemHandler(new PlayerMainInvWrapper(buildContext.getPlayer().inventory), 9)
+                    .endAtSlot(8)
+                    .build()
+                    .setPos(7, 166))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> getErrorDisplayID() == 0
+                            ? getBaseMetaTileEntity().isActive()
+                                ? StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.running_perfectly")
+                                : StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.turn_on_with_mallet")
+                            : "")
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 8))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.in"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(178, 10))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.out"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(176, 28))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_in",
+                            numberFormat.format(clientEUIn)))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.avg_out",
+                            numberFormat.format(clientEUOut)))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 30))
+            .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.text.power_sub_station.power_loss",
+                            numberFormat.format(clientEULoss)))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 40))
+            .widget(
+                new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_ENERGY_FRAME)
+                    .setPos(4, 155)
+                    .setSize(149, 7))
+            .widget(new FakeSyncWidget.FloatSyncer(this::getProgress, val -> clientProgress = val))
+            .widget(
+                new ProgressBar().setProgress(this::getProgress)
+                    .setTexture(GTPPUITextures.PROGRESSBAR_PSS_ENERGY, 147)
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setPos(5, 156)
+                    .setSize(147, 5))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.stored"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(10, 132))
+            .widget(
+                new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEUStored = val))
+            .widget(new TextWidget().setTextSupplier(() -> {
+                int colorScale = (int) (clientProgress * 100 * 2.55);
+                return new Text(numberFormat.format(clientEUStored) + " EU")
+                    .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
+            })
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(10, 142))
+            .widget(
+                new TextWidget().setStringSupplier(() -> numberFormat.format(clientProgress * 100) + "%")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(70, 155));
     }
 
     private float getProgress() {

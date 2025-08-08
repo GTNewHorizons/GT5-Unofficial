@@ -43,30 +43,30 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                4,
-                new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
-                        "Cleans itself automatically", "Does not explode in rain!" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            4,
+            new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
+                "Cleans itself automatically", "Does not explode in rain!" });
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == ForgeDirection.UP) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                    TextureFactory.of(Textures.BlockIcons.OVERLAY_SOLAR_PANEL) };
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SOLAR_PANEL) };
         }
         if (sideDirection == facingDirection) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                    OVERLAYS_ENERGY_OUT[mTier] };
+                OVERLAYS_ENERGY_OUT[mTier] };
         }
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
     }
@@ -79,11 +79,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESolarGenerator(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
     }
@@ -117,67 +117,73 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         addGregTechLogo(builder);
         addConditionalImages(builder);
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3)
-                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+            SlotGroup.ofItemHandler(inventoryHandler, 2)
+                .startFromSlot(0)
+                .endAtSlot(3)
+                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                            @Override
-                            public int getSlotStackLimit() {
-                                return 1;
-                            }
-                        }).background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER).build()
-                        .setPos(100, 15))
-                .widget(
-                        new ProgressBar()
-                                .setProgress(
-                                        () -> (float) getBaseMetaTileEntity().getStoredEU()
-                                                / getBaseMetaTileEntity().getEUCapacity())
-                                .setDirection(ProgressBar.Direction.RIGHT).setTexture(
-                                        GTUITextures.PROGRESSBAR_STORED_EU,
-                                        147)
-                                .setPos(14, 74).setSize(147, 5))
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> formatNumbers(clientEU) + "/"
-                                                + formatNumbers(getBaseMetaTileEntity().getEUCapacity())
-                                                + " EU")
-                                .setTextAlignment(Alignment.Center).setPos(14, 66).setSize(147, 5))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> getBaseMetaTileEntity().getStoredEU(),
-                                val -> clientEU = val));
+                    @Override
+                    public int getSlotStackLimit() {
+                        return 1;
+                    }
+                })
+                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER)
+                .build()
+                .setPos(100, 15))
+            .widget(
+                new ProgressBar()
+                    .setProgress(
+                        () -> (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity())
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setTexture(GTUITextures.PROGRESSBAR_STORED_EU, 147)
+                    .setPos(14, 74)
+                    .setSize(147, 5))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> formatNumbers(clientEU) + "/"
+                            + formatNumbers(getBaseMetaTileEntity().getEUCapacity())
+                            + " EU")
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(14, 66)
+                    .setSize(147, 5))
+            .widget(new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEU = val));
     }
 
     public void addConditionalImages(ModularWindow.Builder builder) {
-        builder.widget(
-                new DrawableWidget().setDrawable(
+        builder
+            .widget(
+                new DrawableWidget()
+                    .setDrawable(
                         () -> dayTime ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
-                        .setPos(5, 10).setSize(16, 16))
-                .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator1")).setPos(21, 15))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(() -> dayTime, val -> dayTime = val))
-                .widget(
-                        new DrawableWidget().setDrawable(
-                                () -> noRain ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
-                                        : GTUITextures.OVERLAY_BUTTON_CROSS)
-                                .setPos(5, 26).setSize(16, 16))
-                .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator2")).setPos(21, 31))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(() -> noRain, val -> noRain = val))
-                .widget(
-                        new DrawableWidget().setDrawable(
-                                () -> seesSky ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
-                                        : GTUITextures.OVERLAY_BUTTON_CROSS)
-                                .setPos(5, 42).setSize(16, 16))
-                .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator3")).setPos(21, 47))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> seesSky, val -> seesSky = val));
+                    .setPos(5, 10)
+                    .setSize(16, 16))
+            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator1")).setPos(21, 15))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> dayTime, val -> dayTime = val))
+            .widget(
+                new DrawableWidget()
+                    .setDrawable(
+                        () -> noRain ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setPos(5, 26)
+                    .setSize(16, 16))
+            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator2")).setPos(21, 31))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> noRain, val -> noRain = val))
+            .widget(
+                new DrawableWidget()
+                    .setDrawable(
+                        () -> seesSky ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setPos(5, 42)
+                    .setSize(16, 16))
+            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator3")).setPos(21, 47))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> seesSky, val -> seesSky = val));
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT).setSize(17, 17)
-                        .setPos(154, 5));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                .setSize(17, 17)
+                .setPos(154, 5));
     }
 
     private boolean valid = true;
@@ -217,7 +223,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         IGregTechTileEntity aBase = getBaseMetaTileEntity();
         tag.setBoolean("valid", valid);
         tag.setLong("storedeu", aBase.getStoredEU());
@@ -227,20 +233,20 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("valid")) currenttip.add(
-                tag.getBoolean("valid")
-                        ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
-                        : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
+            tag.getBoolean("valid")
+                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
+                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
         if (tag.hasKey("storedeu") && tag.hasKey("maxeu")) currenttip.add(
-                EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
-                        + EnumChatFormatting.GRAY
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(tag.getLong("maxeu"))
-                        + EnumChatFormatting.GRAY
-                        + " EU");
+            EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
+                + EnumChatFormatting.GRAY
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(tag.getLong("maxeu"))
+                + EnumChatFormatting.GRAY
+                + " EU");
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -271,13 +277,13 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 }

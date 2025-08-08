@@ -48,7 +48,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
     private int tier = -1;
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
-            Loaders.FRF_Coil_4 };
+        Loaders.FRF_Coil_4 };
 
     public MTEFuelRefineFactory(String name) {
         super(name);
@@ -74,47 +74,50 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     public IStructureDefinition<MTEFuelRefineFactory> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<MTEFuelRefineFactory>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "               ", "      CCC      ", "               " },
-                                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                                            { "    CC   CC    ", "   CFFCCCFFC   ", "    CC   CC    " },
-                                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { " X           X ", "CFC         CFC", " X           X " },
-                                            { " G           G ", "CFC         CFC", " G           G " },
-                                            { " X           X ", "CFC         CFC", " X           X " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                                            { "    CC   CC    ", "   CFFC~CFFC   ", "    CC   CC    " },
-                                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                                            { "               ", "      CCC      ", "               " } }))
-                    .addElement(
-                            'X',
-                            buildHatchAdder(MTEFuelRefineFactory.class).atLeast(
-                                    gregtech.api.enums.HatchElement.Maintenance,
-                                    gregtech.api.enums.HatchElement.InputHatch,
-                                    gregtech.api.enums.HatchElement.InputBus,
-                                    gregtech.api.enums.HatchElement.OutputHatch,
-                                    tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                            .or(gregtech.api.enums.HatchElement.Energy),
-                                    tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
-                                            .or(gregtech.api.enums.HatchElement.Dynamo))
-                                    .casingIndex(179).dot(1).buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
-                    .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
-                    .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
-                    .addElement(
-                            'F',
-                            ofBlocksTiered(
-                                    fieldCoilTierConverter(),
-                                    getAllFieldCoilTiers(),
-                                    -1,
-                                    MTEFuelRefineFactory::setCoilTier,
-                                    MTEFuelRefineFactory::getCoilTier))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "               ", "      CCC      ", "               " },
+                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
+                            { "    CC   CC    ", "   CFFCCCFFC   ", "    CC   CC    " },
+                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { " X           X ", "CFC         CFC", " X           X " },
+                            { " G           G ", "CFC         CFC", " G           G " },
+                            { " X           X ", "CFC         CFC", " X           X " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
+                            { "    CC   CC    ", "   CFFC~CFFC   ", "    CC   CC    " },
+                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
+                            { "               ", "      CCC      ", "               " } }))
+                .addElement(
+                    'X',
+                    buildHatchAdder(MTEFuelRefineFactory.class)
+                        .atLeast(
+                            gregtech.api.enums.HatchElement.Maintenance,
+                            gregtech.api.enums.HatchElement.InputHatch,
+                            gregtech.api.enums.HatchElement.InputBus,
+                            gregtech.api.enums.HatchElement.OutputHatch,
+                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
+                                .or(gregtech.api.enums.HatchElement.Energy),
+                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                .or(gregtech.api.enums.HatchElement.Dynamo))
+                        .casingIndex(179)
+                        .dot(1)
+                        .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
+                .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
+                .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
+                .addElement(
+                    'F',
+                    ofBlocksTiered(
+                        fieldCoilTierConverter(),
+                        getAllFieldCoilTiers(),
+                        -1,
+                        MTEFuelRefineFactory::setCoilTier,
+                        MTEFuelRefineFactory::getCoilTier))
+                .build();
         }
         return multiDefinition;
     }
@@ -149,19 +152,24 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Fuel Refinery").addInfo("But at what cost?").addInfo("Produces naquadah fuels.")
-                .addInfo("Needs field restriction coils to control the fatal radiation.")
-                .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks.")
-                .addTecTechHatchInfo().addUnlimitedTierSkips().beginStructureBlock(3, 15, 15, false)
-                .addController("Mid of the third layer")
-                .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
-                .addCasingInfoExactly("Field Restriction Coil", 32, true)
-                .addCasingInfoExactly("Field Restriction Glass", 8, false)
-                .addInputHatch("The casings adjacent to field restriction glass.")
-                .addInputBus("The casings adjacent to field restriction glass.", 1)
-                .addOutputHatch("The casings adjacent to field restriction glass.", 1)
-                .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
-                .addDynamoHatch("The casings adjacent to field restriction glass.", 1).toolTipFinisher();
+        tt.addMachineType("Naquadah Fuel Refinery")
+            .addInfo("But at what cost?")
+            .addInfo("Produces naquadah fuels.")
+            .addInfo("Needs field restriction coils to control the fatal radiation.")
+            .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks.")
+            .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
+            .beginStructureBlock(3, 15, 15, false)
+            .addController("Mid of the third layer")
+            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
+            .addCasingInfoExactly("Field Restriction Coil", 32, true)
+            .addCasingInfoExactly("Field Restriction Glass", 8, false)
+            .addInputHatch("The casings adjacent to field restriction glass.")
+            .addInputBus("The casings adjacent to field restriction glass.", 1)
+            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
+            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
+            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -241,7 +249,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -266,18 +274,27 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing()
-                            .build(),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                            .extFacing().glow().build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE).extFacing()
-                            .build(),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing()
-                            .glow().build() };
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179) };
     }

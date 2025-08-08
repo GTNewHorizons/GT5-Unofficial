@@ -18,7 +18,7 @@ import gregtech.common.gui.modularui.UIHelper;
 public class PreciseAssemblerFrontend extends RecipeMapFrontend {
 
     public PreciseAssemblerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

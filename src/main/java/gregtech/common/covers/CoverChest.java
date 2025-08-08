@@ -154,19 +154,23 @@ public class CoverChest extends Cover {
 
     private static void dropItem(ICoverable coverable, ForgeDirection direction, ItemStack tItem) {
         final EntityItem tItemEntity = new EntityItem(
-                coverable.getWorld(),
-                coverable.getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetX,
-                coverable.getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetY,
-                coverable.getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetZ,
-                new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+            coverable.getWorld(),
+            coverable.getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetX,
+            coverable.getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetY,
+            coverable.getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetZ,
+            new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
         if (tItem.hasTagCompound()) {
-            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
+            tItemEntity.getEntityItem()
+                .setTagCompound(
+                    (NBTTagCompound) tItem.getTagCompound()
+                        .copy());
         }
         tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
         tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.05D + 0.2D);
         tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
-        coverable.getWorld().spawnEntityInWorld(tItemEntity);
+        coverable.getWorld()
+            .spawnEntityInWorld(tItemEntity);
     }
 }

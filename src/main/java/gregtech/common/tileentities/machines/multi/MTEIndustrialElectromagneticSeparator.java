@@ -62,8 +62,8 @@ import gregtech.common.tileentities.machines.multi.gui.MTEIndustrialElectromagne
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEIndustrialElectromagneticSeparator extends
-        MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
+public class MTEIndustrialElectromagneticSeparator
+    extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
 
     public enum MagnetTiers {
 
@@ -86,23 +86,23 @@ public class MTEIndustrialElectromagneticSeparator extends
 
         public static String buildMagnetTooltip(MagnetTiers m) {
             String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Speed: +"
-                    + Math.round((1F / m.speedBoost * 100) - 100)
-                    + "%/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "EU Usage: "
-                    + Math.round(m.euModifier * 100)
-                    + "%/n "
-                    + EnumChatFormatting.AQUA
-                    + "Parallel: "
-                    + m.maxParallel;
+                + "Speed: +"
+                + Math.round((1F / m.speedBoost * 100) - 100)
+                + "%/n "
+                + EnumChatFormatting.DARK_PURPLE
+                + "EU Usage: "
+                + Math.round(m.euModifier * 100)
+                + "%/n "
+                + EnumChatFormatting.AQUA
+                + "Parallel: "
+                + m.maxParallel;
 
             if (m.supportsExotic) tooltip = tooltip + "/n "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Can Use Multi-Amp Hatches/n "
-                    + EnumChatFormatting.RED
-                    + "Limit to one energy hatch if using Multi-Amp";
+                + EnumChatFormatting.BOLD
+                + EnumChatFormatting.GREEN
+                + "Can Use Multi-Amp Hatches/n "
+                + EnumChatFormatting.RED
+                + "Limit to one energy hatch if using Multi-Amp";
 
             return tooltip;
         }
@@ -117,35 +117,38 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEIndustrialElectromagneticSeparator>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    (new String[][] { { "  CCC  ", "       ", "       ", "       ", "       ", "  B~B  " },
-                            { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BEB  ", " BBBBB " },
-                            { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
-                            { "C     C", "C     C", "CBBBBBC", "CA C AC", "CBBBBBC", "BBBBBBB" },
-                            { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
-                            { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BBB  ", " BBBBB " },
-                            { "  CCC  ", "   C   ", "   C   ", "   C   ", "   C   ", "  BBB  " } }))
-            .addElement('A', chainAllGlasses())
-            .addElement(
-                    'B',
-                    ofChain(
-                            buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
-                                    .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                                    .dot(1).buildAndChain(
-                                            onElementPass(
-                                                    MTEIndustrialElectromagneticSeparator::onCasingAdded,
-                                                    ofBlock(GregTechAPI.sBlockCasings10, 0)))))
-            .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
-            .addElement(
-                    'E',
-                    buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
-                            .adder(MTEIndustrialElectromagneticSeparator::addMagHatch).hatchClass(MTEHatchMagnet.class)
-                            .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0)).dot(2)
-                            .build())
-            .build();
+        .<MTEIndustrialElectromagneticSeparator>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            (new String[][] { { "  CCC  ", "       ", "       ", "       ", "       ", "  B~B  " },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BEB  ", " BBBBB " },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { "C     C", "C     C", "CBBBBBC", "CA C AC", "CBBBBBC", "BBBBBBB" },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BBB  ", " BBBBB " },
+                { "  CCC  ", "   C   ", "   C   ", "   C   ", "   C   ", "  BBB  " } }))
+        .addElement('A', chainAllGlasses())
+        .addElement(
+            'B',
+            ofChain(
+                buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
+                    .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(
+                            MTEIndustrialElectromagneticSeparator::onCasingAdded,
+                            ofBlock(GregTechAPI.sBlockCasings10, 0)))))
+        .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
+        .addElement(
+            'E',
+            buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
+                .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
+                .hatchClass(MTEHatchMagnet.class)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
+                .dot(2)
+                .build())
+        .build();
 
     public MTEIndustrialElectromagneticSeparator(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -167,25 +170,39 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons
-                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_EMS_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW).extFacing().glow().build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 rTexture = new ITexture[] {
-                        Textures.BlockIcons
-                                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_EMS).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_EMS_GLOW).extFacing().glow().build() };
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)) };
         }
         return rTexture;
     }
@@ -193,21 +210,26 @@ public class MTEIndustrialElectromagneticSeparator extends
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE").addInfo("Use screwdriver to switch mode")
-                .addInfo("Insert an electromagnet into the electromagnet housing to use")
-                .addInfo("Better electromagnets give further bonuses")
-                .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
-                .beginStructureBlock(7, 6, 7, false).addController("Front Center")
-                .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
-                .addCasingInfoExactly("Any Tiered Glass", 12, false)
-                .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
-                .addOtherStructurePart(
-                        translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
-                        "1 Block Above/Behind Controller",
-                        2)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addSubChannelUsage(GTStructureChannels.BOROGLASS)
-                .toolTipFinisher(GTValues.authorBaps);
+        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
+            .addInfo("Use screwdriver to switch mode")
+            .addInfo("Insert an electromagnet into the electromagnet housing to use")
+            .addInfo("Better electromagnets give further bonuses")
+            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
+            .beginStructureBlock(7, 6, 7, false)
+            .addController("Front Center")
+            .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
+            .addCasingInfoExactly("Any Tiered Glass", 12, false)
+            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
+            .addOtherStructurePart(
+                translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                "1 Block Above/Behind Controller",
+                2)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(GTValues.authorBaps);
         return tt;
     }
 
@@ -266,7 +288,8 @@ public class MTEIndustrialElectromagneticSeparator extends
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
             }
-        }.noRecipeCaching().setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -279,7 +302,7 @@ public class MTEIndustrialElectromagneticSeparator extends
     @Override
     public RecipeMap<?> getRecipeMap() {
         return (machineMode == MACHINEMODE_POLARIZER) ? RecipeMaps.polarizerRecipes
-                : RecipeMaps.electroMagneticSeparatorRecipes;
+            : RecipeMaps.electroMagneticSeparatorRecipes;
     }
 
     @Nonnull
@@ -309,11 +332,10 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatToPlayer(
-                aPlayer,
-                translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -335,21 +357,21 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", machineMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-                translateToLocal("GT5U.machines.oreprocessor1") + " "
-                        + EnumChatFormatting.WHITE
-                        + translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
-                        + EnumChatFormatting.RESET);
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 
     @Override
@@ -392,8 +414,8 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     public static boolean isValidElectromagnet(ItemStack aMagnet) {
         return aMagnet != null && aMagnet.getItem() instanceof MetaGeneratedItem01
-                && aMagnet.getItemDamage() >= 32345
-                && aMagnet.getItemDamage() <= 32349;
+            && aMagnet.getItemDamage() >= 32345
+            && aMagnet.getItemDamage() <= 32349;
     }
 
     private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -412,7 +434,7 @@ public class MTEIndustrialElectromagneticSeparator extends
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

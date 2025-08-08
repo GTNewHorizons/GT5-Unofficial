@@ -25,30 +25,27 @@ public class GregtechFactoryGradeReplacementMultis {
     private static void run1() {
         Logger.INFO("Gregtech 5 Content | Registering Advanced GT Multiblock replacements.");
         GregtechItemList.Machine_Adv_BlastFurnace.set(
-                new MTEAdvEBF(Machine_Adv_BlastFurnace.ID, "multimachine.adv.blastfurnace", "Volcanus")
-                        .getStackForm(1L));
+            new MTEAdvEBF(Machine_Adv_BlastFurnace.ID, "multimachine.adv.blastfurnace", "Volcanus").getStackForm(1L));
         GregtechItemList.Machine_Adv_ImplosionCompressor.set(
-                new MTEAdvImplosionCompressor(
-                        Machine_Adv_ImplosionCompressor.ID,
-                        "multimachine.adv.implosioncompressor",
-                        "Density^2").getStackForm(1L));
+            new MTEAdvImplosionCompressor(
+                Machine_Adv_ImplosionCompressor.ID,
+                "multimachine.adv.implosioncompressor",
+                "Density^2").getStackForm(1L));
         GregtechItemList.Industrial_Cryogenic_Freezer.set(
-                new MTEIndustrialVacuumFreezer(
-                        Industrial_Cryogenic_Freezer.ID,
-                        "multimachine.adv.industrialfreezer",
-                        "Cryogenic Freezer").getStackForm(1L));
+            new MTEIndustrialVacuumFreezer(
+                Industrial_Cryogenic_Freezer.ID,
+                "multimachine.adv.industrialfreezer",
+                "Cryogenic Freezer").getStackForm(1L));
         GregtechItemList.FusionComputer_UV2.set(
-                new MTEAdvFusionMk4(FusionComputer_UV2.ID, "fusioncomputer.tier.09", "FusionTech MK IV")
-                        .getStackForm(1L));
+            new MTEAdvFusionMk4(FusionComputer_UV2.ID, "fusioncomputer.tier.09", "FusionTech MK IV").getStackForm(1L));
         GregtechItemList.FusionComputer_UV3.set(
-                new MTEAdvFusionMk5(FusionComputer_UV3.ID, "fusioncomputer.tier.10", "FusionTech MK V")
-                        .getStackForm(1L));
+            new MTEAdvFusionMk5(FusionComputer_UV3.ID, "fusioncomputer.tier.10", "FusionTech MK V").getStackForm(1L));
 
         // 31021
         GregtechItemList.Machine_Adv_DistillationTower.set(
-                new MTEAdvDistillationTower(
-                        Machine_Adv_DistillationTower.ID,
-                        "multimachine.adv.distillationtower",
-                        "Dangote Distillus").getStackForm(1L));
+            new MTEAdvDistillationTower(
+                Machine_Adv_DistillationTower.ID,
+                "multimachine.adv.distillationtower",
+                "Dangote Distillus").getStackForm(1L));
     }
 }

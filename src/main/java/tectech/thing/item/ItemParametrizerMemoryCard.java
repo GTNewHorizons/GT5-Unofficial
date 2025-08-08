@@ -51,7 +51,7 @@ public final class ItemParametrizerMemoryCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int ordinalSide, float hitX, float hitY, float hitZ) {
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(aPlayer instanceof EntityPlayerMP)) return false;
         if (!(tTileEntity instanceof IGregTechTileEntity)) return false;
@@ -70,9 +70,9 @@ public final class ItemParametrizerMemoryCard extends Item {
                         reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
                     } else {
                         reason = translateToLocalFormatted(
-                                "item.em.parametrizerMemoryCard.controllerMismatch",
-                                tNBT.getString("controller"),
-                                controller.getLocalName());
+                            "item.em.parametrizerMemoryCard.controllerMismatch",
+                            tNBT.getString("controller"),
+                            controller.getLocalName());
                     }
                     GTUtility.sendChatToPlayer(aPlayer, reason);
 
@@ -84,7 +84,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
 
                     controller.parametrization
-                            .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
+                        .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
                 GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
             } else {
@@ -96,12 +96,12 @@ public final class ItemParametrizerMemoryCard extends Item {
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
                     // Tesla tower for some reason has a bunch of parameters called "unused"
                     if (parameters[0] != null && !parameters[0].getBrief()
-                            .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
+                        .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value0D", parameters[0].get());
                         tagChild.setString("name0", parameters[0].getBrief());
                     }
                     if (parameters[1] != null && !parameters[1].getBrief()
-                            .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
+                        .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value1D", parameters[1].get());
                         tagChild.setString("name1", parameters[1].getBrief());
                     }
@@ -193,10 +193,10 @@ public final class ItemParametrizerMemoryCard extends Item {
         if (tNBT == null) return;
         if (tNBT.hasKey("controller")) {
             aList.add(
-                    translateToLocalFormatted(
-                            "item.em.parametrizerMemoryCard.desc.copied_controller",
-                            EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
-                            EnumChatFormatting.GREEN + tNBT.getString("coords")));
+                translateToLocalFormatted(
+                    "item.em.parametrizerMemoryCard.desc.copied_controller",
+                    EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.GREEN + tNBT.getString("coords")));
         }
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
@@ -204,17 +204,17 @@ public final class ItemParametrizerMemoryCard extends Item {
                 NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
                 if (tag.hasKey("name0")) {
                     aList.add(
-                            EnumChatFormatting.AQUA + tag.getString("name0")
-                                    + ": "
-                                    + EnumChatFormatting.GRAY
-                                    + tag.getDouble("value0D"));
+                        EnumChatFormatting.AQUA + tag.getString("name0")
+                            + ": "
+                            + EnumChatFormatting.GRAY
+                            + tag.getDouble("value0D"));
                 }
                 if (tag.hasKey("name1")) {
                     aList.add(
-                            EnumChatFormatting.AQUA + tag.getString("name1")
-                                    + ": "
-                                    + EnumChatFormatting.GRAY
-                                    + tag.getDouble("value1D"));
+                        EnumChatFormatting.AQUA + tag.getString("name1")
+                            + ": "
+                            + EnumChatFormatting.GRAY
+                            + tag.getDouble("value1D"));
                 }
             }
         }

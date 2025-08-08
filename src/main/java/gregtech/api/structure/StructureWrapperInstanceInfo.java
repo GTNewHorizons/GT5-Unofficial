@@ -24,7 +24,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
  * An object that stores specifics about an instance multi (casing counts mainly).
  */
 public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlignment & IStructureProvider<MTE>>
-        implements IStructureInstance<MTE> {
+    implements IStructureInstance<MTE> {
 
     public final StructureWrapper<MTE> structure;
 
@@ -105,14 +105,15 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
         NBTTagList list = context.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND);
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            char casing = tag.getString("casing").charAt(0);
+            char casing = tag.getString("casing")
+                .charAt(0);
 
             lines.add(
-                    GTUtility.translate(
-                            "GT5U.gui.missing_casings_specific",
-                            structure.casings.get(casing).casing.getLocalizedName(),
-                            tag.getInteger("req"),
-                            tag.getInteger("pres")));
+                GTUtility.translate(
+                    "GT5U.gui.missing_casings_specific",
+                    structure.casings.get(casing).casing.getLocalizedName(),
+                    tag.getInteger("req"),
+                    tag.getInteger("pres")));
         }
     }
 

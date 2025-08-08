@@ -70,19 +70,25 @@ public class CoverGui<T extends Cover> {
     public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
-                cover.getTile().markDirty();
+                cover.getTile()
+                    .markDirty();
             }
         });
         final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
-                .debugName(getGuiId());
-        final Flow widgetsColumn = Flow.column().coverChildren().crossAxisAlignment(Alignment.CrossAxis.START)
-                .marginLeft(WIDGET_MARGIN).marginTop(WIDGET_MARGIN);
+            .debugName(getGuiId());
+        final Flow widgetsColumn = Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginLeft(WIDGET_MARGIN)
+            .marginTop(WIDGET_MARGIN);
         panel.child(widgetsColumn);
         addTitleToUI(widgetsColumn);
         addUIWidgets(syncManager, widgetsColumn);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
-            panel.child(new CoverTickRateButton(cover, syncManager).right(4).bottom(4));
+            panel.child(
+                new CoverTickRateButton(cover, syncManager).right(4)
+                    .bottom(4));
         }
 
         return panel;
@@ -92,33 +98,45 @@ public class CoverGui<T extends Cover> {
         ItemStack coverItem = GTUtility.intToStack(cover.getCoverID());
         if (coverItem == null) return;
         column.child(
-                Flow.row().coverChildren().marginBottom(4)
-                        .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget()).child(
-                                new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName())
-                                        .marginLeft(4).widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+            Flow.row()
+                .coverChildren()
+                .marginBottom(4)
+                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
+                .child(
+                    new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
     }
 
     /**
      * Creates a layout to which you can add rows positioned with {@link CoverGui#positionRow}.
      */
     protected Flow makeRowLayout() {
-        return Flow.column().coverChildren().crossAxisAlignment(Alignment.CrossAxis.START).marginLeft(WIDGET_MARGIN)
-                .childPadding(ROW_PADDING);
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginLeft(WIDGET_MARGIN)
+            .childPadding(ROW_PADDING);
     }
 
     /**
      * Positions a row to render nicely inside the layout returned by {@link CoverGui#makeRowLayout}.
      */
     protected Flow positionRow(Flow row) {
-        return row.coverChildren().childPadding(ROW_ELEMENT_PADDING);
+        return row.coverChildren()
+            .childPadding(ROW_ELEMENT_PADDING);
     }
 
     protected Flow makeNamedColumn(IKey name) {
-        return Flow.column().coverChildren().crossAxisAlignment(Alignment.CrossAxis.START).child(name.asWidget());
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .child(name.asWidget());
     }
 
     protected TextFieldWidget makeNumberField(int width) {
-        return new TextFieldWidget().setFormatAsInteger(true).width(width).height(12);
+        return new TextFieldWidget().setFormatAsInteger(true)
+            .width(width)
+            .height(12);
     }
 
     protected TextFieldWidget makeNumberField() {

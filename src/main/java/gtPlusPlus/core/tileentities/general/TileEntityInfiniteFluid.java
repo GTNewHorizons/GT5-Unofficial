@@ -50,14 +50,14 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
                         this.fluid.amount = this.getCapacity();
                         this.needsUpdate = true;
                         FluidEvent.fireEvent(
-                                new FluidEvent.FluidFillingEvent(
-                                        fluid,
-                                        this.getWorldObj(),
-                                        this.xCoord,
-                                        this.yCoord,
-                                        this.zCoord,
-                                        this,
-                                        resource.amount));
+                            new FluidEvent.FluidFillingEvent(
+                                fluid,
+                                this.getWorldObj(),
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this,
+                                resource.amount));
                     }
                     return resource.amount;
                 } else if (this.fluid.isFluidEqual(resource)) {
@@ -66,14 +66,14 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
                         // it's still going to advertize it has max int capacity tho,
                         // but the capacity will effectively be infinite.
                         FluidEvent.fireEvent(
-                                new FluidEvent.FluidFillingEvent(
-                                        fluid,
-                                        this.getWorldObj(),
-                                        this.xCoord,
-                                        this.yCoord,
-                                        this.zCoord,
-                                        this,
-                                        resource.amount));
+                            new FluidEvent.FluidFillingEvent(
+                                fluid,
+                                this.getWorldObj(),
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this,
+                                resource.amount));
                     }
                     return resource.amount;
                 }
@@ -93,14 +93,14 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
                 if (this.fluid.isFluidEqual(resource)) {
                     if (doDrain) {
                         FluidEvent.fireEvent(
-                                new FluidEvent.FluidDrainingEvent(
-                                        fluid,
-                                        this.getWorldObj(),
-                                        this.xCoord,
-                                        this.yCoord,
-                                        this.zCoord,
-                                        this,
-                                        resource.amount));
+                            new FluidEvent.FluidDrainingEvent(
+                                fluid,
+                                this.getWorldObj(),
+                                this.xCoord,
+                                this.yCoord,
+                                this.zCoord,
+                                this,
+                                resource.amount));
                     }
                     return resource.copy();
                 }
@@ -108,14 +108,14 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
             case SUPPLY_ALL_FLUIDS:
                 if (doDrain) {
                     FluidEvent.fireEvent(
-                            new FluidEvent.FluidDrainingEvent(
-                                    fluid,
-                                    this.getWorldObj(),
-                                    this.xCoord,
-                                    this.yCoord,
-                                    this.zCoord,
-                                    this,
-                                    resource.amount));
+                        new FluidEvent.FluidDrainingEvent(
+                            fluid,
+                            this.getWorldObj(),
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this,
+                            resource.amount));
                 }
                 return resource.copy();
         }
@@ -134,14 +134,14 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
         fs.amount = maxDrain;
         if (doDrain) {
             FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                            fluid,
-                            this.getWorldObj(),
-                            this.xCoord,
-                            this.yCoord,
-                            this.zCoord,
-                            this,
-                            0));
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this,
+                    0));
         }
         return fs;
     }

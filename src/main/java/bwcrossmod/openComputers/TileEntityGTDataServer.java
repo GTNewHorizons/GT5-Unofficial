@@ -42,7 +42,7 @@ import li.cil.oc.api.network.SimpleComponent;
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.ModIDs.OPEN_COMPUTERS)
 public class TileEntityGTDataServer extends TileEntity
-        implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
+    implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
     private final BiMap<Long, GTNBTDataBase> OrbDataBase = HashBiMap.create();
 
@@ -59,7 +59,12 @@ public class TileEntityGTDataServer extends TileEntity
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
         for (Map.Entry<Long, GTNBTDataBase> entry : this.OrbDataBase.entrySet()) {
-            ret.add(entry.getValue().getId() + Long.MAX_VALUE + ". " + entry.getValue().getmDataTitle());
+            ret.add(
+                entry.getValue()
+                    .getId() + Long.MAX_VALUE
+                    + ". "
+                    + entry.getValue()
+                        .getmDataTitle());
         }
         return ret.toArray(new String[0]);
     }
@@ -80,21 +85,21 @@ public class TileEntityGTDataServer extends TileEntity
 
         if (this.isServerSide()) {
             if (GTUtility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))
-                    && this.mItems[0].hasTagCompound()) {
+                && this.mItems[0].hasTagCompound()) {
                 if (GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
                     this.OrbDataBase.put(
-                            GTNBTDataBase.getMaxID(),
-                            new GTNBTDataBase(
-                                    BehaviourDataOrb.getDataName(this.mItems[0]),
-                                    BehaviourDataOrb.getDataTitle(this.mItems[0]),
-                                    this.mItems[0].getTagCompound()));
+                        GTNBTDataBase.getMaxID(),
+                        new GTNBTDataBase(
+                            BehaviourDataOrb.getDataName(this.mItems[0]),
+                            BehaviourDataOrb.getDataTitle(this.mItems[0]),
+                            this.mItems[0].getTagCompound()));
                 } else {
                     long id = GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound());
                     this.OrbDataBase.put(id, GTNBTDataBase.getGTTagFromId(id));
                 }
             }
             if (GTUtility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))
-                    && this.mItems[0].hasTagCompound()) {
+                && this.mItems[0].hasTagCompound()) {
 
                 String bookTitle = GTUtility.ItemNBT.getBookTitle(this.mItems[0]);
                 String punchcardData = GTUtility.ItemNBT.getPunchCardData(this.mItems[0]);
@@ -102,13 +107,12 @@ public class TileEntityGTDataServer extends TileEntity
                 byte data = (byte) (bookTitle.isEmpty() ? punchcardData.isEmpty() ? mapID != -1 ? 3 : -1 : 2 : 1);
 
                 String title = data == 1 ? bookTitle
-                        : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
+                    : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
                 String name = data == 1 ? "eBook"
-                        : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
+                    : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
                 if (GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
-                    this.OrbDataBase.put(
-                            GTNBTDataBase.getMaxID(),
-                            new GTNBTDataBase(name, title, this.mItems[0].getTagCompound()));
+                    this.OrbDataBase
+                        .put(GTNBTDataBase.getMaxID(), new GTNBTDataBase(name, title, this.mItems[0].getTagCompound()));
                 } else {
                     long id = GTNBTDataBase.getIdFromTag(this.mItems[0].getTagCompound());
                     this.OrbDataBase.put(id, GTNBTDataBase.getGTTagFromId(id));

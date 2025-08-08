@@ -66,7 +66,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends GTPPMultiBlockBase<T>
-        implements IOverclockDescriptionProvider {
+    implements IOverclockDescriptionProvider {
 
     private final OverclockDescriber overclockDescriber;
 
@@ -88,10 +88,10 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    aActive ? getFrontOverlayActive() : getFrontOverlay() };
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
@@ -209,8 +209,8 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
             log(
-                    "Trying to set recipe map. Type: "
-                            + (getRecipeMap() != null ? getRecipeMap().unlocalizedName : "Null"));
+                "Trying to set recipe map. Type: "
+                    + (getRecipeMap() != null ? getRecipeMap().unlocalizedName : "Null"));
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
             log("Adding Steam Input Bus");
             aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
@@ -249,19 +249,30 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
-            if (GTUtility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
-                if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                    tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+            if (GTUtility.areStacksEqual(
+                aStack,
+                tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(0))) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(0).stackSize >= aStack.stackSize) {
+                    tHatch.getBaseMetaTileEntity()
+                        .decrStackSize(0, aStack.stackSize);
                     return true;
                 }
             }
         }
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                if (GTUtility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                if (GTUtility.areStacksEqual(
+                    aStack,
+                    tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i))) {
+                    if (tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(0).stackSize >= aStack.stackSize) {
+                        tHatch.getBaseMetaTileEntity()
+                            .decrStackSize(0, aStack.stackSize);
                         return true;
                     }
                 }
@@ -274,14 +285,16 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
-            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             if (tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
         }
         for (MTEHatchInput hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
-            byte hatchColor = hatch.getBaseMetaTileEntity().getColorization();
+            byte hatchColor = hatch.getBaseMetaTileEntity()
+                .getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             rList.add(hatch.getFillableStack());
         }
@@ -292,12 +305,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
-            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null) {
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
                 }
             }
         }
@@ -320,7 +338,8 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             ItemStack single = aStack.splitStack(1);
             for (MTEHatchOutput tHatch : filteredHatches) {
                 if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, single)) outputSuccess = true;
+                    if (tHatch.getBaseMetaTileEntity()
+                        .addStackToSlot(1, single)) outputSuccess = true;
                 }
             }
         }
@@ -331,8 +350,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                rList.add(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i));
             }
         }
         return rList;
@@ -396,14 +418,15 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     @SideOnly(Side.CLIENT)
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-            List<String> lines) {
+        List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
             lines.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.missing_hatch",
-                            GregtechItemList.Hatch_Input_Steam.get(1).getDisplayName()));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.missing_hatch",
+                    GregtechItemList.Hatch_Input_Steam.get(1)
+                        .getDisplayName()));
         }
     }
 
@@ -434,39 +457,41 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStored, val -> uiSteamStored = val));
 
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG_STEEL)
-                        .dynamicTooltip(
-                                () -> Collections.singletonList(
-                                        translateToLocalFormatted(
-                                                MTEBasicMachine.STEAM_AMOUNT_LANGKEY,
-                                                numberFormat.format(uiSteamStored),
-                                                numberFormat.format(uiSteamCapacity))))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setUpdateTooltipEveryTick(true).setSize(48, 42)
-                        .setPos(-48, -8));
+            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG_STEEL)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        translateToLocalFormatted(
+                            MTEBasicMachine.STEAM_AMOUNT_LANGKEY,
+                            numberFormat.format(uiSteamStored),
+                            numberFormat.format(uiSteamCapacity))))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(48, 42)
+                .setPos(-48, -8));
 
         builder.widget(
-                new DrawableWidget()
-                        .setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
-                        .setPos(-48 + 21, -8 + 21).setSize(18, 4));
+            new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
+                .setPos(-48 + 21, -8 + 21)
+                .setSize(18, 4));
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(
-                    RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+            currentTip
+                .add(RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
         String efficiency = RESET + StatCollector
-                .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
             currentTip
-                    .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip.add(
-                    GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+            currentTip
+                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -474,24 +499,22 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             long actualEnergyUsage = tag.getLong("energyUsage");
             if (actualEnergyUsage > 0) {
                 currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                                "GTPP.waila.steam.use",
-                                formatNumbers(actualEnergyUsage * 20)));
+                    StatCollector
+                        .translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage * 20)));
             }
         }
         currentTip.add(
-                GTWaila.getMachineProgressString(
-                        isActive,
-                        tag.getBoolean("isAllowedToWork"),
-                        tag.getInteger("maxProgress"),
-                        tag.getInteger("progress")));
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.multiblock.status.cpu_load",
-                            formatNumbers(tAverageTime)));
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -510,8 +533,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     protected static <T extends MTESteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
-        return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList).hatchIds(31040)
-                .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+        return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
+            .hatchIds(31040)
+            .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
     }
 
     protected static OverclockDescriber createOverclockDescriber() {

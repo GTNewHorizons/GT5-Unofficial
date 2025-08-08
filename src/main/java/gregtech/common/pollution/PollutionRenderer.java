@@ -117,8 +117,7 @@ public class PollutionRenderer {
         if (!GTMod.proxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-                || (fogIntensityLastTick < FOG_START_EXP_RATIO))
-            return;
+            || (fogIntensityLastTick < FOG_START_EXP_RATIO)) return;
 
         if (event.fogMode == 0) {
             double v = 1 - fogIntensityLastTick / FOG_START_EXP_RATIO;
@@ -137,9 +136,8 @@ public class PollutionRenderer {
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
 
         if (event.entity.isPotionActive(Potion.blindness) || (fogIntensityLastTick < FOG_START_EXP_RATIO)
-                || event.block.getMaterial() == Material.water
-                || event.block.getMaterial() == Material.lava)
-            return;
+            || event.block.getMaterial() == Material.water
+            || event.block.getMaterial() == Material.lava) return;
 
         GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP2);
         event.density = (float) Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F;
@@ -175,14 +173,14 @@ public class PollutionRenderer {
         } else if (DEBUG) {
             drawPollution("Intensity: " + (fogIntensityLastTick * 10000), 0);
             drawPollution(
-                    "Pollution: " + pollutionMap.getPollution(
-                            Minecraft.getMinecraft().thePlayer.lastTickPosX,
-                            Minecraft.getMinecraft().thePlayer.lastTickPosZ),
-                    20);
+                "Pollution: " + pollutionMap.getPollution(
+                    Minecraft.getMinecraft().thePlayer.lastTickPosX,
+                    Minecraft.getMinecraft().thePlayer.lastTickPosZ),
+                20);
             drawPollution(
-                    "Density:   " + ((float) (Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F)
-                            * 10000),
-                    40);
+                "Density:   "
+                    + ((float) (Math.pow(fogIntensityLastTick - FOG_START_EXP_RATIO, .75F) / 5 + 0.01F) * 10000),
+                40);
         }
     }
 
@@ -217,10 +215,10 @@ public class PollutionRenderer {
 
             if (block.getMaterial() == Material.air) {
                 EntityFX fx = new EntityFXPollution(
-                        w,
-                        (float) i1 + w.rand.nextFloat(),
-                        (float) j1 + w.rand.nextFloat(),
-                        (float) k1 + w.rand.nextFloat());
+                    w,
+                    (float) i1 + w.rand.nextFloat(),
+                    (float) j1 + w.rand.nextFloat(),
+                    (float) k1 + w.rand.nextFloat());
                 mc.effectRenderer.addEffect(fx);
             }
         }

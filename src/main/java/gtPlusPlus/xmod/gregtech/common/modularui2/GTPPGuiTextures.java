@@ -9,6 +9,9 @@ public final class GTPPGuiTextures {
     public static void init() {}
 
     public static final UITexture PICTURE_CANISTER_DARK = UITexture.builder()
-            .location(GTPlusPlus.ID, "gui/overlay_slot/canister_dark").fullImage().canApplyTheme()
-            .name(GTPPTextureIds.PICTURE_CANISTER_DARK).build();
+        .location(GTPlusPlus.ID, "gui/overlay_slot/canister_dark")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTPPTextureIds.PICTURE_CANISTER_DARK)
+        .build();
 }

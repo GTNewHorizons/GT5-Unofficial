@@ -31,19 +31,19 @@ public class BehaviourCoverTool extends BehaviourNone {
     private static final String NBT_COVER_ID = "mCoverId";
     private static final String NBT_COVER_DATA = "mCoverData";
     private final String mTooltip = GTLanguageManager
-            .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
+        .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
     @Override
     public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
-            final ForgeDirection side) {
+        final ForgeDirection side) {
         return tileEntity instanceof ICoverable;
     }
 
     @Override
     // Included for Ring of Loki support.
     public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-            final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
-            final float hitY, final float hitZ) {
+        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+        final float hitY, final float hitZ) {
         if (aWorld.getTileEntity(aX, aY, aZ) instanceof ICoverable) {
             final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
@@ -53,7 +53,7 @@ public class BehaviourCoverTool extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -79,9 +79,9 @@ public class BehaviourCoverTool extends BehaviourNone {
                         chats = ImmutableList.of("Please Copy a Valid Cover First.");
                     } else if (targetCover.getCoverID() == copiedCoverId) {
                         coverable.updateAttachedCover(
-                                copiedCoverId,
-                                targetCover.getSide(),
-                                tNBT.getCompoundTag(NBT_COVER_DATA));
+                            copiedCoverId,
+                            targetCover.getSide(),
+                            tNBT.getCompoundTag(NBT_COVER_DATA));
                         chats = ImmutableList.of("Cover Data Pasted.");
                     } else {
                         chats = ImmutableList.of("Not Matched Cover.");
@@ -98,7 +98,7 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private static Cover getTargetCover(TileEntity tileEntity, ForgeDirection side, float hitX, float hitY,
-            float hitZ) {
+        float hitZ) {
         if (tileEntity instanceof ICoverable coverable) {
             Cover coverAtSide = coverable.getCoverAtSide(side);
             if (coverAtSide != CoverRegistry.NO_COVER) {
@@ -111,33 +111,34 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private static @NotNull List<String> getCopyText(@NotNull Cover targetCover, int aX, int aY, int aZ,
-            int dimensionId) {
+        int dimensionId) {
         List<String> chats = new ArrayList<>();
         chats.add(
-                EnumChatFormatting.STRIKETHROUGH + "-----"
-                        + EnumChatFormatting.RESET
-                        + " X: "
-                        + EnumChatFormatting.AQUA
-                        + GTUtility.formatNumbers(aX)
-                        + EnumChatFormatting.RESET
-                        + " Y: "
-                        + EnumChatFormatting.AQUA
-                        + GTUtility.formatNumbers(aY)
-                        + EnumChatFormatting.RESET
-                        + " Z: "
-                        + EnumChatFormatting.AQUA
-                        + GTUtility.formatNumbers(aZ)
-                        + EnumChatFormatting.RESET
-                        + " D: "
-                        + EnumChatFormatting.AQUA
-                        + dimensionId
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + EnumChatFormatting.STRIKETHROUGH
-                        + "-----");
+            EnumChatFormatting.STRIKETHROUGH + "-----"
+                + EnumChatFormatting.RESET
+                + " X: "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(aX)
+                + EnumChatFormatting.RESET
+                + " Y: "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(aY)
+                + EnumChatFormatting.RESET
+                + " Z: "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(aZ)
+                + EnumChatFormatting.RESET
+                + " D: "
+                + EnumChatFormatting.AQUA
+                + dimensionId
+                + EnumChatFormatting.RESET
+                + " "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "-----");
         ForgeDirection tSide = targetCover.getSide();
         chats.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
-        String coverDisplayName = targetCover.asItemStack().getDisplayName();
+        String coverDisplayName = targetCover.asItemStack()
+            .getDisplayName();
         chats.add("Cover Type: " + EnumChatFormatting.GREEN + coverDisplayName + EnumChatFormatting.RESET);
         return chats;
     }

@@ -99,7 +99,7 @@ public class CoverItemMeter extends Cover {
     }
 
     public static byte computeSignalBasedOnItems(ICoverable tileEntity, boolean inverted, int threshold, int slot,
-            int ordinalSide) {
+        int ordinalSide) {
         long max = 0;
         long used = 0;
         final IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();

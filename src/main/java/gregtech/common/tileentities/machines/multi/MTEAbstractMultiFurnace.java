@@ -4,7 +4,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 
 public abstract class MTEAbstractMultiFurnace<T extends MTEAbstractMultiFurnace<T>>
-        extends MTEExtendedPowerMultiBlockBase<T> {
+    extends MTEExtendedPowerMultiBlockBase<T> {
 
     private HeatingCoilLevel mCoilLevel;
 

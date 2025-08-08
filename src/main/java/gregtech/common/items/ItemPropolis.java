@@ -107,20 +107,35 @@ public class ItemPropolis extends Item {
     }
 
     public void addProcessHV(ItemStack tPropolis, ItemStack aOutput2) {
-        GTValues.RA.stdBuilder().itemInputs(tPropolis).itemOutputs(aOutput2).outputChances(5000)
-                .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 100)).duration(2 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV).addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(5000)
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 100))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(fluidExtractionRecipes);
     }
 
     public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
-        GTValues.RA.stdBuilder().itemInputs(tPropolis).itemOutputs(aOutput2).outputChances(2500)
-                .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 200)).duration(5 * SECONDS).eut(TierEU.RECIPE_EV)
-                .addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(2500)
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 200))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(fluidExtractionRecipes);
     }
 
     public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
-        GTValues.RA.stdBuilder().itemInputs(tPropolis).itemOutputs(aOutput2).outputChances(1500)
-                .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 300)).duration(7 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_IV).addTo(fluidExtractionRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(1500)
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 300))
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(fluidExtractionRecipes);
     }
 }

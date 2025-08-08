@@ -53,7 +53,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-            500 };
+        500 };
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
     private boolean stopChecking = false;
     private String clientLocale = "en_US";
@@ -115,20 +115,19 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public String[] getInfoData() {
-        return new String[] { translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": "
-                + EnumChatFormatting.GOLD
-                + status };
+        return new String[] {
+            translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status };
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -195,7 +194,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         description[0] = CommonValues.TEC_MARK_EM;
         description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0"); // Feeling certain, or not?
         description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                + translateToLocal("gt.blockmachines.hatch.certain.desc.1"); // Schrödinger equation in a box
+            + translateToLocal("gt.blockmachines.hatch.certain.desc.1"); // Schrödinger equation in a box
         if (mTier < 6) {
             description[3] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
         }
@@ -224,67 +223,67 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                 break;
             case 2: // ooo xox ooo
                 result += balanceCheck(
-                        4,
-                        matrix[0],
-                        matrix[4],
-                        matrix[1],
-                        matrix[5],
-                        matrix[2],
-                        matrix[6],
-                        matrix[3],
-                        matrix[7]) ? 0 : 1;
+                    4,
+                    matrix[0],
+                    matrix[4],
+                    matrix[1],
+                    matrix[5],
+                    matrix[2],
+                    matrix[6],
+                    matrix[3],
+                    matrix[7]) ? 0 : 1;
                 result += balanceCheck(
-                        4,
-                        matrix[8],
-                        matrix[12],
-                        matrix[9],
-                        matrix[13],
-                        matrix[10],
-                        matrix[14],
-                        matrix[11],
-                        matrix[15]) ? 0 : 2;
+                    4,
+                    matrix[8],
+                    matrix[12],
+                    matrix[9],
+                    matrix[13],
+                    matrix[10],
+                    matrix[14],
+                    matrix[11],
+                    matrix[15]) ? 0 : 2;
                 break;
             case 3: // oxo xox oxo
                 result += balanceCheck(
-                        2,
-                        matrix[0],
-                        matrix[4],
-                        matrix[8],
-                        matrix[12],
-                        matrix[1],
-                        matrix[5],
-                        matrix[9],
-                        matrix[13]) ? 0 : 1;
+                    2,
+                    matrix[0],
+                    matrix[4],
+                    matrix[8],
+                    matrix[12],
+                    matrix[1],
+                    matrix[5],
+                    matrix[9],
+                    matrix[13]) ? 0 : 1;
                 result += balanceCheck(
-                        4,
-                        matrix[0],
-                        matrix[4],
-                        matrix[1],
-                        matrix[5],
-                        matrix[2],
-                        matrix[6],
-                        matrix[3],
-                        matrix[7]) ? 0 : 2;
+                    4,
+                    matrix[0],
+                    matrix[4],
+                    matrix[1],
+                    matrix[5],
+                    matrix[2],
+                    matrix[6],
+                    matrix[3],
+                    matrix[7]) ? 0 : 2;
                 result += balanceCheck(
-                        4,
-                        matrix[8],
-                        matrix[12],
-                        matrix[9],
-                        matrix[13],
-                        matrix[10],
-                        matrix[14],
-                        matrix[11],
-                        matrix[15]) ? 0 : 4;
+                    4,
+                    matrix[8],
+                    matrix[12],
+                    matrix[9],
+                    matrix[13],
+                    matrix[10],
+                    matrix[14],
+                    matrix[11],
+                    matrix[15]) ? 0 : 4;
                 result += balanceCheck(
-                        2,
-                        matrix[2],
-                        matrix[6],
-                        matrix[10],
-                        matrix[14],
-                        matrix[3],
-                        matrix[7],
-                        matrix[11],
-                        matrix[15]) ? 0 : 8;
+                    2,
+                    matrix[2],
+                    matrix[6],
+                    matrix[10],
+                    matrix[14],
+                    matrix[3],
+                    matrix[7],
+                    matrix[11],
+                    matrix[15]) ? 0 : 8;
                 break;
             case 4: // xox ooo xox
                 result += balanceCheck(2, matrix[0], matrix[4], matrix[1], matrix[5]) ? 0 : 1;
@@ -330,19 +329,22 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK).setSize(18, 18)
-                        .setPos(112, 55));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(112, 55));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
 
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE).setPos(43, 4)
-                        .setSize(90, 72))
-                .widget(
-                        new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR).setPos(46, 27)
-                                .setSize(46, 46));
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(43, 4)
+                .setSize(90, 72))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR)
+                    .setPos(46, 27)
+                    .setSize(46, 46));
 
         int[] xPositions = new int[] { 7, 25, 133, 151 };
         for (int i = 0; i < 4; i++) {
@@ -359,25 +361,25 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                         selection = -1;
                     }
                     compute();
-                }).setPlayClickSound(false)
-                        .setBackground(
-                                GTUITextures.BUTTON_STANDARD,
-                                TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
-                        .setPos(xPositions[i], 4 + j * 18).setSize(18, 18))
-                        .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
+                })
+                    .setPlayClickSound(false)
+                    .setBackground(GTUITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
+                    .setPos(xPositions[i], 4 + j * 18)
+                    .setSize(18, 18))
+                    .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
             }
         }
         builder.widget(new FakeSyncWidget.ByteSyncer(() -> selection, val -> selection = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
+            .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
+            .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
 
         builder.widget(
-                new TextWidget()
-                        .setStringSupplier(
-                                () -> (status == 0
-                                        ? StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ok")
-                                        : StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ng")))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 7));
+            new TextWidget()
+                .setStringSupplier(
+                    () -> (status == 0 ? StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ok")
+                        : StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ng")))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 7));
 
         for (int i = 0; i < 9; i++) {
             final int index = i;
@@ -413,7 +415,9 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                         break;
                 }
                 return null;
-            }).setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12).setSize(4, 4));
+            })
+                .setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12)
+                .setSize(4, 4));
         }
 
         for (int i = 0; i < 16; i++) {
@@ -434,11 +438,14 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                     glDisable(GL_BLEND);
                     glColor4f(1f, 1f, 1f, 1f);
                 }
-            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR).setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
-                    .setSize(8, 8)).widget(
-                            new DrawableWidget().setDrawable(
-                                    () -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
-                                    .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12).setSize(10, 10));
+            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR)
+                .setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
+                .setSize(8, 8))
+                .widget(
+                    new DrawableWidget()
+                        .setDrawable(() -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
+                        .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12)
+                        .setSize(10, 10));
         }
     }
 }

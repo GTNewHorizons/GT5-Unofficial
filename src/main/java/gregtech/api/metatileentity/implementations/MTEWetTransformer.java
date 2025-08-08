@@ -38,29 +38,29 @@ public class MTEWetTransformer extends MTETransformer {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
             rTextures[2][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
             rTextures[3][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
             rTextures[4][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
             rTextures[5][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
             rTextures[6][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[7][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[8][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
             rTextures[9][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
             rTextures[10][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
             rTextures[11][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
         }
         return rTextures;
     }
@@ -68,14 +68,14 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                mDescriptionArray,
-                "Accepts 16A and outputs 64A",
-                "Toggle 2A/8A half-mode with Screwdriver",
-                EnumChatFormatting.BLUE + "Tec"
-                        + EnumChatFormatting.DARK_BLUE
-                        + "Tech"
-                        + EnumChatFormatting.BLUE
-                        + ": Interdimensional");
+            mDescriptionArray,
+            "Accepts 16A and outputs 64A",
+            "Toggle 2A/8A half-mode with Screwdriver",
+            EnumChatFormatting.BLUE + "Tec"
+                + EnumChatFormatting.DARK_BLUE
+                + "Tech"
+                + EnumChatFormatting.BLUE
+                + ": Interdimensional");
     }
 
     @Override
@@ -113,7 +113,7 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
             GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");

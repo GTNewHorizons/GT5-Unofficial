@@ -37,12 +37,12 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     public MTETieredChest(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                3,
-                "This Chest stores " + (int) (GTUtility.powInt(6.0D, aTier) * mStorageFactor) + " Items");
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
+            "This Chest stores " + (int) (GTUtility.powInt(6.0D, aTier) * mStorageFactor) + " Items");
     }
 
     public MTETieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -71,7 +71,10 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()
+            && this.getBaseMetaTileEntity()
+                .isAllowedToWork()) {
             if (this.getItemCount() <= 0) {
                 this.mItemStack = null;
                 this.mItemCount = 0;
@@ -82,7 +85,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             }
 
             if (this.mInventory[0] != null && this.mItemCount < this.getMaxItemCount()
-                    && GTUtility.areStacksEqual(this.mInventory[0], this.mItemStack)) {
+                && GTUtility.areStacksEqual(this.mInventory[0], this.mItemStack)) {
                 this.mItemCount += this.mInventory[0].stackSize;
                 if (this.mItemCount > this.getMaxItemCount()) {
                     this.mInventory[0].stackSize = this.mItemCount - this.getMaxItemCount();
@@ -97,13 +100,12 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                 this.mInventory[1].stackSize = Math.min(this.mItemStack.getMaxStackSize(), this.mItemCount);
                 this.mItemCount -= this.mInventory[1].stackSize;
             } else if (this.mItemCount > 0 && GTUtility.areStacksEqual(this.mInventory[1], this.mItemStack)
-                    && this.mInventory[1].getMaxStackSize() > this.mInventory[1].stackSize) {
-                        int tmp = Math.min(
-                                this.mItemCount,
-                                this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
-                        this.mInventory[1].stackSize += tmp;
-                        this.mItemCount -= tmp;
-                    }
+                && this.mInventory[1].getMaxStackSize() > this.mInventory[1].stackSize) {
+                    int tmp = Math
+                        .min(this.mItemCount, this.mInventory[1].getMaxStackSize() - this.mInventory[1].stackSize);
+                    this.mInventory[1].stackSize += tmp;
+                    this.mItemCount -= tmp;
+                }
 
             if (this.mItemStack != null) {
                 this.mInventory[2] = this.mItemStack.copy();
@@ -126,7 +128,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     @Override
     public int getProgresstime() {
         return this.mItemCount + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
-                + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
+            + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
     }
 
     @Override
@@ -140,26 +142,26 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     }
 
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return aIndex == 1;
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return aIndex == 0 && (this.mInventory[0] == null || GTUtility.areStacksEqual(this.mInventory[0], aStack));
     }
 
     @Override
     public String[] getInfoData() {
         return this.mItemStack == null
-                ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
-                        StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                        StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty"),
-                        Integer.toString(0), Integer.toString(this.getMaxItemCount()) }
-                : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
-                        StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                        this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
-                        Integer.toString(this.getMaxItemCount()) };
+            ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty"), Integer.toString(0),
+                Integer.toString(this.getMaxItemCount()) }
+            : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
+                Integer.toString(this.getMaxItemCount()) };
     }
 
     @Override
@@ -187,14 +189,14 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == ForgeDirection.DOWN && side == ForgeDirection.WEST
+            ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+                TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
+            : (side == aBaseMetaTileEntity.getFrontFacing()
                 ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                        TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
-                : (side == aBaseMetaTileEntity.getFrontFacing()
-                        ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                                TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
-                        : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] });
+                    TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
+                : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] });
     }
 
     @Override
@@ -207,23 +209,29 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(
-                        new SlotWidget(inventoryHandler, 0)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
-                                .setPos(79, 16))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                                .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                                .setPos(79, 52))
-                .widget(
-                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
-                                .setBackground(GTUITextures.TRANSPARENT).setPos(59, 42))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 16)
+                .setSize(71, 45))
+            .widget(
+                new SlotWidget(inventoryHandler, 0)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
+                    .setPos(79, 16))
+            .widget(
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
+                    .setPos(79, 52))
+            .widget(
+                SlotWidget.phantom(inventoryHandler, 2)
+                    .disableInteraction()
+                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setPos(59, 42))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(
+                new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 30));
     }
 }

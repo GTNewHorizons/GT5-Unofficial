@@ -84,15 +84,23 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Grind ores.").addPerfectOCInfo()
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 7, false)
-                .addController("Front Center").addCasingInfoMin("IsaMill Exterior Casing", 40, false)
-                .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
-                .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-                .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
-                .addOtherStructurePart("Ball Housing", "Any Casing").addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Grind ores.")
+            .addPerfectOCInfo()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 7, false)
+            .addController("Front Center")
+            .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
+            .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
+            .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
+            .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
+            .addOtherStructurePart("Ball Housing", "Any Casing")
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -100,30 +108,30 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     public IStructureDefinition<MTEIsaMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIsaMill>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" },
-                                            { "D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC" }, { "DDD", "CCC", "CCC",
-                                                    "CCC", "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(MTEIsaMill.class).adder(MTEIsaMill::addMillingBallsHatch)
-                                            .hatchClass(MTEHatchMillingBalls.class)
-                                            .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
-                                            .casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                    buildHatchAdder(MTEIsaMill.class).atLeast(
-                                            InputBus,
-                                            OutputBus,
-                                            InputHatch,
-                                            OutputHatch,
-                                            Maintenance,
-                                            Energy,
-                                            Muffler).casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                    .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta())).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" },
+                            { "D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC" },
+                            { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(MTEIsaMill.class).adder(MTEIsaMill::addMillingBallsHatch)
+                            .hatchClass(MTEHatchMillingBalls.class)
+                            .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
+                            .casingIndex(getCasingTextureIndex())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(MTEIsaMill.class)
+                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                            .casingIndex(getCasingTextureIndex())
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
+                .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -255,9 +263,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                         }
                     }
                 } else if (aFoundEntity.getHealth() > 0) {
-                    aFoundEntity.attackEntityFrom(
-                            mIsaMillDamageSource,
-                            Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+                    aFoundEntity
+                        .attackEntityFrom(mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                         generateParticles(aFoundEntity);
                     }
@@ -323,13 +330,13 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             float aOffsetY = MathUtils.randFloat(-0.25f, 0.35f);
             float aOffsetZ = MathUtils.randFloat(-0.35f, 0.35f);
             aEntity.worldObj.spawnParticle(
-                    "reddust",
-                    aEffectPos.xPos + aOffsetX,
-                    aEffectPos.yPos + 0.3f + aOffsetY,
-                    aEffectPos.zPos + aOffsetZ,
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "reddust",
+                aEffectPos.xPos + aOffsetX,
+                aEffectPos.yPos + 0.3f + aOffsetY,
+                aEffectPos.zPos + aOffsetZ,
+                0.0D,
+                0.0D,
+                0.0D);
         }
     }
 
@@ -389,7 +396,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     @Override
     public String[] getExtraInfoData() {
         return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
+            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override
@@ -405,7 +412,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputsForColor(color);
         for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
-            byte busColor = tHatch.getBaseMetaTileEntity().getColorization();
+            byte busColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {

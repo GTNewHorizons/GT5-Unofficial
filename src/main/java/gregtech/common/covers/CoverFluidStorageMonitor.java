@@ -57,11 +57,11 @@ import io.netty.buffer.ByteBuf;
 public class CoverFluidStorageMonitor extends Cover {
 
     private static final IIconContainer[] icons = new IIconContainer[] { OVERLAY_FLUID_STORAGE_MONITOR0,
-            OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,
-            OVERLAY_FLUID_STORAGE_MONITOR4, OVERLAY_FLUID_STORAGE_MONITOR5, OVERLAY_FLUID_STORAGE_MONITOR6,
-            OVERLAY_FLUID_STORAGE_MONITOR7, OVERLAY_FLUID_STORAGE_MONITOR8, OVERLAY_FLUID_STORAGE_MONITOR9,
-            OVERLAY_FLUID_STORAGE_MONITOR10, OVERLAY_FLUID_STORAGE_MONITOR11, OVERLAY_FLUID_STORAGE_MONITOR12,
-            OVERLAY_FLUID_STORAGE_MONITOR13, OVERLAY_FLUID_STORAGE_MONITOR14, };
+        OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,
+        OVERLAY_FLUID_STORAGE_MONITOR4, OVERLAY_FLUID_STORAGE_MONITOR5, OVERLAY_FLUID_STORAGE_MONITOR6,
+        OVERLAY_FLUID_STORAGE_MONITOR7, OVERLAY_FLUID_STORAGE_MONITOR8, OVERLAY_FLUID_STORAGE_MONITOR9,
+        OVERLAY_FLUID_STORAGE_MONITOR10, OVERLAY_FLUID_STORAGE_MONITOR11, OVERLAY_FLUID_STORAGE_MONITOR12,
+        OVERLAY_FLUID_STORAGE_MONITOR13, OVERLAY_FLUID_STORAGE_MONITOR14, };
 
     private ForgeDirection fluidLookupSide;
     private int slot;
@@ -126,7 +126,8 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     public CoverFluidStorageMonitor setNullTank() {
-        return this.setFluid((Fluid) null).setScale(0);
+        return this.setFluid((Fluid) null)
+            .setScale(0);
     }
 
     public CoverFluidStorageMonitor issueCoverUpdateIfNeeded(ICoverable tileEntity, ForgeDirection coverSide) {
@@ -199,7 +200,8 @@ public class CoverFluidStorageMonitor extends Cover {
             return;
         }
 
-        setFluid(tank.fluid).setScale(getTankScale(tank)).issueCoverUpdateIfNeeded(coverable, coverSide);
+        setFluid(tank.fluid).setScale(getTankScale(tank))
+            .issueCoverUpdateIfNeeded(coverable, coverSide);
     }
 
     @Override
@@ -231,7 +233,9 @@ public class CoverFluidStorageMonitor extends Cover {
         };
 
         final short[] fluidRGBA = colorToRGBA(fluid.getColor());
-        final ITextureBuilder fluidTextureBuilder = TextureFactory.builder().addIcon(fluidIcon).setRGBA(fluidRGBA);
+        final ITextureBuilder fluidTextureBuilder = TextureFactory.builder()
+            .addIcon(fluidIcon)
+            .setRGBA(fluidRGBA);
         if (fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
         return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[scale]));
     }
@@ -279,7 +283,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     protected static ItemStack fillToTank(@Nonnull ItemStack container, @Nonnull IFluidHandler tank,
-            ForgeDirection coverSide) {
+        ForgeDirection coverSide) {
         final FluidStack fluidToFill = GTUtility.getFluidForFilledItem(container, true);
         if (fluidToFill == null || fluidToFill.getFluid() == null || fluidToFill.amount <= 0) {
             return null;
@@ -306,7 +310,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     protected static ItemStack fillToContainer(@Nonnull ItemStack container, @Nonnull FluidTankInfo tankInfo,
-            @Nonnull IFluidHandler tank, ForgeDirection coverSide) {
+        @Nonnull IFluidHandler tank, ForgeDirection coverSide) {
         if (tankInfo.fluid == null || tankInfo.fluid.getFluid() == null || tankInfo.fluid.amount <= 0) {
             return null;
         }
@@ -316,16 +320,19 @@ public class CoverFluidStorageMonitor extends Cover {
 
         if (container.getItem() instanceof IFluidContainerItem containerItem) {
             final int filled = Math.min(
-                    Optional.ofNullable(
-                            tank.drain(
-                                    coverSide,
-                                    new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
-                                    false))
-                            .filter(fs -> GTUtility.areFluidsEqual(fs, tankInfo.fluid)).map(fs -> fs.amount).orElse(0),
-                    containerItem.fill(
-                            container,
+                Optional
+                    .ofNullable(
+                        tank.drain(
+                            coverSide,
                             new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
-                            false));
+                            false))
+                    .filter(fs -> GTUtility.areFluidsEqual(fs, tankInfo.fluid))
+                    .map(fs -> fs.amount)
+                    .orElse(0),
+                containerItem.fill(
+                    container,
+                    new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
+                    false));
             if (filled == 0) {
                 return null;
             }
@@ -342,8 +349,9 @@ public class CoverFluidStorageMonitor extends Cover {
                 return null;
             }
             if (Optional.ofNullable(tank.drain(coverSide, filledFluid, false))
-                    .filter(fs -> GTUtility.areFluidsEqual(fs, filledFluid)).map(fs -> fs.amount).orElse(0)
-                    != filledFluid.amount) {
+                .filter(fs -> GTUtility.areFluidsEqual(fs, filledFluid))
+                .map(fs -> fs.amount)
+                .orElse(0) != filledFluid.amount) {
                 return null;
             }
             tank.drain(coverSide, filledFluid, true);
@@ -352,7 +360,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     protected static void replaceHeldItemStack(@Nonnull EntityPlayer player, @Nonnull ItemStack heldItem,
-            @Nonnull ItemStack result) {
+        @Nonnull ItemStack result) {
         heldItem.stackSize--;
         GTUtility.addItemToPlayerInventory(player, result);
         player.inventoryContainer.detectAndSendChanges();
@@ -362,7 +370,7 @@ public class CoverFluidStorageMonitor extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             setSide(ForgeDirection.values()[(fluidLookupSide.ordinal() + 1) % ForgeDirection.values().length])
-                    .setSlot(0);
+                .setSlot(0);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("SIDE", "Side: ") + fluidLookupSide.name());
             return;
         }
@@ -402,7 +410,7 @@ public class CoverFluidStorageMonitor extends Cover {
 
     @Nullable
     protected static FluidTankInfo[] getValidFluidTankInfos(@Nullable ICoverable tileEntity,
-            @Nonnull ForgeDirection coverSide) {
+        @Nonnull ForgeDirection coverSide) {
         if (tileEntity instanceof IFluidHandler) {
             final FluidTankInfo[] tanks = ((IFluidHandler) tileEntity).getTankInfo(coverSide);
             if (tanks != null && tanks.length > 0) {
@@ -414,9 +422,9 @@ public class CoverFluidStorageMonitor extends Cover {
 
     @Nullable
     protected static FluidTankInfo[] getValidFluidTankInfosForDisplay(@Nullable ICoverable tileEntity,
-            @Nonnull ForgeDirection coverSide) {
+        @Nonnull ForgeDirection coverSide) {
         if (tileEntity instanceof IGregTechTileEntity baseMetaTileEntity
-                && baseMetaTileEntity.getMetaTileEntity() instanceof MTEDigitalTankBase digitalTank) {
+            && baseMetaTileEntity.getMetaTileEntity() instanceof MTEDigitalTankBase digitalTank) {
             return digitalTank.getRealTankInfo(coverSide);
         }
         return getValidFluidTankInfos(tileEntity, coverSide);
@@ -431,7 +439,7 @@ public class CoverFluidStorageMonitor extends Cover {
 
     protected short[] colorToRGBA(int color) {
         return new short[] { (short) (color >> 16 & 0xFF), (short) (color >> 8 & 0xFF), (short) (color & 0xFF),
-                (short) (0xFF) };
+            (short) (0xFF) };
     }
 
     protected static class Util {

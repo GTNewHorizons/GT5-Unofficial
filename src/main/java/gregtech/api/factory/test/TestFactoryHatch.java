@@ -27,14 +27,14 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
 
     public TestFactoryHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { CommonValues.TEC_MARK_EM,
-                        StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
-                        StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.1"), EnumChatFormatting.AQUA
-                                + StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { CommonValues.TEC_MARK_EM,
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
     }
 
     protected TestFactoryHatch(TestFactoryHatch prototype) {
@@ -48,16 +48,18 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("network", network == null ? "null" : network.toString());
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add("Network: " + accessor.getNBTData().getString("network"));
+        currenttip.add(
+            "Network: " + accessor.getNBTData()
+                .getString("network"));
     }
 
     @Override
@@ -76,7 +78,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
                 IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
 
                 data.add(
-                        base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch.toString());
+                    base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch.toString());
             }
         }
 
@@ -98,8 +100,8 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (base.getTileEntityAtSide(base.getFrontFacing()) instanceof IGregTechTileEntity igte
-                && igte.getColorization() == base.getColorization()
-                && igte.getMetaTileEntity() instanceof TestFactoryElement element) {
+            && igte.getColorization() == base.getColorization()
+            && igte.getMetaTileEntity() instanceof TestFactoryElement element) {
             neighbours.add(element);
         }
     }

@@ -79,7 +79,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
             return false; // Not the correct biome for ore mix
         }
@@ -95,27 +95,27 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
             int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2);
             for (int i = 0; i < j; i++) {
                 TileEntityOres.setOreBlock(
-                        aWorld,
-                        aChunkX + 8 + aRandom.nextInt(16),
-                        this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
-                        aChunkZ + 8 + aRandom.nextInt(16),
-                        this.mMeta,
-                        true,
-                        isUnderdark);
+                    aWorld,
+                    aChunkX + 8 + aRandom.nextInt(16),
+                    this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
+                    aChunkZ + 8 + aRandom.nextInt(16),
+                    this.mMeta,
+                    true,
+                    isUnderdark);
                 count++;
             }
         }
         if (debugSmallOres) {
             GTLog.out.println(
-                    "Small Ore:" + this.mWorldGenName
-                            + " @ dim="
-                            + aDimensionType
-                            + " mX="
-                            + aChunkX / 16
-                            + " mZ="
-                            + aChunkZ / 16
-                            + " ore="
-                            + count);
+                "Small Ore:" + this.mWorldGenName
+                    + " @ dim="
+                    + aDimensionType
+                    + " mX="
+                    + aChunkX / 16
+                    + " mZ="
+                    + aChunkZ / 16
+                    + " ore="
+                    + count);
         }
         return true;
     }

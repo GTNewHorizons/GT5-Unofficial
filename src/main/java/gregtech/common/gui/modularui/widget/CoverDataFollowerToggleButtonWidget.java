@@ -10,7 +10,7 @@ import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.common.covers.Cover;
 
 public class CoverDataFollowerToggleButtonWidget<T extends Cover> extends CoverCycleButtonWidget
-        implements ICoverDataFollowerWidget<T, Boolean> {
+    implements ICoverDataFollowerWidget<T, Boolean> {
 
     private Function<T, Boolean> dataToStateGetter;
 
@@ -45,17 +45,17 @@ public class CoverDataFollowerToggleButtonWidget<T extends Cover> extends CoverC
 
     public static <T extends Cover> CoverDataFollowerToggleButtonWidget<T> ofCheckAndCross() {
         return new CoverDataFollowerToggleButtonWidget<T>()
-                .setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.OVERLAY_BUTTON_CROSS);
+            .setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.OVERLAY_BUTTON_CROSS);
     }
 
     public static <T extends Cover> CoverDataFollowerToggleButtonWidget<T> ofCheck() {
         return new CoverDataFollowerToggleButtonWidget<T>()
-                .setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.TRANSPARENT);
+            .setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.TRANSPARENT);
     }
 
     public static <T extends Cover> CoverDataFollowerToggleButtonWidget<T> ofRedstone() {
         return new CoverDataFollowerToggleButtonWidget<T>()
-                .setToggleTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_ON, GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF);
+            .setToggleTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_ON, GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF);
     }
 
     public static <T extends Cover> CoverDataFollowerToggleButtonWidget<T> ofDisableable() {
@@ -66,7 +66,7 @@ public class CoverDataFollowerToggleButtonWidget<T extends Cover> extends CoverC
      * Disables clicking if button is already pressed.
      */
     public static class CoverDataFollower_DisableableToggleButtonWidget<T extends Cover>
-            extends CoverDataFollowerToggleButtonWidget<T> {
+        extends CoverDataFollowerToggleButtonWidget<T> {
 
         public CoverDataFollower_DisableableToggleButtonWidget() {
             super();

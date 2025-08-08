@@ -158,18 +158,32 @@ public class SelectItemGuiBuilder {
 
         // noinspection DataFlowIssue
         panel.childIf(
-                headerItem != null || title != null,
-                Flow.row().coverChildren().childPadding(4).pos(5, 5)
-                        .child(new ItemDrawable(headerItem).asWidget().size(16))
-                        .childIf(title != null, title.asWidget()));
+            headerItem != null || title != null,
+            Flow.row()
+                .coverChildren()
+                .childPadding(4)
+                .pos(5, 5)
+                .child(
+                    new ItemDrawable(headerItem).asWidget()
+                        .size(16))
+                .childIf(title != null, title.asWidget()));
 
-        panel.child(IKey.lang("GT5U.gui.select.current").asWidget().leftRel(0.5f, -(18 / 2) - 3, 1).height(18).top(22));
         panel.child(
-                new SlotLikeButtonWidget(() -> selected > -1 ? choices.get(selected) : null).background(
-                        GTGuiTextures.SLOT_ITEM_DARK,
-                        new DynamicDrawable(
-                                () -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
-                        .playClickSound(false).onMousePressed(mouseButton -> true).alignX(0.5f).top(22));
+            IKey.lang("GT5U.gui.select.current")
+                .asWidget()
+                .leftRel(0.5f, -(18 / 2) - 3, 1)
+                .height(18)
+                .top(22));
+        panel.child(
+            new SlotLikeButtonWidget(() -> selected > -1 ? choices.get(selected) : null)
+                .background(
+                    GTGuiTextures.SLOT_ITEM_DARK,
+                    new DynamicDrawable(
+                        () -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
+                .playClickSound(false)
+                .onMousePressed(mouseButton -> true)
+                .alignX(0.5f)
+                .top(22));
 
         List<List<IWidget>> choiceWidgets = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
@@ -179,29 +193,31 @@ public class SelectItemGuiBuilder {
                 int index = i * COLS + j;
                 if (index >= choices.size()) break;
                 rowWidgets.add(
-                        new SlotLikeButtonWidget(choices.get(index))
-                                .background(
-                                        new DynamicDrawable(
-                                                () -> selected == index ? GTGuiTextures.SLOT_ITEM_DARK
-                                                        : GTGuiTextures.SLOT_ITEM_STANDARD))
-                                .size(18).onMousePressed(mouseButton -> {
-                                    if (mouseButton == 0) {
-                                        setSelected(index);
-                                    } else {
-                                        setSelected(DESELECTED);
-                                    }
-                                    MouseData mouseData = MouseData.create(mouseButton);
-                                    if (onSelectedServerAction != null) {
-                                        onSelectedServerAction.send(selected, mouseData);
-                                    }
-                                    if (onSelectedClientAction != null) {
-                                        onSelectedClientAction.accept(selected, mouseData);
-                                    }
-                                    return true;
-                                }));
+                    new SlotLikeButtonWidget(choices.get(index)).background(
+                        new DynamicDrawable(
+                            () -> selected == index ? GTGuiTextures.SLOT_ITEM_DARK : GTGuiTextures.SLOT_ITEM_STANDARD))
+                        .size(18)
+                        .onMousePressed(mouseButton -> {
+                            if (mouseButton == 0) {
+                                setSelected(index);
+                            } else {
+                                setSelected(DESELECTED);
+                            }
+                            MouseData mouseData = MouseData.create(mouseButton);
+                            if (onSelectedServerAction != null) {
+                                onSelectedServerAction.send(selected, mouseData);
+                            }
+                            if (onSelectedClientAction != null) {
+                                onSelectedClientAction.accept(selected, mouseData);
+                            }
+                            return true;
+                        }));
             }
         }
-        panel.child(new Grid().coverChildren().pos(7, 46).matrix(choiceWidgets));
+        panel.child(
+            new Grid().coverChildren()
+                .pos(7, 46)
+                .matrix(choiceWidgets));
 
         if (selectedSyncHandler != null) {
             // Correct current selected

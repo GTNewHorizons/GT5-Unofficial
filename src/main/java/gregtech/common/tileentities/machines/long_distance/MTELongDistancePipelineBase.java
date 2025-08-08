@@ -82,8 +82,8 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     @Override
     public String[] getDescription() {
         return new String[] { "Only one Input and Output are allowed per pipeline",
-                "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
-                "Minimum distance: " + minimalDistancePoints + " blocks" };
+            "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
+            "Minimum distance: " + minimalDistancePoints + " blocks" };
     }
 
     @Override
@@ -102,9 +102,9 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("target")) {
             mTargetPos = new ChunkCoordinates(
-                    aNBT.getInteger("target.x"),
-                    aNBT.getInteger("target.y"),
-                    aNBT.getInteger("target.z"));
+                aNBT.getInteger("target.x"),
+                aNBT.getInteger("target.y"),
+                aNBT.getInteger("target.z"));
             if (getDistanceToSelf(mTargetPos) < minimalDistancePoints) mTargetPos = null;
         }
     }
@@ -147,9 +147,8 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                 TileEntity te = world.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 final IMetaTileEntity tMeta;
                 if (te instanceof BaseMetaTileEntity
-                        && ((tMeta = ((BaseMetaTileEntity) te)
-                                .getMetaTileEntity()) instanceof MTELongDistancePipelineBase)
-                        && isSameClass((MTELongDistancePipelineBase) tMeta)) {
+                    && ((tMeta = ((BaseMetaTileEntity) te).getMetaTileEntity()) instanceof MTELongDistancePipelineBase)
+                    && isSameClass((MTELongDistancePipelineBase) tMeta)) {
                     // It's the right type!
                     mTarget = (MTELongDistancePipelineBase) tMeta;
                 } else if (te != null) {
@@ -163,8 +162,8 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
             mTooCloseSender = null;
         if (mTarget == null || mTarget == this) return false;
         if (mTarget.mSender == null || mTarget.mSender.isDead()
-                || mTarget.mSender.mTarget == null
-                || mTarget.mSender.mTarget.isDead()) {
+            || mTarget.mSender.mTarget == null
+            || mTarget.mSender.mTarget.isDead()) {
             mTarget.mSender = this;
             mTarget.mTooCloseSender = null;
         }
@@ -174,23 +173,22 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-            int aLogLevel, ArrayList<String> aList) {
+        int aLogLevel, ArrayList<String> aList) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
-                    Arrays.asList(
-                            "Is Pipeline Output",
-                            "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                Arrays.asList(
+                    "Is Pipeline Output",
+                    "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
         } else {
             aList.addAll(
-                    Arrays.asList(
-                            checkTarget() ? "Is connected to Pipeline Output"
-                                    : "Pipeline Output is not connected/chunkloaded",
-                            "Pipeline Output should be around: X: " + mTargetPos.posX
-                                    + " Y: "
-                                    + mTargetPos.posY
-                                    + " Z: "
-                                    + mTargetPos.posZ));
+                Arrays.asList(
+                    checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
+                    "Pipeline Output should be around: X: " + mTargetPos.posX
+                        + " Y: "
+                        + mTargetPos.posY
+                        + " Z: "
+                        + mTargetPos.posZ));
         }
 
         return aList;
@@ -221,15 +219,15 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
             if (aMetaData != getPipeMeta()) return;
 
             HashSet<ChunkCoordinates> tVisited = new HashSet<>(Collections.singletonList(getCoords())),
-                    tWires = new HashSet<>();
+                tWires = new HashSet<>();
             Queue<ChunkCoordinates> tQueue = new LinkedList<>(
-                    Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
+                Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
 
             while (!tQueue.isEmpty()) {
                 final ChunkCoordinates aCoords = tQueue.poll();
 
                 if (world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ) == aBlock
-                        && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
+                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
                     // We've got another pipe/wire block
                     // TODO: Make sure it's the right type of pipe/wire via meta
                     ChunkCoordinates tCoords;
@@ -253,12 +251,12 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                     // It's not a block - let's see if it's a tile entity
                     TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     if (tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tTileEntity)
-                                    .getMetaTileEntity() instanceof MTELongDistancePipelineBase tGtTile) {
+                        && ((BaseMetaTileEntity) tTileEntity)
+                            .getMetaTileEntity() instanceof MTELongDistancePipelineBase tGtTile) {
                         if (isSameClass(tGtTile) && tWires.contains(
-                                tGtTile.getFacingOffset(
-                                        (BaseMetaTileEntity) tTileEntity,
-                                        ((BaseMetaTileEntity) tTileEntity).getFrontFacing()))) {
+                            tGtTile.getFacingOffset(
+                                (BaseMetaTileEntity) tTileEntity,
+                                ((BaseMetaTileEntity) tTileEntity).getFrontFacing()))) {
                             // If it's the same class, and we've scanned a wire in front of it (the input side), we've
                             // found our target
                             // still need to check if it's distant enough
@@ -287,15 +285,15 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     protected int getDistanceToSelf(ChunkCoordinates aCoords) {
         return Math.abs(getBaseMetaTileEntity().getXCoord() - aCoords.posX)
-                + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY) / 2
-                + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
+            + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY) / 2
+            + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
     }
 
     public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, ForgeDirection side) {
         return new ChunkCoordinates(
-                gt_tile.getOffsetX(side, 1),
-                gt_tile.getOffsetY(side, 1),
-                gt_tile.getOffsetZ(side, 1));
+            gt_tile.getOffsetX(side, 1),
+            gt_tile.getOffsetY(side, 1),
+            gt_tile.getOffsetZ(side, 1));
     }
 
     public ChunkCoordinates getCoords() {
@@ -324,16 +322,16 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
             rTextures[INPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[INPUT_INDEX] };
             rTextures[OUTPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[OUTPUT_INDEX] };
             rTextures[SIDE_UP_DOWN_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
-                    overlays[SIDE_UP_DOWN_INDEX] };
+                overlays[SIDE_UP_DOWN_INDEX] };
             rTextures[SIDE_LEFT_RIGHT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
-                    overlays[SIDE_LEFT_RIGHT_INDEX] };
+                overlays[SIDE_LEFT_RIGHT_INDEX] };
         }
         return rTextures;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         colorIndex += 1;
         if (sideDirection == facingDirection) return mTextures[INPUT_INDEX][colorIndex];
         else if (sideDirection == facingDirection.getOpposite()) return mTextures[OUTPUT_INDEX][colorIndex];
@@ -375,7 +373,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final ForgeDirection side = accessor.getSide();
 
@@ -403,7 +401,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setBoolean("hasInput", mSender != null);

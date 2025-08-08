@@ -12,6 +12,6 @@ public enum FluidState {
 
     public static FluidState fromValue(int stateValue) {
         return stateValue >= 0 && stateValue < FluidState.VALID_STATES.length ? FluidState.VALID_STATES[stateValue]
-                : FluidState.LIQUID;
+            : FluidState.LIQUID;
     }
 }

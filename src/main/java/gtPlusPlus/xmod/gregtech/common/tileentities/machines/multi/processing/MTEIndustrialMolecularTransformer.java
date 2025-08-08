@@ -33,7 +33,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEIndustrialMolecularTransformer>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final int CASING_TEXTURE_ID = 48;
     private int mCasing = 0;
@@ -60,20 +60,25 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     protected MultiblockTooltipBuilder createTooltip() {
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Changes the structure of items to produce new ones")
-                .addInfo("Maximum 1x of each bus/hatch.").addPollutionAmount(getPollutionPerSecond(null))
-                .beginStructureBlock(7, 7, 7, false).addController("Top Center")
-                .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
-                .addCasingInfoMin("TPV-Alloy Coils", 16, false)
-                .addCasingInfoMin("Molecular Containment Casing", 52, false)
-                .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
-                .addCasingInfoMin("Particle Containment Casing", 4, false)
-                .addCasingInfoMin("Resonance Chamber I", 5, false).addCasingInfoMin("Modulator I", 4, false)
-                .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-                .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-                .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Changes the structure of items to produce new ones")
+            .addInfo("Maximum 1x of each bus/hatch.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 7, 7, false)
+            .addController("Top Center")
+            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
+            .addCasingInfoMin("TPV-Alloy Coils", 16, false)
+            .addCasingInfoMin("Molecular Containment Casing", 52, false)
+            .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
+            .addCasingInfoMin("Particle Containment Casing", 4, false)
+            .addCasingInfoMin("Resonance Chamber I", 5, false)
+            .addCasingInfoMin("Modulator I", 4, false)
+            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
+            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
+            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -83,30 +88,32 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     @Override
     public IStructureDefinition<MTEIndustrialMolecularTransformer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMolecularTransformer>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMolecularTransformer>builder()
+                .addShape(
                     STRUCTURE_PIECE_MAIN,
                     (new String[][] { { "       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       " },
-                            { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                            { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                            { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                            { "   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   " },
-                            { "   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   " },
-                            { "   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   " }, }))
-                    .addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
-                    .addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
-                    .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
-                    .addElement('e', ofBlock(getCasingBlock2(), 0)).addElement('f', ofBlock(getCasingBlock2(), 4))
-                    .addElement('c', ofBlock(getCoilBlock(), 3))
-                    .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
-                    .addElement(
-                            'h',
-                            buildHatchAdder(MTEIndustrialMolecularTransformer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
-                    .build();
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   " },
+                        { "   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   " },
+                        { "   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   " }, }))
+                .addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
+                .addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
+                .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
+                .addElement('e', ofBlock(getCasingBlock2(), 0))
+                .addElement('f', ofBlock(getCasingBlock2(), 4))
+                .addElement('c', ofBlock(getCoilBlock(), 3))
+                .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
+                .addElement(
+                    'h',
+                    buildHatchAdder(MTEIndustrialMolecularTransformer.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(
+                            onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }

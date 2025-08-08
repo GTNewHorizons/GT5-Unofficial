@@ -9,7 +9,7 @@ public abstract class GTWaila {
     }
 
     public static String getMachineProgressString(boolean isActive, boolean isAllowedToWork, int maxProgresstime,
-            int progresstime) {
+        int progresstime) {
         return getMachineProgressString(isActive, isAllowedToWork, maxProgresstime, (long) progresstime);
     }
 
@@ -18,15 +18,15 @@ public abstract class GTWaila {
     }
 
     public static String getMachineProgressString(boolean isActive, boolean isAllowedToWork, long maxProgresstime,
-            long progresstime) {
+        long progresstime) {
 
         if (!isAllowedToWork) return StatCollector.translateToLocal("GT5U.waila.machine.working_disabled");
         if (!isActive) return StatCollector.translateToLocal("GT5U.waila.machine.idle");
 
         return StatCollector.translateToLocalFormatted(
-                "GT5U.waila.machine.in_progress",
-                (double) progresstime / 20,
-                (double) maxProgresstime / 20,
-                (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0));
+            "GT5U.waila.machine.in_progress",
+            (double) progresstime / 20,
+            (double) maxProgresstime / 20,
+            (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0));
     }
 }

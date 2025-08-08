@@ -26,12 +26,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     private ItemStack ae2CraftingIcon;
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -54,7 +54,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
 
         try {
             ITexture background;

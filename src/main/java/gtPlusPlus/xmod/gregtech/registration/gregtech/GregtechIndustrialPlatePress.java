@@ -16,9 +16,9 @@ public class GregtechIndustrialPlatePress {
     private static void run1() {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_PlatePress.set(
-                new MTEIndustrialPlatePress(
-                        Industrial_PlatePress.ID,
-                        "industrialbender.controller.tier.single",
-                        "Industrial Material Press").getStackForm(1L));
+            new MTEIndustrialPlatePress(
+                Industrial_PlatePress.ID,
+                "industrialbender.controller.tier.single",
+                "Industrial Material Press").getStackForm(1L));
     }
 }

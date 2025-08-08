@@ -68,18 +68,18 @@ public class ToolButcheryKnife extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has butchered "
-                        + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has butchered "
+                + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 
     @Override

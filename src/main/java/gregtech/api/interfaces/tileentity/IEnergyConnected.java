@@ -83,8 +83,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 } else if (tTileEntity instanceof IEnergySink sink) {
                     if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
                         while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
-                                && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage)
-                            usedAmperes++;
+                            && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
                     }
                 } else if (GregTechAPI.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
                     final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);

@@ -29,7 +29,7 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
 
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List<String> aList,
-            final boolean aF3_H) {
+        final boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         aList.add(translateToLocal("gt.casing.no-mob-spawning"));
         aList.add(translateToLocal("gt.casing.not-tile-entity"));

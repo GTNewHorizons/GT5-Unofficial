@@ -123,28 +123,34 @@ public class CropProcessingRecipes implements Runnable {
     }
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, Materials aMaterialOut, int chance,
-            boolean aMainOutput) {
+        boolean aMainOutput) {
         if (tCrop == null || aMaterial == null || GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1) == null)
             return;
 
         FluidStack fluidOutputChemReactor = aMaterialOut.mOreByProducts.isEmpty() ? null
-                : aMaterialOut.mOreByProducts.get(0).getMolten(1 * INGOTS);
+            : aMaterialOut.mOreByProducts.get(0)
+                .getMolten(1 * INGOTS);
 
         GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
         recipeBuilder
-                .itemInputs(GTUtility.copyAmount(9, tCrop), GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-                .fluidInputs(Materials.Water.getFluid(1_000));
+            .itemInputs(GTUtility.copyAmount(9, tCrop), GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
+            .fluidInputs(Materials.Water.getFluid(1_000));
         if (fluidOutputChemReactor != null) {
             recipeBuilder.fluidOutputs(fluidOutputChemReactor);
         }
-        recipeBuilder.duration(4 * SECONDS + 16 * TICKS).eut(24).addTo(UniversalChemical);
+        recipeBuilder.duration(4 * SECONDS + 16 * TICKS)
+            .eut(24)
+            .addTo(UniversalChemical);
 
         if (aMainOutput) {
-            GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(16, tCrop))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
-                    .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
-                    .duration((int) (aMaterial.getMass() * 128)).eut(384).addTo(autoclaveRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(16, tCrop))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
+                .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
+                .duration((int) (aMaterial.getMass() * 128))
+                .eut(384)
+                .addTo(autoclaveRecipes);
         }
     }
 

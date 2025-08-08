@@ -69,7 +69,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         }
@@ -104,14 +104,14 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
 
     @Override
     public void breakBlock(final World world, final int x, final int y, final int z, final Block block,
-            final int number) {
+        final int number) {
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
     }
 
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
-            final ItemStack stack) {
+        final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityFishTrap) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
@@ -119,7 +119,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 }

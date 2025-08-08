@@ -47,7 +47,8 @@ public class EnumRowBuilder<E extends Enum<E>> {
     public EnumRowBuilder<E> overlay(int size, IDrawable... overlay) {
         this.overlay = new IDrawable[overlay.length];
         for (int i = 0; i < overlay.length; i++) {
-            this.overlay[i] = overlay[i].asIcon().size(size);
+            this.overlay[i] = overlay[i].asIcon()
+                .size(size);
         }
         return this;
     }
@@ -67,9 +68,12 @@ public class EnumRowBuilder<E extends Enum<E>> {
         if (this.tooltip != null && this.tooltip.length != enumClass.getEnumConstants().length) {
             throw new IllegalArgumentException("Number of tooltips must be " + enumClass.getEnumConstants().length);
         }
-        Flow row = Flow.row().childPadding(2).coverChildren();
+        Flow row = Flow.row()
+            .childPadding(2)
+            .coverChildren();
         for (E enumVal : this.enumClass.getEnumConstants()) {
-            ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal)).size(16);
+            ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
+                .size(16);
             if (this.overlay != null) {
                 button.overlay(this.overlay[enumVal.ordinal()]);
             }

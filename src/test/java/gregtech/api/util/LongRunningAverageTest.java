@@ -36,10 +36,11 @@ class LongRunningAverageTest {
             average.update(val);
             int ii = i + 1;
             assertEquals(
-                    expectedSum.divide(BigInteger.valueOf(i + 1)).doubleValue(),
-                    average.avg(),
-                    val / 1e8d,
-                    () -> "Iteration #" + ii);
+                expectedSum.divide(BigInteger.valueOf(i + 1))
+                    .doubleValue(),
+                average.avg(),
+                val / 1e8d,
+                () -> "Iteration #" + ii);
         }
         average = new LongRunningAverage(10);
         LongList l = new LongArrayList();
@@ -50,8 +51,11 @@ class LongRunningAverageTest {
             if (l.size() > 10) {
                 l.removeElements(0, 1);
             }
-            BigInteger avg = l.longStream().mapToObj(BigInteger::valueOf).reduce(BigInteger::add).get()
-                    .divide(BigInteger.valueOf(Math.min(i + 1, 10)));
+            BigInteger avg = l.longStream()
+                .mapToObj(BigInteger::valueOf)
+                .reduce(BigInteger::add)
+                .get()
+                .divide(BigInteger.valueOf(Math.min(i + 1, 10)));
             int ii = i + 1;
             assertEquals(avg.doubleValue(), average.avg(), val / 1e8d, () -> "Iteration #" + ii);
         }
@@ -67,9 +71,10 @@ class LongRunningAverageTest {
             average.update(val);
             int ii = i + 1;
             assertEquals(
-                    expectedSum.divide(BigInteger.valueOf(i + 1)).longValueExact(),
-                    average.avgLong(),
-                    () -> "Iteration #" + ii);
+                expectedSum.divide(BigInteger.valueOf(i + 1))
+                    .longValueExact(),
+                average.avgLong(),
+                () -> "Iteration #" + ii);
         }
         average = new LongRunningAverage(10);
         LongList l = new LongArrayList();
@@ -80,8 +85,11 @@ class LongRunningAverageTest {
             if (l.size() > 10) {
                 l.removeElements(0, 1);
             }
-            BigInteger avg = l.longStream().mapToObj(BigInteger::valueOf).reduce(BigInteger::add).get()
-                    .divide(BigInteger.valueOf(Math.min(i + 1, 10)));
+            BigInteger avg = l.longStream()
+                .mapToObj(BigInteger::valueOf)
+                .reduce(BigInteger::add)
+                .get()
+                .divide(BigInteger.valueOf(Math.min(i + 1, 10)));
             int ii = i + 1;
             assertEquals(avg.longValueExact(), average.avgLong(), () -> "Iteration #" + ii);
         }
@@ -128,9 +136,12 @@ class LongRunningAverageTest {
             }
             int ii = i + 1;
             assertEquals(
-                    l.longStream().mapToObj(BigInteger::valueOf).reduce(BigInteger::add).get(),
-                    average.sum(),
-                    () -> "Iteration #" + ii);
+                l.longStream()
+                    .mapToObj(BigInteger::valueOf)
+                    .reduce(BigInteger::add)
+                    .get(),
+                average.sum(),
+                () -> "Iteration #" + ii);
         }
     }
 
@@ -149,9 +160,12 @@ class LongRunningAverageTest {
             int ii = i + 1;
             assertEquals(l.size(), view.size(), () -> "Iteration #" + ii);
             assertEquals(
-                    l.longStream().mapToObj(BigInteger::valueOf).reduce(BigInteger::add).get(),
-                    view.sum(),
-                    () -> "Iteration #" + ii);
+                l.longStream()
+                    .mapToObj(BigInteger::valueOf)
+                    .reduce(BigInteger::add)
+                    .get(),
+                view.sum(),
+                () -> "Iteration #" + ii);
         }
     }
 }

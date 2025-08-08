@@ -51,7 +51,7 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
         for (int k1 = -1; k1 <= 1; ++k1) {
             for (int l1 = -1; l1 <= 1; ++l1) {
                 int i2 = p_149720_1_.getBiomeGenForCoords(p_149720_2_ + l1, p_149720_4_ + k1)
-                        .getBiomeGrassColor(p_149720_2_ + l1, p_149720_3_, p_149720_4_ + k1);
+                    .getBiomeGrassColor(p_149720_2_ + l1, p_149720_3_, p_149720_4_ + k1);
                 l += (i2 & 16711680) >> 16;
                 i1 += (i2 & 65280) >> 8;
                 j1 += i2 & 255;

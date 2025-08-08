@@ -20,12 +20,12 @@ import gregtech.nei.GTNEIDefaultHandler;
 public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
     public SpargeTowerFrontend(@NotNull BasicUIPropertiesBuilder uiPropertiesBuilder,
-            @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        @NotNull NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     protected List<String> handleNEIByproductTooltip(@NotNull ItemStack stack, @NotNull List<String> currentTip,
-            @NotNull GTRecipe recipe) {
+        @NotNull GTRecipe recipe) {
         int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
         FluidStack spargeGas = recipe.mFluidInputs[0];
         if (stack.isItemEqual(GTUtility.getFluidDisplayStack(spargeGas.getFluid()))) {
@@ -43,14 +43,14 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
     @Override
     public @NotNull List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-            GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
         GTRecipe recipe = neiCachedRecipe.mRecipe;
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
             if (stack == pStack.item) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                     currentTip = handleNEIItemInputTooltip(
-                            currentTip,
-                            (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+                        currentTip,
+                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
                 }
                 break;
             }

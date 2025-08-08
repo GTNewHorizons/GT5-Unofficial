@@ -55,7 +55,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 
 public class MTECleanroom extends MTETooltipMultiBlockBase
-        implements IConstructable, ISecondaryDescribable, ICleanroom {
+    implements IConstructable, ISecondaryDescribable, ICleanroom {
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.
@@ -127,61 +127,63 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
-                .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency.")
-                .addInfo("Can accept 2A from an LV energy hatch.")
-                .addInfo("Will overclock and gain efficiency faster starting from HV.").addSeparator()
-                .addInfo(EnumChatFormatting.RED + "Warning:")
-                .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-                .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
-                .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
-                .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-                .addController("Top center.")
-                .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
-                .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges.")
-                .addOtherStructurePart(
-                        "Plascrete Blocks",
-                        "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
-                                + MachineStats.cleanroom.minCasingCount
-                                + EnumChatFormatting.GRAY
-                                + ".")
-                .addEnergyHatch("Any Plascrete Block. Exactly one.")
-                .addMaintenanceHatch("Any Plascrete Block. Exactly one.").addStructureInfo("")
-                .addStructureInfo(
-                        "Up to " + EnumChatFormatting.GOLD
-                                + MachineStats.cleanroom.maxReplacementPercentage
-                                + "%"
-                                + EnumChatFormatting.GRAY
-                                + " of plascrete blocks can be replaced by other valid blocks.")
-                .addStructureInfo("Try some of the following:")
-                .addStructureInfo(
-                        "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass.")
-                .addStructureInfo("- Machine hulls or diodes for item and power transfer.")
-                .addStructureInfo(
-                        "- Reinforced Doors (" + EnumChatFormatting.ITALIC
-                                + "IC2"
-                                + EnumChatFormatting.RESET
-                                + EnumChatFormatting.GRAY
-                                + "). Keep closed, no gaps allowed or efficiency will drop!")
-                .addStructureInfo(
-                        "- Elevators (" + EnumChatFormatting.ITALIC
-                                + "OpenBlocks"
-                                + EnumChatFormatting.RESET
-                                + EnumChatFormatting.GRAY
-                                + ") or Travel Anchors ("
-                                + EnumChatFormatting.ITALIC
-                                + "EnderIO"
-                                + EnumChatFormatting.RESET
-                                + EnumChatFormatting.GRAY
-                                + ").")
-                .addStructureInfo(
-                        "See " + EnumChatFormatting.DARK_GRAY
-                                + "config/GregTech/MachineStats.cfg"
-                                + EnumChatFormatting.GRAY
-                                + " for more valid blocks.")
-                .addStructureInfo(
-                        EnumChatFormatting.YELLOW
-                                + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
-                .toolTipFinisher();
+            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency.")
+            .addInfo("Can accept 2A from an LV energy hatch.")
+            .addInfo("Will overclock and gain efficiency faster starting from HV.")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.RED + "Warning:")
+            .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
+            .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
+            .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
+            .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
+            .addController("Top center.")
+            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
+            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges.")
+            .addOtherStructurePart(
+                "Plascrete Blocks",
+                "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
+                    + MachineStats.cleanroom.minCasingCount
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addEnergyHatch("Any Plascrete Block. Exactly one.")
+            .addMaintenanceHatch("Any Plascrete Block. Exactly one.")
+            .addStructureInfo("")
+            .addStructureInfo(
+                "Up to " + EnumChatFormatting.GOLD
+                    + MachineStats.cleanroom.maxReplacementPercentage
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " of plascrete blocks can be replaced by other valid blocks.")
+            .addStructureInfo("Try some of the following:")
+            .addStructureInfo(
+                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass.")
+            .addStructureInfo("- Machine hulls or diodes for item and power transfer.")
+            .addStructureInfo(
+                "- Reinforced Doors (" + EnumChatFormatting.ITALIC
+                    + "IC2"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + "). Keep closed, no gaps allowed or efficiency will drop!")
+            .addStructureInfo(
+                "- Elevators (" + EnumChatFormatting.ITALIC
+                    + "OpenBlocks"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + ") or Travel Anchors ("
+                    + EnumChatFormatting.ITALIC
+                    + "EnderIO"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + ").")
+            .addStructureInfo(
+                "See " + EnumChatFormatting.DARK_GRAY
+                    + "config/GregTech/MachineStats.cfg"
+                    + EnumChatFormatting.GRAY
+                    + " for more valid blocks.")
+            .addStructureInfo(
+                EnumChatFormatting.YELLOW
+                    + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
+            .toolTipFinisher();
         return tt;
     }
 
@@ -204,8 +206,10 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
         int amperage = inputVoltage == TierEU.LV ? 2 : 1;
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(40).setEUt(inputVoltage * amperage)
-                .setDuration(45 * Math.max(1, mHeight - 1)).calculate();
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(40)
+            .setEUt(inputVoltage * amperage)
+            .setDuration(45 * Math.max(1, mHeight - 1))
+            .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
@@ -271,7 +275,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * are checked, for efficiency. If a block is not one of the allowed types, CleanroomBlockType.INVALID is returned.
      */
     private CleanroomBlockType getBlockType(IGregTechTileEntity aBaseMetaTileEntity, int dx, int dy, int dz,
-            int allowedMask) {
+        int allowedMask) {
         Block block = aBaseMetaTileEntity.getBlockOffset(dx, dy, dz);
         int meta = aBaseMetaTileEntity.getMetaIDOffset(dx, dy, dz);
 
@@ -289,13 +293,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
 
         if ((allowedMask & MASK_OTHER) != 0 && (ALLOWED_BLOCKS.contains(block.getUnlocalizedName())
-                || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta)))
-            return CleanroomBlockType.OTHER;
+            || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta))) return CleanroomBlockType.OTHER;
 
         if ((allowedMask & MASK_DOOR) != 0
-                // This allows doors on the edges, although their open/closed status will not be calculated correctly.
-                // The intent is that the wall check calling this method will not allow doors on edges.
-                && block instanceof ic2.core.block.BlockIC2Door) {
+            // This allows doors on the edges, although their open/closed status will not be calculated correctly.
+            // The intent is that the wall check calling this method will not allow doors on edges.
+            && block instanceof ic2.core.block.BlockIC2Door) {
 
             if (!isDoorOpen) { // No need to check again if there is already an open door somewhere else.
                 int doorOrientation = getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz);
@@ -312,12 +315,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                         isDoorOpen = true;
                     // Otherwise check adjacent blocks for other doors.
                     else if (dz > dzMin
-                            && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz - 1) instanceof ic2.core.block.BlockIC2Door
-                            && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz - 1))
+                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz - 1) instanceof ic2.core.block.BlockIC2Door
+                        && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz - 1))
                         isDoorOpen = true;
                     else if (dz < dzMax
-                            && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz + 1) instanceof ic2.core.block.BlockIC2Door
-                            && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz + 1))
+                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz + 1) instanceof ic2.core.block.BlockIC2Door
+                        && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz + 1))
                         isDoorOpen = true;
                 } else {
                     // Door on the N or S side (aligned with X axis).
@@ -326,12 +329,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                         isDoorOpen = true;
                     // Check adjacent blocks for other doors.
                     else if (dx > dxMin
-                            && aBaseMetaTileEntity.getBlockOffset(dx - 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
-                            && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx - 1, dy, dz))
+                        && aBaseMetaTileEntity.getBlockOffset(dx - 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
+                        && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx - 1, dy, dz))
                         isDoorOpen = true;
                     else if (dx < dxMax
-                            && aBaseMetaTileEntity.getBlockOffset(dx + 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
-                            && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx + 1, dy, dz))
+                        && aBaseMetaTileEntity.getBlockOffset(dx + 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
+                        && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx + 1, dy, dz))
                         isDoorOpen = true;
                 }
 
@@ -367,7 +370,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean addStructureBlock(IGregTechTileEntity aBaseMetaTileEntity, int dx, int dy, int dz,
-            int allowedMask) {
+        int allowedMask) {
         switch (getBlockType(aBaseMetaTileEntity, dx, dy, dz, allowedMask)) {
             case CASING:
                 ++casingCount;
@@ -400,7 +403,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
             default:
                 throw new IllegalArgumentException(
-                        "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                    "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
         }
     }
 
@@ -468,14 +471,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
 
         if (debugCleanroom) GTLog.out.println(
-                "Cleanroom: dxMin = " + dxMin
-                        + ", dxMax = "
-                        + dxMax
-                        + ", dzMin = "
-                        + dzMin
-                        + ", dzMax = "
-                        + dzMax
-                        + ".");
+            "Cleanroom: dxMin = " + dxMin + ", dxMax = " + dxMax + ", dzMin = " + dzMin + ", dzMax = " + dzMax + ".");
         return true;
     }
 
@@ -554,12 +550,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
                     default:
                         throw new IllegalArgumentException(
-                                "Cleanroom error: unknown block type at at offset (" + dx
-                                        + ", "
-                                        + dy
-                                        + ", "
-                                        + dz
-                                        + ").");
+                            "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
                 }
             }
         }
@@ -642,7 +633,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         mHeight = -dyMin + 1;
 
         if (debugCleanroom) GTLog.out.println(
-                "Cleanroom: Structure complete. Found " + casingCount + " casings, " + otherCount + " other blocks.");
+            "Cleanroom: Structure complete. Found " + casingCount + " casings, " + otherCount + " other blocks.");
 
         // Validate structure.
 
@@ -697,15 +688,21 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0) {
-            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE),
-                    active ? TextureFactory.of(
-                            TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
-                            TextureFactory.builder().addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW).glow().build())
-                            : TextureFactory.of(
-                                    TextureFactory.of(OVERLAY_TOP_CLEANROOM),
-                                    TextureFactory.builder().addIcon(OVERLAY_TOP_CLEANROOM_GLOW).glow().build()) };
+            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), active
+                ? TextureFactory.of(
+                    TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW)
+                        .glow()
+                        .build())
+                : TextureFactory.of(
+                    TextureFactory.of(OVERLAY_TOP_CLEANROOM),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_TOP_CLEANROOM_GLOW)
+                        .glow()
+                        .build()) };
         }
         return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE) };
     }
@@ -805,13 +802,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         screenElements
-                .widget(
-                        new TextWidget()
-                                .setStringSupplier(
-                                        () -> StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": "
-                                                + GTUtility.formatNumbers(mEfficiency / 100D)
-                                                + "%")
-                                .setTextAlignment(Alignment.CenterLeft).setDefaultColor(COLOR_TEXT_WHITE.get()))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mEfficiency, eff -> mEfficiency = eff));
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": "
+                            + GTUtility.formatNumbers(mEfficiency / 100D)
+                            + "%")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mEfficiency, eff -> mEfficiency = eff));
     }
 }

@@ -26,14 +26,14 @@ public class CasingRegistrator implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         GTOreDictUnificator.addAssociation(
-                OrePrefixes.blockCasing,
-                werkstoff.getBridgeMaterial(),
-                new ItemStack(WerkstoffLoader.BWBlockCasings, 1, werkstoff.getmID()),
-                false);
+            OrePrefixes.blockCasing,
+            werkstoff.getBridgeMaterial(),
+            new ItemStack(WerkstoffLoader.BWBlockCasings, 1, werkstoff.getmID()),
+            false);
         GTOreDictUnificator.addAssociation(
-                OrePrefixes.blockCasingAdvanced,
-                werkstoff.getBridgeMaterial(),
-                new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, werkstoff.getmID()),
-                false);
+            OrePrefixes.blockCasingAdvanced,
+            werkstoff.getBridgeMaterial(),
+            new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, werkstoff.getmID()),
+            false);
     }
 }

@@ -40,7 +40,7 @@ public abstract class CoverFacadeBase extends Cover {
     private static final int ITEM_PASS_FLAG = 0x8;
 
     public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock,
-            Function<ItemStack, Integer> getTargetmeta) {
+        Function<ItemStack, Integer> getTargetmeta) {
         return (ForgeDirection side, ItemStack coverItem, ICoverable coverable) -> {
             // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
             // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a
@@ -93,11 +93,11 @@ public abstract class CoverFacadeBase extends Cover {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) {
             GTRenderingWorld.register(
-                    coverable.getXCoord(),
-                    coverable.getYCoord(),
-                    coverable.getZCoord(),
-                    getTargetBlock(mStack),
-                    getTargetMeta(mStack));
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
+                getTargetBlock(mStack),
+                getTargetMeta(mStack));
         }
         return this;
     }
@@ -198,11 +198,11 @@ public abstract class CoverFacadeBase extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mFlags = ((mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                        + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                        + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                        + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            aPlayer,
+            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
+                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
+                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
+                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
     }
 
     @Override
@@ -249,11 +249,11 @@ public abstract class CoverFacadeBase extends Cover {
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(coverItem),
-                getTargetMeta(coverItem));
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(coverItem),
+            getTargetMeta(coverItem));
     }
 
     @Override
@@ -273,8 +273,11 @@ public abstract class CoverFacadeBase extends Cover {
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return TextureFactory.builder().setFromBlock(block, getTargetMeta(mStack)).useWorldCoord()
-                .setFromSide(coverSide).build();
+        return TextureFactory.builder()
+            .setFromBlock(block, getTargetMeta(mStack))
+            .useWorldCoord()
+            .setFromSide(coverSide)
+            .build();
     }
 
     @Override
@@ -310,11 +313,11 @@ public abstract class CoverFacadeBase extends Cover {
             if (mStack != null)
                 // mStack == null -> cover removed before data reach client
                 GTRenderingWorld.unregister(
-                        coverable.getXCoord(),
-                        coverable.getYCoord(),
-                        coverable.getZCoord(),
-                        getTargetBlock(mStack),
-                        getTargetMeta(mStack));
+                    coverable.getXCoord(),
+                    coverable.getYCoord(),
+                    coverable.getZCoord(),
+                    getTargetBlock(mStack),
+                    getTargetMeta(mStack));
         }
     }
 

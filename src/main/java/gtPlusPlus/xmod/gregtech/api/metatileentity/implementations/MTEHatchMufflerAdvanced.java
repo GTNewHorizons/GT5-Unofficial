@@ -40,11 +40,11 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     }
 
     final String[] mDescription = new String[] { "Outputs pollution from a multiblock", "DO NOT OBSTRUCT THE OUTPUT!",
-            "Requires 3 Air Blocks in front of the exhaust face",
-            mTier < 5 ? "Requires an Air Filter"
-                    : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
-            "Can take Air Filters from an input bus of the multiblock",
-            "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%", GTPPCore.GT_Tooltip.get() };
+        "Requires 3 Air Blocks in front of the exhaust face",
+        mTier < 5 ? "Requires an Air Filter"
+            : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
+        "Can take Air Filters from an input bus of the multiblock",
+        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%", GTPPCore.GT_Tooltip.get() };
 
     @Override
     public String[] getDescription() {
@@ -68,7 +68,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return (aIndex == this.SLOT_FILTER && isAirFilter(aStack));
     }
 
@@ -86,8 +86,8 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     @Override
     public boolean polluteEnvironment(MetaTileEntity parentTileEntity, int pollutionAmount) {
         if (!airCheck()) return false; // Muffler obstructed.
-        if (pollutionAmount < 10000
-                && pollutionAmount <= parentTileEntity.getBaseMetaTileEntity().getRandomNumber(10000)) {
+        if (pollutionAmount < 10000 && pollutionAmount <= parentTileEntity.getBaseMetaTileEntity()
+            .getRandomNumber(10000)) {
             // If we are venting less than the maximum amount of pollution, damage filter with a lower chance.
             // This happens if a multiblock has more than one muffler.
             pollutionAmount = calculatePollutionReduction(pollutionAmount, true);
@@ -137,7 +137,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         IGregTechTileEntity bmte = getBaseMetaTileEntity();
         ForgeDirection facing = bmte.getFrontFacing();
         return bmte.getAirAtSide(facing) && bmte.getAirAtSideAndDistance(facing, 1)
-                && bmte.getAirAtSideAndDistance(facing, 2);
+            && bmte.getAirAtSideAndDistance(facing, 2);
     }
 
     /**
@@ -233,14 +233,18 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (this.getBaseMetaTileEntity().isActive()) {
+            if (this.getBaseMetaTileEntity()
+                .isActive()) {
                 String aParticleName;
                 if ((aTick % 2) == 0) {
                     aParticleName = "cloud";
                 } else {
                     aParticleName = "smoke";
                 }
-                this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), aParticleName);
+                this.pollutionParticles(
+                    this.getBaseMetaTileEntity()
+                        .getWorld(),
+                    aParticleName);
             }
         }
     }
@@ -290,51 +294,53 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
 
         if (chk1) {
             aWorld.spawnParticle(
-                    name,
-                    xPos + ran1 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                name,
+                xPos + ran1 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk2) {
             aWorld.spawnParticle(
-                    name,
-                    xPos + ran2 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                name,
+                xPos + ran2 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk3) {
             aWorld.spawnParticle(
-                    name,
-                    xPos + ran3 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                name,
+                xPos + ran3 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
     }
 
     @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTPPUITextures.BACKGROUND_YELLOW)
-                .setItemSlot(GTPPUITextures.SLOT_ITEM_YELLOW).setTitleTab(
-                        GTPPUITextures.TAB_TITLE_YELLOW,
-                        GTPPUITextures.TAB_TITLE_DARK_YELLOW,
-                        GTPPUITextures.TAB_TITLE_ANGULAR_YELLOW);
+            .setItemSlot(GTPPUITextures.SLOT_ITEM_YELLOW)
+            .setTitleTab(
+                GTPPUITextures.TAB_TITLE_YELLOW,
+                GTPPUITextures.TAB_TITLE_DARK_YELLOW,
+                GTPPUITextures.TAB_TITLE_ANGULAR_YELLOW);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
-                        .setBackground(getGUITextureSet().getItemSlot()).setPos(79, 34));
+            new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                .setBackground(getGUITextureSet().getItemSlot())
+                .setPos(79, 34));
     }
 }

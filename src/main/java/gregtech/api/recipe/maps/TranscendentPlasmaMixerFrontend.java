@@ -24,7 +24,7 @@ import gregtech.nei.RecipeDisplayInfo;
 public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
 
     public TranscendentPlasmaMixerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -49,15 +49,15 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
         // the EU/t.
         long multiplier = recipeInfo.recipe.getMetadataOrDefault(EU_MULTIPLIER, 10);
         recipeInfo.drawText(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.display.total",
-                        formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.total",
+                formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)));
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
         long averageUsage = multiplier * recipeInfo.recipe.mEUt;
         recipeInfo.drawText(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.display.average",
-                        formatNumbers(averageUsage),
-                        GTUtility.getTierNameWithParentheses(averageUsage)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.average",
+                formatNumbers(averageUsage),
+                GTUtility.getTierNameWithParentheses(averageUsage)));
     }
 }

@@ -51,18 +51,19 @@ public class DynamicDimensionConfig {
                     String tDimIdentifier = mdd.getDimIdentifier();
                     if (_mDynamicAsteroidMap.containsKey(tDimIdentifier)) {
                         GalacticGreg.Logger.warn(
-                                "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: %s",
-                                tDimIdentifier);
+                            "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: %s",
+                            tDimIdentifier);
                         continue;
                     }
 
                     Asteroids AsteroidProperties = null;
                     for (Asteroids asteroidsConfig : ASTEROIDS_VALUES) {
-                        if (!asteroidsConfig.modContainers.modContainer.getModName().equals(mc.getModName())) {
+                        if (!asteroidsConfig.modContainers.modContainer.getModName()
+                            .equals(mc.getModName())) {
                             continue;
                         }
                         if (!asteroidsConfig.dimensionDef.modDimensionDef.getDimensionName()
-                                .equals(mdd.getDimensionName())) {
+                            .equals(mdd.getDimensionName())) {
                             continue;
                         }
                         AsteroidProperties = asteroidsConfig;
@@ -70,10 +71,10 @@ public class DynamicDimensionConfig {
                     }
                     if (AsteroidProperties == null) {
                         GalacticGreg.Logger.error(
-                                "Something went wrong! no properties are existing for Asteroid dim: "
-                                        + mdd.getDimensionName()
-                                        + " from mod container "
-                                        + mc.getModName());
+                            "Something went wrong! no properties are existing for Asteroid dim: "
+                                + mdd.getDimensionName()
+                                + " from mod container "
+                                + mc.getModName());
                         continue;
                     }
 
@@ -103,8 +104,8 @@ public class DynamicDimensionConfig {
                     }
 
                     if (aConf.MaxSize > 50) GalacticGreg.Logger.warn(
-                            "Asteroid-MaxSize for dimID [%s] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
-                            tDimIdentifier);
+                        "Asteroid-MaxSize for dimID [%s] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
+                        tDimIdentifier);
                     _mDynamicAsteroidMap.put(tDimIdentifier, aConf);
 
                 }

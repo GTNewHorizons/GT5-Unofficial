@@ -41,58 +41,80 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
             if (UniversalSingularities.isModLoaded()) {
                 // Raw Exposed Optical Chip
-                GTValues.RA.stdBuilder().itemInputs(
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
                         ItemList.Circuit_Silicon_Wafer7.get(1L),
                         // Fluxed Electrum Singularity.
                         getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
-                        .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L)).duration(5 * SECONDS)
-                        .eut(TierEU.RECIPE_UMV).addTo(electricImplosionCompressorRecipes);
+                    .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(electricImplosionCompressorRecipes);
             }
         }
 
         // Manual Add due to werkstoff material system disconnected from autogeneration
-        GTValues.RA.stdBuilder().itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
-                .itemOutputs(
-                        WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
-                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
-                .duration(1 * TICKS).eut(TierEU.RECIPE_UEV).addTo(electricImplosionCompressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
+            .itemOutputs(
+                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+            .duration(1 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
-                .itemOutputs(new ItemStack(highDensityPlutonium, 1))
-                .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS)).duration(1).eut(TierEU.RECIPE_UEV)
-                .addTo(electricImplosionCompressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityPlutonium, 1))
+            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .duration(1)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(highDensityUraniumNugget, 5))
-                .itemOutputs(new ItemStack(highDensityUranium, 1))
-                .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS)).duration(1).eut(TierEU.RECIPE_UEV)
-                .addTo(electricImplosionCompressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(highDensityUraniumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityUranium, 1))
+            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .duration(1)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
 
-        GTValues.RA.stdBuilder().itemInputs(new ItemStack(highDensityThoriumNugget, 5))
-                .itemOutputs(new ItemStack(highDensityThorium, 1))
-                .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS)).duration(1).eut(TierEU.RECIPE_UEV)
-                .addTo(electricImplosionCompressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(highDensityThoriumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityThorium, 1))
+            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .duration(1)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
 
         // Magneto material recipe for base fluid.
         GTValues.RA.stdBuilder()
-                .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
-                .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(1 * STACKS))
-                .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * INGOTS))
-                .duration(4 * SECONDS).eut(TierEU.RECIPE_UXV).addTo(electricImplosionCompressorRecipes);
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
+            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(1 * STACKS))
+            .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * INGOTS))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(electricImplosionCompressorRecipes);
 
         // Infinity Catalyst
-        GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
-                .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5)).duration(1).eut(TierEU.RECIPE_UIV)
-                .addTo(electricImplosionCompressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
+            .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
+            .duration(1)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(electricImplosionCompressorRecipes);
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-                .itemInputs(MaterialsUEVplus.Eternity.getNanite(1), MaterialsUEVplus.Universium.getNanite(1))
-                .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(2 * STACKS))
-                .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * INGOTS))
-                .duration(4 * SECONDS).eut(TierEU.RECIPE_MAX).addTo(electricImplosionCompressorRecipes);
+            .itemInputs(MaterialsUEVplus.Eternity.getNanite(1), MaterialsUEVplus.Universium.getNanite(1))
+            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(2 * STACKS))
+            .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * INGOTS))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(electricImplosionCompressorRecipes);
 
         this.addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes();
     }
@@ -122,23 +144,24 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     }
 
     private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
-            final int circuitMultiplier) {
+        final int circuitMultiplier) {
 
         final int partFraction = (int) (part.mMaterialAmount * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-                .itemInputs(
-                        new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
-                        getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
-                        getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                        GTOreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
-                .itemOutputs(
-                        GTOreDictUnificator
-                                .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
-                .fluidInputs(
-                        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
-                                .getMolten((long) partFraction * multiplier))
-                .duration((int) (multiplier * (20 * partFraction / (float) INGOTS))).eut(TierEU.RECIPE_UXV)
-                .addTo(electricImplosionCompressorRecipes);
+            .itemInputs(
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
+                getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
+                getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
+                GTOreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
+            .itemOutputs(
+                GTOreDictUnificator
+                    .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+            .fluidInputs(
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
+                    .getMolten((long) partFraction * multiplier))
+            .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(electricImplosionCompressorRecipes);
     }
 }

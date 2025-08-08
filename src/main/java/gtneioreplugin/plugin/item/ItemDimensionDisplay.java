@@ -18,7 +18,8 @@ public class ItemDimensionDisplay extends ItemBlock {
     public ItemDimensionDisplay(Block block) {
         super(block);
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.CLIENT) {
             MinecraftForgeClient.registerItemRenderer(this, new ItemDimensionDisplayRenderer());
         }
     }
@@ -45,7 +46,8 @@ public class ItemDimensionDisplay extends ItemBlock {
     public String getItemStackDisplayName(ItemStack stack) {
         String dimension = getDimension(stack);
         if (dimension != null) {
-            return DimensionHelper.convertCondensedStringToToolTip(dimension).get(0);
+            return DimensionHelper.convertCondensedStringToToolTip(dimension)
+                .get(0);
         }
         return super.getItemStackDisplayName(stack);
     }

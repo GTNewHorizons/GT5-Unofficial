@@ -27,19 +27,24 @@ public class RecyclerBackend extends NonGTBackend {
 
     @Override
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-            @Nullable GTRecipe cachedRecipe) {
+        @Nullable GTRecipe cachedRecipe) {
         if (items.length == 0 || items[0] == null) {
             return null;
         }
         if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)) {
             return cachedRecipe;
         }
-        GTRecipeBuilder builder = GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, items[0]));
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, items[0]));
         ItemStack output = GTModHandler.getRecyclerOutput(items[0], 0);
         if (output != null) {
-            builder.itemOutputs(output).outputChances(1250);
+            builder.itemOutputs(output)
+                .outputChances(1250);
         }
-        return builder.duration(45).eut(1).build().orElse(null);
+        return builder.duration(45)
+            .eut(1)
+            .build()
+            .orElse(null);
     }
 
     @Override

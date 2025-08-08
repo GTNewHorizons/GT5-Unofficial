@@ -85,18 +85,18 @@ public class ItemBlockGtBlock extends ItemBlock {
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                     if (this.mMaterial != null) {
                         list.add(
-                                StatCollector.translateToLocalFormatted(
-                                        "GTPP.tooltip.block.mining_level",
-                                        Math.min(Math.max(aMiningLevel1, 0), 5)));
+                            StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.block.mining_level",
+                                Math.min(Math.max(aMiningLevel1, 0), 5)));
                         list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
-                        if (mMaterial.getComposites().isEmpty()) {
+                        if (mMaterial.getComposites()
+                            .isEmpty()) {
                             list.add("- " + mMaterial.getLocalizedName());
                         } else {
                             for (MaterialStack m : mMaterial.getComposites()) {
                                 list.add(
-                                        "- " + m.getStackMaterial().getLocalizedName()
-                                                + " x"
-                                                + m.getPartsPerOneHundred());
+                                    "- " + m.getStackMaterial()
+                                        .getLocalizedName() + " x" + m.getPartsPerOneHundred());
                             }
                         }
                     }
@@ -123,7 +123,7 @@ public class ItemBlockGtBlock extends ItemBlock {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
 
         if (!isModular && !isOre) {
             mMaterial = null;

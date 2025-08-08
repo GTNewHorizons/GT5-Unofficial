@@ -47,8 +47,8 @@ public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name",
-                    WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
+                getUnlocalizedName() + "." + i + ".name",
+                WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
             GTStructureChannels.EOH_COMPRESSION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
 

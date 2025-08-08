@@ -38,43 +38,64 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
         Logger.WARNING("Generating Metal recipes for " + material.getLocalizedName());
         if (material.getIngot(1) != null && material.getBlock(1) != null) {
 
-            GTValues.RA.stdBuilder().itemInputs(material.getIngot(9)).itemOutputs(material.getBlock(1))
-                    .duration(15 * SECONDS).eut(2).addTo(compressorRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getIngot(9))
+                .itemOutputs(material.getBlock(1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
             Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Success");
 
         }
 
         if (material.getIngot(1) != null && material.getRod(1) != null) {
-            GTValues.RA.stdBuilder().itemInputs(material.getIngot(1))
-                    .itemOutputs(material.getRod(1), material.getSmallDust(2))
-                    .duration(Math.max(material.getMass() / 8L, 1L)).eut(material.vVoltageMultiplier)
-                    .addTo(latheRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getIngot(1))
+                .itemOutputs(material.getRod(1), material.getSmallDust(2))
+                .duration(Math.max(material.getMass() / 8L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(latheRecipes);
 
             Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (material.getRod(1) != null && material.getBolt(1) != null) {
-            GTValues.RA.stdBuilder().itemInputs(material.getRod(1)).itemOutputs(material.getBolt(4))
-                    .duration(Math.max(material.getMass() * 2L, 1L)).eut(material.vVoltageMultiplier)
-                    .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getRod(1))
+                .itemOutputs(material.getBolt(4))
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(cutterRecipes);
 
             Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (material.getRod(1) != null && material.getLongRod(1) != null) {
-            GTValues.RA.stdBuilder().itemInputs(material.getRod(2)).itemOutputs(material.getLongRod(1))
-                    .duration((int) Math.max(material.getMass(), 1L)).eut(16).addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getRod(2))
+                .itemOutputs(material.getLongRod(1))
+                .duration((int) Math.max(material.getMass(), 1L))
+                .eut(16)
+                .addTo(hammerRecipes);
 
             Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
 
-            GTValues.RA.stdBuilder().itemInputs(material.getLongRod(1)).itemOutputs(material.getRod(2))
-                    .duration(Math.max(material.getMass(), 1L)).eut(4).addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getLongRod(1))
+                .itemOutputs(material.getRod(2))
+                .duration(Math.max(material.getMass(), 1L))
+                .eut(4)
+                .addTo(cutterRecipes);
 
         }
 
         if (material.getBolt(1) != null && material.getScrew(1) != null) {
-            GTValues.RA.stdBuilder().itemInputs(material.getBolt(1)).itemOutputs(material.getScrew(1))
-                    .duration(Math.max(material.getMass() / 8L, 1L)).eut(4).addTo(latheRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getBolt(1))
+                .itemOutputs(material.getScrew(1))
+                .duration(Math.max(material.getMass() / 8L, 1L))
+                .eut(4)
+                .addTo(latheRecipes);
 
             Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
         }

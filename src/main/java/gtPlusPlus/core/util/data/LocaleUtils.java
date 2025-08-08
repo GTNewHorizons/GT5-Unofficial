@@ -21,8 +21,11 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class LocaleUtils {
 
     public static void generateFakeLocaleFile() {
-        for (ModContainer modcontainer : Loader.instance().getModList()) {
-            if (modcontainer.getModId().toLowerCase().equals(GTPlusPlus.ID)) {
+        for (ModContainer modcontainer : Loader.instance()
+            .getModList()) {
+            if (modcontainer.getModId()
+                .toLowerCase()
+                .equals(GTPlusPlus.ID)) {
                 String S = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                 writeToFile(S);
                 dumpItemsAndBlocksForModContainer(modcontainer);

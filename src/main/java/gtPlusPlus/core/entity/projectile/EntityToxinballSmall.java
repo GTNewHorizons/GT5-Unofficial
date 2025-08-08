@@ -20,7 +20,7 @@ public class EntityToxinballSmall extends EntityToxinball {
     }
 
     public EntityToxinballSmall(World p_i1772_1_, double p_i1772_2_, double p_i1772_4_, double p_i1772_6_,
-            double p_i1772_8_, double p_i1772_10_, double p_i1772_12_) {
+        double p_i1772_8_, double p_i1772_10_, double p_i1772_12_) {
         super(p_i1772_1_, p_i1772_2_, p_i1772_4_, p_i1772_6_, p_i1772_8_, p_i1772_10_, p_i1772_12_);
         this.setSize(0.3125F, 0.3125F);
     }
@@ -33,7 +33,7 @@ public class EntityToxinballSmall extends EntityToxinball {
         if (!this.worldObj.isRemote) {
             if (MoP.entityHit != null) {
                 if (!MoP.entityHit.isImmuneToFire() && MoP.entityHit
-                        .attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F)) {
+                    .attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F)) {
                     MoP.entityHit.setFire(5);
                 }
             } else {

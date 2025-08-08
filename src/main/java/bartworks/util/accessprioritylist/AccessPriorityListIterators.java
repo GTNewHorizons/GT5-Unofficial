@@ -29,7 +29,7 @@ public class AccessPriorityListIterators {
         boolean reverse;
 
         public AccessPriorityListListIterator(AccessPriorityListNode<E> head, AccessPriorityListNode<E> tail,
-                boolean reverse) {
+            boolean reverse) {
             this.head = head;
             this.tail = tail;
             this.current = reverse ? tail : head;

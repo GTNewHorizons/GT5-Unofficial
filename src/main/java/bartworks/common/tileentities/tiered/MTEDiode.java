@@ -56,18 +56,22 @@ public class MTEDiode extends MTEBasicHull {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
-            this.maxAmps = this.getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
+        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity()
+            .getWorld().isRemote) {
+            this.maxAmps = this.getAmpsfromMeta(
+                this.getBaseMetaTileEntity()
+                    .getMetaTileID());
             this.aAmps = this.maxAmps;
         }
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
-        if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
+        if (this.getBaseMetaTileEntity()
+            .getWorld().isRemote) return;
         if (!aPlayer.isSneaking()) {
             --this.aAmps;
             if (this.aAmps < 0) this.aAmps = this.maxAmps;

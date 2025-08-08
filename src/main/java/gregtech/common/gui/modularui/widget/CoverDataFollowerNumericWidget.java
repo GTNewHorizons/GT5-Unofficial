@@ -12,7 +12,7 @@ import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.common.covers.Cover;
 
 public class CoverDataFollowerNumericWidget<T extends Cover> extends NumericWidget
-        implements ICoverDataFollowerWidget<T, Double> {
+    implements ICoverDataFollowerWidget<T, Double> {
 
     private Function<T, Double> dataToStateGetter;
 

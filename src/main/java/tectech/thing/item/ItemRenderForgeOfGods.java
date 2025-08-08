@@ -22,7 +22,7 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item,
-            IItemRenderer.ItemRendererHelper helper) {
+        IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
 
@@ -33,10 +33,10 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
 
         if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
         else if (type == IItemRenderer.ItemRenderType.EQUIPPED
-                || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                    GL11.glTranslated(0.5, 0.5, 0.5);
-                    if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
-                }
+            || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
+                GL11.glTranslated(0.5, 0.5, 0.5);
+                if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
+            }
 
         {
 

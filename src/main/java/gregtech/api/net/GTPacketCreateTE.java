@@ -29,7 +29,7 @@ public class GTPacketCreateTE extends GTPacket {
     public GTPacketCreateTE() {}
 
     public GTPacketCreateTE(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5,
-            byte aCommon, byte aUpdate, byte aRedstone, byte aColor, byte aType) {
+        byte aCommon, byte aUpdate, byte aRedstone, byte aColor, byte aType) {
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -78,26 +78,26 @@ public class GTPacketCreateTE extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketCreateTE(
-                // Coords
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                // ID
-                aData.readShort(),
-                // Covers
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                // Everything else
-                aData.readByte(),
-                aData.readByte(),
-                aData.readByte(),
-                aData.readByte(),
-                // TE type
-                aData.readByte());
+            // Coords
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            // ID
+            aData.readShort(),
+            // Covers
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            // Everything else
+            aData.readByte(),
+            aData.readByte(),
+            aData.readByte(),
+            aData.readByte(),
+            // TE type
+            aData.readByte());
     }
 
     @Override
@@ -124,38 +124,38 @@ public class GTPacketCreateTE extends GTPacket {
                 try {
                     if (tileEntity instanceof BaseMetaTileEntity tile) {
                         tile.receiveMetaTileEntityData(
-                                mID,
-                                mC0,
-                                mC1,
-                                mC2,
-                                mC3,
-                                mC4,
-                                mC5,
-                                mCommon,
-                                mUpdate,
-                                mRedstone,
-                                mColor);
+                            mID,
+                            mC0,
+                            mC1,
+                            mC2,
+                            mC3,
+                            mC4,
+                            mC5,
+                            mCommon,
+                            mUpdate,
+                            mRedstone,
+                            mColor);
                     } else if (tileEntity instanceof BaseMetaPipeEntity pipe) {
                         pipe.receiveMetaTileEntityData(
-                                mID,
-                                mC0,
-                                mC1,
-                                mC2,
-                                mC3,
-                                mC4,
-                                mC5,
-                                mCommon,
-                                mUpdate,
-                                mRedstone,
-                                mColor);
+                            mID,
+                            mC0,
+                            mC1,
+                            mC2,
+                            mC3,
+                            mC4,
+                            mC5,
+                            mCommon,
+                            mUpdate,
+                            mRedstone,
+                            mColor);
                     }
                 } catch (Exception e) {
                     GTMod.GT_FML_LOGGER.error(
-                            "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
-                            tileEntity,
-                            mX,
-                            mY,
-                            mZ);
+                        "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                        tileEntity,
+                        mX,
+                        mY,
+                        mZ);
                 }
             }
         }

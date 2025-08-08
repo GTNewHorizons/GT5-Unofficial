@@ -45,12 +45,12 @@ public class GTPacketNodeInfo extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
         return new GTPacketNodeInfo(
-                buf.readInt(),
-                buf.readInt(),
-                buf.readInt(),
-                buf.readInt(),
-                buf.readInt(),
-                buf.readInt());
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class GTPacketNodeInfo extends GTPacket {
             if (worldClient.blockExists(mBlockX, mBlockY, mBlockZ)) {
                 TileEntity tileEntity = world.getTileEntity(mBlockX, mBlockY, mBlockZ);
                 if (tileEntity instanceof IGregTechTileEntity igtte
-                        && igtte.getMetaTileEntity() instanceof MTEResearchCompleter completer) {
+                    && igtte.getMetaTileEntity() instanceof MTEResearchCompleter completer) {
                     completer.setNodeValues(nodeDistance, nodeColor);
                 }
             }

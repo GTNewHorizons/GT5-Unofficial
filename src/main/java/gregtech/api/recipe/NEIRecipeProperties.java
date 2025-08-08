@@ -94,11 +94,11 @@ public final class NEIRecipeProperties {
     public final Comparator<GTRecipe> comparator;
 
     NEIRecipeProperties(boolean registerNEI, @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator,
-            Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
-            boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
-            Function<GTRecipe, ItemStack[]> itemInputsGetter, Function<GTRecipe, FluidStack[]> fluidInputsGetter,
-            Function<GTRecipe, ItemStack[]> itemOutputsGetter, Function<GTRecipe, FluidStack[]> fluidOutputsGetter,
-            Comparator<GTRecipe> comparator) {
+        Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
+        boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
+        Function<GTRecipe, ItemStack[]> itemInputsGetter, Function<GTRecipe, FluidStack[]> fluidInputsGetter,
+        Function<GTRecipe, ItemStack[]> itemOutputsGetter, Function<GTRecipe, FluidStack[]> fluidOutputsGetter,
+        Comparator<GTRecipe> comparator) {
         this.registerNEI = registerNEI;
         this.handlerInfoCreator = handlerInfoCreator;
         this.recipeBackgroundOffset = recipeBackgroundOffset;

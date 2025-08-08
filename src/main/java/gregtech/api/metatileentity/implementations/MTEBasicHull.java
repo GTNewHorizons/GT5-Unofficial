@@ -13,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public class MTEBasicHull extends MTEBasicTank {
 
     public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 1, aDescription, aTextures);
     }
 
@@ -73,19 +73,19 @@ public class MTEBasicHull extends MTEBasicTank {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return true;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return true;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-            int colorIndex, boolean aConnected, boolean redstoneLevel) {
+        int colorIndex, boolean aConnected, boolean redstoneLevel) {
         return mTextures[Math.min(2, side.ordinal()) + (side == aFacing ? 3 : 0)][colorIndex + 1];
     }
 
@@ -97,11 +97,11 @@ public class MTEBasicHull extends MTEBasicTank {
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
         }
         return rTextures;
     }

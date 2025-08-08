@@ -23,15 +23,14 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-                || type == ItemRenderType.INVENTORY
-                || type == ItemRenderType.ENTITY;
+            || type == ItemRenderType.INVENTORY
+            || type == ItemRenderType.ENTITY;
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
-                || (helper == ItemRendererHelper.ENTITY_ROTATION
-                        && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
     }
 
     /**
@@ -72,7 +71,8 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             }
 
             if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-                IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
+                IIcon fluidIcon = aFluid.getFluid()
+                    .getIcon(aFluid);
                 if (fluidIcon != null) {
                     markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
@@ -92,7 +92,7 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     }
 
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor,
-            int pass, Object... data) {
+        int pass, Object... data) {
         renderRegularItem(type, aStack, icon, shouldModulateColor);
     }
 

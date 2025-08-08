@@ -34,7 +34,7 @@ public class ToolTrowel extends GTTool {
     @Override
     public short[] getRGBa(final boolean aIsToolHead, final ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -50,11 +50,11 @@ public class ToolTrowel extends GTTool {
     @Override
     public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " was taken to trowel town by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " was taken to trowel town by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

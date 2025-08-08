@@ -32,15 +32,19 @@ public class FluidLimiterUIFactory extends CoverUIFactory<CoverFluidLimiter> {
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(
+        builder
+            .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) Math.round(coverData.getThreshold() * 100),
-                        (coverData, val) -> coverData.setThreshold(val.floatValue() / 100),
-                        widget -> widget.setBounds(0, 100).setFocusOnGuiOpen(true)
-                                .setPos(startX, startY + spaceY * 2 - 24).setSize(spaceX * 4 - 3, 12)))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fluid_limiter.threshold"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX, startY + spaceY * 2 - 35));
+                    new CoverDataFollowerNumericWidget<>(),
+                    coverData -> (double) Math.round(coverData.getThreshold() * 100),
+                    (coverData, val) -> coverData.setThreshold(val.floatValue() / 100),
+                    widget -> widget.setBounds(0, 100)
+                        .setFocusOnGuiOpen(true)
+                        .setPos(startX, startY + spaceY * 2 - 24)
+                        .setSize(spaceX * 4 - 3, 12)))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fluid_limiter.threshold"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX, startY + spaceY * 2 - 35));
     }
 }

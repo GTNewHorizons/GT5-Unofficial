@@ -70,10 +70,10 @@ public class SPMCommand extends GTBaseCommand {
                     return;
                 }
                 processUnlock(
-                        sender,
-                        arguments[1],
-                        arguments[2],
-                        arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
                 break;
             case UNLOCK_UPGRADE:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
@@ -82,16 +82,16 @@ public class SPMCommand extends GTBaseCommand {
                 }
                 if (arguments.length < 4) {
                     sendChatToPlayer(
-                            sender,
-                            "Not enough arguments. Needs to mention a project a location and an upgrade name");
+                        sender,
+                        "Not enough arguments. Needs to mention a project a location and an upgrade name");
                     return;
                 }
                 processUnlock(
-                        sender,
-                        arguments[1],
-                        arguments[2],
-                        arguments[3],
-                        arguments.length >= 5 ? arguments[4] : sender.getCommandSenderName());
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments[3],
+                    arguments.length >= 5 ? arguments[4] : sender.getCommandSenderName());
                 break;
             case LOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
@@ -103,15 +103,15 @@ public class SPMCommand extends GTBaseCommand {
                     return;
                 }
                 processLock(
-                        sender,
-                        arguments[1],
-                        arguments[2],
-                        arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
             case LIST:
                 if (arguments.length < 2) {
                     sendChatToPlayer(
-                            sender,
-                            "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked");
+                        sender,
+                        "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked");
                     return;
                 }
                 processList(sender, arguments[1], arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
@@ -160,8 +160,10 @@ public class SPMCommand extends GTBaseCommand {
                     ISpaceProject project = SpaceProjectManager.getProject(arguments[2]);
                     if (project != null) {
                         autoComplete.addAll(
-                                project.getAllUpgrades().stream().map(ISpaceProject.ISP_Upgrade::getUnlocalizedName)
-                                        .collect(Collectors.toList()));
+                            project.getAllUpgrades()
+                                .stream()
+                                .map(ISpaceProject.ISP_Upgrade::getUnlocalizedName)
+                                .collect(Collectors.toList()));
                     }
                 } else {
                     autoComplete.addAll(Arrays.asList(getPlayers()));
@@ -169,20 +171,25 @@ public class SPMCommand extends GTBaseCommand {
             }
         }
         String finalFilter = filter;
-        return autoComplete.stream().filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
-                .collect(Collectors.toList());
+        return autoComplete.stream()
+            .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+            .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
-        return MinecraftServer.getServer().getAllUsernames();
+        return MinecraftServer.getServer()
+            .getAllUsernames();
     }
 
     private String[] getLocations() {
-        return SpaceProjectManager.getLocationNames().toArray(new String[0]);
+        return SpaceProjectManager.getLocationNames()
+            .toArray(new String[0]);
     }
 
     private String[] getProjects() {
-        return SpaceProjectManager.getProjectsMap().keySet().toArray(new String[0]);
+        return SpaceProjectManager.getProjectsMap()
+            .keySet()
+            .toArray(new String[0]);
     }
 
     private String[] getSubCommands() {
@@ -219,7 +226,7 @@ public class SPMCommand extends GTBaseCommand {
     }
 
     private void processUnlock(ICommandSender sender, String projectName, String location, String upgradeName,
-            String playerName) {
+        String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         ISpaceProject tProject = SpaceProjectManager.getTeamProjectOrCopy(tID, projectName, getLocation(location));
         if (tProject != null) {
@@ -243,7 +250,8 @@ public class SPMCommand extends GTBaseCommand {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         switch (argument) {
             case ALL -> {
-                for (String project : SpaceProjectManager.getProjectsMap().keySet()) {
+                for (String project : SpaceProjectManager.getProjectsMap()
+                    .keySet()) {
                     sendChatToPlayer(sender, project);
                 }
             }

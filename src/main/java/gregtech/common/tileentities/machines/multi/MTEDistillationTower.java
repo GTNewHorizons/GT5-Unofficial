@@ -54,7 +54,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -65,55 +65,54 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     static {
         IHatchElement<MTEDistillationTower> layeredOutputHatch = OutputHatch
-                .withCount(MTEDistillationTower::getCurrentLayerOutputHatchCount)
-                .withAdder(MTEDistillationTower::addLayerOutputHatch);
+            .withCount(MTEDistillationTower::getCurrentLayerOutputHatchCount)
+            .withAdder(MTEDistillationTower::addLayerOutputHatch);
         STRUCTURE_DEFINITION = StructureDefinition.<MTEDistillationTower>builder()
-                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
-                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LLL", "LLL" }, }))
-                .addElement(
-                        'b',
-                        ofChain(
-                                buildHatchAdder(MTEDistillationTower.class)
-                                        .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
-                                        .casingIndex(CASING_INDEX).dot(1).build(),
-                                onElementPass(
-                                        MTEDistillationTower::onCasingFound,
-                                        ofBlock(GregTechAPI.sBlockCasings4, 1))))
-                .addElement(
-                        'l',
-                        ofChain(
-                                buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
-                                        .casingIndex(CASING_INDEX).dot(2)
-                                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN).build(),
-                                ofHatchAdder(MTEDistillationTower::addEnergyInputToMachineList, CASING_INDEX, 2),
-                                ofHatchAdder(MTEDistillationTower::addLayerOutputHatch, CASING_INDEX, 2),
-                                ofHatchAdder(MTEDistillationTower::addMaintenanceToMachineList, CASING_INDEX, 2),
-                                onElementPass(
-                                        MTEDistillationTower::onCasingFound,
-                                        ofBlock(GregTechAPI.sBlockCasings4, 1))))
-                // hint element only used in top layer
-                .addElement(
-                        'L',
-                        buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
-                                .casingIndex(CASING_INDEX).dot(2).disallowOnly(ForgeDirection.UP)
-                                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-                .addElement(
-                        'c',
-                        ofChain(
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(MTEDistillationTower::addOutputToMachineList, CASING_INDEX, 3)),
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(
-                                                MTEDistillationTower::addMaintenanceToMachineList,
-                                                CASING_INDEX,
-                                                3)),
-                                onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                                isAir()))
-                .build();
+            .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
+            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LLL", "LLL" }, }))
+            .addElement(
+                'b',
+                ofChain(
+                    buildHatchAdder(MTEDistillationTower.class)
+                        .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build(),
+                    onElementPass(MTEDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .addElement(
+                'l',
+                ofChain(
+                    buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
+                        .casingIndex(CASING_INDEX)
+                        .dot(2)
+                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                        .build(),
+                    ofHatchAdder(MTEDistillationTower::addEnergyInputToMachineList, CASING_INDEX, 2),
+                    ofHatchAdder(MTEDistillationTower::addLayerOutputHatch, CASING_INDEX, 2),
+                    ofHatchAdder(MTEDistillationTower::addMaintenanceToMachineList, CASING_INDEX, 2),
+                    onElementPass(MTEDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            // hint element only used in top layer
+            .addElement(
+                'L',
+                buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
+                    .casingIndex(CASING_INDEX)
+                    .dot(2)
+                    .disallowOnly(ForgeDirection.UP)
+                    .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+            .addElement(
+                'c',
+                ofChain(
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(MTEDistillationTower::addOutputToMachineList, CASING_INDEX, 3)),
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(MTEDistillationTower::addMaintenanceToMachineList, CASING_INDEX, 3)),
+                    onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                    isAir()))
+            .build();
     }
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
@@ -137,29 +136,43 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT").addInfo("Fluids are only put out at the correct height")
-                .addInfo("The correct height equals the slot number in the NEI recipe")
-                .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true).addController("Front bottom")
-                .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-                .addEnergyHatch("Any casing except top centre", 1, 2).addMaintenanceHatch("Any casing", 1, 2, 3)
-                .addInputHatch("Any bottom layer casing", 1).addOutputBus("Any bottom layer casing", 1)
-                .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-                .toolTipFinisher();
+        tt.addMachineType("Distillery, DT")
+            .addInfo("Fluids are only put out at the correct height")
+            .addInfo("The correct height equals the slot number in the NEI recipe")
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .addController("Front bottom")
+            .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
+            .addEnergyHatch("Any casing except top centre", 1, 2)
+            .addMaintenanceHatch("Any casing", 1, 2, 3)
+            .addInputHatch("Any bottom layer casing", 1)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-            ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
-                            .build() };
+            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -185,16 +198,17 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1).size();
+            : mOutputHatchesByLayer.get(mHeight - 1)
+                .size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch))
-            return false;
+            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+        return mOutputHatchesByLayer.get(mHeight - 1)
+            .add(tHatch);
     }
 
     @Override
@@ -206,7 +220,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a freaking tower, it won't work
         return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
-                && !f.isVerticallyFliped();
+            && !f.isVerticallyFliped();
     }
 
     @Override
@@ -235,7 +249,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
             }
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
+            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
+                .isEmpty())
                 // layer without output hatch
                 return false;
             if (mTopLayerFound) {
@@ -247,8 +262,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
         // validate final invariants... (actual height is mHeight+1)
         return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 3
-                && mTopLayerFound
-                && mMaintenanceHatches.size() == 1;
+            && mTopLayerFound
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -265,9 +280,10 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     public boolean canDumpFluidToME() {
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream().allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream().anyMatch(
-                        tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
+        return this.mOutputHatchesByLayer.stream()
+            .allMatch(
+                tLayerOutputHatches -> tLayerOutputHatches.stream()
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
     @Override
@@ -296,15 +312,15 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         }
         mHeight = tTotalHeight - 1;
         return survivalBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT,
-                stackSize,
-                1,
-                tTotalHeight - 1,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            STRUCTURE_PIECE_TOP_HINT,
+            stackSize,
+            1,
+            tTotalHeight - 1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -324,7 +340,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

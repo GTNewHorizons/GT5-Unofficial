@@ -70,7 +70,7 @@ public class MTERedstoneStrengthDisplay extends MTERedstoneBase {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 6);
     }
 
@@ -94,16 +94,14 @@ public class MTERedstoneStrengthDisplay extends MTERedstoneBase {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    TextureFactory.of(sIconList[mType * 16 + mRedstoneStrength]) };
+                TextureFactory.of(sIconList[mType * 16 + mRedstoneStrength]) };
         }
-        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
@@ -112,31 +110,31 @@ public class MTERedstoneStrengthDisplay extends MTERedstoneBase {
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_Off) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_Off) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_On) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_On) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_Off) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_Off) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_On) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_On) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_Off) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_Off) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_On) };
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_On) };
     }
 }

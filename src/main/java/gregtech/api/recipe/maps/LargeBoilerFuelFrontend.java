@@ -13,7 +13,7 @@ import gregtech.nei.RecipeDisplayInfo;
 public class LargeBoilerFuelFrontend extends RecipeMapFrontend {
 
     public LargeBoilerFuelFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

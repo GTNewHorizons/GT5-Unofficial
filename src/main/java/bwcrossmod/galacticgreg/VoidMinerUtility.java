@@ -37,8 +37,8 @@ import gregtech.common.WorldgenGTOreSmallPieces;
 public class VoidMinerUtility {
 
     public static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
-            WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
-            WerkstoffLoader.Oganesson.getFluidOrGas(1) };
+        WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
+        WerkstoffLoader.Oganesson.getFluidOrGas(1) };
     public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {
@@ -52,7 +52,7 @@ public class VoidMinerUtility {
             internalMap = new HashMap<>();
             totalWeight = 0;
             voidMinerBlacklistedDrops = Collections
-                    .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
+                .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
         }
 
         /**
@@ -76,7 +76,11 @@ public class VoidMinerUtility {
          */
         public void addDrop(Block block, int meta, float weight) {
             if (this.voidMinerBlacklistedDrops.contains(
-                    String.format("%s:%d", GameRegistry.findUniqueIdentifierFor(block).toString(), meta)))
+                String.format(
+                    "%s:%d",
+                    GameRegistry.findUniqueIdentifierFor(block)
+                        .toString(),
+                    meta)))
                 return;
             Item item = Item.getItemFromBlock(block);
             addDrop(item, meta, weight);
@@ -91,10 +95,11 @@ public class VoidMinerUtility {
             Item item = itemStack.getItem();
             int meta = Items.feather.getDamage(itemStack);
             if (this.voidMinerBlacklistedDrops.contains(
-                    String.format(
-                            "%s:%d",
-                            GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item)).toString(),
-                            meta)))
+                String.format(
+                    "%s:%d",
+                    GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item))
+                        .toString(),
+                    meta)))
                 return;
             addDrop(item, meta, weight);
         }
@@ -137,11 +142,11 @@ public class VoidMinerUtility {
 
         // ross dims
         dropMapsByDimId.put(
-                Configuration.crossModInteractions.ross128BID,
-                getDropMapRoss(Configuration.crossModInteractions.ross128BID));
+            Configuration.crossModInteractions.ross128BID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BID));
         dropMapsByDimId.put(
-                Configuration.crossModInteractions.ross128BAID,
-                getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
+            Configuration.crossModInteractions.ross128BAID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
 
         // other space dims
         for (ModContainer modContainer : getModContainers()) {
@@ -160,18 +165,19 @@ public class VoidMinerUtility {
         // Ore Veins
         Predicate<WorldgenGTOreLayer> oreLayerPredicate = makeOreLayerPredicate(dimId);
         WorldgenGTOreLayer.sList.stream()
-                .filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen)).forEach(element -> {
-                    dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
-                    dropMap.addDrop(element.mSecondaryMeta, element.mWeight, false);
-                    dropMap.addDrop(element.mSporadicMeta, element.mWeight / 8f, false);
-                    dropMap.addDrop(element.mBetweenMeta, element.mWeight / 8f, false);
-                });
+            .filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen))
+            .forEach(element -> {
+                dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
+                dropMap.addDrop(element.mSecondaryMeta, element.mWeight, false);
+                dropMap.addDrop(element.mSporadicMeta, element.mWeight / 8f, false);
+                dropMap.addDrop(element.mBetweenMeta, element.mWeight / 8f, false);
+            });
 
         // Small Ores
         Predicate<WorldgenGTOreSmallPieces> smallOresPredicate = makeSmallOresPredicate(dimId);
         WorldgenGTOreSmallPieces.sList.stream()
-                .filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen))
-                .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
+            .filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen))
+            .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
         return dropMap;
     }
 
@@ -233,22 +239,25 @@ public class VoidMinerUtility {
         DropMap dropMap = new DropMap();
 
         // Normal Ore Veins
-        GalacticGreg.oreVeinWorldgenList.stream().filter(
+        GalacticGreg.oreVeinWorldgenList.stream()
+            .filter(
                 gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof WorldgenOreLayerSpace oreLayerSpace
-                        && oreLayerSpace.isEnabledForDim(finalDef))
-                .map(gt_worldgen -> (WorldgenOreLayerSpace) gt_worldgen).forEach(element -> {
-                    dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
-                    dropMap.addDrop(element.mSecondaryMeta, element.mWeight, false);
-                    dropMap.addDrop(element.mSporadicMeta, element.mWeight / 8f, false);
-                    dropMap.addDrop(element.mBetweenMeta, element.mWeight / 8f, false);
-                });
+                    && oreLayerSpace.isEnabledForDim(finalDef))
+            .map(gt_worldgen -> (WorldgenOreLayerSpace) gt_worldgen)
+            .forEach(element -> {
+                dropMap.addDrop(element.mPrimaryMeta, element.mWeight, false);
+                dropMap.addDrop(element.mSecondaryMeta, element.mWeight, false);
+                dropMap.addDrop(element.mSporadicMeta, element.mWeight / 8f, false);
+                dropMap.addDrop(element.mBetweenMeta, element.mWeight / 8f, false);
+            });
 
         // Normal Small Ores
-        GalacticGreg.smallOreWorldgenList.stream().filter(
+        GalacticGreg.smallOreWorldgenList.stream()
+            .filter(
                 gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof WorldgenOreSmallSpace oreSmallPiecesSpace
-                        && oreSmallPiecesSpace.isEnabledForDim(finalDef))
-                .map(gt_worldgen -> (WorldgenOreSmallSpace) gt_worldgen)
-                .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
+                    && oreSmallPiecesSpace.isEnabledForDim(finalDef))
+            .map(gt_worldgen -> (WorldgenOreSmallSpace) gt_worldgen)
+            .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
         return dropMap;
     }
 
@@ -256,7 +265,8 @@ public class VoidMinerUtility {
         if (!extraDropsDimMap.containsKey(dimId)) {
             extraDropsDimMap.put(dimId, new DropMap());
         }
-        extraDropsDimMap.get(dimId).addDrop(block, meta, weight);
+        extraDropsDimMap.get(dimId)
+            .addDrop(block, meta, weight);
     }
 
     /**

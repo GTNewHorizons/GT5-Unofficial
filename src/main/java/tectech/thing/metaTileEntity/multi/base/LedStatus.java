@@ -47,7 +47,7 @@ public enum LedStatus {
     }
 
     public static LedStatus fromLimitsInclusiveOuterBoundary(double value, double min, double low, double high,
-            double max, double... excludedNumbers) {
+        double max, double... excludedNumbers) {
         if (value < min) return STATUS_TOO_LOW;
         if (value > max) return STATUS_TOO_HIGH;
 

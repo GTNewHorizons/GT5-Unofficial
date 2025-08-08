@@ -32,24 +32,24 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
      */
     public MTEHatchWirelessDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                        GRAY + "Does not connect to wires. This block accepts EU into the network.",
-                        AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                                + YELLOW
-                                + GTUtility.formatNumbers(aAmp * V[aTier])
-                                + GRAY
-                                + " EU/t" },
-                aAmp);
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                GRAY + "Does not connect to wires. This block accepts EU into the network.",
+                AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + GRAY
+                    + " EU/t" },
+            aAmp);
     }
 
     public MTEHatchWirelessDynamoMulti(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 

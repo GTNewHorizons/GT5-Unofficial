@@ -29,105 +29,93 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
 
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
 
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-                && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
 
             if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
-                    || aMaterial == MaterialsBotania.Dreamwood) {
+                || aMaterial == MaterialsBotania.Dreamwood) {
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                Materials.Water.getFluid(
-                                        Math.max(
-                                                4,
-                                                Math.min(
-                                                        1000,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 320))))
-                        .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                GTModHandler.getDistilledWater(
-                                        Math.max(
-                                                3,
-                                                Math.min(
-                                                        750,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 426))))
-                        .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                Materials.Lubricant.getFluid(
-                                        Math.max(
-                                                1,
-                                                Math.min(
-                                                        250,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 1280))))
-                        .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
             }
 
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                Materials.Water.getFluid(
-                                        Math.max(
-                                                4,
-                                                Math.min(
-                                                        1000,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 320))))
-                        .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                GTModHandler.getDistilledWater(
-                                        Math.max(
-                                                3,
-                                                Math.min(
-                                                        750,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 426))))
-                        .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
-                GTValues.RA.stdBuilder().itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                        .fluidInputs(
-                                Materials.Lubricant.getFluid(
-                                        Math.max(
-                                                1,
-                                                Math.min(
-                                                        250,
-                                                        ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS
-                                                                * 30
-                                                                / 1280))))
-                        .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS).eut(TierEU.RECIPE_LV)
-                        .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
             }
         }
 
@@ -138,31 +126,26 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
 
         if (tStack1 != null) GTModHandler
-                .removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
+            .removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
         if (tStack2 != null) GTModHandler
-                .removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
+            .removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
         if (tStack3 != null) {
-            GTModHandler.removeRecipeDelayed(
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3,
-                    tStack3);
+            GTModHandler
+                .removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron
-                    || aMaterial == Materials.Obsidian)) {
+                || aMaterial == Materials.Obsidian)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
-                    GTValues.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Block.get(0L))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(9 * INGOTS)).duration(aMaterial.getMass() * 9 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 8)).addTo(fluidSolidifierRecipes);
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(ItemList.Shape_Mold_Block.get(0L))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                        .fluidInputs(aMaterial.getMolten(9 * INGOTS))
+                        .duration(aMaterial.getMass() * 9 * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 8))
+                        .addTo(fluidSolidifierRecipes);
                 }
             }
         }
@@ -172,8 +155,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack3 != null) tStack3.stackSize = 9;
 
         if (tStack2 != null) {
-            GTValues.RA.stdBuilder().itemInputs(aStack).itemOutputs(tStack2).duration(5 * SECONDS).eut(24)
-                    .addTo(hammerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(aStack)
+                .itemOutputs(tStack2)
+                .duration(5 * SECONDS)
+                .eut(24)
+                .addTo(hammerRecipes);
             if (tStack3 != null)
                 GTModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
             GTModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
@@ -183,15 +170,17 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null && aMaterial != Materials.Obsidian) {
             // 9 ingots -> 1 block
-            GTValues.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                    .duration(aMaterial.getMass() * 2 * TICKS).eut(calculateRecipeEU(aMaterial, 2))
-                    .addTo(compressorRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                .duration(aMaterial.getMass() * 2 * TICKS)
+                .eut(calculateRecipeEU(aMaterial, 2))
+                .addTo(compressorRecipes);
         }
 
         if (aMaterial.mName.equals("Mercury")) {
             System.err.println(
-                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
+                "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }
 }

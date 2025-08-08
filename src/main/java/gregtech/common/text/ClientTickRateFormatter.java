@@ -30,8 +30,8 @@ public final class ClientTickRateFormatter {
 
     public String toString() {
         return StatCollector.translateToLocalFormatted(
-                "gt.cover.info.format.tick_rate",
-                tickRate,
-                StatCollector.translateToLocal(unitI18NKey));
+            "gt.cover.info.format.tick_rate",
+            tickRate,
+            StatCollector.translateToLocal(unitI18NKey));
     }
 }

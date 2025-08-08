@@ -12,12 +12,12 @@ public class BaseItemPlate extends BaseItemComponent {
     }
 
     public BaseItemPlate(final String unlocalizedName, final String materialName, final MaterialState state,
-            final short[] colour, final int tier, final int sRadioactivity) {
+        final short[] colour, final int tier, final int sRadioactivity) {
         this(
-                MaterialUtils.generateQuickMaterial(
-                        materialName,
-                        state,
-                        new short[] { colour[0], colour[1], colour[2], 0 },
-                        sRadioactivity));
+            MaterialUtils.generateQuickMaterial(
+                materialName,
+                state,
+                new short[] { colour[0], colour[1], colour[2], 0 },
+                sRadioactivity));
     }
 }

@@ -38,13 +38,13 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     public MTEHatchElementalDataOrbHolder(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                17,
-                new String[] { "Holds Data Orbs for the Elemental Duplicator", "Can insert/extract the circuit slot",
-                        "A circuit must be used to select a slot (1-16)", GTPPCore.GT_Tooltip.get() });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            17,
+            new String[] { "Holds Data Orbs for the Elemental Duplicator", "Can insert/extract the circuit slot",
+                "A circuit must be used to select a slot (1-16)", GTPPCore.GT_Tooltip.get() });
     }
 
     public MTEHatchElementalDataOrbHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -115,20 +115,20 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
-                && aStack.getItem() instanceof ItemIntegratedCircuit
-                && side == getBaseMetaTileEntity().getFrontFacing();
+            && aStack.getItem() instanceof ItemIntegratedCircuit
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
-                && aStack.getItem() instanceof ItemIntegratedCircuit
-                && side == getBaseMetaTileEntity().getFrontFacing();
+            && aStack.getItem() instanceof ItemIntegratedCircuit
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     public ArrayList<ItemStack> getInventory() {
@@ -157,8 +157,9 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex == mInventory.length - 1 && aStack != null
-                && aStack.getItem() instanceof ItemIntegratedCircuit
-                && ordinalSide == getBaseMetaTileEntity().getFrontFacing().ordinal()) {
+            && aStack.getItem() instanceof ItemIntegratedCircuit
+            && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
+                .ordinal()) {
             Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
             return true;
         }
@@ -202,23 +203,26 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 4);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build().child(
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build()
+            .child(
                 gridTemplate4by4(
-                        index -> new ItemSlot()
-                                .slot(
-                                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv").filter(
-                                                stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_DATA_ORB)));
+                    index -> new ItemSlot().slot(
+                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
+                            .filter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
+                        .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_DATA_ORB)));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
-                        .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DATA_ORB)
-                        .applyForWidget(
-                                widget -> widget
-                                        .setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                        .build().setPos(52, 7));
+            SlotGroup.ofItemHandler(inventoryHandler, 4)
+                .startFromSlot(0)
+                .endAtSlot(15)
+                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DATA_ORB)
+                .applyForWidget(
+                    widget -> widget.setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
+                .build()
+                .setPos(52, 7));
     }
 }

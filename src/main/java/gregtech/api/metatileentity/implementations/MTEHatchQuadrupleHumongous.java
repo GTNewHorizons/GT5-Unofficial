@@ -11,7 +11,7 @@ public class MTEHatchQuadrupleHumongous extends MTEHatchMultiInput {
     }
 
     public MTEHatchQuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
     }
 

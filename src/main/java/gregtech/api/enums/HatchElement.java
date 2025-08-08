@@ -29,7 +29,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         }
     },
     Maintenance("GT5U.MBTT.MaintenanceHatch", MTEMultiBlockBase::addMaintenanceToMachineList,
-            MTEHatchMaintenance.class) {
+        MTEHatchMaintenance.class) {
 
         @Override
         public long count(MTEMultiBlockBase t) {
@@ -87,14 +87,16 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.getExoticEnergyHatches().size();
+            return t.getExoticEnergyHatches()
+                .size();
         }
     },
     MultiAmpEnergy("GT5U.MBTT.MultiampEnergyHatch", MTEMultiBlockBase::addMultiAmpEnergyInputToMachineList) {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.getExoticEnergyHatches().size();
+            return t.getExoticEnergyHatches()
+                .size();
         }
     };
 

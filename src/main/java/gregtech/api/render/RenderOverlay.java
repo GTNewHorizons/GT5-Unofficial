@@ -47,20 +47,21 @@ import gregtech.mixin.interfaces.accessors.ChunkCacheAccessor;
  */
 public class RenderOverlay {
 
-    private static final LoadingCache<World, RenderOverlay> instances = CacheBuilder.newBuilder().weakKeys()
-            .build(new CacheLoader<>() {
+    private static final LoadingCache<World, RenderOverlay> instances = CacheBuilder.newBuilder()
+        .weakKeys()
+        .build(new CacheLoader<>() {
 
-                @Override
-                public RenderOverlay load(World key) {
-                    return new RenderOverlay();
-                }
-            });
+            @Override
+            public RenderOverlay load(World key) {
+                return new RenderOverlay();
+            }
+        });
     private final Map<ChunkCoordinates, ITexture[]> overlays = new ConcurrentHashMap<>();
     private final ListMultimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
     private final ListMultimap<ChunkCoordIntPair, OverlayTicket> byChunk = ArrayListMultimap.create();
 
     public OverlayTicket set(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-            ITexture texture, int zlevel) {
+        ITexture texture, int zlevel) {
         ChunkCoordinates loc = new ChunkCoordinates(x, y, z);
         RenderLocation renderLoc = new RenderLocation(x, y, z, dir);
         ITexture[] holder = overlays.computeIfAbsent(loc, xx -> new ITexture[6]);
@@ -81,7 +82,11 @@ public class RenderOverlay {
             return null;
         }
         // composing into a single object makes it easier to handle everywhere
-        return TextureFactory.of(tickets.stream().sorted().map(t -> t.texture).toArray(ITexture[]::new));
+        return TextureFactory.of(
+            tickets.stream()
+                .sorted()
+                .map(t -> t.texture)
+                .toArray(ITexture[]::new));
     }
 
     public ITexture[] get(int x, int y, int z) {
@@ -129,7 +134,7 @@ public class RenderOverlay {
     }
 
     public static void set(World world, int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-            ITexture texture, int zlevel) {
+        ITexture texture, int zlevel) {
         getOrCreate(world).set(xOwner, yOwner, zOwner, x, y, z, dir, texture, zlevel);
     }
 
@@ -163,7 +168,7 @@ public class RenderOverlay {
         final int order;
 
         public OverlayTicket(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
-                ITexture texture, int order) {
+            ITexture texture, int order) {
             this.xOwner = xOwner;
             this.yOwner = yOwner;
             this.zOwner = zOwner;

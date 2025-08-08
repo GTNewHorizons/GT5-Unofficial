@@ -180,7 +180,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
         return machineEntity instanceof BaseMetaTileEntity bmte
-                && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
     }
 
     @Override
@@ -249,10 +249,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB, Entity collider) {
+        List<AxisAlignedBB> outputAABB, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
-            gtTE.getMetaTileEntity().addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+            gtTE.getMetaTileEntity()
+                .addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
             return;
         }
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
@@ -262,7 +263,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
-            return gtTE.getMetaTileEntity().getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -272,7 +274,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
-            return gtTE.getMetaTileEntity().getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -282,7 +285,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             final AxisAlignedBB bbb = gtTE.getMetaTileEntity()
-                    .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
+                .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
             minX = bbb.minX; // This essentially sets block bounds
             minY = bbb.minY;
             minZ = bbb.minZ;
@@ -303,7 +306,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
-            gtTE.getMetaTileEntity().onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+            gtTE.getMetaTileEntity()
+                .onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
@@ -351,13 +355,13 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return tTileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTileEntity).privateAccess()
-                && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
-                        : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
+            && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+                : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
     }
 
     @Override
     public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
-            float aOffsetX, float aOffsetY, float aOffsetZ) {
+        float aOffsetX, float aOffsetY, float aOffsetZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null) {
             return false;
@@ -367,12 +371,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
         if (aPlayer.isSneaking()) {
             if (tCurrentItem != null && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
-                    && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-                    && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-                    && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                    && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
-                    && !CoverRegistry.isCover(tCurrentItem))
-                return false;
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
+                && !CoverRegistry.isCover(tCurrentItem)) return false;
         }
 
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
@@ -380,8 +383,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         // Used for Ring of Loki support
         if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaBaseItem mbItem) {
             if (mbItem.forEachBehavior(
-                    tCurrentItem,
-                    behavior -> behavior.shouldInterruptBlockActivation(aPlayer, tTileEntity, side))) {
+                tCurrentItem,
+                behavior -> behavior.shouldInterruptBlockActivation(aPlayer, tTileEntity, side))) {
                 return false;
             }
         }
@@ -420,11 +423,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
             GTLog.exp.printf(
-                    "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                    aX,
-                    aY,
-                    aZ,
-                    aWorld.provider.dimensionId);
+                "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
+                aX,
+                aY,
+                aZ,
+                aWorld.provider.dimensionId);
             baseTE.doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -443,13 +446,16 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                     final ItemStack tItem = gtTE.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (gtTE.isValidSlot(i)) && mte.shouldDropItemAt(i)) {
                         final EntityItem tItemEntity = new EntityItem(
-                                aWorld,
-                                aX + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                                aY + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                                aZ + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
-                                new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+                            aWorld,
+                            aX + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+                            aY + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+                            aZ + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+                            new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
                         if (tItem.hasTagCompound()) {
-                            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
+                            tItemEntity.getEntityItem()
+                                .setTagCompound(
+                                    (NBTTagCompound) tItem.getTagCompound()
+                                        .copy());
                         }
                         tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
                         tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.25D);
@@ -514,7 +520,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            return gtTE.getOutputRedstoneSignal(ForgeDirection.getOrientation(ordinalSide).getOpposite());
+            return gtTE.getOutputRedstoneSignal(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite());
         }
         return 0;
     }
@@ -526,24 +534,26 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            return gtTE.getStrongOutputRedstoneSignal(ForgeDirection.getOrientation(ordinalSide).getOpposite());
+            return gtTE.getStrongOutputRedstoneSignal(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite());
         }
         return 0;
     }
 
     @Override
     public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance,
-            int aFortune) {
+        int aFortune) {
         if (!aWorld.isRemote) {
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity bmte && (GregTechAPI.sMachineNonWrenchExplosions)) {
                     GTLog.exp.printf(
-                            "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                            aX,
-                            aY,
-                            aZ,
-                            aWorld.provider.dimensionId);
+                        "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
+                        aX,
+                        aY,
+                        aZ,
+                        aWorld.provider.dimensionId);
                     bmte.doEnergyExplosion();
                 }
             } else {
@@ -563,7 +573,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 return true;
             }
             if (tTileEntity instanceof BaseMetaPipeEntity
-                    && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
+                && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
                 return true;
             }
             return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).hasCoverAtSide(side);
@@ -593,7 +603,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void randomDisplayTick(World aWorld, int aX, int aY, int aZ, Random aRandom) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
-            gtTE.getMetaTileEntity().onRandomDisplayTick(gtTE);
+            gtTE.getMetaTileEntity()
+                .onRandomDisplayTick(gtTE);
         }
     }
 
@@ -622,7 +633,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX,
-            double explosionY, double explosionZ) {
+        double explosionY, double explosionZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         IMetaTileEntity mte = GTUtility.getMetaTileEntity(tTileEntity);
         if (mte != null) {
@@ -646,8 +657,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
         iGregTechTileEntity.setFrontFacing(
-                BaseTileEntity
-                        .getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
+            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
     }
 
     @Override
@@ -678,13 +688,15 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (tTileEntity instanceof CoverableTileEntity tile) {
             final ForgeDirection dir = ForgeDirection.getOrientation(ordinalSide);
             if (dir != ForgeDirection.UNKNOWN) {
-                final Block facadeBlock = tile.getCoverAtSide(dir).getFacadeBlock();
+                final Block facadeBlock = tile.getCoverAtSide(dir)
+                    .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    final Block facadeBlock = tile.getCoverAtSide(tSide).getFacadeBlock();
+                    final Block facadeBlock = tile.getCoverAtSide(tSide)
+                        .getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }

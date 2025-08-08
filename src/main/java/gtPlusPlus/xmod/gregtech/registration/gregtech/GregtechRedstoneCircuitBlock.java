@@ -11,6 +11,6 @@ public class GregtechRedstoneCircuitBlock {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Circuit Block.");
         GregtechItemList.RedstoneCircuitBlock
-                .set(new MTERedstoneCircuitBlock(RedstoneCircuitBlock.ID).getStackForm(1L));
+            .set(new MTERedstoneCircuitBlock(RedstoneCircuitBlock.ID).getStackForm(1L));
     }
 }

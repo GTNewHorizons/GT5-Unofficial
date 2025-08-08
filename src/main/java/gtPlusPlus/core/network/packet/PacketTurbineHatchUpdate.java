@@ -13,7 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbi
 import io.netty.buffer.ByteBuf;
 
 public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<PacketTurbineHatchUpdate>
-        implements IMessage {
+    implements IMessage {
 
     private int x;
     private int y;
@@ -105,7 +105,8 @@ public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<Packe
 
     @Override
     public IMessage handleClientMessage(EntityPlayer player, PacketTurbineHatchUpdate message, MessageContext ctx) {
-        TileEntity te = player.getEntityWorld().getTileEntity(message.x, message.y, message.z);
+        TileEntity te = player.getEntityWorld()
+            .getTileEntity(message.x, message.y, message.z);
         if (!(te instanceof BaseMetaTileEntity mteHost)) return null;
         IMetaTileEntity mte = mteHost.getMetaTileEntity();
         if (!(mte instanceof MTEHatchTurbine hatch)) return null;

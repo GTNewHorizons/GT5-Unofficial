@@ -61,43 +61,42 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // region structure
     // use multi A energy inputs, use less power the longer it runs
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"), // 1 - Classic Hatches or Clean
-                                                                                   // Stainless Steel
-            // Casing
-            translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"), // Also acts like a hopper so give it
-                                                                                   // an Output
-            // Bus
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"), // 1 - Classic Hatches or Clean
+                                                                               // Stainless Steel
+        // Casing
+        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"), // Also acts like a hopper so give it
+                                                                               // an Output
+        // Bus
     };
 
     private static final IStructureDefinition<MTEMicrowave> STRUCTURE_DEFINITION = IStructureDefinition
-            .<MTEMicrowave>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] { { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" },
-                                    { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" },
-                                    { "AA~AA", "A---A", "A---A", "A---A", "AAAAA" },
-                                    { "ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA" } }))
-            .addElement('A', ofBlock(sBlockCasings4, 1))
-            .addElement('B', ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
-            .build();
+        .<MTEMicrowave>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" },
+                    { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" }, { "AA~AA", "A---A", "A---A", "A---A", "AAAAA" },
+                    { "ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA" } }))
+        .addElement('A', ofBlock(sBlockCasings4, 1))
+        .addElement('B', ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
+        .build();
     // endregion
 
     // region parameters
     protected Parameters.Group.ParameterIn powerSetting, timerSetting;
     protected Parameters.Group.ParameterOut timerValue, remainingTime;
     private static final INameFunction<MTEMicrowave> POWER_SETTING_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0"); // Power setting
+        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0"); // Power setting
     private static final INameFunction<MTEMicrowave> TIMER_SETTING_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1"); // Timer setting
+        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1"); // Timer setting
 
     private static final INameFunction<MTEMicrowave> TIMER_VALUE_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0"); // Timer value
+        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0"); // Timer value
     private static final INameFunction<MTEMicrowave> TIMER_REMAINING_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1"); // Timer remaining
+        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1"); // Timer remaining
     private static final IStatusFunction<MTEMicrowave> POWER_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
     private static final IStatusFunction<MTEMicrowave> TIMER_STATUS = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
@@ -158,27 +157,33 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         double zPos = mte.getZCoord() + 0.5f + xyzOffsets.get2();
         AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2).offset(xPos, yPos, zPos);
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
-        Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1)).abs();
+        Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1))
+            .abs();
         int power = (int) powerSetting.get();
         int damagingFactor = Math.min(power >> 6, 8) + Math.min(power >> 8, 24)
-                + Math.min(power >> 12, 48)
-                + (power >> 18);
+            + Math.min(power >> 12, 48)
+            + (power >> 18);
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
         HashSet<Entity> tickedStuff = new HashSet<>();
 
         boolean inside = true;
         do {
-            for (Entity entity : mte.getWorld().getEntitiesWithinAABBExcludingEntity(null, aabb)) {
+            for (Entity entity : mte.getWorld()
+                .getEntitiesWithinAABBExcludingEntity(null, aabb)) {
 
                 if (tickedStuff.add(entity)) {
                     if (inside && entity instanceof EntityItem) {
                         GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipeQuery()
-                                .items(((EntityItem) entity).getEntityItem()).voltage(128).notUnificated(true).find();
+                            .items(((EntityItem) entity).getEntityItem())
+                            .voltage(128)
+                            .notUnificated(true)
+                            .find();
                         if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
                             itemsToOutput.add(((EntityItem) entity).getEntityItem());
                         } else {
-                            ItemStack newStuff = tRecipe.getOutput(0).copy();
+                            ItemStack newStuff = tRecipe.getOutput(0)
+                                .copy();
                             newStuff.stackSize = ((EntityItem) entity).getEntityItem().stackSize;
                             itemsToOutput.add(newStuff);
                         }
@@ -201,7 +206,8 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         mOutputItems = itemsToOutput.toArray(new ItemStack[0]);
 
         if (remainingTime.get() <= 0) {
-            mte.getWorld().playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
+            mte.getWorld()
+                .playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
             stopMachine(ShutDownReasonRegistry.NONE);
         }
     }
@@ -211,57 +217,58 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name")) // Machine Type:
                                                                                                // Microwave Grinder
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0")) // Controller block of
-                                                                                                // the
-                // Microwave Grinder
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1")) // Starts a timer when
-                                                                                                // enabled
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2")) // While the timer is
-                                                                                                // running
-                // anything inside the machine
-                // will take damage
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.3")) // The machine will also
-                                                                                                // collect
-                // any items inside of it
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.4")) // Can be configured
-                                                                                                // with a Parametrizer
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
-                                                                                                // Wither)
-                .beginStructureBlock(5, 4, 5, true).addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
-                                                                                                                        // Front
-                                                                                                                        // center
-                .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
-                                                                                                            // Stainless
-                                                                                                            // Steel
-                // Casing (minimum)
-                .addOtherStructurePart(
-                        translateToLocal("tt.keyword.Structure.DataConnector"),
-                        translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                        2) // Output Bus: Any outer casing on the bottom layer
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
-                                                                                                    // outer casing on
-                                                                                                    // the bottom layer
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Maintenance
-                                                                                                         // Hatch: Any
-                                                                                                         // outer casing
-                                                                                                         // on the
-                                                                                                         // bottom layer
-                .toolTipFinisher();
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0")) // Controller block of
+                                                                                            // the
+            // Microwave Grinder
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1")) // Starts a timer when
+                                                                                            // enabled
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2")) // While the timer is
+                                                                                            // running
+            // anything inside the machine
+            // will take damage
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.3")) // The machine will also
+                                                                                            // collect
+            // any items inside of it
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.4")) // Can be configured
+                                                                                            // with a Parametrizer
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
+                                                                                            // Wither)
+            .beginStructureBlock(5, 4, 5, true)
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
+                                                                                 // Front
+                                                                                 // center
+            .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
+                                                                                                        // Stainless
+                                                                                                        // Steel
+            // Casing (minimum)
+            .addOtherStructurePart(
+                translateToLocal("tt.keyword.Structure.DataConnector"),
+                translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
+                2) // Output Bus: Any outer casing on the bottom layer
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
+                                                                                                // outer casing on
+                                                                                                // the bottom layer
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Maintenance
+                                                                                                     // Hatch: Any
+                                                                                                     // outer casing
+                                                                                                     // on the
+                                                                                                     // bottom layer
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
-                    new TTRenderedExtendedFacingTexture(
-                            aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
-                                    : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
+                new TTRenderedExtendedFacingTexture(
+                    aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
+                        : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
         } else if (side == facing.getOpposite()) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
-                    aActive ? Textures.BlockIcons.casingTexturePages[0][52]
-                            : Textures.BlockIcons.casingTexturePages[0][53] };
+                aActive ? Textures.BlockIcons.casingTexturePages[0][52]
+                    : Textures.BlockIcons.casingTexturePages[0][53] };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49] };
     }

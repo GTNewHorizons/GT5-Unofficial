@@ -38,7 +38,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
     protected boolean neiAdded = false;
 
     public ItemBreederCell(String aUnlocalized, String aEnglish, String aEnglishTooltip, int aHeatBonusStep,
-            int aHeatBonusMultiplier, int aRequiredPulse, Supplier<ItemStack> aProduct) {
+        int aHeatBonusMultiplier, int aRequiredPulse, Supplier<ItemStack> aProduct) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.mHeatBonusStep = aHeatBonusStep;
         this.mHeatBonusMultiplier = aHeatBonusMultiplier;
@@ -47,17 +47,22 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
         GregTechAPI.sAfterGTPostload.add(() -> {
             mProduct = aProduct.get();
             if (!hidden && !neiAdded) {
-                GTValues.RA.stdBuilder().itemInputs(new ItemStack(this)).itemOutputs(mProduct).setNEIDesc(
+                GTValues.RA.stdBuilder()
+                    .itemInputs(new ItemStack(this))
+                    .itemOutputs(mProduct)
+                    .setNEIDesc(
                         GTUtility.breakLines(
-                                translateToLocal(
-                                        deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
-                                                : "GT5U.nei.nuclear.breeder.heat_neutral"),
-                                translateToLocalFormatted(
-                                        "GT5U.nei.nuclear.breeder.reactor_hull_heat",
-                                        mHeatBonusStep,
-                                        mHeatBonusMultiplier),
-                                translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
-                        .duration(0).eut(0).addTo(RecipeMaps.ic2NuclearFakeRecipes);
+                            translateToLocal(
+                                deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
+                                    : "GT5U.nei.nuclear.breeder.heat_neutral"),
+                            translateToLocalFormatted(
+                                "GT5U.nei.nuclear.breeder.reactor_hull_heat",
+                                mHeatBonusStep,
+                                mHeatBonusMultiplier),
+                            translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
+                    .duration(0)
+                    .eut(0)
+                    .addTo(RecipeMaps.ic2NuclearFakeRecipes);
 
                 neiAdded = true;
             }
@@ -93,10 +98,10 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
             default -> EnumChatFormatting.WHITE;
         };
         aList.add(
-                translateToLocalFormatted(
-                        "gt.item.desc.progress",
-                        color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
-                        formatNumbers(getMaxDamage())));
+            translateToLocalFormatted(
+                "gt.item.desc.progress",
+                color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
+                formatNumbers(getMaxDamage())));
         if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + translateToLocal("gt.item.desc.haz_rad"));
     }
 
@@ -110,7 +115,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
 
     @Override
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
-            int pulseX, int pulseY, boolean heatrun) {
+        int pulseX, int pulseY, boolean heatrun) {
         if (heatrun) {
             int myLevel = getNewDamage(reactor, yourStack);
             if (myLevel >= getMaxDamage()) reactor.setItemAt(youX, youY, mProduct.copy());

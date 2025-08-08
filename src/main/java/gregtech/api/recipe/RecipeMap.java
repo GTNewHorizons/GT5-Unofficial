@@ -65,7 +65,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         backend.setRecipeMap(this);
         if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
             throw new IllegalArgumentException(
-                    "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
+                "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
         }
         ALL_RECIPE_MAPS.put(unlocalizedName, this);
     }
@@ -90,8 +90,10 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      * @return List of registered recipe categories associated with this recipemap.
      */
     public List<RecipeCategory> getAssociatedCategories() {
-        return RecipeCategory.ALL_RECIPE_CATEGORIES.values().stream().filter(category -> category.recipeMap == this)
-                .collect(Collectors.toList());
+        return RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .stream()
+            .filter(category -> category.recipeMap == this)
+            .collect(Collectors.toList());
     }
 
     public RecipeCategory getDefaultRecipeCategory() {
@@ -135,8 +137,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         aRecipe.mHidden = aHidden;
         aRecipe.mFakeRecipe = aFakeRecipe;
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs
-                && aRecipe.mInputs.length < backend.properties.minItemInputs)
-            return null;
+            && aRecipe.mInputs.length < backend.properties.minItemInputs) return null;
         if (aCheckForCollisions && ENABLE_COLLISION_CHECK && backend.checkCollision(aRecipe)) return null;
         return backend.compileRecipe(aRecipe);
     }
@@ -148,24 +149,24 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Deprecated
     @Nullable
     public GTRecipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
-            @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
-            @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
-            boolean hidden) {
+        @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
+        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
+        boolean hidden) {
         return addFakeRecipe(
-                aCheckForCollisions,
-                new GTRecipe.GTRecipe_WithAlt(
-                        false,
-                        aInputs,
-                        aOutputs,
-                        aSpecial,
-                        null,
-                        aFluidInputs,
-                        aFluidOutputs,
-                        aDuration,
-                        aEUt,
-                        aSpecialValue,
-                        aAlt),
-                hidden);
+            aCheckForCollisions,
+            new GTRecipe.GTRecipe_WithAlt(
+                false,
+                aInputs,
+                aOutputs,
+                aSpecial,
+                null,
+                aFluidInputs,
+                aFluidOutputs,
+                aDuration,
+                aEUt,
+                aSpecialValue,
+                aAlt),
+            hidden);
     }
 
     /**
@@ -227,11 +228,11 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Override
     public String toString() {
         return "RecipeMap{" + "unlocalizedName='"
-                + unlocalizedName
-                + '\''
-                + ", ownerMod="
-                + defaultRecipeCategory.ownerMod.getModId()
-                + '}';
+            + unlocalizedName
+            + '\''
+            + ", ownerMod="
+            + defaultRecipeCategory.ownerMod.getModId()
+            + '}';
     }
 
     private static final Pattern LEGACY_IDENTIFIER_PATTERN = Pattern.compile("(.+)_[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+");

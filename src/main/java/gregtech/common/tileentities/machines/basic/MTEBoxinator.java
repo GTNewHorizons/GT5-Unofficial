@@ -25,82 +25,76 @@ public class MTEBoxinator extends MTEBasicMachine {
 
     public MTEBoxinator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                MachineType.PACKAGER.tooltipDescription(),
-                2,
-                1,
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon(
-                                        "basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW"))
-                                .glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(
-                                new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR")),
-                        TextureFactory.builder()
-                                .addIcon(
-                                        new Textures.BlockIcons.CustomIcon(
-                                                "basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_GLOW"))
-                                .glow().build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            MachineType.PACKAGER.tooltipDescription(),
+            2,
+            1,
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR")),
+                TextureFactory.builder()
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR")),
+                TextureFactory.builder()
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR")),
+                TextureFactory.builder()
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR")),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_GLOW"))
+                    .glow()
+                    .build()));
     }
 
     public MTEBoxinator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -119,10 +113,9 @@ public class MTEBoxinator extends MTEBasicMachine {
 
     private boolean hasValidCache(ItemStack mItem, int mType, boolean mClearOnFailure) {
         if (aInputCache != null && aOutputCache != null
-                && aTypeCache == mType
-                && aInputCache.isItemEqual(mItem)
-                && ItemStack.areItemStackTagsEqual(mItem, aInputCache))
-            return true;
+            && aTypeCache == mType
+            && aInputCache.isItemEqual(mItem)
+            && ItemStack.areItemStackTagsEqual(mItem, aInputCache)) return true;
         // clear cache if it was invalid
         if (mClearOnFailure) {
             aInputCache = null;
@@ -147,7 +140,7 @@ public class MTEBoxinator extends MTEBasicMachine {
         ItemStack tSlot0 = getInputAt(0);
         ItemStack tSlot1 = getInputAt(1);
         if ((GTUtility.isStackValid(tSlot0)) && (GTUtility.isStackValid(tSlot1))
-                && (GTUtility.getContainerItem(tSlot0, true) == null)) {
+            && (GTUtility.getContainerItem(tSlot0, true) == null)) {
             if ((ItemList.Schematic_1by1.isStackEqual(tSlot1)) && (tSlot0.stackSize >= 1)) {
                 boolean tIsCached = hasValidCache(tSlot0, 1, true);
                 this.mOutputItems[0] = tIsCached ? aOutputCache.copy() : GTModHandler.getRecipeOutput(tSlot0);
@@ -167,7 +160,7 @@ public class MTEBoxinator extends MTEBasicMachine {
             if ((ItemList.Schematic_2by2.isStackEqual(tSlot1)) && (getInputAt(0).stackSize >= 4)) {
                 boolean tIsCached = hasValidCache(tSlot0, 2, true);
                 this.mOutputItems[0] = tIsCached ? aOutputCache.copy()
-                        : GTModHandler.getRecipeOutput(tSlot0, tSlot0, null, tSlot0, tSlot0);
+                    : GTModHandler.getRecipeOutput(tSlot0, tSlot0, null, tSlot0, tSlot0);
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(this.mOutputItems[0])) {
                         getInputAt(0).stackSize -= 4;
@@ -184,16 +177,8 @@ public class MTEBoxinator extends MTEBasicMachine {
             if ((ItemList.Schematic_3by3.isStackEqual(tSlot1)) && (getInputAt(0).stackSize >= 9)) {
                 boolean tIsCached = hasValidCache(tSlot0, 3, true);
                 this.mOutputItems[0] = tIsCached ? aOutputCache.copy()
-                        : GTModHandler.getRecipeOutput(
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0,
-                                tSlot0);
+                    : GTModHandler
+                        .getRecipeOutput(tSlot0, tSlot0, tSlot0, tSlot0, tSlot0, tSlot0, tSlot0, tSlot0, tSlot0);
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(this.mOutputItems[0])) {
                         getInputAt(0).stackSize -= 9;
@@ -213,27 +198,31 @@ public class MTEBoxinator extends MTEBasicMachine {
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
         ItemStack tInput1 = getInputAt(1);
         if ((ItemList.Schematic_1by1.isStackEqual(tInput1)) || (ItemList.Schematic_2by2.isStackEqual(tInput1))
-                || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
+            || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
             if (hasValidCache(aStack, aTypeCache, false)) return true;
-            if (RecipeMaps.packagerRecipes.findRecipeQuery().caching(false)
-                    .items(GTUtility.copyAmount(64, aStack), tInput1).voltage(GTValues.V[mTier]).notUnificated(true)
-                    .find() != null) {
+            if (RecipeMaps.packagerRecipes.findRecipeQuery()
+                .caching(false)
+                .items(GTUtility.copyAmount(64, aStack), tInput1)
+                .voltage(GTValues.V[mTier])
+                .notUnificated(true)
+                .find() != null) {
                 return true;
             }
             if (ItemList.Schematic_1by1.isStackEqual(getInputAt(1)) && GTModHandler.getRecipeOutput(aStack) != null)
                 return true;
             if (ItemList.Schematic_2by2.isStackEqual(getInputAt(1))
-                    && GTModHandler.getRecipeOutput(aStack, aStack, null, aStack, aStack) != null) {
+                && GTModHandler.getRecipeOutput(aStack, aStack, null, aStack, aStack) != null) {
                 return true;
             }
-            return ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GTModHandler
-                    .getRecipeOutput(aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack) != null);
+            return ItemList.Schematic_3by3.isStackEqual(getInputAt(1))
+                && (GTModHandler.getRecipeOutput(aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack)
+                    != null);
         } else {
             return RecipeMaps.packagerRecipes.containsInput(aStack);
         }

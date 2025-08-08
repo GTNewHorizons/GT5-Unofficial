@@ -18,7 +18,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
     protected boolean invertFilter = false;
 
     public MTEFilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription) {
+        String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
@@ -72,24 +72,24 @@ public abstract class MTEFilterBase extends MTEBuffer {
 
     private void addEmitRedstoneGraduallyButton(ModularWindow.Builder builder) {
         builder.widget(
-                createToggleButton(
-                        () -> bRedstoneIfFull,
-                        val -> bRedstoneIfFull = val,
-                        GTUITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                        this::getEmitRedstoneGraduallyButtonTooltip).setUpdateTooltipEveryTick(true));
+            createToggleButton(
+                () -> bRedstoneIfFull,
+                val -> bRedstoneIfFull = val,
+                GTUITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
+                this::getEmitRedstoneGraduallyButtonTooltip).setUpdateTooltipEveryTick(true));
     }
 
     private GTTooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
         return mTooltipCache
-                .getUncachedTooltipData(EMIT_REDSTONE_GRADUALLY_TOOLTIP, getEmptySlots(), getRedstoneOutput());
+            .getUncachedTooltipData(EMIT_REDSTONE_GRADUALLY_TOOLTIP, getEmptySlots(), getRedstoneOutput());
     }
 
     private void addInvertFilterButton(ModularWindow.Builder builder) {
         builder.widget(
-                createToggleButton(
-                        () -> invertFilter,
-                        val -> invertFilter = val,
-                        GTUITextures.OVERLAY_BUTTON_INVERT_FILTER,
-                        () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
+            createToggleButton(
+                () -> invertFilter,
+                val -> invertFilter = val,
+                GTUITextures.OVERLAY_BUTTON_INVERT_FILTER,
+                () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
     }
 }

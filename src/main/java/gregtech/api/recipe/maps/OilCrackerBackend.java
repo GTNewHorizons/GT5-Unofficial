@@ -26,12 +26,16 @@ public class OilCrackerBackend extends RecipeMapBackend {
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
         if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 1 && recipe.mFluidInputs[1] != null) {
-            validCatalystFluidNames.add(recipe.mFluidInputs[1].getFluid().getName());
+            validCatalystFluidNames.add(
+                recipe.mFluidInputs[1].getFluid()
+                    .getName());
         }
         return recipe;
     }
 
     public boolean isValidCatalystFluid(FluidStack fluid) {
-        return validCatalystFluidNames.contains(fluid.getFluid().getName());
+        return validCatalystFluidNames.contains(
+            fluid.getFluid()
+                .getName());
     }
 }

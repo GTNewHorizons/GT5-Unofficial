@@ -30,7 +30,7 @@ public class ReasonOutOfStuff implements ShutDownReason {
     @Override
     public String getDisplayString() {
         return Objects.requireNonNull(
-                StatCollector.translateToLocalFormatted("GT5U.gui.text.out_of_stuff", required, formatNumbers(amount)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.out_of_stuff", required, formatNumbers(amount)));
     }
 
     @Override

@@ -30,8 +30,8 @@ import gregtech.api.util.shutdown.ShutDownReason;
  * It can cause Problems to include this Interface!
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IFluidHandler, ITurnable,
-        IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-        IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
+    IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
+    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
 
     /**
      * @return the MetaID of the Block or the MetaTileEntity ID.
@@ -163,8 +163,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     @Override
     default boolean isMachineBlockUpdateRecursive() {
         return !isDead() && getMetaTileEntity() != null
-                && getMetaTileEntity().getBaseMetaTileEntity() == this
-                && getMetaTileEntity().isMachineBlockUpdateRecursive();
+            && getMetaTileEntity().getBaseMetaTileEntity() == this
+            && getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
     default void setShutdownStatus(boolean newStatus) {}

@@ -73,7 +73,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
                 try {
-                    GlobalEnergy.put(UUID.fromString(entry.getKey().toString()), entry.getValue());
+                    GlobalEnergy.put(
+                        UUID.fromString(
+                            entry.getKey()
+                                .toString()),
+                        entry.getValue());
                 } catch (RuntimeException ignored) {
                     // probably a malformed uuid. in any case, try carry on with the load
                 }

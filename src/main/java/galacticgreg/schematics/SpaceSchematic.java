@@ -86,8 +86,11 @@ public class SpaceSchematic {
             posX = pSI.getX();
             posY = pSI.getY();
             posZ = pSI.getZ();
-            blockName = Block.blockRegistry.getNameForObject(pSI.getBlock().getBlock());
-            blockMeta = pSI.getBlock().getMeta();
+            blockName = Block.blockRegistry.getNameForObject(
+                pSI.getBlock()
+                    .getBlock());
+            blockMeta = pSI.getBlock()
+                .getMeta();
         }
 
         public Vec3 getVec3Pos() {

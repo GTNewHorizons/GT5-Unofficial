@@ -81,8 +81,8 @@ public class MultiblockTooltipBuilder {
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
     private static final String M_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
-            .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
-            .toArray(String[]::new);
+        .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
+        .toArray(String[]::new);
 
     private List<String> iLines;
     private List<String> sLines;
@@ -174,8 +174,8 @@ public class MultiblockTooltipBuilder {
         switch (GTMod.proxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
-            default -> iLines.add(
-                    color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
+            default -> iLines
+                .add(color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
     }
@@ -190,12 +190,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
         iLines.add(
-                TT_causes + COLON
-                        + EnumChatFormatting.DARK_PURPLE
-                        + pollution
-                        + " "
-                        + EnumChatFormatting.GRAY
-                        + TT_pps);
+            TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
@@ -211,33 +206,33 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder beginStructureBlock(int w, int h, int l, boolean hollow) {
         sLines.add(
-                EnumChatFormatting.WHITE + TT_dimensions
-                        + COLON
-                        + EnumChatFormatting.GOLD
-                        + w
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + h
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + l
-                        + EnumChatFormatting.GRAY
-                        + " ("
-                        + EnumChatFormatting.GOLD
-                        + "W"
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + "H"
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + "L"
-                        + EnumChatFormatting.GRAY
-                        + ") "
-                        + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+            EnumChatFormatting.WHITE + TT_dimensions
+                + COLON
+                + EnumChatFormatting.GOLD
+                + w
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + h
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + l
+                + EnumChatFormatting.GRAY
+                + " ("
+                + EnumChatFormatting.GOLD
+                + "W"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "H"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "L"
+                + EnumChatFormatting.GRAY
+                + ") "
+                + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
@@ -256,38 +251,38 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
-            int lmax, boolean hollow) {
+        int lmax, boolean hollow) {
         sLines.add(
-                EnumChatFormatting.WHITE + TT_dimensions
-                        + COLON
-                        + EnumChatFormatting.GOLD
-                        + wmin
-                        + (wmin != wmax ? "-" + wmax : "")
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + hmin
-                        + (hmin != hmax ? "-" + hmax : "")
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + lmin
-                        + (lmin != lmax ? "-" + lmax : "")
-                        + EnumChatFormatting.GRAY
-                        + " ("
-                        + EnumChatFormatting.GOLD
-                        + "W"
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + "H"
-                        + EnumChatFormatting.GRAY
-                        + "x"
-                        + EnumChatFormatting.GOLD
-                        + "L"
-                        + EnumChatFormatting.GRAY
-                        + ") "
-                        + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+            EnumChatFormatting.WHITE + TT_dimensions
+                + COLON
+                + EnumChatFormatting.GOLD
+                + wmin
+                + (wmin != wmax ? "-" + wmax : "")
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + hmin
+                + (hmin != hmax ? "-" + hmax : "")
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + lmin
+                + (lmin != lmax ? "-" + lmax : "")
+                + EnumChatFormatting.GRAY
+                + " ("
+                + EnumChatFormatting.GOLD
+                + "W"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "H"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "L"
+                + EnumChatFormatting.GRAY
+                + ") "
+                + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
@@ -314,11 +309,11 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addCasingInfoExactly(String casingName, int count, boolean isTiered) {
         return addCasingInfoExactlyColored(
-                casingName,
-                EnumChatFormatting.GRAY,
-                count,
-                EnumChatFormatting.GOLD,
-                isTiered);
+            casingName,
+            EnumChatFormatting.GRAY,
+            count,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -332,15 +327,15 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasingInfoExactlyColored(String casingName, EnumChatFormatting textColor,
-            int count, EnumChatFormatting countColor, boolean isTiered) {
+        int count, EnumChatFormatting countColor, boolean isTiered) {
         sLines.add(
-                countColor + TAB
-                        + count
-                        + "x "
-                        + EnumChatFormatting.RESET
-                        + textColor
-                        + casingName
-                        + (isTiered ? " " + TT_tiered : ""));
+            countColor + TAB
+                + count
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -355,11 +350,11 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addCasingInfoMin(String casingName, int minCount, boolean isTiered) {
         return addCasingInfoMinColored(
-                casingName,
-                EnumChatFormatting.GRAY,
-                minCount,
-                EnumChatFormatting.GOLD,
-                isTiered);
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -374,17 +369,17 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasingInfoMinColored(String casingName, EnumChatFormatting textColor,
-            int minCount, EnumChatFormatting countColor, boolean isTiered) {
+        int minCount, EnumChatFormatting countColor, boolean isTiered) {
         sLines.add(
-                countColor + TAB
-                        + minCount
-                        + "x "
-                        + EnumChatFormatting.RESET
-                        + textColor
-                        + casingName
-                        + " "
-                        + TT_minimum
-                        + (isTiered ? " " + TT_tiered : ""));
+            countColor + TAB
+                + minCount
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + " "
+                + TT_minimum
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -399,14 +394,14 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasingInfoRange(String casingName, int minCount, int maxCount,
-            boolean isTiered) {
+        boolean isTiered) {
         return addCasingInfoRangeColored(
-                casingName,
-                EnumChatFormatting.GRAY,
-                minCount,
-                maxCount,
-                EnumChatFormatting.GOLD,
-                isTiered);
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            maxCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -422,20 +417,20 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasingInfoRangeColored(String casingName, EnumChatFormatting textColor,
-            int minCount, int maxCount, EnumChatFormatting countColor, boolean isTiered) {
+        int minCount, int maxCount, EnumChatFormatting countColor, boolean isTiered) {
         sLines.add(
-                countColor + TAB
-                        + minCount
-                        + "x"
-                        + EnumChatFormatting.GRAY
-                        + " - "
-                        + countColor
-                        + maxCount
-                        + "x "
-                        + EnumChatFormatting.RESET
-                        + textColor
-                        + casingName
-                        + (isTiered ? " " + TT_tiered : ""));
+            countColor + TAB
+                + minCount
+                + "x"
+                + EnumChatFormatting.GRAY
+                + " - "
+                + countColor
+                + maxCount
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -630,9 +625,9 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
         iLines.add(
-                GTValues.TIER_COLORS[t] + GTValues.VN[t]
-                        + EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
+            GTValues.TIER_COLORS[t] + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
         return this;
     }
 
@@ -656,11 +651,11 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addGlassEnergyLimitInfo(int t) {
         iLines.add(
-                StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ", "
-                        + GTValues.TIER_COLORS[t]
-                        + GTValues.VN[t]
-                        + EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimitTier"));
+            StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ", "
+                + GTValues.TIER_COLORS[t]
+                + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimitTier"));
         return this;
     }
 
@@ -856,23 +851,23 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
-            boolean useFinisherConfig) {
+        boolean useFinisherConfig) {
         if (useFinisherConfig) {
             switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
                 case 1 -> sLines.add(TAB + " ");
                 case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines.add(
-                        TAB + color.toString()
-                                + EnumChatFormatting.STRIKETHROUGH
-                                + StringUtils.getRepetitionOf('-', length));
+                    TAB + color.toString()
+                        + EnumChatFormatting.STRIKETHROUGH
+                        + StringUtils.getRepetitionOf('-', length));
             }
         } else {
             switch (GTMod.proxy.separatorStyle) {
                 case 0 -> sLines.add(TAB + " ");
                 case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines
-                        .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
+                    .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
             }
         }
         return this;
@@ -918,8 +913,8 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
         sLines.add(
-                TAB + StatCollector
-                        .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+            TAB + StatCollector
+                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
@@ -986,25 +981,25 @@ public class MultiblockTooltipBuilder {
      */
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
-            @Nullable String... authors) {
+        @Nullable String... authors) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> iLines.add(" ");
             case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));
             default -> iLines.add(
-                    separatorColor.toString() + EnumChatFormatting.STRIKETHROUGH
-                            + StringUtils.getRepetitionOf('-', separatorLength));
+                separatorColor.toString() + EnumChatFormatting.STRIKETHROUGH
+                    + StringUtils.getRepetitionOf('-', separatorLength));
         }
 
         iLines.add(
-                TT_hold + " "
-                        + EnumChatFormatting.BOLD
-                        + "[LSHIFT]"
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.GRAY
-                        + " "
-                        + TT_todisplay);
+            TT_hold + " "
+                + EnumChatFormatting.BOLD
+                + "[LSHIFT]"
+                + EnumChatFormatting.RESET
+                + EnumChatFormatting.GRAY
+                + " "
+                + TT_todisplay);
         if (authors != null && authors.length > 0) {
             final String authorTag = "Author: ";
             final StringBuilder sb = new StringBuilder();
@@ -1032,24 +1027,25 @@ public class MultiblockTooltipBuilder {
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
         sLines.add(
-                EnumChatFormatting.WHITE + TT_SeeStructure1
-                        + EnumChatFormatting.BLUE
-                        + " Structure"
-                        + EnumChatFormatting.DARK_BLUE
-                        + "Lib "
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.WHITE
-                        + TT_SeeStructure2);
+            EnumChatFormatting.WHITE + TT_SeeStructure1
+                + EnumChatFormatting.BLUE
+                + " Structure"
+                + EnumChatFormatting.DARK_BLUE
+                + "Lib "
+                + EnumChatFormatting.RESET
+                + EnumChatFormatting.WHITE
+                + TT_SeeStructure2);
         // create the final arrays
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
         // e.getKey() - 1 because 1 dot is meta 0.
-        hArray = Stream
-                .concat(
-                        hLines.stream(),
-                        hBlocks.asMap().entrySet().stream()
-                                .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
-                .toArray(String[]::new);
+        hArray = Stream.concat(
+            hLines.stream(),
+            hBlocks.asMap()
+                .entrySet()
+                .stream()
+                .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
+            .toArray(String[]::new);
         // free memory
         iLines = null;
         sLines = null;

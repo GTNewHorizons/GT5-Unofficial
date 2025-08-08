@@ -109,7 +109,7 @@ public abstract class EIGMode {
      * @return Null if no bucket could be created from the item.
      */
     public @Nullable EIGBucket tryCreateNewBucket(MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input,
-            int maxConsume, boolean simulate) {
+        int maxConsume, boolean simulate) {
         // Validate inputs
         if (input == null) return null;
         maxConsume = Math.min(input.stackSize, maxConsume);

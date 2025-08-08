@@ -15,13 +15,13 @@ public class EntityDropParticleFX extends EntityFX {
     private int bobTimer;
 
     public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
-            float particleBlue) {
+        float particleBlue) {
 
         this(world, x, y, z, particleRed, particleGreen, particleBlue, -1);
     }
 
     public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
-            float particleBlue, int gravityMod) {
+        float particleBlue, int gravityMod) {
 
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -70,32 +70,32 @@ public class EntityDropParticleFX extends EntityFX {
         }
         if (this.particleGravity > 0) {
             Material material = this.worldObj
-                    .getBlock(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ))
-                    .getMaterial();
+                .getBlock(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ))
+                .getMaterial();
 
             if (material.isLiquid() || material.isSolid()) {
                 double d0 = MathHelper.floor(this.posY) + 1
-                        - BlockLiquid.getLiquidHeightPercent(
-                                this.worldObj.getBlockMetadata(
-                                        MathHelper.floor(this.posX),
-                                        MathHelper.floor(this.posY),
-                                        MathHelper.floor(this.posZ)));
+                    - BlockLiquid.getLiquidHeightPercent(
+                        this.worldObj.getBlockMetadata(
+                            MathHelper.floor(this.posX),
+                            MathHelper.floor(this.posY),
+                            MathHelper.floor(this.posZ)));
                 if (this.posY < d0) {
                     this.setDead();
                 }
             }
         } else {
             Material material = this.worldObj
-                    .getBlock(MathHelper.ceil(this.posX), MathHelper.ceil(this.posY), MathHelper.ceil(this.posZ))
-                    .getMaterial();
+                .getBlock(MathHelper.ceil(this.posX), MathHelper.ceil(this.posY), MathHelper.ceil(this.posZ))
+                .getMaterial();
 
             if (material.isLiquid() || material.isSolid()) {
                 double d0 = MathHelper.ceil(this.posY) + 1
-                        - BlockLiquid.getLiquidHeightPercent(
-                                this.worldObj.getBlockMetadata(
-                                        MathHelper.ceil(this.posX),
-                                        MathHelper.ceil(this.posY),
-                                        MathHelper.ceil(this.posZ)));
+                    - BlockLiquid.getLiquidHeightPercent(
+                        this.worldObj.getBlockMetadata(
+                            MathHelper.ceil(this.posX),
+                            MathHelper.ceil(this.posY),
+                            MathHelper.ceil(this.posZ)));
                 if (this.posY > d0) {
                     this.setDead();
                 }

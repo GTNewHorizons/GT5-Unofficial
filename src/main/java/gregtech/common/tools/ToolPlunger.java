@@ -57,7 +57,7 @@ public class ToolPlunger extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -72,11 +72,11 @@ public class ToolPlunger extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " got stuck trying to escape through a Pipe while fighting "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " got stuck trying to escape through a Pipe while fighting "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

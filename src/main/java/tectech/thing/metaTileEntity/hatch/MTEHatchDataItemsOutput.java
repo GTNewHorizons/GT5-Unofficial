@@ -31,13 +31,13 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -106,22 +106,24 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
             ((MTEPipeData) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof MTEHatchDataItemsInput && ((MTEHatchDataItemsInput) meta).getColorization() == color
-                && ((MTEHatchDataItemsInput) meta).canConnectData(base.getFrontFacing().getOpposite())) {
-                    return (IConnectsToDataPipe) meta;
-                }
+            && ((MTEHatchDataItemsInput) meta).canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
         return null;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("recipeCount", previousPacket == null ? 0 : previousPacket.getContent().length);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();

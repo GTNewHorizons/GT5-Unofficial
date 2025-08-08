@@ -19,7 +19,7 @@ import gregtech.api.util.GTUtility;
 public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     private static final String localizedDescFormat = GTLanguageManager
-            .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
+        .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
     public final Materials mMaterial;
 
     public MTEFrame(int aID, String aName, String aNameRegional, Materials aMaterial) {
@@ -46,10 +46,10 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
-            int colorIndex, boolean active, boolean redstoneLevel) {
+        int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-                Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
+            mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+            Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
     }
 
     @Override
@@ -94,13 +94,13 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 

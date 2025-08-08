@@ -42,10 +42,10 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     @Override
     public String[] getDescription() {
         return new String[] { "An automation port for Large Turbines",
-                "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-                "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-                "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-                "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
+            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
+            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
+            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
+            "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
     }
 
     private MTELargeTurbine mParent = null;
@@ -53,7 +53,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (aTimer % mRefreshTime == 0 && this.getBaseMetaTileEntity().isServerSide()) {
+        if (aTimer % mRefreshTime == 0 && this.getBaseMetaTileEntity()
+            .isServerSide()) {
             tryRefillTurbine();
         }
     }
@@ -123,13 +124,13 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return isItemStackTurbine(aStack);
     }
 
@@ -152,7 +153,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
+        ItemStack aTool) {
         if (aPlayer != null) {
             if (KeyboardUtils.isCtrlKeyDown()) {
                 mDescending = !mDescending;
@@ -205,7 +206,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine)
-                        .setAccess(false, true).setPos(79, 34));
+            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine)
+                .setAccess(false, true)
+                .setPos(79, 34));
     }
 }

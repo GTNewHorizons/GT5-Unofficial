@@ -29,7 +29,7 @@ public class BehaviourWrench extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager
-            .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
+        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public BehaviourWrench(int aCosts) {
         this.mCosts = aCosts;
@@ -37,28 +37,29 @@ public class BehaviourWrench extends BehaviourNone {
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) {
             return false;
         }
         final int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
-        final short targetSideOrdinal = (short) GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ).ordinal();
+        final short targetSideOrdinal = (short) GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
+            .ordinal();
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         final WrenchHandler handler = new WrenchHandler(
-                aBlock,
-                aMeta,
-                targetSideOrdinal,
-                aTileEntity,
-                aPlayer,
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                aStack,
-                (MetaGeneratedTool) aItem,
-                mCosts);
+            aBlock,
+            aMeta,
+            targetSideOrdinal,
+            aTileEntity,
+            aPlayer,
+            aWorld,
+            aX,
+            aY,
+            aZ,
+            aStack,
+            (MetaGeneratedTool) aItem,
+            mCosts);
 
         try {
             return handler.handle() && !aWorld.isRemote;
@@ -121,7 +122,10 @@ public class BehaviourWrench extends BehaviourNone {
                         return true;
                     });
                     if (player.isSneaking() && direction == front) return doWrenchOperation(costs, () -> {
-                        orientable.setOrientation(tempFront, tempUp.getRotation(tempFront).getRotation(tempFront));
+                        orientable.setOrientation(
+                            tempFront,
+                            tempUp.getRotation(tempFront)
+                                .getRotation(tempFront));
                         return true;
                     });
                 }
@@ -151,9 +155,8 @@ public class BehaviourWrench extends BehaviourNone {
             }
 
             if (block == Blocks.powered_repeater || block == Blocks.unpowered_repeater
-                    || block == Blocks.powered_comparator
-                    || block == Blocks.unpowered_comparator)
-                return setBlockMeta(costs, meta / 4 * 4 + (meta % 4 + 1) % 4);
+                || block == Blocks.powered_comparator
+                || block == Blocks.unpowered_comparator) return setBlockMeta(costs, meta / 4 * 4 + (meta % 4 + 1) % 4);
 
             // hopper cannot face sky
             if (block == Blocks.hopper && targetSideOrdinal != 1) return setBlockMeta(costs, targetSideOrdinal);
@@ -168,7 +171,8 @@ public class BehaviourWrench extends BehaviourNone {
             if (tileEntity instanceof IPartHost) return false;
 
             final int logWoodId = OreDictionary.getOreID("logWood");
-            if (Arrays.stream(OreDictionary.getOreIDs(new ItemStack(block))).anyMatch(id -> id == logWoodId)) {
+            if (Arrays.stream(OreDictionary.getOreIDs(new ItemStack(block)))
+                .anyMatch(id -> id == logWoodId)) {
                 // IC2 rubber logs carry more info than just side in the meta
                 if (!(block instanceof BlockRubWood)) {
                     // The meta just work
@@ -177,8 +181,8 @@ public class BehaviourWrench extends BehaviourNone {
             }
 
             // vanilla block rotate logic
-            if ((Arrays.asList(block.getValidRotations(world, x, y, z)).contains(direction)))
-                return rotateBlock(costs, direction);
+            if ((Arrays.asList(block.getValidRotations(world, x, y, z))
+                .contains(direction))) return rotateBlock(costs, direction);
             return false;
 
             // GT blocks' rotations are done by blocks themselves after this returning false
@@ -196,7 +200,7 @@ public class BehaviourWrench extends BehaviourNone {
         private final int costs;
 
         public WrenchHandler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player,
-                World world, int x, int y, int z, ItemStack stack, MetaGeneratedTool item, int costs) {
+            World world, int x, int y, int z, ItemStack stack, MetaGeneratedTool item, int costs) {
             this.block = block;
             this.meta = meta;
             this.targetSideOrdinal = targetSideOrdinal;
@@ -257,14 +261,14 @@ public class BehaviourWrench extends BehaviourNone {
 
     public static boolean isVanillaCantFaceAxisY(Block block) {
         return GTUtility.arrayContains(
-                block,
-                Blocks.pumpkin,
-                Blocks.lit_pumpkin,
-                Blocks.furnace,
-                Blocks.lit_furnace,
-                Blocks.chest,
-                Blocks.trapped_chest,
-                Blocks.ender_chest);
+            block,
+            Blocks.pumpkin,
+            Blocks.lit_pumpkin,
+            Blocks.furnace,
+            Blocks.lit_furnace,
+            Blocks.chest,
+            Blocks.trapped_chest,
+            Blocks.ender_chest);
     }
 
     public static boolean isVanillaAllSideRotatable(Block block) {

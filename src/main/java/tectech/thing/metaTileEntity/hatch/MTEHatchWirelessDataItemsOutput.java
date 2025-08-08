@@ -37,14 +37,14 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     public MTEHatchWirelessDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_EM,
-                        translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -63,13 +63,13 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -104,10 +104,11 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
-            aTick = MinecraftServer.getServer().getTickCounter();
+            aTick = MinecraftServer.getServer()
+                .getTickCounter();
             if (dataPacket != null && aTick % WirelessDataStore.IO_TICK_RATE == 0) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
-                        .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                    .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
                 wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()), aTick);
             }
         }
@@ -115,30 +116,29 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-                TextureFactory.of(
-                        EM_D_ACTIVE,
-                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-                TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture, TextureFactory
+            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory
+        return new ITexture[] { aBaseTexture,
+            TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-                TextureFactory.of(EM_D_CONN) };
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("recipeCount", dataPacket == null ? 0 : dataPacket.getContent().length);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();

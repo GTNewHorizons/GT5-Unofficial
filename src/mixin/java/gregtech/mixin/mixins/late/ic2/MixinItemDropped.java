@@ -9,8 +9,8 @@ import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(
-        value = { ic2.core.block.machine.BlockMachine2.class, ic2.core.block.machine.BlockMachine3.class,
-                ic2.core.block.wiring.BlockElectric.class })
+    value = { ic2.core.block.machine.BlockMachine2.class, ic2.core.block.machine.BlockMachine3.class,
+        ic2.core.block.wiring.BlockElectric.class })
 public class MixinItemDropped extends Block {
 
     protected MixinItemDropped(Material materialIn) {

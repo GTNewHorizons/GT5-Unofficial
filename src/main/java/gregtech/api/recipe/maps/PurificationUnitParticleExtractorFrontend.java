@@ -20,7 +20,7 @@ public class PurificationUnitParticleExtractorFrontend extends RecipeMapFrontend
     public static final ArrayList<ItemStack> inputItemsShuffled = new ArrayList<>();
 
     public PurificationUnitParticleExtractorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

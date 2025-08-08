@@ -15,9 +15,9 @@ public class GregtechIndustrialAlloySmelter {
 
     private static void run1() {
         GregtechItemList.Industrial_AlloySmelter.set(
-                new MTEIndustrialAlloySmelter(
-                        Industrial_AlloySmelter.ID,
-                        "industrialalloysmelter.controller.tier.single",
-                        "Zyngen").getStackForm(1L));
+            new MTEIndustrialAlloySmelter(
+                Industrial_AlloySmelter.ID,
+                "industrialalloysmelter.controller.tier.single",
+                "Zyngen").getStackForm(1L));
     }
 }

@@ -47,7 +47,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRockBreaker>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialRockBreaker> STRUCTURE_DEFINITION = null;
@@ -72,23 +72,31 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     private static final String casingBaseName = GTLanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
     private static final String casingMiddleName = GTLanguageManager
-            .getTranslation("gtplusplus.blockcasings.2.11.name");
+        .getTranslation("gtplusplus.blockcasings.2.11.name");
     private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
-                .addInfo("Use Integrated Circuit to determine recipe")
-                .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
-                .addInfo("Needs Water and Lava in input hatch")
-                .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-                .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 4, 3, true)
-                .addController("Bottom Front").addCasingInfoMin(casingBaseName, 9, false)
-                .addCasingInfoExactly(casingMiddleName, 16, false).addInputBus(anyBaseCasing, 1)
-                .addInputHatch(anyBaseCasing, 1).addOutputBus(anyBaseCasing, 1).addEnergyHatch(anyBaseCasing, 1)
-                .addMaintenanceHatch(anyBaseCasing, 1).addMufflerHatch(anyBaseCasing, 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
+            .addInfo("Use Integrated Circuit to determine recipe")
+            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
+            .addInfo("Needs Water and Lava in input hatch")
+            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
+            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 4, 3, true)
+            .addController("Bottom Front")
+            .addCasingInfoMin(casingBaseName, 9, false)
+            .addCasingInfoExactly(casingMiddleName, 16, false)
+            .addInputBus(anyBaseCasing, 1)
+            .addInputHatch(anyBaseCasing, 1)
+            .addOutputBus(anyBaseCasing, 1)
+            .addEnergyHatch(anyBaseCasing, 1)
+            .addMaintenanceHatch(anyBaseCasing, 1)
+            .addMufflerHatch(anyBaseCasing, 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -96,18 +104,20 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     public IStructureDefinition<MTEIndustrialRockBreaker> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialRockBreaker>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEIndustrialRockBreaker.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(16)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
-                    .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                            { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEIndustrialRockBreaker.class)
+                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.GTPP_INDEX(16))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
+                .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -204,7 +214,9 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setSpeedBonus(1 / 3.0).setEuModifier(0.75).setMaxParallelSupplier(this::getTrueParallel);
+        }.setSpeedBonus(1 / 3.0)
+            .setEuModifier(0.75)
+            .setMaxParallelSupplier(this::getTrueParallel);
 
     }
 

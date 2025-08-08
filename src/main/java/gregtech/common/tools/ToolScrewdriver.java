@@ -25,17 +25,18 @@ import gregtech.common.items.behaviors.BehaviourScrewdriver;
 public class ToolScrewdriver extends GTTool {
 
     public static final List<String> mEffectiveList = Arrays.asList(
-            EntityCaveSpider.class.getName(),
-            EntitySpider.class.getName(),
-            "EntityTFHedgeSpider",
-            "EntityTFKingSpider",
-            "EntityTFSwarmSpider",
-            "EntityTFTowerBroodling");
+        EntityCaveSpider.class.getName(),
+        EntitySpider.class.getName(),
+        "EntityTFHedgeSpider",
+        "EntityTFKingSpider",
+        "EntityTFSwarmSpider",
+        "EntityTFTowerBroodling");
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
+        EntityPlayer aPlayer) {
+        String tName = aEntity.getClass()
+            .getName();
         tName = tName.substring(tName.lastIndexOf('.') + 1);
         return mEffectiveList.contains(tName) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -78,21 +79,21 @@ public class ToolScrewdriver extends GTTool {
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "screwdriver")
-                || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.circuits);
+            || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.circuits);
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-                ? MetaGeneratedTool.getPrimaryMaterial(
-                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
-                : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+            ? MetaGeneratedTool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
+            : Textures.ItemIcons.HANDLE_SCREWDRIVER;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-                : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -103,12 +104,12 @@ public class ToolScrewdriver extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " is screwed! (by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + ")");
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " is screwed! (by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + ")");
     }
 }

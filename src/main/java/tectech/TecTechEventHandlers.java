@@ -9,7 +9,9 @@ import tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil;
 public class TecTechEventHandlers {
 
     public static void init() {
-        FMLCommonHandler.instance().bus().register(new TecTechEventHandlers());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new TecTechEventHandlers());
     }
 
     @SubscribeEvent

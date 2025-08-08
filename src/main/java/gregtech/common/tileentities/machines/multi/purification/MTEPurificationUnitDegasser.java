@@ -57,7 +57,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPurificationUnitDegasser>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings9, 11);
 
@@ -88,19 +88,23 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final int MIN_CASING = 780;
 
     private static final IStructureDefinition<MTEPurificationUnitDegasser> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEPurificationUnitDegasser>builder().addShape(STRUCTURE_PIECE_MAIN, structure)
-            .addElement(
-                    'A',
-                    ofChain(
-                            lazy(
-                                    t -> GTStructureUtility.<MTEPurificationUnitDegasser>buildHatchAdder().atLeastList(
-                                            Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
-                                            .casingIndex(CASING_INDEX_MAIN).dot(1)
-                                            .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch").build()),
-                            onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
-            // Omni-purpose infinity fused glass
-            .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 2)).addElement('C', ofFrame(Materials.Bedrockium))
-            .build();
+        .<MTEPurificationUnitDegasser>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement(
+            'A',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitDegasser>buildHatchAdder()
+                        .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .dot(1)
+                        .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
+                        .build()),
+                onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
+        // Omni-purpose infinity fused glass
+        .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 2))
+        .addElement('C', ofFrame(Materials.Bedrockium))
+        .build();
 
     private static final int STRUCTURE_X_OFFSET = 8;
     private static final int STRUCTURE_Y_OFFSET = 23;
@@ -108,8 +112,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10_000),
-            WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
-            WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
+        WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
+        WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
 
     private static final class SuperconductorMaterial {
 
@@ -125,15 +129,13 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final long SUPERCON_FLUID_AMOUNT = 10 * INGOTS;
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
-            new SuperconductorMaterial(
-                    Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT),
-                    1.0f),
-            new SuperconductorMaterial(
-                    Materials.Longasssuperconductornameforuhvwire.getMolten(SUPERCON_FLUID_AMOUNT),
-                    1.25f),
-            new SuperconductorMaterial(Materials.SuperconductorUEVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.5f),
-            new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
-            new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
+        new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT), 1.0f),
+        new SuperconductorMaterial(
+            Materials.Longasssuperconductornameforuhvwire.getMolten(SUPERCON_FLUID_AMOUNT),
+            1.25f),
+        new SuperconductorMaterial(Materials.SuperconductorUEVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.5f),
+        new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
+        new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
     private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(32 * INGOTS);
     private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10_000);
@@ -226,16 +228,28 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean active, boolean redstoneLevel) {
+        int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
     }
@@ -243,25 +257,25 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                hintsOnly,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                STRUCTURE_X_OFFSET,
-                STRUCTURE_Y_OFFSET,
-                STRUCTURE_Z_OFFSET,
-                elementBudget,
-                env,
-                true);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET,
+            elementBudget,
+            env,
+            true);
     }
 
     @Override
@@ -273,203 +287,208 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Purification Unit")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.BOLD
-                                + "Water Tier: "
-                                + EnumChatFormatting.WHITE
-                                + GTUtility.formatNumbers(getWaterTier())
-                                + EnumChatFormatting.RESET)
-                .addInfo("Must be linked to a Purification Plant using a data stick to work.").addSeparator()
-                .addInfo(
-                        "At the start of the operation, the " + EnumChatFormatting.WHITE
-                                + "Degasser Control Hatch"
-                                + EnumChatFormatting.GRAY
-                                + " will output a redstone signal.")
-                .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
-                .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
-                .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.").addSeparator()
-                .addInfo(
-                        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                                + "Bit 1: "
-                                + EnumChatFormatting.BLUE
-                                + EnumChatFormatting.BOLD
-                                + "Ozone Sparging by Inert Gas")
-                .addInfo(
-                        "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
-                                + "inert gas"
-                                + EnumChatFormatting.GRAY
-                                + " into the machine.")
-                .addInfo(
-                        "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
-                                + "2-3"
-                                + EnumChatFormatting.GRAY
-                                + " as a 2-bit number.")
-                .addInfo(
-                        EnumChatFormatting.GRAY + "0: "
-                                + EnumChatFormatting.RED
-                                + "10000L "
-                                + EnumChatFormatting.WHITE
-                                + "Helium"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + "1: "
-                                + EnumChatFormatting.RED
-                                + "7500L "
-                                + EnumChatFormatting.WHITE
-                                + "Neon"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + "2: "
-                                + EnumChatFormatting.RED
-                                + "5000L "
-                                + EnumChatFormatting.WHITE
-                                + "Krypton"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + "3: "
-                                + EnumChatFormatting.RED
-                                + "2500L "
-                                + EnumChatFormatting.WHITE
-                                + "Xenon")
-                .addSeparator()
-                .addInfo(
-                        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                                + "Bit 2: "
-                                + EnumChatFormatting.BLUE
-                                + EnumChatFormatting.BOLD
-                                + "Superconductive Deionization")
-                .addInfo(
-                        "If this bit is on, you must insert " + EnumChatFormatting.RED
-                                + "1440L "
-                                + EnumChatFormatting.WHITE
-                                + "Molten Superconductor Base.")
-                .addInfo("Using higher tier superconductor provides bonus output.")
-                .addInfo(
-                        "Output multiplier: " + EnumChatFormatting.DARK_GREEN
-                                + "UV"
-                                + EnumChatFormatting.GRAY
-                                + ": "
-                                + EnumChatFormatting.WHITE
-                                + "1x"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + EnumChatFormatting.DARK_RED
-                                + "UHV"
-                                + EnumChatFormatting.GRAY
-                                + ": "
-                                + EnumChatFormatting.WHITE
-                                + "1.25x"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + EnumChatFormatting.DARK_PURPLE
-                                + "UEV"
-                                + EnumChatFormatting.GRAY
-                                + ": "
-                                + EnumChatFormatting.WHITE
-                                + "1.5x"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + EnumChatFormatting.DARK_BLUE
-                                + EnumChatFormatting.BOLD
-                                + "UIV"
-                                + EnumChatFormatting.GRAY
-                                + ": "
-                                + EnumChatFormatting.WHITE
-                                + "1.75x"
-                                + EnumChatFormatting.GRAY
-                                + " / "
-                                + EnumChatFormatting.RED
-                                + EnumChatFormatting.BOLD
-                                + "UMV"
-                                + EnumChatFormatting.GRAY
-                                + ": "
-                                + EnumChatFormatting.WHITE
-                                + "2x")
-                .addSeparator()
-                .addInfo(
-                        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                                + "Bit 3: "
-                                + EnumChatFormatting.BLUE
-                                + EnumChatFormatting.BOLD
-                                + "Gravitationally-Generated Differential Vacuum Extraction")
-                .addInfo(
-                        "If this bit is on, you must insert " + EnumChatFormatting.RED
-                                + "4608L "
-                                + EnumChatFormatting.WHITE
-                                + "Molten Neutronium"
-                                + EnumChatFormatting.GRAY
-                                + ".")
-                .addSeparator()
-                .addInfo(
-                        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                                + "Bit 4: "
-                                + EnumChatFormatting.BLUE
-                                + EnumChatFormatting.BOLD
-                                + "Seldonian Settlement Process")
-                .addInfo(
-                        "If this bit is on," + EnumChatFormatting.RED
-                                + " DISREGARD "
-                                + EnumChatFormatting.GRAY
-                                + "all other bits and do not insert anything.")
-                .addSeparator()
-                .addInfo(
-                        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                                + "No bits: "
-                                + EnumChatFormatting.BLUE
-                                + EnumChatFormatting.BOLD
-                                + "Machine Overload")
-                .addInfo("In rare cases, the machine may overload and output no control signal at all.")
-                .addInfo(
-                        "To prevent machine damage, insert " + EnumChatFormatting.RED
-                                + "10000L "
-                                + EnumChatFormatting.WHITE
-                                + "Super Coolant.")
-                .addSeparator().addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
-                .addInfo("Inserting any fluid not requested by the signal will always void the recipe.").addSeparator()
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "The penultimate stage of water purification, step seven, is an irregular series of complex")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "processes designed to remove any residual materials left by the decontaminants from the previous")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "steps such as any energetic ions, acids, clarifiers, or gasses. Depending on what the Degasser")
-                .addInfo(
-                        EnumChatFormatting.AQUA + ""
-                                + EnumChatFormatting.ITALIC
-                                + "detects in the water, it will request various materials to complete the processes listed above.")
-                .beginStructureBlock(17, 25, 17, false).addController("Front center")
-                .addCasingInfoRangeColored(
-                        "Heat-Resistant Trinium Plated Casing",
-                        EnumChatFormatting.GRAY,
-                        MIN_CASING,
-                        803,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Omni-Purpose Infinity Fused Glass",
-                        EnumChatFormatting.GRAY,
-                        622,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addCasingInfoExactlyColored(
-                        "Bedrockium Frame Box",
-                        EnumChatFormatting.GRAY,
-                        124,
-                        EnumChatFormatting.GOLD,
-                        false)
-                .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-                .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-                .addOtherStructurePart(
-                        StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
-                        EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
-                        1)
-                .toolTipFinisher(AuthorNotAPenguin);
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GTUtility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addSeparator()
+            .addInfo(
+                "At the start of the operation, the " + EnumChatFormatting.WHITE
+                    + "Degasser Control Hatch"
+                    + EnumChatFormatting.GRAY
+                    + " will output a redstone signal.")
+            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
+            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
+            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + "Bit 1: "
+                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.BOLD
+                    + "Ozone Sparging by Inert Gas")
+            .addInfo(
+                "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
+                    + "inert gas"
+                    + EnumChatFormatting.GRAY
+                    + " into the machine.")
+            .addInfo(
+                "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
+                    + "2-3"
+                    + EnumChatFormatting.GRAY
+                    + " as a 2-bit number.")
+            .addInfo(
+                EnumChatFormatting.GRAY + "0: "
+                    + EnumChatFormatting.RED
+                    + "10000L "
+                    + EnumChatFormatting.WHITE
+                    + "Helium"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + "1: "
+                    + EnumChatFormatting.RED
+                    + "7500L "
+                    + EnumChatFormatting.WHITE
+                    + "Neon"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + "2: "
+                    + EnumChatFormatting.RED
+                    + "5000L "
+                    + EnumChatFormatting.WHITE
+                    + "Krypton"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + "3: "
+                    + EnumChatFormatting.RED
+                    + "2500L "
+                    + EnumChatFormatting.WHITE
+                    + "Xenon")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + "Bit 2: "
+                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.BOLD
+                    + "Superconductive Deionization")
+            .addInfo(
+                "If this bit is on, you must insert " + EnumChatFormatting.RED
+                    + "1440L "
+                    + EnumChatFormatting.WHITE
+                    + "Molten Superconductor Base.")
+            .addInfo("Using higher tier superconductor provides bonus output.")
+            .addInfo(
+                "Output multiplier: " + EnumChatFormatting.DARK_GREEN
+                    + "UV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_RED
+                    + "UHV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.25x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "UEV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.5x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.BOLD
+                    + "UIV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.75x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.RED
+                    + EnumChatFormatting.BOLD
+                    + "UMV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "2x")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + "Bit 3: "
+                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.BOLD
+                    + "Gravitationally-Generated Differential Vacuum Extraction")
+            .addInfo(
+                "If this bit is on, you must insert " + EnumChatFormatting.RED
+                    + "4608L "
+                    + EnumChatFormatting.WHITE
+                    + "Molten Neutronium"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + "Bit 4: "
+                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.BOLD
+                    + "Seldonian Settlement Process")
+            .addInfo(
+                "If this bit is on," + EnumChatFormatting.RED
+                    + " DISREGARD "
+                    + EnumChatFormatting.GRAY
+                    + "all other bits and do not insert anything.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + "No bits: "
+                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.BOLD
+                    + "Machine Overload")
+            .addInfo("In rare cases, the machine may overload and output no control signal at all.")
+            .addInfo(
+                "To prevent machine damage, insert " + EnumChatFormatting.RED
+                    + "10000L "
+                    + EnumChatFormatting.WHITE
+                    + "Super Coolant.")
+            .addSeparator()
+            .addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
+            .addInfo("Inserting any fluid not requested by the signal will always void the recipe.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The penultimate stage of water purification, step seven, is an irregular series of complex")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "processes designed to remove any residual materials left by the decontaminants from the previous")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "steps such as any energetic ions, acids, clarifiers, or gasses. Depending on what the Degasser")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "detects in the water, it will request various materials to complete the processes listed above.")
+            .beginStructureBlock(17, 25, 17, false)
+            .addController("Front center")
+            .addCasingInfoRangeColored(
+                "Heat-Resistant Trinium Plated Casing",
+                EnumChatFormatting.GRAY,
+                MIN_CASING,
+                803,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Omni-Purpose Infinity Fused Glass",
+                EnumChatFormatting.GRAY,
+                622,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Bedrockium Frame Box",
+                EnumChatFormatting.GRAY,
+                124,
+                EnumChatFormatting.GOLD,
+                false)
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
+                1)
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -481,8 +500,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     // Whether this fluid stack is accepted as a fluid in the inputs that the unit requires at runtime.
     public static boolean isValidFluid(FluidStack stack) {
         return stack.isFluidEqual(CATALYST_FLUID) || stack.isFluidEqual(COOLANT_FLUID)
-                || Arrays.stream(INERT_GASES.get()).anyMatch(stack::isFluidEqual)
-                || Arrays.stream(SUPERCONDUCTOR_MATERIALS.get()).anyMatch(mat -> stack.isFluidEqual(mat.fluid));
+            || Arrays.stream(INERT_GASES.get())
+                .anyMatch(stack::isFluidEqual)
+            || Arrays.stream(SUPERCONDUCTOR_MATERIALS.get())
+                .anyMatch(mat -> stack.isFluidEqual(mat.fluid));
     }
 
     // Check if an exact match for this FluidStack was found in the map of inserted fluids
@@ -521,7 +542,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         if (controlSignal.getBit(1)) {
             // Find the first superconductor material in the list that was inserted with an exact match
             Optional<SuperconductorMaterial> material = Arrays.stream(SUPERCONDUCTOR_MATERIALS.get())
-                    .filter(candidate -> wasFluidInsertedExact(candidate.fluid)).findFirst();
+                .filter(candidate -> wasFluidInsertedExact(candidate.fluid))
+                .findFirst();
             if (material.isPresent()) {
                 // Get the material and set the output multiplier, then
                 // report success with the matching fluid.
@@ -629,15 +651,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 for (FluidStack fluid : drainableFluids) {
                     if (fluid != null && isValidFluid(fluid)) {
                         // Apparently this parameter is mostly ignored, but might as well get it right.
-                        ForgeDirection front = hatch.getBaseMetaTileEntity().getFrontFacing();
+                        ForgeDirection front = hatch.getBaseMetaTileEntity()
+                            .getFrontFacing();
                         // Drain the fluid and save it
                         FluidStack drainedFluid = hatch.drain(front, fluid, true);
                         // If the fluid does not yet exist in the map, insert it.
                         // Otherwise, merge the amounts
                         insertedStuffThisCycle.merge(
-                                fluid.getFluid(),
-                                drainedFluid,
-                                (a, b) -> new FluidStack(a.getFluid(), a.amount + b.amount));
+                            fluid.getFluid(),
+                            drainedFluid,
+                            (a, b) -> new FluidStack(a.getFluid(), a.amount + b.amount));
                     }
                 }
             }
@@ -650,8 +673,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         if (outputMultiplier > 1.01f && mOutputFluids != null) {
             FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
-                    waterOutput.getFluid(),
-                    (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+                waterOutput.getFluid(),
+                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -726,7 +749,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             NBTTagCompound compound = new NBTTagCompound();
             stack.writeToNBT(compound);
-            fluidMap.setTag(stack.getFluid().getName(), compound);
+            fluidMap.setTag(
+                stack.getFluid()
+                    .getName(),
+                compound);
         }
         aNBT.setTag("insertedFluidMap", fluidMap);
     }
@@ -735,10 +761,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
         if (status.satisfied) {
             return base + EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
         } else {
             return base + EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
         }
     }
 
@@ -746,35 +772,35 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.purification_unit_degasser.control_signal",
-                        EnumChatFormatting.YELLOW + controlSignal.toString()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.control_signal",
+                EnumChatFormatting.YELLOW + controlSignal.toString()));
         info.add(
-                StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.purification_unit_degasser.output_multiplier",
-                        "" + EnumChatFormatting.YELLOW + outputMultiplier));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.output_multiplier",
+                "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                    StatCollector.translateToLocalFormatted(
-                            "GT5U.infodata.purification_unit_degasser.fluid_inserted",
-                            "" + EnumChatFormatting.YELLOW + stack.amount,
-                            stack.getLocalizedName()));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_degasser.fluid_inserted",
+                    "" + EnumChatFormatting.YELLOW + stack.amount,
+                    stack.getLocalizedName()));
         }
         info.add(
-                generateInfoStringForBit(
-                        0,
-                        controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
-                                : isBit0Satisfied()));
+            generateInfoStringForBit(
+                0,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit0Satisfied()));
         info.add(
-                generateInfoStringForBit(
-                        1,
-                        controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
-                                : isBit1Satisfied()));
+            generateInfoStringForBit(
+                1,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit1Satisfied()));
         info.add(
-                generateInfoStringForBit(
-                        2,
-                        controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
-                                : isBit2Satisfied()));
+            generateInfoStringForBit(
+                2,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit2Satisfied()));
         info.add(generateInfoStringForBit(3, isBit3Satisfied()));
         return info.toArray(new String[] {});
     }
@@ -794,7 +820,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
         @SafeVarargs
         SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitDegasser> adder,
-                Class<? extends IMetaTileEntity>... mteClasses) {
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

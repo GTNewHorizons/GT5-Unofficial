@@ -53,9 +53,12 @@ public class GTFluidFactory {
      * @return the registered {@link Fluid}
      */
     public static Fluid of(final String fluidName, final String localizedName, final Materials material,
-            final FluidState state, final int temperature) {
-        return builder(fluidName).withLocalizedName(localizedName).withStateAndTemperature(state, temperature)
-                .buildAndRegister().configureMaterials(material).asFluid();
+        final FluidState state, final int temperature) {
+        return builder(fluidName).withLocalizedName(localizedName)
+            .withStateAndTemperature(state, temperature)
+            .buildAndRegister()
+            .configureMaterials(material)
+            .asFluid();
     }
 
     /**
@@ -68,9 +71,11 @@ public class GTFluidFactory {
      * @return the registered {@link Fluid}
      */
     public static Fluid of(final String fluidName, final String localizedName, final FluidState state,
-            final int temperature) {
-        return builder(fluidName).withLocalizedName(localizedName).withStateAndTemperature(state, temperature)
-                .buildAndRegister().asFluid();
+        final int temperature) {
+        return builder(fluidName).withLocalizedName(localizedName)
+            .withStateAndTemperature(state, temperature)
+            .buildAndRegister()
+            .asFluid();
     }
 
     /**

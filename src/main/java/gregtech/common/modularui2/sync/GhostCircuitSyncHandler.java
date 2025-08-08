@@ -97,7 +97,7 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
         IItemHandler handler = getSlot().getItemHandler();
         if (!(handler instanceof GhostCircuitItemStackHandler ghostHandler)) {
             throw new IllegalStateException(
-                    "GhostCircuitSyncHandler has IItemHandler that is not GhostCircuitItemStackHandler");
+                "GhostCircuitSyncHandler has IItemHandler that is not GhostCircuitItemStackHandler");
         }
         return ghostHandler;
     }

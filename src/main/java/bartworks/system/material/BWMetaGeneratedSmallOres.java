@@ -29,8 +29,8 @@ public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
     public BWMetaGeneratedSmallOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + OrePrefixes.oreSmall,
-                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+            "bw.blocktype." + OrePrefixes.oreSmall,
+            OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
     }
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block,
-            int[] aBlockMeta) {
+        int[] aBlockMeta) {
         if (!air) {
             aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         }
@@ -47,11 +47,12 @@ public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         Block tOreBlock = WerkstoffLoader.BWSmallOres;
         if (aMetaData < 0 || tBlock == Blocks.air && !air
-                || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
+            || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
             return false;
         }
         final int aaY = aY;
-        if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
+        if (Arrays.stream(aBlockMeta)
+            .noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
             return false;
         }
 

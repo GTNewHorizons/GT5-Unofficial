@@ -68,8 +68,8 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
     @Override
     public void onWalkOver(EntityLivingBase aEntity, World aWorld, int aX, int aY, int aZ) {
         if ((aEntity.motionX != 0 || aEntity.motionZ != 0) && !aEntity.isInWater()
-                && !aEntity.isWet()
-                && !aEntity.isSneaking()) {
+            && !aEntity.isWet()
+            && !aEntity.isSneaking()) {
             double tSpeed = (aWorld.getBlock(aX, aY - 1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
             aEntity.motionX *= tSpeed;
             aEntity.motionZ *= tSpeed;

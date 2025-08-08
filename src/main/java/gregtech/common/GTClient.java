@@ -148,103 +148,103 @@ public class GTClient extends GTProxy {
         mAnimationTick = 0L;
         mAnimationDirection = false;
         mPosR = Arrays.asList(
-                Materials.Enderium,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.Force,
-                Materials.Pyrotheum,
-                Materials.Sunnarium,
-                Materials.Glowstone,
-                Materials.Thaumium,
-                Materials.InfusedVis,
-                Materials.InfusedAir,
-                Materials.InfusedFire,
-                Materials.FierySteel,
-                Materials.Firestone);
+            Materials.Enderium,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.Force,
+            Materials.Pyrotheum,
+            Materials.Sunnarium,
+            Materials.Glowstone,
+            Materials.Thaumium,
+            Materials.InfusedVis,
+            Materials.InfusedAir,
+            Materials.InfusedFire,
+            Materials.FierySteel,
+            Materials.Firestone);
         mPosG = Arrays.asList(
-                Materials.Enderium,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.Force,
-                Materials.Pyrotheum,
-                Materials.Sunnarium,
-                Materials.Glowstone,
-                Materials.InfusedAir,
-                Materials.InfusedEarth);
+            Materials.Enderium,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.Force,
+            Materials.Pyrotheum,
+            Materials.Sunnarium,
+            Materials.Glowstone,
+            Materials.InfusedAir,
+            Materials.InfusedEarth);
         mPosB = Arrays.asList(
-                Materials.Enderium,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.InfusedVis,
-                Materials.InfusedWater,
-                Materials.Thaumium);
+            Materials.Enderium,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.InfusedVis,
+            Materials.InfusedWater,
+            Materials.Thaumium);
         mNegR = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
         mNegG = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
         mNegB = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
         mMoltenPosR = Arrays.asList(
-                Materials.Enderium,
-                Materials.NetherStar,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.Force,
-                Materials.Pyrotheum,
-                Materials.Sunnarium,
-                Materials.Glowstone,
-                Materials.Thaumium,
-                Materials.InfusedVis,
-                Materials.InfusedAir,
-                Materials.InfusedFire,
-                Materials.FierySteel,
-                Materials.Firestone);
+            Materials.Enderium,
+            Materials.NetherStar,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.Force,
+            Materials.Pyrotheum,
+            Materials.Sunnarium,
+            Materials.Glowstone,
+            Materials.Thaumium,
+            Materials.InfusedVis,
+            Materials.InfusedAir,
+            Materials.InfusedFire,
+            Materials.FierySteel,
+            Materials.Firestone);
         mMoltenPosG = Arrays.asList(
-                Materials.Enderium,
-                Materials.NetherStar,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.Force,
-                Materials.Pyrotheum,
-                Materials.Sunnarium,
-                Materials.Glowstone,
-                Materials.InfusedAir,
-                Materials.InfusedEarth);
+            Materials.Enderium,
+            Materials.NetherStar,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.Force,
+            Materials.Pyrotheum,
+            Materials.Sunnarium,
+            Materials.Glowstone,
+            Materials.InfusedAir,
+            Materials.InfusedEarth);
         mMoltenPosB = Arrays.asList(
-                Materials.Enderium,
-                Materials.NetherStar,
-                Materials.Vinteum,
-                Materials.Uranium235,
-                Materials.InfusedGold,
-                Materials.Plutonium241,
-                Materials.NaquadahEnriched,
-                Materials.Naquadria,
-                Materials.InfusedOrder,
-                Materials.InfusedVis,
-                Materials.InfusedWater,
-                Materials.Thaumium);
+            Materials.Enderium,
+            Materials.NetherStar,
+            Materials.Vinteum,
+            Materials.Uranium235,
+            Materials.InfusedGold,
+            Materials.Plutonium241,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.InfusedOrder,
+            Materials.InfusedVis,
+            Materials.InfusedWater,
+            Materials.Thaumium);
         mMoltenNegR = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegG = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
@@ -265,7 +265,8 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-        Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer
+        Minecraft.getMinecraft()
+            .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         new Thread(new GTCapesLoader(), "GT Cape Loader").start();
         mPreference = new GTClientPreference();
@@ -326,16 +327,16 @@ public class GTClient extends GTProxy {
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
-        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
-                .registerReloadListener(new IResourceManagerReloadListener() {
+        ((IReloadableResourceManager) Minecraft.getMinecraft()
+            .getResourceManager()).registerReloadListener(new IResourceManagerReloadListener() {
 
-                    @Override
-                    public void onResourceManagerReload(IResourceManager l) {
-                        GUIColorOverride.onResourceManagerReload();
-                        FallbackableSteamTexture.reload();
-                        CoverRegistry.reloadCoverColorOverrides();
-                    }
-                });
+                @Override
+                public void onResourceManagerReload(IResourceManager l) {
+                    GUIColorOverride.onResourceManagerReload();
+                    FallbackableSteamTexture.reload();
+                    CoverRegistry.reloadCoverColorOverrides();
+                }
+            });
         Pollution.onPostInitClient();
     }
 
@@ -343,12 +344,13 @@ public class GTClient extends GTProxy {
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         super.onLoadComplete(event);
         for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
-            if (category.recipeMap.getFrontend().getNEIProperties().registerNEI) {
+            if (category.recipeMap.getFrontend()
+                .getNEIProperties().registerNEI) {
                 FluidRecipe.addRecipeMap(
-                        category.unlocalizedName,
-                        new GregTech5RecipeExtractor(
-                                category.unlocalizedName.equals("gt.recipe.scanner")
-                                        || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
+                    category.unlocalizedName,
+                    new GregTech5RecipeExtractor(
+                        category.unlocalizedName.equals("gt.recipe.scanner")
+                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
             }
         }
     }
@@ -360,8 +362,8 @@ public class GTClient extends GTProxy {
         // the player should handle its own movement, rest is handled by the server
         if (entity instanceof EntityClientPlayerMP && entity.onGround) {
             int tX = MathHelper.floor_double(entity.posX),
-                    tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                    tZ = MathHelper.floor_double(entity.posZ);
+                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
+                tZ = MathHelper.floor_double(entity.posZ);
             Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
             if (tBlock instanceof IBlockOnWalkOver)
                 ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
@@ -403,7 +405,8 @@ public class GTClient extends GTProxy {
                 mFirstTick = false;
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
 
-                if (!Minecraft.getMinecraft().isSingleplayer()) {
+                if (!Minecraft.getMinecraft()
+                    .isSingleplayer()) {
                     GTModHandler.removeAllIC2Recipes();
                 }
             }
@@ -412,7 +415,7 @@ public class GTClient extends GTProxy {
                 afterSomeTime = 0;
             }
             for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
-                    .iterator(); iterator.hasNext();) {
+                .iterator(); iterator.hasNext();) {
                 Map.Entry<GTPlayedSound, Integer> tEntry = iterator.next();
                 if (tEntry.getValue() < 0) {
                     iterator.remove();
@@ -569,7 +572,7 @@ public class GTClient extends GTProxy {
             if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
                 IToolStats tStats = mgt.getToolStats(stack);
                 boolean playBreak = (MetaGeneratedTool.getToolDamage(stack) + tStats.getToolDamagePerContainerCraft())
-                        >= MetaGeneratedTool.getToolMaxDamage(stack);
+                    >= MetaGeneratedTool.getToolMaxDamage(stack);
                 String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
                 GTUtility.doSoundAtClient(sound, 1, 1.0F);
                 this.mTicksUntilNextCraftSound = 10;
@@ -657,15 +660,15 @@ public class GTClient extends GTProxy {
         final ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null) return false;
         return GTUtility.isStackInList(stack, GregTechAPI.sWrenchList)
-                || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
-                || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
-                || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
-                || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
-                || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
-                || CoverRegistry.isCover(stack)
-                || (stack.getItem() instanceof ItemMachines
-                        && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
-                        && player.isSneaking());
+            || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(stack)
+            || (stack.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
+                && player.isSneaking());
     }
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

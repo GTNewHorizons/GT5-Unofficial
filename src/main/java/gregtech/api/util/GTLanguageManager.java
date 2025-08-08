@@ -56,8 +56,8 @@ public class GTLanguageManager {
 
     // TODO: convert to enum
     public static String FACE_ANY = "gt.lang.face.any", FACE_BOTTOM = "gt.lang.face.bottom",
-            FACE_TOP = "gt.lang.face.top", FACE_LEFT = "gt.lang.face.left", FACE_FRONT = "gt.lang.face.front",
-            FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
+        FACE_TOP = "gt.lang.face.top", FACE_LEFT = "gt.lang.face.left", FACE_FRONT = "gt.lang.face.front",
+        FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
 
     public static String[] FACES = { FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE };
 
@@ -69,12 +69,12 @@ public class GTLanguageManager {
     static {
         try {
             Field fieldStringTranslateLanguageList = ReflectionHelper
-                    .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
+                .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
             Field fieldStringTranslateInstance = ReflectionHelper
-                    .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
+                .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
             // noinspection unchecked
             stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
-                    .get(fieldStringTranslateInstance.get(null));
+                .get(fieldStringTranslateInstance.get(null));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -121,9 +121,9 @@ public class GTLanguageManager {
         addToMCLangList(trimmedKey, translation);
         TEMPMAP.put(trimmedKey, translation);
         LanguageRegistry.instance()
-                // If we use the actual user configured locale here, switching lang to others while running game
-                // turns everything into unlocalized string. So we make it "default" and call it a day.
-                .injectLanguage("en_US", TEMPMAP);
+            // If we use the actual user configured locale here, switching lang to others while running game
+            // turns everything into unlocalized string. So we make it "default" and call it a day.
+            .injectLanguage("en_US", TEMPMAP);
         TEMPMAP.clear();
         return translation;
     }
@@ -190,7 +190,8 @@ public class GTLanguageManager {
         if (GTUtility.isStackInvalid(aStack)) return "null";
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display").getString("Name");
+            String tName = tNBT.getCompoundTag("display")
+                .getString("Name");
             if (GTUtility.isStringValid(tName)) {
                 return tName;
             }
@@ -347,8 +348,8 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
         addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_207",
-                "Pump speed: %dL every %d ticks, %.2f L/sec on average");
+            "Interaction_DESCRIPTION_Index_207",
+            "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
@@ -399,8 +400,8 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_262", "Fluid Auto Output Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_263", "Fluid Auto Output Enabled");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_264",
-                "currently none, will be locked to the next that is put in");
+            "Interaction_DESCRIPTION_Index_264",
+            "currently none, will be locked to the next that is put in");
         addStringLocalization("Interaction_DESCRIPTION_Index_265", "1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_266", "Lock Fluid Mode Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_267", "Overflow Voiding Mode Disabled");

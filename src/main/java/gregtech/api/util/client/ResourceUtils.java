@@ -22,7 +22,8 @@ public class ResourceUtils {
      */
     @SideOnly(Side.CLIENT)
     public static boolean resourceExists(@NotNull ResourceLocation resLoc) {
-        final IResourceManager resMan = Minecraft.getMinecraft().getResourceManager();
+        final IResourceManager resMan = Minecraft.getMinecraft()
+            .getResourceManager();
         try {
             resMan.getResource(resLoc);
             return true;

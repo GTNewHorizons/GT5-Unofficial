@@ -22,7 +22,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
     ItemStack @Nullable [] mBlackList = null;
 
     public ShapedRecipe(Object aInput1, Object aInput2, Object aInput3, Object aInput4, Object aInput5, Object aInput6,
-            Object aInput7, Object aInput8, Object aInput9, ItemStack aOutput) {
+        Object aInput7, Object aInput8, Object aInput9, ItemStack aOutput) {
 
         this(new Object[] { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 }, aOutput);
     }
@@ -70,10 +70,10 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                 if (aInputs.length != 9) {
                     Logger.RECIPE(
-                            "[Fix] Recipe for " + aOutput.getDisplayName()
-                                    + " has incorrect number of inputs. Size: "
-                                    + aInputs.length
-                                    + ".");
+                        "[Fix] Recipe for " + aOutput.getDisplayName()
+                            + " has incorrect number of inputs. Size: "
+                            + aInputs.length
+                            + ".");
                 }
 
                 // Build a Pair for each slot
@@ -94,11 +94,12 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                         }
                         aRecipePairs.add(Pair.of(CHARS.charAt(aCharSlot), stack));
                         Logger.RECIPE(
-                                "Storing '" + CHARS.charAt(aCharSlot)
-                                        + "' with an object of type "
-                                        + stack.getClass().getSimpleName()
-                                        + " and a value of "
-                                        + mInfo);
+                            "Storing '" + CHARS.charAt(aCharSlot)
+                                + "' with an object of type "
+                                + stack.getClass()
+                                    .getSimpleName()
+                                + " and a value of "
+                                + mInfo);
                         aChar[aMemSlot++] = CHARS.charAt(aCharSlot);
                         aCharSlot++;
                         aLoggingInfo[aInfoSlot++] = mInfo;
@@ -132,7 +133,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                         aGrid[2] = "" + aGridWhole.charAt(6) + aGridWhole.charAt(7) + aGridWhole.charAt(8);
                     } else {
                         Logger.RECIPE(
-                                "[Fix] Grid length for recipe outputting " + aOutput.getDisplayName() + " is not 9.");
+                            "[Fix] Grid length for recipe outputting " + aOutput.getDisplayName() + " is not 9.");
                     }
 
                     // Rebuild the Map without spaces
@@ -157,22 +158,23 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                             }
                             aRecipePairs.add(Pair.of(CHARS.charAt(aCharSlot), stack));
                             Logger.RECIPE(
-                                    "Registering Pair of '" + CHARS.charAt(aCharSlot)
-                                            + "' and a "
-                                            + stack.getClass().getSimpleName()
-                                            + " object. Object has a value of "
-                                            + mInfo);
+                                "Registering Pair of '" + CHARS.charAt(aCharSlot)
+                                    + "' and a "
+                                    + stack.getClass()
+                                        .getSimpleName()
+                                    + " object. Object has a value of "
+                                    + mInfo);
                             aCharSlot++;
                             counter++;
                         }
                     }
 
                     Logger.RECIPE(
-                            "Counter started at " + KEY_COUNTER
-                                    + ", counter is now at "
-                                    + counter
-                                    + ". Trying to create Varag array with a size of "
-                                    + (KEY_COUNTER + (counter - KEY_COUNTER) * 2));
+                        "Counter started at " + KEY_COUNTER
+                            + ", counter is now at "
+                            + counter
+                            + ". Trying to create Varag array with a size of "
+                            + (KEY_COUNTER + (counter - KEY_COUNTER) * 2));
                     // Counter started at 3, counter is now at 4. Trying to create Varag array with a size of 2
 
                     // Register the shaped grid straight to the varags
@@ -216,7 +218,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                 } else {
                     Logger.RECIPE(
-                            "[Fix] Recipe for " + aOutput.getDisplayName() + " contains a strange number of inputs.");
+                        "[Fix] Recipe for " + aOutput.getDisplayName() + " contains a strange number of inputs.");
                 }
 
                 // Try set the recipe for this object.

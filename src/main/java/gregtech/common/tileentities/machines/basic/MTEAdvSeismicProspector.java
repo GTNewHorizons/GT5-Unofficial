@@ -46,24 +46,27 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     public MTEAdvSeismicProspector(int aID, String aName, String aNameRegional, int aTier, int aRadius, int aStep) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1, // amperage
-                "",
-                1, // input slot count
-                1, // output slot count
-                TextureFactory.of(VOID),
-                TextureFactory.of(VOID),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR),
-                TextureFactory.of(VOID),
-                TextureFactory.of(VOID),
-                TextureFactory.of(VOID),
-                TextureFactory.of(VOID));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1, // amperage
+            "",
+            1, // input slot count
+            1, // output slot count
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID));
         radius = aRadius;
         step = aStep;
     }
@@ -71,14 +74,14 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return new String[] { "Place, activate with explosives",
-                "2 Powderbarrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
-                "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
-                "Ore prospecting area = " + radius * 2 + "x" + radius * 2 + " ONLY blocks below prospector",
-                "Oil prospecting area 3x3 oilfields, each is 8x8 chunks" };
+            "2 Powderbarrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
+            "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
+            "Ore prospecting area = " + radius * 2 + "x" + radius * 2 + " ONLY blocks below prospector",
+            "Oil prospecting area 3x3 oilfields, each is 8x8 chunks" };
     }
 
     protected MTEAdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            int aRadius, int aStep) {
+        int aRadius, int aStep) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
         radius = aRadius;
         step = aStep;
@@ -87,12 +90,12 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEAdvSeismicProspector(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.radius,
-                this.step);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.radius,
+            this.step);
     }
 
     @Override
@@ -101,39 +104,43 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
             ItemStack aStack = aPlayer.getCurrentEquippedItem();
 
             if (!ready && (GTUtility.consumeItems(aPlayer, aStack, Item.getItemFromBlock(Blocks.tnt), 16)
-                    || GTUtility.consumeItems(aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8)
-                    || GTUtility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4)
-                    || GTUtility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2))) {
+                || GTUtility.consumeItems(aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8)
+                || GTUtility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4)
+                || GTUtility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2))) {
 
                 this.ready = true;
                 this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
 
             } else if (ready && mMaxProgresstime == 0
-                    && aStack != null
-                    && aStack.stackSize == 1
-                    && aStack.getItem() == ItemList.Tool_DataStick.getItem()) {
-                        this.ready = false;
+                && aStack != null
+                && aStack.stackSize == 1
+                && aStack.getItem() == ItemList.Tool_DataStick.getItem()) {
+                    this.ready = false;
 
-                        // prospecting ores
-                        HashMap<String, Integer> tOres = new HashMap<>(36);
+                    // prospecting ores
+                    HashMap<String, Integer> tOres = new HashMap<>(36);
 
-                        prospectOres(tOres);
+                    prospectOres(tOres);
 
-                        // prospecting oils
-                        ArrayList<String> tOils = new ArrayList<>();
-                        prospectOils(tOils);
+                    // prospecting oils
+                    ArrayList<String> tOils = new ArrayList<>();
+                    prospectOils(tOils);
 
-                        GTUtility.ItemNBT.setAdvancedProspectionData(
-                                mTier,
-                                aStack,
-                                this.getBaseMetaTileEntity().getXCoord(),
-                                this.getBaseMetaTileEntity().getYCoord(),
-                                this.getBaseMetaTileEntity().getZCoord(),
-                                this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
-                                tOils,
-                                GTUtility.sortByValueToList(tOres),
-                                radius);
-                    }
+                    GTUtility.ItemNBT.setAdvancedProspectionData(
+                        mTier,
+                        aStack,
+                        this.getBaseMetaTileEntity()
+                            .getXCoord(),
+                        this.getBaseMetaTileEntity()
+                            .getYCoord(),
+                        this.getBaseMetaTileEntity()
+                            .getZCoord(),
+                        this.getBaseMetaTileEntity()
+                            .getWorld().provider.dimensionId,
+                        tOils,
+                        GTUtility.sortByValueToList(tOres),
+                        radius);
+                }
         }
 
         return true;
@@ -157,9 +164,8 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
                     for (int i = 0; i < oilfieldSize; i++) {
                         for (int j = 0; j < oilfieldSize; j++) {
-                            Chunk tChunk = getBaseMetaTileEntity().getWorld().getChunkFromChunkCoords(
-                                    xChunk + i + x * oilfieldSize,
-                                    zChunk + j + z * oilfieldSize);
+                            Chunk tChunk = getBaseMetaTileEntity().getWorld()
+                                .getChunkFromChunkCoords(xChunk + i + x * oilfieldSize, zChunk + j + z * oilfieldSize);
                             FluidStack tFluid = undergroundOilReadInformation(tChunk);
                             if (tFluid != null) {
                                 if (tFluid.amount > max) max = tFluid.amount;
@@ -171,17 +177,26 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
                         }
                     }
 
-                    aOils.add(++oilFieldCount + "," + min + "-" + max + "," + tFluids.get(cInts).getLocalizedName());
+                    aOils.add(
+                        ++oilFieldCount + ","
+                            + min
+                            + "-"
+                            + max
+                            + ","
+                            + tFluids.get(cInts)
+                                .getLocalizedName());
                 }
             }
         } catch (Exception ignored) {}
     }
 
     private void prospectOres(Map<String, Integer> aOres) {
-        int tLeftXBound = this.getBaseMetaTileEntity().getXCoord() - radius;
+        int tLeftXBound = this.getBaseMetaTileEntity()
+            .getXCoord() - radius;
         int tRightXBound = tLeftXBound + 2 * radius;
 
-        int tLeftZBound = this.getBaseMetaTileEntity().getZCoord() - radius;
+        int tLeftZBound = this.getBaseMetaTileEntity()
+            .getZCoord() - radius;
         int tRightZBound = tLeftZBound + 2 * radius;
 
         for (int i = tLeftXBound; i <= tRightXBound; i += step) {
@@ -201,17 +216,20 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     private void prospectHole(int i, int k, Map<String, Integer> aOres) {
         String tFoundOre;
-        for (int j = this.getBaseMetaTileEntity().getYCoord(); j > 0; j--) {
+        for (int j = this.getBaseMetaTileEntity()
+            .getYCoord(); j > 0; j--) {
             tFoundOre = checkForOre(i, j, k);
             if (tFoundOre != null) countOre(aOres, tFoundOre, cX, cZ);
         }
     }
 
     private String checkForOre(int x, int y, int z) {
-        Block tBlock = this.getBaseMetaTileEntity().getBlock(x, y, z);
+        Block tBlock = this.getBaseMetaTileEntity()
+            .getBlock(x, y, z);
 
         if (tBlock instanceof BlockOresAbstract) {
-            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
+            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld()
+                .getTileEntity(x, y, z);
 
             if ((tTileEntity instanceof TileEntityOres) && (((TileEntityOres) tTileEntity).mMetaData < 16000)) { // Filtering
                                                                                                                  // small
@@ -221,11 +239,12 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
                 if ((tMaterial != null) && (tMaterial != Materials._NULL)) return tMaterial.mDefaultLocalName;
             }
         } else {
-            int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
+            int tMetaID = getBaseMetaTileEntity().getWorld()
+                .getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
             ItemData association = GTOreDictUnificator.getAssociation(is);
-            if ((association != null) && (association.mPrefix.toString().startsWith("ore")))
-                return association.mMaterial.mMaterial.mDefaultLocalName;
+            if ((association != null) && (association.mPrefix.toString()
+                .startsWith("ore"))) return association.mMaterial.mMaterial.mDefaultLocalName;
             else if (GTUtility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();
         }
         return null;

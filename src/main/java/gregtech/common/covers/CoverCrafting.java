@@ -21,13 +21,13 @@ public class CoverCrafting extends Cover {
         if ((aPlayer instanceof EntityPlayerMP && coverable != null)) {
             ((EntityPlayerMP) aPlayer).getNextWindowId();
             ((EntityPlayerMP) aPlayer).playerNetServerHandler.sendPacket(
-                    new S2DPacketOpenWindow(((EntityPlayerMP) aPlayer).currentWindowId, 1, "Crafting", 9, true));
+                new S2DPacketOpenWindow(((EntityPlayerMP) aPlayer).currentWindowId, 1, "Crafting", 9, true));
             aPlayer.openContainer = new ContainerWorkbench(
-                    aPlayer.inventory,
-                    aPlayer.worldObj,
-                    coverable.getXCoord(),
-                    coverable.getYCoord(),
-                    coverable.getZCoord()) {
+                aPlayer.inventory,
+                aPlayer.worldObj,
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord()) {
 
                 @Override
                 public boolean canInteractWith(EntityPlayer player) {

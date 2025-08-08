@@ -50,64 +50,65 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                 return tag == null ? "" : tag.getFrequency();
             }
             return "";
-        }).setSetter(val -> {
-            if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
-                UUID uuid = null;
+        })
+            .setSetter(val -> {
+                if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
+                    UUID uuid = null;
 
-                CoverLegacyData cover = getCover();
-                if (cover != null && CoverEnderFluidLink.testBit(cover.getVariable(), PUBLIC_PRIVATE_MASK)) {
-                    uuid = getUUID();
-                    if (!uuid.equals(CoverEnderFluidLink.getOwner(tank))) return;
+                    CoverLegacyData cover = getCover();
+                    if (cover != null && CoverEnderFluidLink.testBit(cover.getVariable(), PUBLIC_PRIVATE_MASK)) {
+                        uuid = getUUID();
+                        if (!uuid.equals(CoverEnderFluidLink.getOwner(tank))) return;
+                    }
+
+                    EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
                 }
-
-                EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
-            }
-        }).setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft).setFocusOnGuiOpen(true)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0).setSize(SPACE_X * 5 - 8, 12))
-                .widget(
-                        new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                this::getCover,
-                                (id, coverData) -> !getClickable(id, coverData.getVariable()),
-                                (id, coverData) -> coverData
-                                        .setVariable(getNewCoverVariable(id, coverData.getVariable())),
-                                getUIBuildContext())
-                                        .addToggleButton(
-                                                PUBLIC_BUTTON_ID,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                                        .addTooltip(translateToLocal("gt.interact.desc.public"))
-                                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
-                                        .addToggleButton(
-                                                PRIVATE_BUTTON_ID,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                                                        .addTooltip(translateToLocal("gt.interact.desc.private"))
-                                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
-                                        .addToggleButton(
-                                                IMPORT_BUTTON_ID,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                                        .addTooltip(translateToLocal("gt.interact.desc.import"))
-                                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
-                                        .addToggleButton(
-                                                EXPORT_BUTTON_ID,
-                                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                                        .addTooltip(translateToLocal("gt.interact.desc.export"))
-                                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
-                .widget(
-                        new TextWidget(translateToLocal("gt.interact.desc.channel"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
-                .widget(
-                        new TextWidget(translateToLocal("gt.interact.desc.set_perm"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
-                .widget(
-                        new TextWidget(translateToLocal("gt.interact.desc.set_io"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
+            })
+            .setTextColor(Color.WHITE.dark(1))
+            .setTextAlignment(Alignment.CenterLeft)
+            .setFocusOnGuiOpen(true)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0)
+            .setSize(SPACE_X * 5 - 8, 12))
+            .widget(
+                new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                    this::getCover,
+                    (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                    (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
+                    getUIBuildContext())
+                        .addToggleButton(
+                            PUBLIC_BUTTON_ID,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
+                                .addTooltip(translateToLocal("gt.interact.desc.public"))
+                                .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
+                        .addToggleButton(
+                            PRIVATE_BUTTON_ID,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
+                                .addTooltip(translateToLocal("gt.interact.desc.private"))
+                                .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
+                        .addToggleButton(
+                            IMPORT_BUTTON_ID,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
+                                .addTooltip(translateToLocal("gt.interact.desc.import"))
+                                .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
+                        .addToggleButton(
+                            EXPORT_BUTTON_ID,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                                .addTooltip(translateToLocal("gt.interact.desc.export"))
+                                .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
+            .widget(
+                new TextWidget(translateToLocal("gt.interact.desc.channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
+            .widget(
+                new TextWidget(translateToLocal("gt.interact.desc.set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
+            .widget(
+                new TextWidget(translateToLocal("gt.interact.desc.set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
     }
 
     private int getNewCoverVariable(int id, int coverVariable) {
@@ -123,13 +124,14 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
             case PUBLIC_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
             case PRIVATE_BUTTON_ID -> !CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
             case IMPORT_BUTTON_ID -> !CoverEnderFluidLink
-                    .testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
+                .testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
             case EXPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
             default -> false;
         };
     }
 
     private UUID getUUID() {
-        return getUIBuildContext().getPlayer().getUniqueID();
+        return getUIBuildContext().getPlayer()
+            .getUniqueID();
     }
 }

@@ -78,7 +78,7 @@ public class BlockPooCollector extends BlockContainer {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -87,16 +87,17 @@ public class BlockPooCollector extends BlockContainer {
                 if (!tank.mInventory.isEmpty()) {
                     GTUtility.sendChatToPlayer(player, "Inventory contains:");
                     GTUtility
-                            .sendChatToPlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
+                        .sendChatToPlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
                 } else {
                     GTUtility.sendChatToPlayer(player, "No solids collected yet.");
                 }
                 if (tank.tank.getFluid() != null) {
                     GTUtility.sendChatToPlayer(
-                            player,
-                            "Tank contains " + tank.tank.getFluidAmount()
-                                    + "L of "
-                                    + tank.tank.getFluid().getLocalizedName());
+                        player,
+                        "Tank contains " + tank.tank.getFluidAmount()
+                            + "L of "
+                            + tank.tank.getFluid()
+                                .getLocalizedName());
                 }
             }
         }

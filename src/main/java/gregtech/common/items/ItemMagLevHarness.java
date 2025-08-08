@@ -75,11 +75,11 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                 setFly(player, player.capabilities.isCreativeMode);
                 if (Math.random() <= 0.03) {
                     GTNHLib.proxy.sendMessageAboveHotbar(
-                            player,
-                            new ChatComponentTranslation("GT5U.maglevHarness.pylons"),
-                            25,
-                            true,
-                            false);
+                        player,
+                        new ChatComponentTranslation("GT5U.maglevHarness.pylons"),
+                        25,
+                        true,
+                        false);
                 }
             } else if (closestPylon != prevPylon) {
                 GTMod.proxy.tetherManager.disconnectPlayer(player);

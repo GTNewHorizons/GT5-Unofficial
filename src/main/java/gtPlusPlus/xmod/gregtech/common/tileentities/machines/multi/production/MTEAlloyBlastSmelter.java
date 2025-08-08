@@ -80,13 +80,21 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType()).addInfo("Allows Complex alloys to be created")
-                .addInfo("Recipe tier is limited to hatch tier").addPollutionAmount(getPollutionPerSecond(null))
-                .beginStructureBlock(3, 4, 3, true).addController("Bottom Center")
-                .addCasingInfoMin("Blast Smelter Casings", 4, false)
-                .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false).addInputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).toolTipFinisher();
+        tt.addMachineType(getMachineType())
+            .addInfo("Allows Complex alloys to be created")
+            .addInfo("Recipe tier is limited to hatch tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 4, 3, true)
+            .addController("Bottom Center")
+            .addCasingInfoMin("Blast Smelter Casings", 4, false)
+            .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false)
+            .addInputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -94,18 +102,20 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     public IStructureDefinition<MTEAlloyBlastSmelter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAlloyBlastSmelter>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(MTEAlloyBlastSmelter.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(15)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                    .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 14)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                            { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEAlloyBlastSmelter.class)
+                        .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.GTPP_INDEX(15))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
+                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 14))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -170,7 +180,8 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         }
 
         if (circuit == null) {
-            circuit = GTUtility.getIntegratedCircuit(0).getItem();
+            circuit = GTUtility.getIntegratedCircuit(0)
+                .getItem();
         }
 
         if (aStack == null) {
@@ -200,8 +211,8 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override

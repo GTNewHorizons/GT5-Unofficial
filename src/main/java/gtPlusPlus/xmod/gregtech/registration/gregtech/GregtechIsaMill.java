@@ -17,16 +17,16 @@ public class GregtechIsaMill {
         Logger.INFO("Gregtech5u Content | Registering Milling Content.");
 
         GregtechItemList.Controller_IsaMill.set(
-                new MTEIsaMill(Controller_IsaMill.ID, "gtpp.multimachine.isamill", "IsaMill Grinding Machine")
-                        .getStackForm(1L));
+            new MTEIsaMill(Controller_IsaMill.ID, "gtpp.multimachine.isamill", "IsaMill Grinding Machine")
+                .getStackForm(1L));
         GregtechItemList.Controller_Flotation_Cell.set(
-                new MTEFrothFlotationCell(
-                        Controller_Flotation_Cell.ID,
-                        "gtpp.multimachine.flotationcell",
-                        "Flotation Cell Regulator").getStackForm(1L));
+            new MTEFrothFlotationCell(
+                Controller_Flotation_Cell.ID,
+                "gtpp.multimachine.flotationcell",
+                "Flotation Cell Regulator").getStackForm(1L));
 
         // Milling Ball Bus
-        GregtechItemList.Bus_Milling_Balls.set(
-                (new MTEHatchMillingBalls(Bus_Milling_Balls.ID, "hatch.milling", "Ball Housing")).getStackForm(1L));
+        GregtechItemList.Bus_Milling_Balls
+            .set((new MTEHatchMillingBalls(Bus_Milling_Balls.ID, "hatch.milling", "Ball Housing")).getStackForm(1L));
     }
 }

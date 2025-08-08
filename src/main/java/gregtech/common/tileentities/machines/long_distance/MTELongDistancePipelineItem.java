@@ -152,8 +152,9 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             final IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory inv)
-                return inv.getAccessibleSlotsFromSide(tTile.getFrontFacing().ordinal());
+            if (iInventory instanceof ISidedInventory inv) return inv.getAccessibleSlotsFromSide(
+                tTile.getFrontFacing()
+                    .ordinal());
             if (iInventory != null) {
                 final int[] tReturn = new int[iInventory.getSizeInventory()];
                 for (int i = 0; i < tReturn.length; i++) tReturn[i] = i;
@@ -169,8 +170,11 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory iSidedInventory)
-                return iSidedInventory.canInsertItem(aSlot, aStack, tTile.getFrontFacing().ordinal());
+            if (iInventory instanceof ISidedInventory iSidedInventory) return iSidedInventory.canInsertItem(
+                aSlot,
+                aStack,
+                tTile.getFrontFacing()
+                    .ordinal());
             return iInventory != null;
         }
         return false;
@@ -192,11 +196,17 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
         overlays[INPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT);
         overlays[OUTPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK);
         overlays[SIDE_UP_DOWN_INDEX] = TextureFactory.of(
-                TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN),
-                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN_GLOW).glow().build());
+            TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN_GLOW)
+                .glow()
+                .build());
         overlays[SIDE_LEFT_RIGHT_INDEX] = TextureFactory.of(
-                TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT),
-                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT_GLOW).glow().build());
+            TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT_GLOW)
+                .glow()
+                .build());
 
         return overlays;
     }

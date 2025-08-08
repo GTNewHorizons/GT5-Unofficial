@@ -36,7 +36,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBase<?> & IStructureProvider<MTE>>
-        extends MultiblockTooltipBuilder {
+    extends MultiblockTooltipBuilder {
 
     public final StructureWrapper<MTE> structure;
 
@@ -55,19 +55,19 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock(boolean hollow) {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                    structure.minSize.get0(),
-                    structure.minSize.get1(),
-                    structure.minSize.get2(),
-                    structure.maxSize.get0(),
-                    structure.maxSize.get1(),
-                    structure.maxSize.get2(),
-                    hollow);
+                structure.minSize.get0(),
+                structure.minSize.get1(),
+                structure.minSize.get2(),
+                structure.maxSize.get0(),
+                structure.maxSize.get1(),
+                structure.maxSize.get2(),
+                hollow);
         } else {
             super.beginStructureBlock(
-                    structure.minSize.get0(),
-                    structure.minSize.get1(),
-                    structure.minSize.get2(),
-                    hollow);
+                structure.minSize.get0(),
+                structure.minSize.get1(),
+                structure.minSize.get2(),
+                hollow);
         }
 
         return this;
@@ -79,19 +79,19 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock() {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                    structure.minSize.get0(),
-                    structure.minSize.get1(),
-                    structure.minSize.get2(),
-                    structure.maxSize.get0(),
-                    structure.maxSize.get1(),
-                    structure.maxSize.get2(),
-                    false);
+                structure.minSize.get0(),
+                structure.minSize.get1(),
+                structure.minSize.get2(),
+                structure.maxSize.get0(),
+                structure.maxSize.get1(),
+                structure.maxSize.get2(),
+                false);
         } else {
             super.beginStructureBlock(
-                    structure.minSize.get0(),
-                    structure.minSize.get1(),
-                    structure.minSize.get2(),
-                    false);
+                structure.minSize.get0(),
+                structure.minSize.get1(),
+                structure.minSize.get2(),
+                false);
         }
 
         return this;
@@ -154,7 +154,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
      * Sets the location/casing for a hatch instead of using the default location.
      */
     public StructureWrapperTooltipBuilder<MTE> addHatchLocationOverride(IHatchElement<? super MTE> hatch,
-            String newLocation) {
+        String newLocation) {
         hatchInfoOverrides.put(hatch, newLocation);
         return this;
     }
@@ -163,7 +163,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
      * Sets the location/casing for a hatch instead of using the default location.
      */
     public StructureWrapperTooltipBuilder<MTE> addHatchLocationOverride(Collection<IHatchElement<? super MTE>> hatches,
-            String newLocation) {
+        String newLocation) {
         for (var hatch : hatches) {
             hatchInfoOverrides.put(hatch, newLocation);
         }
@@ -189,8 +189,8 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         // add dots to the info if possible
         if (dots.length > 0) {
             info += GTUtility.translate(
-                    "GT5U.MBTT.HatchDots",
-                    String.join(", ", GTDataUtils.mapToList(new IntArrayList(dots), Object::toString)));
+                "GT5U.MBTT.HatchDots",
+                String.join(", ", GTDataUtils.mapToList(new IntArrayList(dots), Object::toString)));
         }
 
         if (nameOverride != null) {
@@ -277,7 +277,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
      * @see StructureWrapperTooltipBuilder#addHatch(ICasing, IHatchElement, int...)
      */
     public StructureWrapperTooltipBuilder<MTE> addAllCasingInfo(@Nullable List<ICasing> casingOrder,
-            @Nullable List<IHatchElement<? super MTE>> hatchOrder) {
+        @Nullable List<IHatchElement<? super MTE>> hatchOrder) {
         ObjectArraySet<ICasing> addedCasings = new ObjectArraySet<>();
         ObjectArraySet<IHatchElement<?>> addedHatches = new ObjectArraySet<>();
 
@@ -350,9 +350,15 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
 
             // this is only relevant for special hatches
             Comparator<Pair<ICasing, IHatchElement<? super MTE>>> nameComparator = Comparator.nullsFirst(
-                    Comparator.comparing(p -> hatchNameOverrides.getOrDefault(p.right(), p.right().getDisplayName())));
+                Comparator.comparing(
+                    p -> hatchNameOverrides.getOrDefault(
+                        p.right(),
+                        p.right()
+                            .getDisplayName())));
 
-            hatchesSorted.sort(Comparator.comparingInt(categoryComparator).thenComparing(nameComparator));
+            hatchesSorted.sort(
+                Comparator.comparingInt(categoryComparator)
+                    .thenComparing(nameComparator));
         }
 
         for (var hatch : hatchesSorted) {

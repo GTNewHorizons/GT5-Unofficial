@@ -22,8 +22,8 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class BaseBauble extends Item implements IBauble {
 
     /**
@@ -86,13 +86,15 @@ public class BaseBauble extends Item implements IBauble {
 
     public void onEquippedOrLoadedIntoWorld(EntityLivingBase player) {
         attributes.clear();
-        player.getAttributeMap().applyAttributeModifiers(attributes);
+        player.getAttributeMap()
+            .applyAttributeModifiers(attributes);
     }
 
     @Override
     public void onUnequipped(ItemStack stack, EntityLivingBase player) {
         attributes.clear();
-        player.getAttributeMap().removeAttributeModifiers(attributes);
+        player.getAttributeMap()
+            .removeAttributeModifiers(attributes);
     }
 
     @Override

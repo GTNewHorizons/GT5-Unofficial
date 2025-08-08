@@ -33,12 +33,12 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
     public MTEHatchVoidBus(int aID, String aName, String aNameRegional) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                1,
-                new String[] { "Voids items from Multiblocks", "Must be configured to work" },
-                0);
+            aID,
+            aName,
+            aNameRegional,
+            1,
+            new String[] { "Voids items from Multiblocks", "Must be configured to work" },
+            0);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -171,8 +171,13 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         if (lockedInventoryHandler == null) return;
 
         builder.widget(
-                SlotGroup.ofItemHandler(lockedInventoryHandler, 2).startFromSlot(0).endAtSlot(3)
-                        .background(PhantomItemButton.FILTER_BACKGROUND).phantom(true).build().setPos(70, 25));
+            SlotGroup.ofItemHandler(lockedInventoryHandler, 2)
+                .startFromSlot(0)
+                .endAtSlot(3)
+                .background(PhantomItemButton.FILTER_BACKGROUND)
+                .phantom(true)
+                .build()
+                .setPos(70, 25));
     }
 
     public ItemStack[] getLockedItems() {

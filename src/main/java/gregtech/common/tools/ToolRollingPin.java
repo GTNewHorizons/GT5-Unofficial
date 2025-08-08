@@ -47,11 +47,11 @@ public class ToolRollingPin extends GTTool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " got flattened by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " got flattened by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

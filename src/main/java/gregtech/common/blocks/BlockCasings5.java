@@ -46,7 +46,7 @@ import gregtech.common.render.GTRendererBlock;
  * 16 subtypes at most.
  */
 public class BlockCasings5 extends BlockCasingsAbstract
-        implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
@@ -73,7 +73,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         for (int i = 0; i < 14; i++) {
             GTStructureChannels.HEATING_COIL
-                    .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
+                .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
         }
     }
 
@@ -162,7 +162,11 @@ public class BlockCasings5 extends BlockCasingsAbstract
                     default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                 };
 
-                textures.add(TextureFactory.builder().addIcon(foreground).glow().build());
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(foreground)
+                        .glow()
+                        .build());
             }
         }
 

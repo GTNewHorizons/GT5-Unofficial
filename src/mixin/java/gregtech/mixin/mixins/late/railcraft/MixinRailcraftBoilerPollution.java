@@ -32,8 +32,8 @@ public class MixinRailcraftBoilerPollution {
         if ((world.getTotalWorldTime() % 20) == 0) {
             int pollutionAmount;
             if (this.tile instanceof TileMultiBlock) {
-                pollutionAmount = (((TileMultiBlock) this.tile).getComponents().size() - x)
-                        * PollutionConfig.fireboxPollutionAmount;
+                pollutionAmount = (((TileMultiBlock) this.tile).getComponents()
+                    .size() - x) * PollutionConfig.fireboxPollutionAmount;
             } else if (this.tile instanceof TileEngineSteamHobby) {
                 pollutionAmount = PollutionConfig.hobbyistEnginePollutionAmount;
             } else {

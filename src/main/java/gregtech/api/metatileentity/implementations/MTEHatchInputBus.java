@@ -67,15 +67,15 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier, int slots) {
         super(
-                id,
-                name,
-                nameRegional,
-                tier,
-                slots,
-                ArrayExt.of(
-                        "Item Input for Multiblocks",
-                        "Shift + right click with screwdriver to turn Sort mode on/off",
-                        "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+            id,
+            name,
+            nameRegional,
+            tier,
+            slots,
+            ArrayExt.of(
+                "Item Input for Multiblocks",
+                "Shift + right click with screwdriver to turn Sort mode on/off",
+                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -91,9 +91,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
         return GTMod.proxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
-                        TextureFactory.of(ITEM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
+                TextureFactory.of(ITEM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
     }
 
     @Override
@@ -101,9 +101,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);
         return GTMod.proxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
-                        TextureFactory.of(ITEM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay,
+                TextureFactory.of(ITEM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), coloredPipeOverlay };
     }
 
     @Override
@@ -129,7 +129,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", (byte) (getBaseMetaTileEntity().getColorization() + 1));
 
@@ -137,11 +137,12 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = (byte) (accessor.getNBTData().getByte("color") - 1);
+        byte color = (byte) (accessor.getNBTData()
+            .getByte("color") - 1);
         if (color >= 0 && color < 16) currenttip.add(
-                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
     }
 
     @Override
@@ -198,7 +199,8 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
-            mInventory[slot] = stacks.get(sID).copy();
+            mInventory[slot] = stacks.get(sID)
+                .copy();
             toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
             mInventory[slot].stackSize = toSet;
             slots.merge(sID, toSet, (a, b) -> a - b);
@@ -229,8 +231,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-            ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side).isGUIClickable()) return;
+        ItemStack aTool) {
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
+            .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;
@@ -243,30 +246,29 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                 }
             }
             GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   "
-                            + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   "
+                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
         } else {
             disableFilter = !disableFilter;
-            GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
         }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aIndex == getCircuitSlot()) return false;
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing() && aIndex != getCircuitSlot()
-                && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
-                && (disableLimited || limitedAllowPutStack(aIndex, aStack));
+            && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
+            && (disableLimited || limitedAllowPutStack(aIndex, aStack));
     }
 
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
@@ -287,11 +289,11 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     private void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
-                createToggleButton(
-                        () -> !disableSort,
-                        val -> disableSort = !val,
-                        GTUITextures.OVERLAY_BUTTON_SORTING_MODE,
-                        () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+            createToggleButton(
+                () -> !disableSort,
+                val -> disableSort = !val,
+                GTUITextures.OVERLAY_BUTTON_SORTING_MODE,
+                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
     }
 
     private void addOneStackLimitButton(ModularWindow.Builder builder) {
@@ -322,10 +324,13 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-            Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
-        return new CycleButtonWidget().setToggle(getter, setter).setStaticTexture(picture)
-                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62).setSize(BUTTON_SIZE, BUTTON_SIZE)
-                .setGTTooltip(tooltipDataSupplier);
+        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
     }
 }
